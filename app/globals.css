@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 :root {
+  --color-dark-lighter: #323232;
   --color-dark: #222222;
+
   --color-light: #f2e6e6;
+  --color-light-darker: #726666;
+
   --color-accent: #ff4f4f;
 }
 
