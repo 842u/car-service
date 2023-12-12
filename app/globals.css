@@ -7,9 +7,11 @@
   --color-dark: #222222;
 
   --color-light: #f2e6e6;
-  --color-light-darker: #726666;
+  --color-light-darker: #938787;
 
   --color-accent: #ff4f4f;
+
+  --color-border-default: #7c7c7c7c;
 }
 
 *,
