@@ -1,5 +1,5 @@
 {
-  "name": "docker-nginx-rpi",
+  "name": "service-car",
   "version": "0.1.0",
   "private": true,
   "scripts": {
