@@ -9,9 +9,16 @@ const config: Config = {
   ],
   theme: {
     colors: {
+      'dark-lighter': 'var(--color-dark-lighter)',
       dark: 'var(--color-dark)',
+
       light: 'var(--color-light)',
+      'light-darker': 'var(--color-light-darker)',
+
       accent: 'var(--color-accent)',
+      'accent-darker': 'var(--color-accent-darker)',
+
+      'border-default': 'var(--color-border-default)',
     },
   },
   plugins: [],

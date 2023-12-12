@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 import { ColorThemeProvider } from '@/components/providers/ColorThemeProvider';
+import { NavBar } from '@/components/ui/NavBar/NavBar';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,8 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-light text-dark dark:bg-dark dark:text-light">
-        <ColorThemeProvider>{children}</ColorThemeProvider>
+      <body className="bg-light text-dark transition-colors dark:bg-dark dark:text-light">
+        <ColorThemeProvider>
+          <NavBar />
+          {children}
+        </ColorThemeProvider>
       </body>
     </html>
   );
