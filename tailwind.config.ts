@@ -16,6 +16,7 @@ const config: Config = {
       'light-darker': 'var(--color-light-darker)',
 
       accent: 'var(--color-accent)',
+      'accent-darker': 'var(--color-accent-darker)',
 
       'border-default': 'var(--color-border-default)',
     },

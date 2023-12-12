@@ -50,6 +50,7 @@
         "shorthandLast": false
       }
     ],
+    "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error"
