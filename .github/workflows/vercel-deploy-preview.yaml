@@ -1,0 +1,61 @@
+name: Vercel Deploy Preview
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  vercel-deploy-preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: Preview
+      url: ${{ steps.vercel-deploy.outputs.URL }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Get Npm Global Directory
+        id: npm-global-dir
+        run: echo "dir=$(npm prefix -g)" >> ${GITHUB_OUTPUT}
+
+      - name: Cache Npm Global Dependencies
+        uses: actions/cache@v3
+        id: npm-global-cache
+        env:
+          cache-name: cache-npm-global-dependencies
+        with:
+          path: ${{ steps.npm-global-dir.outputs.dir }}
+          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}
+
+      - name: Install Vercel CLI
+        if: steps.npm-global-cache.outputs.cache-hit != 'true'
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        id: vercel-deploy
+        run: echo "URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> ${GITHUB_OUTPUT}
+
+      - name: Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: 842u_BOT
+          DISCORD_AVATAR: https://avatars.githubusercontent.com/u/23544888?v=4
+        uses: Ilshidur/action-discord@master
+        with:
+          args: |
+            New PR PREVIEW for {{ EVENT_PAYLOAD.repository.full_name }}
+            ${{ steps.vercel-deploy.outputs.URL }}
