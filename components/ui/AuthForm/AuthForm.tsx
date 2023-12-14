@@ -1,29 +1,79 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
+
+const emailValidationRules = {
+  required: 'This field is required.',
+  minLength: {
+    value: 3,
+    message: 'Minimum length is 3.',
+  },
+  maxLength: {
+    value: 254,
+    message: 'Maximum length is 254.',
+  },
+  pattern: {
+    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+    message: 'Enter valid e-mail adress.',
+  },
+};
+
+const passwordValidationRules = {
+  required: 'This field is required.',
+  minLength: {
+    value: 6,
+    message: 'Minimum length is 6.',
+  },
+  maxLength: {
+    value: 256,
+    message: 'Maximum length is 256.',
+  },
+};
+
+type AuthFormValues = {
+  email: string;
+  password: string;
+};
 
 export default function AuthForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const togglePasswordVisibility = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful, isValid, isSubmitting },
+  } = useForm<AuthFormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const passwordVisibilityHandler = () => {
     setIsPasswordVisible((currentState) => !currentState);
   };
 
-  const submitHandler = (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const submitHandler: SubmitHandler<AuthFormValues> = (data) => {
+    console.log(data);
   };
 
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
+
   return (
-    <form className="flex flex-col" onSubmit={submitHandler}>
+    <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
       <h1>Hello</h1>
       <label htmlFor="email">
         Email
         <input
-          required
+          {...register('email', emailValidationRules)}
           id="email"
-          placeholder="Enter your email."
+          placeholder="Enter your email ..."
           type="email"
         />
       </label>
@@ -31,19 +81,25 @@ export default function AuthForm() {
         <label htmlFor="password">
           Password
           <input
-            required
+            {...register('password', passwordValidationRules)}
             id="password"
-            placeholder="Enter your password."
+            placeholder="Enter your password ..."
             type={isPasswordVisible ? 'text' : 'password'}
           />
         </label>
         <ToggleVisibilityButton
           className="absolute h-full"
           isVisible={isPasswordVisible}
-          onClick={togglePasswordVisibility}
+          onClick={passwordVisibilityHandler}
         />
       </div>
-      <button type="submit">Sign In</button>
+      <button
+        className="disabled:text-light-darker"
+        disabled={!isValid || isSubmitting}
+        type="submit"
+      >
+        Sign In
+      </button>
     </form>
   );
 }
