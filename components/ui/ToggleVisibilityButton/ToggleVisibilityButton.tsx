@@ -13,11 +13,18 @@ export function ToggleVisibilityButton({
   const { className } = props;
 
   return (
-    <button type="button" {...props} className={twMerge('w-6', className)}>
+    <button
+      type="button"
+      {...props}
+      className={twMerge(
+        'w-6 rounded-md border border-alpha-grey-500',
+        className,
+      )}
+    >
       {isVisible ? (
-        <EyeSlashIcon className="aspect-square w-full" />
+        <EyeSlashIcon className="pointer-events-none aspect-square w-full" />
       ) : (
-        <EyeIcon className="aspect-square w-full" />
+        <EyeIcon className="pointer-events-none aspect-square w-full" />
       )}
     </button>
   );

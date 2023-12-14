@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { twMerge } from 'tailwind-merge';
 
 import {
   emailValidationRules,
@@ -22,8 +23,9 @@ export default function AuthForm() {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitSuccessful, isValid, isSubmitting },
+    formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
   } = useForm<AuthFormValues>({
+    mode: 'onTouched',
     defaultValues: {
       email: '',
       password: '',
@@ -34,9 +36,7 @@ export default function AuthForm() {
     setIsPasswordVisible((currentState) => !currentState);
   };
 
-  const submitHandler: SubmitHandler<AuthFormValues> = (data) => {
-    console.log(data);
-  };
+  const submitHandler: SubmitHandler<AuthFormValues> = (data) => data;
 
   useEffect(() => {
     reset();
@@ -44,39 +44,57 @@ export default function AuthForm() {
 
   return (
     <form
-      className="flex flex-col gap-4"
+      className="flex h-full w-full flex-col items-center justify-center gap-4 p-8"
       onSubmit={handleSubmit(submitHandler)}
     >
-      <h1>Hello</h1>
-      <label htmlFor="email">
+      <h1 className="my-4 self-start text-xl">Sign in to your accout.</h1>
+      <label className="w-full" htmlFor="email">
         Email
         <input
-          className="block"
+          className={twMerge(
+            'mt-2 block w-full rounded-md border border-alpha-grey-500 bg-light-600 px-4 py-2 placeholder:text-sm placeholder:text-light-900 focus:border-alpha-grey-500 focus:ring-alpha-grey-700 dark:bg-dark-700 ',
+            errors.email?.message
+              ? 'border-error-500 bg-error-50 focus:border-error-500 dark:bg-error-900'
+              : '',
+          )}
           {...register('email', emailValidationRules)}
           id="email"
           placeholder="Enter your email ..."
           type="email"
         />
+        <p className="my-2 whitespace-pre-wrap text-sm text-error-400">
+          {errors.email?.message || ' '}
+        </p>
       </label>
-      <label htmlFor="password">
+      <label className="w-full" htmlFor="password">
         Password
         <div className="relative">
           <input
-            className="block"
+            className={twMerge(
+              'mt-2 block w-full rounded-md border border-alpha-grey-500 bg-light-600 px-4 py-2 placeholder:text-sm placeholder:text-light-900 focus:border-alpha-grey-500 focus:ring-alpha-grey-700 dark:bg-dark-700 ',
+              errors.password?.message
+                ? 'border-error-500 bg-error-50 focus:border-error-500 dark:bg-error-900'
+                : '',
+            )}
             {...register('password', passwordValidationRules)}
             id="password"
             placeholder="Enter your password ..."
             type={isPasswordVisible ? 'text' : 'password'}
           />
-          <ToggleVisibilityButton
-            className="absolute right-0 top-0"
-            isVisible={isPasswordVisible}
-            onClick={passwordVisibilityHandler}
-          />
+          <div className="absolute right-0 top-0 mr-2 flex h-full flex-col items-center justify-center">
+            <ToggleVisibilityButton
+              className="bg-alpha-grey-500 p-1"
+              isVisible={isPasswordVisible}
+              onClick={passwordVisibilityHandler}
+            />
+          </div>
         </div>
+        <p className="my-2 whitespace-pre-wrap text-sm text-error-400">
+          {errors.password?.message || ' '}
+        </p>
       </label>
       <button
-        className="disabled:text-light-darker"
+        className="rounded-md border border-accent-500 bg-accent-800 px-4 py-2 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
         disabled={!isValid || isSubmitting}
         type="submit"
       >

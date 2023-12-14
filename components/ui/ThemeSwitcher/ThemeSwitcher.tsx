@@ -23,9 +23,9 @@ export function ThemeSwitcher() {
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
       {resolvedTheme === 'dark' ? (
-        <SunIcon className="stroke-light" />
+        <SunIcon className="transition-opacity" />
       ) : (
-        <MoonIcon className="stroke-dark" />
+        <MoonIcon className="transition-opacity" />
       )}
     </button>
   );
