@@ -6,7 +6,7 @@ export function NavBar() {
     <header className="fixed flex h-16 w-full items-center justify-center border-b border-border-default">
       <nav>
         <div className="flex items-center justify-center">
-          <LinkButton href="/login">Login</LinkButton>
+          <LinkButton href="/dashboard">Login</LinkButton>
           <div className="h-6 w-6">
             <ThemeSwitcher />
           </div>

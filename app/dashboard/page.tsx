@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import AccountForm from '@/components/ui/AccountForm/AccountForm';
 import { Database } from '@/types/supabase';
 
-export default async function AccountPage() {
+export default async function DashboardPage() {
   const cookieStore = cookies();
 
   const supabase = createServerClient<Database>(
@@ -25,6 +25,7 @@ export default async function AccountPage() {
 
   return (
     <main className="flex h-screen flex-col items-center justify-center">
+      DASHBOARD PAGE
       <AccountForm session={session} />
     </main>
   );
