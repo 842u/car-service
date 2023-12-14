@@ -1,26 +1,50 @@
 'use client';
 
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { createBrowserClient } from '@supabase/ssr';
-
-import { Database } from '@/types/supabase';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import React, { useState } from 'react';
 
 export default function AuthForm() {
-  const supabase = createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((currentState) => !currentState);
+  };
+
+  const submitHandler = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+  };
 
   return (
-    <Auth
-      appearance={{ theme: ThemeSupa }}
-      providers={[]}
-      redirectTo="http://localhost:3000/api/auth/callback"
-      showLinks={false}
-      supabaseClient={supabase}
-      theme="dark"
-      view="magic_link"
-    />
+    <form className="flex flex-col" onSubmit={submitHandler}>
+      <h1>Hello</h1>
+      <label htmlFor="email">
+        Email
+        <input
+          required
+          id="email"
+          placeholder="Enter your email."
+          type="email"
+        />
+      </label>
+      <div className="relative">
+        <label htmlFor="password">
+          Password
+          <input
+            required
+            id="password"
+            placeholder="Enter your password."
+            type={isPasswordVisible ? 'text' : 'password'}
+          />
+        </label>
+        <button
+          className="absolute aspect-square h-full"
+          type="button"
+          onClick={togglePasswordVisibility}
+        >
+          {isPasswordVisible ? <EyeSlashIcon /> : <EyeIcon />}
+        </button>
+      </div>
+      <button type="submit">Sign In</button>
+    </form>
   );
 }
