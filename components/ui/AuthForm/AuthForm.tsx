@@ -1,7 +1,8 @@
 'use client';
 
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
+
+import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 
 export default function AuthForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -36,13 +37,11 @@ export default function AuthForm() {
             type={isPasswordVisible ? 'text' : 'password'}
           />
         </label>
-        <button
-          className="absolute aspect-square h-full"
-          type="button"
+        <ToggleVisibilityButton
+          className="absolute h-full"
+          isVisible={isPasswordVisible}
           onClick={togglePasswordVisibility}
-        >
-          {isPasswordVisible ? <EyeSlashIcon /> : <EyeIcon />}
-        </button>
+        />
       </div>
       <button type="submit">Sign In</button>
     </form>
