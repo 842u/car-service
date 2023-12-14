@@ -3,35 +3,12 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import {
+  emailValidationRules,
+  passwordValidationRules,
+} from '@/utils/validation';
+
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
-
-const emailValidationRules = {
-  required: 'This field is required.',
-  minLength: {
-    value: 3,
-    message: 'Minimum length is 3.',
-  },
-  maxLength: {
-    value: 254,
-    message: 'Maximum length is 254.',
-  },
-  pattern: {
-    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
-    message: 'Enter valid e-mail adress.',
-  },
-};
-
-const passwordValidationRules = {
-  required: 'This field is required.',
-  minLength: {
-    value: 6,
-    message: 'Minimum length is 6.',
-  },
-  maxLength: {
-    value: 256,
-    message: 'Maximum length is 256.',
-  },
-};
 
 type AuthFormValues = {
   email: string;
