@@ -43,33 +43,38 @@ export default function AuthForm() {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
+    <form
+      className="flex flex-col gap-4"
+      onSubmit={handleSubmit(submitHandler)}
+    >
       <h1>Hello</h1>
       <label htmlFor="email">
         Email
         <input
+          className="block"
           {...register('email', emailValidationRules)}
           id="email"
           placeholder="Enter your email ..."
           type="email"
         />
       </label>
-      <div className="relative">
-        <label htmlFor="password">
-          Password
+      <label htmlFor="password">
+        Password
+        <div className="relative">
           <input
+            className="block"
             {...register('password', passwordValidationRules)}
             id="password"
             placeholder="Enter your password ..."
             type={isPasswordVisible ? 'text' : 'password'}
           />
-        </label>
-        <ToggleVisibilityButton
-          className="absolute h-full"
-          isVisible={isPasswordVisible}
-          onClick={passwordVisibilityHandler}
-        />
-      </div>
+          <ToggleVisibilityButton
+            className="absolute right-0 top-0"
+            isVisible={isPasswordVisible}
+            onClick={passwordVisibilityHandler}
+          />
+        </div>
+      </label>
       <button
         className="disabled:text-light-darker"
         disabled={!isValid || isSubmitting}
