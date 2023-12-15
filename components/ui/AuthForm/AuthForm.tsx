@@ -16,7 +16,12 @@ type AuthFormValues = {
   password: string;
 };
 
-export default function AuthForm() {
+type AuthFormProps = {
+  redirectTo: string;
+  className: string;
+};
+
+export default function AuthForm({ redirectTo, className }: AuthFormProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {
@@ -36,7 +41,10 @@ export default function AuthForm() {
     setIsPasswordVisible((currentState) => !currentState);
   };
 
-  const submitHandler: SubmitHandler<AuthFormValues> = (data) => data;
+  const submitHandler: SubmitHandler<AuthFormValues> = (data) => ({
+    data,
+    redirectTo,
+  });
 
   useEffect(() => {
     reset();
@@ -44,10 +52,12 @@ export default function AuthForm() {
 
   return (
     <form
-      className="flex h-full w-full flex-col items-center justify-center gap-4 p-8"
+      className={twMerge(
+        'flex flex-col items-center justify-center gap-4',
+        className,
+      )}
       onSubmit={handleSubmit(submitHandler)}
     >
-      <h1 className="my-4 self-start text-xl">Sign in to your accout.</h1>
       <label className="w-full" htmlFor="email">
         Email
         <input
