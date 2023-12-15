@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export const emailValidationRules = {
   required: 'This field is required.',
   minLength: {
@@ -21,7 +23,20 @@ export const passwordValidationRules = {
     message: 'Minimum length is 6.',
   },
   maxLength: {
-    value: 256,
-    message: 'Maximum length is 256.',
+    value: 72,
+    message: 'Maximum length is 72.',
   },
 };
+
+export const emailSchema = z
+  .string()
+  .trim()
+  .min(emailValidationRules.minLength.value)
+  .max(emailValidationRules.maxLength.value)
+  .email();
+
+export const passwordSchema = z
+  .string()
+  .trim()
+  .min(passwordValidationRules.minLength.value)
+  .max(passwordValidationRules.maxLength.value);

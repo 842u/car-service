@@ -41,10 +41,21 @@ export default function AuthForm({ redirectTo, className }: AuthFormProps) {
     setIsPasswordVisible((currentState) => !currentState);
   };
 
-  const submitHandler: SubmitHandler<AuthFormValues> = (data) => ({
-    data,
-    redirectTo,
-  });
+  const submitHandler: SubmitHandler<AuthFormValues> = async (data) => {
+    const formData = JSON.stringify(data);
+
+    const response = await fetch(redirectTo, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: formData,
+    });
+
+    const responseData = await response.json();
+
+    console.log(responseData);
+  };
 
   useEffect(() => {
     reset();
