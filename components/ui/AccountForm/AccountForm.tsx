@@ -134,7 +134,7 @@ export default function AccountForm({ session }: { session: Session | null }) {
       </div>
 
       <div>
-        <form action="/api/auth/signout" method="get">
+        <form action="/api/auth/sign-out" method="get">
           <button type="submit">Sign out</button>
         </form>
       </div>
