@@ -20,12 +20,14 @@ type AuthFormValues = {
 type AuthFormProps = {
   submitText: string;
   submitUrl: string;
-  className: string;
+  strictPasswordCheck?: boolean;
+  className?: string;
 };
 
 export default function AuthForm({
   submitText,
   submitUrl,
+  strictPasswordCheck = true,
   className,
 }: AuthFormProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -103,7 +105,12 @@ export default function AuthForm({
                 ? 'border-error-500 bg-error-50 focus:border-error-500 dark:bg-error-900'
                 : '',
             )}
-            {...register('password', passwordValidationRules)}
+            {...register(
+              'password',
+              strictPasswordCheck
+                ? passwordValidationRules
+                : { required: 'This field is required' },
+            )}
             id="password"
             placeholder="Enter your password ..."
             type={isPasswordVisible ? 'text' : 'password'}
