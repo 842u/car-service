@@ -2,8 +2,6 @@ import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { emailSchema, passwordSchema } from '@/utils/validation';
-
 export async function POST(requset: NextRequest) {
   const cookieStore = cookies();
 
@@ -27,17 +25,7 @@ export async function POST(requset: NextRequest) {
     },
   );
 
-  try {
-    emailSchema.parse(email);
-    passwordSchema.parse(password);
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Server validation failed. Try again.' },
-      { status: 400 },
-    );
-  }
-
-  const { error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -51,7 +39,7 @@ export async function POST(requset: NextRequest) {
 
   return NextResponse.json(
     {
-      message: 'Succesfully created an account.',
+      message: 'Succesfully signed in.',
     },
     { status: 200 },
   );
