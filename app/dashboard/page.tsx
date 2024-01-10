@@ -1,7 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-import AccountForm from '@/components/ui/AccountForm/AccountForm';
 import { Database } from '@/types/supabase';
 
 export default async function DashboardPage() {
@@ -20,13 +19,14 @@ export default async function DashboardPage() {
   );
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <main className="flex h-screen flex-col items-center justify-center">
-      DASHBOARD PAGE
-      <AccountForm session={session} />
+      <h1>DASHBOARD</h1>
+      <p>{user?.email}</p>
+      <a href="/api/auth/sign-out">Sign Out</a>
     </main>
   );
 }
