@@ -9,6 +9,7 @@ import {
   passwordValidationRules,
 } from '@/utils/validation';
 
+import { Spinner } from '../Spinner/Spinner';
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 
 type AuthFormValues = {
@@ -120,11 +121,15 @@ export default function AuthForm({
         </p>
       </label>
       <button
-        className="rounded-md border border-accent-500 bg-accent-800 px-4 py-2 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
+        className="h-11 rounded-md border border-accent-500 bg-accent-800 px-4 py-2 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
         disabled={!isValid || isSubmitting}
         type="submit"
       >
-        {submitText}
+        {isSubmitting ? (
+          <Spinner className="h-full" color="#88868c" />
+        ) : (
+          submitText
+        )}
       </button>
     </form>
   );
