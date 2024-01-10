@@ -23,7 +23,6 @@ export async function GET(req: NextRequest) {
     },
   );
 
-  // Check if we have a session
   const {
     data: { session },
   } = await supabase.auth.getSession();

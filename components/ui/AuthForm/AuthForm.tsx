@@ -17,11 +17,16 @@ type AuthFormValues = {
 };
 
 type AuthFormProps = {
-  redirectTo: string;
+  submitText: string;
+  submitUrl: string;
   className: string;
 };
 
-export default function AuthForm({ redirectTo, className }: AuthFormProps) {
+export default function AuthForm({
+  submitText,
+  submitUrl,
+  className,
+}: AuthFormProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {
@@ -44,7 +49,7 @@ export default function AuthForm({ redirectTo, className }: AuthFormProps) {
   const submitHandler: SubmitHandler<AuthFormValues> = async (data) => {
     const formData = JSON.stringify(data);
 
-    const response = await fetch(redirectTo, {
+    const response = await fetch(submitUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -119,7 +124,7 @@ export default function AuthForm({ redirectTo, className }: AuthFormProps) {
         disabled={!isValid || isSubmitting}
         type="submit"
       >
-        Sign In
+        {submitText}
       </button>
     </form>
   );
