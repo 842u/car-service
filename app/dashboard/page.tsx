@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 
 import { Database } from '@/types/supabase';
 
@@ -26,6 +27,7 @@ export default async function DashboardPage() {
     <main className="flex h-screen flex-col items-center justify-center">
       <h1>DASHBOARD</h1>
       <p>{user?.email}</p>
+      <Link href="/dashboard/account/password-reset">Reset password</Link>
       <a href="/api/auth/sign-out">Sign Out</a>
     </main>
   );

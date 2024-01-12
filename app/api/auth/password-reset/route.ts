@@ -2,8 +2,10 @@ import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(requset: NextRequest) {
-  const { email, password } = await requset.json();
+import { passwordSchema } from '@/utils/validation';
+
+export async function PATCH(request: NextRequest) {
+  const { password, passwordConfirm } = await request.json();
 
   const cookieStore = cookies();
   const supabase = createServerClient(
@@ -24,10 +26,19 @@ export async function POST(requset: NextRequest) {
     },
   );
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  try {
+    passwordSchema.parse(password);
+    if (password !== passwordConfirm) {
+      throw new Error('Passwords not match.');
+    }
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Server validation failed. Try again.' },
+      { status: 400 },
+    );
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
 
   if (error) {
     return NextResponse.json(
@@ -38,7 +49,7 @@ export async function POST(requset: NextRequest) {
 
   return NextResponse.json(
     {
-      message: 'Succesfully signed in.',
+      message: 'Your password has been changed.',
     },
     { status: 200 },
   );

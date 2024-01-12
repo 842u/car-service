@@ -36,25 +36,38 @@ export async function POST(requset: NextRequest) {
     );
   }
 
-  const { error } = await supabase.auth.signUp({
+  // * For Local development due to inconsistency error messages in signUp()
+  // const { error } = await supabase.auth.signUp({
+  //   email,
+  //   password,
+  // });
+
+  // if (error?.message === 'User already registered') {
+  //   const redirectTo = requset.nextUrl.clone();
+  //   redirectTo.pathname = 'dashboard/account/password-reset';
+
+  //   await supabase.auth.resetPasswordForEmail(email, {
+  //     redirectTo: redirectTo.href,
+  //   });
+
+  //   return NextResponse.json({
+  //     message:
+  //       'Welcome! To get started, please check your email and click the confirmation link. USER ALREADY EXISTS! PASSWORD RESET SEND.',
+  //   });
+  // }
+
+  // if (error) {
+  //   return NextResponse.json(
+  //     { error: error.message },
+  //     { status: error.status },
+  //   );
+  // }
+
+  // * For Production
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
   });
-
-  // * only for local development due to inconsistency error messages in signUp()
-  if (error?.message === 'User already registered') {
-    const redirectTo = requset.nextUrl.clone();
-    redirectTo.pathname = '/account/password-reset';
-
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectTo.href,
-    });
-
-    return NextResponse.json({
-      message:
-        'Welcome! To get started, please check your email and click the confirmation link. USER ALREADY EXIST',
-    });
-  }
 
   if (error) {
     return NextResponse.json(
@@ -63,27 +76,19 @@ export async function POST(requset: NextRequest) {
     );
   }
 
-  // * switch with this in production
-  // if (error) {
-  //   return NextResponse.json(
-  //     { error: error.message },
-  //     { status: error.status },
-  //   );
-  // }
+  if (data?.user?.identities?.length === 0) {
+    const redirectTo = requset.nextUrl.clone();
+    redirectTo.pathname = 'dashboard/account/password-reset';
 
-  // if (data?.user?.identities?.length === 0) {
-  //   const redirectTo = requset.nextUrl.clone();
-  //   redirectTo.pathname = '/account/reset-password';
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectTo.href,
+    });
 
-  //   await supabase.auth.resetPasswordForEmail(email, {
-  //     redirectTo: redirectTo.href,
-  //   });
-
-  //   return NextResponse.json({
-  //     message:
-  //       'Welcome! To get started, please check your email and click the confirmation link. USER ALREADY EXIST',
-  //   });
-  // }
+    return NextResponse.json({
+      message:
+        'Welcome! To get started, please check your email and click the confirmation link. USER ALREADY EXISTS! PASSWORD RESET SEND.',
+    });
+  }
 
   return NextResponse.json(
     {
