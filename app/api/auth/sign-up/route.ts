@@ -36,34 +36,6 @@ export async function POST(requset: NextRequest) {
     );
   }
 
-  // * For Local development due to inconsistency error messages in signUp()
-  // const { error } = await supabase.auth.signUp({
-  //   email,
-  //   password,
-  // });
-
-  // if (error?.message === 'User already registered') {
-  //   const redirectTo = requset.nextUrl.clone();
-  //   redirectTo.pathname = 'dashboard/account/password-reset';
-
-  //   await supabase.auth.resetPasswordForEmail(email, {
-  //     redirectTo: redirectTo.href,
-  //   });
-
-  //   return NextResponse.json({
-  //     message:
-  //       'Welcome! To get started, please check your email and click the confirmation link. USER ALREADY EXISTS! PASSWORD RESET SEND.',
-  //   });
-  // }
-
-  // if (error) {
-  //   return NextResponse.json(
-  //     { error: error.message },
-  //     { status: error.status },
-  //   );
-  // }
-
-  // * For Production
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -86,7 +58,7 @@ export async function POST(requset: NextRequest) {
 
     return NextResponse.json({
       message:
-        'Welcome! To get started, please check your email and click the confirmation link. USER ALREADY EXISTS! PASSWORD RESET SEND.',
+        'Welcome! To get started, please check your email and click the confirmation link.',
     });
   }
 
