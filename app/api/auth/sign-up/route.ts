@@ -59,10 +59,15 @@ export async function POST(requset: NextRequest) {
       redirectTo: redirectUrl.href,
     });
 
-    return NextResponse.json({
-      message:
-        'Welcome! To get started, please check your email and click the confirmation link.',
-    });
+    return NextResponse.json(
+      {
+        message:
+          'Welcome! To get started, please check your email and click the confirmation link.',
+      },
+      {
+        status: 200,
+      },
+    );
   }
 
   return NextResponse.json(
