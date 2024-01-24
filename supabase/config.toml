@@ -57,26 +57,9 @@ content_path = "./supabase/templates/confirmation.html"
 subject = "password reset"
 content_path = "./supabase/templates/recovery.html"
 
-
 [auth.sms]
-enable_signup = true
-enable_confirmations = false
-template = "Your code is {{ .Code }} ."
-
-[auth.sms.test_otp]
-
-[auth.sms.twilio]
-enabled = false
-account_sid = ""
-message_service_sid = ""
-auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
-
-[auth.external.apple]
-enabled = false
-client_id = ""
-secret = "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"
-redirect_uri = ""
-url = ""
+enable_signup = false
+enable_confirmations = true
 
 [analytics]
 enabled = false
