@@ -53,10 +53,8 @@ export async function POST(requset: NextRequest) {
   }
 
   if (data?.user?.identities?.length === 0) {
-    redirectUrl.pathname = 'dashboard/account/password-reset';
-
     await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectUrl.href,
+      redirectTo: redirectUrl.origin,
     });
 
     return NextResponse.json(
