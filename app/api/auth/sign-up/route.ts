@@ -7,6 +7,7 @@ import { emailSchema, passwordSchema } from '@/utils/validation';
 export async function POST(requset: NextRequest) {
   const { email, password } = await requset.json();
   const cookieStore = cookies();
+  const redirectUrl = requset.nextUrl.clone();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -39,6 +40,9 @@ export async function POST(requset: NextRequest) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: redirectUrl.origin,
+    },
   });
 
   if (error) {
@@ -49,11 +53,10 @@ export async function POST(requset: NextRequest) {
   }
 
   if (data?.user?.identities?.length === 0) {
-    const redirectTo = requset.nextUrl.clone();
-    redirectTo.pathname = 'dashboard/account/password-reset';
+    redirectUrl.pathname = 'dashboard/account/password-reset';
 
     await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectTo.href,
+      redirectTo: redirectUrl.href,
     });
 
     return NextResponse.json({
