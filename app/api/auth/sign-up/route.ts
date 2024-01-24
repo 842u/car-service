@@ -41,7 +41,7 @@ export async function POST(requset: NextRequest) {
     email,
     password,
     options: {
-      emailRedirectTo: `${redirectUrl.origin}/`,
+      emailRedirectTo: redirectUrl.origin,
     },
   });
 
