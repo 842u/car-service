@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 
 import { passwordValidationRules } from '@/utils/validation';
@@ -107,8 +108,45 @@ describe('Input', () => {
 
     render(<MockForm />);
 
-    const input = screen.getByRole('button', { name: 'toggle visibility' });
+    const visibilityButton = screen.getByRole('button', {
+      name: 'toggle visibility',
+    });
 
-    expect(input).toBeInTheDocument();
+    expect(visibilityButton).toBeInTheDocument();
+  });
+
+  it('should switch input type from pasword to text if visibility button is clicked', async () => {
+    const user = userEvent.setup();
+    const placeholderText = 'Enter your inputs ...';
+    const identifier = 'test-input';
+
+    function MockForm() {
+      const { register } = useForm();
+
+      return (
+        <Input
+          label={identifier}
+          name={identifier}
+          placeholder={placeholderText}
+          register={register}
+          registerOptions={passwordValidationRules}
+          type="password"
+        />
+      );
+    }
+
+    render(<MockForm />);
+
+    const input = screen.getByPlaceholderText(placeholderText);
+
+    const visibilityButton = screen.getByRole('button', {
+      name: 'toggle visibility',
+    });
+
+    expect(input).toHaveAttribute('type', 'password');
+    await user.click(visibilityButton);
+    expect(input).toHaveAttribute('type', 'text');
+    await user.click(visibilityButton);
+    expect(input).toHaveAttribute('type', 'password');
   });
 });
