@@ -6,11 +6,7 @@ export default async function SignUpPage() {
   return (
     <main className="flex h-screen flex-col items-center justify-center">
       <h1 className="my-8 text-xl">Create a new account.</h1>
-      <AuthForm
-        className="w-full px-8"
-        submitText="Sign Up"
-        submitUrl="/api/auth/sign-up"
-      />
+      <AuthForm submitText="Sign Up" submitUrl="/api/auth/sign-up" />
       <p className="my-4 text-sm text-light-800">
         <span>Have an account? </span>
         <Link
