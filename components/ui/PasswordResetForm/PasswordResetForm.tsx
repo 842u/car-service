@@ -2,9 +2,11 @@
 
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { twMerge } from 'tailwind-merge';
 
 import { passwordValidationRules } from '@/utils/validation';
+
+import { Input } from '../Input/Input';
+import { SubmittButton } from '../SubmittButton/SubmittButton';
 
 type PasswordResetFormValues = {
   password: string;
@@ -17,7 +19,7 @@ export function PasswordResetForm() {
     handleSubmit,
     getValues,
     reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
   } = useForm<PasswordResetFormValues>({
     mode: 'onTouched',
     defaultValues: {
@@ -46,44 +48,34 @@ export function PasswordResetForm() {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
-      <label className="flex flex-col" htmlFor="password">
-        New password.
-        <input
-          className={twMerge(
-            'mt-2 block w-full rounded-md border border-alpha-grey-500 bg-light-600 px-4 py-2 placeholder:text-sm placeholder:text-light-900 focus:border-alpha-grey-500 focus:ring-alpha-grey-700 dark:bg-dark-700 ',
-            errors.password?.message
-              ? 'border-error-500 bg-error-50 focus:border-error-500 dark:bg-error-900'
-              : '',
-          )}
-          id="new-password"
-          type="text"
-          {...register('password', passwordValidationRules)}
-        />
-        <p className="my-2 whitespace-pre-wrap text-sm text-error-400">
-          {errors.password?.message || ' '}
-        </p>
-      </label>
-      <label className="flex flex-col" htmlFor="confirm-new-password">
-        Confirm new password.
-        <input
-          className={twMerge(
-            'mt-2 block w-full rounded-md border border-alpha-grey-500 bg-light-600 px-4 py-2 placeholder:text-sm placeholder:text-light-900 focus:border-alpha-grey-500 focus:ring-alpha-grey-700 dark:bg-dark-700 ',
-            errors.passwordConfirm?.message
-              ? 'border-error-500 bg-error-50 focus:border-error-500 dark:bg-error-900'
-              : '',
-          )}
-          type="text"
-          {...register('passwordConfirm', {
-            required: 'This field is required.',
-            validate: (value) =>
-              value === getValues('password') || 'Password not match.',
-          })}
-        />
-        <p className="my-2 whitespace-pre-wrap text-sm text-error-400">
-          {errors.passwordConfirm?.message || ' '}
-        </p>
-      </label>
-      <button type="submit">Reset</button>
+      <Input
+        errorMessage={errors.password?.message}
+        label="New Password"
+        name="password"
+        placeholder="Enter new password"
+        register={register}
+        registerOptions={passwordValidationRules}
+        type="password"
+      />
+      <Input
+        errorMessage={errors.passwordConfirm?.message}
+        label="Confirm New Password"
+        name="passwordConfirm"
+        placeholder="Confirm new password"
+        register={register}
+        registerOptions={{
+          required: 'This field is required.',
+          validate: (value) =>
+            value === getValues('password') || 'Password not match.',
+        }}
+        type="password"
+      />
+      <SubmittButton
+        disabled={!isValid || isSubmitting}
+        isSubmitting={isSubmitting}
+      >
+        Reset
+      </SubmittButton>
     </form>
   );
 }
