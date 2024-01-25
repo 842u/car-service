@@ -11,6 +11,7 @@ export function ToggleVisibilityButton({
 }: ToggleVisibilityButtonProps) {
   return (
     <button
+      aria-label="toggle visibility"
       type="button"
       {...props}
       className="w-6 rounded-md border border-alpha-grey-500 bg-alpha-grey-500 p-0.5"
