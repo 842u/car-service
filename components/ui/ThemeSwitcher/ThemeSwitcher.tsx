@@ -5,9 +5,8 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 export function ThemeSwitcher() {
-  const { resolvedTheme, setTheme } = useTheme();
-
   const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
@@ -17,15 +16,21 @@ export function ThemeSwitcher() {
 
   return (
     <button
-      aria-label="color theme"
+      aria-label="switch color theme"
       className="h-fit w-6"
       type="button"
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
       {resolvedTheme === 'dark' ? (
-        <SunIcon className="transition-opacity" />
+        <SunIcon
+          className="transition-opacity"
+          data-testid="light-theme-icon"
+        />
       ) : (
-        <MoonIcon className="transition-opacity" />
+        <MoonIcon
+          className="transition-opacity"
+          data-testid="dark-theme-icon"
+        />
       )}
     </button>
   );
