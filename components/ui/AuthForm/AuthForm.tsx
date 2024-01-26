@@ -10,7 +10,7 @@ import {
 } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
-import { SubmittButton } from '../SubmittButton/SubmittButton';
+import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 type AuthFormValues = {
   email: string;
@@ -90,12 +90,12 @@ export default function AuthForm({
         }
         type="password"
       />
-      <SubmittButton
+      <SubmitButton
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
         {submitText}
-      </SubmittButton>
+      </SubmitButton>
     </form>
   );
 }

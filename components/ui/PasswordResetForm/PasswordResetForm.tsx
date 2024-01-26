@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { passwordValidationRules } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
-import { SubmittButton } from '../SubmittButton/SubmittButton';
+import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 type PasswordResetFormValues = {
   password: string;
@@ -70,12 +70,12 @@ export function PasswordResetForm() {
         }}
         type="password"
       />
-      <SubmittButton
+      <SubmitButton
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
         Reset
-      </SubmittButton>
+      </SubmitButton>
     </form>
   );
 }

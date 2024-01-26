@@ -14,6 +14,7 @@ export function Spinner({
   return (
     <svg
       className={twMerge('aspect-square h-8', className)}
+      data-testid="spinner"
       viewBox="-25 -25 230 230"
     >
       <path
