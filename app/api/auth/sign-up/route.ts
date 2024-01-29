@@ -47,8 +47,6 @@ export async function POST(requset: NextRequest) {
           emailRedirectTo: redirectUrl.origin,
         },
       }),
-      9000,
-      new Error('There was an error with the upstream service.'),
     );
 
     if (error) {
@@ -64,8 +62,6 @@ export async function POST(requset: NextRequest) {
         supabase.auth.resetPasswordForEmail(email, {
           redirectTo: redirectUrl.origin,
         }),
-        9000,
-        new Error('There was an error with the upstream service.'),
       );
     }
   } catch (error) {

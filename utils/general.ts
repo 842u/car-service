@@ -1,7 +1,9 @@
 export async function promiseWithTimeout<T>(
   promise: Promise<T>,
-  time: number,
-  timeoutError: Error,
+  time = 8000,
+  timeoutError = new Error(
+    'There was an error with the upstream service. Try again.',
+  ),
 ) {
   const timeoutPromise = new Promise((_, reject) => {
     setTimeout(() => reject(new Error()), time);
