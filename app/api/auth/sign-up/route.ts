@@ -2,6 +2,7 @@ import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { promiseWithTimeout } from '@/utils/general';
 import { emailSchema, passwordSchema } from '@/utils/validation';
 
 export async function POST(requset: NextRequest) {
@@ -38,13 +39,17 @@ export async function POST(requset: NextRequest) {
   }
 
   try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl.origin,
-      },
-    });
+    const { data, error } = await promiseWithTimeout(
+      supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl.origin,
+        },
+      }),
+      9000,
+      new Error('There was an error with the upstream service.'),
+    );
 
     if (error) {
       return NextResponse.json(
@@ -53,10 +58,15 @@ export async function POST(requset: NextRequest) {
       );
     }
 
+    // Send password reset email for confirmed existing users.
     if (data?.user?.identities?.length === 0) {
-      await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: redirectUrl.origin,
-      });
+      await promiseWithTimeout(
+        supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: redirectUrl.origin,
+        }),
+        9000,
+        new Error('There was an error with the upstream service.'),
+      );
 
       return NextResponse.json(
         {
@@ -69,7 +79,9 @@ export async function POST(requset: NextRequest) {
       );
     }
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
   }
 
   return NextResponse.json(
