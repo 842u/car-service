@@ -67,16 +67,6 @@ export async function POST(requset: NextRequest) {
         9000,
         new Error('There was an error with the upstream service.'),
       );
-
-      return NextResponse.json(
-        {
-          message:
-            'Welcome! To get started, please check your email and click the confirmation link.',
-        },
-        {
-          status: 200,
-        },
-      );
     }
   } catch (error) {
     if (error instanceof Error) {
