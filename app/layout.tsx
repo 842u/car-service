@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-light text-dark transition-colors dark:bg-dark dark:text-light">
+      <body className="bg-light-500 text-dark-500 transition-colors dark:bg-dark-500 dark:text-light-500">
         <ColorThemeProvider>
           <NavBar />
           {children}
