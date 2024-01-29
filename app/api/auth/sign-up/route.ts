@@ -37,35 +37,39 @@ export async function POST(requset: NextRequest) {
     );
   }
 
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: redirectUrl.origin,
-    },
-  });
-
-  if (error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: error.status },
-    );
-  }
-
-  if (data?.user?.identities?.length === 0) {
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectUrl.origin,
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl.origin,
+      },
     });
 
-    return NextResponse.json(
-      {
-        message:
-          'Welcome! To get started, please check your email and click the confirmation link.',
-      },
-      {
-        status: 200,
-      },
-    );
+    if (error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.status },
+      );
+    }
+
+    if (data?.user?.identities?.length === 0) {
+      await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: redirectUrl.origin,
+      });
+
+      return NextResponse.json(
+        {
+          message:
+            'Welcome! To get started, please check your email and click the confirmation link.',
+        },
+        {
+          status: 200,
+        },
+      );
+    }
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 });
   }
 
   return NextResponse.json(
