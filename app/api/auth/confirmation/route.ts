@@ -5,6 +5,8 @@ import { type EmailOtpType } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { promiseWithTimeout } from '@/utils/general';
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
@@ -35,10 +37,12 @@ export async function GET(request: NextRequest) {
       },
     );
 
-    const { error } = await supabase.auth.verifyOtp({
-      type,
-      token_hash,
-    });
+    const { error } = await promiseWithTimeout(
+      supabase.auth.verifyOtp({
+        type,
+        token_hash,
+      }),
+    );
 
     if (!error) {
       return NextResponse.redirect(redirectTo);

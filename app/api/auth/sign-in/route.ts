@@ -2,10 +2,12 @@ import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { promiseWithTimeout } from '@/utils/general';
+
 export async function POST(requset: NextRequest) {
   const { email, password } = await requset.json();
-
   const cookieStore = cookies();
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -24,10 +26,12 @@ export async function POST(requset: NextRequest) {
     },
   );
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { error } = await promiseWithTimeout(
+    supabase.auth.signInWithPassword({
+      email,
+      password,
+    }),
+  );
 
   if (error) {
     return NextResponse.json(

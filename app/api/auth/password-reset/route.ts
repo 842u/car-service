@@ -2,12 +2,13 @@ import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { promiseWithTimeout } from '@/utils/general';
 import { passwordSchema } from '@/utils/validation';
 
 export async function PATCH(request: NextRequest) {
   const { password, passwordConfirm } = await request.json();
-
   const cookieStore = cookies();
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -38,7 +39,9 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
-  const { error } = await supabase.auth.updateUser({ password });
+  const { error } = await promiseWithTimeout(
+    supabase.auth.updateUser({ password }),
+  );
 
   if (error) {
     return NextResponse.json(

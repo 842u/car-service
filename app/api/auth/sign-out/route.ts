@@ -2,6 +2,8 @@ import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { promiseWithTimeout } from '@/utils/general';
+
 export async function GET(req: NextRequest) {
   const cookieStore = cookies();
 
@@ -25,10 +27,10 @@ export async function GET(req: NextRequest) {
 
   const {
     data: { session },
-  } = await supabase.auth.getSession();
+  } = await promiseWithTimeout(supabase.auth.getSession());
 
   if (session) {
-    await supabase.auth.signOut();
+    await promiseWithTimeout(supabase.auth.signOut());
   }
 
   return NextResponse.redirect(new URL('/', req.url), {
