@@ -2,9 +2,14 @@
 
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { ComponentProps, useEffect, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-export function ThemeSwitcher() {
+type ThemeSwitcherProps = ComponentProps<'button'> & {
+  className?: string;
+};
+
+export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
 
@@ -17,18 +22,19 @@ export function ThemeSwitcher() {
   return (
     <button
       aria-label="switch color theme"
-      className="h-fit w-6"
+      className={twMerge('block', className)}
       type="button"
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      {...props}
     >
       {resolvedTheme === 'dark' ? (
         <SunIcon
-          className="transition-opacity"
+          className="mx-auto h-6 w-6 transition-opacity"
           data-testid="light-theme-icon"
         />
       ) : (
         <MoonIcon
-          className="transition-opacity"
+          className="mx-auto h-6 w-6 transition-opacity"
           data-testid="dark-theme-icon"
         />
       )}
