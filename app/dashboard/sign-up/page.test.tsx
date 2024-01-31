@@ -15,10 +15,10 @@ describe('SignUpPage', () => {
     render(<SignUpPage />);
 
     const form = screen.getByTestId('auth-form');
-    const signUpText = screen.getByText(/sign up/i);
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
 
     expect(form).toBeInTheDocument();
-    expect(signUpText).toBeInTheDocument();
+    expect(signUpButton).toBeInTheDocument();
   });
 
   it('should render link for sign in page', () => {
