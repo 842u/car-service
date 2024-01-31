@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { BrandLogoFull } from '@/components/decorative/BrandLogoFull';
 import AuthForm from '@/components/ui/AuthForm/AuthForm';
 
-export default async function SignUpPage() {
+export default function SignUpPage() {
   return (
     <main className="relative h-screen">
       <div className="flex h-full w-full flex-col items-center justify-center bg-light-500 shadow-xl shadow-dark-700 transition-[background-color] dark:bg-dark-500 lg:w-2/5 lg:border-r lg:border-alpha-grey-500">
@@ -23,7 +23,10 @@ export default async function SignUpPage() {
           </Link>
         </p>
       </div>
-      <div className="absolute left-0 top-0 -z-10 hidden h-full w-full bg-light-300 transition-[background-color] dark:bg-dark-700 lg:block">
+      <div
+        aria-hidden
+        className="absolute left-0 top-0 -z-10 hidden h-full w-full bg-light-300 transition-[background-color] dark:bg-dark-700 lg:block"
+      >
         <BrandLogoFull className="h-full w-full stroke-accent-500" />
       </div>
     </main>

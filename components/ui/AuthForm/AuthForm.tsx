@@ -66,6 +66,7 @@ export default function AuthForm({
   return (
     <form
       className={twMerge('flex flex-col', className)}
+      data-testid="auth-form"
       onSubmit={handleSubmit(submitHandler)}
     >
       <Input
