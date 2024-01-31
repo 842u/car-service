@@ -4,15 +4,19 @@ import { SubmitButton } from './SubmitButton';
 
 describe('SubmittButton', () => {
   it('should render a button', () => {
-    render(<SubmitButton />);
+    const buttonText = 'some text';
 
-    const button = screen.getByRole('button', { name: 'submit' });
+    render(<SubmitButton>{buttonText}</SubmitButton>);
+
+    const button = screen.getByRole('button', { name: buttonText });
 
     expect(button).toBeInTheDocument();
   });
 
   it('should render a loading spinner while is submitting', () => {
-    render(<SubmitButton isSubmitting />);
+    const buttonText = 'some text';
+
+    render(<SubmitButton isSubmitting>{buttonText}</SubmitButton>);
 
     const spinner = screen.getByTestId('spinner');
 
