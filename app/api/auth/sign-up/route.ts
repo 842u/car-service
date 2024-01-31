@@ -1,32 +1,15 @@
-import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { promiseWithTimeout } from '@/utils/general';
+import { getActionClient } from '@/utils/supabase';
 import { emailSchema, passwordSchema } from '@/utils/validation';
 
 export async function POST(requset: NextRequest) {
   const { email, password } = await requset.json();
-  const cookieStore = cookies();
   const redirectUrl = requset.nextUrl.clone();
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          cookieStore.set({ name, value, ...options });
-        },
-        remove(name: string, options: CookieOptions) {
-          cookieStore.set({ name, value: '', ...options });
-        },
-      },
-    },
-  );
+  const cookieStore = cookies();
+  const { auth } = getActionClient(cookieStore);
 
   try {
     emailSchema.parse(email);
@@ -40,7 +23,7 @@ export async function POST(requset: NextRequest) {
 
   try {
     const { data, error } = await promiseWithTimeout(
-      supabase.auth.signUp({
+      auth.signUp({
         email,
         password,
         options: {
@@ -56,10 +39,10 @@ export async function POST(requset: NextRequest) {
       );
     }
 
-    // Send password reset email for confirmed existing users.
+    // If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user. For users who forget that have and account send email with password reset flow.
     if (data?.user?.identities?.length === 0) {
       await promiseWithTimeout(
-        supabase.auth.resetPasswordForEmail(email, {
+        auth.resetPasswordForEmail(email, {
           redirectTo: redirectUrl.origin,
         }),
       );
