@@ -7,7 +7,7 @@ import {
   RegisterOptions,
   UseFormRegister,
 } from 'react-hook-form';
-import { twJoin } from 'tailwind-merge';
+import { twMerge } from 'tailwind-merge';
 
 import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
 
@@ -43,7 +43,7 @@ export function Input<T extends FieldValues>({
       {label}
       <div className="relative">
         <input
-          className={twJoin(
+          className={twMerge(
             'mt-2 block w-full rounded-md border border-alpha-grey-500 bg-light-600 px-4 py-2 placeholder:text-sm placeholder:text-light-900 focus:border-alpha-grey-500 focus:ring-alpha-grey-700 dark:bg-dark-700 ',
             errorMessage
               ? 'border-error-500 bg-error-200 focus:border-error-500 dark:bg-error-900'
