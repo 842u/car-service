@@ -1,17 +1,31 @@
-import { LinkButton } from '../LinkButton/LinkButton';
-import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
+'use client';
+
+import { useState } from 'react';
+
+import { BrandLabel } from '@/components/decorative/BrandLabel';
+
+import { HamburgerButton } from '../HamburgerButton/HamburgerButton';
+import { NavMenu } from './NavMenu';
 
 export function NavBar() {
+  const [navOpen, setNavOpen] = useState(false);
+
   return (
-    <header className="fixed flex h-16 w-full items-center justify-center border-b border-alpha-grey-500">
-      <nav>
-        <div className="flex items-center justify-center">
-          <LinkButton href="/dashboard">Login</LinkButton>
-          <div className="h-6 w-6">
-            <ThemeSwitcher />
-          </div>
-        </div>
-      </nav>
+    <header className="fixed z-50 flex h-16 w-full items-center justify-between border-b border-alpha-grey-500 px-5">
+      <div
+        aria-hidden
+        className="absolute left-0 z-10 box-content h-full w-full border-b border-alpha-grey-500 bg-light-500 transition-all dark:bg-dark-500 lg:hidden"
+      />
+      <BrandLabel className="z-10" />
+      <HamburgerButton
+        aria-label="toggle navigation menu"
+        className="z-10 lg:hidden"
+        isActive={navOpen}
+        onClick={() => {
+          setNavOpen((currentState) => !currentState);
+        }}
+      />
+      <NavMenu isActive={navOpen} />
     </header>
   );
 }
