@@ -12,7 +12,7 @@ export function NavMenu({ isActive }: NavMenuProps) {
   return (
     <nav
       className={twJoin(
-        'absolute left-0 top-0 flex h-screen w-screen justify-center bg-light-500 opacity-0 transition-all dark:bg-dark-500 lg:static lg:h-full lg:w-auto lg:translate-y-0 lg:items-center lg:justify-center lg:bg-none lg:text-xs lg:opacity-100',
+        'absolute left-0 top-0 flex h-screen w-screen justify-center bg-light-500 opacity-0 transition-all dark:bg-dark-500 lg:static lg:h-full lg:w-auto lg:translate-y-0 lg:items-center lg:justify-center lg:bg-[transparent] lg:text-xs lg:opacity-100 lg:dark:bg-[transparent]',
         isActive ? 'translate-y-0 opacity-100' : '-translate-y-full',
       )}
     >
