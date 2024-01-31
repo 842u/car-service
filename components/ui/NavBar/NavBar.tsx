@@ -11,7 +11,7 @@ export function NavBar() {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
-    <header className="fixed z-50 flex h-16 w-full items-center justify-between border-b border-alpha-grey-500 px-5">
+    <header className="fixed z-50 flex h-16 w-full items-center justify-between border-b border-alpha-grey-500 bg-light-500 px-5 transition-[background-color] dark:bg-dark-500">
       <div
         aria-hidden
         className="absolute left-0 z-10 box-content h-full w-full border-b border-alpha-grey-500 bg-light-500 transition-all dark:bg-dark-500 lg:hidden"
