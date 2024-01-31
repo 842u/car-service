@@ -8,13 +8,13 @@ import { promiseWithTimeout } from '@/utils/general';
 import { getActionClient } from '@/utils/supabase';
 
 export async function GET(request: NextRequest) {
-  const requestURL = request.nextUrl.clone();
-  const { searchParams } = requestURL;
+  const redirectURL = request.nextUrl.clone();
+  const { searchParams } = request.nextUrl;
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as EmailOtpType | null;
   const next = searchParams.get('next') ?? '/';
 
-  requestURL.pathname = next;
+  redirectURL.pathname = next;
 
   if (token_hash && type) {
     const cookieStore = cookies();
@@ -27,11 +27,11 @@ export async function GET(request: NextRequest) {
     );
 
     if (error) {
-      requestURL.pathname = '/auth/auth-code-error';
+      redirectURL.pathname = '/auth/auth-code-error';
 
-      return NextResponse.redirect(requestURL);
+      return NextResponse.redirect(redirectURL);
     }
   }
 
-  return NextResponse.redirect(requestURL);
+  return NextResponse.redirect(redirectURL);
 }

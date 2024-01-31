@@ -7,7 +7,7 @@ import { emailSchema, passwordSchema } from '@/utils/validation';
 
 export async function POST(requset: NextRequest) {
   const { email, password } = await requset.json();
-  const redirectUrl = requset.nextUrl.clone();
+  const redirectURL = requset.nextUrl.clone();
   const cookieStore = cookies();
   const { auth } = getActionClient(cookieStore);
 
@@ -27,7 +27,7 @@ export async function POST(requset: NextRequest) {
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl.origin,
+          emailRedirectTo: redirectURL.origin,
         },
       }),
     );
@@ -43,7 +43,7 @@ export async function POST(requset: NextRequest) {
     if (data?.user?.identities?.length === 0) {
       await promiseWithTimeout(
         auth.resetPasswordForEmail(email, {
-          redirectTo: redirectUrl.origin,
+          redirectTo: redirectURL.origin,
         }),
       );
     }

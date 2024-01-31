@@ -5,7 +5,7 @@ import { promiseWithTimeout } from '@/utils/general';
 import { getActionClient } from '@/utils/supabase';
 
 export async function GET(request: NextRequest) {
-  const requestURL = request.nextUrl.clone();
+  const redirectURL = request.nextUrl.clone();
   const cookieStore = cookies();
   const { auth } = getActionClient(cookieStore);
   const {
@@ -16,9 +16,7 @@ export async function GET(request: NextRequest) {
     await promiseWithTimeout(auth.signOut());
   }
 
-  requestURL.pathname = '/';
-
-  return NextResponse.redirect(requestURL, {
+  return NextResponse.redirect(redirectURL.origin, {
     status: 302,
   });
 }
