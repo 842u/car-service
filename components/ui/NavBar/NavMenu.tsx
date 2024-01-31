@@ -18,7 +18,9 @@ export function NavMenu({ isActive }: NavMenuProps) {
     >
       <ul className="relative flex w-4/5 flex-col items-center justify-center md:w-2/3 lg:flex-row-reverse lg:gap-3">
         <NavMenuItem>
-          <ThemeSwitcher className="my-4 w-full" />
+          <div className="my-4 w-full lg:w-6">
+            <ThemeSwitcher className="my-4 w-full" />
+          </div>
         </NavMenuItem>
         <NavMenuItem>
           <LinkButton className="my-4" href="/dashboard">
