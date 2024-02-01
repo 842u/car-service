@@ -69,9 +69,3 @@
   --color-alpha-grey-800: #999999cc;
   --color-alpha-grey-900: #999999e6;
 }
-
-*,
-*::before,
-*::after {
-  font-family: Helvetica, Arial, sans-serif;
-}
