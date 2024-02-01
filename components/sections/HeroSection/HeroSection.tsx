@@ -1,10 +1,12 @@
 import { LinkButton } from '@/components/ui/LinkButton/LinkButton';
 
+import { Section } from '../Section';
+
 export function HeroSection() {
   return (
-    <section
+    <Section
       aria-labelledby="welcome motto"
-      className="m-auto mt-16 flex h-[50vh] w-10/12 max-w-7xl flex-col items-center justify-center text-center lg:mt-0 lg:h-screen"
+      className="mt-16 flex h-[50vh] flex-col items-center justify-center text-center lg:mt-0 lg:h-screen"
     >
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">
         <p className="bg-gradient-to-b from-dark-100 to-dark-500 bg-clip-text leading-tight text-[transparent] dark:from-light-400 dark:to-light-800">
@@ -33,6 +35,6 @@ export function HeroSection() {
           </LinkButton>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }
