@@ -9,7 +9,7 @@ type SectionProps = ComponentProps<'section'> & {
 export function Section({ className, children, ...props }: SectionProps) {
   return (
     <section
-      className={twMerge('m-auto w-11/12 max-w-7xl', className)}
+      className={twMerge('m-auto w-11/12 max-w-7xl md:w-10/12', className)}
       {...props}
     >
       {children}
