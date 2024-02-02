@@ -1,0 +1,28 @@
+import { BrandLabel } from '@/components/decorative/icons/brand/BrandLabel';
+import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
+import { MailIcon } from '@/components/decorative/icons/MailIcon';
+import { Section } from '@/components/sections/Section';
+
+export function Footer() {
+  return (
+    <footer className="bg-gradient-to-b from-light-500 to-light-600 before:absolute before:h-[1px] before:w-full before:bg-gradient-to-l before:from-alpha-grey-50 before:via-alpha-grey-300 before:to-alpha-grey-50 dark:from-dark-500 dark:to-dark-900">
+      <Section className="my-0 py-5 md:my-0 lg:my-0">
+        <BrandLabel className="lg mx-auto my-5 h-12 lg:mx-0" />
+
+        <address className="flex h-10 items-center justify-evenly lg:justify-start lg:gap-10">
+          <a
+            aria-label="GitHub"
+            href="https://github.com/842u/car-service"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <GitHubIcon className="w-8 fill-alpha-grey-900 dark:fill-alpha-grey-500" />
+          </a>
+          <a aria-label="Mail" href="mailto:contact@842u.dev">
+            <MailIcon className="w-8 fill-alpha-grey-900 dark:fill-alpha-grey-500" />
+          </a>
+        </address>
+      </Section>
+    </footer>
+  );
+}

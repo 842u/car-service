@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { BrandLogoFull } from '@/components/decorative/BrandLogoFull';
+import { BrandLogoFull } from '@/components/decorative/icons/brand/BrandLogoFull';
 import AuthForm from '@/components/ui/AuthForm/AuthForm';
 
 export default function SignInPage() {

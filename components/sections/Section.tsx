@@ -10,7 +10,7 @@ export function Section({ className, children, ...props }: SectionProps) {
   return (
     <section
       className={twMerge(
-        'm-auto my-24 w-11/12 max-w-7xl md:w-10/12',
+        'm-auto my-10 w-11/12 max-w-7xl md:w-10/12 lg:my-20',
         className,
       )}
       {...props}

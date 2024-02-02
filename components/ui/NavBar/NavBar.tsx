@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { BrandLabel } from '@/components/decorative/BrandLabel';
+import { BrandLabel } from '@/components/decorative/icons/brand/BrandLabel';
 
 import { HamburgerButton } from '../HamburgerButton/HamburgerButton';
 import { NavMenu } from './NavMenu';
