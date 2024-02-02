@@ -13,8 +13,8 @@ export function FeaturesSection() {
       aria-labelledby="platform features"
       className="mb-7 flex flex-col items-center justify-center gap-4 md:flex-row md:flex-wrap"
     >
-      <div className="@container h-96 w-full md:w-1/3 md:flex-grow">
-        <Card className="@sm:items-start @sm:text-left relative flex h-full flex-col items-center justify-start gap-2 overflow-hidden text-center">
+      <div className="h-96 w-full @container md:w-1/3 md:flex-grow">
+        <Card className="relative flex h-full flex-col items-center justify-start gap-2 overflow-hidden text-center @sm:items-start @sm:text-left">
           <CardImage className="w-16 p-1.5">
             <BrandLogoFull className="stroke-accent-500 stroke-[6]" />
           </CardImage>
@@ -23,14 +23,14 @@ export function FeaturesSection() {
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
             Dignissimos temporibus officia nostrum at, sed unde!
           </CardDescription>
-          <CardBackgroundImage className="@sm:right-10 @sm:top-16 @sm:h-3/4 @sm:w-auto @sm:-rotate-12 h-[130%] w-[130%] rotate-12">
+          <CardBackgroundImage className="h-[130%] w-[130%] rotate-12 @sm:right-10 @sm:top-16 @sm:h-3/4 @sm:w-auto @sm:-rotate-12">
             <BrandLogoFull className="w-full stroke-alpha-grey-300" />
           </CardBackgroundImage>
         </Card>
       </div>
 
-      <div className="@container h-96 w-full md:w-1/3 md:flex-grow lg:w-1/4 lg:flex-grow-0">
-        <Card className="@sm:items-start @sm:text-left relative flex h-full flex-col items-center justify-start gap-2 overflow-hidden text-center">
+      <div className="h-96 w-full @container md:w-1/3 md:flex-grow lg:w-1/4 lg:flex-grow-0">
+        <Card className="relative flex h-full flex-col items-center justify-start gap-2 overflow-hidden text-center @sm:items-start @sm:text-left">
           <CardImage className="w-16 p-1.5">
             <BrandLogoFull className="stroke-accent-500 stroke-[6]" />
           </CardImage>
@@ -39,14 +39,14 @@ export function FeaturesSection() {
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
             Dignissimos temporibus officia nostrum at, sed unde!
           </CardDescription>
-          <CardBackgroundImage className="@sm:right-10 @sm:top-16 @sm:h-3/4 @sm:w-auto @sm:-rotate-12 h-[130%] w-[130%] rotate-12">
+          <CardBackgroundImage className="h-[130%] w-[130%] rotate-12 @sm:right-10 @sm:top-16 @sm:h-3/4 @sm:w-auto @sm:-rotate-12">
             <BrandLogoFull className="w-full stroke-alpha-grey-300" />
           </CardBackgroundImage>
         </Card>
       </div>
 
-      <div className="@container h-96 w-full md:w-1/3 md:flex-grow lg:w-1/4 lg:flex-grow-0">
-        <Card className="@sm:items-start @sm:text-left relative flex h-full flex-col items-center justify-start gap-2 overflow-hidden text-center">
+      <div className="h-96 w-full @container md:w-1/3 md:flex-grow lg:w-1/4 lg:flex-grow-0">
+        <Card className="relative flex h-full flex-col items-center justify-start gap-2 overflow-hidden text-center @sm:items-start @sm:text-left">
           <CardImage className="w-16 p-1.5">
             <BrandLogoFull className="stroke-accent-500 stroke-[6]" />
           </CardImage>
@@ -55,7 +55,7 @@ export function FeaturesSection() {
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
             Dignissimos temporibus officia nostrum at, sed unde!
           </CardDescription>
-          <CardBackgroundImage className="@sm:right-10 @sm:top-16 @sm:h-3/4 @sm:w-auto @sm:-rotate-12 h-[130%] w-[130%] rotate-12">
+          <CardBackgroundImage className="h-[130%] w-[130%] rotate-12 @sm:right-10 @sm:top-16 @sm:h-3/4 @sm:w-auto @sm:-rotate-12">
             <BrandLogoFull className="w-full stroke-alpha-grey-300" />
           </CardBackgroundImage>
         </Card>

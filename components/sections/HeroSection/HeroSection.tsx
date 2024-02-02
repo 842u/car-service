@@ -24,11 +24,9 @@ export function HeroSection() {
           vero. Eligendi laudantium iusto at.
         </p>
         <div className="flex gap-2">
-          <LinkButton className="px-5 text-sm" href="/dashboard/sign-up">
-            Sign Up
-          </LinkButton>
+          <LinkButton href="/dashboard/sign-up">Sign Up</LinkButton>
           <LinkButton
-            className="border-alpha-grey-500 bg-dark-400 px-5 text-sm"
+            className="border-alpha-grey-500 bg-dark-400"
             href="/dashboard/sign-up"
           >
             Sign In
