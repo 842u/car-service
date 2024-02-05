@@ -10,6 +10,10 @@ import { NavMenu } from './NavMenu';
 export function NavBar() {
   const [navOpen, setNavOpen] = useState(false);
 
+  const navMenuClickHandler = () => {
+    setNavOpen(false);
+  };
+
   return (
     <header className="fixed left-0 top-0 z-50 h-16 w-full border-b border-alpha-grey-500 bg-light-500 px-5 transition-[background-color] dark:bg-dark-500">
       <div className="m-auto flex h-full w-11/12 max-w-7xl items-center justify-between md:w-10/12">
@@ -26,7 +30,7 @@ export function NavBar() {
             setNavOpen((currentState) => !currentState);
           }}
         />
-        <NavMenu isActive={navOpen} />
+        <NavMenu isActive={navOpen} onMenuClick={navMenuClickHandler} />
       </div>
     </header>
   );
