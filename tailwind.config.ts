@@ -16,6 +16,7 @@ const config: Config = {
       'dark-200': 'var(--color-dark-200)',
       'dark-300': 'var(--color-dark-300)',
       'dark-400': 'var(--color-dark-400)',
+      'dark-450': 'var(--color-dark-450)',
       'dark-500': 'var(--color-dark-500)',
       'dark-600': 'var(--color-dark-600)',
       'dark-700': 'var(--color-dark-700)',
