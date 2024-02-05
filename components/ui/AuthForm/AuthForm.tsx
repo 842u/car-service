@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
+import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
 import {
   emailValidationRules,
   passwordValidationRules,
@@ -69,6 +70,7 @@ export default function AuthForm({
       data-testid="auth-form"
       onSubmit={handleSubmit(submitHandler)}
     >
+      <TextSeparator className="my-4 text-sm" text="or" />
       <Input
         errorMessage={errors.email?.message}
         label="Email"
