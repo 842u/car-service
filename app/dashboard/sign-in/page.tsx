@@ -26,7 +26,7 @@ export default function SignInPage() {
       </div>
       <div
         aria-hidden
-        className="absolute left-0 top-0 -z-10 hidden h-full w-full bg-light-300 transition-[background-color] dark:bg-dark-700 lg:block"
+        className="absolute left-0 top-0 -z-10 hidden h-full w-full bg-gradient-to-bl from-light-500 to-light-600 dark:from-dark-500 dark:to-dark-900 lg:block"
       >
         <BrandLogoFull className="h-full w-full stroke-accent-500" />
       </div>
