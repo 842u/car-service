@@ -16,7 +16,7 @@ export function BrandLabel({ className }: BrandLabelProps) {
   return (
     <Link
       className={twMerge(
-        `flex h-full flex-row items-center gap-3 whitespace-nowrap text-3xl ${smoochSans.className}`,
+        `flex h-full w-fit flex-row items-center justify-center gap-3 whitespace-nowrap text-3xl font-medium ${smoochSans.className}`,
         className,
       )}
       href="/"

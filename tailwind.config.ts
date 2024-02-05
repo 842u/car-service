@@ -1,3 +1,4 @@
+import containerQueries from '@tailwindcss/container-queries';
 import tailwindForms from '@tailwindcss/forms';
 import type { Config } from 'tailwindcss';
 
@@ -77,7 +78,7 @@ const config: Config = {
       'alpha-grey-900': 'var(--color-alpha-grey-900)',
     },
   },
-  plugins: [tailwindForms],
+  plugins: [tailwindForms, containerQueries],
 };
 
 export default config;
