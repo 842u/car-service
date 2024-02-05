@@ -23,7 +23,7 @@ export function NavMenu({ isActive }: NavMenuProps) {
           </div>
         </NavMenuItem>
         <NavMenuItem>
-          <LinkButton className="my-4" href="/dashboard">
+          <LinkButton className="my-4 lg:text-xs" href="/dashboard">
             Dashboard
           </LinkButton>
         </NavMenuItem>
