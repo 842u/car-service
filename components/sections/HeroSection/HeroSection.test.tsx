@@ -11,13 +11,18 @@ describe('HeroSection', () => {
     expect(heading).toBeInTheDocument();
   });
 
-  it('should render links for signing in and signing up', () => {
+  it('should render links for signing in and signing up pages', () => {
+    const signInPagePath = '/dashboard/sign-in';
+    const signUpPagePath = '/dashboard/sign-up';
+
     render(<HeroSection />);
 
     const signInLink = screen.getByRole('link', { name: /sign in/i });
     const signUpLink = screen.getByRole('link', { name: /sign up/i });
 
     expect(signInLink).toBeInTheDocument();
+    expect(signInLink).toHaveAttribute('href', signInPagePath);
     expect(signUpLink).toBeInTheDocument();
+    expect(signUpLink).toHaveAttribute('href', signUpPagePath);
   });
 });

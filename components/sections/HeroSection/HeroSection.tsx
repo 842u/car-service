@@ -27,7 +27,7 @@ export function HeroSection() {
           <LinkButton href="/dashboard/sign-up">Sign Up</LinkButton>
           <LinkButton
             className="border-alpha-grey-500 bg-dark-400"
-            href="/dashboard/sign-up"
+            href="/dashboard/sign-in"
           >
             Sign In
           </LinkButton>
