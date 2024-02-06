@@ -65,8 +65,8 @@ export default function EmailAuthForm({
 
   return (
     <form
+      aria-label="Email Authentication"
       className={twMerge('flex flex-col', className)}
-      data-testid="auth-form"
       onSubmit={handleSubmit(submitHandler)}
     >
       <Input

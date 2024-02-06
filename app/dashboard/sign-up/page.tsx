@@ -9,13 +9,16 @@ export default function SignUpPage() {
   return (
     <main>
       <div className="flex min-h-screen flex-col justify-center pt-16 lg:absolute lg:w-2/5 lg:border-r lg:border-alpha-grey-500 lg:bg-light-500 lg:shadow-xl lg:transition-[background-color] lg:dark:bg-dark-500">
-        <section className="mx-auto flex h-full w-11/12 max-w-sm flex-col items-stretch justify-center gap-7">
-          <div>
-            <h1 className="mb-1 text-2xl">Get started</h1>
+        <section
+          aria-label="Sign Up Authentication"
+          className="mx-auto flex h-full w-11/12 max-w-sm flex-col items-stretch justify-center gap-7"
+        >
+          <h1>
+            <p className="mb-1 text-2xl">Get started</p>
             <p className="text-sm text-light-900 dark:text-dark-200">
               Create a new account
             </p>
-          </div>
+          </h1>
           <OAuthProviders />
           <TextSeparator text="or" />
           <EmailAuthForm submitText="Sign Up" submitUrl="/api/auth/sign-up" />

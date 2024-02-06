@@ -19,7 +19,11 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
     await signInWithOAuthProvider(auth, 'github');
   };
   return (
-    <section className={twMerge('flex flex-col gap-4', className)} {...props}>
+    <section
+      className={twMerge('flex flex-col gap-4', className)}
+      {...props}
+      aria-label="OAuth Providers"
+    >
       <Button onClick={gitHubButtonClickHandler}>
         <GitHubIcon className="mr-2 h-full fill-light-500" />
         <span>Continue with GitHub</span>
