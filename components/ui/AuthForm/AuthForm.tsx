@@ -4,12 +4,15 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
+import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
+import { getBrowserClient, signInWithOAuthProvider } from '@/utils/supabase';
 import {
   emailValidationRules,
   passwordValidationRules,
 } from '@/utils/validation';
 
+import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
@@ -44,6 +47,8 @@ export default function AuthForm({
     },
   });
 
+  const { auth } = getBrowserClient();
+
   const submitHandler: SubmitHandler<AuthFormValues> = async (data) => {
     const formData = JSON.stringify(data);
 
@@ -60,6 +65,10 @@ export default function AuthForm({
     console.log(responseData);
   };
 
+  const gitHubButtonClickHandler = async () => {
+    await signInWithOAuthProvider(auth, 'github');
+  };
+
   useEffect(() => {
     reset();
   }, [isSubmitSuccessful, reset]);
@@ -70,6 +79,10 @@ export default function AuthForm({
       data-testid="auth-form"
       onSubmit={handleSubmit(submitHandler)}
     >
+      <Button onClick={gitHubButtonClickHandler}>
+        <GitHubIcon className="mr-2 h-full fill-light-500" />
+        <span>Continue with GitHub</span>
+      </Button>
       <TextSeparator className="my-4 text-sm" text="or" />
       <Input
         errorMessage={errors.email?.message}
