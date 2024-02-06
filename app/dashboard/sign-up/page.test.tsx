@@ -6,15 +6,27 @@ describe('SignUpPage', () => {
   it('should render heading that indicates account creation', () => {
     render(<SignUpPage />);
 
-    const heading = screen.getByRole('heading', { name: /new account/i });
+    const heading = screen.getByRole('heading', {
+      name: /(new|create) account/i,
+    });
 
     expect(heading).toBeInTheDocument();
   });
 
-  it('should render form for signing up', () => {
+  it('should render OAuth providers section', () => {
     render(<SignUpPage />);
 
-    const form = screen.getByTestId('auth-form');
+    const authProviders = screen.getByRole('region', {
+      name: /oauth providers/i,
+    });
+
+    expect(authProviders).toBeInTheDocument();
+  });
+
+  it('should render email authentication form for signing up', () => {
+    render(<SignUpPage />);
+
+    const form = screen.getByRole('form', { name: /email authentication/i });
     const signUpButton = screen.getByRole('button', { name: /sign up/i });
 
     expect(form).toBeInTheDocument();
@@ -22,10 +34,13 @@ describe('SignUpPage', () => {
   });
 
   it('should render link for sign in page', () => {
+    const signInPagePath = '/dashboard/sign-in';
+
     render(<SignUpPage />);
 
     const link = screen.getByRole('link', { name: /sign in/i });
 
     expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', signInPagePath);
   });
 });
