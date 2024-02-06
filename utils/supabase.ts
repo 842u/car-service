@@ -3,7 +3,11 @@ import {
   createBrowserClient,
   createServerClient,
 } from '@supabase/ssr';
+import { Provider } from '@supabase/supabase-js';
+import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 import { cookies } from 'next/headers';
+
+import { getEnvironmentUrl } from './general';
 
 export function getBrowserClient() {
   return createBrowserClient(
@@ -44,4 +48,20 @@ export function getActionClient(cookieStore: ReturnType<typeof cookies>) {
       },
     },
   );
+}
+
+export async function signInWithOAuthProvider(
+  authClient: SupabaseAuthClient,
+  provider: Provider,
+) {
+  const redirectTo = getEnvironmentUrl();
+
+  redirectTo.pathname = 'api/auth/confirmation';
+
+  await authClient.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: redirectTo.href,
+    },
+  });
 }
