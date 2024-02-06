@@ -12,19 +12,30 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as EmailOtpType | null;
+  const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/';
+  const cookieStore = cookies();
+  const { auth } = getActionClient(cookieStore);
 
   redirectURL.pathname = next;
 
   if (token_hash && type) {
-    const cookieStore = cookies();
-    const { auth } = getActionClient(cookieStore);
     const { error } = await promiseWithTimeout(
       auth.verifyOtp({
         type,
         token_hash,
       }),
     );
+
+    if (error) {
+      redirectURL.pathname = '/auth/auth-code-error';
+
+      return NextResponse.redirect(redirectURL);
+    }
+  }
+
+  if (code) {
+    const { error } = await auth.exchangeCodeForSession(code);
 
     if (error) {
       redirectURL.pathname = '/auth/auth-code-error';
