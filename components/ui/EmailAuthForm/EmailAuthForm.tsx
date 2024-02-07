@@ -12,30 +12,30 @@ import {
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-type AuthFormValues = {
+type EmailAuthFormValues = {
   email: string;
   password: string;
 };
 
-type AuthFormProps = {
+type EmailAuthFormProps = {
   submitText: string;
   submitUrl: string;
   strictPasswordCheck?: boolean;
   className?: string;
 };
 
-export default function AuthForm({
+export default function EmailAuthForm({
   submitText,
   submitUrl,
   strictPasswordCheck = true,
   className,
-}: AuthFormProps) {
+}: EmailAuthFormProps) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<AuthFormValues>({
+  } = useForm<EmailAuthFormValues>({
     mode: 'onTouched',
     defaultValues: {
       email: '',
@@ -43,7 +43,7 @@ export default function AuthForm({
     },
   });
 
-  const submitHandler: SubmitHandler<AuthFormValues> = async (data) => {
+  const submitHandler: SubmitHandler<EmailAuthFormValues> = async (data) => {
     const formData = JSON.stringify(data);
 
     const response = await fetch(submitUrl, {
@@ -65,8 +65,8 @@ export default function AuthForm({
 
   return (
     <form
+      aria-label="Email Authentication"
       className={twMerge('flex flex-col', className)}
-      data-testid="auth-form"
       onSubmit={handleSubmit(submitHandler)}
     >
       <Input
