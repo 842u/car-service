@@ -4,6 +4,7 @@ import { ComponentPropsWithoutRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
+import { GoogleIcon } from '@/components/decorative/icons/GoogleIcon';
 
 import { Button } from '../Button/Button';
 
@@ -26,6 +27,22 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
       },
     });
   };
+
+  const googleButtonClickHandler = async () => {
+    const { getBrowserClient } = await import('@/utils/supabase');
+    const { auth } = getBrowserClient();
+    const requestUrl = new URL(window.location.origin);
+
+    requestUrl.pathname = 'api/auth/confirmation';
+
+    await auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: requestUrl.href,
+      },
+    });
+  };
+
   return (
     <section
       className={twMerge('flex flex-col gap-4', className)}
@@ -36,9 +53,9 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
         <GitHubIcon className="mr-2 h-full fill-light-500" />
         <span>Continue with GitHub</span>
       </Button>
-      <Button onClick={gitHubButtonClickHandler}>
-        <GitHubIcon className="mr-2 h-full fill-light-500" />
-        <span>Continue with GitHub</span>
+      <Button onClick={googleButtonClickHandler}>
+        <GoogleIcon className="mr-2 h-full fill-light-500" />
+        <span>Continue with Google</span>
       </Button>
     </section>
   );
