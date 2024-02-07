@@ -5,7 +5,6 @@ import { twMerge } from 'tailwind-merge';
 
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 
-// import { getBrowserClient } from '@/utils/supabase';
 import { Button } from '../Button/Button';
 
 type OAuthProvidersProps = ComponentPropsWithoutRef<'section'> & {
