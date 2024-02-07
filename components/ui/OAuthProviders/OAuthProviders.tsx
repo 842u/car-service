@@ -4,7 +4,7 @@ import { ComponentPropsWithoutRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
-import { getBrowserClient, signInWithOAuthProvider } from '@/utils/supabase';
+import { getBrowserClient } from '@/utils/supabase';
 
 import { Button } from '../Button/Button';
 
@@ -16,7 +16,16 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
   const { auth } = getBrowserClient();
 
   const gitHubButtonClickHandler = async () => {
-    await signInWithOAuthProvider(auth, 'github');
+    const requestUrl = new URL(window.location.origin);
+
+    requestUrl.pathname = 'api/auth/confirmation';
+
+    await auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: requestUrl.href,
+      },
+    });
   };
   return (
     <section
