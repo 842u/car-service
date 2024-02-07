@@ -4,8 +4,8 @@ import { ComponentPropsWithoutRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
-import { getBrowserClient } from '@/utils/supabase';
 
+// import { getBrowserClient } from '@/utils/supabase';
 import { Button } from '../Button/Button';
 
 type OAuthProvidersProps = ComponentPropsWithoutRef<'section'> & {
@@ -13,9 +13,9 @@ type OAuthProvidersProps = ComponentPropsWithoutRef<'section'> & {
 };
 
 export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
-  const { auth } = getBrowserClient();
-
   const gitHubButtonClickHandler = async () => {
+    const { getBrowserClient } = await import('@/utils/supabase');
+    const { auth } = getBrowserClient();
     const requestUrl = new URL(window.location.origin);
 
     requestUrl.pathname = 'api/auth/confirmation';
