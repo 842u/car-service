@@ -19,3 +19,17 @@ export async function promiseWithTimeout<T>(
       throw timeoutError;
     });
 }
+
+export function unslugify(slug: string, capitalize: boolean) {
+  let chunks = slug.trim().split('-');
+
+  if (capitalize) {
+    chunks = chunks.map((chunk) => {
+      const firstCharacter = chunk.at(0)?.toUpperCase();
+
+      return firstCharacter + chunk.slice(1);
+    });
+  }
+
+  return chunks.join(' ');
+}

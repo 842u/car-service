@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
+import { unslugify } from '@/utils/general';
 import {
   emailValidationRules,
   passwordValidationRules,
@@ -101,7 +102,7 @@ export default function EmailAuthForm({
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
-        {type}
+        {unslugify(type, true)}
       </SubmitButton>
     </form>
   );
