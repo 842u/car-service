@@ -37,7 +37,6 @@ export function NavMenu({ isActive, onMenuClick }: NavMenuProps) {
         <NavMenuItem>
           <p className="my-4 text-center">Placeholder</p>
         </NavMenuItem>
-        <ul />
       </ul>
     </nav>
   );
