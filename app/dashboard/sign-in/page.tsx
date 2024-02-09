@@ -21,7 +21,7 @@ export default function SignInPage() {
           </h1>
           <OAuthProviders />
           <TextSeparator text="or" />
-          <EmailAuthForm submitText="Sign In" submitUrl="/api/auth/sign-in" />
+          <EmailAuthForm strictPasswordCheck={false} type="sign-in" />
           <p className="mx-auto text-sm text-light-900 dark:text-dark-200">
             <span>Don&apos;t have an account? </span>
             <Link

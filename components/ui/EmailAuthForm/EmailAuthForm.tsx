@@ -1,5 +1,6 @@
 'use client';
 
+import { Route } from 'next';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
@@ -12,21 +13,23 @@ import {
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
+export type EmailAuthFormType = 'sign-up' | 'sign-in';
+
 type EmailAuthFormValues = {
   email: string;
   password: string;
 };
 
 type EmailAuthFormProps = {
-  submitText: string;
-  submitUrl: string;
+  type: EmailAuthFormType;
   strictPasswordCheck?: boolean;
   className?: string;
 };
 
+const EMAIL_AUTH_API_ENDPOINT: Route = '/api/auth/email-auth';
+
 export default function EmailAuthForm({
-  submitText,
-  submitUrl,
+  type,
   strictPasswordCheck = true,
   className,
 }: EmailAuthFormProps) {
@@ -44,16 +47,19 @@ export default function EmailAuthForm({
   });
 
   const submitHandler: SubmitHandler<EmailAuthFormValues> = async (data) => {
-    const formData = JSON.stringify(data);
+    const url = new URL(window.location.origin);
 
-    const response = await fetch(submitUrl, {
+    url.pathname = EMAIL_AUTH_API_ENDPOINT;
+    url.searchParams.set('type', type);
+
+    const formData = JSON.stringify(data);
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: formData,
     });
-
     const responseData = await response.json();
 
     console.log(responseData);
@@ -95,7 +101,7 @@ export default function EmailAuthForm({
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
-        {submitText}
+        {type}
       </SubmitButton>
     </form>
   );

@@ -21,7 +21,7 @@ export default function SignUpPage() {
           </h1>
           <OAuthProviders />
           <TextSeparator text="or" />
-          <EmailAuthForm submitText="Sign Up" submitUrl="/api/auth/sign-up" />
+          <EmailAuthForm type="sign-up" />
           <p className="mx-auto text-sm text-light-900 dark:text-dark-200">
             <span>Have an account? </span>
             <Link
