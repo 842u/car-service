@@ -1,6 +1,10 @@
+// Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
+
+const DEFAULT_TIMEOUT = 9000;
+
 export async function promiseWithTimeout<T>(
   promise: Promise<T>,
-  time = 8000,
+  time = DEFAULT_TIMEOUT,
   timeoutError = new Error(
     'There was an error with the upstream service. Try again.',
   ),

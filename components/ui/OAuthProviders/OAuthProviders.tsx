@@ -18,7 +18,7 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
     const { auth } = getBrowserClient();
     const requestUrl = new URL(window.location.origin);
 
-    requestUrl.pathname = 'api/auth/confirmation';
+    requestUrl.pathname = 'api/auth/callback';
 
     await auth.signInWithOAuth({
       provider: 'github',
@@ -33,7 +33,7 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
     const { auth } = getBrowserClient();
     const requestUrl = new URL(window.location.origin);
 
-    requestUrl.pathname = 'api/auth/confirmation';
+    requestUrl.pathname = 'api/auth/callback';
 
     await auth.signInWithOAuth({
       provider: 'google',
