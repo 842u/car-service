@@ -5,7 +5,7 @@ import { Section } from '../Section';
 export function HeroSection() {
   return (
     <Section
-      aria-labelledby="welcome motto"
+      aria-label="welcome motto"
       className="mt-16 flex h-[50vh] flex-col items-center justify-center text-center lg:mt-0 lg:h-screen"
     >
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">

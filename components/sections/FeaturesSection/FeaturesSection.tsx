@@ -10,7 +10,7 @@ import { Section } from '../Section';
 export function FeaturesSection() {
   return (
     <Section
-      aria-labelledby="platform features"
+      aria-label="platform features"
       className="mb-7 flex flex-col items-center justify-center gap-4 md:flex-row md:flex-wrap"
     >
       <div className="h-96 w-full @container md:w-1/3 md:flex-grow">
