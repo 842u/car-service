@@ -63,7 +63,7 @@ export function Input<T extends FieldValues>({
           </div>
         )}
       </div>
-      <p className="my-2 whitespace-pre-wrap text-sm text-error-400">
+      <p className="my-1 whitespace-pre-wrap text-sm text-error-400">
         {errorMessage || ' '}
       </p>
     </label>

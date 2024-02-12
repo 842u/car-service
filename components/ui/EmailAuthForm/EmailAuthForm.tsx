@@ -1,6 +1,7 @@
 'use client';
 
 import { Route } from 'next';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
@@ -24,6 +25,7 @@ type EmailAuthFormValues = {
 type EmailAuthFormProps = {
   type: EmailAuthFormType;
   strictPasswordCheck?: boolean;
+  passwordReminder?: boolean;
   className?: string;
 };
 
@@ -32,6 +34,7 @@ const EMAIL_AUTH_API_ENDPOINT: Route = '/api/auth/email-auth';
 export default function EmailAuthForm({
   type,
   strictPasswordCheck = true,
+  passwordReminder = false,
   className,
 }: EmailAuthFormProps) {
   const {
@@ -85,19 +88,29 @@ export default function EmailAuthForm({
         registerOptions={emailValidationRules}
         type="email"
       />
-      <Input
-        errorMessage={errors.password?.message}
-        label="Password"
-        name="password"
-        placeholder="Enter your password ..."
-        register={register}
-        registerOptions={
-          strictPasswordCheck
-            ? passwordValidationRules
-            : { required: 'This field is required' }
-        }
-        type="password"
-      />
+      <div className="relative">
+        <Input
+          errorMessage={errors.password?.message}
+          label="Password"
+          name="password"
+          placeholder="Enter your password ..."
+          register={register}
+          registerOptions={
+            strictPasswordCheck
+              ? passwordValidationRules
+              : { required: 'This field is required' }
+          }
+          type="password"
+        />
+        {passwordReminder && (
+          <Link
+            className="absolute right-0 top-0 text-sm text-light-900 dark:text-dark-200"
+            href="/"
+          >
+            Forgot Password?
+          </Link>
+        )}
+      </div>
       <SubmitButton
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
