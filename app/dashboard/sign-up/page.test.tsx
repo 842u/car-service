@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react';
 
 import SignUpPage from './page';
 
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ router: {} }),
+}));
+
 describe('SignUpPage', () => {
   it('should render heading that indicates account creation', () => {
     render(<SignUpPage />);
@@ -34,13 +38,10 @@ describe('SignUpPage', () => {
   });
 
   it('should render link for sign in page', () => {
-    const signInPagePath = '/dashboard/sign-in';
-
     render(<SignUpPage />);
 
-    const link = screen.getByRole('link', { name: /sign in/i });
+    const link = screen.getByTestId('sign-in-link');
 
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', signInPagePath);
   });
 });

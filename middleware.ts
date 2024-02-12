@@ -1,8 +1,11 @@
 import { type CookieOptions, createServerClient } from '@supabase/ssr';
+import { Route } from 'next';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+  const requestUrl = request.nextUrl.clone();
+  const requestUrlPath = requestUrl.pathname as Route;
   let response = NextResponse.next({ request: { headers: request.headers } });
 
   const supabase = createServerClient(
@@ -41,9 +44,10 @@ export async function middleware(request: NextRequest) {
 
   if (!user) {
     if (
-      request.nextUrl.pathname !== '/' &&
-      request.nextUrl.pathname !== '/dashboard/sign-in' &&
-      request.nextUrl.pathname !== '/dashboard/sign-up'
+      requestUrlPath !== '/' &&
+      requestUrlPath !== '/dashboard/sign-in' &&
+      requestUrlPath !== '/dashboard/sign-up' &&
+      requestUrlPath !== '/dashboard/forgot-password'
     ) {
       return NextResponse.redirect(new URL('/dashboard/sign-in', request.url));
     }
@@ -51,10 +55,10 @@ export async function middleware(request: NextRequest) {
 
   if (user) {
     if (
-      (!request.nextUrl.pathname.includes('/dashboard') &&
-        request.nextUrl.pathname !== '/') ||
-      request.nextUrl.pathname === '/dashboard/sign-in' ||
-      request.nextUrl.pathname === '/dashboard/sign-up'
+      (!requestUrlPath.includes('/dashboard') && requestUrlPath !== '/') ||
+      requestUrlPath === '/dashboard/sign-in' ||
+      requestUrlPath === '/dashboard/sign-up' ||
+      requestUrlPath === '/dashboard/forgot-password'
     ) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }

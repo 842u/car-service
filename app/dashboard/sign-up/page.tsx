@@ -1,8 +1,7 @@
-import Link from 'next/link';
-
 import { BrandLogoFull } from '@/components/decorative/icons/brand/BrandLogoFull';
 import EmailAuthForm from '@/components/ui/EmailAuthForm/EmailAuthForm';
 import { OAuthProviders } from '@/components/ui/OAuthProviders/OAuthProviders';
+import { SignInLink } from '@/components/ui/SignInLink/SignInLink';
 import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
 
 export default function SignUpPage() {
@@ -21,16 +20,8 @@ export default function SignUpPage() {
           </h1>
           <OAuthProviders />
           <TextSeparator text="or" />
-          <EmailAuthForm submitText="Sign Up" submitUrl="/api/auth/sign-up" />
-          <p className="mx-auto text-sm text-light-900 dark:text-dark-200">
-            <span>Have an account? </span>
-            <Link
-              className="text-dark-500 underline dark:text-light-500"
-              href="/dashboard/sign-in"
-            >
-              Sign In Now
-            </Link>
-          </p>
+          <EmailAuthForm type="sign-up" />
+          <SignInLink className="mx-auto" />
         </section>
       </div>
 
