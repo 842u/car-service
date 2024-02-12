@@ -14,7 +14,7 @@ export function SignInLink({ className }: SignInLinkProps) {
       )}
       data-testid="sign-in-link"
     >
-      <span>Don&apos;t have an account? </span>
+      <span>Have an account? </span>
       <Link
         className="text-dark-500 underline dark:text-light-500"
         href="/dashboard/sign-in"
