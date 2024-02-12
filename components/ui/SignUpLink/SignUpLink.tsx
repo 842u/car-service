@@ -12,6 +12,7 @@ export function SignUpLink({ className }: SignUpLinkProps) {
         'text-sm text-light-900 dark:text-dark-200',
         className,
       )}
+      data-testid="sign-up-link"
     >
       <span>Don&apos;t have an account? </span>
       <Link

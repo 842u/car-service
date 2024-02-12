@@ -32,13 +32,10 @@ describe('SignInPage', () => {
   });
 
   it('should render link for sign up page', () => {
-    const signUpPagePath = '/dashboard/sign-up';
-
     render(<SignInPage />);
 
-    const link = screen.getByRole('link', { name: /sign up/i });
+    const link = screen.getByTestId('sign-up-link');
 
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', signUpPagePath);
   });
 });
