@@ -1,8 +1,7 @@
-import Link from 'next/link';
-
 import { BrandLogoFull } from '@/components/decorative/icons/brand/BrandLogoFull';
 import EmailAuthForm from '@/components/ui/EmailAuthForm/EmailAuthForm';
 import { OAuthProviders } from '@/components/ui/OAuthProviders/OAuthProviders';
+import { SignUpLink } from '@/components/ui/SignUpLink/SignUpLink';
 import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
 
 export default function SignInPage() {
@@ -26,15 +25,7 @@ export default function SignInPage() {
             strictPasswordCheck={false}
             type="sign-in"
           />
-          <p className="mx-auto text-sm text-light-900 dark:text-dark-200">
-            <span>Don&apos;t have an account? </span>
-            <Link
-              className="text-dark-500 underline dark:text-light-500"
-              href="/dashboard/sign-up"
-            >
-              Sign Up Now
-            </Link>
-          </p>
+          <SignUpLink className="mx-auto" />
         </section>
       </div>
 
