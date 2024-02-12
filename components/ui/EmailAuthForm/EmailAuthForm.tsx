@@ -67,10 +67,11 @@ export default function EmailAuthForm({
       body: formData,
     });
     const responseData = await response.json();
+
     console.log(responseData);
 
     if (response.ok && type === 'sign-in') {
-      router.push('/dashboard');
+      router.refresh();
     }
   };
 
