@@ -2,6 +2,7 @@
 
 import { Route } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
@@ -37,6 +38,7 @@ export default function EmailAuthForm({
   passwordReminder = false,
   className,
 }: EmailAuthFormProps) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -65,8 +67,11 @@ export default function EmailAuthForm({
       body: formData,
     });
     const responseData = await response.json();
-
     console.log(responseData);
+
+    if (response.ok && type === 'sign-in') {
+      router.push('/dashboard');
+    }
   };
 
   useEffect(() => {
