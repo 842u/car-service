@@ -8,6 +8,7 @@ const config: Config = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './utils/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     colors: {
@@ -55,6 +56,17 @@ const config: Config = {
       'error-700': 'var(--color-error-700)',
       'error-800': 'var(--color-error-800)',
       'error-900': 'var(--color-error-900)',
+
+      'warning-50': 'var(--color-warning-50)',
+      'warning-100': 'var(--color-warning-100)',
+      'warning-200': 'var(--color-warning-200)',
+      'warning-300': 'var(--color-warning-300)',
+      'warning-400': 'var(--color-warning-400)',
+      'warning-500': 'var(--color-warning-500)',
+      'warning-600': 'var(--color-warning-600)',
+      'warning-700': 'var(--color-warning-700)',
+      'warning-800': 'var(--color-warning-800)',
+      'warning-900': 'var(--color-warning-900)',
 
       'success-50': 'var(--color-success-50)',
       'success-100': 'var(--color-success-100)',
