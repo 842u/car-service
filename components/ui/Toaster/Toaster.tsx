@@ -1,12 +1,9 @@
 'use client';
 
 import { AnimatePresence, LazyMotion } from 'framer-motion';
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import {
-  ToastsContext,
-  ToastsContextType,
-} from '@/components/providers/ToastsProvider';
+import { useToasts } from '@/hooks/useToasts';
 
 import { Toast } from '../Toast/Toast';
 
@@ -15,16 +12,14 @@ type ToasterProps = {
   toastCloseTime?: number;
 };
 
-const loadFeatures = () =>
+const framerFeatures = () =>
   import('../../../utils/framer-motion').then((mod) => mod.default);
 
 export function Toaster({
   maxToasts = 3,
   toastCloseTime = 2000,
 }: ToasterProps) {
-  const { toasts, addToast, removeToast } = useContext(
-    ToastsContext,
-  ) as ToastsContextType;
+  const { toasts, addToast, removeToast } = useToasts();
 
   const toastCloseInterval = useRef<NodeJS.Timeout>();
 
@@ -59,7 +54,10 @@ export function Toaster({
   }, [removeToast, toasts, toastCloseTime]);
 
   return (
-    <>
+    <section
+      aria-label="notifications"
+      className="fixed bottom-0 z-50 w-full p-2 md:right-0 md:m-5 md:max-w-sm"
+    >
       <button
         className="fixed bottom-1/2 left-0 m-10"
         type="button"
@@ -67,37 +65,32 @@ export function Toaster({
       >
         add
       </button>
-      <section
-        aria-label="notifications"
-        className="fixed bottom-0 z-50 w-full p-2 md:right-0 md:m-5 md:max-w-sm"
+      <ol
+        className="relative"
+        onBlur={toasterMouseLeaveHandler}
+        onFocus={toasterMouseOverHandler}
+        onMouseLeave={toasterMouseLeaveHandler}
+        onMouseOver={toasterMouseOverHandler}
       >
-        <ol
-          className="relative"
-          onBlur={toasterMouseLeaveHandler}
-          onFocus={toasterMouseOverHandler}
-          onMouseLeave={toasterMouseLeaveHandler}
-          onMouseOver={toasterMouseOverHandler}
-        >
-          <LazyMotion features={loadFeatures}>
-            <AnimatePresence mode="popLayout">
-              {toasts.map((toast, index) => {
-                if (index < toasts.length - maxToasts) {
-                  return;
-                }
+        <LazyMotion features={framerFeatures}>
+          <AnimatePresence mode="popLayout">
+            {toasts.map((toast, index) => {
+              if (index < toasts.length - maxToasts) {
+                return;
+              }
 
-                return (
-                  <Toast
-                    key={toast.id}
-                    id={toast.id}
-                    message={toast.message}
-                    type={toast.type}
-                  />
-                );
-              })}
-            </AnimatePresence>
-          </LazyMotion>
-        </ol>
-      </section>
-    </>
+              return (
+                <Toast
+                  key={toast.id}
+                  id={toast.id}
+                  message={toast.message}
+                  type={toast.type}
+                />
+              );
+            })}
+          </AnimatePresence>
+        </LazyMotion>
+      </ol>
+    </section>
   );
 }

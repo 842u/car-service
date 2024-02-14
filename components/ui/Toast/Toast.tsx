@@ -1,13 +1,10 @@
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import { m } from 'framer-motion';
-import { ForwardedRef, forwardRef, useContext } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import {
-  Toast as ToastObject,
-  ToastsContext,
-  ToastsContextType,
-} from '@/components/providers/ToastsProvider';
+import { useToasts } from '@/hooks/useToasts';
+import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 
 type ToastProps = ToastObject & {
@@ -19,7 +16,7 @@ export const Toast = forwardRef(
     { message, id, type, className }: ToastProps,
     ref: ForwardedRef<HTMLLIElement>,
   ) => {
-    const { removeToast } = useContext(ToastsContext) as ToastsContextType;
+    const { removeToast } = useToasts();
 
     const { style, icon } = getToastAssets(type)!;
 

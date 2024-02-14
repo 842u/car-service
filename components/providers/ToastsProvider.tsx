@@ -1,32 +1,13 @@
 'use client';
 
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 
-export type ToastType = 'info' | 'success' | 'error' | 'warning';
-
-export type Toast = {
-  id: string;
-  message: string;
-  type: ToastType;
-};
-
-export type ToastsContextType = {
-  toasts: Toast[];
-  addToast: (message: string, type: ToastType) => void;
-  removeToast: (id: string) => void;
-};
+import { ToastsContext } from '@/context/ToastsContext';
+import { Toast, ToastType } from '@/types';
 
 type ToastsProviderProps = {
   children: ReactNode;
 };
-
-export const ToastsContext = createContext<ToastsContextType | null>(null);
 
 export function ToastsProvider({ children }: ToastsProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);

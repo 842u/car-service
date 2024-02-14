@@ -5,12 +5,7 @@ import {
   InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 
-import { ToastType } from '@/components/providers/ToastsProvider';
-
-type ToastAsset = {
-  style: string;
-  icon: JSX.Element;
-};
+import { ToastAsset, ToastType } from '@/types';
 
 const errorIcon = (
   <ExclamationCircleIcon className="aspect-square w-6 flex-shrink-0 stroke-error-500" />
