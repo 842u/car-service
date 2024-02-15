@@ -17,9 +17,9 @@ const ToastsAnimation: MotionProps = {
   transition: {
     ease: 'anticipate',
   },
-  initial: { opacity: 0, scale: 0.3 },
+  initial: { opacity: 0, scale: 0 },
   animate: { scale: 1, opacity: 1 },
-  exit: { scale: 0.3, opacity: 0 },
+  exit: { scale: 0.5, opacity: 0.5 },
 };
 
 const framerFeatures = () =>
@@ -91,11 +91,11 @@ export function Toaster({
 
               return (
                 <Toast
-                  {...ToastsAnimation}
                   key={toast.id}
                   id={toast.id}
                   message={toast.message}
                   type={toast.type}
+                  {...ToastsAnimation}
                 />
               );
             })}
