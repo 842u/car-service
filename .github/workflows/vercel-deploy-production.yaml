@@ -58,3 +58,8 @@ jobs:
           args: |
             New PRODUCTION for {{ EVENT_PAYLOAD.repository.full_name }}
             https://car-service.842u.dev
+
+  create-unlighthouse-audit:
+    needs: vercel-deploy-production
+    uses: ./.github/workflows/create-unlighthouse-audit.yaml
+    secrets: inherit
