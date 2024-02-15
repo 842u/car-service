@@ -3,6 +3,8 @@
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useToasts } from '@/hooks/useToasts';
+import { RouteHandlerResponse } from '@/types';
 import { passwordValidationRules } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
@@ -14,6 +16,7 @@ type PasswordResetFormValues = {
 };
 
 export function PasswordResetForm() {
+  const { addToast } = useToasts();
   const {
     register,
     handleSubmit,
@@ -39,9 +42,11 @@ export function PasswordResetForm() {
       },
       body: password,
     });
-    const responseData = await response.json();
+    const { message, error } = (await response.json()) as RouteHandlerResponse;
 
-    console.log(responseData);
+    message && addToast(message, 'success');
+
+    error && addToast(error, 'error');
   };
 
   useEffect(() => reset(), [isSubmitSuccessful, reset]);
