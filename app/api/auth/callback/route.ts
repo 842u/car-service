@@ -4,6 +4,7 @@ import { type EmailOtpType } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { RouteHandlerResponse } from '@/types';
 import { promiseWithTimeout } from '@/utils/general';
 import { getActionClient } from '@/utils/supabase';
 
@@ -29,8 +30,8 @@ export async function GET(request: NextRequest) {
     );
 
     if (error) {
-      return NextResponse.json(
-        { error: error.message },
+      return NextResponse.json<RouteHandlerResponse>(
+        { error: error.message, message: null },
         { status: error.status },
       );
     }
@@ -44,8 +45,8 @@ export async function GET(request: NextRequest) {
     );
 
     if (error) {
-      return NextResponse.json(
-        { error: error.message },
+      return NextResponse.json<RouteHandlerResponse>(
+        { error: error.message, message: null },
         { status: error.status },
       );
     }

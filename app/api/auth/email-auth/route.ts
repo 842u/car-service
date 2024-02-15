@@ -104,5 +104,8 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ error: 'Something went wrong.' }, { status: 400 });
+  return NextResponse.json<RouteHandlerResponse>(
+    { error: 'Something went wrong.', message: null },
+    { status: 400 },
+  );
 }
