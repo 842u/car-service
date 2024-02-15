@@ -1,17 +1,15 @@
-name: Vercel Deploy Preview
+name: Create Unlighthouse Audit
 
 on:
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
+  workflow_call:
 
 jobs:
-  vercel-deploy-preview:
+  create-unlighthouse-audit:
     runs-on: ubuntu-latest
     environment:
-      name: Preview
-      url: ${{ steps.vercel-deploy.outputs.URL }}
+      name: Insights
+      url: https://insights.car-service.842u.dev
 
     steps:
       - uses: actions/checkout@v4
@@ -35,19 +33,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}
 
-      - name: Install Vercel CLI
+      - name: Install Unlighthouse CLI
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
-        run: npm install --global vercel@latest
+        run: npm install --global @unlighthouse/cli
 
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Run Unlighthouse Audit
+        run: unlighthouse-ci --site https://www.car-service.842u.dev --build-static --throttle
 
-      - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy Project Artifacts to Vercel
-        id: vercel-deploy
-        run: echo "URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> ${GITHUB_OUTPUT}
+      - name: Push To Static Audit Repo
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: git@github.com:842u/insights-car-service.git
+          BRANCH: main
+          FOLDER: .unlighthouse
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Discord Notification
         env:
@@ -57,5 +56,5 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            New PR PREVIEW for {{ EVENT_PAYLOAD.repository.full_name }}
-            ${{ steps.vercel-deploy.outputs.URL }}
+            New AUDIT for {{ EVENT_PAYLOAD.repository.full_name }}
+            https://insights.car-service.842u.dev

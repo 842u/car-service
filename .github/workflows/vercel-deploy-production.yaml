@@ -14,18 +14,18 @@ jobs:
       url: https://car-service.842u.dev
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 20
 
       - name: Get Npm Global Directory
         id: npm-global-dir
         run: echo "DIR=$(npm prefix -g)" >> ${GITHUB_OUTPUT}
 
       - name: Cache Npm Global Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: npm-global-cache
         env:
           cache-name: cache-npm-global-dependencies
@@ -58,3 +58,8 @@ jobs:
           args: |
             New PRODUCTION for {{ EVENT_PAYLOAD.repository.full_name }}
             https://car-service.842u.dev
+
+  create-unlighthouse-audit:
+    needs: vercel-deploy-production
+    uses: ./.github/workflows/create-unlighthouse-audit.yaml
+    secrets: inherit
