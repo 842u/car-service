@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, LazyMotion } from 'framer-motion';
+import { AnimatePresence, LazyMotion, MotionProps } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
@@ -9,7 +9,17 @@ import { Toast } from '../Toast/Toast';
 
 type ToasterProps = {
   maxToasts?: number;
-  toastCloseTime?: number;
+  toastLifeTime?: number;
+};
+
+const ToastsAnimation: MotionProps = {
+  layout: true,
+  transition: {
+    ease: 'anticipate',
+  },
+  initial: { opacity: 0, scale: 0.3 },
+  animate: { scale: 1, opacity: 1 },
+  exit: { scale: 0.3, opacity: 0 },
 };
 
 const framerFeatures = () =>
@@ -17,7 +27,7 @@ const framerFeatures = () =>
 
 export function Toaster({
   maxToasts = 3,
-  toastCloseTime = 2000,
+  toastLifeTime: toastCloseTime = 2000,
 }: ToasterProps) {
   const { toasts, addToast, removeToast } = useToasts();
 
@@ -81,6 +91,7 @@ export function Toaster({
 
               return (
                 <Toast
+                  {...ToastsAnimation}
                   key={toast.id}
                   id={toast.id}
                   message={toast.message}
