@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
+import { useToasts } from '@/hooks/useToasts';
+import { RouteHandlerResponse } from '@/types';
 import { unslugify } from '@/utils/general';
 import {
   emailValidationRules,
@@ -39,6 +41,7 @@ export default function EmailAuthForm({
   className,
 }: EmailAuthFormProps) {
   const router = useRouter();
+  const { addToast } = useToasts();
   const {
     register,
     handleSubmit,
@@ -66,12 +69,16 @@ export default function EmailAuthForm({
       },
       body: formData,
     });
-    const responseData = await response.json();
 
-    console.log(responseData);
+    const { message, error } = (await response.json()) as RouteHandlerResponse;
+
+    error && addToast(error, 'error');
+
+    message && addToast(message, 'success');
 
     if (response.ok && type === 'sign-in') {
-      router.refresh();
+      router.prefetch('/dashboard');
+      router.push('/dashboard');
     }
   };
 

@@ -27,15 +27,11 @@ const framerFeatures = () =>
 
 export function Toaster({
   maxToasts = 3,
-  toastLifeTime: toastCloseTime = 2000,
+  toastLifeTime: toastCloseTime = 6000,
 }: ToasterProps) {
-  const { toasts, addToast, removeToast } = useToasts();
+  const { toasts, removeToast } = useToasts();
 
   const toastCloseInterval = useRef<NodeJS.Timeout>();
-
-  const addButtonClickHandler = () => {
-    addToast(`${crypto.randomUUID().slice(0, 8)} toast`, 'success');
-  };
 
   const toasterMouseOverHandler = () => {
     clearInterval(toastCloseInterval.current);
@@ -68,13 +64,6 @@ export function Toaster({
       aria-label="notifications"
       className="fixed bottom-0 z-50 w-full p-2 md:right-0 md:m-5 md:max-w-sm"
     >
-      <button
-        className="fixed bottom-1/2 left-0 m-10"
-        type="button"
-        onClick={addButtonClickHandler}
-      >
-        add
-      </button>
       <ol
         className="relative"
         onBlur={toasterMouseLeaveHandler}

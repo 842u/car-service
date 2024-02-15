@@ -8,4 +8,8 @@ export type ToastsContextType = {
   removeToast: (id: string) => void;
 };
 
-export const ToastsContext = createContext<ToastsContextType | null>(null);
+export const ToastsContext = createContext<ToastsContextType>({
+  toasts: [],
+  addToast: () => {},
+  removeToast: () => {},
+});

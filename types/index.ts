@@ -10,3 +10,7 @@ export type ToastAsset = {
   style: string;
   icon: JSX.Element;
 };
+
+export type RouteHandlerResponse =
+  | { message: string; error: null }
+  | { message: null; error: string };
