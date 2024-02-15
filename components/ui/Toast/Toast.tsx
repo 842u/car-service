@@ -27,7 +27,6 @@ export const Toast = forwardRef(
 
     return (
       <m.li
-        {...props}
         ref={ref}
         className={twMerge(
           'my-2 flex w-full items-center justify-between gap-2 rounded-lg border border-alpha-grey-400 bg-light-600 px-3 py-2 text-sm dark:bg-dark-600',
@@ -35,6 +34,7 @@ export const Toast = forwardRef(
           className,
         )}
         id={id}
+        {...props}
       >
         {icon}
         <span>{message}</span>
