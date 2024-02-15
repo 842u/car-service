@@ -48,6 +48,17 @@
   --color-error-800: #8c1f1f;
   --color-error-900: #6b1818;
 
+  --color-warning-50: #fff3e6;
+  --color-warning-100: #ffdab0;
+  --color-warning-200: #ffc88a;
+  --color-warning-300: #ffaf54;
+  --color-warning-400: #ffa033;
+  --color-warning-500: #ff8800;
+  --color-warning-600: #e87c00;
+  --color-warning-700: #b56100;
+  --color-warning-800: #8c4b00;
+  --color-warning-900: #6b3900;
+
   --color-success-50: #e9fff1;
   --color-success-100: #baffd4;
   --color-success-200: #98ffc0;

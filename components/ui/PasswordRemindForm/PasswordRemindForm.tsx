@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useToasts } from '@/hooks/useToasts';
 import { emailValidationRules } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
@@ -14,6 +15,7 @@ type PasswordRemindFormValues = {
 };
 
 export function PasswordRemindForm() {
+  const { addToast } = useToasts();
   const {
     register,
     reset,
@@ -30,12 +32,16 @@ export function PasswordRemindForm() {
     const { email } = data;
     const { getBrowserClient } = await import('@/utils/supabase');
     const { auth } = getBrowserClient();
+    const { data: responseData, error: responseError } =
+      await auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin,
+      });
+    const resetPasswordMessage =
+      'Your password reset request has been received. Please check your email for further instructions.';
 
-    const response = await auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin,
-    });
+    responseData && addToast(resetPasswordMessage, 'success');
 
-    console.log(response);
+    responseError && addToast(responseError.message, 'error');
   };
 
   useEffect(() => {

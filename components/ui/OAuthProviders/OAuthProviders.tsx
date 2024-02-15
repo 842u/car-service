@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { GoogleIcon } from '@/components/decorative/icons/GoogleIcon';
+import { useToasts } from '@/hooks/useToasts';
 
 import { Button } from '../Button/Button';
 
@@ -13,34 +14,20 @@ type OAuthProvidersProps = ComponentPropsWithoutRef<'section'> & {
 };
 
 export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
+  const { addToast } = useToasts();
+
   const gitHubButtonClickHandler = async () => {
-    const { getBrowserClient } = await import('@/utils/supabase');
-    const { auth } = getBrowserClient();
-    const requestUrl = new URL(window.location.origin);
+    const { signInWithOAuthHandler } = await import('@/utils/supabase');
+    const { error } = await signInWithOAuthHandler('github');
 
-    requestUrl.pathname = 'api/auth/callback';
-
-    await auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        redirectTo: requestUrl.href,
-      },
-    });
+    error && addToast(error.message, 'error');
   };
 
   const googleButtonClickHandler = async () => {
-    const { getBrowserClient } = await import('@/utils/supabase');
-    const { auth } = getBrowserClient();
-    const requestUrl = new URL(window.location.origin);
+    const { signInWithOAuthHandler } = await import('@/utils/supabase');
+    const { error } = await signInWithOAuthHandler('google');
 
-    requestUrl.pathname = 'api/auth/callback';
-
-    await auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: requestUrl.href,
-      },
-    });
+    error && addToast(error.message, 'error');
   };
 
   return (

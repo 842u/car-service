@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { RouteHandlerResponse } from '@/types';
 import { promiseWithTimeout } from '@/utils/general';
 import { getActionClient } from '@/utils/supabase';
 import { passwordSchema } from '@/utils/validation';
@@ -14,8 +15,8 @@ export async function PATCH(request: NextRequest) {
       throw new Error('Passwords not match.');
     }
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Server validation failed. Try again.' },
+    return NextResponse.json<RouteHandlerResponse>(
+      { error: 'Server validation failed. Try again.', message: null },
       { status: 400 },
     );
   }
@@ -25,15 +26,16 @@ export async function PATCH(request: NextRequest) {
   const { error } = await promiseWithTimeout(auth.updateUser({ password }));
 
   if (error) {
-    return NextResponse.json(
-      { error: error.message },
+    return NextResponse.json<RouteHandlerResponse>(
+      { error: error.message, message: null },
       { status: error.status },
     );
   }
 
-  return NextResponse.json(
+  return NextResponse.json<RouteHandlerResponse>(
     {
       message: 'Your password has been changed.',
+      error: null,
     },
     { status: 200 },
   );

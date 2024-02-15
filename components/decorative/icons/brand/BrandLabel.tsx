@@ -1,12 +1,9 @@
-import { Smooch_Sans } from 'next/font/google';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
-import { BrandLogoMinimal } from './BrandLogoMinimal';
+import { smoochSans } from '@/utils/fonts';
 
-const smoochSans = Smooch_Sans({
-  subsets: ['latin'],
-});
+import { BrandLogoMinimal } from './BrandLogoMinimal';
 
 type BrandLabelProps = {
   className?: string;

@@ -3,6 +3,8 @@ import {
   createBrowserClient,
   createServerClient,
 } from '@supabase/ssr';
+import { Provider } from '@supabase/supabase-js';
+import { Route } from 'next';
 import { cookies } from 'next/headers';
 
 export function getBrowserClient() {
@@ -44,4 +46,22 @@ export function getActionClient(cookieStore: ReturnType<typeof cookies>) {
       },
     },
   );
+}
+
+const CALLBACK_API_ENDPOINT: Route = '/api/auth/callback';
+
+export async function signInWithOAuthHandler(provider: Provider) {
+  const { auth } = getBrowserClient();
+  const requestUrl = new URL(window.location.origin);
+
+  requestUrl.pathname = CALLBACK_API_ENDPOINT;
+
+  const response = await auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: requestUrl.href,
+    },
+  });
+
+  return response;
 }
