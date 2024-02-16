@@ -1,8 +1,5 @@
-import dotenv from 'dotenv';
 import type { Config } from 'jest';
 import nextJest from 'next/jest';
-
-dotenv.config({ path: './.env.test.local' });
 
 const createJestConfig = nextJest({
   dir: './',
@@ -18,6 +15,10 @@ const config: Config = {
   coverageProvider: 'v8',
 
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+
+  reporters: [['github-actions', { silent: false }], 'summary'],
+
+  testPathIgnorePatterns: ['./node_modules', './e2e'],
 
   testEnvironment: 'jsdom',
 };
