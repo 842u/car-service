@@ -38,8 +38,12 @@ jobs:
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
         run: npm install --global @unlighthouse/cli
 
+      - name: Install Puppeteer
+        if: steps.npm-global-cache.outputs.cache-hit != 'true'
+        run: npm install --global puppeteer
+
       - name: Run Unlighthouse Audit
-        run: unlighthouse-ci --site https://www.car-service.842u.dev --build-static --throttle --no-cache
+        run: npx unlighthouse-ci --site https://www.car-service.842u.dev --build-static --throttle --no-cache
 
       - name: Push To Static Audit Repo
         uses: s0/git-publish-subdir-action@v2.6.0
