@@ -1,18 +1,20 @@
 import { expect, test } from '@playwright/test';
+import { Route } from 'next';
 
 test('has title', async ({ page }) => {
-  await page.goto('http://localhost:3000/');
+  const homePagePath: Route = '/';
 
-  // Expect a title "to contain" a substring.
+  await page.goto(homePagePath);
+
   await expect(page).toHaveTitle(/Create Next App/i);
 });
 
 test('should have dashboard link', async ({ page }) => {
-  await page.goto('http://localhost:3000/');
+  const homePagePath: Route = '/';
 
-  // Click the get started link.
+  await page.goto(homePagePath);
+
   const link = page.getByRole('link', { name: /dashboard/i });
 
-  // Expects page to have a heading with the name of Installation.
   await expect(link).toBeVisible();
 });
