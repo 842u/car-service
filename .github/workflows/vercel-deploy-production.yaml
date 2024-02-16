@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 jobs:
   vercel-deploy-production:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
       name: Production

@@ -4,10 +4,12 @@ on:
   pull_request:
     branches:
       - main
+
   workflow_dispatch:
 
 jobs:
   vercel-deploy-preview:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
       name: Preview
