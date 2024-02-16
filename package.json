@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "test:jest": "jest"
+    "test:jest": "jest",
+    "test:playwright": "playwright test",
+    "test:playwright:report": "playwright show-report"
   },
   "dependencies": {
     "@supabase/ssr": "0.0.10",
