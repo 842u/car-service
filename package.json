@@ -10,6 +10,7 @@
     "prepare": "husky install",
     "test:jest": "jest",
     "test:playwright": "playwright test",
+    "test:playwright:headed": "playwright test --headed",
     "test:playwright:ui": "playwright test --ui",
     "test:playwright:report": "playwright show-report"
   },
