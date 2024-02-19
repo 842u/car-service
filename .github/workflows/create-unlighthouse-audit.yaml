@@ -44,13 +44,13 @@ jobs:
 
       - name: Bump Lighthouse Version
         run: |
-          cd $(npm prefix -g)/lib/node_modules/@unlighthouse/cli
+          cd ${{ steps.npm-global-dir.outputs.dir }}/lib/node_modules/@unlighthouse/cli
           cd ./node_modules/@unlighthouse/core
           sed -i 's/"lighthouse": "^9.6.8"/"lighthouse": "^11.5.0"/' package.json
-          cd $(npm prefix -g)/lib/node_modules/@unlighthouse/cli
+          cd ${{ steps.npm-global-dir.outputs.dir }}/lib/node_modules/@unlighthouse/cli
           npm install
           cd ./node_modules/@unlighthouse/core/dist
-          sed -i 's/"lighthouse-core"/"core"/' index.mjs
+          sed -i 's/lighthouse-core/core/' index.mjs
 
       - name: Run Unlighthouse Audit
         run: unlighthouse-ci --site https://www.car-service.842u.dev --build-static --throttle --no-cache --samples 4
