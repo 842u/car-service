@@ -32,6 +32,8 @@ jobs:
           ls -a
           cd $(npm prefix -g)/lib
           ls -a
+          cd $(npm prefix -g)/lib/node_modules
+          ls -a
           cd $(npm prefix -g)/share
           ls -a
           cd $(npm prefix -g)/node_modules/@unlighthouse/cli
