@@ -38,12 +38,22 @@ jobs:
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
         run: npm install --global @unlighthouse/cli
 
+      - name: Bump Lighthouse Version
+        run: |
+          cd ${{ steps.npm-global-dir.outputs.dir }}/@unlighthouse/cli
+          cd ./node_modules/@unlighthouse/core
+          sed -i /"lighthouse": "^9.6.8"/"lighthouse": "^11.5.0"/ package.json
+          cd ${{ steps.npm-global-dir.outputs.dir }}/@unlighthouse/cli
+          npm install
+          cd ./node_modules/@unlighthouse/core/dist
+          sed -i /lighthouse-core/core/ index.mjs
+
       - name: Install Puppeteer
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
         run: npm install --global puppeteer
 
       - name: Run Unlighthouse Audit
-        run: npx unlighthouse-ci --site https://www.car-service.842u.dev --build-static --throttle --no-cache
+        run: npx unlighthouse-ci --site https://www.car-service.842u.dev --build-static --throttle --no-cache --samples 3
 
       - name: Push To Static Audit Repo
         uses: s0/git-publish-subdir-action@v2.6.0
