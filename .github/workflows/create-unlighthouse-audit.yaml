@@ -40,10 +40,10 @@ jobs:
 
       - name: Bump Lighthouse Version
         run: |
-          cd ${{ steps.npm-global-dir.outputs.dir }}/@unlighthouse/cli
+          cd $(npm prefix -g)/@unlighthouse/cli
           cd ./node_modules/@unlighthouse/core
           sed -i /"lighthouse": "^9.6.8"/"lighthouse": "^11.5.0"/ package.json
-          cd ${{ steps.npm-global-dir.outputs.dir }}/@unlighthouse/cli
+          cd $(npm prefix -g)/@unlighthouse/cli
           npm install
           cd ./node_modules/@unlighthouse/core/dist
           sed -i /lighthouse-core/core/ index.mjs
