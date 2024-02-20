@@ -96,9 +96,7 @@ export async function getUserSession(request: NextRequest) {
     },
   );
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const { data } = await supabase.auth.getUser();
 
-  return session;
+  return data;
 }
