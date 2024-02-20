@@ -17,18 +17,12 @@
   ],
   "overrides": [
     {
+      "excludedFiles": ["./e2e/**/?(*.)+(spec|test).[jt]s?(x)"],
       "extends": [
         "plugin:testing-library/react",
         "plugin:jest-dom/recommended"
       ],
-      "files": [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "**/?(*.)+(spec|test).[jt]s?(x)"
-      ],
-      "excludedFiles": [
-        "./e2e/**/?(*.)+(spec|test).[jt]s?(x)",
-        "./tests-examples/**/?(*.)+(spec|test).[jt]s?(x)"
-      ]
+      "files": ["**/?(*.)+(spec|test).[jt]s?(x)"]
     }
   ],
   "parser": "@typescript-eslint/parser",
