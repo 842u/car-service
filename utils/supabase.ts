@@ -67,7 +67,7 @@ export async function signInWithOAuthHandler(provider: Provider) {
   return response;
 }
 
-export async function getUserSession(request: NextRequest) {
+export async function getUserSession(request: NextRequest, headers: Headers) {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -83,13 +83,13 @@ export async function getUserSession(request: NextRequest) {
             ...options,
           });
           NextResponse.next({
-            request: { headers: request.headers },
+            request: { headers },
           });
         },
         remove(name: string, options: CookieOptions) {
           request.cookies.set({ name, value: '', ...options });
           NextResponse.next({
-            request: { headers: request.headers },
+            request: { headers },
           });
         },
       },
