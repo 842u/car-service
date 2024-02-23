@@ -5,8 +5,9 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { RouteHandlerResponse } from '@/types';
-import { promiseWithTimeout } from '@/utils/general';
 import { getActionClient } from '@/utils/supabase';
+
+export const maxDuration = 10;
 
 const ON_SUCCESS_PATH = '/dashboard';
 
@@ -22,12 +23,7 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') as EmailOtpType | null;
 
   if (token_hash && type) {
-    const { error } = await promiseWithTimeout(
-      auth.verifyOtp({
-        type,
-        token_hash,
-      }),
-    );
+    const { error } = await auth.verifyOtp({ type, token_hash });
 
     if (error) {
       return NextResponse.json<RouteHandlerResponse>(
@@ -40,9 +36,7 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
 
   if (code) {
-    const { error } = await promiseWithTimeout(
-      auth.exchangeCodeForSession(code),
-    );
+    const { error } = await auth.exchangeCodeForSession(code);
 
     if (error) {
       return NextResponse.json<RouteHandlerResponse>(
