@@ -83,7 +83,7 @@ export const securityHeaders = [
   },
   {
     key: 'Strict-Transport-Security',
-    value: 'max-age=86400; includeSubDomains',
+    value: 'max-age=31536000; includeSubDomains',
   },
   {
     key: 'Permissions-Policy',
