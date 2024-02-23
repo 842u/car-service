@@ -14,7 +14,7 @@ export function getAuthenticatedRedirectPath(
       requestPath !== '/dashboard/sign-up' &&
       requestPath !== '/dashboard/forgot-password'
     ) {
-      redirectToPath = '/dashboard/sign-in' as Route;
+      redirectToPath = '/dashboard/sign-in';
 
       return redirectToPath;
     }
@@ -27,9 +27,12 @@ export function getAuthenticatedRedirectPath(
       requestPath === '/dashboard/sign-up' ||
       requestPath === '/dashboard/forgot-password'
     ) {
-      redirectToPath = '/dashboard' as Route;
+      redirectToPath = '/dashboard';
 
       return redirectToPath;
     }
   }
+  redirectToPath = '/';
+
+  return redirectToPath;
 }
