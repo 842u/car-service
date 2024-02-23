@@ -78,7 +78,8 @@ export default function EmailAuthForm({
 
     if (response.ok && type === 'sign-in') {
       router.prefetch('/dashboard');
-      router.push('/dashboard');
+      router.replace('/dashboard');
+      router.refresh();
     }
   };
 

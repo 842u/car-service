@@ -1,72 +1,59 @@
-import { type CookieOptions, createServerClient } from '@supabase/ssr';
 import { Route } from 'next';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
+import { generateCspWithNonce } from '@/utils/security.mjs';
+
+import { getAuthenticatedRedirectPath } from './utils/middleware';
+import { getUserSession } from './utils/supabase';
+
 export async function middleware(request: NextRequest) {
   const requestUrl = request.nextUrl.clone();
-  const requestUrlPath = requestUrl.pathname as Route;
-  let response = NextResponse.next({ request: { headers: request.headers } });
+  const requestHeaders = new Headers(request.headers);
+  const { csp, nonce } = generateCspWithNonce();
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-          response = NextResponse.next({
-            request: { headers: request.headers },
-          });
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({ name, value: '', ...options });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-        },
-      },
+  requestHeaders.set('x-nonce', nonce);
+  requestHeaders.set('content-security-policy', csp);
+
+  let response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
     },
+  });
+
+  const { user } = await getUserSession(request, requestHeaders, response);
+  const redirectPath = getAuthenticatedRedirectPath(
+    user,
+    requestUrl.pathname as Route,
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    if (
-      requestUrlPath !== '/' &&
-      requestUrlPath !== '/dashboard/sign-in' &&
-      requestUrlPath !== '/dashboard/sign-up' &&
-      requestUrlPath !== '/dashboard/forgot-password'
-    ) {
-      return NextResponse.redirect(new URL('/dashboard/sign-in', request.url));
-    }
+  if (redirectPath) {
+    response = NextResponse.redirect(new URL(redirectPath, requestUrl.origin), {
+      headers: requestHeaders,
+    });
   }
 
-  if (user) {
-    if (
-      (!requestUrlPath.includes('/dashboard') && requestUrlPath !== '/') ||
-      requestUrlPath === '/dashboard/sign-in' ||
-      requestUrlPath === '/dashboard/sign-up' ||
-      requestUrlPath === '/dashboard/forgot-password'
-    ) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
-  }
+  /*
+   * CSP needs to be set twice, see more:
+   * https://github.com/vercel/next.js/issues/43743#issuecomment-1542712188
+   */
+  response.headers.set('content-security-policy', csp);
 
   return response;
 }
 
 export const config = {
-  matcher: ['/', '/dashboard', '/dashboard/:path*'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - robots.txt
+     */
+    {
+      source: '/((?!api|_next/static|_next/image|favicon.ico|robots.txt).*)',
+    },
+  ],
 };
