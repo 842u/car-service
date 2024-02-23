@@ -15,29 +15,27 @@ export async function middleware(request: NextRequest) {
   requestHeaders.set('x-nonce', nonce);
   requestHeaders.set('content-security-policy', csp);
 
-  const response = NextResponse.next({
+  let response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
 
-  /*
-   * Needs to be set twice, see more:
-   * https://github.com/vercel/next.js/issues/43743#issuecomment-1542712188
-   */
-  response.headers.set('content-security-policy', csp);
-
-  const { user } = await getUserSession(request, requestHeaders);
+  const { user } = await getUserSession(request, requestHeaders, response);
   const redirectPath = getAuthenticatedRedirectPath(
     user,
     requestUrl.pathname as Route,
   );
 
-  if (redirectPath) {
-    return NextResponse.redirect(new URL(redirectPath, requestUrl.origin), {
-      headers: requestHeaders,
-    });
-  }
+  response = NextResponse.redirect(new URL(redirectPath, requestUrl.origin), {
+    headers: requestHeaders,
+  });
+
+  /*
+   * CSP needs to be set twice, see more:
+   * https://github.com/vercel/next.js/issues/43743#issuecomment-1542712188
+   */
+  response.headers.set('content-security-policy', csp);
 
   return response;
 }
@@ -53,10 +51,6 @@ export const config = {
      */
     {
       source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' },
-      ],
     },
   ],
 };
