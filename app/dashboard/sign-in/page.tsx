@@ -7,7 +7,7 @@ import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
 export default function SignInPage() {
   return (
     <main>
-      <div className="flex min-h-screen flex-col justify-center pt-16 lg:absolute lg:w-2/5 lg:border-r lg:border-alpha-grey-500 lg:bg-light-500 lg:shadow-xl lg:transition-[background-color] lg:dark:bg-dark-500">
+      <div className="flex min-h-screen flex-col justify-center pt-16 lg:absolute lg:w-2/5 lg:border-r lg:border-alpha-grey-300 lg:bg-light-500 lg:shadow-xl lg:transition-[background-color] lg:dark:bg-dark-500">
         <section
           aria-label="Sign In Authentication"
           className="mx-auto flex h-full w-11/12 max-w-sm flex-col items-stretch justify-center gap-7"

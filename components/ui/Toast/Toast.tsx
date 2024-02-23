@@ -29,7 +29,7 @@ export const Toast = forwardRef(
       <m.li
         ref={ref}
         className={twMerge(
-          'my-2 flex w-full items-center justify-between gap-2 rounded-lg border border-alpha-grey-400 bg-light-600 px-3 py-2 text-sm dark:bg-dark-600',
+          'my-2 flex w-full items-center justify-between gap-2 rounded-lg border border-alpha-grey-300 bg-light-600 px-3 py-2 text-sm dark:bg-dark-600',
           style,
           className,
         )}
