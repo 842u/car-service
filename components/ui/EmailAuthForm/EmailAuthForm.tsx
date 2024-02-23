@@ -77,6 +77,8 @@ export default function EmailAuthForm({
     message && addToast(message, 'success');
 
     if (response.ok && type === 'sign-in') {
+      router.prefetch('/dashboard');
+      router.replace('/dashboard');
       router.refresh();
     }
   };
