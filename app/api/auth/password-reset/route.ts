@@ -2,9 +2,10 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { RouteHandlerResponse } from '@/types';
-import { promiseWithTimeout } from '@/utils/general';
 import { getActionClient } from '@/utils/supabase';
 import { passwordSchema } from '@/utils/validation';
+
+export const maxDuration = 10;
 
 export async function PATCH(request: NextRequest) {
   const { password, passwordConfirm } = await request.json();
@@ -23,7 +24,7 @@ export async function PATCH(request: NextRequest) {
 
   const cookieStore = cookies();
   const { auth } = getActionClient(cookieStore);
-  const { error } = await promiseWithTimeout(auth.updateUser({ password }));
+  const { error } = await auth.updateUser({ password });
 
   if (error) {
     return NextResponse.json<RouteHandlerResponse>(

@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { EmailAuthFormType } from '@/components/ui/EmailAuthForm/EmailAuthForm';
 import { RouteHandlerResponse } from '@/types';
-import { promiseWithTimeout } from '@/utils/general';
 import { getActionClient } from '@/utils/supabase';
 import { emailSchema, passwordSchema } from '@/utils/validation';
+
+export const maxDuration = 10;
 
 export async function POST(request: NextRequest) {
   const requestUrl = request.nextUrl.clone();
@@ -27,15 +28,13 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const { data, error } = await promiseWithTimeout(
-        auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: requestUrl.origin,
-          },
-        }),
-      );
+      const { data, error } = await auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: requestUrl.origin,
+        },
+      });
 
       if (error) {
         return NextResponse.json<RouteHandlerResponse>(
@@ -44,13 +43,13 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user. For users who forget that have and account send email with password reset flow.
+      /*
+       * If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user. For users who forget that have and account send email with password reset flow.
+       */
       if (data?.user?.identities?.length === 0) {
-        await promiseWithTimeout(
-          auth.resetPasswordForEmail(email, {
-            redirectTo: requestUrl.origin,
-          }),
-        );
+        await auth.resetPasswordForEmail(email, {
+          redirectTo: requestUrl.origin,
+        });
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -73,12 +72,10 @@ export async function POST(request: NextRequest) {
 
   if (type === 'sign-in') {
     try {
-      const { error } = await promiseWithTimeout(
-        auth.signInWithPassword({
-          email,
-          password,
-        }),
-      );
+      const { error } = await auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (error) {
         return NextResponse.json<RouteHandlerResponse>(
