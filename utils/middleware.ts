@@ -32,7 +32,4 @@ export function getAuthenticatedRedirectPath(
       return redirectToPath;
     }
   }
-  redirectToPath = '/';
-
-  return redirectToPath;
 }

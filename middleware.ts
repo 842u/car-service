@@ -27,9 +27,11 @@ export async function middleware(request: NextRequest) {
     requestUrl.pathname as Route,
   );
 
-  response = NextResponse.redirect(new URL(redirectPath, requestUrl.origin), {
-    headers: requestHeaders,
-  });
+  if (redirectPath) {
+    response = NextResponse.redirect(new URL(redirectPath, requestUrl.origin), {
+      headers: requestHeaders,
+    });
+  }
 
   /*
    * CSP needs to be set twice, see more:
