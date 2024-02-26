@@ -19,7 +19,7 @@ export function BrandLabel({ className }: BrandLabelProps) {
       href="/"
     >
       <BrandLogoMinimal className="h-full stroke-accent-500 stroke-[10]" />
-      Car Service
+      <span className="hidden md:inline">Car Service</span>
     </Link>
   );
 }
