@@ -6,7 +6,7 @@ export function HeroSection() {
   return (
     <Section
       aria-label="welcome motto"
-      className="mt-16 flex h-[50vh] flex-col items-center justify-center text-center lg:mt-0 lg:h-screen"
+      className="mt-0 flex h-[50vh] flex-col items-center justify-center pt-16 text-center lg:mt-0 lg:h-screen"
     >
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">
         <p className="bg-gradient-to-b from-dark-100 to-dark-500 bg-clip-text leading-tight text-[transparent] dark:from-light-400 dark:to-light-800">
