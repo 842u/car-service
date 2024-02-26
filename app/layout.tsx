@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 
 import { ColorThemeProvider } from '@/components/providers/ColorThemeProvider';
 import { ToastsProvider } from '@/components/providers/ToastsProvider';
-import { NavBar } from '@/components/ui/NavBar/NavBar';
 import { Toaster } from '@/components/ui/Toaster/Toaster';
 import { inter } from '@/utils/fonts';
 
@@ -26,7 +25,6 @@ export default function RootLayout({
         <ToastsProvider>
           <ColorThemeProvider>
             <Toaster />
-            <NavBar />
             {children}
           </ColorThemeProvider>
         </ToastsProvider>
