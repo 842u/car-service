@@ -1,5 +1,10 @@
 import { twJoin, twMerge } from 'tailwind-merge';
 
+import { CarsIcon } from '@/components/decorative/icons/CarsIcon';
+import { GarageIcon } from '@/components/decorative/icons/GarageIcon';
+
+import { DashboardNavMenuItem } from './DashboardNavMenuItem';
+
 type DashboardNavMenuProps = {
   isActive: boolean;
   onClick: () => void;
@@ -28,10 +33,15 @@ export function DashboardNavMenu({
           isActive ? 'translate-x-0' : '-translate-x-full',
         )}
       />
-      <ul>
-        <li>cars</li>
-        <li>account</li>
-        <li>settings</li>
+      <ul className="h-full px-4 md:px-2">
+        <li className="my-4 md:my-2">
+          <DashboardNavMenuItem href="/dashboard" text="Dashboard">
+            <GarageIcon />
+          </DashboardNavMenuItem>
+          <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
+            <CarsIcon />
+          </DashboardNavMenuItem>
+        </li>
       </ul>
     </nav>
   );
