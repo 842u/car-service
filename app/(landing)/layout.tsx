@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 
-import { NavBar } from '@/components/ui/NavBar/NavBar';
+import { LandingNavBar } from '@/components/ui/NavBar/LandingNavBar/LandingNavBar';
 
 export default function LandingLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <NavBar />
+      <LandingNavBar />
       {children}
     </>
   );
