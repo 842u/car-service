@@ -17,23 +17,26 @@ export function DashboardNavMenuItem({
   const isActive = pathname === href;
 
   return (
-    <Link
+    <li
       className={twJoin(
-        'flex items-center rounded-md',
+        'my-2 rounded-md @container md:overflow-hidden',
         isActive ? 'bg-alpha-grey-200' : '',
       )}
-      href={href}
     >
-      <svg
-        className={twJoin(
-          'm-2 aspect-square h-8 stroke-[10] md:w-full',
-          isActive ? 'stroke-accent-400' : 'stroke-alpha-grey-700',
-        )}
-      >
-        {children}
-      </svg>
+      <Link className="flex items-center justify-start" href={href}>
+        <svg
+          className={twJoin(
+            'm-2 aspect-square h-8 stroke-[10] md:flex-shrink-0',
+            isActive ? 'stroke-accent-400' : 'stroke-alpha-grey-700',
+          )}
+        >
+          {children}
+        </svg>
 
-      <span className="my-2 md:hidden">{text}</span>
-    </Link>
+        <span className="md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
+          {text}
+        </span>
+      </Link>
+    </li>
   );
 }

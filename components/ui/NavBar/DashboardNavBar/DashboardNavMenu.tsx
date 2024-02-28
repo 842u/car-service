@@ -20,7 +20,7 @@ export function DashboardNavMenu({
     // eslint-disable-next-line
     <nav
       className={twMerge(
-        'absolute left-0 top-0 z-50 h-screen w-3/5 border-r border-alpha-grey-300 bg-light-500 pt-16 transition-all dark:bg-dark-500 md:w-16 md:translate-x-0',
+        'absolute left-0 top-0 z-50 h-screen w-3/5 border-r border-alpha-grey-300 bg-light-500 pt-16 transition-all dark:bg-dark-500 md:w-16 md:translate-x-0 md:hover:w-52',
         isActive ? 'translate-x-0' : '-translate-x-full',
         className,
       )}
@@ -33,15 +33,13 @@ export function DashboardNavMenu({
           isActive ? 'translate-x-0' : '-translate-x-full',
         )}
       />
-      <ul className="h-full px-4 md:px-2">
-        <li className="my-4 md:my-2">
-          <DashboardNavMenuItem href="/dashboard" text="Dashboard">
-            <GarageIcon />
-          </DashboardNavMenuItem>
-          <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
-            <CarsIcon />
-          </DashboardNavMenuItem>
-        </li>
+      <ul className="h-full px-2">
+        <DashboardNavMenuItem href="/dashboard" text="Dashboard">
+          <GarageIcon />
+        </DashboardNavMenuItem>
+        <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
+          <CarsIcon />
+        </DashboardNavMenuItem>
       </ul>
     </nav>
   );
