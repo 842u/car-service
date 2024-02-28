@@ -2,8 +2,7 @@ import './globals.css';
 
 import type { Metadata } from 'next';
 
-import { ColorThemeProvider } from '@/components/providers/ColorThemeProvider';
-import { ToastsProvider } from '@/components/providers/ToastsProvider';
+import { Providers } from '@/components/providers/Providers';
 import { Toaster } from '@/components/ui/Toaster/Toaster';
 import { inter } from '@/utils/fonts';
 
@@ -22,12 +21,10 @@ export default function RootLayout({
       <body
         className={`bg-light-500 text-dark-500 transition-colors dark:bg-dark-500 dark:text-light-500 ${inter.className}`}
       >
-        <ToastsProvider>
-          <ColorThemeProvider>
-            <Toaster />
-            {children}
-          </ColorThemeProvider>
-        </ToastsProvider>
+        <Providers>
+          <Toaster />
+          {children}
+        </Providers>
       </body>
     </html>
   );
