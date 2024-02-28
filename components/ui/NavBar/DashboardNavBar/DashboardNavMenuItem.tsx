@@ -19,21 +19,30 @@ export function DashboardNavMenuItem({
   return (
     <li
       className={twJoin(
-        'my-2 rounded-md @container md:overflow-hidden',
-        isActive ? 'bg-alpha-grey-200' : '',
+        'group my-2 rounded-md hover:bg-alpha-grey-100 md:overflow-hidden md:transition-colors md:@container',
+        isActive ? 'bg-alpha-grey-200 hover:bg-alpha-grey-200' : '',
       )}
     >
       <Link className="flex items-center justify-start" href={href}>
         <svg
           className={twJoin(
-            'm-2 aspect-square h-8 stroke-[10] md:flex-shrink-0',
-            isActive ? 'stroke-accent-400' : 'stroke-alpha-grey-700',
+            'm-2 aspect-square h-8 stroke-[10] md:flex-shrink-0 md:transition-colors',
+            isActive
+              ? 'stroke-accent-400'
+              : 'stroke-alpha-grey-700 group-hover:stroke-alpha-grey-900',
           )}
         >
           {children}
         </svg>
 
-        <span className="md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
+        <span
+          className={twJoin(
+            'md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100',
+            isActive
+              ? ''
+              : 'text-alpha-grey-700 group-hover:text-alpha-grey-900',
+          )}
+        >
           {text}
         </span>
       </Link>
