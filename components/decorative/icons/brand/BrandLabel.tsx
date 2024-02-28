@@ -12,6 +12,7 @@ type BrandLabelProps = {
 export function BrandLabel({ className }: BrandLabelProps) {
   return (
     <Link
+      aria-label="landing page"
       className={twMerge(
         `flex h-full w-fit flex-row items-center justify-center gap-3 whitespace-nowrap text-3xl font-medium ${smoochSans.className}`,
         className,
@@ -19,7 +20,7 @@ export function BrandLabel({ className }: BrandLabelProps) {
       href="/"
     >
       <BrandLogoMinimal className="h-full stroke-accent-500 stroke-[10]" />
-      Car Service
+      <span className="hidden md:inline">Car Service</span>
     </Link>
   );
 }

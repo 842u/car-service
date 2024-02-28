@@ -28,7 +28,6 @@ export default async function DashboardPage() {
       <h1>DASHBOARD</h1>
       <p>{user?.email}</p>
       <Link href="/dashboard/account/password-reset">Reset password</Link>
-      <a href="/api/auth/sign-out">Sign Out</a>
     </main>
   );
 }

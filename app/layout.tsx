@@ -2,9 +2,7 @@ import './globals.css';
 
 import type { Metadata } from 'next';
 
-import { ColorThemeProvider } from '@/components/providers/ColorThemeProvider';
-import { ToastsProvider } from '@/components/providers/ToastsProvider';
-import { NavBar } from '@/components/ui/NavBar/NavBar';
+import { Providers } from '@/components/providers/Providers';
 import { Toaster } from '@/components/ui/Toaster/Toaster';
 import { inter } from '@/utils/fonts';
 
@@ -19,17 +17,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body
         className={`bg-light-500 text-dark-500 transition-colors dark:bg-dark-500 dark:text-light-500 ${inter.className}`}
       >
-        <ToastsProvider>
-          <ColorThemeProvider>
-            <Toaster />
-            <NavBar />
-            {children}
-          </ColorThemeProvider>
-        </ToastsProvider>
+        <Providers>
+          <Toaster />
+          {children}
+        </Providers>
       </body>
     </html>
   );
