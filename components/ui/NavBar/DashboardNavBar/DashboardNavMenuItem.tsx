@@ -6,11 +6,14 @@ import { twJoin } from 'tailwind-merge';
 type DashboardNavMenuItemProps = {
   href: Route;
   text: string;
+  prefetch?: boolean;
   children?: JSX.Element;
 };
+
 export function DashboardNavMenuItem({
   href,
   text,
+  prefetch = true,
   children,
 }: DashboardNavMenuItemProps) {
   const pathname = usePathname();
@@ -23,7 +26,11 @@ export function DashboardNavMenuItem({
         isActive ? 'bg-alpha-grey-200 hover:bg-alpha-grey-200' : '',
       )}
     >
-      <Link className="flex items-center justify-start" href={href}>
+      <Link
+        className="flex items-center justify-start"
+        href={href}
+        prefetch={prefetch}
+      >
         <svg
           className={twJoin(
             'm-2 aspect-square h-8 stroke-[10] md:flex-shrink-0 md:transition-colors',

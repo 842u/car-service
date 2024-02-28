@@ -49,7 +49,11 @@ export function DashboardNavMenu({
             <ThemeSwitcher className="h-full w-full" />
           </div>
         </li>
-        <DashboardNavMenuItem href="/api/auth/sign-out" text="Sign Out">
+        <DashboardNavMenuItem
+          href="/api/auth/sign-out"
+          prefetch={false}
+          text="Sign Out"
+        >
           <ArrowLeftStartOnRectangleIcon />
         </DashboardNavMenuItem>
       </ul>

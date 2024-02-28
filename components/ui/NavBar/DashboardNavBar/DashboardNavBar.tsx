@@ -25,6 +25,7 @@ export function DashboardNavBar() {
     <NavBar>
       <BrandLabel className="z-10" />
       <HamburgerButton
+        aria-label="toggle navigation menu"
         className="z-10 md:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
