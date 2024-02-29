@@ -25,6 +25,10 @@ export async function GET(request: NextRequest) {
   if (token_hash && type) {
     const { error } = await auth.verifyOtp({ type, token_hash });
 
+    searchParams.delete('token_hash');
+    searchParams.delete('type');
+    searchParams.delete('next');
+
     if (error) {
       return NextResponse.json<RouteHandlerResponse>(
         { error: error.message, message: null },
@@ -37,6 +41,8 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     const { error } = await auth.exchangeCodeForSession(code);
+
+    searchParams.delete('code');
 
     if (error) {
       return NextResponse.json<RouteHandlerResponse>(
