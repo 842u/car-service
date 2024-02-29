@@ -33,7 +33,7 @@ export const securityHeaders = [
 export const baseContentSecurityPolicy = {
   'default-src': ["'self'"],
   'base-uri': ["'self'"],
-  'connect-src': ["'self'"],
+  'connect-src': ["'self'", `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/`],
   'script-src': [
     "'self'",
     "'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo='",
