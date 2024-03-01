@@ -1,8 +1,8 @@
-import { XCircleIcon } from '@heroicons/react/24/outline';
 import { m } from 'framer-motion';
 import { ComponentPropsWithoutRef, ForwardedRef, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
 import { useToasts } from '@/hooks/useToasts';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
@@ -43,7 +43,7 @@ export const Toast = forwardRef(
           type="button"
           onClick={closeButtonClickHandler}
         >
-          <XCircleIcon className="aspect-square w-6 flex-shrink-0" />
+          <XCircleIcon className="aspect-square w-6 flex-shrink-0 stroke-dark-500 stroke-[10] dark:stroke-light-500" />
         </button>
       </m.li>
     );

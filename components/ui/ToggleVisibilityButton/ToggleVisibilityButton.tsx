@@ -1,5 +1,7 @@
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { ComponentProps } from 'react';
+
+import { EyeClosedIcon } from '@/components/decorative/icons/EyeClosed';
+import { EyeOpenIcon } from '@/components/decorative/icons/EyeOpen';
 
 type ToggleVisibilityButtonProps = ComponentProps<'button'> & {
   isVisible?: boolean;
@@ -17,13 +19,13 @@ export function ToggleVisibilityButton({
       className="w-6 rounded-md border border-alpha-grey-500 bg-alpha-grey-500 p-0.5"
     >
       {isVisible ? (
-        <EyeSlashIcon
-          className="pointer-events-none aspect-square w-full"
+        <EyeClosedIcon
+          className="pointer-events-none stroke-dark-500 stroke-[10] dark:stroke-light-500"
           data-testid="eye-slash-icon"
         />
       ) : (
-        <EyeIcon
-          className="pointer-events-none aspect-square w-full"
+        <EyeOpenIcon
+          className="pointer-events-none stroke-dark-500 stroke-[10] dark:stroke-light-500"
           data-testid="eye-icon"
         />
       )}

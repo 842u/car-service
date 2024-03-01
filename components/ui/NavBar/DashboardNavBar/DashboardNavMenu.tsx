@@ -1,8 +1,8 @@
-import { ArrowLeftStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import { twJoin, twMerge } from 'tailwind-merge';
 
 import { CarsIcon } from '@/components/decorative/icons/CarsIcon';
-import { GarageIcon } from '@/components/decorative/icons/GarageIcon';
+import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
+import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
 import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
@@ -38,7 +38,7 @@ export function DashboardNavMenu({
       />
       <ul className="flex-grow">
         <DashboardNavMenuItem href="/dashboard" text="Dashboard">
-          <GarageIcon />
+          <HomeIcon />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
           <CarsIcon />
@@ -58,8 +58,8 @@ export function DashboardNavMenu({
             className="flex items-center justify-start"
             href="/api/auth/sign-out"
           >
-            <div className="m-2 aspect-square h-8 stroke-[10] md:flex-shrink-0 md:transition-colors">
-              <ArrowLeftStartOnRectangleIcon className="h-full w-full" />
+            <div className="mx-2 aspect-square h-8 md:flex-shrink-0 md:transition-colors">
+              <SignOutIcon className="h-full w-full stroke-dark-500 stroke-[10] dark:stroke-light-500" />
             </div>
             <span className="whitespace-nowrap md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
               Sign Out

@@ -1,9 +1,11 @@
 'use client';
 
-import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { useTheme } from 'next-themes';
 import { ComponentProps, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+
+import { MoonIcon } from '@/components/decorative/icons/MoonIcon';
+import { SunIcon } from '@/components/decorative/icons/SunIcon';
 
 type ThemeSwitcherProps = ComponentProps<'button'> & {
   className?: string;
@@ -29,12 +31,12 @@ export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
     >
       {resolvedTheme === 'dark' ? (
         <SunIcon
-          className="mx-auto h-full w-full transition-opacity"
+          className="h-full w-full stroke-light-500 stroke-[10]"
           data-testid="light-theme-icon"
         />
       ) : (
         <MoonIcon
-          className="mx-auto h-full w-full transition-opacity"
+          className="h-full w-full stroke-dark-500 stroke-[10]"
           data-testid="dark-theme-icon"
         />
       )}
