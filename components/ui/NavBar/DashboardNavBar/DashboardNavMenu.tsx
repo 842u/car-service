@@ -3,6 +3,7 @@ import { twJoin, twMerge } from 'tailwind-merge';
 
 import { CarsIcon } from '@/components/decorative/icons/CarsIcon';
 import { GarageIcon } from '@/components/decorative/icons/GarageIcon';
+import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
 import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
@@ -41,6 +42,9 @@ export function DashboardNavMenu({
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
           <CarsIcon />
+        </DashboardNavMenuItem>
+        <DashboardNavMenuItem href="/dashboard/account" text="Account">
+          <UserIcon />
         </DashboardNavMenuItem>
       </ul>
       <ul className="relative w-full before:mx-auto before:block before:h-[1px] before:w-3/4 before:bg-alpha-grey-300">
