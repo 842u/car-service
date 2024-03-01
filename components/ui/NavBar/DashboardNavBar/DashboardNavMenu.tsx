@@ -53,13 +53,19 @@ export function DashboardNavMenu({
             <ThemeSwitcher className="h-full w-full" />
           </div>
         </li>
-        <DashboardNavMenuItem
-          href="/api/auth/sign-out"
-          prefetch={false}
-          text="Sign Out"
-        >
-          <ArrowLeftStartOnRectangleIcon />
-        </DashboardNavMenuItem>
+        <li className="group m-2 rounded-md py-2 hover:bg-alpha-grey-100 md:overflow-hidden md:transition-colors md:@container">
+          <a
+            className="flex items-center justify-start"
+            href="/api/auth/sign-out"
+          >
+            <div className="m-2 aspect-square h-8 stroke-[10] md:flex-shrink-0 md:transition-colors">
+              <ArrowLeftStartOnRectangleIcon className="h-full w-full" />
+            </div>
+            <span className="whitespace-nowrap md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
+              Sign Out
+            </span>
+          </a>
+        </li>
       </ul>
     </nav>
   );
