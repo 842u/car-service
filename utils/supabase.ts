@@ -8,15 +8,17 @@ import { Route } from 'next';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { Database } from '@/types/supabase';
+
 export function getBrowserClient() {
-  return createBrowserClient(
+  return createBrowserClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 }
 
 export function getServerClient(cookieStore: ReturnType<typeof cookies>) {
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -30,7 +32,7 @@ export function getServerClient(cookieStore: ReturnType<typeof cookies>) {
 }
 
 export function getActionClient(cookieStore: ReturnType<typeof cookies>) {
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
