@@ -33,7 +33,7 @@ export function DashboardNavMenuItem({
         href={href}
         prefetch={prefetch}
       >
-        <svg
+        <div
           className={twJoin(
             'm-2 aspect-square h-8 stroke-[10] md:flex-shrink-0 md:transition-colors',
             isActive
@@ -42,7 +42,7 @@ export function DashboardNavMenuItem({
           )}
         >
           {children}
-        </svg>
+        </div>
 
         <span
           className={twJoin(
