@@ -23,7 +23,7 @@ export function DashboardNavMenu({
     // eslint-disable-next-line
     <nav
       className={twMerge(
-        'absolute left-0 top-0 z-50 flex h-screen w-56 flex-col border-r border-alpha-grey-300 bg-light-500 pt-16 transition-all dark:bg-dark-500 md:w-16 md:translate-x-0 md:hover:w-56',
+        'fixed left-0 top-0 z-50 flex h-screen w-56 flex-col border-r border-alpha-grey-300 bg-light-500 pt-16 transition-all dark:bg-dark-500 md:w-16 md:translate-x-0 md:hover:w-56',
         isActive ? 'translate-x-0' : '-translate-x-full',
         className,
       )}
@@ -32,7 +32,7 @@ export function DashboardNavMenu({
       <div
         aria-hidden
         className={twJoin(
-          'absolute -z-10 h-screen w-screen overflow-hidden md:hidden',
+          'fixed -z-10 h-screen w-screen overflow-hidden md:hidden',
           isActive ? 'translate-x-0' : '-translate-x-full',
         )}
       />
@@ -47,7 +47,7 @@ export function DashboardNavMenu({
           <UserIcon />
         </DashboardNavMenuItem>
       </ul>
-      <ul className="relative w-full before:mx-auto before:block before:h-[1px] before:w-3/4 before:bg-alpha-grey-300">
+      <ul className="w-full before:mx-auto before:block before:h-[1px] before:w-3/4 before:bg-alpha-grey-300">
         <li className="group m-2 rounded-md py-2 hover:bg-alpha-grey-100 md:overflow-hidden md:transition-colors md:@container">
           <div className="h-8 w-full">
             <ThemeSwitcher className="h-full w-full" />
