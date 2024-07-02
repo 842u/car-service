@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS "supabase_migrations"."schema_migrations" (
 
 ALTER TABLE "supabase_migrations"."schema_migrations" OWNER TO "postgres";
 
-ALTER TABLE ONLY "supabase_migrations"."schema_migrations"
-    ADD CONSTRAINT "schema_migrations_pkey" PRIMARY KEY ("version");
+-- ALTER TABLE ONLY "supabase_migrations"."schema_migrations"
+--     ADD CONSTRAINT "schema_migrations_pkey" PRIMARY KEY ("version");
 
 GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";
