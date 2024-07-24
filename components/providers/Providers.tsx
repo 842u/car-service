@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { ColorThemeProvider } from './ColorThemeProvider';
 import { ToastsProvider } from './ToastsProvider';
+import { UserProfileProvider } from './UserProfileProvider';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -9,8 +10,10 @@ type ProvidersProps = {
 
 export function Providers({ children }: ProvidersProps) {
   return (
-    <ToastsProvider>
-      <ColorThemeProvider>{children}</ColorThemeProvider>
-    </ToastsProvider>
+    <UserProfileProvider>
+      <ToastsProvider>
+        <ColorThemeProvider>{children}</ColorThemeProvider>
+      </ToastsProvider>
+    </UserProfileProvider>
   );
 }
