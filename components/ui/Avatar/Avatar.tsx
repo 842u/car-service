@@ -1,23 +1,23 @@
-'use client';
-
 import Image from 'next/image';
-import { useContext } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
-import { UserProfileContext } from '@/context/UserProfileContext';
 
-export function Avatar() {
-  const userProfile = useContext(UserProfileContext);
+type AvatarProps = {
+  src?: string;
+  className?: string;
+};
 
+export function Avatar({ src, className }: AvatarProps) {
   return (
-    <div className="relative h-24 w-24 rounded-full border-2 border-alpha-grey-300">
-      {userProfile?.avatar_url ? (
-        <Image
-          fill
-          alt="user avatar"
-          className="rounded-full"
-          src={userProfile.avatar_url}
-        />
+    <div
+      className={twMerge(
+        className,
+        'relative h-24 w-24 rounded-full border-2 border-alpha-grey-300',
+      )}
+    >
+      {src ? (
+        <Image fill alt="user avatar" className="rounded-full" src={src} />
       ) : (
         <UserIcon className="stroke-alpha-grey-500 stroke-2" />
       )}
