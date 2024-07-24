@@ -1,40 +1,18 @@
 'use client';
 
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useMemo } from 'react';
 
-import { ToastsContext } from '@/context/ToastsContext';
-import { Toast, ToastType } from '@/types';
+import { ToastsContext, ToastsContextType } from '@/context/ToastsContext';
+import { useToasts } from '@/hooks/useToasts';
 
 type ToastsProviderProps = {
   children: ReactNode;
 };
 
 export function ToastsProvider({ children }: ToastsProviderProps) {
-  const [toasts, setToasts] = useState<Toast[]>([]);
+  const { toasts, addToast, removeToast } = useToasts();
 
-  const addToast = useCallback(
-    (message: string, type: ToastType) => {
-      const newToast = {
-        id: crypto.randomUUID(),
-        message,
-        type,
-      };
-
-      setToasts([...toasts, newToast]);
-    },
-    [toasts],
-  );
-
-  const removeToast = useCallback(
-    (id: string) => {
-      const filteredToasts = toasts.filter((toast) => toast.id !== id);
-
-      setToasts([...filteredToasts]);
-    },
-    [toasts],
-  );
-
-  const value = useMemo(
+  const value = useMemo<ToastsContextType>(
     () => ({
       toasts,
       addToast,

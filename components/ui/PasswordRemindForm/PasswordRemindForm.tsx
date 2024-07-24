@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useToasts } from '@/hooks/useToasts';
+import { ToastsContext } from '@/context/ToastsContext';
 import { emailValidationRules } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
@@ -15,7 +15,7 @@ type PasswordRemindFormValues = {
 };
 
 export function PasswordRemindForm() {
-  const { addToast } = useToasts();
+  const { addToast } = useContext(ToastsContext);
   const {
     register,
     reset,
