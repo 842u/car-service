@@ -1,4 +1,4 @@
-import { SyntheticEvent, useContext, useState } from 'react';
+import { SyntheticEvent, useContext, useEffect, useRef, useState } from 'react';
 
 import { Avatar } from '@/components/ui/Avatar/Avatar';
 import { Button } from '@/components/ui/Button/Button';
@@ -8,17 +8,32 @@ import { UserProfileContext } from '@/context/UserProfileContext';
 
 export function AvatarSection() {
   const userProfile = useContext(UserProfileContext);
-  const [avatarFile, setAvatarFile] = useState<File | null>();
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const avatarInputElement = useRef<HTMLInputElement>();
+
+  const avatarFileUrl = avatarFile && URL.createObjectURL(avatarFile);
 
   const avatarChangeHandler = (event: SyntheticEvent) => {
-    const input = event.currentTarget;
+    const input = event.target;
 
     if (input instanceof HTMLInputElement) {
       const file = input.files?.[0];
 
-      setAvatarFile(file);
+      file && setAvatarFile(file);
     }
   };
+
+  const cancelAvatarChangeHandler = () => {
+    avatarInputElement.current!.value = '';
+    avatarFileUrl && URL.revokeObjectURL(avatarFileUrl);
+    setAvatarFile(null);
+  };
+
+  useEffect(() => {
+    avatarInputElement.current = document.querySelector(
+      '#avatar-upload',
+    ) as HTMLInputElement;
+  }, [avatarFile]);
 
   return (
     <SettingsSection headingText="Avatar">
@@ -37,13 +52,7 @@ export function AvatarSection() {
               onChange={avatarChangeHandler}
             />
           </label>
-          <Avatar
-            src={
-              (avatarFile && URL.createObjectURL(avatarFile)) ||
-              userProfile?.avatar_url ||
-              ''
-            }
-          />
+          <Avatar src={avatarFileUrl || userProfile?.avatar_url || ''} />
         </div>
         <div>
           <p className="text-sm">Click on the avatar to upload a custom one.</p>
@@ -57,7 +66,7 @@ export function AvatarSection() {
             <Button
               className="flex-1"
               disabled={!avatarFile}
-              onClick={() => setAvatarFile(null)}
+              onClick={cancelAvatarChangeHandler}
             >
               Cancel
             </Button>
