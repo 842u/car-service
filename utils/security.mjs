@@ -53,7 +53,7 @@ export const baseContentSecurityPolicy = {
     "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
   ],
   'font-src': ["'self'"],
-  'img-src': ["'self'", 'data:'],
+  'img-src': ["'self'", 'data:', 'blob:'],
   'worker-src': ["'self'"],
   'frame-ancestors': ["'none'"],
   'form-action': ["'self'"],
