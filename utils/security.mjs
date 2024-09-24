@@ -37,6 +37,7 @@ export const baseContentSecurityPolicy = {
     "'self'",
     `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/`,
     `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/`,
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/`,
   ],
   'script-src': [
     "'self'",

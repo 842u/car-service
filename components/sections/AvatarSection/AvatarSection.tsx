@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/Button/Button';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
 import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
+import { hashFile } from '@/utils/general';
+import { getBrowserClient } from '@/utils/supabase';
 import { avatarFileSchema } from '@/utils/validation';
 
 export function AvatarSection() {
@@ -19,6 +21,12 @@ export function AvatarSection() {
   const avatarPreviewUrl =
     avatarPreviewFile && URL.createObjectURL(avatarPreviewFile);
 
+  const clearAvatarPreview = () => {
+    avatarInputElement.current!.value = '';
+    avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl);
+    setAvatarPreviewFile(null);
+  };
+
   const avatarChangeHandler = (event: SyntheticEvent) => {
     const input = event.target;
 
@@ -31,9 +39,7 @@ export function AvatarSection() {
 
           setAvatarPreviewFile(file);
         } catch (error) {
-          avatarInputElement.current!.value = '';
-          avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl);
-          setAvatarPreviewFile(null);
+          clearAvatarPreview();
 
           if (error instanceof ZodError) {
             addToast(error.issues[0].message, 'error');
@@ -41,14 +47,34 @@ export function AvatarSection() {
             addToast(error.message, 'error');
           }
         }
+      } else {
+        clearAvatarPreview();
+
+        addToast('You must select an file to upload.', 'error');
       }
     }
   };
 
   const cancelAvatarChangeHandler = () => {
-    avatarInputElement.current!.value = '';
-    avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl);
-    setAvatarPreviewFile(null);
+    clearAvatarPreview();
+  };
+
+  const avatarUploadHandler = async () => {
+    const supabase = getBrowserClient();
+
+    if (avatarPreviewFile) {
+      const hashedFile = await hashFile(avatarPreviewFile);
+      const { data, error } = await supabase.storage
+        .from('avatars')
+        .upload(`${userProfile?.id}/${hashedFile}`, avatarPreviewFile, {
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      data && addToast('Avatar uploaded successfully.', 'success');
+      error && addToast(error.message, 'error');
+      clearAvatarPreview();
+    }
   };
 
   useEffect(() => {
@@ -85,6 +111,7 @@ export function AvatarSection() {
             <Button
               className="flex-1 border-accent-500 bg-accent-800 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
               disabled={!avatarPreviewFile}
+              onClick={avatarUploadHandler}
             >
               Save
             </Button>
