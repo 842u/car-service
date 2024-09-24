@@ -4,7 +4,6 @@ import { ZodError } from 'zod';
 import { Avatar } from '@/components/ui/Avatar/Avatar';
 import { Button } from '@/components/ui/Button/Button';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
-import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { avatarFileSchema } from '@/utils/validation';
@@ -12,10 +11,13 @@ import { avatarFileSchema } from '@/utils/validation';
 export function AvatarSection() {
   const { addToast } = useContext(ToastsContext);
   const userProfile = useContext(UserProfileContext);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
+  const [avatarPreviewFile, setAvatarPreviewFile] = useState<File | null>(null);
+
   const avatarInputElement = useRef<HTMLInputElement>();
 
-  const avatarFileUrl = avatarFile && URL.createObjectURL(avatarFile);
+  const avatarPreviewUrl =
+    avatarPreviewFile && URL.createObjectURL(avatarPreviewFile);
 
   const avatarChangeHandler = (event: SyntheticEvent) => {
     const input = event.target;
@@ -27,11 +29,11 @@ export function AvatarSection() {
         try {
           avatarFileSchema.parse(file);
 
-          setAvatarFile(file);
+          setAvatarPreviewFile(file);
         } catch (error) {
           avatarInputElement.current!.value = '';
-          avatarFileUrl && URL.revokeObjectURL(avatarFileUrl);
-          setAvatarFile(null);
+          avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl);
+          setAvatarPreviewFile(null);
 
           if (error instanceof ZodError) {
             addToast(error.issues[0].message, 'error');
@@ -45,15 +47,15 @@ export function AvatarSection() {
 
   const cancelAvatarChangeHandler = () => {
     avatarInputElement.current!.value = '';
-    avatarFileUrl && URL.revokeObjectURL(avatarFileUrl);
-    setAvatarFile(null);
+    avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl);
+    setAvatarPreviewFile(null);
   };
 
   useEffect(() => {
     avatarInputElement.current = document.querySelector(
       '#avatar-upload',
     ) as HTMLInputElement;
-  }, [avatarFile]);
+  }, []);
 
   return (
     <SettingsSection headingText="Avatar">
@@ -72,7 +74,7 @@ export function AvatarSection() {
               onChange={avatarChangeHandler}
             />
           </label>
-          <Avatar src={avatarFileUrl || userProfile?.avatar_url || ''} />
+          <Avatar src={avatarPreviewUrl || userProfile?.avatar_url || ''} />
         </div>
         <div>
           <p className="text-sm">Click on the avatar to upload a custom one.</p>
@@ -80,12 +82,15 @@ export function AvatarSection() {
             Accepted file types: PNG, JPG. Max file size: 5MB.
           </p>
           <div className="my-4 flex justify-center gap-4">
-            <SubmitButton className="flex-1" disabled={!avatarFile}>
+            <Button
+              className="flex-1 border-accent-500 bg-accent-800 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
+              disabled={!avatarPreviewFile}
+            >
               Save
-            </SubmitButton>
+            </Button>
             <Button
               className="flex-1"
-              disabled={!avatarFile}
+              disabled={!avatarPreviewFile}
               onClick={cancelAvatarChangeHandler}
             >
               Cancel
