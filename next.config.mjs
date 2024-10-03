@@ -11,6 +11,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com',
       },
+      {
+        protocol: process.env.APP_PROTOCOL,
+        hostname: `${process.env.APP_DOMAIN}/**`,
+        port: process.env.APP_API_PORT || '',
+      },
     ],
   },
   async headers() {
