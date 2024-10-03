@@ -7,25 +7,33 @@ import { hashFile } from '@/utils/general';
 import { getBrowserClient } from '@/utils/supabase';
 import { avatarFileSchema } from '@/utils/validation';
 
-export function useAvatarUpload(avatarInputSelector: string) {
+export function useAvatarUpload() {
   const { addToast } = useContext(ToastsContext);
   const userProfile = useContext(UserProfileContext);
 
   const [avatarPreviewFile, setAvatarPreviewFile] = useState<File | null>(null);
 
-  const avatarInputElement = useRef<HTMLInputElement>();
+  const avatarInputElement = useRef<HTMLInputElement>(null);
+  const avatarPreviewUrl = useRef('');
+  const avatarOptimisticUrl = useRef('');
 
-  const avatarPreviewUrl =
-    avatarPreviewFile && URL.createObjectURL(avatarPreviewFile);
+  avatarPreviewUrl.current =
+    (avatarPreviewFile && URL.createObjectURL(avatarPreviewFile)) || '';
 
   const clearAvatarPreview = () => {
-    avatarInputElement.current!.value = '';
-    avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl);
+    if (avatarInputElement.current) {
+      avatarInputElement.current.value = '';
+    }
+    avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl.current);
     setAvatarPreviewFile(null);
   };
 
   const avatarChangeHandler = (event: SyntheticEvent) => {
     const input = event.target;
+
+    if (avatarPreviewUrl.current) {
+      URL.revokeObjectURL(avatarPreviewUrl.current);
+    }
 
     if (input instanceof HTMLInputElement) {
       const file = input.files?.[0];
@@ -59,31 +67,64 @@ export function useAvatarUpload(avatarInputSelector: string) {
   const avatarUploadHandler = async () => {
     const supabase = getBrowserClient();
 
+    if (avatarOptimisticUrl.current) {
+      URL.revokeObjectURL(avatarOptimisticUrl.current);
+    }
+
+    avatarOptimisticUrl.current =
+      (avatarPreviewFile && URL.createObjectURL(avatarPreviewFile)) || '';
+
     if (avatarPreviewFile) {
       const hashedFile = await hashFile(avatarPreviewFile);
-      const { data, error } = await supabase.storage
+      const { data, error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(`${userProfile?.id}/${hashedFile}`, avatarPreviewFile, {
-          cacheControl: '3600',
-          upsert: false,
-        });
+        .upload(`${userProfile?.id}/${hashedFile}`, avatarPreviewFile);
 
-      data && addToast('Avatar uploaded successfully.', 'success');
-      error && addToast(error.message, 'error');
-      clearAvatarPreview();
+      try {
+        if (data) {
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({
+              avatar_url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`,
+            })
+            .eq('id', userProfile?.id || '');
+
+          if (updateError) {
+            throw new Error('Failed to update user profile.');
+          }
+
+          clearAvatarPreview();
+          addToast('Avatar uploaded successfully.', 'success');
+        } else if (uploadError) {
+          throw new Error(uploadError.message);
+        }
+      } catch (error) {
+        clearAvatarPreview();
+        if (error instanceof Error) {
+          addToast(error.message, 'error');
+        }
+      }
     }
   };
 
-  useEffect(() => {
-    avatarInputElement.current = document.querySelector(
-      avatarInputSelector,
-    ) as HTMLInputElement;
-  }, [avatarInputSelector]);
+  useEffect(
+    () => () => {
+      if (avatarPreviewUrl.current) {
+        URL.revokeObjectURL(avatarPreviewUrl.current);
+      }
+      if (avatarOptimisticUrl.current) {
+        URL.revokeObjectURL(avatarOptimisticUrl.current);
+      }
+    },
+    [],
+  );
 
   return {
     avatarChangeHandler,
+    avatarInputElement,
     cancelAvatarChangeHandler,
     avatarUploadHandler,
-    avatarPreviewUrl,
+    avatarPreviewUrl: avatarPreviewUrl.current,
+    avatarOptimisticUrl: avatarOptimisticUrl.current,
   };
 }

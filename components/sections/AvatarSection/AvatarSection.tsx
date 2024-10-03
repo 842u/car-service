@@ -13,7 +13,9 @@ export function AvatarSection() {
     avatarUploadHandler,
     cancelAvatarChangeHandler,
     avatarPreviewUrl,
-  } = useAvatarUpload('#avatar-upload');
+    avatarInputElement,
+    avatarOptimisticUrl,
+  } = useAvatarUpload();
 
   return (
     <SettingsSection headingText="Avatar">
@@ -25,6 +27,7 @@ export function AvatarSection() {
             htmlFor="avatar-upload"
           >
             <input
+              ref={avatarInputElement}
               accept="image/png, image/jpeg"
               className="invisible"
               id="avatar-upload"
@@ -32,7 +35,14 @@ export function AvatarSection() {
               onChange={avatarChangeHandler}
             />
           </label>
-          <Avatar src={avatarPreviewUrl || userProfile?.avatar_url || ''} />
+          <Avatar
+            src={
+              avatarPreviewUrl ||
+              avatarOptimisticUrl ||
+              userProfile?.avatar_url ||
+              ''
+            }
+          />
         </div>
         <div>
           <p className="text-sm">Click on the avatar to upload a custom one.</p>
