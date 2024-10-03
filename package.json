@@ -18,7 +18,7 @@
     "db:types:production": "cross-env env-cmd -f ./.env.production.local supabase gen types typescript --project-id=$SUPABASE_PROJECT_ID --schema public > types/supabase.ts"
   },
   "dependencies": {
-    "@supabase/ssr": "0.0.10",
+    "@supabase/ssr": "0.5.1",
     "@supabase/supabase-js": "2.45.4",
     "framer-motion": "11.0.5",
     "next": "14.2.5",
