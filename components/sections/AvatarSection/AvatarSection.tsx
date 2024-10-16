@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { Avatar } from '@/components/ui/Avatar/Avatar';
 import { Button } from '@/components/ui/Button/Button';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
+import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { useAvatarUpload } from '@/hooks/useAvatarUpload';
 
@@ -15,6 +16,7 @@ export function AvatarSection() {
     avatarPreviewUrl,
     avatarInputElement,
     avatarOptimisticUrl,
+    isLoading,
   } = useAvatarUpload();
 
   return (
@@ -52,14 +54,18 @@ export function AvatarSection() {
           <div className="my-4 flex justify-center gap-4">
             <Button
               className="flex-1 border-accent-500 bg-accent-800 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
-              disabled={!avatarPreviewUrl}
+              disabled={!avatarPreviewUrl || isLoading}
               onClick={avatarUploadHandler}
             >
-              Save
+              {isLoading ? (
+                <Spinner className="m-auto h-full" color="#88868c" />
+              ) : (
+                'Save'
+              )}
             </Button>
             <Button
               className="flex-1"
-              disabled={!avatarPreviewUrl}
+              disabled={!avatarPreviewUrl || isLoading}
               onClick={cancelAvatarChangeHandler}
             >
               Cancel

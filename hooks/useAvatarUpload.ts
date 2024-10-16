@@ -12,6 +12,7 @@ export function useAvatarUpload() {
   const userProfile = useContext(UserProfileContext);
 
   const [avatarPreviewFile, setAvatarPreviewFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const avatarInputElement = useRef<HTMLInputElement>(null);
   const avatarPreviewUrl = useRef('');
@@ -65,6 +66,8 @@ export function useAvatarUpload() {
   };
 
   const avatarUploadHandler = async () => {
+    setIsLoading(true);
+
     const supabase = getBrowserClient();
 
     if (avatarOptimisticUrl.current) {
@@ -93,13 +96,16 @@ export function useAvatarUpload() {
             throw new Error('Failed to update user profile.');
           }
 
+          setIsLoading(false);
           clearAvatarPreview();
           addToast('Avatar uploaded successfully.', 'success');
         } else if (uploadError) {
           throw new Error(uploadError.message);
         }
       } catch (error) {
+        setIsLoading(false);
         clearAvatarPreview();
+
         if (error instanceof Error) {
           addToast(error.message, 'error');
         }
@@ -124,6 +130,7 @@ export function useAvatarUpload() {
     avatarInputElement,
     cancelAvatarChangeHandler,
     avatarUploadHandler,
+    isLoading,
     avatarPreviewUrl: avatarPreviewUrl.current,
     avatarOptimisticUrl: avatarOptimisticUrl.current,
   };
