@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const MAX_AVATAR_FILE_SIZE = 1024 * 1024 * 3;
+export const MAX_AVATAR_FILE_SIZE = 1024 * 1024 * 3;
 export const ACCEPTED_AVATAR_FILE_TYPES = ['image/png', 'image/jpeg'];
 
 export const emailValidationRules = {

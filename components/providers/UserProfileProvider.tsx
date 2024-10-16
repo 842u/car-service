@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -10,10 +10,15 @@ type UserProfileProviderProps = {
 };
 
 export function UserProfileProvider({ children }: UserProfileProviderProps) {
-  const userProfile = useUserProfile();
+  const { userProfile, setUserProfile } = useUserProfile();
+
+  const value = useMemo(
+    () => ({ userProfile, setUserProfile }),
+    [userProfile, setUserProfile],
+  );
 
   return (
-    <UserProfileContext.Provider value={userProfile}>
+    <UserProfileContext.Provider value={value}>
       {children}
     </UserProfileContext.Provider>
   );

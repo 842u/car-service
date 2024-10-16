@@ -1,37 +1,25 @@
 import { useEffect, useState } from 'react';
 
 import { UserProfile } from '@/types';
-import { getBrowserClient } from '@/utils/supabase';
+import { fetchUserProfile } from '@/utils/general';
 
 export function useUserProfile() {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    avatar_url: '',
+    id: '',
+    username: '',
+  });
 
   useEffect(() => {
-    const supabase = getBrowserClient();
-
     (async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      const profileData = await fetchUserProfile();
 
-      if (!session) return;
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) return;
-
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user?.id || '');
-
-      supabase.auth.onAuthStateChange(() => {
-        setUserProfile(profileData?.[0] || null);
-      });
+      setUserProfile((previousState) => ({
+        ...previousState,
+        ...profileData,
+      }));
     })();
   }, []);
 
-  return userProfile;
+  return { userProfile, setUserProfile };
 }

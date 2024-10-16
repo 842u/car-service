@@ -1,5 +1,7 @@
 // Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
 
+import { getBrowserClient } from './supabase';
+
 const DEFAULT_TIMEOUT = 9000;
 
 export async function promiseWithTimeout<T>(
@@ -44,3 +46,26 @@ export async function hashFile(file: File) {
 
   return hashHex;
 }
+
+export const fetchUserProfile = async () => {
+  const supabase = getBrowserClient();
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) return;
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user?.id || '');
+
+  return profileData?.[0];
+};

@@ -6,16 +6,27 @@ import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection
 import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { useAvatarUpload } from '@/hooks/useAvatarUpload';
+import {
+  ACCEPTED_AVATAR_FILE_TYPES,
+  MAX_AVATAR_FILE_SIZE,
+} from '@/utils/validation';
+
+const acceptedFileTypes = ACCEPTED_AVATAR_FILE_TYPES.map(
+  (mimeType) => mimeType.split('/')[1],
+)
+  .join(', ')
+  .toUpperCase();
+
+const maxFileSize = MAX_AVATAR_FILE_SIZE / (1024 * 1024);
 
 export function AvatarSection() {
-  const userProfile = useContext(UserProfileContext);
+  const { userProfile } = useContext(UserProfileContext);
   const {
     avatarChangeHandler,
     avatarUploadHandler,
     cancelAvatarChangeHandler,
     avatarPreviewUrl,
     avatarInputElement,
-    avatarOptimisticUrl,
     isLoading,
   } = useAvatarUpload();
 
@@ -37,19 +48,13 @@ export function AvatarSection() {
               onChange={avatarChangeHandler}
             />
           </label>
-          <Avatar
-            src={
-              avatarPreviewUrl ||
-              avatarOptimisticUrl ||
-              userProfile?.avatar_url ||
-              ''
-            }
-          />
+          <Avatar src={avatarPreviewUrl || userProfile?.avatar_url || ''} />
         </div>
         <div>
           <p className="text-sm">Click on the avatar to upload a custom one.</p>
           <p className="text-sm text-alpha-grey-700">
-            Accepted file types: PNG, JPG. Max file size: 5MB.
+            {`Accepted file types: ${acceptedFileTypes}. Max file size:
+            ${maxFileSize}MB.`}
           </p>
           <div className="my-4 flex justify-center gap-4">
             <Button

@@ -1,7 +1,12 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
 import { UserProfile } from '@/types';
 
-export type UserProfileContextType = UserProfile | null;
+export type UserProfileContextType = {
+  userProfile: UserProfile;
+  setUserProfile: Dispatch<SetStateAction<UserProfile>>;
+};
 
-export const UserProfileContext = createContext<UserProfileContextType>(null);
+export const UserProfileContext = createContext<UserProfileContextType>(
+  {} as UserProfileContextType,
+);

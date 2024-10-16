@@ -3,13 +3,13 @@ import { ZodError } from 'zod';
 
 import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
-import { hashFile } from '@/utils/general';
+import { fetchUserProfile, hashFile } from '@/utils/general';
 import { getBrowserClient } from '@/utils/supabase';
 import { avatarFileSchema } from '@/utils/validation';
 
 export function useAvatarUpload() {
   const { addToast } = useContext(ToastsContext);
-  const userProfile = useContext(UserProfileContext);
+  const { userProfile, setUserProfile } = useContext(UserProfileContext);
 
   const [avatarPreviewFile, setAvatarPreviewFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,23 +18,27 @@ export function useAvatarUpload() {
   const avatarPreviewUrl = useRef('');
   const avatarOptimisticUrl = useRef('');
 
-  avatarPreviewUrl.current =
-    (avatarPreviewFile && URL.createObjectURL(avatarPreviewFile)) || '';
+  const clearAvatarOptimistic = () => {
+    URL.revokeObjectURL(userProfile.avatar_url || '');
+    URL.revokeObjectURL(avatarOptimisticUrl.current);
+    avatarOptimisticUrl.current = '';
+  };
 
   const clearAvatarPreview = () => {
     if (avatarInputElement.current) {
       avatarInputElement.current.value = '';
     }
-    avatarPreviewUrl && URL.revokeObjectURL(avatarPreviewUrl.current);
+
+    URL.revokeObjectURL(avatarPreviewUrl.current);
+    avatarPreviewUrl.current = '';
+
     setAvatarPreviewFile(null);
   };
 
   const avatarChangeHandler = (event: SyntheticEvent) => {
-    const input = event.target;
+    URL.revokeObjectURL(avatarPreviewUrl.current);
 
-    if (avatarPreviewUrl.current) {
-      URL.revokeObjectURL(avatarPreviewUrl.current);
-    }
+    const input = event.target;
 
     if (input instanceof HTMLInputElement) {
       const file = input.files?.[0];
@@ -42,6 +46,7 @@ export function useAvatarUpload() {
       if (file) {
         try {
           avatarFileSchema.parse(file);
+          avatarPreviewUrl.current = URL.createObjectURL(file);
 
           setAvatarPreviewFile(file);
         } catch (error) {
@@ -67,44 +72,54 @@ export function useAvatarUpload() {
 
   const avatarUploadHandler = async () => {
     setIsLoading(true);
+    clearAvatarOptimistic();
 
     const supabase = getBrowserClient();
 
-    if (avatarOptimisticUrl.current) {
-      URL.revokeObjectURL(avatarOptimisticUrl.current);
-    }
-
-    avatarOptimisticUrl.current =
-      (avatarPreviewFile && URL.createObjectURL(avatarPreviewFile)) || '';
-
     if (avatarPreviewFile) {
+      avatarOptimisticUrl.current = URL.createObjectURL(avatarPreviewFile);
+
+      setUserProfile((previousState) => ({
+        ...previousState,
+        avatar_url: avatarOptimisticUrl.current,
+      }));
+
       const hashedFile = await hashFile(avatarPreviewFile);
-      const { data, error: uploadError } = await supabase.storage
+
+      const { data, error: fileUploadError } = await supabase.storage
         .from('avatars')
         .upload(`${userProfile?.id}/${hashedFile}`, avatarPreviewFile);
 
       try {
         if (data) {
-          const { error: updateError } = await supabase
+          const { error: profileUpdateError } = await supabase
             .from('profiles')
             .update({
               avatar_url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`,
             })
             .eq('id', userProfile?.id || '');
 
-          if (updateError) {
+          if (profileUpdateError) {
             throw new Error('Failed to update user profile.');
           }
 
           setIsLoading(false);
           clearAvatarPreview();
+
           addToast('Avatar uploaded successfully.', 'success');
-        } else if (uploadError) {
-          throw new Error(uploadError.message);
+        } else if (fileUploadError) {
+          throw new Error(fileUploadError.message);
         }
       } catch (error) {
+        const profileData = await fetchUserProfile();
+        setUserProfile((previousState) => ({
+          ...previousState,
+          ...profileData,
+        }));
+
         setIsLoading(false);
         clearAvatarPreview();
+        clearAvatarOptimistic();
 
         if (error instanceof Error) {
           addToast(error.message, 'error');
@@ -115,12 +130,7 @@ export function useAvatarUpload() {
 
   useEffect(
     () => () => {
-      if (avatarPreviewUrl.current) {
-        URL.revokeObjectURL(avatarPreviewUrl.current);
-      }
-      if (avatarOptimisticUrl.current) {
-        URL.revokeObjectURL(avatarOptimisticUrl.current);
-      }
+      clearAvatarPreview();
     },
     [],
   );
@@ -132,6 +142,5 @@ export function useAvatarUpload() {
     avatarUploadHandler,
     isLoading,
     avatarPreviewUrl: avatarPreviewUrl.current,
-    avatarOptimisticUrl: avatarOptimisticUrl.current,
   };
 }
