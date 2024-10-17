@@ -30,8 +30,8 @@ export function PasswordRemindForm() {
     data,
   ) => {
     const { email } = data;
-    const { getBrowserClient } = await import('@/utils/supabase');
-    const { auth } = getBrowserClient();
+    const { createClient } = await import('@/utils/supabase/client');
+    const { auth } = createClient();
     const { data: responseData, error: responseError } =
       await auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin,

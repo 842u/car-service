@@ -1,8 +1,7 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { RouteHandlerResponse } from '@/types';
-import { getActionClient } from '@/utils/supabase';
+import { createClient } from '@/utils/supabase/server';
 import { passwordSchema } from '@/utils/validation';
 
 export const maxDuration = 10;
@@ -22,8 +21,8 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
-  const cookieStore = cookies();
-  const { auth } = getActionClient(cookieStore);
+  const { auth } = createClient();
+
   const { error } = await auth.updateUser({ password });
 
   if (error) {

@@ -17,14 +17,14 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
   const { addToast } = useContext(ToastsContext);
 
   const gitHubButtonClickHandler = async () => {
-    const { signInWithOAuthHandler } = await import('@/utils/supabase');
+    const { signInWithOAuthHandler } = await import('@/utils/general');
     const { error } = await signInWithOAuthHandler('github');
 
     error && addToast(error.message, 'error');
   };
 
   const googleButtonClickHandler = async () => {
-    const { signInWithOAuthHandler } = await import('@/utils/supabase');
+    const { signInWithOAuthHandler } = await import('@/utils/general');
     const { error } = await signInWithOAuthHandler('google');
 
     error && addToast(error.message, 'error');

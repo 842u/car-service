@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { fetchUserProfile, hashFile } from '@/utils/general';
-import { getBrowserClient } from '@/utils/supabase';
+import { createClient } from '@/utils/supabase/client';
 import { avatarFileSchema } from '@/utils/validation';
 
 export function useAvatarUpload() {
@@ -74,7 +74,7 @@ export function useAvatarUpload() {
     setIsLoading(true);
     clearAvatarOptimistic();
 
-    const supabase = getBrowserClient();
+    const supabase = createClient();
 
     if (avatarPreviewFile) {
       avatarOptimisticUrl.current = URL.createObjectURL(avatarPreviewFile);

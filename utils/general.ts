@@ -1,6 +1,9 @@
 // Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
 
-import { getBrowserClient } from './supabase';
+import { Provider } from '@supabase/supabase-js';
+import { Route } from 'next';
+
+import { createClient } from './supabase/client';
 
 const DEFAULT_TIMEOUT = 9000;
 
@@ -48,7 +51,7 @@ export async function hashFile(file: File) {
 }
 
 export const fetchUserProfile = async () => {
-  const supabase = getBrowserClient();
+  const supabase = createClient();
 
   const {
     data: { session },
@@ -69,3 +72,19 @@ export const fetchUserProfile = async () => {
 
   return profileData?.[0];
 };
+
+export async function signInWithOAuthHandler(provider: Provider) {
+  const { auth } = createClient();
+  const requestUrl = new URL(window.location.origin);
+
+  requestUrl.pathname = '/api/auth/callback' as Route;
+
+  const response = await auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: requestUrl.href,
+    },
+  });
+
+  return response;
+}
