@@ -1,6 +1,6 @@
 import { Route } from 'next';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
 import { twJoin } from 'tailwind-merge';
 
 type DashboardNavMenuItemProps = {
@@ -17,7 +17,9 @@ export function DashboardNavMenuItem({
   children,
 }: DashboardNavMenuItemProps) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const segment = useSelectedLayoutSegment();
+  const isActive =
+    pathname === href || (pathname.startsWith(href) && href !== `/${segment}`);
 
   return (
     <li
@@ -31,7 +33,7 @@ export function DashboardNavMenuItem({
         href={href}
         prefetch={prefetch}
       >
-        <svg
+        <div
           className={twJoin(
             'm-2 aspect-square h-8 stroke-[10] md:flex-shrink-0 md:transition-colors',
             isActive
@@ -40,7 +42,7 @@ export function DashboardNavMenuItem({
           )}
         >
           {children}
-        </svg>
+        </div>
 
         <span
           className={twJoin(

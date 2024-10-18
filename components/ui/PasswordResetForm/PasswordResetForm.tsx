@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useToasts } from '@/hooks/useToasts';
+import { ToastsContext } from '@/context/ToastsContext';
 import { RouteHandlerResponse } from '@/types';
 import { passwordValidationRules } from '@/utils/validation';
 
@@ -16,7 +16,7 @@ type PasswordResetFormValues = {
 };
 
 export function PasswordResetForm() {
-  const { addToast } = useToasts();
+  const { addToast } = useContext(ToastsContext);
   const {
     register,
     handleSubmit,

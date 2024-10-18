@@ -26,7 +26,7 @@ export function LandingNavMenu({
     >
       <ul className="relative flex w-4/5 flex-col items-center justify-center md:w-1/2 lg:flex-row-reverse lg:gap-3">
         <li className="w-full before:absolute before:h-[1px] before:w-full before:bg-alpha-grey-500 after:absolute after:h-[1px] after:w-full after:bg-alpha-grey-500 lg:before:hidden lg:after:hidden">
-          <div className="my-4 w-full lg:w-6">
+          <div className="lg:w-6">
             <ThemeSwitcher className="my-4 w-full" />
           </div>
         </li>

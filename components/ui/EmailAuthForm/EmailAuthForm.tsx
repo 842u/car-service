@@ -3,11 +3,11 @@
 import { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { useToasts } from '@/hooks/useToasts';
+import { ToastsContext } from '@/context/ToastsContext';
 import { RouteHandlerResponse } from '@/types';
 import { unslugify } from '@/utils/general';
 import {
@@ -41,7 +41,7 @@ export default function EmailAuthForm({
   className,
 }: EmailAuthFormProps) {
   const router = useRouter();
-  const { addToast } = useToasts();
+  const { addToast } = useContext(ToastsContext);
   const {
     register,
     handleSubmit,

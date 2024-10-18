@@ -1,3 +1,5 @@
+import { Database } from './supabase';
+
 export type ToastType = 'info' | 'success' | 'error' | 'warning';
 
 export type Toast = {
@@ -14,3 +16,5 @@ export type ToastAsset = {
 export type RouteHandlerResponse =
   | { message: string; error: null }
   | { message: null; error: string };
+
+export type UserProfile = Database['public']['Tables']['profiles']['Row'];

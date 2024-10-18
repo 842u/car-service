@@ -16,7 +16,7 @@ const config: Config = {
 
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 
-  reporters: [['github-actions', { silent: false }], 'summary'],
+  reporters: ['default', 'github-actions'],
 
   testPathIgnorePatterns: ['./node_modules', './e2e'],
 

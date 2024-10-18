@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+export const MAX_AVATAR_FILE_SIZE = 1024 * 1024 * 3;
+export const ACCEPTED_AVATAR_FILE_TYPES = ['image/png', 'image/jpeg'];
+
 export const emailValidationRules = {
   required: 'This field is required.',
   minLength: {
@@ -40,3 +43,14 @@ export const passwordSchema = z
   .trim()
   .min(passwordValidationRules.minLength.value)
   .max(passwordValidationRules.maxLength.value);
+
+export const avatarFileSchema = z
+  .instanceof(File)
+  .refine(
+    (file) => ACCEPTED_AVATAR_FILE_TYPES.includes(file.type),
+    `File must be of type: ${ACCEPTED_AVATAR_FILE_TYPES.join(', ')}`,
+  )
+  .refine(
+    (file) => file.size <= MAX_AVATAR_FILE_SIZE,
+    'File size must be less than 3MB',
+  );

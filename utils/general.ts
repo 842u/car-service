@@ -1,5 +1,10 @@
 // Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
 
+import { Provider } from '@supabase/supabase-js';
+import { Route } from 'next';
+
+import { createClient } from './supabase/client';
+
 const DEFAULT_TIMEOUT = 9000;
 
 export async function promiseWithTimeout<T>(
@@ -32,4 +37,54 @@ export function unslugify(slug: string, capitalize: boolean) {
   }
 
   return chunks.join(' ');
+}
+
+export async function hashFile(file: File) {
+  const arrayBuffer = await file.arrayBuffer();
+  const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+
+  return hashHex;
+}
+
+export const fetchUserProfile = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) return;
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user?.id || '');
+
+  return profileData?.[0];
+};
+
+export async function signInWithOAuthHandler(provider: Provider) {
+  const { auth } = createClient();
+  const requestUrl = new URL(window.location.origin);
+
+  requestUrl.pathname = '/api/auth/callback' as Route;
+
+  const response = await auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: requestUrl.href,
+    },
+  });
+
+  return response;
 }

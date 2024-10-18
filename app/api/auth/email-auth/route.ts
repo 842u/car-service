@@ -1,9 +1,8 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { EmailAuthFormType } from '@/components/ui/EmailAuthForm/EmailAuthForm';
 import { RouteHandlerResponse } from '@/types';
-import { getActionClient } from '@/utils/supabase';
+import { createClient } from '@/utils/supabase/server';
 import { emailSchema, passwordSchema } from '@/utils/validation';
 
 export const maxDuration = 10;
@@ -13,8 +12,8 @@ export async function POST(request: NextRequest) {
   const { searchParams } = requestUrl;
   const type = searchParams.get('type') as EmailAuthFormType | null;
   const { email, password } = await request.json();
-  const cookieStore = cookies();
-  const { auth } = getActionClient(cookieStore);
+
+  const { auth } = createClient();
 
   if (type === 'sign-up') {
     try {

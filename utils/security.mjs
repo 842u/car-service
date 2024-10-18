@@ -33,7 +33,12 @@ export const securityHeaders = [
 export const baseContentSecurityPolicy = {
   'default-src': ["'self'"],
   'base-uri': ["'self'"],
-  'connect-src': ["'self'"],
+  'connect-src': [
+    "'self'",
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/`,
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/`,
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/`,
+  ],
   'script-src': [
     "'self'",
     "'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo='",
@@ -49,7 +54,7 @@ export const baseContentSecurityPolicy = {
     "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
   ],
   'font-src': ["'self'"],
-  'img-src': ["'self'", 'data:'],
+  'img-src': ["'self'", 'data:', 'blob:'],
   'worker-src': ["'self'"],
   'frame-ancestors': ["'none'"],
   'form-action': ["'self'"],
