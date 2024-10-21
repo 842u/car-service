@@ -31,6 +31,22 @@ export const passwordValidationRules = {
   },
 };
 
+export const usernameValidationRules = {
+  required: 'This field is required.',
+  minLength: {
+    value: 3,
+    message: 'Minimum length is 2.',
+  },
+  maxLength: {
+    value: 32,
+    message: 'Maximum length is 32.',
+  },
+  pattern: {
+    value: /^(?!.*[ ]{2})[0-9\p{Letter}\p{Mark}\s]+(?<![ ])$/u,
+    message: 'asd',
+  },
+};
+
 export const emailSchema = z
   .string()
   .trim()
@@ -52,5 +68,5 @@ export const avatarFileSchema = z
   )
   .refine(
     (file) => file.size <= MAX_AVATAR_FILE_SIZE,
-    'File size must be less than 3MB',
+    `File size must be less than ${MAX_AVATAR_FILE_SIZE / (1024 * 1024)}MB`,
   );
