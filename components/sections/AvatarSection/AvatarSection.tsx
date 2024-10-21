@@ -32,30 +32,34 @@ export function AvatarSection() {
 
   return (
     <SettingsSection headingText="Avatar">
-      <div className="flex w-full flex-col items-center lg:flex-row lg:justify-around">
-        <div className="relative h-24 w-24">
-          <label
-            aria-label="upload avatar"
-            className="absolute z-10 inline-block h-full w-full cursor-pointer rounded-full"
-            htmlFor="avatar-upload"
-          >
-            <input
-              ref={avatarInputElement}
-              accept="image/png, image/jpeg"
-              className="invisible"
-              id="avatar-upload"
-              type="file"
-              onChange={avatarChangeHandler}
-            />
-          </label>
-          <Avatar src={avatarPreviewUrl || userProfile?.avatar_url || ''} />
+      <div className="flex w-full flex-col items-center lg:flex-row lg:justify-between">
+        <div className="flex w-1/3 flex-col items-center justify-center">
+          <div className="relative h-24 w-24">
+            <label
+              aria-label="upload avatar"
+              className="absolute z-10 inline-block h-full w-full cursor-pointer rounded-full"
+              htmlFor="avatar-upload"
+            >
+              <input
+                ref={avatarInputElement}
+                accept="image/png, image/jpeg"
+                className="invisible"
+                id="avatar-upload"
+                type="file"
+                onChange={avatarChangeHandler}
+              />
+            </label>
+            <Avatar src={avatarPreviewUrl || userProfile?.avatar_url || ''} />
+          </div>
         </div>
-        <div>
-          <p className="text-sm">Click on the avatar to upload a custom one.</p>
-          <p className="text-sm text-alpha-grey-700">
-            {`Accepted file types: ${acceptedFileTypes}. Max file size:
+        <div className="w-full flex-1">
+          <div className="my-4 text-sm">
+            <p>Click on the avatar to upload a custom one.</p>
+            <p className="text-alpha-grey-700">
+              {`Accepted file types: ${acceptedFileTypes}. Max file size:
             ${maxFileSize}MB.`}
-          </p>
+            </p>
+          </div>
           <div className="my-4 flex justify-center gap-4">
             <Button
               className="flex-1 border-accent-500 bg-accent-800 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
