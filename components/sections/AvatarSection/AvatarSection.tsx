@@ -42,7 +42,7 @@ export function AvatarSection() {
             >
               <input
                 ref={avatarInputElement}
-                accept="image/png, image/jpeg"
+                accept={ACCEPTED_AVATAR_FILE_TYPES.join(', ')}
                 className="invisible"
                 id="avatar-upload"
                 type="file"
