@@ -69,18 +69,20 @@ export function UsernameSection() {
   return (
     <SettingsSection headingText="Username">
       <form
-        className="items-center justify-between gap-4 lg:flex"
+        className="items-center justify-between lg:flex"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <Input
-          label="Username"
-          name="username"
-          placeholder="Enter your username"
-          register={register}
-          registerOptions={usernameValidationRules}
-          type="text"
-        />
-        <div>
+        <div className="lg:w-1/3 lg:p-4">
+          <Input
+            label="Username"
+            name="username"
+            placeholder="Enter your username"
+            register={register}
+            registerOptions={usernameValidationRules}
+            type="text"
+          />
+        </div>
+        <div className="w-full flex-1">
           <div className="text-sm">
             <p>
               Please enter your full name, or a display name you are comfortable
