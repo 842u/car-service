@@ -12,8 +12,8 @@ export function Avatar({ src, className }: AvatarProps) {
   return (
     <div
       className={twMerge(
-        className,
         'relative h-24 w-24 rounded-full border-2 border-alpha-grey-300',
+        className,
       )}
     >
       {src ? (
