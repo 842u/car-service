@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { BrandLabel } from '@/components/decorative/icons/brand/BrandLabel';
 
 import { HamburgerButton } from '../../HamburgerButton/HamburgerButton';
+import { UserBadge } from '../../UserBadge/UserBadge';
 import { NavBar } from '../NavBar';
 import { DashboardNavMenu } from './DashboardNavMenu';
 
@@ -24,6 +25,7 @@ export function DashboardNavBar() {
   return (
     <NavBar>
       <BrandLabel className="z-10" />
+      <UserBadge />
       <HamburgerButton
         aria-label="toggle navigation menu"
         className="z-10 md:hidden"
