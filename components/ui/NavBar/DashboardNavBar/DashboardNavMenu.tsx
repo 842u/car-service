@@ -6,6 +6,7 @@ import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
 import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
+import { DashboardNavMenuBottomItem } from './DashboardNavMenuBottomItem';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {
@@ -49,12 +50,12 @@ export function DashboardNavMenu({
         </DashboardNavMenuItem>
       </ul>
       <ul className="w-full before:mx-auto before:block before:h-[1px] before:w-3/4 before:bg-alpha-grey-300">
-        <li className="group m-2 rounded-md py-2 hover:bg-alpha-grey-100 md:overflow-hidden md:transition-colors md:@container">
+        <DashboardNavMenuBottomItem>
           <div className="h-8 w-full">
             <ThemeSwitcher className="h-full w-full" />
           </div>
-        </li>
-        <li className="group m-2 rounded-md py-2 hover:bg-alpha-grey-100 md:overflow-hidden md:transition-colors md:@container">
+        </DashboardNavMenuBottomItem>
+        <DashboardNavMenuBottomItem>
           <a
             className="flex items-center justify-start"
             href="/api/auth/sign-out"
@@ -66,7 +67,7 @@ export function DashboardNavMenu({
               Sign Out
             </span>
           </a>
-        </li>
+        </DashboardNavMenuBottomItem>
       </ul>
     </nav>
   );
