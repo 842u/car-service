@@ -23,7 +23,7 @@ export function DashboardNavMenu({
   return (
     // eslint-disable-next-line
     <nav
-      aria-label="dashboard menu"
+      aria-label="dashboard navigation menu"
       className={twMerge(
         'fixed left-0 top-0 z-50 flex h-screen w-56 flex-col border-r border-alpha-grey-300 bg-light-500 pt-16 transition-all dark:bg-dark-500 md:w-16 md:translate-x-0 md:hover:w-56',
         isActive ? 'translate-x-0' : '-translate-x-full',

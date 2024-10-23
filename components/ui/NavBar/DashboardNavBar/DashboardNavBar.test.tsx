@@ -19,7 +19,7 @@ describe('DashboardNavBar', () => {
     );
 
     const dashboardMenu = screen.getByRole('navigation', {
-      name: /dashboard menu/i,
+      name: /dashboard navigation menu/i,
     });
 
     expect(dashboardMenu).toBeInTheDocument();
