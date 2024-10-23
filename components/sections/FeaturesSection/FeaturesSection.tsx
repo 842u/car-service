@@ -1,4 +1,4 @@
-import { BrandLogoFull } from '@/components/decorative/icons/brand/BrandLogoFull';
+import { BrandLogoFull } from '@/components/decorative/icons/BrandLogoFull';
 import { Card } from '@/components/ui/Card/Card';
 import { CardBackgroundImage } from '@/components/ui/Card/CardBackgroundImage';
 import { CardDescription } from '@/components/ui/Card/CardDescription';
