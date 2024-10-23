@@ -9,15 +9,15 @@ import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {
-  isActive: boolean;
-  onClick: () => void;
+  isActive?: boolean;
+  onClick?: () => void;
   className?: string;
 };
 
 export function DashboardNavMenu({
-  isActive,
+  isActive = true,
   onClick,
-  className,
+  className = '',
 }: DashboardNavMenuProps) {
   return (
     // eslint-disable-next-line
