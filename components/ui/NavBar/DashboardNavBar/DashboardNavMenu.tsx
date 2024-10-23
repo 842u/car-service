@@ -2,9 +2,9 @@ import { twJoin, twMerge } from 'tailwind-merge';
 
 import { CarsIcon } from '@/components/decorative/icons/CarsIcon';
 import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
-import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
+import { SignOutLink } from '../../SignOutLink/SignOutLink';
 import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
 import { DashboardNavMenuBottomItem } from './DashboardNavMenuBottomItem';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
@@ -56,17 +56,7 @@ export function DashboardNavMenu({
           </div>
         </DashboardNavMenuBottomItem>
         <DashboardNavMenuBottomItem>
-          <a
-            className="flex items-center justify-start"
-            href="/api/auth/sign-out"
-          >
-            <div className="mx-2 aspect-square h-8 md:flex-shrink-0 md:transition-colors">
-              <SignOutIcon className="h-full w-full stroke-dark-500 stroke-[10] dark:stroke-light-500" />
-            </div>
-            <span className="whitespace-nowrap md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
-              Sign Out
-            </span>
-          </a>
+          <SignOutLink />
         </DashboardNavMenuBottomItem>
       </ul>
     </nav>
