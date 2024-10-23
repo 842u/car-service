@@ -5,15 +5,15 @@ import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
 import { LandingNavMenuItem } from './LandingNavMenuItem';
 
 type LandingNavMenuProps = {
-  isActive: boolean;
-  onClick: () => void;
+  isActive?: boolean;
+  onClick?: () => void;
   className?: string;
 };
 
 export function LandingNavMenu({
-  isActive,
+  isActive = true,
   onClick,
-  className,
+  className = '',
 }: LandingNavMenuProps) {
   return (
     // eslint-disable-next-line
