@@ -6,15 +6,17 @@ export const ACCEPTED_AVATAR_FILE_TYPES = ['image/png', 'image/jpeg'];
 export const emailValidationRules = {
   required: 'This field is required.',
   minLength: {
-    value: 3,
-    message: 'Minimum length is 3.',
+    value: 6,
+    message: 'Minimum length is 6.',
   },
   maxLength: {
     value: 254,
     message: 'Maximum length is 254.',
   },
   pattern: {
-    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+    // Old simple regexp /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
+    value:
+      /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i,
     message: 'Enter valid e-mail adress.',
   },
 };
