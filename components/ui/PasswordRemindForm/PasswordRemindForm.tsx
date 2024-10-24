@@ -64,7 +64,7 @@ export function PasswordRemindForm() {
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
-        Send reset email
+        Send password reset email
       </SubmitButton>
     </form>
   );
