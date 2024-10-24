@@ -1,8 +1,11 @@
 import { ComponentPropsWithoutRef } from 'react';
 
+export const USER_ICON_TEST_ID = 'user icon';
+
 export function UserIcon({ ...props }: ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg
+      data-testid={USER_ICON_TEST_ID}
       fill="none"
       viewBox="0 0 200 200"
       {...props}

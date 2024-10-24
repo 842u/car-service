@@ -32,8 +32,6 @@ type EmailAuthFormProps = {
   className?: string;
 };
 
-const EMAIL_AUTH_API_ENDPOINT: Route = '/api/auth/email-auth';
-
 export default function EmailAuthForm({
   type,
   strictPasswordCheck = true,
@@ -58,7 +56,7 @@ export default function EmailAuthForm({
   const submitHandler: SubmitHandler<EmailAuthFormValues> = async (data) => {
     const url = new URL(window.location.origin);
 
-    url.pathname = EMAIL_AUTH_API_ENDPOINT;
+    url.pathname = '/api/auth/email-auth' as Route;
     url.searchParams.set('type', type);
 
     const formData = JSON.stringify(data);

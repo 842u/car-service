@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
+import { BrandLogoMinimal } from '@/components/decorative/icons/BrandLogoMinimal';
 import { smoochSans } from '@/utils/fonts';
-
-import { BrandLogoMinimal } from './BrandLogoMinimal';
 
 type BrandLabelProps = {
   className?: string;

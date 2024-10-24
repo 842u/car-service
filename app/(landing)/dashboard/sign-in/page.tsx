@@ -1,4 +1,4 @@
-import { BrandLogoFull } from '@/components/decorative/icons/brand/BrandLogoFull';
+import { BrandLogoFull } from '@/components/decorative/icons/BrandLogoFull';
 import EmailAuthForm from '@/components/ui/EmailAuthForm/EmailAuthForm';
 import { OAuthProviders } from '@/components/ui/OAuthProviders/OAuthProviders';
 import { SignUpLink } from '@/components/ui/SignUpLink/SignUpLink';

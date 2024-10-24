@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 
-import { BrandLabel } from '@/components/decorative/icons/brand/BrandLabel';
-
+import { BrandLabel } from '../../BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../HamburgerButton/HamburgerButton';
 import { NavBar } from '../NavBar';
 import { LandingNavMenu } from './LandingNavMenu';
