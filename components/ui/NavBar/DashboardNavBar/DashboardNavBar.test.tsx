@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 
 import { UserProfileProvider } from '@/components/providers/UserProfileProvider';
 
@@ -10,8 +10,22 @@ jest.mock('next/navigation', () => ({
   usePathname: () => '/dashboard',
 }));
 
+jest.mock('@supabase/ssr', () => ({
+  createBrowserClient: () => ({
+    from: () => ({
+      select: () => ({
+        eq: () => ({}),
+      }),
+    }),
+    auth: {
+      getSession: async () => ({ data: { session: {} } }),
+      getUser: async () => ({ data: { user: {} } }),
+    },
+  }),
+}));
+
 describe('DashboardNavBar', () => {
-  it('should render dashboard menu', () => {
+  it('should render dashboard menu', async () => {
     render(
       <UserProfileProvider>
         <DashboardNavBar />
@@ -22,10 +36,10 @@ describe('DashboardNavBar', () => {
       name: /dashboard navigation menu/i,
     });
 
-    expect(dashboardMenu).toBeInTheDocument();
+    await waitFor(() => expect(dashboardMenu).toBeInTheDocument());
   });
 
-  it('should render a brand logo link to landing page', () => {
+  it('should render a brand logo link to landing page', async () => {
     render(
       <UserProfileProvider>
         <DashboardNavBar />
@@ -34,10 +48,10 @@ describe('DashboardNavBar', () => {
 
     const landingPageLink = screen.getByRole('link', { name: /landing page/i });
 
-    expect(landingPageLink).toBeInTheDocument();
+    await waitFor(() => expect(landingPageLink).toBeInTheDocument());
   });
 
-  it('should render a hamburger button for nav menu toggle', () => {
+  it('should render a hamburger button for nav menu toggle', async () => {
     render(
       <UserProfileProvider>
         <DashboardNavBar />
@@ -48,10 +62,10 @@ describe('DashboardNavBar', () => {
       name: /toggle navigation menu/i,
     });
 
-    expect(menuToggleButton).toBeInTheDocument();
+    await waitFor(() => expect(menuToggleButton).toBeInTheDocument());
   });
 
-  it('should render a user badge', () => {
+  it('should render a user badge', async () => {
     render(
       <UserProfileProvider>
         <DashboardNavBar />
@@ -60,6 +74,6 @@ describe('DashboardNavBar', () => {
 
     const userBadge = screen.getByTestId(USER_BADGE_TEST_ID);
 
-    expect(userBadge).toBeInTheDocument();
+    await waitFor(() => expect(userBadge).toBeInTheDocument());
   });
 });
