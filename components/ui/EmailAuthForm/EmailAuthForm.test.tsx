@@ -3,9 +3,11 @@ import { render, screen } from '@testing-library/react';
 import EmailAuthForm, { EmailAuthFormType } from './EmailAuthForm';
 
 jest.mock('next/navigation', () => ({
-  useRouter() {
-    return {};
-  },
+  useRouter: () => ({}),
+}));
+
+jest.mock('@supabase/ssr', () => ({
+  createBrowserClient: () => ({}),
 }));
 
 describe('EmailAuthForm', () => {
