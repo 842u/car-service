@@ -52,10 +52,14 @@ export function PasswordResetForm() {
   useEffect(() => reset(), [isSubmitSuccessful, reset]);
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
+    <form
+      aria-label="password reset"
+      className="flex flex-col"
+      onSubmit={handleSubmit(submitHandler)}
+    >
       <Input
         errorMessage={errors.password?.message}
-        label="New Password"
+        label="New password"
         name="password"
         placeholder="Enter new password"
         register={register}
@@ -64,9 +68,9 @@ export function PasswordResetForm() {
       />
       <Input
         errorMessage={errors.passwordConfirm?.message}
-        label="Confirm New Password"
+        label="Confirm Password"
         name="passwordConfirm"
-        placeholder="Confirm new password"
+        placeholder="Confirm password"
         register={register}
         registerOptions={{
           required: 'This field is required.',
