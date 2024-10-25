@@ -5,27 +5,21 @@ import { Toast, ToastType } from '@/types';
 export function useToasts() {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback(
-    (message: string, type: ToastType) => {
-      const newToast = {
-        id: crypto.randomUUID(),
-        message,
-        type,
-      };
+  const addToast = useCallback((message: string, type: ToastType) => {
+    const newToast = {
+      id: crypto.randomUUID(),
+      message,
+      type,
+    };
 
-      setToasts([...toasts, newToast]);
-    },
-    [toasts],
-  );
+    setToasts((currentToasts) => [...currentToasts, newToast]);
+  }, []);
 
-  const removeToast = useCallback(
-    (id: string) => {
-      const filteredToasts = toasts.filter((toast) => toast.id !== id);
-
-      setToasts([...filteredToasts]);
-    },
-    [toasts],
-  );
+  const removeToast = useCallback((id: string) => {
+    setToasts((currentToasts) =>
+      currentToasts.filter((toast) => toast.id !== id),
+    );
+  }, []);
 
   return { toasts, addToast, removeToast };
 }
