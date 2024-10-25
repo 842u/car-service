@@ -33,6 +33,7 @@ export const Toast = forwardRef(
     return (
       <m.li
         ref={ref}
+        aria-label={`${type} notification: ${message}`}
         className={twMerge(
           'my-2 flex w-full items-center justify-between gap-2 rounded-lg border border-alpha-grey-300 bg-light-600 px-3 py-2 text-sm dark:bg-dark-600',
           style,
