@@ -4,16 +4,16 @@ import { UserProfileContext } from '@/context/UserProfileContext';
 import { useAvatarUpload } from '@/hooks/useAvatarUpload';
 import { getMimeTypeExtensions } from '@/utils/general';
 import {
-  ACCEPTED_AVATAR_MIME_TYPES,
-  MAX_AVATAR_FILE_SIZE,
+  AVATAR_ACCEPTED_MIME_TYPES,
+  AVATAR_MAX_FILE_SIZE_BYTES,
 } from '@/utils/validation';
 
 import { Avatar } from '../Avatar/Avatar';
 import { Button } from '../Button/Button';
 import { Spinner } from '../Spinner/Spinner';
 
-const acceptedFileTypes = getMimeTypeExtensions(ACCEPTED_AVATAR_MIME_TYPES);
-const maxFileSize = MAX_AVATAR_FILE_SIZE / (1024 * 1024);
+const acceptedFileTypes = getMimeTypeExtensions(AVATAR_ACCEPTED_MIME_TYPES);
+const maxFileSize = AVATAR_MAX_FILE_SIZE_BYTES / (1024 * 1024);
 
 export function AvatarUploader() {
   const { userProfile } = useContext(UserProfileContext);
@@ -37,7 +37,7 @@ export function AvatarUploader() {
           >
             <input
               ref={avatarInputElement}
-              accept={ACCEPTED_AVATAR_MIME_TYPES.join(', ')}
+              accept={AVATAR_ACCEPTED_MIME_TYPES.join(', ')}
               className="invisible"
               id="avatar-upload"
               type="file"

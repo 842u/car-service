@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-export const MAX_AVATAR_FILE_SIZE = 1024 * 1024 * 3;
-export const ACCEPTED_AVATAR_MIME_TYPES = ['image/png', 'image/jpeg'];
+export const AVATAR_MAX_FILE_SIZE_BYTES = 1024 * 1024 * 3;
+export const AVATAR_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
 
 export const emailValidationRules = {
   required: 'This field is required.',
@@ -17,7 +17,7 @@ export const emailValidationRules = {
     // Old simple regexp /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
     value:
       /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i,
-    message: 'Enter valid e-mail adress.',
+    message: 'Enter valid e-mail address.',
   },
 };
 
@@ -65,10 +65,12 @@ export const passwordSchema = z
 export const avatarFileSchema = z
   .instanceof(File)
   .refine(
-    (file) => ACCEPTED_AVATAR_MIME_TYPES.includes(file.type),
-    `File must be of type: ${ACCEPTED_AVATAR_MIME_TYPES.join(', ')}`,
+    (file) => AVATAR_ACCEPTED_MIME_TYPES.includes(file.type),
+    `File must be of type: ${AVATAR_ACCEPTED_MIME_TYPES.join(', ')}`,
   )
   .refine(
-    (file) => file.size <= MAX_AVATAR_FILE_SIZE,
-    `File size must be less than ${MAX_AVATAR_FILE_SIZE / (1024 * 1024)}MB`,
+    (file) => file.size <= AVATAR_MAX_FILE_SIZE_BYTES,
+    `File size must be less than ${
+      AVATAR_MAX_FILE_SIZE_BYTES / (1024 * 1024)
+    }MB`,
   );
