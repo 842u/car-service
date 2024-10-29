@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { useAvatarUpload } from '@/hooks/useAvatarUpload';
 import {
-  ACCEPTED_AVATAR_FILE_TYPES,
+  ACCEPTED_AVATAR_MIME_TYPES,
   MAX_AVATAR_FILE_SIZE,
 } from '@/utils/validation';
 
@@ -11,7 +11,7 @@ import { Avatar } from '../Avatar/Avatar';
 import { Button } from '../Button/Button';
 import { Spinner } from '../Spinner/Spinner';
 
-const acceptedFileTypes = ACCEPTED_AVATAR_FILE_TYPES.map(
+const acceptedFileTypes = ACCEPTED_AVATAR_MIME_TYPES.map(
   (mimeType) => mimeType.split('/')[1],
 )
   .join(', ')
@@ -41,7 +41,7 @@ export function AvatarUploader() {
           >
             <input
               ref={avatarInputElement}
-              accept={ACCEPTED_AVATAR_FILE_TYPES.join(', ')}
+              accept={ACCEPTED_AVATAR_MIME_TYPES.join(', ')}
               className="invisible"
               id="avatar-upload"
               type="file"
