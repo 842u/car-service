@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { useAvatarUpload } from '@/hooks/useAvatarUpload';
+import { getMimeTypeExtensions } from '@/utils/general';
 import {
   ACCEPTED_AVATAR_MIME_TYPES,
   MAX_AVATAR_FILE_SIZE,
@@ -11,12 +12,7 @@ import { Avatar } from '../Avatar/Avatar';
 import { Button } from '../Button/Button';
 import { Spinner } from '../Spinner/Spinner';
 
-const acceptedFileTypes = ACCEPTED_AVATAR_MIME_TYPES.map(
-  (mimeType) => mimeType.split('/')[1],
-)
-  .join(', ')
-  .toUpperCase();
-
+const acceptedFileTypes = getMimeTypeExtensions(ACCEPTED_AVATAR_MIME_TYPES);
 const maxFileSize = MAX_AVATAR_FILE_SIZE / (1024 * 1024);
 
 export function AvatarUploader() {

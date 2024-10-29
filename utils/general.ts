@@ -88,3 +88,12 @@ export async function signInWithOAuthHandler(provider: Provider) {
 
   return response;
 }
+
+export function getMimeTypeExtensions(mimeTypes: string[]) {
+  const typesExtensions = mimeTypes
+    .map((mimeType) => mimeType.split('/')[1])
+    .join(', ')
+    .toUpperCase();
+
+  return typesExtensions;
+}
