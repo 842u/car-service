@@ -12,6 +12,8 @@ import { Avatar } from '../Avatar/Avatar';
 import { Button } from '../Button/Button';
 import { Spinner } from '../Spinner/Spinner';
 
+export const AVATAR_INPUT_TEST_ID = 'avatar-input';
+
 const acceptedFileTypes = getMimeTypeExtensions(AVATAR_ACCEPTED_MIME_TYPES);
 const maxFileSize = AVATAR_MAX_FILE_SIZE_BYTES / (1024 * 1024);
 
@@ -39,6 +41,7 @@ export function AvatarUploader() {
               ref={avatarInputElement}
               accept={AVATAR_ACCEPTED_MIME_TYPES.join(', ')}
               className="invisible"
+              data-testid={AVATAR_INPUT_TEST_ID}
               id="avatar-upload"
               type="file"
               onChange={avatarChangeHandler}
