@@ -21,6 +21,8 @@ const config: Config = {
   testPathIgnorePatterns: ['./node_modules', './e2e'],
 
   testEnvironment: 'jsdom',
+
+  resetMocks: true,
 };
 
 export default createJestConfig(config);
