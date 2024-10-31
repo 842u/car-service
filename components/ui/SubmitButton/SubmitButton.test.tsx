@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 
+import { SPINNER_TEST_ID } from '../Spinner/Spinner';
 import { SubmitButton } from './SubmitButton';
 
-describe('SubmittButton', () => {
+describe('SubmitButton', () => {
   it('should render a button', () => {
     const buttonText = 'some text';
     render(<SubmitButton>{buttonText}</SubmitButton>);
@@ -16,7 +17,7 @@ describe('SubmittButton', () => {
     const buttonText = 'some text';
     render(<SubmitButton isSubmitting>{buttonText}</SubmitButton>);
 
-    const spinner = screen.getByTestId('spinner');
+    const spinner = screen.getByTestId(SPINNER_TEST_ID);
 
     expect(spinner).toBeInTheDocument();
   });
