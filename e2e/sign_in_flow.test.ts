@@ -30,7 +30,7 @@ test.describe('sign_in_flow', () => {
   }) => {
     test.skip(
       browserName === 'webkit',
-      'button keeps beign disabled even after filling form',
+      'button keeps being disabled even after filling out the form',
     );
 
     const signInPath: Route = '/dashboard/sign-in';
@@ -48,13 +48,13 @@ test.describe('sign_in_flow', () => {
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('go to dashboard page on succesfull email auth sign in', async ({
+  test('go to dashboard page on successful email auth sign in', async ({
     page,
     browserName,
   }) => {
     test.skip(
       browserName === 'webkit',
-      'button keeps beign disabled even after filling form',
+      'button keeps being disabled even after filling out the form',
     );
     const signInPath: Route = '/dashboard/sign-in';
     const dashboardPath: Route = '/dashboard';
