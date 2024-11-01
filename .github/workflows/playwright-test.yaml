@@ -38,6 +38,9 @@ jobs:
       - name: Build Production App
         run: npm run build
 
+      - name: Start Production Server
+        run: npm run start
+
       - name: Run Playwright Tests
         run: npm run test:playwright
 
