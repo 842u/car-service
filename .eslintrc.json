@@ -17,16 +17,36 @@
   ],
   "overrides": [
     {
+      "files": ["**/?(*.)+(spec|test).[jt]s?(x)"],
       "excludedFiles": ["./e2e/**/?(*.)+(spec|test).[jt]s?(x)"],
       "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "airbnb",
+        "airbnb-typescript",
+        "plugin:react/jsx-runtime",
+        "plugin:@next/next/recommended",
         "plugin:testing-library/react",
-        "plugin:jest-dom/recommended"
+        "plugin:jest-dom/recommended",
+        "prettier"
       ],
-      "files": ["**/?(*.)+(spec|test).[jt]s?(x)"]
+      "rules": {
+        "import/extensions": "off"
+      }
     },
     {
       "files": ["./e2e/**/?(*.)+(spec|test).[jt]s?(x)"],
-      "extends": ["plugin:playwright/recommended"]
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "airbnb",
+        "airbnb-typescript",
+        "plugin:react/jsx-runtime",
+        "plugin:playwright/recommended",
+        "prettier"
+      ]
     }
   ],
   "parser": "@typescript-eslint/parser",
