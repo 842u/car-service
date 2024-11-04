@@ -23,6 +23,10 @@
         "plugin:jest-dom/recommended"
       ],
       "files": ["**/?(*.)+(spec|test).[jt]s?(x)"]
+    },
+    {
+      "files": ["./e2e/**/?(*.)+(spec|test).[jt]s?(x)"],
+      "extends": ["plugin:playwright/recommended"]
     }
   ],
   "parser": "@typescript-eslint/parser",
