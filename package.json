@@ -15,9 +15,10 @@
     "prepare": "husky install",
     "test:jest": "jest",
     "test:playwright": "playwright test",
-    "test:playwright:local": "npm run env:test playwright test",
+    "test:playwright:local": "npm run env:test npm run test:playwright",
     "test:playwright:headed": "playwright test --headed",
     "test:playwright:ui": "playwright test --ui",
+    "test:playwright:ui:local": "npm run env:test npm run test:playwright:ui",
     "test:playwright:report": "playwright show-report",
     "db:types:local": "supabase gen types typescript --local > types/supabase.ts",
     "db:types:production": "cross-env env-cmd -f ./.env.production.local supabase gen types typescript --project-id=$SUPABASE_PROJECT_ID --schema public > types/supabase.ts"
