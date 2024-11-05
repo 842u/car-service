@@ -1,8 +1,23 @@
 import { expect, test } from '@playwright/test';
 import { Route } from 'next';
 
+import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
+
 test.describe('sign_in_flow', () => {
-  test('go to sign in page from navigation', async ({ page }) => {
+  test('go to sign in page from landing page', async ({ page }) => {
+    const homePagePath: Route = '/';
+    const signInPath: Route = '/dashboard/sign-in';
+
+    await page.goto(homePagePath);
+    const signInLink = page.getByRole('link', { name: /sign in/i });
+    await signInLink.click();
+
+    await expect(page).toHaveURL(signInPath);
+  });
+
+  test('go to sign in page from clicking navigation dashboard', async ({
+    page,
+  }) => {
     const homePagePath: Route = '/';
     const signInPath: Route = '/dashboard/sign-in';
 
@@ -13,49 +28,68 @@ test.describe('sign_in_flow', () => {
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('go to sign in page from welcome section', async ({ page }) => {
-    const homePagePath: Route = '/';
+  test('go to sign in page from sign up page', async ({ page }) => {
+    const signUpPath: Route = '/dashboard/sign-up';
     const signInPath: Route = '/dashboard/sign-in';
 
-    await page.goto(homePagePath);
-    const signInButton = page.getByRole('link', { name: /sign in/i });
-    await signInButton.click();
+    await page.goto(signUpPath);
+    const dashboardLink = page.getByRole('link', { name: /dashboard/i });
+    await dashboardLink.click();
+
+    await expect(page).toHaveURL(signInPath);
+
+    await page.goto(signUpPath);
+    const signInLink = page.getByRole('link', { name: /sign in/i });
+    await signInLink.click();
 
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('stay on sign in page if wrong email auth credentials provided', async ({
+  test('submit button should be disabled if sign in email auth form is filled incorrectly', async ({
     page,
-    browserName,
   }) => {
-    test.skip(
-      browserName === 'webkit',
-      'button keeps being disabled even after filling out the form',
-    );
-
     const signInPath: Route = '/dashboard/sign-in';
-    const wrongEmail = 'wrong@email.com';
-    const wrongPassword = 'wrongpassword';
+    const wrongEmail = 'wrong@email';
+    const wrongPassword = 'wrong';
 
     await page.goto(signInPath);
     const emailInput = page.getByRole('textbox', { name: /email/i });
     const passwordInput = page.getByRole('textbox', { name: /password/i });
     await emailInput.fill(wrongEmail);
     await passwordInput.fill(wrongPassword);
-    const signInButton = page.getByRole('button', { name: /sign in/i });
-    await signInButton.click();
+    const submitButton = page.getByRole('button', { name: /sign in/i });
 
+    await expect(submitButton).toBeDisabled();
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('go to dashboard page on successful email auth sign in', async ({
+  test('should stay on sign in page if wrong credentials provided and error info should be displayed', async ({
     page,
-    browserName,
   }) => {
-    test.skip(
-      browserName === 'webkit',
-      'button keeps being disabled even after filling out the form',
-    );
+    await deleteTestUser();
+    const signInPath: Route = '/dashboard/sign-in';
+    const testUserEmail = process.env.EMAIL_AUTH_TEST_EMAIL!;
+    const testUserPassword = process.env.EMAIL_AUTH_TEST_PASSWORD!;
+
+    await page.goto(signInPath);
+    const emailInput = page.getByRole('textbox', { name: /email/i });
+    const passwordInput = page.getByRole('textbox', { name: /password/i });
+    await emailInput.fill(testUserEmail);
+    await passwordInput.fill(testUserPassword);
+    const submitButton = page.getByRole('button', { name: /sign in/i });
+    await submitButton.click();
+    const errorToast = page.getByLabel(/error notification/i);
+
+    await expect(errorToast).toBeInViewport();
+    await expect(submitButton).toBeDisabled();
+    await expect(page).toHaveURL(signInPath);
+  });
+
+  test('should go to dashboard page on successful email auth sign in and success info should be displayed', async ({
+    page,
+  }) => {
+    await deleteTestUser();
+    await createTestUser();
     const signInPath: Route = '/dashboard/sign-in';
     const dashboardPath: Route = '/dashboard';
     const testAccountEmail = process.env.EMAIL_AUTH_TEST_EMAIL!;
@@ -66,9 +100,11 @@ test.describe('sign_in_flow', () => {
     const passwordInput = page.getByRole('textbox', { name: /password/i });
     await emailInput.fill(testAccountEmail);
     await passwordInput.fill(testAccountPassword);
-    const signInButton = page.getByRole('button', { name: /sign in/i });
-    await signInButton.click();
+    const submitButton = page.getByRole('button', { name: /sign in/i });
+    await submitButton.click();
+    const successToast = page.getByLabel(/success notification/i);
 
     await expect(page).toHaveURL(dashboardPath);
+    await expect(successToast).toBeInViewport();
   });
 });
