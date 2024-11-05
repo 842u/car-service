@@ -67,13 +67,16 @@ test.describe('sign_in_flow', () => {
     page,
   }) => {
     await deleteTestUser();
-    const signInPath: Route = '/dashboard/sign-in';
     const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
     const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
+    const signInPath: Route = '/dashboard/sign-in';
 
     await page.goto(signInPath);
-    const emailInput = page.getByRole('textbox', { name: /email/i });
-    const passwordInput = page.getByRole('textbox', { name: /password/i });
+    const emailInput = page.getByPlaceholder(/enter your email/i);
+    const passwordInput = page.getByPlaceholder(/enter your password/i);
+    // For some reason, the webkit browser requires input to be set to a textbox instead of a password. It may not be able to read the value of the password type.
+    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    await togglePasswordVisibility.click();
     await emailInput.fill(testUserEmail);
     await passwordInput.fill(testUserPassword);
     const submitButton = page.getByRole('button', { name: /sign in/i });
@@ -90,21 +93,25 @@ test.describe('sign_in_flow', () => {
   }) => {
     await deleteTestUser();
     await createTestUser();
+    const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+    const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
     const signInPath: Route = '/dashboard/sign-in';
     const dashboardPath: Route = '/dashboard';
-    const testAccountEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
-    const testAccountPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
     await page.goto(signInPath);
-    const emailInput = page.getByRole('textbox', { name: /email/i });
-    const passwordInput = page.getByRole('textbox', { name: /password/i });
-    await emailInput.fill(testAccountEmail);
-    await passwordInput.fill(testAccountPassword);
+    const emailInput = page.getByPlaceholder(/enter your email/i);
+    const passwordInput = page.getByPlaceholder(/enter your password/i);
+    // For some reason, the webkit browser requires input to be set to a textbox instead of a password. It may not be able to read the value of the password type.
+    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    await togglePasswordVisibility.click();
+    await emailInput.fill(testUserEmail);
+    await passwordInput.fill(testUserPassword);
     const submitButton = page.getByRole('button', { name: /sign in/i });
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
 
     await expect(page).toHaveURL(dashboardPath);
     await expect(successToast).toBeInViewport();
+    await deleteTestUser();
   });
 });

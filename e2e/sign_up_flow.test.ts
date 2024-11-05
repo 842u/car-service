@@ -51,9 +51,11 @@ test.describe('sign_up_flow', () => {
     await expect(emailInput).toBeInViewport();
     await expect(passwordInput).toBeInViewport();
 
+    // For some reason, the webkit browser requires input to be set to a textbox instead of a password. It may not be able to read the value of the password type.
+    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    await togglePasswordVisibility.click();
     await emailInput.fill(wrongFormatEmail);
     await passwordInput.fill(wrongFormatPassword);
-    await passwordInput.blur();
 
     await expect(submitButton).toBeDisabled();
     await expect(page).toHaveURL(signUpPage);
@@ -75,9 +77,11 @@ test.describe('sign_up_flow', () => {
     await expect(emailInput).toBeInViewport();
     await expect(passwordInput).toBeInViewport();
 
+    // For some reason, the webkit browser requires input to be set to a textbox instead of a password. It may not be able to read the value of the password type.
+    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    await togglePasswordVisibility.click();
     await emailInput.fill(testUserEmail);
     await passwordInput.fill(testUserPassword);
-    await passwordInput.blur();
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
 
@@ -102,9 +106,11 @@ test.describe('sign_up_flow', () => {
     await expect(emailInput).toBeInViewport();
     await expect(passwordInput).toBeInViewport();
 
+    // For some reason, the webkit browser requires input to be set to a textbox instead of a password. It may not be able to read the value of the password type.
+    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    await togglePasswordVisibility.click();
     await emailInput.fill(testUserEmail);
     await passwordInput.fill(testUserPassword);
-    await passwordInput.blur();
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
 
