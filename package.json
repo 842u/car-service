@@ -17,6 +17,7 @@
     "test:playwright": "playwright test",
     "test:playwright:local": "npm run env:test npm run test:playwright",
     "test:playwright:headed": "playwright test --headed",
+    "test:playwright:headed:local": "npm run env:test npm run test:playwright:headed",
     "test:playwright:ui": "playwright test --ui",
     "test:playwright:ui:local": "npm run env:test npm run test:playwright:ui",
     "test:playwright:report": "playwright show-report",
