@@ -46,7 +46,10 @@
         "plugin:react/jsx-runtime",
         "plugin:playwright/recommended",
         "prettier"
-      ]
+      ],
+      "rules": {
+        "import/extensions": "off"
+      }
     }
   ],
   "parser": "@typescript-eslint/parser",
