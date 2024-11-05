@@ -64,8 +64,8 @@ test.describe('sign_up_flow', () => {
   }) => {
     await deleteTestUser();
     const signUpPage: Route = '/dashboard/sign-up';
-    const testUserEmail = process.env.EMAIL_AUTH_TEST_EMAIL!;
-    const testUserPassword = process.env.EMAIL_AUTH_TEST_PASSWORD!;
+    const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+    const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
     await page.goto(signUpPage);
     const emailInput = page.getByPlaceholder(/enter your email/i);
@@ -91,8 +91,8 @@ test.describe('sign_up_flow', () => {
     await deleteTestUser();
     await createTestUser();
     const signUpPage: Route = '/dashboard/sign-up';
-    const testUserEmail = process.env.EMAIL_AUTH_TEST_EMAIL!;
-    const testUserPassword = process.env.EMAIL_AUTH_TEST_PASSWORD!;
+    const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+    const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
     await page.goto(signUpPage);
     const emailInput = page.getByPlaceholder(/enter your email/i);

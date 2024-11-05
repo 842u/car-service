@@ -1,8 +1,8 @@
 import { createClient } from './client';
 
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const testUserEmail = process.env.EMAIL_AUTH_TEST_EMAIL!;
-const testUserPassword = process.env.EMAIL_AUTH_TEST_PASSWORD!;
+const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
 const supabase = createClient(undefined, supabaseServiceRoleKey);
 

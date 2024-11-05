@@ -68,8 +68,8 @@ test.describe('sign_in_flow', () => {
   }) => {
     await deleteTestUser();
     const signInPath: Route = '/dashboard/sign-in';
-    const testUserEmail = process.env.EMAIL_AUTH_TEST_EMAIL!;
-    const testUserPassword = process.env.EMAIL_AUTH_TEST_PASSWORD!;
+    const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+    const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
     await page.goto(signInPath);
     const emailInput = page.getByRole('textbox', { name: /email/i });
@@ -92,8 +92,8 @@ test.describe('sign_in_flow', () => {
     await createTestUser();
     const signInPath: Route = '/dashboard/sign-in';
     const dashboardPath: Route = '/dashboard';
-    const testAccountEmail = process.env.EMAIL_AUTH_TEST_EMAIL!;
-    const testAccountPassword = process.env.EMAIL_AUTH_TEST_PASSWORD!;
+    const testAccountEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+    const testAccountPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
     await page.goto(signInPath);
     const emailInput = page.getByRole('textbox', { name: /email/i });
