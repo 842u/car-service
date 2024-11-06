@@ -2,6 +2,8 @@ import { createBrowserClient } from '@supabase/ssr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { correctEmails, wrongEmails } from '@/utils/validation.test';
+
 import { PasswordRemindForm } from './PasswordRemindForm';
 
 jest.setTimeout(12000);
@@ -46,7 +48,7 @@ describe('PasswordRemindForm', () => {
   });
 
   it('submit handler should not be called while wrong email provided', async () => {
-    const wrongEmail = 'plainaddress';
+    const wrongEmail = wrongEmails[0];
     const user = userEvent.setup();
     render(<PasswordRemindForm />);
 
@@ -62,7 +64,7 @@ describe('PasswordRemindForm', () => {
   });
 
   it('submit handler should be called while correct email provided', async () => {
-    const correctEmail = 'username123@gmail.com';
+    const correctEmail = correctEmails[0];
     const user = userEvent.setup();
     render(<PasswordRemindForm />);
 
@@ -79,67 +81,21 @@ describe('PasswordRemindForm', () => {
 
   it('should be disabled while wrong email format provided', async () => {
     const user = userEvent.setup();
-    const wrongEmails = [
-      'plainaddress',
-      '@missingusername.com',
-      'username@.com',
-      'username@domain..com',
-      'username@domain.c',
-      'username@domain,com',
-      'username@domain@domain.com',
-      'username@-domain.com',
-      'username@domain.com.',
-      'username@domain.c#om',
-      'username@domain..com',
-      'username@.com',
-      '@domain.com',
-      'username@domain..com',
-      'username@domain,com',
-      'username@domain..com',
-      'user name@domain.com',
-      'username@domain.c@om',
-      'username@domain..com',
-      'username@domain.c#om',
-      'username@domain..com',
-    ];
+    const wrongEmail = wrongEmails[0];
     render(<PasswordRemindForm />);
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const submitButton = screen.getByRole('button', {
       name: /send password reset email/i,
     });
+    await user.type(emailInput, wrongEmail);
 
-    /* eslint-disable no-restricted-syntax, no-await-in-loop */
-    for (const email of wrongEmails) {
-      await user.clear(emailInput);
-      await user.type(emailInput, email);
-
-      expect(submitButton).toBeDisabled();
-    }
-    /* eslint-enable no-restricted-syntax, no-await-in-loop */
+    expect(submitButton).toBeDisabled();
   });
 
   it('should be enabled while correct email format provided', async () => {
     const user = userEvent.setup();
-    const correctEmails = [
-      'john.doe@example.com',
-      'jane_smith123@mail.org',
-      'firstname.lastname@company.co',
-      'contact@domain.co.uk',
-      'username123@gmail.com',
-      'name@domain123.com',
-      'info@mywebsite.org',
-      'support@service.com',
-      'user.name@web-service.net',
-      'admin@site.com',
-      'user@company.email',
-      'name.last@domain.com',
-      'user.name@education.edu',
-      'my.email@subdomain.domain.com',
-      'example_user@domain.info',
-      'hello.world@domain.travel',
-      'user@my-domain.com',
-    ];
+    const correctEmail = correctEmails[0];
     render(<PasswordRemindForm />);
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
@@ -147,14 +103,8 @@ describe('PasswordRemindForm', () => {
       name: /send password reset email/i,
     });
 
-    /* eslint-disable no-restricted-syntax, no-await-in-loop */
-    for (const email of correctEmails) {
-      await user.type(emailInput, email);
+    await user.type(emailInput, correctEmail);
 
-      expect(submitButton).toBeEnabled();
-
-      await user.clear(emailInput);
-    }
-    /* eslint-enable no-restricted-syntax, no-await-in-loop */
+    expect(submitButton).toBeEnabled();
   });
 });
