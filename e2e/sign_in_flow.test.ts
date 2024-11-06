@@ -4,39 +4,50 @@ import { Route } from 'next';
 import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
 
 test.describe('sign_in_flow', () => {
-  test('go to sign in page from landing page', async ({ page }) => {
-    const homePagePath: Route = '/';
-    const signInPath: Route = '/dashboard/sign-in';
-
-    await page.goto(homePagePath);
-    const signInLink = page.getByRole('link', { name: /sign in/i });
-    await signInLink.click();
-
-    await expect(page).toHaveURL(signInPath);
-  });
-
-  test('go to sign in page from clicking navigation dashboard', async ({
+  test('go to sign in page from landing page - @desktop @tablet @mobile', async ({
     page,
   }) => {
     const homePagePath: Route = '/';
     const signInPath: Route = '/dashboard/sign-in';
 
     await page.goto(homePagePath);
+    const signInLink = page.getByRole('link', { name: /sign in/i });
+    await signInLink.click();
+
+    await expect(page).toHaveURL(signInPath);
+  });
+
+  test('go to sign in page from navigation - @desktop', async ({ page }) => {
+    const homePagePath: Route = '/';
+    const signInPath: Route = '/dashboard/sign-in';
+
+    await page.goto(homePagePath);
     const dashboardLink = page.getByRole('link', { name: /dashboard/i });
     await dashboardLink.click();
 
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('go to sign in page from sign up page', async ({ page }) => {
-    const signUpPath: Route = '/dashboard/sign-up';
+  test('go to sign in page from navigation - @tablet @mobile', async ({
+    page,
+  }) => {
+    const homePagePath: Route = '/';
     const signInPath: Route = '/dashboard/sign-in';
 
-    await page.goto(signUpPath);
+    await page.goto(homePagePath);
+    const hamburgerButton = page.getByLabel(/toggle navigation menu/i);
+    await hamburgerButton.click();
     const dashboardLink = page.getByRole('link', { name: /dashboard/i });
     await dashboardLink.click();
 
     await expect(page).toHaveURL(signInPath);
+  });
+
+  test('go to sign in page from sign up page - @desktop @tablet @mobile', async ({
+    page,
+  }) => {
+    const signUpPath: Route = '/dashboard/sign-up';
+    const signInPath: Route = '/dashboard/sign-in';
 
     await page.goto(signUpPath);
     const signInLink = page.getByRole('link', { name: /sign in/i });
@@ -45,7 +56,7 @@ test.describe('sign_in_flow', () => {
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('submit button should be disabled if sign in email auth form is filled incorrectly', async ({
+  test('submit button should be disabled if sign in email auth form is filled incorrectly - @desktop @tablet @mobile', async ({
     page,
   }) => {
     const signInPath: Route = '/dashboard/sign-in';
@@ -63,7 +74,7 @@ test.describe('sign_in_flow', () => {
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('should stay on sign in page if wrong credentials provided and error info should be displayed', async ({
+  test('should stay on sign in page if wrong credentials provided and error info should be displayed - @desktop @tablet @mobile', async ({
     page,
   }) => {
     await deleteTestUser();
@@ -88,7 +99,7 @@ test.describe('sign_in_flow', () => {
     await expect(page).toHaveURL(signInPath);
   });
 
-  test('should go to dashboard page on successful email auth sign in and success info should be displayed', async ({
+  test('should go to dashboard page on successful email auth sign in and success info should be displayed - @desktop @tablet @mobile', async ({
     page,
   }) => {
     await deleteTestUser();
