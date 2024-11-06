@@ -2,7 +2,7 @@ import { createBrowserClient } from '@supabase/ssr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { correctEmails, wrongEmails } from '@/utils/validation.test';
+import { correctEmails, wrongEmails } from '@/utils/validation';
 
 import { PasswordRemindForm } from './PasswordRemindForm';
 
