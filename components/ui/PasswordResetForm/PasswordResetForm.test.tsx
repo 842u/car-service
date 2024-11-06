@@ -18,7 +18,7 @@ describe('PasswordResetForm', () => {
     expect(passwordInput).toBeInTheDocument();
   });
 
-  it('should render confirm passwor input field', () => {
+  it('should render confirm password input field', () => {
     render(<PasswordResetForm />);
 
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -26,7 +26,7 @@ describe('PasswordResetForm', () => {
     expect(confirmPasswordInput).toBeInTheDocument();
   });
 
-  it('should be initialy disabled', () => {
+  it('should be initially disabled', () => {
     render(<PasswordResetForm />);
 
     const submitButton = screen.getByRole('button', { name: /reset/i });
