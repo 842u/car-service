@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 export const AVATAR_MAX_FILE_SIZE_BYTES = 1024 * 1024 * 3;
 export const AVATAR_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
+export const EMAIL_VALIDATION_REGEXP =
+  /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i;
+export const USERNAME_VALIDATION_REGEXP =
+  /^(?!.*[ ]{2})[0-9\p{Letter}\p{Mark}\s]+(?<![ ])$/u;
 
 export const emailValidationRules = {
   required: 'This field is required.',
@@ -15,8 +19,7 @@ export const emailValidationRules = {
   },
   pattern: {
     // Old simple regexp /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
-    value:
-      /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i,
+    value: EMAIL_VALIDATION_REGEXP,
     message: 'Enter valid e-mail address.',
   },
 };
@@ -44,8 +47,8 @@ export const usernameValidationRules = {
     message: 'Maximum length is 32.',
   },
   pattern: {
-    value: /^(?!.*[ ]{2})[0-9\p{Letter}\p{Mark}\s]+(?<![ ])$/u,
-    message: 'asd',
+    value: USERNAME_VALIDATION_REGEXP,
+    message: 'Enter a valid username.',
   },
 };
 
