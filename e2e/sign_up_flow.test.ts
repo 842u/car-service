@@ -4,7 +4,9 @@ import { Route } from 'next';
 import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
 
 test.describe('sign_up_flow', () => {
-  test('go to sign up page from landing page', async ({ page }) => {
+  test('go to sign up page from landing page - @desktop @tablet @mobile', async ({
+    page,
+  }) => {
     const homePagePath: Route = '/';
     const signUpPath: Route = '/dashboard/sign-up';
 
@@ -17,9 +19,7 @@ test.describe('sign_up_flow', () => {
     await expect(page).toHaveURL(signUpPath);
   });
 
-  test('go to sign up page from clicking navigation dashboard', async ({
-    page,
-  }) => {
+  test('go to sign up page from navigation - @desktop', async ({ page }) => {
     const homePagePath: Route = '/';
     const signInPath: Route = '/dashboard/sign-in';
     const signUpPath: Route = '/dashboard/sign-up';
@@ -36,7 +36,28 @@ test.describe('sign_up_flow', () => {
     await expect(page).toHaveURL(signUpPath);
   });
 
-  test('submit button should be disabled if sign up email auth form is filled incorrectly', async ({
+  test('go to sign up page from navigation - @tablet @mobile', async ({
+    page,
+  }) => {
+    const homePagePath: Route = '/';
+    const signInPath: Route = '/dashboard/sign-in';
+    const signUpPath: Route = '/dashboard/sign-up';
+
+    await page.goto(homePagePath);
+    const hamburgerButton = page.getByLabel(/toggle navigation menu/i);
+    await hamburgerButton.click();
+    const dashboardLink = page.getByRole('link', { name: /dashboard/i });
+    await dashboardLink.click();
+
+    await expect(page).toHaveURL(signInPath);
+
+    const signUpLink = page.getByRole('link', { name: /sign up/i });
+    await signUpLink.click();
+
+    await expect(page).toHaveURL(signUpPath);
+  });
+
+  test('submit button should be disabled if sign up email auth form is filled incorrectly - @desktop @tablet @mobile', async ({
     page,
   }) => {
     const signUpPage: Route = '/dashboard/sign-up';
@@ -61,7 +82,7 @@ test.describe('sign_up_flow', () => {
     await expect(page).toHaveURL(signUpPage);
   });
 
-  test('should stay on sign up page on successful sign up and success info should be displayed', async ({
+  test('should stay on sign up page on successful sign up and success info should be displayed - @desktop @tablet @mobile', async ({
     page,
   }) => {
     await deleteTestUser();
@@ -89,7 +110,7 @@ test.describe('sign_up_flow', () => {
     await expect(page).toHaveURL(signUpPage);
   });
 
-  test('should stay on sign up page on existing user email sign up and success info should be displayed', async ({
+  test('should stay on sign up page on existing user email sign up and success info should be displayed - @desktop @tablet @mobile', async ({
     page,
   }) => {
     await deleteTestUser();
