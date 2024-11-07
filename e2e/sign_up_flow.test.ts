@@ -3,7 +3,7 @@ import { Route } from 'next';
 
 import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
 
-test.describe('sign_up_flow', () => {
+test.describe('sign_up_flow - @unauthenticated', () => {
   test('go to sign up page from landing page - @desktop @tablet @mobile', async ({
     page,
   }) => {
