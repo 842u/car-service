@@ -1,7 +1,8 @@
-import { BrandLabel } from '@/components/decorative/icons/brand/BrandLabel';
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { MailIcon } from '@/components/decorative/icons/MailIcon';
 import { Section } from '@/components/sections/Section';
+
+import { BrandLabel } from '../BrandLabel/BrandLabel';
 
 export function Footer() {
   return (

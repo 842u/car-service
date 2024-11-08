@@ -5,9 +5,9 @@ import { fetchUserProfile } from '@/utils/general';
 
 export function useUserProfile() {
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    avatar_url: '',
+    avatar_url: null,
     id: '',
-    username: '',
+    username: null,
   });
 
   useEffect(() => {

@@ -7,6 +7,8 @@ import { ToastsContext } from '@/context/ToastsContext';
 
 import { Toast } from '../Toast/Toast';
 
+const TOAST_LIFETIME = 6000;
+
 type ToasterProps = {
   maxToasts?: number;
   toastLifeTime?: number;
@@ -27,7 +29,7 @@ const framerFeatures = () =>
 
 export function Toaster({
   maxToasts = 3,
-  toastLifeTime: toastCloseTime = 6000,
+  toastLifeTime = TOAST_LIFETIME,
 }: ToasterProps) {
   const { toasts, removeToast } = useContext(ToastsContext);
 
@@ -44,7 +46,7 @@ export function Toaster({
       if (latestToastId) {
         removeToast(latestToastId);
       }
-    }, toastCloseTime);
+    }, toastLifeTime);
   };
 
   useEffect(() => {
@@ -54,10 +56,10 @@ export function Toaster({
       if (latestToastId) {
         removeToast(latestToastId);
       }
-    }, toastCloseTime);
+    }, toastLifeTime);
 
     return () => clearInterval(toastCloseInterval.current);
-  }, [removeToast, toasts, toastCloseTime]);
+  }, [removeToast, toasts, toastLifeTime]);
 
   return (
     <section
