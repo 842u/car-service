@@ -1,6 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 
+/**
+ * * As for playwright v1.48.2, playwright will run projects that have dependencies list last.
+ * * To not interfere with test user token by deleting and creating test user,
+ * * leave projects that use auth token without dependencies so they run first.
+ */
+
 const authFile = path.join(__dirname, './playwright/.auth/user.json');
 
 export default defineConfig({
@@ -16,7 +22,8 @@ export default defineConfig({
     {
       name: 'Auth Setup',
       testMatch: /.*\.setup\.ts/,
-      grep: /authenticated/,
+      grep: /@authenticated/,
+      grepInvert: /@unauthenticated/,
     },
     {
       name: 'Desktop Chrome',
@@ -35,6 +42,7 @@ export default defineConfig({
       },
       grep: /@desktop/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
     {
       name: 'Desktop Firefox',
@@ -53,6 +61,7 @@ export default defineConfig({
       },
       grep: /@desktop/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
     {
       name: 'Desktop Edge',
@@ -71,6 +80,7 @@ export default defineConfig({
       },
       grep: /@desktop/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
     {
       name: 'Desktop Safari',
@@ -91,6 +101,7 @@ export default defineConfig({
       },
       grep: /@desktop/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
     {
       name: 'Tablet Chrome',
@@ -117,6 +128,7 @@ export default defineConfig({
       },
       grep: /@tablet/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
     {
       name: 'Tablet Safari',
@@ -135,6 +147,7 @@ export default defineConfig({
       },
       grep: /@tablet/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
     {
       name: 'Mobile Chrome',
@@ -153,6 +166,7 @@ export default defineConfig({
       },
       grep: /@mobile/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
     {
       name: 'Mobile Safari',
@@ -171,6 +185,7 @@ export default defineConfig({
       },
       grep: /@mobile/,
       grepInvert: /@authenticated/,
+      dependencies: ['Auth Setup'],
     },
   ],
   webServer: {
