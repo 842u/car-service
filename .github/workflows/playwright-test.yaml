@@ -41,6 +41,14 @@ jobs:
       - name: Build Production App
         run: npm run build
 
+      - name: Run Supabase Instance
+        run: npx supabase start
+        env:
+          SUPABASE_AUTH_GITHUB_CLIENT_ID: ${{ secrets.SUPABASE_AUTH_GITHUB_CLIENT_ID }}
+          SUPABASE_AUTH_GITHUB_SECRET: ${{ secrets.SUPABASE_AUTH_GITHUB_SECRET }}
+          SUPABASE_AUTH_GOOGLE_CLIENT_ID: ${{ secrets.SUPABASE_AUTH_GOOGLE_CLIENT_ID }}
+          SUPABASE_AUTH_GOOGLE_SECRET: ${{ secrets.SUPABASE_AUTH_GOOGLE_SECRET }}
+
       - name: Run Playwright Tests
         run: npm run test:playwright
         env:
