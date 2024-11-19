@@ -15,13 +15,15 @@ jobs:
   playwright-test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    environment:
+      name: Test
     env:
       CI: true
+      APP_PROTOCOL: ${{ secrets.APP_PROTOCOL }}
+      APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
+      APP_API_PORT: ${{ secrets.APP_API_PORT }}
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      SUPABASE_TEST_USER_EMAIL: ${{ secrets.SUPABASE_TEST_USER_EMAIL}}
-      SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -41,6 +43,10 @@ jobs:
 
       - name: Run Playwright Tests
         run: npm run test:playwright
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_TEST_USER_EMAIL: ${{ secrets.SUPABASE_TEST_USER_EMAIL}}
+          SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
 
       - uses: actions/upload-artifact@v4
         if: always()
