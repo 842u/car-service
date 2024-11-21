@@ -33,28 +33,19 @@ jobs:
         with:
           node-version: 20
 
-      - name: Cache Docker Images
+      - name: Cache Docker Images & Playwright Browsers
         uses: actions/cache@v4
-        id: cache-docker-images
+        id: cache-docker-and-playwright
         with:
           path: |
             /tmp/docker-cache
-          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
-
-      - name: Cache Playwright Browsers
-        uses: actions/cache@v4
-        id: cache-playwright
-        with:
-          path: |
             /tmp/playwright-browser-cache
           key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
 
       - name: Load Cached Docker Images
-        if: steps.cache-docker-images.outputs.cache-hit == 'true'
+        if: steps.cache-docker-and-playwright.outputs.cache-hit == 'true'
         run: |
           if [ -d "/tmp/docker-cache" ]; then
             for image in /tmp/docker-cache/*.tar; do
@@ -110,7 +101,7 @@ jobs:
           SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
 
       - name: Save Docker Images
-        if: steps.cache-docker-images.outputs.cache-hit == 'false'
+        if: steps.cache-docker-and-playwright.outputs.cache-hit == 'false'
         run: |
           mkdir -p /tmp/docker-cache
           docker save -o /tmp/docker-cache/supabase.tar \
