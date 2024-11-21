@@ -55,12 +55,18 @@ jobs:
           --url "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/add_vault_secret" \
           -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
           -H "Content-Type: application/json" \
-          -d '{"secret_name": "SUPABASE_TEST_USER_EMAIL", "secret_value": "$SUPABASE_TEST_USER_EMAIL"}' \
+          -d '{
+                "secret_name": "SUPABASE_TEST_USER_EMAIL",
+                "secret_value": "'"$SUPABASE_TEST_USER_EMAIL"'"
+              }' \
           && curl --fail --request "POST" \
           --url "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/add_vault_secret" \
           -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
           -H "Content-Type: application/json" \
-          -d '{"secret_name": "SUPABASE_TEST_USER_PASSWORD", "secret_value": "$SUPABASE_TEST_USER_PASSWORD"}'
+          -d '{
+                "secret_name": "SUPABASE_TEST_USER_PASSWORD",
+                "secret_value": "'"$SUPABASE_TEST_USER_PASSWORD"'"
+              }'
         env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_TEST_USER_EMAIL: ${{ secrets.SUPABASE_TEST_USER_EMAIL}}
