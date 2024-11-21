@@ -24,6 +24,7 @@ jobs:
       APP_API_PORT: ${{ secrets.APP_API_PORT }}
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      PLAYWRIGHT_BROWSERS_PATH: /tmp/playwright-browser-cache
 
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +40,16 @@ jobs:
           path: |
             /tmp/docker-cache
           key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
-          # ADD GITHUB BRANCH
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
+
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: cache-playwright
+        with:
+          path: |
+            /tmp/playwright-browser-cache
+          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
 
@@ -100,6 +110,7 @@ jobs:
           SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
 
       - name: Save Docker Images
+        if: steps.cache-docker-images.outputs.cache-hit == 'false'
         run: |
           mkdir -p /tmp/docker-cache
           docker save -o /tmp/docker-cache/supabase.tar \
