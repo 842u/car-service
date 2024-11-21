@@ -32,6 +32,25 @@ jobs:
         with:
           node-version: 20
 
+      - name: Cache Docker Images
+        uses: actions/cache@v4
+        id: cache-docker-images
+        with:
+          path: |
+            /tmp/docker-cache
+          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
+
+      - name: Load Cached Docker Images
+        if: steps.cache-docker-images.outputs.cache-hit == 'true'
+        run: |
+          if [ -d "/tmp/docker-cache" ]; then
+            for image in /tmp/docker-cache/*.tar; do
+              docker load -i $image || true
+            done
+          fi
+
       - name: Install Dependencies
         run: npm ci
 
@@ -78,6 +97,11 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_TEST_USER_EMAIL: ${{ secrets.SUPABASE_TEST_USER_EMAIL}}
           SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
+
+      - name: Save Docker Images
+        run: |
+          mkdir -p /tmp/docker-cache
+          docker save -o /tmp/docker-cache/supabase.tar $(docker images -q supabase/*)
 
       - uses: actions/upload-artifact@v4
         if: always()
