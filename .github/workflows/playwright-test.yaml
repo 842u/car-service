@@ -40,9 +40,21 @@ jobs:
           path: |
             /tmp/docker-cache
             /tmp/playwright-browser-cache
-          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
+          key: |
+            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('package.json') }}
+            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Cache NextJS Build
+        uses: actions/cache@v4
+        id: cache-nextjs-build
+        with:
+          path: |
+            ${{ github.workspace }}/.next/cache
+          key: |
+            ${{ runner.os }}-${{ github.job }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Load Cached Docker Images
         if: steps.cache-docker-and-playwright.outputs.cache-hit == 'true'
