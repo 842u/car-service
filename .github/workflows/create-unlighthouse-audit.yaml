@@ -21,18 +21,22 @@ jobs:
 
       - name: Get Npm Global Directory
         id: npm-global-dir
-        run: echo "dir=$(npm prefix -g)" >> ${GITHUB_OUTPUT}
+        run: echo "dir=$(npm prefix -g)" >> $GITHUB_OUTPUT
+
+      - name: Get Latest Unlighthouse CLI Version
+        id: unlighthouse-version
+        run: echo "version=$(npm show @unlighthouse/cli version)" >> $GITHUB_OUTPUT
 
       - name: Cache Npm Global Dependencies
         uses: actions/cache@v4
         id: npm-global-cache
-        env:
-          cache-name: cache-npm-global-dependencies
         with:
-          path: ${{ steps.npm-global-dir.outputs.dir }}
-          key: ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}
+          path: |
+            ${{ steps.npm-global-dir.outputs.dir }}
+          key: |
+            ${{ runner.os }}-${{ github.job }}-${{ steps.unlighthouse-version.outputs.version }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}
+            ${{ runner.os }}-${{ github.job }}-${{ steps.unlighthouse-version.outputs.version }}
 
       - name: Install Unlighthouse CLI
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
