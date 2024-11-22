@@ -17,7 +17,7 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      VERCEL_VERSION: ${{ steps.vercel_version.outputs.vercel_version }}
+      VERCEL_VERSION: ${{ steps.vercel-version.outputs.vercel_version }}
 
     steps:
       - uses: actions/checkout@v4
