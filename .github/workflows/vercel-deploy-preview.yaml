@@ -13,11 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Preview
-      url: ${{ steps.vercel-deploy.outputs.URL }}
+      url: ${{ steps.vercel-deploy.outputs.url }}
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      VERCEL_VERSION: ${{ steps.vercel-version.outputs.vercel_version }}
 
     steps:
       - uses: actions/checkout@v4
@@ -28,7 +27,11 @@ jobs:
 
       - name: Get Npm Global Directory
         id: npm-global-dir
-        run: echo "dir=$(npm prefix -g)" >> ${GITHUB_OUTPUT}
+        run: echo "dir=$(npm prefix -g)" >> $GITHUB_OUTPUT
+
+      - name: Get Latest Vercel CLI Version
+        id: vercel-version
+        run: echo "version=$(npm show vercel version)" >> $GITHUB_OUTPUT
 
       - name: Cache Npm Global Dependencies
         uses: actions/cache@v4
@@ -39,17 +42,13 @@ jobs:
           path: |
             ${{ steps.npm-global-dir.outputs.dir }}
           key: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ env.VERCEL_VERSION }}
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ steps.vercel-version.outputs.version }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ env.VERCEL_VERSION }}
+            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ steps.vercel-version.outputs.version }}
 
       - name: Install Vercel CLI
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
         run: npm install --global vercel@latest
-
-      - name: Get Vercel CLI Version
-        id: vercel-version
-        run: echo "version=$(vercel --version)" >> ${GITHUB_OUTPUT}
 
       - name: Pull Vercel Remote Environment Variables
         run: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
@@ -63,7 +62,7 @@ jobs:
 
       - name: Deploy Project Artifacts to Vercel
         id: vercel-deploy
-        run: echo "URL=$(vercel deploy --prebuilt --token=${VERCEL_TOKEN})" >> ${GITHUB_OUTPUT}
+        run: echo "url=$(vercel deploy --prebuilt --token=${VERCEL_TOKEN})" >> $GITHUB_OUTPUT
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
@@ -76,4 +75,4 @@ jobs:
         with:
           args: |
             New PR PREVIEW for {{ EVENT_PAYLOAD.repository.full_name }}
-            ${{ steps.vercel-deploy.outputs.URL }}
+            ${{ steps.vercel-deploy.outputs.url }}
