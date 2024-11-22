@@ -36,15 +36,13 @@ jobs:
       - name: Cache Npm Global Dependencies
         uses: actions/cache@v4
         id: npm-global-cache
-        env:
-          cache-name: cache-npm-global-dependencies
         with:
           path: |
             ${{ steps.npm-global-dir.outputs.dir }}
           key: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ steps.vercel-version.outputs.version }}
+            ${{ runner.os }}-${{ github.job }}-${{ steps.vercel-version.outputs.version }}
           restore-keys: |
-            ${{ runner.os }}-${{ github.job }}-${{ env.cache-name }}-${{ steps.vercel-version.outputs.version }}
+            ${{ runner.os }}-${{ github.job }}-${{ steps.vercel-version.outputs.version }}
 
       - name: Install Vercel CLI
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
