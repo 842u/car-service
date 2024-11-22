@@ -15,13 +15,16 @@ jobs:
   playwright-test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    environment:
+      name: Test
     env:
       CI: true
+      APP_PROTOCOL: ${{ secrets.APP_PROTOCOL }}
+      APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
+      APP_API_PORT: ${{ secrets.APP_API_PORT }}
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      SUPABASE_TEST_USER_EMAIL: ${{ secrets.SUPABASE_TEST_USER_EMAIL}}
-      SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      PLAYWRIGHT_BROWSERS_PATH: /tmp/playwright-browser-cache
 
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +32,38 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Cache Docker Images & Playwright Browsers
+        uses: actions/cache@v4
+        id: cache-docker-and-playwright
+        with:
+          path: |
+            /tmp/docker-cache
+            /tmp/playwright-browser-cache
+          key: |
+            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Cache NextJS Build
+        uses: actions/cache@v4
+        id: cache-nextjs-build
+        with:
+          path: |
+            ${{ github.workspace }}/.next/cache
+          key: |
+            ${{ runner.os }}-${{ github.job }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Load Cached Docker Images
+        if: steps.cache-docker-and-playwright.outputs.cache-hit == 'true'
+        run: |
+          if [ -d "/tmp/docker-cache" ]; then
+            for image in /tmp/docker-cache/*.tar; do
+              docker load -i $image || true
+            done
+          fi
 
       - name: Install Dependencies
         run: npm ci
@@ -39,8 +74,50 @@ jobs:
       - name: Build Production App
         run: npm run build
 
+      - name: Run Supabase Instance
+        run: npx supabase start
+        env:
+          SUPABASE_AUTH_GITHUB_CLIENT_ID: ${{ secrets.SUPABASE_AUTH_GITHUB_CLIENT_ID }}
+          SUPABASE_AUTH_GITHUB_SECRET: ${{ secrets.SUPABASE_AUTH_GITHUB_SECRET }}
+          SUPABASE_AUTH_GOOGLE_CLIENT_ID: ${{ secrets.SUPABASE_AUTH_GOOGLE_CLIENT_ID }}
+          SUPABASE_AUTH_GOOGLE_SECRET: ${{ secrets.SUPABASE_AUTH_GOOGLE_SECRET }}
+
+      - name: Add Supabase Test User Vault Secrets
+        run: |
+          curl --fail --request "POST" \
+          --url "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/add_vault_secret" \
+          -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{
+                "secret_name": "SUPABASE_TEST_USER_EMAIL",
+                "secret_value": "'"$SUPABASE_TEST_USER_EMAIL"'"
+              }' \
+          && curl --fail --request "POST" \
+          --url "${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/add_vault_secret" \
+          -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{
+                "secret_name": "SUPABASE_TEST_USER_PASSWORD",
+                "secret_value": "'"$SUPABASE_TEST_USER_PASSWORD"'"
+              }'
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_TEST_USER_EMAIL: ${{ secrets.SUPABASE_TEST_USER_EMAIL}}
+          SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
+
       - name: Run Playwright Tests
         run: npm run test:playwright
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_TEST_USER_EMAIL: ${{ secrets.SUPABASE_TEST_USER_EMAIL}}
+          SUPABASE_TEST_USER_PASSWORD: ${{ secrets.SUPABASE_TEST_USER_PASSWORD}}
+
+      - name: Save Docker Images
+        if: steps.cache-docker-and-playwright.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p /tmp/docker-cache
+          docker save -o /tmp/docker-cache/supabase.tar \
+          $(docker images -q public.ecr.aws/supabase/*)
 
       - uses: actions/upload-artifact@v4
         if: always()
