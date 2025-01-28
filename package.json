@@ -72,7 +72,7 @@
     "postcss": "8.4.32",
     "prettier": "3.1.1",
     "prettier-plugin-tailwindcss": "0.5.9",
-    "supabase": "1.223.10",
+    "supabase": "2.9.6",
     "tailwindcss": "3.3.6",
     "ts-node": "10.9.2",
     "typescript": "5.3.3",
