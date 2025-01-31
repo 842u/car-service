@@ -47,6 +47,8 @@ export const baseContentSecurityPolicy = {
   'script-src-elem': [
     "'self'",
     "'sha256-Ec/XLCqW9IkiT3yUDKK5ftmkQGcF3JzHW7lzlrWMZYQ='",
+    "'sha256-sMUvF0os9V34ws2UK8LEc/zCqikMbBYqO77IfWl/Nkc='",
+    "'sha256-ZxMTxSoAmLpwE6bS1bnz8lEIthqWQKiXdna55Q5pWXc='",
   ],
   'style-src': [
     "'self'",
