@@ -24,7 +24,7 @@ export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
   return (
     <button
       aria-label="switch color theme"
-      className={twMerge('block aspect-square h-6', className)}
+      className={twMerge('block aspect-square h-6 cursor-pointer', className)}
       type="button"
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       {...props}
