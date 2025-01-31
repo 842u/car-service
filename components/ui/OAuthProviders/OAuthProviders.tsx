@@ -37,11 +37,11 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
       aria-label="OAuth Providers"
     >
       <Button onClick={gitHubButtonClickHandler}>
-        <GitHubIcon className="mr-2 h-full fill-light-500" />
+        <GitHubIcon className="fill-light-500 mr-2 h-full" />
         <span>Continue with GitHub</span>
       </Button>
       <Button onClick={googleButtonClickHandler}>
-        <GoogleIcon className="mr-2 h-full fill-light-500" />
+        <GoogleIcon className="fill-light-500 mr-2 h-full" />
         <span>Continue with Google</span>
       </Button>
     </section>

@@ -7,7 +7,7 @@ export function Card({ className, children }: CardProps) {
   return (
     <div
       className={twMerge(
-        'rounded-2xl border border-alpha-grey-300 bg-gradient-to-tr from-light-600 to-light-500 p-6 shadow-lg drop-shadow-lg dark:from-dark-600 dark:via-dark-500 dark:to-dark-450',
+        'border-alpha-grey-300 from-light-600 to-light-500 dark:from-dark-600 dark:via-dark-500 dark:to-dark-450 rounded-2xl border bg-linear-to-tr p-6 shadow-lg drop-shadow-lg',
         className,
       )}
     >

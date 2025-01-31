@@ -24,7 +24,7 @@ export function DashboardNavMenuItem({
   return (
     <li
       className={twJoin(
-        'group m-2 rounded-md hover:bg-alpha-grey-100 md:overflow-hidden md:transition-colors md:@container',
+        'group hover:bg-alpha-grey-100 m-2 rounded-md md:@container md:overflow-hidden md:transition-colors',
         isActive ? 'bg-alpha-grey-200 hover:bg-alpha-grey-200' : '',
       )}
     >
@@ -35,7 +35,7 @@ export function DashboardNavMenuItem({
       >
         <div
           className={twJoin(
-            'm-2 aspect-square h-8 stroke-[10] md:flex-shrink-0 md:transition-colors',
+            'm-2 aspect-square h-8 stroke-10 md:shrink-0 md:transition-colors',
             isActive
               ? 'stroke-accent-400'
               : 'stroke-alpha-grey-700 group-hover:stroke-alpha-grey-900',

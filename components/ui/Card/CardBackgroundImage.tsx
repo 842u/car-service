@@ -14,7 +14,7 @@ export function CardBackgroundImage({
     <div
       aria-hidden
       className={twMerge(
-        'absolute -z-10 flex h-full w-full select-none flex-col items-center justify-center',
+        'absolute -z-10 flex h-full w-full flex-col items-center justify-center select-none',
         className,
       )}
     >

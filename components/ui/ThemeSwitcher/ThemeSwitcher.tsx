@@ -31,12 +31,12 @@ export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
     >
       {resolvedTheme === 'dark' ? (
         <SunIcon
-          className="h-full w-full stroke-light-500 stroke-[10]"
+          className="stroke-light-500 h-full w-full stroke-10"
           data-testid="light-theme-icon"
         />
       ) : (
         <MoonIcon
-          className="h-full w-full stroke-dark-500 stroke-[10]"
+          className="stroke-dark-500 h-full w-full stroke-10"
           data-testid="dark-theme-icon"
         />
       )}

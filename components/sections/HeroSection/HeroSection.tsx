@@ -9,10 +9,10 @@ export function HeroSection() {
       className="mt-0 flex h-[50vh] flex-col items-center justify-center pt-16 text-center lg:mt-0 lg:h-screen"
     >
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">
-        <p className="bg-gradient-to-b from-dark-100 to-dark-500 bg-clip-text leading-tight text-[transparent] dark:from-light-400 dark:to-light-800">
+        <p className="from-dark-100 to-dark-500 dark:from-light-400 dark:to-light-800 bg-linear-to-b bg-clip-text leading-tight text-[transparent]">
           Car&apos;s Story Safely Managed.
         </p>
-        <p className="mt-1 bg-gradient-to-b from-accent-200 to-accent-800 bg-clip-text leading-tight text-[transparent]">
+        <p className="from-accent-200 to-accent-800 mt-1 bg-linear-to-b bg-clip-text leading-tight text-[transparent]">
           Store, Track, Drive.
         </p>
       </h1>

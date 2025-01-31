@@ -1,6 +1,99 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-*: initial;
+  --color-dark-50: var(--color-dark-50);
+  --color-dark-100: var(--color-dark-100);
+  --color-dark-200: var(--color-dark-200);
+  --color-dark-300: var(--color-dark-300);
+  --color-dark-400: var(--color-dark-400);
+  --color-dark-450: var(--color-dark-450);
+  --color-dark-500: var(--color-dark-500);
+  --color-dark-600: var(--color-dark-600);
+  --color-dark-700: var(--color-dark-700);
+  --color-dark-800: var(--color-dark-800);
+  --color-dark-900: var(--color-dark-900);
+  --color-light-50: var(--color-light-50);
+  --color-light-100: var(--color-light-100);
+  --color-light-200: var(--color-light-200);
+  --color-light-300: var(--color-light-300);
+  --color-light-400: var(--color-light-400);
+  --color-light-500: var(--color-light-500);
+  --color-light-600: var(--color-light-600);
+  --color-light-700: var(--color-light-700);
+  --color-light-800: var(--color-light-800);
+  --color-light-900: var(--color-light-900);
+  --color-accent-50: var(--color-accent-50);
+  --color-accent-100: var(--color-accent-100);
+  --color-accent-200: var(--color-accent-200);
+  --color-accent-300: var(--color-accent-300);
+  --color-accent-400: var(--color-accent-400);
+  --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+  --color-accent-700: var(--color-accent-700);
+  --color-accent-800: var(--color-accent-800);
+  --color-accent-900: var(--color-accent-900);
+  --color-error-50: var(--color-error-50);
+  --color-error-100: var(--color-error-100);
+  --color-error-200: var(--color-error-200);
+  --color-error-300: var(--color-error-300);
+  --color-error-400: var(--color-error-400);
+  --color-error-500: var(--color-error-500);
+  --color-error-600: var(--color-error-600);
+  --color-error-700: var(--color-error-700);
+  --color-error-800: var(--color-error-800);
+  --color-error-900: var(--color-error-900);
+  --color-warning-50: var(--color-warning-50);
+  --color-warning-100: var(--color-warning-100);
+  --color-warning-200: var(--color-warning-200);
+  --color-warning-300: var(--color-warning-300);
+  --color-warning-400: var(--color-warning-400);
+  --color-warning-500: var(--color-warning-500);
+  --color-warning-600: var(--color-warning-600);
+  --color-warning-700: var(--color-warning-700);
+  --color-warning-800: var(--color-warning-800);
+  --color-warning-900: var(--color-warning-900);
+  --color-success-50: var(--color-success-50);
+  --color-success-100: var(--color-success-100);
+  --color-success-200: var(--color-success-200);
+  --color-success-300: var(--color-success-300);
+  --color-success-400: var(--color-success-400);
+  --color-success-500: var(--color-success-500);
+  --color-success-600: var(--color-success-600);
+  --color-success-700: var(--color-success-700);
+  --color-success-800: var(--color-success-800);
+  --color-success-900: var(--color-success-900);
+  --color-alpha-grey-50: var(--color-alpha-grey-50);
+  --color-alpha-grey-100: var(--color-alpha-grey-100);
+  --color-alpha-grey-200: var(--color-alpha-grey-200);
+  --color-alpha-grey-300: var(--color-alpha-grey-300);
+  --color-alpha-grey-400: var(--color-alpha-grey-400);
+  --color-alpha-grey-500: var(--color-alpha-grey-500);
+  --color-alpha-grey-600: var(--color-alpha-grey-600);
+  --color-alpha-grey-700: var(--color-alpha-grey-700);
+  --color-alpha-grey-800: var(--color-alpha-grey-800);
+  --color-alpha-grey-900: var(--color-alpha-grey-900);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
   --color-dark-50: #e9e9e9;
