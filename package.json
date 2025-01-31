@@ -25,8 +25,8 @@
     "db:types:production": "cross-env env-cmd -f ./.env.production.local supabase gen types typescript --project-id=$SUPABASE_PROJECT_ID --schema public > types/supabase.ts"
   },
   "dependencies": {
-    "@supabase/ssr": "0.5.1",
-    "@supabase/supabase-js": "2.45.4",
+    "@supabase/ssr": "0.5.2",
+    "@supabase/supabase-js": "2.48.1",
     "framer-motion": "11.0.5",
     "next": "14.2.15",
     "next-themes": "0.2.1",
@@ -72,7 +72,7 @@
     "postcss": "8.4.32",
     "prettier": "3.1.1",
     "prettier-plugin-tailwindcss": "0.5.9",
-    "supabase": "1.223.10",
+    "supabase": "2.9.6",
     "tailwindcss": "3.3.6",
     "ts-node": "10.9.2",
     "typescript": "5.3.3",

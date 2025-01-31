@@ -18,7 +18,7 @@ const config: Config = {
 
   reporters: ['default', 'github-actions'],
 
-  testPathIgnorePatterns: ['./node_modules', './e2e'],
+  testPathIgnorePatterns: ['./node_modules', './e2e', './resources'],
 
   testEnvironment: 'jsdom',
 };
