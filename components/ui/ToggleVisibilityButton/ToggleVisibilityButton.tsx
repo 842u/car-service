@@ -16,7 +16,7 @@ export function ToggleVisibilityButton({
       aria-label="toggle visibility"
       type="button"
       {...props}
-      className="border-alpha-grey-500 bg-alpha-grey-500 w-6 rounded-md border p-0.5"
+      className="border-alpha-grey-500 bg-alpha-grey-500 w-6 cursor-pointer rounded-md border p-0.5"
     >
       {isVisible ? (
         <EyeClosedIcon
