@@ -8,6 +8,6 @@ type CardDescriptionProps = {
 
 export function CardDescription({ className, children }: CardDescriptionProps) {
   return (
-    <p className={twMerge('text-sm text-light-800', className)}>{children}</p>
+    <p className={twMerge('text-light-800 text-sm', className)}>{children}</p>
   );
 }

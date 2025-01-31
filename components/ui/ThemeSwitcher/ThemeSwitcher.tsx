@@ -24,19 +24,19 @@ export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
   return (
     <button
       aria-label="switch color theme"
-      className={twMerge('block aspect-square h-6', className)}
+      className={twMerge('block aspect-square h-6 cursor-pointer', className)}
       type="button"
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       {...props}
     >
       {resolvedTheme === 'dark' ? (
         <SunIcon
-          className="h-full w-full stroke-light-500 stroke-[10]"
+          className="stroke-light-500 h-full w-full stroke-10"
           data-testid="light-theme-icon"
         />
       ) : (
         <MoonIcon
-          className="h-full w-full stroke-dark-500 stroke-[10]"
+          className="stroke-dark-500 h-full w-full stroke-10"
           data-testid="dark-theme-icon"
         />
       )}

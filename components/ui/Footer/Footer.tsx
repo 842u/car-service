@@ -6,7 +6,7 @@ import { BrandLabel } from '../BrandLabel/BrandLabel';
 
 export function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-light-500 to-light-600 before:absolute before:h-[1px] before:w-full before:bg-gradient-to-l before:from-alpha-grey-50 before:via-alpha-grey-300 before:to-alpha-grey-50 dark:from-dark-500 dark:to-dark-900">
+    <footer className="from-light-500 to-light-600 before:from-alpha-grey-50 before:via-alpha-grey-300 before:to-alpha-grey-50 dark:from-dark-500 dark:to-dark-900 bg-linear-to-b before:absolute before:h-[1px] before:w-full before:bg-linear-to-l">
       <Section className="my-0 py-5 md:my-0 lg:my-0">
         <BrandLabel className="lg mx-auto my-5 h-12 lg:mx-0" />
 
@@ -17,10 +17,10 @@ export function Footer() {
             rel="noreferrer"
             target="_blank"
           >
-            <GitHubIcon className="w-8 fill-alpha-grey-900 dark:fill-alpha-grey-500" />
+            <GitHubIcon className="fill-alpha-grey-900 dark:fill-alpha-grey-500 w-8" />
           </a>
           <a aria-label="Mail" href="mailto:contact@842u.dev">
-            <MailIcon className="w-8 fill-alpha-grey-900 dark:fill-alpha-grey-500" />
+            <MailIcon className="fill-alpha-grey-900 dark:fill-alpha-grey-500 w-8" />
           </a>
         </address>
       </Section>

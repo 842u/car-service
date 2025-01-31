@@ -16,16 +16,16 @@ export function ToggleVisibilityButton({
       aria-label="toggle visibility"
       type="button"
       {...props}
-      className="w-6 rounded-md border border-alpha-grey-500 bg-alpha-grey-500 p-0.5"
+      className="border-alpha-grey-500 bg-alpha-grey-500 w-6 cursor-pointer rounded-md border p-0.5"
     >
       {isVisible ? (
         <EyeClosedIcon
-          className="pointer-events-none stroke-dark-500 stroke-[10] dark:stroke-light-500"
+          className="stroke-dark-500 dark:stroke-light-500 pointer-events-none stroke-10"
           data-testid="eye-slash-icon"
         />
       ) : (
         <EyeOpenIcon
-          className="pointer-events-none stroke-dark-500 stroke-[10] dark:stroke-light-500"
+          className="stroke-dark-500 dark:stroke-light-500 pointer-events-none stroke-10"
           data-testid="eye-icon"
         />
       )}

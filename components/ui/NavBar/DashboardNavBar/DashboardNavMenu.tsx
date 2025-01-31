@@ -25,7 +25,7 @@ export function DashboardNavMenu({
     <nav
       aria-label="dashboard navigation menu"
       className={twMerge(
-        'fixed left-0 top-0 z-50 flex h-screen w-56 flex-col border-r border-alpha-grey-300 bg-light-500 pt-16 transition-all dark:bg-dark-500 md:w-16 md:translate-x-0 md:hover:w-56',
+        'border-alpha-grey-300 bg-light-500 dark:bg-dark-500 fixed top-0 left-0 z-50 flex h-screen w-56 flex-col border-r pt-16 transition-all md:w-16 md:translate-x-0 md:hover:w-56',
         isActive ? 'translate-x-0' : '-translate-x-full',
         className,
       )}
@@ -38,7 +38,7 @@ export function DashboardNavMenu({
           isActive ? 'translate-x-0' : '-translate-x-full',
         )}
       />
-      <ul className="flex-grow">
+      <ul className="grow">
         <DashboardNavMenuItem href="/dashboard" text="Dashboard">
           <HomeIcon />
         </DashboardNavMenuItem>
@@ -49,7 +49,7 @@ export function DashboardNavMenu({
           <UserIcon />
         </DashboardNavMenuItem>
       </ul>
-      <ul className="w-full before:mx-auto before:block before:h-[1px] before:w-3/4 before:bg-alpha-grey-300">
+      <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
         <DashboardNavMenuBottomItem>
           <div className="h-8 w-full">
             <ThemeSwitcher className="h-full w-full" />

@@ -116,7 +116,7 @@ export default function EmailAuthForm({
         />
         {passwordReminder && (
           <Link
-            className="absolute right-0 top-0 text-sm text-light-900 dark:text-dark-200"
+            className="text-light-900 dark:text-dark-200 absolute top-0 right-0 text-sm"
             href="/dashboard/forgot-password"
           >
             Forgot Password?

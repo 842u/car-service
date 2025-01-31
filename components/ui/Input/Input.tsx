@@ -44,7 +44,7 @@ export function Input<T extends FieldValues>({
       <div className="relative">
         <input
           className={twMerge(
-            'mt-2 block w-full rounded-md border border-alpha-grey-300 bg-light-600 px-4 py-2 placeholder:text-sm placeholder:text-light-900 focus:border-alpha-grey-500 focus:ring-alpha-grey-700 dark:bg-dark-700 ',
+            'border-alpha-grey-300 bg-light-600 placeholder:text-light-900 focus:border-alpha-grey-500 focus:ring-alpha-grey-700 dark:bg-dark-700 mt-2 block w-full rounded-md border px-4 py-2 placeholder:text-sm',
             errorMessage
               ? 'border-error-500 bg-error-200 focus:border-error-500 dark:bg-error-900'
               : '',
@@ -55,7 +55,7 @@ export function Input<T extends FieldValues>({
           {...register(name, registerOptions)}
         />
         {type === 'password' && (
-          <div className="absolute right-0 top-0 mr-2 flex h-full flex-col justify-center">
+          <div className="absolute top-0 right-0 mr-2 flex h-full flex-col justify-center">
             <ToggleVisibilityButton
               isVisible={isPasswordVisible}
               onClick={passwordVisibilityHandler}
@@ -63,7 +63,7 @@ export function Input<T extends FieldValues>({
           </div>
         )}
       </div>
-      <p className="my-1 whitespace-pre-wrap text-sm text-error-400">
+      <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
         {errorMessage || ' '}
       </p>
     </label>

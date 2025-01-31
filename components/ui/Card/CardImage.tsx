@@ -10,7 +10,7 @@ export function CardImage({ className, children }: CardImageProps) {
   return (
     <div
       className={twMerge(
-        'rounded-2xl bg-light-500 dark:bg-dark-500',
+        'bg-light-500 dark:bg-dark-500 rounded-2xl',
         className,
       )}
     >

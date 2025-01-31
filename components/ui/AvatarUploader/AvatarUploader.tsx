@@ -60,7 +60,7 @@ export function AvatarUploader() {
         </div>
         <div className="my-4 flex justify-center gap-4">
           <Button
-            className="flex-1 border-accent-500 bg-accent-800 text-light-500 transition-colors disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
+            className="border-accent-500 bg-accent-800 text-light-500 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 flex-1 transition-colors"
             disabled={!avatarPreviewUrl || isLoading}
             onClick={avatarUploadHandler}
           >

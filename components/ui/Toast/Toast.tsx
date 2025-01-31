@@ -35,7 +35,7 @@ export const Toast = forwardRef(
         ref={ref}
         aria-label={`${type} notification: ${message}`}
         className={twMerge(
-          'my-2 flex w-full items-center justify-between gap-2 rounded-lg border border-alpha-grey-300 bg-light-600 px-3 py-2 text-sm dark:bg-dark-600',
+          'border-alpha-grey-300 bg-light-600 dark:bg-dark-600 my-2 flex w-full items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm',
           style,
           className,
         )}
@@ -49,7 +49,7 @@ export const Toast = forwardRef(
           type="button"
           onClick={closeButtonClickHandler}
         >
-          <XCircleIcon className="aspect-square w-6 flex-shrink-0 stroke-dark-500 stroke-[10] dark:stroke-light-500" />
+          <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 aspect-square w-6 shrink-0 stroke-10" />
         </button>
       </m.li>
     );

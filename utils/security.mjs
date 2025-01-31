@@ -41,13 +41,12 @@ export const baseContentSecurityPolicy = {
   ],
   'script-src': [
     "'self'",
-    "'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo='",
     "'strict-dynamic'",
     `${process.env.DEVELOPMENT ? "'unsafe-eval'" : ''}`,
   ],
   'script-src-elem': [
     "'self'",
-    "'sha256-eMuh8xiwcX72rRYNAGENurQBAcH7kLlAUQcoOri3BIo='",
+    "'sha256-Ec/XLCqW9IkiT3yUDKK5ftmkQGcF3JzHW7lzlrWMZYQ='",
   ],
   'style-src': [
     "'self'",
