@@ -43,3 +43,4 @@ next-env.d.ts
 
 # vsc
 .vscode
+*.code-workspace
