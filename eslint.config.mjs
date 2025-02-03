@@ -5,6 +5,7 @@ import pluginReact from 'eslint-plugin-react';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginImportX from 'eslint-plugin-import-x';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
+import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
@@ -26,6 +27,7 @@ export default tseslint.config(
   pluginJs.configs.recommended,
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginImportX.flatConfigs.typescript,
+  eslintPluginJsxA11y.flatConfigs.recommended,
   eslintPluginJestDom.configs['flat/recommended'],
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
