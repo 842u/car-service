@@ -7,6 +7,8 @@ import eslintPluginImportX from 'eslint-plugin-import-x';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPlaywright from 'eslint-plugin-playwright';
+import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
+import { fixupPluginRules } from '@eslint/compat';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
@@ -29,6 +31,16 @@ export default tseslint.config(
       globals: globals.browser,
       ecmaVersion: 'latest',
       sourceType: 'module',
+    },
+  },
+  {
+    plugins: {
+      'react-hooks': fixupPluginRules(eslintPluginReactHooks),
+    },
+  },
+  {
+    rules: {
+      ...eslintPluginReactHooks.configs.recommended.rules,
     },
   },
   pluginJs.configs.recommended,
