@@ -1,14 +1,15 @@
-import globals from 'globals';
+import { fixupPluginRules } from '@eslint/compat';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginImportX from 'eslint-plugin-import-x';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPlaywright from 'eslint-plugin-playwright';
+import pluginReact from 'eslint-plugin-react';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
-import { fixupPluginRules } from '@eslint/compat';
+import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
@@ -36,11 +37,14 @@ export default tseslint.config(
   {
     plugins: {
       'react-hooks': fixupPluginRules(eslintPluginReactHooks),
+      'simple-import-sort': eslintPluginSimpleImportSort,
     },
   },
   {
     rules: {
       ...eslintPluginReactHooks.configs.recommended.rules,
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
   pluginJs.configs.recommended,
