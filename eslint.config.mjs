@@ -24,6 +24,7 @@ export default tseslint.config(
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   eslintPluginImportX.flatConfigs.recommended,
+  eslintPluginImportX.flatConfigs.typescript,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   eslintConfigPrettier,
