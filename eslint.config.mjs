@@ -8,6 +8,7 @@ import eslintPluginPlaywright from 'eslint-plugin-playwright';
 import pluginReact from 'eslint-plugin-react';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
 import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
+import eslintPluginTestingLibrary from 'eslint-plugin-testing-library';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -53,6 +54,8 @@ export default tseslint.config(
   eslintPluginJsxA11y.flatConfigs.recommended,
   eslintPluginJestDom.configs['flat/recommended'],
   eslintPluginPlaywright.configs['flat/recommended'],
+  eslintPluginTestingLibrary.configs['flat/dom'],
+  eslintPluginTestingLibrary.configs['flat/react'],
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
