@@ -24,7 +24,13 @@ export default tseslint.config(
       'test-result/',
     ],
   },
-  { languageOptions: { globals: globals.browser } },
+  {
+    languageOptions: {
+      globals: globals.browser,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+    },
+  },
   pluginJs.configs.recommended,
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginImportX.flatConfigs.typescript,
@@ -33,5 +39,6 @@ export default tseslint.config(
   eslintPluginPlaywright.configs['flat/recommended'],
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat['jsx-runtime'],
   eslintConfigPrettier,
 );
