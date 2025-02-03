@@ -5,9 +5,11 @@ import pluginReact from 'eslint-plugin-react';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
 /** @type {import('eslint').Linter.Config[]} */
-export default [
+export default tseslint.config(
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+  },
+  {
     ignores: [
       '.next/',
       'coverage/',
@@ -23,4 +25,4 @@ export default [
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   eslintConfigPrettier,
-];
+);
