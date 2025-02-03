@@ -1,16 +1,24 @@
-import { fixupPluginRules } from '@eslint/compat';
+import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginImportX from 'eslint-plugin-import-x';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
-import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPlaywright from 'eslint-plugin-playwright';
 import pluginReact from 'eslint-plugin-react';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
 import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
 import eslintPluginTestingLibrary from 'eslint-plugin-testing-library';
 import globals from 'globals';
+import path from 'path';
 import tseslint from 'typescript-eslint';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
@@ -43,7 +51,6 @@ export default tseslint.config(
   {
     plugins: {
       react: pluginReact,
-      'react-hooks': fixupPluginRules(eslintPluginReactHooks),
       'simple-import-sort': eslintPluginSimpleImportSort,
     },
   },
@@ -57,7 +64,6 @@ export default tseslint.config(
   pluginJs.configs.recommended,
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginImportX.flatConfigs.typescript,
-  eslintPluginJsxA11y.flatConfigs.recommended,
   eslintPluginJestDom.configs['flat/recommended'],
   eslintPluginPlaywright.configs['flat/recommended'],
   eslintPluginTestingLibrary.configs['flat/dom'],
@@ -65,5 +71,8 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
+  ...compat.config({
+    extends: ['next/core-web-vitals', 'next/typescript'],
+  }),
   eslintConfigPrettier,
 );
