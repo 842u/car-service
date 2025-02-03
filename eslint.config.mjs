@@ -72,7 +72,7 @@ export default tseslint.config(
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
   ...compat.config({
-    extends: ['next/core-web-vitals', 'next/typescript'],
+    extends: ['next', 'next/core-web-vitals', 'next/typescript'],
   }),
   eslintConfigPrettier,
 );
