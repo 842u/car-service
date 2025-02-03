@@ -6,6 +6,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginImportX from 'eslint-plugin-import-x';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
+import eslintPluginPlaywright from 'eslint-plugin-playwright';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
@@ -29,6 +30,7 @@ export default tseslint.config(
   eslintPluginImportX.flatConfigs.typescript,
   eslintPluginJsxA11y.flatConfigs.recommended,
   eslintPluginJestDom.configs['flat/recommended'],
+  eslintPluginPlaywright.configs['flat/recommended'],
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   eslintConfigPrettier,
