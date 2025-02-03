@@ -33,10 +33,16 @@ export default tseslint.config(
       globals: globals.browser,
       ecmaVersion: 'latest',
       sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
   },
   {
     plugins: {
+      react: pluginReact,
       'react-hooks': fixupPluginRules(eslintPluginReactHooks),
       'simple-import-sort': eslintPluginSimpleImportSort,
     },
