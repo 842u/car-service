@@ -16,7 +16,6 @@ export function LandingNavMenu({
   className = '',
 }: LandingNavMenuProps) {
   return (
-    // eslint-disable-next-line
     <nav
       aria-label="landing navigation menu"
       className={twMerge(
