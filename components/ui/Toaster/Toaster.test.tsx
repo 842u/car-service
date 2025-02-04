@@ -107,7 +107,7 @@ describe('Toaster', () => {
           timeout: TOAST_LIFETIME * 2,
         },
       );
-    } catch (error) {
+    } catch (_error) {
       expect(testToast).toBeInTheDocument();
     }
 

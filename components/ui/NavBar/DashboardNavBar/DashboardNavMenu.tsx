@@ -21,7 +21,6 @@ export function DashboardNavMenu({
   className = '',
 }: DashboardNavMenuProps) {
   return (
-    // eslint-disable-next-line
     <nav
       aria-label="dashboard navigation menu"
       className={twMerge(

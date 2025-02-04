@@ -188,7 +188,6 @@ describe('AvatarUploader', () => {
     const saveButton = screen.getByRole('button', { name: /save/i });
     const cancelButton = screen.getByRole('button', { name: /cancel/i });
 
-    /* eslint-disable no-restricted-syntax, no-await-in-loop */
     for (const file of correctFiles) {
       mockUrlCreateObjectUrl.mockReturnValueOnce(
         `http://some/url/${file.name}`,
@@ -200,7 +199,6 @@ describe('AvatarUploader', () => {
       expect(cancelButton).toBeEnabled();
       jest.resetAllMocks();
     }
-    /* eslint-enable no-restricted-syntax, no-await-in-loop */
   });
 
   it('should disable buttons, revert avatar and display info when user choose incorrect file', async () => {
@@ -235,7 +233,6 @@ describe('AvatarUploader', () => {
     const saveButton = screen.getByRole('button', { name: /save/i });
     const cancelButton = screen.getByRole('button', { name: /cancel/i });
 
-    /* eslint-disable no-restricted-syntax, no-await-in-loop */
     for (const file of incorrectFiles) {
       mockUrlCreateObjectUrl.mockReturnValueOnce(
         `http://some/url/${file.name}`,
@@ -250,7 +247,7 @@ describe('AvatarUploader', () => {
       expect(cancelButton).toBeDisabled();
       jest.resetAllMocks();
     }
-    /* eslint-enable no-restricted-syntax, no-await-in-loop */
+
     const typeErrorMessage = screen.getByText(/File must be of type/i);
     const sizeErrorMessage = screen.getByText(/File size must be less than/i);
 
@@ -299,7 +296,7 @@ describe('AvatarUploader', () => {
     );
 
     const fileInput = screen.getByLabelText('upload avatar');
-    /* eslint-disable no-restricted-syntax, no-await-in-loop */
+
     for (const file of correctFiles) {
       mockUrlCreateObjectUrl.mockReturnValueOnce(
         `blob:http://some/url/${file.name}`,
@@ -314,7 +311,6 @@ describe('AvatarUploader', () => {
       );
       jest.resetAllMocks();
     }
-    /* eslint-enable no-restricted-syntax, no-await-in-loop */
   });
 
   it('should disable buttons and revert avatar after cancel change', async () => {

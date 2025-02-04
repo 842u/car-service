@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     try {
       emailSchema.parse(email);
       passwordSchema.parse(password);
-    } catch (error) {
+    } catch (_error) {
       return NextResponse.json<RouteHandlerResponse>(
         { error: 'Server validation failed. Try again.', message: null },
         { status: 400 },
