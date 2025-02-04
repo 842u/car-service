@@ -17,8 +17,12 @@ jobs:
   jest-test:
     uses: ./.github/workflows/jest-test.yaml
 
+  playwright-test:
+    needs: [prettier-format-check, eslint-lint, jest-test]
+    uses: ./.github/workflows/playwright-test.yaml
+
   vercel-deploy-preview:
-    needs: eslint-lint
+    needs: playwright-test
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
