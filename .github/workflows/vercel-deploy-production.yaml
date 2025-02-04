@@ -29,6 +29,9 @@ jobs:
         id: npm-global-dir
         run: echo "dir=$(npm prefix -g)" >> $GITHUB_OUTPUT
 
+      - name: Lint Code
+        run: npm run lint
+
       - name: Get Latest Vercel CLI Version
         id: vercel-version
         run: echo "version=$(npm show vercel version)" >> $GITHUB_OUTPUT
