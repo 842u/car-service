@@ -11,8 +11,12 @@ jobs:
   prettier-format-check:
     uses: ./.github/workflows/prettier-format-check.yaml
 
-  vercel-deploy-preview:
+  eslint-lint:
     needs: prettier-format-check
+    uses: ./.github/workflows/eslint-lint.yaml
+
+  vercel-deploy-preview:
+    needs: eslint-lint
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
