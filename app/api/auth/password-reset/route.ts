@@ -14,7 +14,7 @@ export async function PATCH(request: NextRequest) {
     if (password !== passwordConfirm) {
       throw new Error('Passwords not match.');
     }
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json<RouteHandlerResponse>(
       { error: 'Server validation failed. Try again.', message: null },
       { status: 400 },
