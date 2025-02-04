@@ -27,6 +27,7 @@ jobs:
     secrets: inherit
 
   vercel-deploy-production:
+    needs: playwright-test
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
