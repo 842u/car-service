@@ -64,10 +64,6 @@ export default tseslint.config(
   pluginJs.configs.recommended,
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginImportX.flatConfigs.typescript,
-  eslintPluginJestDom.configs['flat/recommended'],
-  eslintPluginPlaywright.configs['flat/recommended'],
-  eslintPluginTestingLibrary.configs['flat/dom'],
-  eslintPluginTestingLibrary.configs['flat/react'],
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
@@ -75,4 +71,17 @@ export default tseslint.config(
     extends: ['next', 'next/core-web-vitals', 'next/typescript'],
   }),
   eslintConfigPrettier,
+  {
+    name: 'e2e',
+    files: ['e2e/**/?(*.)+(spec|test).[jt]s?(x)'],
+    ...eslintPluginPlaywright.configs['flat/recommended'],
+  },
+  {
+    name: 'jest',
+    files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+    ignores: ['e2e/**'],
+    ...eslintPluginJestDom.configs['flat/recommended'],
+    ...eslintPluginTestingLibrary.configs['flat/dom'],
+    ...eslintPluginTestingLibrary.configs['flat/react'],
+  },
 );
