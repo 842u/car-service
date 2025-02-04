@@ -8,6 +8,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  prettier-format-check:
+    uses: ./.github/workflows/prettier-format-check.yaml
+
+  eslint-lint:
+    uses: ./.github/workflows/eslint-lint.yaml
+
+  jest-test:
+    uses: ./.github/workflows/jest-test.yaml
+
+  playwright-test:
+    needs: [prettier-format-check, eslint-lint, jest-test]
+    uses: ./.github/workflows/playwright-test.yaml
+    # Setting 'secrets: inherit' does not necessarily pass secrets from this workflow.
+    # Inside 'playwright-test.yaml' -> 'environment: name: Test' are set.
+    # This means secrets from test environment will be used.
+    # However 'secrets: inherit' is needed.
+    secrets: inherit
+
   vercel-deploy-production:
     timeout-minutes: 10
     runs-on: ubuntu-latest

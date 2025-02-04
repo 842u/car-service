@@ -11,7 +11,7 @@
     "postbuild:test": "node ./scripts/removeInlineScripts.mjs",
     "start": "next start",
     "start:test": "npm run env:test next start",
-    "lint": "eslint",
+    "lint": "eslint . --max-warnings 0",
     "prepare": "husky install",
     "test:jest": "jest",
     "test:playwright": "playwright test",
