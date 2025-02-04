@@ -44,6 +44,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ github.job }}-${{ steps.vercel-version.outputs.version }}
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Lint Code
         run: npm run lint
 
