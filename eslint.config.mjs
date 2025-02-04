@@ -81,6 +81,17 @@ export default typescriptEslintConfig(
           allowTernary: true,
         },
       ],
+      'react/jsx-sort-props': [
+        'error',
+        {
+          callbacksLast: true,
+          ignoreCase: true,
+          noSortAlphabetically: false,
+          reservedFirst: true,
+          shorthandFirst: true,
+          shorthandLast: false,
+        },
+      ],
     },
   },
   pluginJs.configs.recommended,
