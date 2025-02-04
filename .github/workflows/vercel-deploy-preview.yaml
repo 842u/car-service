@@ -44,6 +44,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ github.job }}-${{ steps.vercel-version.outputs.version }}
 
+      - name: Lint Code
+        run: npm run lint
+
       - name: Install Vercel CLI
         if: steps.npm-global-cache.outputs.cache-hit != 'true'
         run: npm install --global vercel@latest
