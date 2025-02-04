@@ -8,7 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
+  prettier-format-check:
+    uses: ./.github/workflows/prettier-format-check.yaml
+
   vercel-deploy-preview:
+    needs: prettier-format-check
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
