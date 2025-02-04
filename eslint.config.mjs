@@ -10,7 +10,10 @@ import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
 import eslintPluginTestingLibrary from 'eslint-plugin-testing-library';
 import globals from 'globals';
 import path from 'path';
-import tseslint from 'typescript-eslint';
+import {
+  config as typescriptEslintConfig,
+  configs as typescriptEslintConfigs,
+} from 'typescript-eslint';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,7 +24,7 @@ const compat = new FlatCompat({
 });
 
 /** @type {import('eslint').Linter.Config[]} */
-export default tseslint.config(
+export default typescriptEslintConfig(
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
   },
@@ -83,7 +86,7 @@ export default tseslint.config(
   pluginJs.configs.recommended,
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginImportX.flatConfigs.typescript,
-  ...tseslint.configs.recommended,
+  ...typescriptEslintConfigs.recommended,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
   ...compat.config({
