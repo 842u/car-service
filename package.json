@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "env:local": "env-cmd -f ./.env.development.local",
     "dev": "cross-env DEVELOPMENT=true next dev",
     "build": "next build",
