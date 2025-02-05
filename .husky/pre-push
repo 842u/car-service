@@ -1,4 +1,1 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 npx prettier . --write && npm run lint && npx tsc --noEmit && npm run test:jest && npm run build:local && npm run test:playwright:local
