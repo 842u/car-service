@@ -18,7 +18,16 @@ const config: Config = {
 
   reporters: ['default', 'github-actions'],
 
-  testPathIgnorePatterns: ['./node_modules', './e2e', './resources'],
+  testPathIgnorePatterns: [
+    './node_modules',
+    './e2e',
+    './resources',
+    './next',
+    './coverage',
+    './playwright',
+    './playwright-report',
+    './test-results',
+  ],
 
   testEnvironment: 'jsdom',
 };

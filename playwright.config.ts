@@ -189,7 +189,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: process.env.CI ? 'npm run start' : 'npm run start:test',
+    command: process.env.CI ? 'npm run start' : 'npm run start:local',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
   },
