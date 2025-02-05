@@ -45,6 +45,7 @@ export const Toast = forwardRef(function Toast(
       <span>{message}</span>
       <button
         aria-label="close notification"
+        className="cursor-pointer"
         type="button"
         onClick={closeButtonClickHandler}
       >
