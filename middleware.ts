@@ -68,7 +68,7 @@ export async function middleware(request: NextRequest) {
       requestUrl.pathname === ('/dashboard/sign-in' as Route))
   ) {
     response = NextResponse.redirect(
-      new URL('/dashboard/account' as Route, requestUrl.origin),
+      new URL('/dashboard' as Route, requestUrl.origin),
       {
         headers: requestHeaders,
       },
