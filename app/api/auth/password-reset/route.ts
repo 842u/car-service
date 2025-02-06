@@ -21,7 +21,7 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
-  const { auth } = createClient();
+  const { auth } = await createClient();
 
   const { error } = await auth.updateUser({ password });
 

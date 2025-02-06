@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   const type = searchParams.get('type') as EmailAuthFormType | null;
   const { email, password } = await request.json();
 
-  const { auth } = createClient();
+  const { auth } = await createClient();
 
   if (type === 'sign-up') {
     try {
