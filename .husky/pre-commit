@@ -1,1 +1,1 @@
-npx prettier . --write && npm run lint && npx tsc --noEmit
+npm run lint-staged && npx tsc --noEmit
