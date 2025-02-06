@@ -75,12 +75,6 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  /*
-   * CSP needs to be set twice, see more:
-   * https://github.com/vercel/next.js/issues/43743#issuecomment-1542712188
-   * In the docs, response headers are also set before returing response:
-   * https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy#adding-a-nonce-with-middleware
-   */
   response.headers.set('x-nonce', nonce);
   response.headers.set('content-security-policy', csp);
 
