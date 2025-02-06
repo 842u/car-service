@@ -13,6 +13,7 @@
     "start": "next start",
     "start:local": "npm run env:local npm run start",
     "lint": "eslint . --max-warnings 0",
+    "lint-staged": "lint-staged",
     "test:jest": "jest",
     "test:playwright": "playwright test",
     "test:playwright:local": "npm run env:local npm run test:playwright",
