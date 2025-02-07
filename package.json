@@ -10,7 +10,6 @@
     "build": "next build",
     "build:local": "npm run env:local npm run build",
     "postbuild": "node ./scripts/removeInlineScripts.mjs",
-    "postbuild:local": "node ./scripts/removeInlineScripts.mjs",
     "start": "next start",
     "start:local": "npm run env:local npm run start",
     "lint": "eslint . --max-warnings 0",
