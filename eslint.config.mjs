@@ -92,6 +92,7 @@ export default typescriptEslintConfig(
           shorthandLast: false,
         },
       ],
+      'react/self-closing-comp': 'error',
     },
   },
   pluginJs.configs.recommended,
