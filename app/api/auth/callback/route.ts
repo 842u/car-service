@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = requestUrl;
   const next = searchParams.get('next') ?? ON_SUCCESS_PATH;
 
-  const { auth } = createClient();
+  const { auth } = await createClient();
 
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as EmailOtpType | null;

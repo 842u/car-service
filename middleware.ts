@@ -68,19 +68,13 @@ export async function middleware(request: NextRequest) {
       requestUrl.pathname === ('/dashboard/sign-in' as Route))
   ) {
     response = NextResponse.redirect(
-      new URL('/dashboard/account' as Route, requestUrl.origin),
+      new URL('/dashboard' as Route, requestUrl.origin),
       {
         headers: requestHeaders,
       },
     );
   }
 
-  /*
-   * CSP needs to be set twice, see more:
-   * https://github.com/vercel/next.js/issues/43743#issuecomment-1542712188
-   * In the docs, response headers are also set before returing response:
-   * https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy#adding-a-nonce-with-middleware
-   */
   response.headers.set('x-nonce', nonce);
   response.headers.set('content-security-policy', csp);
 
@@ -100,6 +94,10 @@ export const config = {
     {
       source:
         '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+      missing: [
+        { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'purpose', value: 'prefetch' },
+      ],
     },
   ],
 };

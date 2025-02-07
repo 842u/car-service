@@ -1,3 +1,5 @@
+import { JSX } from 'react';
+
 import { Database } from './supabase';
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning';

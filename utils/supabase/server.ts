@@ -6,11 +6,11 @@ import { Database } from '@/types/supabase';
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export function createClient(
+export async function createClient(
   supabaseUrl: string = supabaseAppUrl,
   supabaseKey: string = supabaseAnonKey,
 ) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(supabaseUrl, supabaseKey, {
     cookies: {

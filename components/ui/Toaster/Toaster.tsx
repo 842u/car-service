@@ -33,7 +33,7 @@ export function Toaster({
 }: ToasterProps) {
   const { toasts, removeToast } = useContext(ToastsContext);
 
-  const toastCloseInterval = useRef<NodeJS.Timeout>();
+  const toastCloseInterval = useRef<NodeJS.Timeout>(undefined);
 
   const toasterMouseOverHandler = () => {
     clearInterval(toastCloseInterval.current);

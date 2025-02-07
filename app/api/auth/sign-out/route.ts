@@ -7,7 +7,7 @@ export const maxDuration = 10;
 export async function GET(request: NextRequest) {
   const redirectURL = request.nextUrl.clone();
 
-  const { auth } = createClient();
+  const { auth } = await createClient();
 
   const {
     data: { session },

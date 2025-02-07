@@ -1,6 +1,7 @@
 import { Route } from 'next';
 import Link from 'next/link';
 import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
+import { JSX } from 'react';
 import { twJoin } from 'tailwind-merge';
 
 type DashboardNavMenuItemProps = {
