@@ -1,10 +1,5 @@
-import { m } from 'framer-motion';
-import {
-  ComponentPropsWithoutRef,
-  ForwardedRef,
-  forwardRef,
-  useContext,
-} from 'react';
+import * as m from 'motion/react-m';
+import { ForwardedRef, forwardRef, useContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
@@ -12,10 +7,9 @@ import { ToastsContext } from '@/context/ToastsContext';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 
-type ToastProps = ToastObject &
-  ComponentPropsWithoutRef<typeof m.li> & {
-    className?: string;
-  };
+type ToastProps = ToastObject & {
+  className?: string;
+};
 
 export const Toast = forwardRef(function Toast(
   { message, id, type, className, ...props }: ToastProps,

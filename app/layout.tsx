@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 import { Providers } from '@/components/providers/Providers';
-import { Toaster } from '@/components/ui/Toaster/Toaster';
+import LazyToaster from '@/components/ui/Toaster/LazyToaster';
 import { inter } from '@/utils/fonts';
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
         className={`bg-light-500 text-dark-500 dark:bg-dark-500 dark:text-light-500 transition-colors ${inter.className}`}
       >
         <Providers>
-          <Toaster />
+          <LazyToaster />
           {children}
         </Providers>
       </body>

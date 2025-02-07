@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, LazyMotion, MotionProps } from 'framer-motion';
+import { AnimatePresence, LazyMotion, MotionProps } from 'motion/react';
 import { useContext, useEffect, useRef } from 'react';
 
 import { ToastsContext } from '@/context/ToastsContext';
@@ -25,7 +25,7 @@ const ToastsAnimation: MotionProps = {
 };
 
 const framerFeatures = () =>
-  import('../../../utils/framer-motion').then((mod) => mod.default);
+  import('@/utils/motion').then((mod) => mod.default);
 
 export function Toaster({
   maxToasts = 3,
