@@ -5,6 +5,7 @@
   "scripts": {
     "prepare": "husky",
     "env:local": "env-cmd -f ./.env.development.local",
+    "analyze-bundle": "cross-env ANALYZE=true npm run build",
     "dev": "cross-env DEVELOPMENT=true next dev",
     "build": "next build",
     "build:local": "npm run env:local npm run build",
