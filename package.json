@@ -23,6 +23,7 @@
     "db:types:production": "cross-env env-cmd -f ./.env.production.local supabase gen types typescript --project-id=$SUPABASE_PROJECT_ID --schema public > types/supabase.ts"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "15.1.6",
     "@supabase/ssr": "0.5.2",
     "@supabase/supabase-js": "2.48.1",
     "framer-motion": "12.3.1",
