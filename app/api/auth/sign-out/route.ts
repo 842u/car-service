@@ -10,10 +10,10 @@ export async function GET(request: NextRequest) {
   const { auth } = await createClient();
 
   const {
-    data: { session },
-  } = await auth.getSession();
+    data: { user },
+  } = await auth.getUser();
 
-  if (session) {
+  if (user) {
     await auth.signOut();
   }
 
