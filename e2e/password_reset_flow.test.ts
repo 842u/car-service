@@ -43,7 +43,8 @@ test.describe('password_reset_flow - @unauthenticated', () => {
 
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
-    await emailInput.pressSequentially(nonExistingEmail);
+    await emailInput.focus();
+    await emailInput.fill(nonExistingEmail);
     const submitButton = page.getByLabel(/send password reset email/i);
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
@@ -61,7 +62,7 @@ test.describe('password_reset_flow - @unauthenticated', () => {
 
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
-    await emailInput.pressSequentially(nonExistingEmail);
+    await emailInput.fill(nonExistingEmail);
     const submitButton = page.getByLabel(/send password reset email/i);
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
@@ -117,8 +118,8 @@ test.describe('password_reset_flow - @authenticated', () => {
       .getByLabel('toggle visibility');
     await newPasswordVisibilityButton.click();
     await confirmPasswordVisibilityButton.click();
-    await newPasswordInput.pressSequentially(wrongPassword);
-    await confirmPasswordInput.pressSequentially(wrongPassword);
+    await newPasswordInput.fill(wrongPassword);
+    await confirmPasswordInput.fill(wrongPassword);
 
     await expect(submitButton).toBeDisabled();
   });
@@ -144,8 +145,8 @@ test.describe('password_reset_flow - @authenticated', () => {
       .getByLabel('toggle visibility');
     await newPasswordVisibilityButton.click();
     await confirmPasswordVisibilityButton.click();
-    await newPasswordInput.pressSequentially(correctPassword);
-    await confirmPasswordInput.pressSequentially(anotherCorrectPassword);
+    await newPasswordInput.fill(correctPassword);
+    await confirmPasswordInput.fill(anotherCorrectPassword);
 
     await expect(submitButton).toBeDisabled();
   });
@@ -170,8 +171,8 @@ test.describe('password_reset_flow - @authenticated', () => {
       .getByLabel('toggle visibility');
     await newPasswordVisibilityButton.click();
     await confirmPasswordVisibilityButton.click();
-    await newPasswordInput.pressSequentially(oldPassword);
-    await confirmPasswordInput.pressSequentially(oldPassword);
+    await newPasswordInput.fill(oldPassword);
+    await confirmPasswordInput.fill(oldPassword);
     await submitButton.click();
     const errorToast = page.getByLabel(/error notification:/);
 
@@ -201,8 +202,8 @@ test.describe('password_reset_flow - @authenticated', () => {
       .getByLabel('toggle visibility');
     await newPasswordVisibilityButton.click();
     await confirmPasswordVisibilityButton.click();
-    await newPasswordInput.pressSequentially(newPassword);
-    await confirmPasswordInput.pressSequentially(newPassword);
+    await newPasswordInput.fill(newPassword);
+    await confirmPasswordInput.fill(newPassword);
     await submitButton.click();
     const successToast = page.getByLabel(/success notification:/);
     const closeToastButton = page.getByLabel(/close notification/i);
@@ -211,12 +212,8 @@ test.describe('password_reset_flow - @authenticated', () => {
     await expect(successToast).toHaveText(/your password has been changed/i);
 
     await closeToastButton.click();
-    await newPasswordInput.pressSequentially(
-      process.env.SUPABASE_TEST_USER_PASSWORD!,
-    );
-    await confirmPasswordInput.pressSequentially(
-      process.env.SUPABASE_TEST_USER_PASSWORD!,
-    );
+    await newPasswordInput.fill(process.env.SUPABASE_TEST_USER_PASSWORD!);
+    await confirmPasswordInput.fill(process.env.SUPABASE_TEST_USER_PASSWORD!);
     await submitButton.click();
 
     const successToastSecond = page.getByLabel(/success notification:/);
