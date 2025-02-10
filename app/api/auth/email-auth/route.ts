@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json<RouteHandlerResponse>(
         {
-          message: 'Succesfully signed in.',
+          message: 'Successfully signed in.',
           error: null,
         },
         { status: 200 },
