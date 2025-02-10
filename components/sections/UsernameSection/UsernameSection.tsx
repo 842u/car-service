@@ -25,7 +25,7 @@ export function UsernameSection() {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting, isValid, isDirty },
+    formState: { isSubmitting, isValid, isDirty, errors },
   } = useForm<UsernameFormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -59,7 +59,7 @@ export function UsernameSection() {
       return;
     }
 
-    addToast('Username changed succesfully.', 'success');
+    addToast('Username changed successfully.', 'success');
   };
 
   useEffect(() => {
@@ -74,11 +74,13 @@ export function UsernameSection() {
       >
         <div className="lg:w-1/3 lg:p-4">
           <Input
+            errorMessage={errors.username?.message}
             label="Username"
             name="username"
             placeholder="Enter your username"
             register={register}
             registerOptions={usernameValidationRules}
+            showErrorMessage={false}
             type="text"
           />
         </div>

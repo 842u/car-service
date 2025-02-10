@@ -19,6 +19,7 @@ type InputProps<T extends FieldValues> = {
   registerOptions: RegisterOptions<T>;
   placeholder?: string;
   errorMessage?: string | undefined;
+  showErrorMessage?: boolean;
 };
 
 export function Input<T extends FieldValues>({
@@ -29,6 +30,7 @@ export function Input<T extends FieldValues>({
   placeholder,
   registerOptions,
   errorMessage,
+  showErrorMessage = true,
 }: InputProps<T>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(
     type !== 'password' || false,
@@ -63,9 +65,11 @@ export function Input<T extends FieldValues>({
           </div>
         )}
       </div>
-      <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
-        {errorMessage || ' '}
-      </p>
+      {showErrorMessage && (
+        <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
+          {errorMessage || ' '}
+        </p>
+      )}
     </label>
   );
 }

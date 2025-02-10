@@ -57,6 +57,13 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      add_vault_secret: {
+        Args: {
+          secret_name: string;
+          secret_value: string;
+        };
+        Returns: undefined;
+      };
       delete_test_user: {
         Args: Record<PropertyKey, never>;
         Returns: undefined;

@@ -8,8 +8,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
 import { ToastsContext } from '@/context/ToastsContext';
+import { UserProfileContext } from '@/context/UserProfileContext';
 import { RouteHandlerResponse } from '@/types';
-import { unslugify } from '@/utils/general';
+import { fetchUserProfile, unslugify } from '@/utils/general';
 import {
   emailValidationRules,
   passwordValidationRules,
@@ -40,6 +41,7 @@ export default function EmailAuthForm({
 }: EmailAuthFormProps) {
   const router = useRouter();
   const { addToast } = useContext(ToastsContext);
+  const { setUserProfile } = useContext(UserProfileContext);
   const {
     register,
     handleSubmit,
@@ -75,9 +77,14 @@ export default function EmailAuthForm({
     message && addToast(message, 'success');
 
     if (response.ok && type === 'sign-in') {
-      router.prefetch('/dashboard');
+      const profileData = await fetchUserProfile();
+
+      setUserProfile((previousState) => ({
+        ...previousState,
+        ...profileData,
+      }));
+
       router.replace('/dashboard');
-      router.refresh();
     }
   };
 
