@@ -43,8 +43,7 @@ test.describe('password_reset_flow - @unauthenticated', () => {
 
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
-    await emailInput.focus();
-    await emailInput.fill(nonExistingEmail);
+    await emailInput.pressSequentially(nonExistingEmail);
     const submitButton = page.getByLabel(/send password reset email/i);
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
@@ -62,7 +61,7 @@ test.describe('password_reset_flow - @unauthenticated', () => {
 
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
-    await emailInput.fill(nonExistingEmail);
+    await emailInput.pressSequentially(nonExistingEmail);
     const submitButton = page.getByLabel(/send password reset email/i);
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
