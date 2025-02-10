@@ -84,7 +84,7 @@ export const usernameValidationRules = {
   required: 'This field is required.',
   minLength: {
     value: 3,
-    message: 'Minimum length is 2.',
+    message: 'Minimum length is 3.',
   },
   maxLength: {
     value: 32,
