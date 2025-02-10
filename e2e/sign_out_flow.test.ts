@@ -24,6 +24,7 @@ test.describe('sign_out_flow - @authenticated', () => {
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
 
+    // Due to inconsistencies between how webkit and other browsers handle cookie attributes, those attributes must be set manually to prevent errors in tests.
     await expect(page).toHaveURL('/dashboard');
     const cookieBuffer = await page.context().cookies();
     if (cookieBuffer[0]) {
@@ -31,7 +32,6 @@ test.describe('sign_out_flow - @authenticated', () => {
         ? (cookieBuffer[0].secure = true)
         : (cookieBuffer[0].secure = false);
     }
-    console.log(cookieBuffer[0]);
 
     await page.context().clearCookies();
     await page.context().addCookies(cookieBuffer);
