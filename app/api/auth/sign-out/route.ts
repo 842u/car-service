@@ -10,12 +10,16 @@ export async function GET(request: NextRequest) {
   const { auth } = await createClient();
 
   const {
-    data: { session },
-  } = await auth.getSession();
+    data: { user },
+  } = await auth.getUser();
 
-  if (session) {
-    await auth.signOut();
+  if (!user) {
+    return NextResponse.redirect(redirectURL.origin, {
+      status: 401,
+    });
   }
+
+  await auth.signOut();
 
   return NextResponse.redirect(redirectURL.origin, {
     status: 302,

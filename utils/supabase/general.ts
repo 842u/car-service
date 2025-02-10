@@ -1,12 +1,12 @@
 import { createClient } from './client';
 
+const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
 const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
-const supabase = createClient(undefined, supabaseServiceRoleKey);
-
 export async function createTestUser() {
+  const supabase = createClient(supabaseAppUrl, supabaseServiceRoleKey);
   try {
     const { error } = await supabase.auth.admin.createUser({
       email: testUserEmail,
@@ -21,6 +21,7 @@ export async function createTestUser() {
 }
 
 export async function deleteTestUser() {
+  const supabase = createClient(supabaseAppUrl, supabaseServiceRoleKey);
   try {
     const { status, error } = await supabase.rpc('delete_test_user');
     if ((status < 200 && status >= 300) || error)

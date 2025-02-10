@@ -18,7 +18,6 @@ jest.mock('@supabase/ssr', () => ({
       }),
     }),
     auth: {
-      getSession: async () => ({ data: { session: {} } }),
       getUser: async () => ({ data: { user: {} } }),
     },
   }),

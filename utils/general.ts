@@ -54,12 +54,6 @@ export const fetchUserProfile = async () => {
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session) return;
-
-  const {
     data: { user },
   } = await supabase.auth.getUser();
 
