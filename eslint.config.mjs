@@ -60,6 +60,7 @@ export default typescriptEslintConfig(
   {
     rules: {
       ...eslintPluginReactHooks.configs.recommended.rules,
+      'no-console': 'warn',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       '@typescript-eslint/no-unused-vars': [

@@ -16,9 +16,9 @@ setup('authenticate - @authenticated', async ({ page }) => {
 
   await page.goto(signInPath);
   const emailInput = page.getByPlaceholder(/enter your email/i);
-  await emailInput.pressSequentially(testUserEmail);
+  await emailInput.fill(testUserEmail);
   const passwordInput = page.getByPlaceholder(/enter your password/i);
-  await passwordInput.pressSequentially(testUserPassword);
+  await passwordInput.fill(testUserPassword);
   await page.getByRole('button', { name: 'Sign in' }).click();
   const successToast = page.getByLabel(/success notification/i);
 
