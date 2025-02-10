@@ -16,24 +16,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Get Typescript Version
-        id: typescript-version
-        run: echo "version=$(npm pkg get devDependencies.typescript)" >> $GITHUB_OUTPUT
+      - name: Install Dependencies
+        run: npm ci
 
-      - name: Rename package.json
-        run: mv package.json _package.json
-
-      - name: Rename package-lock.json
-        run: mv package-lock.json _package-lock.json
-
-      - name: Install Typescript
-        run: npm install --no-package-lock --no-save typescript@${{ steps.typescript-version.outputs.version }}
-
-      - name: Rename _package.json
-        run: mv _package.json package.json
-
-      - name: Rename _package-lock.json
-        run: mv _package-lock.json package-lock.json
-
-      - name: Run Typescript Check
+      - name: Run Typescript
         run: npx tsc --noEmit
