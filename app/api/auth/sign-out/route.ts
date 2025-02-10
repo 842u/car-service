@@ -13,9 +13,13 @@ export async function GET(request: NextRequest) {
     data: { user },
   } = await auth.getUser();
 
-  if (user) {
-    await auth.signOut();
+  if (!user) {
+    return NextResponse.redirect(redirectURL.origin, {
+      status: 401,
+    });
   }
+
+  await auth.signOut();
 
   return NextResponse.redirect(redirectURL.origin, {
     status: 302,
