@@ -1,0 +1,3 @@
+DROP TRIGGER delete_old_avatar_files_from_bucket ON STORAGE.objects;
+
+DROP FUNCTION delete_old_avatar_files_from_bucket;

@@ -34,6 +34,93 @@ export type Database = {
   };
   public: {
     Tables: {
+      cars: {
+        Row: {
+          additional_fuel_type: Database['public']['Enums']['fuel'] | null;
+          brand: string | null;
+          created_at: string | null;
+          custom_name: string | null;
+          drive_type: Database['public']['Enums']['drive'] | null;
+          engine_capacity: number | null;
+          fuel_type: Database['public']['Enums']['fuel'] | null;
+          id: string;
+          image_url: string | null;
+          insurance_expiration: string | null;
+          license_plates: string | null;
+          mileage: number | null;
+          model: string | null;
+          production_year: number | null;
+          transmission_type: Database['public']['Enums']['transmission'] | null;
+          vin: string | null;
+        };
+        Insert: {
+          additional_fuel_type?: Database['public']['Enums']['fuel'] | null;
+          brand?: string | null;
+          created_at?: string | null;
+          custom_name?: string | null;
+          drive_type?: Database['public']['Enums']['drive'] | null;
+          engine_capacity?: number | null;
+          fuel_type?: Database['public']['Enums']['fuel'] | null;
+          id?: string;
+          image_url?: string | null;
+          insurance_expiration?: string | null;
+          license_plates?: string | null;
+          mileage?: number | null;
+          model?: string | null;
+          production_year?: number | null;
+          transmission_type?:
+            | Database['public']['Enums']['transmission']
+            | null;
+          vin?: string | null;
+        };
+        Update: {
+          additional_fuel_type?: Database['public']['Enums']['fuel'] | null;
+          brand?: string | null;
+          created_at?: string | null;
+          custom_name?: string | null;
+          drive_type?: Database['public']['Enums']['drive'] | null;
+          engine_capacity?: number | null;
+          fuel_type?: Database['public']['Enums']['fuel'] | null;
+          id?: string;
+          image_url?: string | null;
+          insurance_expiration?: string | null;
+          license_plates?: string | null;
+          mileage?: number | null;
+          model?: string | null;
+          production_year?: number | null;
+          transmission_type?:
+            | Database['public']['Enums']['transmission']
+            | null;
+          vin?: string | null;
+        };
+        Relationships: [];
+      };
+      cars_ownerships: {
+        Row: {
+          car_id: string;
+          is_primary_owner: boolean;
+          owner_id: string;
+        };
+        Insert: {
+          car_id: string;
+          is_primary_owner?: boolean;
+          owner_id: string;
+        };
+        Update: {
+          car_id?: string;
+          is_primary_owner?: boolean;
+          owner_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cars_ownerships_car_id_fkey';
+            columns: ['car_id'];
+            isOneToOne: false;
+            referencedRelation: 'cars';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -70,7 +157,17 @@ export type Database = {
       };
     };
     Enums: {
-      [_ in never]: never;
+      drive: 'FWD' | 'RWD' | '4WD' | 'AWD';
+      fuel:
+        | 'gasoline'
+        | 'diesel'
+        | 'CNG'
+        | 'LPG'
+        | 'hybrid'
+        | 'electric'
+        | 'hydrogen'
+        | 'ethanol';
+      transmission: 'manual' | 'automatic' | 'CVT';
     };
     CompositeTypes: {
       [_ in never]: never;
