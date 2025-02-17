@@ -5,21 +5,21 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { Database } from './types/supabase';
 import { generateCspWithNonce } from './utils/security.mjs';
 
-const publicRoutes: Route[] = ['/'];
+export const publicRoutes: Route[] = ['/'];
 
-const unauthenticatedOnlyRoutes: Route[] = [
+export const unauthenticatedOnlyRoutes: Route[] = [
   '/dashboard/sign-in',
   '/dashboard/sign-up',
   '/dashboard/forgot-password',
 ];
 
-const authenticatedOnlyRoutes: Route[] = [
+export const authenticatedOnlyRoutes: Route[] = [
   '/dashboard',
   '/dashboard/account',
   '/dashboard/cars',
 ];
 
-const authenticatedOnlyDynamicRoutes: Route[] = ['/dashboard/cars'];
+export const authenticatedOnlyDynamicRoutes: Route[] = ['/dashboard/cars'];
 
 export async function middleware(request: NextRequest) {
   const { csp, nonce } = generateCspWithNonce();
