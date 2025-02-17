@@ -85,6 +85,7 @@ export default function EmailAuthForm({
       }));
 
       router.replace('/dashboard');
+      router.refresh();
     }
   };
 

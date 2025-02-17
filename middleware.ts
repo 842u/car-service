@@ -5,9 +5,26 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { Database } from './types/supabase';
 import { generateCspWithNonce } from './utils/security.mjs';
 
+export const publicRoutes: Route[] = ['/'];
+
+export const unauthenticatedOnlyRoutes: Route[] = [
+  '/dashboard/sign-in',
+  '/dashboard/sign-up',
+  '/dashboard/forgot-password',
+];
+
+export const authenticatedOnlyRoutes: Route[] = [
+  '/dashboard',
+  '/dashboard/account',
+  '/dashboard/cars',
+];
+
+export const authenticatedOnlyDynamicRoutes: Route[] = ['/dashboard/cars'];
+
 export async function middleware(request: NextRequest) {
   const { csp, nonce } = generateCspWithNonce();
   const requestUrl = request.nextUrl.clone();
+  const requestPath = requestUrl.pathname as Route;
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-nonce', nonce);
@@ -45,10 +62,8 @@ export async function middleware(request: NextRequest) {
 
   if (
     !user &&
-    requestUrl.pathname !== ('/' as Route) &&
-    requestUrl.pathname !== ('/dashboard/forgot-password' as Route) &&
-    requestUrl.pathname !== ('/dashboard/sign-up' as Route) &&
-    requestUrl.pathname !== ('/dashboard/sign-in' as Route)
+    !publicRoutes.includes(requestPath) &&
+    !unauthenticatedOnlyRoutes.includes(requestPath)
   ) {
     response = NextResponse.redirect(
       new URL('/dashboard/sign-in' as Route, requestUrl.origin),
@@ -60,9 +75,11 @@ export async function middleware(request: NextRequest) {
 
   if (
     user &&
-    (requestUrl.pathname === ('/dashboard/forgot-password' as Route) ||
-      requestUrl.pathname === ('/dashboard/sign-up' as Route) ||
-      requestUrl.pathname === ('/dashboard/sign-in' as Route))
+    !publicRoutes.includes(requestPath) &&
+    !authenticatedOnlyRoutes.includes(requestPath) &&
+    !authenticatedOnlyDynamicRoutes.some((route) =>
+      requestPath.startsWith(route),
+    )
   ) {
     response = NextResponse.redirect(
       new URL('/dashboard' as Route, requestUrl.origin),
@@ -91,10 +108,6 @@ export const config = {
     {
       source:
         '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' },
-      ],
     },
   ],
 };
