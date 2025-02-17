@@ -1,5 +1,5 @@
 import * as m from 'motion/react-m';
-import { ForwardedRef, forwardRef, useContext } from 'react';
+import { Ref, useContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
@@ -8,13 +8,18 @@ import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 
 type ToastProps = ToastObject & {
+  ref?: Ref<HTMLLIElement>;
   className?: string;
 };
 
-export const Toast = forwardRef(function Toast(
-  { message, id, type, className, ...props }: ToastProps,
-  ref: ForwardedRef<HTMLLIElement>,
-) {
+export function Toast({
+  message,
+  id,
+  type,
+  className,
+  ref,
+  ...props
+}: ToastProps) {
   const { removeToast } = useContext(ToastsContext);
 
   const { style, icon } = getToastAssets(type)!;
@@ -47,4 +52,4 @@ export const Toast = forwardRef(function Toast(
       </button>
     </m.li>
   );
-});
+}
