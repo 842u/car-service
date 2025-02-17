@@ -5,11 +5,21 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { Database } from './types/supabase';
 import { generateCspWithNonce } from './utils/security.mjs';
 
+const publicRoutes: Route[] = ['/'];
+
 const unauthenticatedOnlyRoutes: Route[] = [
   '/dashboard/sign-in',
   '/dashboard/sign-up',
   '/dashboard/forgot-password',
 ];
+
+const authenticatedOnlyRoutes: Route[] = [
+  '/dashboard',
+  '/dashboard/account',
+  '/dashboard/cars',
+];
+
+const authenticatedOnlyDynamicRoutes: Route[] = ['/dashboard/cars'];
 
 export async function middleware(request: NextRequest) {
   const { csp, nonce } = generateCspWithNonce();
@@ -52,7 +62,7 @@ export async function middleware(request: NextRequest) {
 
   if (
     !user &&
-    requestPath !== '/' &&
+    !publicRoutes.includes(requestPath) &&
     !unauthenticatedOnlyRoutes.includes(requestPath)
   ) {
     response = NextResponse.redirect(
@@ -63,7 +73,14 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  if (user && unauthenticatedOnlyRoutes.includes(requestPath)) {
+  if (
+    user &&
+    !publicRoutes.includes(requestPath) &&
+    !authenticatedOnlyRoutes.includes(requestPath) &&
+    !authenticatedOnlyDynamicRoutes.some((route) =>
+      requestPath.startsWith(route),
+    )
+  ) {
     response = NextResponse.redirect(
       new URL('/dashboard' as Route, requestUrl.origin),
       {
