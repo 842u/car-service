@@ -5,9 +5,16 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { Database } from './types/supabase';
 import { generateCspWithNonce } from './utils/security.mjs';
 
+const unauthenticatedOnlyRoutes: Route[] = [
+  '/dashboard/sign-in',
+  '/dashboard/sign-up',
+  '/dashboard/forgot-password',
+];
+
 export async function middleware(request: NextRequest) {
   const { csp, nonce } = generateCspWithNonce();
   const requestUrl = request.nextUrl.clone();
+  const requestPath = requestUrl.pathname as Route;
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-nonce', nonce);
@@ -45,10 +52,8 @@ export async function middleware(request: NextRequest) {
 
   if (
     !user &&
-    requestUrl.pathname !== ('/' as Route) &&
-    requestUrl.pathname !== ('/dashboard/forgot-password' as Route) &&
-    requestUrl.pathname !== ('/dashboard/sign-up' as Route) &&
-    requestUrl.pathname !== ('/dashboard/sign-in' as Route)
+    requestPath !== '/' &&
+    !unauthenticatedOnlyRoutes.includes(requestPath)
   ) {
     response = NextResponse.redirect(
       new URL('/dashboard/sign-in' as Route, requestUrl.origin),
@@ -58,12 +63,7 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  if (
-    user &&
-    (requestUrl.pathname === ('/dashboard/forgot-password' as Route) ||
-      requestUrl.pathname === ('/dashboard/sign-up' as Route) ||
-      requestUrl.pathname === ('/dashboard/sign-in' as Route))
-  ) {
+  if (user && unauthenticatedOnlyRoutes.includes(requestPath)) {
     response = NextResponse.redirect(
       new URL('/dashboard' as Route, requestUrl.origin),
       {
