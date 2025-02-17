@@ -18,6 +18,10 @@ const nextConfig = {
         hostname: 'avatars.githubusercontent.com',
       },
       {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
         protocol: process.env.APP_PROTOCOL,
         hostname: `${process.env.APP_DOMAIN}/**`,
         port: process.env.APP_API_PORT || '',
