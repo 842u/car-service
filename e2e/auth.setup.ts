@@ -1,4 +1,4 @@
-import { expect, test as setup } from '@playwright/test';
+import test, { expect, test as setup } from '@playwright/test';
 import { Route } from 'next';
 import path from 'path';
 
@@ -7,11 +7,14 @@ import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
 const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 
 setup('authenticate - @authenticated', async ({ page }) => {
-  await deleteTestUser();
-  await createTestUser();
+  const testUserIndex = test.info().workerIndex;
+
+  await deleteTestUser(testUserIndex);
+  await createTestUser(testUserIndex);
+
   const dashboardPath: Route = '/dashboard';
   const signInPath: Route = '/dashboard/sign-in';
-  const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+  const testUserEmail = testUserIndex + process.env.SUPABASE_TEST_USER_EMAIL!;
   const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
   await page.goto(signInPath);
@@ -26,4 +29,6 @@ setup('authenticate - @authenticated', async ({ page }) => {
   await expect(page).toHaveURL(dashboardPath);
 
   await page.context().storageState({ path: authFile });
+
+  await deleteTestUser(testUserIndex);
 });
