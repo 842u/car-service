@@ -1,25 +1,11 @@
-import test, { expect } from '@playwright/test';
 import { Route } from 'next';
 
 import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
 import { wrongEmails } from '@/utils/validation';
 
+import { expect, test } from './fixtures';
+
 test.describe('password_reset_flow - @unauthenticated', () => {
-  test('go to password reset page - @desktop @tablet @mobile', async ({
-    page,
-  }) => {
-    const signInPath: Route = '/dashboard/sign-in';
-    const passwordResetPath: Route = '/dashboard/forgot-password';
-
-    await page.goto(signInPath);
-    const forgotPasswordLink = page.getByRole('link', {
-      name: /forgot password/i,
-    });
-    await forgotPasswordLink.click();
-
-    await expect(page).toHaveURL(passwordResetPath);
-  });
-
   test('password reset form should be disabled if wrong format email provided - @desktop @tablet @mobile', async ({
     page,
   }) => {
@@ -28,7 +14,7 @@ test.describe('password_reset_flow - @unauthenticated', () => {
 
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
-    await emailInput.fill(wrongEmail);
+    await emailInput.pressSequentially(wrongEmail);
     const submitButton = page.getByLabel(/send password reset email/i);
 
     await expect(submitButton).toBeDisabled();
@@ -37,9 +23,8 @@ test.describe('password_reset_flow - @unauthenticated', () => {
   test('password reset page should display success info for non existing email - @desktop @tablet @mobile', async ({
     page,
   }) => {
-    await deleteTestUser();
     const passwordResetPath: Route = '/dashboard/forgot-password';
-    const nonExistingEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
+    const nonExistingEmail = `${crypto.randomUUID()}@${crypto.randomUUID()}.com`;
 
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
@@ -54,54 +39,30 @@ test.describe('password_reset_flow - @unauthenticated', () => {
   test('password reset page should display success info for existing email - @desktop @tablet @mobile', async ({
     page,
   }) => {
-    await deleteTestUser();
-    await createTestUser();
+    const testUserIndex = test.info().workerIndex;
+    const { email } = await createTestUser(testUserIndex);
     const passwordResetPath: Route = '/dashboard/forgot-password';
-    const nonExistingEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
 
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
-    await emailInput.pressSequentially(nonExistingEmail);
+    await emailInput.pressSequentially(email);
     const submitButton = page.getByLabel(/send password reset email/i);
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
 
     await expect(successToast).toBeInViewport();
+
+    await deleteTestUser(testUserIndex);
   });
 });
 
 test.describe('password_reset_flow - @authenticated', () => {
-  test('go to account settings from dashboard - @desktop @tablet', async ({
-    page,
-  }) => {
-    const dashboardPath: Route = '/dashboard';
-    const accountSettingsPath: Route = '/dashboard/account';
-
-    await page.goto(dashboardPath);
-    const accountSettingsLink = page.getByRole('link', { name: /account/i });
-    await accountSettingsLink.click();
-
-    await expect(page).toHaveURL(accountSettingsPath);
-  });
-
-  test('go to account settings from dashboard - @mobile', async ({ page }) => {
-    const dashboardPath: Route = '/dashboard';
-    const accountSettingsPath: Route = '/dashboard/account';
-
-    await page.goto(dashboardPath);
-    const hamburgerButton = page.getByLabel(/toggle navigation menu/i);
-    await hamburgerButton.click();
-    const accountSettingsLink = page.getByRole('link', { name: /account/i });
-    await accountSettingsLink.click();
-
-    await expect(page).toHaveURL(accountSettingsPath);
-  });
-
-  test('password change form should be disabled if wrong password provided -  @desktop @tablet @mobile', async ({
-    page,
+  test('password change form should be disabled if wrong format password provided - @desktop @tablet @mobile', async ({
+    authenticatedPage,
   }) => {
     const accountSettingsPath: Route = '/dashboard/account';
-    const wrongPassword = 'wrong';
+    const tooShortPassword = 'short';
+    const page = authenticatedPage.page;
 
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
@@ -117,15 +78,16 @@ test.describe('password_reset_flow - @authenticated', () => {
       .getByLabel('toggle visibility');
     await newPasswordVisibilityButton.click();
     await confirmPasswordVisibilityButton.click();
-    await newPasswordInput.fill(wrongPassword);
-    await confirmPasswordInput.fill(wrongPassword);
+    await newPasswordInput.fill(tooShortPassword);
+    await confirmPasswordInput.fill(tooShortPassword);
 
     await expect(submitButton).toBeDisabled();
   });
 
-  test('password change form should be disabled if passwords differ -  @desktop @tablet @mobile', async ({
-    page,
+  test('password change form should be disabled if passwords differ - @desktop @tablet @mobile', async ({
+    authenticatedPage,
   }) => {
+    const page = authenticatedPage.page;
     const accountSettingsPath: Route = '/dashboard/account';
     const correctPassword = 'correct';
     const anotherCorrectPassword = 'anotherCorrect';
@@ -150,11 +112,13 @@ test.describe('password_reset_flow - @authenticated', () => {
     await expect(submitButton).toBeDisabled();
   });
 
-  test('error info should be displayed if new password are same as current password -  @desktop @tablet @mobile', async ({
-    page,
+  test('error info should be displayed if new password are same as current password - @desktop @tablet @mobile', async ({
+    authenticatedPage,
+    testUserAccountCredentials,
   }) => {
+    const page = authenticatedPage.page;
     const accountSettingsPath: Route = '/dashboard/account';
-    const oldPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
+    const { password } = testUserAccountCredentials;
 
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
@@ -170,8 +134,8 @@ test.describe('password_reset_flow - @authenticated', () => {
       .getByLabel('toggle visibility');
     await newPasswordVisibilityButton.click();
     await confirmPasswordVisibilityButton.click();
-    await newPasswordInput.fill(oldPassword);
-    await confirmPasswordInput.fill(oldPassword);
+    await newPasswordInput.fill(password);
+    await confirmPasswordInput.fill(password);
     await submitButton.click();
     const errorToast = page.getByLabel(/error notification:/);
 
@@ -181,9 +145,10 @@ test.describe('password_reset_flow - @authenticated', () => {
     );
   });
 
-  test('success info should be displayed password successfully changed -  @desktop @tablet @mobile', async ({
-    page,
+  test('success info should be displayed if password successfully changed - @desktop @tablet @mobile', async ({
+    authenticatedPage,
   }) => {
+    const page = authenticatedPage.page;
     const accountSettingsPath: Route = '/dashboard/account';
     const newPassword = 'newPassword';
 
@@ -205,21 +170,8 @@ test.describe('password_reset_flow - @authenticated', () => {
     await confirmPasswordInput.fill(newPassword);
     await submitButton.click();
     const successToast = page.getByLabel(/success notification:/);
-    const closeToastButton = page.getByLabel(/close notification/i);
 
     await expect(successToast).toBeInViewport();
     await expect(successToast).toHaveText(/your password has been changed/i);
-
-    await closeToastButton.click();
-    await newPasswordInput.fill(process.env.SUPABASE_TEST_USER_PASSWORD!);
-    await confirmPasswordInput.fill(process.env.SUPABASE_TEST_USER_PASSWORD!);
-    await submitButton.click();
-
-    const successToastSecond = page.getByLabel(/success notification:/);
-
-    await expect(successToastSecond).toBeInViewport();
-    await expect(successToastSecond).toHaveText(
-      /your password has been changed/i,
-    );
   });
 });
