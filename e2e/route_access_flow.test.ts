@@ -1,4 +1,3 @@
-import test, { expect } from '@playwright/test';
 import { Route } from 'next';
 
 import {
@@ -7,6 +6,8 @@ import {
   publicRoutes,
   unauthenticatedOnlyRoutes,
 } from '@/middleware';
+
+import { expect, test } from './fixtures';
 
 test.describe('route_access_flow - @unauthenticated', () => {
   test('unauthenticated user can visit public routes - @mobile @tablet @desktop', async ({
@@ -51,8 +52,10 @@ test.describe('route_access_flow - @unauthenticated', () => {
 
 test.describe('route_access_flow - @authenticated', () => {
   test('authenticated user can visit public routes - @mobile @tablet @desktop', async ({
-    page,
+    authenticatedPage,
   }) => {
+    const page = authenticatedPage.page;
+
     for await (const route of publicRoutes) {
       await page.goto(route);
 
@@ -61,8 +64,10 @@ test.describe('route_access_flow - @authenticated', () => {
   });
 
   test('authenticated user can visit authenticated only routes - @mobile @tablet @desktop', async ({
-    page,
+    authenticatedPage,
   }) => {
+    const page = authenticatedPage.page;
+
     for await (const route of authenticatedOnlyRoutes) {
       await page.goto(route);
 
@@ -71,8 +76,9 @@ test.describe('route_access_flow - @authenticated', () => {
   });
 
   test('authenticated user can visit authenticated only dynamic routes - @mobile @tablet @desktop', async ({
-    page,
+    authenticatedPage,
   }) => {
+    const page = authenticatedPage.page;
     const dynamicRouteSegment = '/some_random_id';
 
     for await (const route of authenticatedOnlyDynamicRoutes) {
@@ -85,8 +91,9 @@ test.describe('route_access_flow - @authenticated', () => {
   });
 
   test('authenticated user should be redirected when accessing unauthenticated only routes - @mobile @tablet @desktop', async ({
-    page,
+    authenticatedPage,
   }) => {
+    const page = authenticatedPage.page;
     const redirectionRoute: Route = '/dashboard';
 
     for await (const route of unauthenticatedOnlyRoutes) {
