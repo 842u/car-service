@@ -152,7 +152,9 @@ export type Database = {
         Returns: undefined;
       };
       delete_test_user: {
-        Args: Record<PropertyKey, never>;
+        Args: {
+          test_user_index: number;
+        };
         Returns: undefined;
       };
     };
