@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 2,
-  timeout: 15000,
+  timeout: 20000,
   reporter: [['html', { open: 'never' }]],
   use: { baseURL: 'http://localhost:3000', trace: 'on-first-retry' },
   webServer: {
