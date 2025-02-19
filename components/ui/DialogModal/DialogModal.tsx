@@ -29,7 +29,7 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
     <dialog
       {...props}
       ref={dialogRef}
-      className="m-auto backdrop:backdrop-blur-xs"
+      className="m-auto bg-transparent backdrop:backdrop-blur-xs"
       onClick={() => dialogRef.current?.close()}
     >
       <div

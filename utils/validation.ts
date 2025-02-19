@@ -1,4 +1,8 @@
+import { RegisterOptions } from 'react-hook-form';
 import { z } from 'zod';
+
+import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
+import { Database } from '@/types/supabase';
 
 export const AVATAR_MAX_FILE_SIZE_BYTES = 1024 * 1024 * 3;
 export const AVATAR_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
@@ -93,6 +97,85 @@ export const usernameValidationRules = {
   pattern: {
     value: USERNAME_VALIDATION_REGEXP,
     message: 'Enter a valid username.',
+  },
+};
+
+export const carNameValidationRules: RegisterOptions<AddCarFormValues> = {
+  minLength: {
+    value: 1,
+    message: 'Minimum length is 1.',
+  },
+  maxLength: {
+    value: 30,
+    message: 'Maximum length is 30.',
+  },
+};
+
+export const carBrandValidationRules: RegisterOptions<AddCarFormValues> = {
+  minLength: {
+    value: 2,
+    message: 'Minimum length is 2.',
+  },
+  maxLength: {
+    value: 25,
+    message: 'Maximum length is 25.',
+  },
+};
+
+export const carModelValidationRules: RegisterOptions<AddCarFormValues> = {
+  minLength: {
+    value: 1,
+    message: 'Minimum length is 1.',
+  },
+  maxLength: {
+    value: 25,
+    message: 'Maximum length is 25.',
+  },
+};
+
+export const carLicensePlatesValidationRules: RegisterOptions<AddCarFormValues> =
+  {
+    minLength: {
+      value: 1,
+      message: 'Minimum length is 1.',
+    },
+    maxLength: {
+      value: 15,
+      message: 'Maximum length is 15.',
+    },
+  };
+
+export const carVinPlatesValidationRules: RegisterOptions<AddCarFormValues> = {
+  minLength: {
+    value: 17,
+    message: 'VIN must be 17 characters long.',
+  },
+  maxLength: {
+    value: 17,
+    message: 'VIN must be 17 characters long.',
+  },
+};
+
+export const fuelTypesMapping = {
+  CNG: 'CNG',
+  diesel: 'diesel',
+  electric: 'electric',
+  ethanol: 'ethanol',
+  gasoline: 'gasoline',
+  hybrid: 'hybrid',
+  hydrogen: 'hydrogen',
+  LPG: 'LPG',
+} satisfies Record<
+  Database['public']['Enums']['fuel'],
+  Database['public']['Enums']['fuel']
+>;
+
+export const carFuelTypePlatesValidationRules = {
+  validate: (value: unknown) => {
+    if (typeof value !== 'string' || !Object.hasOwn(fuelTypesMapping, value)) {
+      return 'Select proper value.';
+    }
+    return true;
   },
 };
 
