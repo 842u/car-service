@@ -44,7 +44,7 @@ htmlFiles.forEach((file) => {
     file,
     newFile.replace(
       INLINE_SCRIPT_MARK,
-      `<script src="/${basePath}/static/chunks/${hash}.js" crossorigin="" defer></script>`,
+      `<script src="/${basePath}/static/chunks/${hash}.js"></script>`,
     ),
   );
 
