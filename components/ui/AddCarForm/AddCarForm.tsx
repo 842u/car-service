@@ -1,18 +1,23 @@
 import { useForm } from 'react-hook-form';
-import { twMerge } from 'tailwind-merge';
 
-import { Database } from '@/types/supabase';
 import {
   carBrandValidationRules,
-  carFuelTypePlatesValidationRules,
   carLicensePlatesValidationRules,
   carModelValidationRules,
   carNameValidationRules,
-  carVinPlatesValidationRules,
+  carVinValidationRules,
+  driveTypesMapping,
   fuelTypesMapping,
+  getCarDatabaseEnumTypeValidationRules,
+  transmissionTypesMapping,
 } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
+import { Select } from '../Select/Select';
+
+type Fuel = keyof typeof fuelTypesMapping;
+type Transmission = keyof typeof transmissionTypesMapping;
+type Drive = keyof typeof driveTypesMapping;
 
 export type AddCarFormValues = {
   name: string | undefined;
@@ -20,10 +25,10 @@ export type AddCarFormValues = {
   model: string | undefined;
   licensePlates: string | undefined;
   vin: string | undefined;
-  fuelType: Database['public']['Enums']['fuel'] | undefined;
-  additionalFuelType: Database['public']['Enums']['fuel'] | undefined;
-  transmissionType: Database['public']['Enums']['transmission'] | undefined;
-  driveType: Database['public']['Enums']['drive'] | undefined;
+  fuelType: Fuel;
+  additionalFuelType: Fuel;
+  transmissionType: Transmission;
+  driveType: Drive;
   productionYear: number | undefined;
   engineCapacity: number | undefined;
   mileage: number | undefined;
@@ -36,10 +41,10 @@ const defaultAddCarFormValues: AddCarFormValues = {
   model: '',
   licensePlates: '',
   vin: '',
-  fuelType: 'gasoline',
-  additionalFuelType: 'gasoline',
-  transmissionType: 'manual',
-  driveType: 'FWD',
+  fuelType: '---',
+  additionalFuelType: '---',
+  transmissionType: '---',
+  driveType: '---',
   productionYear: 0,
   engineCapacity: 0,
   mileage: 0,
@@ -98,33 +103,49 @@ export function AddCarForm() {
         name="vin"
         placeholder="Enter a car VIN ..."
         register={register}
-        registerOptions={carVinPlatesValidationRules}
+        registerOptions={carVinValidationRules}
         type="text"
       />
-      <label className="text-sm" htmlFor="fuelType">
-        Fuel Type
-        <select
-          className={twMerge(
-            'border-alpha-grey-300 bg-light-600 dark:border-alpha-grey-300 dark:bg-dark-700 block w-full rounded-md border px-4 py-2',
-            errors.fuelType?.message
-              ? 'border-error-500 bg-error-200 focus:border-error-500 dark:bg-error-900'
-              : '',
-          )}
-          id="fuelType"
-          {...register('fuelType', carFuelTypePlatesValidationRules)}
-        >
-          <option value={1}>1</option>
-          <option value={fuelTypesMapping.CNG}>{fuelTypesMapping.CNG}</option>
-          <option value={fuelTypesMapping.diesel}>
-            {fuelTypesMapping.diesel}
-          </option>
-        </select>
-        {errors.fuelType?.message && (
-          <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
-            {errors.fuelType?.message || ' '}
-          </p>
+      <Select
+        errorMessage={errors.fuelType?.message}
+        label="Fuel Type"
+        name="fuelType"
+        options={fuelTypesMapping}
+        register={register}
+        registerOptions={getCarDatabaseEnumTypeValidationRules(
+          fuelTypesMapping,
         )}
-      </label>
+      />
+      <Select
+        errorMessage={errors.additionalFuelType?.message}
+        label="Additional Fuel Type"
+        name="additionalFuelType"
+        options={fuelTypesMapping}
+        register={register}
+        registerOptions={getCarDatabaseEnumTypeValidationRules(
+          fuelTypesMapping,
+        )}
+      />
+      <Select
+        errorMessage={errors.transmissionType?.message}
+        label="Transmission Type"
+        name="transmissionType"
+        options={transmissionTypesMapping}
+        register={register}
+        registerOptions={getCarDatabaseEnumTypeValidationRules(
+          transmissionTypesMapping,
+        )}
+      />
+      <Select
+        errorMessage={errors.driveType?.message}
+        label="Drive Type"
+        name="driveType"
+        options={driveTypesMapping}
+        register={register}
+        registerOptions={getCarDatabaseEnumTypeValidationRules(
+          driveTypesMapping,
+        )}
+      />
     </form>
   );
 }

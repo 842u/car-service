@@ -145,7 +145,7 @@ export const carLicensePlatesValidationRules: RegisterOptions<AddCarFormValues> 
     },
   };
 
-export const carVinPlatesValidationRules: RegisterOptions<AddCarFormValues> = {
+export const carVinValidationRules: RegisterOptions<AddCarFormValues> = {
   minLength: {
     value: 17,
     message: 'VIN must be 17 characters long.',
@@ -157,27 +157,56 @@ export const carVinPlatesValidationRules: RegisterOptions<AddCarFormValues> = {
 };
 
 export const fuelTypesMapping = {
-  CNG: 'CNG',
+  '---': undefined,
   diesel: 'diesel',
-  electric: 'electric',
-  ethanol: 'ethanol',
   gasoline: 'gasoline',
   hybrid: 'hybrid',
-  hydrogen: 'hydrogen',
+  electric: 'electric',
   LPG: 'LPG',
+  CNG: 'CNG',
+  ethanol: 'ethanol',
+  hydrogen: 'hydrogen',
 } satisfies Record<
   Database['public']['Enums']['fuel'],
   Database['public']['Enums']['fuel']
->;
+> & { '---': undefined };
 
-export const carFuelTypePlatesValidationRules = {
-  validate: (value: unknown) => {
-    if (typeof value !== 'string' || !Object.hasOwn(fuelTypesMapping, value)) {
-      return 'Select proper value.';
-    }
-    return true;
-  },
-};
+export const transmissionTypesMapping = {
+  '---': undefined,
+  manual: 'manual',
+  automatic: 'automatic',
+  CVT: 'CVT',
+} satisfies Record<
+  Database['public']['Enums']['transmission'],
+  Database['public']['Enums']['transmission']
+> & { '---': undefined };
+
+export const driveTypesMapping = {
+  '---': undefined,
+  FWD: 'FWD',
+  RWD: 'RWD',
+  AWD: 'AWD',
+  '4WD': '4WD',
+} satisfies Record<
+  Database['public']['Enums']['drive'],
+  Database['public']['Enums']['drive']
+> & { '---': undefined };
+
+export function getCarDatabaseEnumTypeValidationRules<
+  T extends { [key: string]: string | undefined },
+>(databaseCarEnumTypeMapping: T): RegisterOptions<AddCarFormValues> {
+  return {
+    validate: (value: unknown) => {
+      if (
+        typeof value !== 'string' ||
+        !Object.hasOwn(databaseCarEnumTypeMapping, value)
+      ) {
+        return 'Select proper value.';
+      }
+      return true;
+    },
+  };
+}
 
 export const emailSchema = z
   .string()
