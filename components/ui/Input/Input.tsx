@@ -53,7 +53,13 @@ export function Input<T extends FieldValues>({
           )}
           id={name}
           placeholder={placeholder}
-          type={isPasswordVisible ? 'text' : 'password'}
+          type={
+            type === 'password'
+              ? isPasswordVisible
+                ? 'text'
+                : 'password'
+              : type
+          }
           {...register(name, registerOptions)}
         />
         {type === 'password' && (
