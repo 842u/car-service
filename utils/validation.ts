@@ -2,7 +2,6 @@ import { RegisterOptions } from 'react-hook-form';
 import { z } from 'zod';
 
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Database } from '@/types/supabase';
 
 export const AVATAR_MAX_FILE_SIZE_BYTES = 1024 * 1024 * 3;
 export const AVATAR_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
@@ -186,42 +185,6 @@ export function getCarProductionYearValidationRules(): RegisterOptions<AddCarFor
     },
   };
 }
-
-export const fuelTypesMapping = {
-  '---': undefined,
-  diesel: 'diesel',
-  gasoline: 'gasoline',
-  hybrid: 'hybrid',
-  electric: 'electric',
-  LPG: 'LPG',
-  CNG: 'CNG',
-  ethanol: 'ethanol',
-  hydrogen: 'hydrogen',
-} satisfies Record<
-  Database['public']['Enums']['fuel'],
-  Database['public']['Enums']['fuel']
-> & { '---': undefined };
-
-export const transmissionTypesMapping = {
-  '---': undefined,
-  manual: 'manual',
-  automatic: 'automatic',
-  CVT: 'CVT',
-} satisfies Record<
-  Database['public']['Enums']['transmission'],
-  Database['public']['Enums']['transmission']
-> & { '---': undefined };
-
-export const driveTypesMapping = {
-  '---': undefined,
-  FWD: 'FWD',
-  RWD: 'RWD',
-  AWD: 'AWD',
-  '4WD': '4WD',
-} satisfies Record<
-  Database['public']['Enums']['drive'],
-  Database['public']['Enums']['drive']
-> & { '---': undefined };
 
 export function getCarDatabaseEnumTypeValidationRules<
   T extends { [key: string]: string | undefined },

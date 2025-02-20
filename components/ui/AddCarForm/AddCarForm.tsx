@@ -1,6 +1,14 @@
 import { useForm } from 'react-hook-form';
 
 import {
+  Drive,
+  driveTypesMapping,
+  Fuel,
+  fuelTypesMapping,
+  Transmission,
+  transmissionTypesMapping,
+} from '@/types';
+import {
   carBrandValidationRules,
   carEngineCapacityValidationRules,
   carLicensePlatesValidationRules,
@@ -8,19 +16,12 @@ import {
   carModelValidationRules,
   carNameValidationRules,
   carVinValidationRules,
-  driveTypesMapping,
-  fuelTypesMapping,
   getCarDatabaseEnumTypeValidationRules,
   getCarProductionYearValidationRules,
-  transmissionTypesMapping,
 } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
 import { Select } from '../Select/Select';
-
-type Fuel = keyof typeof fuelTypesMapping;
-type Transmission = keyof typeof transmissionTypesMapping;
-type Drive = keyof typeof driveTypesMapping;
 
 export type AddCarFormValues = {
   name: string | undefined;
