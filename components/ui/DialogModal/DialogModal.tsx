@@ -6,6 +6,8 @@ import {
   useRef,
 } from 'react';
 
+import { CloseBUtton } from '../CloseButton/CloseButton';
+
 export type DialogModalRef = {
   showModal: () => void;
 };
@@ -16,6 +18,8 @@ type DialogModalProps = ComponentPropsWithoutRef<'dialog'> & {
 
 export function DialogModal({ children, ref, ...props }: DialogModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const closeModal = () => dialogRef.current?.close();
 
   useImperativeHandle(ref, () => {
     return {
@@ -30,13 +34,16 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
       {...props}
       ref={dialogRef}
       className="m-auto bg-transparent backdrop:backdrop-blur-xs"
-      onClick={() => dialogRef.current?.close()}
+      onClick={closeModal}
     >
       <div
         onClick={(event: SyntheticEvent) => {
           event.stopPropagation();
         }}
       >
+        <div className="m-2 place-self-end">
+          <CloseBUtton onClick={closeModal} />
+        </div>
         {children}
       </div>
     </dialog>
