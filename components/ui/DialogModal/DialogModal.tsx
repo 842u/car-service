@@ -10,6 +10,7 @@ import { CloseBUtton } from '../CloseButton/CloseButton';
 
 export type DialogModalRef = {
   showModal: () => void;
+  closeModal: () => void;
 };
 
 type DialogModalProps = ComponentPropsWithoutRef<'dialog'> & {
@@ -26,6 +27,7 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
       showModal() {
         dialogRef.current?.showModal();
       },
+      closeModal,
     };
   }, []);
 
