@@ -2,13 +2,16 @@ import { useForm } from 'react-hook-form';
 
 import {
   carBrandValidationRules,
+  carEngineCapacityValidationRules,
   carLicensePlatesValidationRules,
+  carMileageValidationRules,
   carModelValidationRules,
   carNameValidationRules,
   carVinValidationRules,
   driveTypesMapping,
   fuelTypesMapping,
   getCarDatabaseEnumTypeValidationRules,
+  getCarProductionYearValidationRules,
   transmissionTypesMapping,
 } from '@/utils/validation';
 
@@ -45,7 +48,7 @@ const defaultAddCarFormValues: AddCarFormValues = {
   additionalFuelType: '---',
   transmissionType: '---',
   driveType: '---',
-  productionYear: 0,
+  productionYear: new Date().getFullYear(),
   engineCapacity: 0,
   mileage: 0,
   insuranceExpiration: new Date(),
@@ -145,6 +148,41 @@ export function AddCarForm() {
         registerOptions={getCarDatabaseEnumTypeValidationRules(
           driveTypesMapping,
         )}
+      />
+      <Input
+        errorMessage={errors.productionYear?.message}
+        label="Production Year"
+        name="productionYear"
+        placeholder="Enter production year ..."
+        register={register}
+        registerOptions={getCarProductionYearValidationRules()}
+        type="number"
+      />
+      <Input
+        errorMessage={errors.engineCapacity?.message}
+        label="Engine Capacity [cc]"
+        name="engineCapacity"
+        placeholder="Enter engine capacity ..."
+        register={register}
+        registerOptions={carEngineCapacityValidationRules}
+        type="number"
+      />
+      <Input
+        errorMessage={errors.mileage?.message}
+        label="Mileage [km]"
+        name="mileage"
+        placeholder="Enter a car mileage ..."
+        register={register}
+        registerOptions={carMileageValidationRules}
+        type="number"
+      />
+      <Input
+        errorMessage={errors.insuranceExpiration?.message}
+        label="Insurance Expiration Date"
+        name="insuranceExpiration"
+        placeholder="Enter insurance expiration date ..."
+        register={register}
+        type="date"
       />
     </form>
   );

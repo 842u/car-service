@@ -156,6 +156,37 @@ export const carVinValidationRules: RegisterOptions<AddCarFormValues> = {
   },
 };
 
+export const carEngineCapacityValidationRules: RegisterOptions<AddCarFormValues> =
+  {
+    valueAsNumber: true,
+    min: {
+      value: 0,
+      message: 'Value must be positive number.',
+    },
+  };
+
+export const carMileageValidationRules: RegisterOptions<AddCarFormValues> = {
+  valueAsNumber: true,
+  min: {
+    value: 0,
+    message: 'Value must be positive number.',
+  },
+};
+
+export function getCarProductionYearValidationRules(): RegisterOptions<AddCarFormValues> {
+  const maxYear = new Date().getFullYear() + 5;
+  return {
+    min: {
+      value: 1885,
+      message: 'Hey! First car was made in 1885.',
+    },
+    max: {
+      value: maxYear,
+      message: `Maximum production year is ${maxYear}.`,
+    },
+  };
+}
+
 export const fuelTypesMapping = {
   '---': undefined,
   diesel: 'diesel',

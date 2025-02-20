@@ -16,7 +16,7 @@ type InputProps<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   type: HTMLInputTypeAttribute;
-  registerOptions: RegisterOptions<T>;
+  registerOptions?: RegisterOptions<T>;
   placeholder?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
