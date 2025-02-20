@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   Drive,
@@ -20,8 +20,10 @@ import {
   getCarProductionYearValidationRules,
 } from '@/utils/validation';
 
+import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { Select } from '../Select/Select';
+import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 export type AddCarFormValues = {
   name: string | undefined;
@@ -55,16 +57,38 @@ const defaultAddCarFormValues: AddCarFormValues = {
   insuranceExpiration: new Date(),
 };
 
-export function AddCarForm() {
+type AddCarFormProps = {
+  onCancel?: () => void;
+};
+
+export function AddCarForm({ onCancel }: AddCarFormProps) {
   const {
     register,
-    formState: { errors },
+    reset,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
   } = useForm<AddCarFormValues>({
     mode: 'onTouched',
     defaultValues: defaultAddCarFormValues,
   });
+
+  const cancelForm = () => {
+    reset();
+    onCancel?.();
+  };
+
+  const submitHandler: SubmitHandler<AddCarFormValues> = async (data) => {
+    // eslint-disable-next-line
+    console.log(data);
+  };
+
   return (
-    <form className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10">
+    <form
+      className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10"
+      onSubmit={handleSubmit(submitHandler)}
+    >
+      <h2 className="text-xl">Add a new car</h2>
+      <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
       <Input
         errorMessage={errors.name?.message}
         label="Name"
@@ -185,6 +209,18 @@ export function AddCarForm() {
         register={register}
         type="date"
       />
+      <div className="flex gap-4">
+        <Button className="w-full" onClick={cancelForm}>
+          Cancel
+        </Button>
+        <SubmitButton
+          className="w-full"
+          disabled={!isValid || isSubmitting}
+          isSubmitting={isSubmitting}
+        >
+          Save
+        </SubmitButton>
+      </div>
     </form>
   );
 }
