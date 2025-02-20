@@ -1,6 +1,10 @@
 'use client';
 
-import { HTMLInputTypeAttribute, useState } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  HTMLInputTypeAttribute,
+  useState,
+} from 'react';
 import {
   FieldValues,
   Path,
@@ -20,7 +24,7 @@ type InputProps<T extends FieldValues> = {
   placeholder?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
-};
+} & ComponentPropsWithoutRef<'input'>;
 
 export function Input<T extends FieldValues>({
   register,
@@ -31,6 +35,7 @@ export function Input<T extends FieldValues>({
   registerOptions,
   errorMessage,
   showErrorMessage = true,
+  ...props
 }: InputProps<T>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(
     type !== 'password' || false,
@@ -60,6 +65,7 @@ export function Input<T extends FieldValues>({
                 : 'password'
               : type
           }
+          {...props}
           {...register(name, registerOptions)}
         />
         {type === 'password' && (
