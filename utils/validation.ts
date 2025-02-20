@@ -99,7 +99,7 @@ export const usernameValidationRules = {
   },
 };
 
-export const carNameValidationRules: RegisterOptions<AddCarFormValues> = {
+export const carNameValidationRules = {
   minLength: {
     value: 1,
     message: 'Minimum length is 1.',
@@ -108,9 +108,9 @@ export const carNameValidationRules: RegisterOptions<AddCarFormValues> = {
     value: 30,
     message: 'Maximum length is 30.',
   },
-};
+} satisfies RegisterOptions<AddCarFormValues>;
 
-export const carBrandValidationRules: RegisterOptions<AddCarFormValues> = {
+export const carBrandValidationRules = {
   minLength: {
     value: 2,
     message: 'Minimum length is 2.',
@@ -119,9 +119,9 @@ export const carBrandValidationRules: RegisterOptions<AddCarFormValues> = {
     value: 25,
     message: 'Maximum length is 25.',
   },
-};
+} satisfies RegisterOptions<AddCarFormValues>;
 
-export const carModelValidationRules: RegisterOptions<AddCarFormValues> = {
+export const carModelValidationRules = {
   minLength: {
     value: 1,
     message: 'Minimum length is 1.',
@@ -130,21 +130,20 @@ export const carModelValidationRules: RegisterOptions<AddCarFormValues> = {
     value: 25,
     message: 'Maximum length is 25.',
   },
-};
+} satisfies RegisterOptions<AddCarFormValues>;
 
-export const carLicensePlatesValidationRules: RegisterOptions<AddCarFormValues> =
-  {
-    minLength: {
-      value: 1,
-      message: 'Minimum length is 1.',
-    },
-    maxLength: {
-      value: 15,
-      message: 'Maximum length is 15.',
-    },
-  };
+export const carLicensePlatesValidationRules = {
+  minLength: {
+    value: 1,
+    message: 'Minimum length is 1.',
+  },
+  maxLength: {
+    value: 15,
+    message: 'Maximum length is 15.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
 
-export const carVinValidationRules: RegisterOptions<AddCarFormValues> = {
+export const carVinValidationRules = {
   minLength: {
     value: 17,
     message: 'VIN must be 17 characters long.',
@@ -153,26 +152,25 @@ export const carVinValidationRules: RegisterOptions<AddCarFormValues> = {
     value: 17,
     message: 'VIN must be 17 characters long.',
   },
-};
+} satisfies RegisterOptions<AddCarFormValues>;
 
-export const carEngineCapacityValidationRules: RegisterOptions<AddCarFormValues> =
-  {
-    valueAsNumber: true,
-    min: {
-      value: 0,
-      message: 'Value must be positive number.',
-    },
-  };
-
-export const carMileageValidationRules: RegisterOptions<AddCarFormValues> = {
+export const carEngineCapacityValidationRules = {
   valueAsNumber: true,
   min: {
     value: 0,
     message: 'Value must be positive number.',
   },
-};
+} satisfies RegisterOptions<AddCarFormValues>;
 
-export function getCarProductionYearValidationRules(): RegisterOptions<AddCarFormValues> {
+export const carMileageValidationRules = {
+  valueAsNumber: true,
+  min: {
+    value: 0,
+    message: 'Value must be positive number.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export function getCarProductionYearValidationRules() {
   const maxYear = new Date().getFullYear() + 5;
   return {
     min: {
@@ -183,7 +181,7 @@ export function getCarProductionYearValidationRules(): RegisterOptions<AddCarFor
       value: maxYear,
       message: `Maximum production year is ${maxYear}.`,
     },
-  };
+  } satisfies RegisterOptions<AddCarFormValues>;
 }
 
 export function getCarDatabaseEnumTypeValidationRules<
