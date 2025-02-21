@@ -2,12 +2,12 @@ import Image from 'next/image';
 
 import { BrandLogoFull } from '@/components/decorative/icons/BrandLogoFull';
 
-type CarImageProps = {
+type CarImagePreviewProps = {
   src?: string;
   className?: string;
 };
 
-export function CarImage({ src, className }: CarImageProps) {
+export function CarImagePreview({ src, className }: CarImagePreviewProps) {
   return (
     <div className={className}>
       {src ? (

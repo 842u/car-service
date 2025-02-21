@@ -24,7 +24,7 @@ import {
 } from '@/utils/validation';
 
 import { Button } from '../Button/Button';
-import { CarImage } from '../CarImage/CarImage';
+import { CarImagePreview } from '../CarImagePreview/CarImagePreview';
 import { Input } from '../Input/Input';
 import { InputImage, InputImageRef } from '../InputImage/InputImage';
 import { Select } from '../Select/Select';
@@ -120,7 +120,7 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
         className="border-alpha-grey-300 h-64 w-64 overflow-hidden rounded-lg border"
         control={control}
         errorMessage={errors.image?.message}
-        ImagePreviewComponent={CarImage}
+        ImagePreviewComponent={CarImagePreview}
         name="image"
         rules={carImageFileValidationRules}
       />
