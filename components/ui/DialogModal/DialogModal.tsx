@@ -35,17 +35,17 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
     <dialog
       {...props}
       ref={dialogRef}
-      className="m-auto bg-transparent backdrop:backdrop-blur-xs"
+      className="relative m-auto bg-transparent backdrop:backdrop-blur-xs"
       onClick={closeModal}
     >
+      <div className="absolute top-0 right-0 m-4">
+        <CloseBUtton onClick={closeModal} />
+      </div>
       <div
         onClick={(event: SyntheticEvent) => {
           event.stopPropagation();
         }}
       >
-        <div className="m-2 place-self-end">
-          <CloseBUtton onClick={closeModal} />
-        </div>
         {children}
       </div>
     </dialog>
