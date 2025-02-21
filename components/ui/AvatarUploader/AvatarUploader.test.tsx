@@ -9,8 +9,8 @@ import { UserProfileProvider } from '@/components/providers/UserProfileProvider'
 import { UserProfile } from '@/types';
 import { getMimeTypeExtensions } from '@/utils/general';
 import {
-  AVATAR_ACCEPTED_MIME_TYPES,
-  AVATAR_MAX_FILE_SIZE_BYTES,
+  IMAGE_FILE_ACCEPTED_MIME_TYPES,
+  IMAGE_FILE_MAX_SIZE_BYTES,
 } from '@/utils/validation';
 
 import { AVATAR_TEST_ID } from '../Avatar/Avatar';
@@ -25,9 +25,9 @@ const mockUserProfile = {
 } as const satisfies UserProfile;
 
 const avatarFile = new File(
-  [new Uint8Array(AVATAR_MAX_FILE_SIZE_BYTES)],
+  [new Uint8Array(IMAGE_FILE_MAX_SIZE_BYTES)],
   'avatar.png',
-  { type: AVATAR_ACCEPTED_MIME_TYPES[0] },
+  { type: IMAGE_FILE_ACCEPTED_MIME_TYPES[0] },
 );
 const avatarPreviewUrl = `blob:http://some/url/${avatarFile.name}`;
 
@@ -127,7 +127,7 @@ describe('AvatarUploader', () => {
 
   it('should render info about accepted file types', () => {
     const regexp = new RegExp(
-      getMimeTypeExtensions(AVATAR_ACCEPTED_MIME_TYPES),
+      getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES),
       'i',
     );
     render(<AvatarUploader />);
@@ -138,9 +138,7 @@ describe('AvatarUploader', () => {
   });
 
   it('should render info about max file size in MB', () => {
-    const regexp = new RegExp(
-      `${AVATAR_MAX_FILE_SIZE_BYTES / (1024 * 1024)}MB`,
-    );
+    const regexp = new RegExp(`${IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024)}MB`);
     render(<AvatarUploader />);
 
     const fileTypesInfo = screen.getByText(regexp);
@@ -176,9 +174,9 @@ describe('AvatarUploader', () => {
 
   it('should enable buttons when user choose correct file', async () => {
     const user = userEvent.setup({ applyAccept: false });
-    const correctFiles = AVATAR_ACCEPTED_MIME_TYPES.map(
+    const correctFiles = IMAGE_FILE_ACCEPTED_MIME_TYPES.map(
       (type) =>
-        new File([new Uint8Array(AVATAR_MAX_FILE_SIZE_BYTES)], type, { type }),
+        new File([new Uint8Array(IMAGE_FILE_MAX_SIZE_BYTES)], type, { type }),
     );
     render(<AvatarUploader />);
 
@@ -204,17 +202,17 @@ describe('AvatarUploader', () => {
   it('should disable buttons, revert avatar and display info when user choose incorrect file', async () => {
     const user = userEvent.setup({ applyAccept: false });
     const wrongTypeFile = new File(
-      [new Uint8Array(AVATAR_MAX_FILE_SIZE_BYTES)],
+      [new Uint8Array(IMAGE_FILE_MAX_SIZE_BYTES)],
       'wrong_type_file.gif',
       {
         type: 'image/gif',
       },
     );
     const tooBigFile = new File(
-      [new Uint8Array(AVATAR_MAX_FILE_SIZE_BYTES * 2)],
+      [new Uint8Array(IMAGE_FILE_MAX_SIZE_BYTES * 2)],
       'too_big_file.png',
       {
-        type: AVATAR_ACCEPTED_MIME_TYPES[0],
+        type: IMAGE_FILE_ACCEPTED_MIME_TYPES[0],
       },
     );
     const incorrectFiles = [wrongTypeFile, tooBigFile];
@@ -285,9 +283,9 @@ describe('AvatarUploader', () => {
 
   it('should display correct avatar preview on a correct file changes', async () => {
     const user = userEvent.setup({ applyAccept: false });
-    const correctFiles = AVATAR_ACCEPTED_MIME_TYPES.map(
+    const correctFiles = IMAGE_FILE_ACCEPTED_MIME_TYPES.map(
       (type) =>
-        new File([new Uint8Array(AVATAR_MAX_FILE_SIZE_BYTES)], type, { type }),
+        new File([new Uint8Array(IMAGE_FILE_MAX_SIZE_BYTES)], type, { type }),
     );
     render(
       <UserProfileProvider>

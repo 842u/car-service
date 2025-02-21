@@ -12,6 +12,7 @@ import {
 import {
   carBrandValidationRules,
   carEngineCapacityValidationRules,
+  carImageFileValidationRules,
   carLicensePlatesValidationRules,
   carMileageValidationRules,
   carModelValidationRules,
@@ -19,14 +20,18 @@ import {
   carVinValidationRules,
   getCarDatabaseEnumTypeValidationRules,
   getCarProductionYearValidationRules,
+  IMAGE_FILE_ACCEPTED_MIME_TYPES,
 } from '@/utils/validation';
 
 import { Button } from '../Button/Button';
+import { CarImage } from '../CarImage/CarImage';
 import { Input } from '../Input/Input';
+import { InputImage, InputImageRef } from '../InputImage/InputImage';
 import { Select } from '../Select/Select';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 export type AddCarFormValues = {
+  image: File | undefined;
   name: string | undefined;
   brand: string | undefined;
   model: string | undefined;
@@ -42,7 +47,8 @@ export type AddCarFormValues = {
   insuranceExpiration: Date | undefined;
 };
 
-const defaultAddCarFormValues: AddCarFormValues = {
+export const defaultAddCarFormValues: AddCarFormValues = {
+  image: undefined,
   name: '',
   brand: '',
   model: '',
@@ -75,24 +81,30 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
   const carProductionYearValidationRules = useRef(
     getCarProductionYearValidationRules(),
   );
+  const fileInputRef = useRef<InputImageRef>(null);
+
   const {
     register,
     reset,
     handleSubmit,
+    control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<AddCarFormValues>({
-    mode: 'onTouched',
+    mode: 'onChange',
     defaultValues: defaultAddCarFormValues,
   });
 
   const cancelForm = () => {
-    reset();
     onCancel?.();
+    fileInputRef.current?.reset();
+    reset();
   };
 
   const submitHandler: SubmitHandler<AddCarFormValues> = async (data) => {
     // eslint-disable-next-line
     console.log(data);
+    fileInputRef.current?.reset();
+    reset();
   };
 
   return (
@@ -102,6 +114,16 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
     >
       <h2 className="text-xl">Add a new car</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
+      <InputImage
+        ref={fileInputRef}
+        accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
+        className="border-alpha-grey-300 h-64 w-64 overflow-hidden rounded-lg border"
+        control={control}
+        errorMessage={errors.image?.message}
+        ImagePreviewComponent={CarImage}
+        name="image"
+        rules={carImageFileValidationRules}
+      />
       <Input
         errorMessage={errors.name?.message}
         label="Name"

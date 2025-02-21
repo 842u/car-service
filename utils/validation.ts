@@ -1,10 +1,10 @@
 import { RegisterOptions } from 'react-hook-form';
-import { z } from 'zod';
+import { z, ZodError } from 'zod';
 
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 
-export const AVATAR_MAX_FILE_SIZE_BYTES = 1024 * 1024 * 3;
-export const AVATAR_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
+export const IMAGE_FILE_MAX_SIZE_BYTES = 1024 * 1024 * 3;
+export const IMAGE_FILE_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
 export const EMAIL_VALIDATION_REGEXP =
   /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i;
 export const USERNAME_VALIDATION_REGEXP =
@@ -33,23 +33,15 @@ export const correctEmails = [
 export const wrongEmails = [
   'plainaddress',
   '@missingusername.com',
-  'username@.com',
-  'username@domain..com',
   'username@domain.c',
-  'username@domain,com',
   'username@domain@domain.com',
   'username@-domain.com',
   'username@domain.com.',
-  'username@domain.c#om',
-  'username@domain..com',
   'username@.com',
   '@domain.com',
-  'username@domain..com',
   'username@domain,com',
-  'username@domain..com',
   'user name@domain.com',
   'username@domain.c@om',
-  'username@domain..com',
   'username@domain.c#om',
   'username@domain..com',
 ];
@@ -170,6 +162,28 @@ export const carMileageValidationRules = {
   },
 } satisfies RegisterOptions<AddCarFormValues>;
 
+export const carImageFileValidationRules = {
+  validate: (value: unknown) => {
+    if (!(value instanceof File) && value) {
+      return 'Input value is not a file.';
+    }
+
+    if (value instanceof File) {
+      try {
+        imageFileSchema.parse(value);
+      } catch (error) {
+        if (error instanceof ZodError) {
+          return error.issues[0].message;
+        } else if (error instanceof Error) {
+          return error.message;
+        }
+      }
+    }
+
+    return true;
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
 export function getCarProductionYearValidationRules() {
   const maxYear = new Date().getFullYear() + 5;
   return {
@@ -197,7 +211,7 @@ export function getCarDatabaseEnumTypeValidationRules<
       }
       return true;
     },
-  };
+  } satisfies RegisterOptions<AddCarFormValues>;
 }
 
 export const emailSchema = z
@@ -213,15 +227,15 @@ export const passwordSchema = z
   .min(passwordValidationRules.minLength.value)
   .max(passwordValidationRules.maxLength.value);
 
-export const avatarFileSchema = z
+export const imageFileSchema = z
   .instanceof(File)
   .refine(
-    (file) => AVATAR_ACCEPTED_MIME_TYPES.includes(file.type),
-    `File must be of type: ${AVATAR_ACCEPTED_MIME_TYPES.join(', ')}`,
+    (file) => IMAGE_FILE_ACCEPTED_MIME_TYPES.includes(file.type),
+    `File must be of type: ${IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}`,
   )
   .refine(
-    (file) => file.size <= AVATAR_MAX_FILE_SIZE_BYTES,
+    (file) => file.size <= IMAGE_FILE_MAX_SIZE_BYTES,
     `File size must be less than ${
-      AVATAR_MAX_FILE_SIZE_BYTES / (1024 * 1024)
+      IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024)
     }MB`,
   );
