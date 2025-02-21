@@ -109,148 +109,156 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
 
   return (
     <form
-      className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10"
+      className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10 md:flex md:flex-wrap md:gap-x-10 lg:gap-x-5"
       onSubmit={handleSubmit(submitHandler)}
     >
       <h2 className="text-xl">Add a new car</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
-      <InputImage
-        ref={fileInputRef}
-        accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
-        className="border-alpha-grey-300 h-64 w-64 overflow-hidden rounded-lg border"
-        control={control}
-        errorMessage={errors.image?.message}
-        ImagePreviewComponent={CarImagePreview}
-        name="image"
-        rules={carImageFileValidationRules}
-      />
-      <Input
-        errorMessage={errors.name?.message}
-        label="Name"
-        maxLength={carNameValidationRules.maxLength.value}
-        minLength={carNameValidationRules.minLength.value}
-        name="name"
-        placeholder="Enter a name for a car ..."
-        register={register}
-        registerOptions={carNameValidationRules}
-        type="text"
-      />
-      <Input
-        errorMessage={errors.brand?.message}
-        label="Brand"
-        maxLength={carBrandValidationRules.maxLength.value}
-        minLength={carBrandValidationRules.minLength.value}
-        name="brand"
-        placeholder="Enter a car brand ..."
-        register={register}
-        registerOptions={carBrandValidationRules}
-        type="text"
-      />
-      <Input
-        errorMessage={errors.model?.message}
-        label="Model"
-        maxLength={carModelValidationRules.maxLength.value}
-        minLength={carModelValidationRules.minLength.value}
-        name="model"
-        placeholder="Enter a car model ..."
-        register={register}
-        registerOptions={carModelValidationRules}
-        type="text"
-      />
-      <Input
-        errorMessage={errors.licensePlates?.message}
-        label="License Plates"
-        maxLength={carLicensePlatesValidationRules.maxLength.value}
-        minLength={carLicensePlatesValidationRules.minLength.value}
-        name="licensePlates"
-        placeholder="Enter a car license plates ..."
-        register={register}
-        registerOptions={carLicensePlatesValidationRules}
-        type="text"
-      />
-      <Input
-        errorMessage={errors.vin?.message}
-        label="VIN"
-        maxLength={carVinValidationRules.maxLength.value}
-        minLength={carVinValidationRules.minLength.value}
-        name="vin"
-        placeholder="Enter a car VIN ..."
-        register={register}
-        registerOptions={carVinValidationRules}
-        type="text"
-      />
-      <Select
-        errorMessage={errors.fuelType?.message}
-        label="Fuel Type"
-        name="fuelType"
-        options={fuelTypesMapping}
-        register={register}
-        registerOptions={carFuelTypeValidationRules.current}
-      />
-      <Select
-        errorMessage={errors.additionalFuelType?.message}
-        label="Additional Fuel Type"
-        name="additionalFuelType"
-        options={fuelTypesMapping}
-        register={register}
-        registerOptions={carFuelTypeValidationRules.current}
-      />
-      <Select
-        errorMessage={errors.transmissionType?.message}
-        label="Transmission Type"
-        name="transmissionType"
-        options={transmissionTypesMapping}
-        register={register}
-        registerOptions={carTransmissionTypeValidationRules.current}
-      />
-      <Select
-        errorMessage={errors.driveType?.message}
-        label="Drive Type"
-        name="driveType"
-        options={driveTypesMapping}
-        register={register}
-        registerOptions={carDriveTypeValidationRules.current}
-      />
-      <Input
-        errorMessage={errors.productionYear?.message}
-        label="Production Year"
-        max={carProductionYearValidationRules.current.max.value}
-        min={carProductionYearValidationRules.current.min.value}
-        name="productionYear"
-        placeholder="Enter production year ..."
-        register={register}
-        registerOptions={carProductionYearValidationRules.current}
-        type="number"
-      />
-      <Input
-        errorMessage={errors.engineCapacity?.message}
-        label="Engine Capacity [cc]"
-        min={carEngineCapacityValidationRules.min.value}
-        name="engineCapacity"
-        placeholder="Enter engine capacity ..."
-        register={register}
-        registerOptions={carEngineCapacityValidationRules}
-        type="number"
-      />
-      <Input
-        errorMessage={errors.mileage?.message}
-        label="Mileage [km]"
-        min={carMileageValidationRules.min.value}
-        name="mileage"
-        placeholder="Enter a car mileage ..."
-        register={register}
-        registerOptions={carMileageValidationRules}
-        type="number"
-      />
-      <Input
-        errorMessage={errors.insuranceExpiration?.message}
-        label="Insurance Expiration Date"
-        name="insuranceExpiration"
-        placeholder="Enter insurance expiration date ..."
-        register={register}
-        type="date"
-      />
-      <div className="flex gap-4">
+      <div className="md:flex md:flex-1 md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">
+        <InputImage
+          ref={fileInputRef}
+          accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
+          className="border-alpha-grey-300 h-64 w-64 overflow-hidden rounded-lg border"
+          control={control}
+          errorMessage={errors.image?.message}
+          ImagePreviewComponent={CarImagePreview}
+          name="image"
+          rules={carImageFileValidationRules}
+        />
+      </div>
+      <div className="md:flex-1 md:basis-1/3 lg:basis-1/5">
+        <Input
+          errorMessage={errors.name?.message}
+          label="Name"
+          maxLength={carNameValidationRules.maxLength.value}
+          minLength={carNameValidationRules.minLength.value}
+          name="name"
+          placeholder="Enter a name for a car ..."
+          register={register}
+          registerOptions={carNameValidationRules}
+          type="text"
+        />
+        <Input
+          errorMessage={errors.brand?.message}
+          label="Brand"
+          maxLength={carBrandValidationRules.maxLength.value}
+          minLength={carBrandValidationRules.minLength.value}
+          name="brand"
+          placeholder="Enter a car brand ..."
+          register={register}
+          registerOptions={carBrandValidationRules}
+          type="text"
+        />
+        <Input
+          errorMessage={errors.model?.message}
+          label="Model"
+          maxLength={carModelValidationRules.maxLength.value}
+          minLength={carModelValidationRules.minLength.value}
+          name="model"
+          placeholder="Enter a car model ..."
+          register={register}
+          registerOptions={carModelValidationRules}
+          type="text"
+        />
+        <Input
+          errorMessage={errors.licensePlates?.message}
+          label="License Plates"
+          maxLength={carLicensePlatesValidationRules.maxLength.value}
+          minLength={carLicensePlatesValidationRules.minLength.value}
+          name="licensePlates"
+          placeholder="Enter a car license plates ..."
+          register={register}
+          registerOptions={carLicensePlatesValidationRules}
+          type="text"
+        />
+        <Input
+          errorMessage={errors.vin?.message}
+          label="VIN"
+          maxLength={carVinValidationRules.maxLength.value}
+          minLength={carVinValidationRules.minLength.value}
+          name="vin"
+          placeholder="Enter a car VIN ..."
+          register={register}
+          registerOptions={carVinValidationRules}
+          type="text"
+        />
+      </div>
+      <div className="md:flex-1 md:basis-1/3 lg:basis-1/5">
+        <Select
+          errorMessage={errors.fuelType?.message}
+          label="Fuel Type"
+          name="fuelType"
+          options={fuelTypesMapping}
+          register={register}
+          registerOptions={carFuelTypeValidationRules.current}
+        />
+        <Select
+          errorMessage={errors.additionalFuelType?.message}
+          label="Additional Fuel Type"
+          name="additionalFuelType"
+          options={fuelTypesMapping}
+          register={register}
+          registerOptions={carFuelTypeValidationRules.current}
+        />
+        <Select
+          errorMessage={errors.transmissionType?.message}
+          label="Transmission Type"
+          name="transmissionType"
+          options={transmissionTypesMapping}
+          register={register}
+          registerOptions={carTransmissionTypeValidationRules.current}
+        />
+        <Select
+          errorMessage={errors.driveType?.message}
+          label="Drive Type"
+          name="driveType"
+          options={driveTypesMapping}
+          register={register}
+          registerOptions={carDriveTypeValidationRules.current}
+        />
+      </div>
+      <div className="md:flex-1 md:basis-1/3 lg:basis-1/5">
+        <Input
+          errorMessage={errors.productionYear?.message}
+          label="Production Year"
+          max={carProductionYearValidationRules.current.max.value}
+          min={carProductionYearValidationRules.current.min.value}
+          name="productionYear"
+          placeholder="Enter production year ..."
+          register={register}
+          registerOptions={carProductionYearValidationRules.current}
+          type="number"
+        />
+        <Input
+          errorMessage={errors.engineCapacity?.message}
+          label="Engine Capacity [cc]"
+          min={carEngineCapacityValidationRules.min.value}
+          name="engineCapacity"
+          placeholder="Enter engine capacity ..."
+          register={register}
+          registerOptions={carEngineCapacityValidationRules}
+          type="number"
+        />
+        <Input
+          errorMessage={errors.mileage?.message}
+          label="Mileage [km]"
+          min={carMileageValidationRules.min.value}
+          name="mileage"
+          placeholder="Enter a car mileage ..."
+          register={register}
+          registerOptions={carMileageValidationRules}
+          type="number"
+        />
+        <Input
+          errorMessage={errors.insuranceExpiration?.message}
+          label="Insurance Expiration Date"
+          name="insuranceExpiration"
+          placeholder="Enter insurance expiration date ..."
+          register={register}
+          type="date"
+        />
+      </div>
+      <div className="my-5 flex gap-10 md:flex-1 md:basis-full lg:gap-5">
         <Button className="w-full" onClick={cancelForm}>
           Cancel
         </Button>
