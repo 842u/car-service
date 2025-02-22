@@ -44,7 +44,7 @@ export type AddCarFormValues = {
   productionYear: number | undefined;
   engineCapacity: number | undefined;
   mileage: number | undefined;
-  insuranceExpiration: Date | undefined;
+  insuranceExpiration: string | undefined;
 };
 
 export const defaultAddCarFormValues: AddCarFormValues = {
@@ -61,7 +61,7 @@ export const defaultAddCarFormValues: AddCarFormValues = {
   productionYear: new Date().getFullYear(),
   engineCapacity: 0,
   mileage: 0,
-  insuranceExpiration: new Date(),
+  insuranceExpiration: new Date().toISOString().split('T')[0],
 };
 
 export function AddCarForm() {
