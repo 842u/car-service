@@ -118,7 +118,7 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
         <InputImage
           ref={fileInputRef}
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
-          className="border-alpha-grey-300 h-64 w-64 overflow-hidden rounded-lg border"
+          className="h-64 w-64 overflow-hidden rounded-lg border"
           control={control}
           errorMessage={errors.image?.message}
           ImagePreviewComponent={CarImagePreview}

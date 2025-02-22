@@ -13,7 +13,7 @@ export function CarImagePreview({ src, className }: CarImagePreviewProps) {
       {src ? (
         <Image fill alt="car image" src={src} />
       ) : (
-        <BrandLogoFull className="stroke-alpha-grey-300 stroke-2" />
+        <BrandLogoFull className="stroke-alpha-grey-600 stroke-1" />
       )}
     </div>
   );

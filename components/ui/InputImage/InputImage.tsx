@@ -52,16 +52,19 @@ export function InputImage({
         {label && <p className="self-start py-2 text-sm">{label}</p>}
         <div
           className={twMerge(
-            'relative',
+            'border-alpha-grey-400 relative',
             className,
             errorMessage
               ? 'border-error-500 focus:border-error-500 border-2'
               : '',
           )}
         >
-          {errorMessage && (
-            <div className="bg-error-500/10 absolute z-10 h-full w-full" />
-          )}
+          <div
+            className={twMerge(
+              'bg-light-600 dark:bg-dark-700 absolute z-0 h-full w-full',
+              errorMessage ? 'bg-error-500/10 dark:bg-error-500/10 z-10' : '',
+            )}
+          />
           {ImagePreviewComponent && (
             <ImagePreviewComponent
               className="absolute h-full w-full"
