@@ -14,7 +14,7 @@ export function CloseBUtton({ className, ...props }: AddCarButtonProps) {
     <Button
       aria-label="close dialog modal"
       className={twMerge(
-        'border-accent-400 bg-accent-800 hover:bg-accent-700 dark:bg-accent-900 dark:hover:bg-accent-800 aspect-square cursor-pointer rounded-lg border-1 p-0 transition-colors',
+        'border-accent-500 bg-accent-800 aspect-square cursor-pointer rounded-lg border-1 p-0',
         className,
       )}
       type="button"
