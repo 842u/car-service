@@ -15,7 +15,7 @@ export default function CarsPage() {
   return (
     <main className="flex h-screen flex-col items-center justify-center">
       <DialogModal ref={addCarModalRef}>
-        <AddCarForm onCancel={() => addCarModalRef.current?.closeModal()} />
+        <AddCarForm />
       </DialogModal>
       <AddCarButton
         className="fixed right-0 bottom-0 m-4 md:m-8 lg:m-12"

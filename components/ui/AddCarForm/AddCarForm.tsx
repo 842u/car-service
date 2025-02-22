@@ -64,11 +64,7 @@ export const defaultAddCarFormValues: AddCarFormValues = {
   insuranceExpiration: new Date(),
 };
 
-type AddCarFormProps = {
-  onCancel?: () => void;
-};
-
-export function AddCarForm({ onCancel }: AddCarFormProps) {
+export function AddCarForm() {
   const carFuelTypeValidationRules = useRef(
     getCarDatabaseEnumTypeValidationRules(fuelTypesMapping),
   );
@@ -88,14 +84,13 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
     reset,
     handleSubmit,
     control,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<AddCarFormValues>({
     mode: 'onChange',
     defaultValues: defaultAddCarFormValues,
   });
 
-  const cancelForm = () => {
-    onCancel?.();
+  const resetButtonHandler = () => {
     fileInputRef.current?.reset();
     reset();
   };
@@ -260,8 +255,12 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
         />
       </div>
       <div className="mt-5 flex gap-10 md:flex-auto md:basis-full lg:justify-end lg:gap-5">
-        <Button className="w-full lg:max-w-48" onClick={cancelForm}>
-          Cancel
+        <Button
+          className="w-full lg:max-w-48"
+          disabled={isSubmitting || !isDirty}
+          onClick={resetButtonHandler}
+        >
+          Reset
         </Button>
         <SubmitButton
           className="w-full lg:max-w-48"
