@@ -122,6 +122,7 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
           control={control}
           errorMessage={errors.image?.message}
           ImagePreviewComponent={CarImagePreview}
+          label="Image"
           name="image"
           rules={carImageFileValidationRules}
         />
