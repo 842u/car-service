@@ -109,12 +109,12 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
 
   return (
     <form
-      className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10 md:flex md:flex-wrap md:gap-x-10 lg:gap-x-5"
+      className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10 md:flex md:flex-wrap md:gap-x-10 lg:gap-x-5 lg:p-5"
       onSubmit={handleSubmit(submitHandler)}
     >
       <h2 className="text-xl">Add a new car</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
-      <div className="md:flex md:flex-1 md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">
+      <div className="md:flex md:flex-auto md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">
         <InputImage
           ref={fileInputRef}
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
@@ -126,7 +126,7 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
           rules={carImageFileValidationRules}
         />
       </div>
-      <div className="md:flex-1 md:basis-1/3 lg:basis-1/5">
+      <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
         <Input
           errorMessage={errors.name?.message}
           label="Name"
@@ -183,7 +183,7 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
           type="text"
         />
       </div>
-      <div className="md:flex-1 md:basis-1/3 lg:basis-1/5">
+      <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
         <Select
           errorMessage={errors.fuelType?.message}
           label="Fuel Type"
@@ -217,7 +217,7 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
           registerOptions={carDriveTypeValidationRules.current}
         />
       </div>
-      <div className="md:flex-1 md:basis-1/3 lg:basis-1/5">
+      <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
         <Input
           errorMessage={errors.productionYear?.message}
           label="Production Year"
@@ -258,12 +258,12 @@ export function AddCarForm({ onCancel }: AddCarFormProps) {
           type="date"
         />
       </div>
-      <div className="my-5 flex gap-10 md:flex-1 md:basis-full lg:gap-5">
-        <Button className="w-full" onClick={cancelForm}>
+      <div className="mt-5 flex gap-10 md:flex-auto md:basis-full lg:justify-end lg:gap-5">
+        <Button className="w-full lg:max-w-48" onClick={cancelForm}>
           Cancel
         </Button>
         <SubmitButton
-          className="w-full"
+          className="w-full lg:max-w-48"
           disabled={!isValid || isSubmitting}
           isSubmitting={isSubmitting}
         >
