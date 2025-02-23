@@ -5,7 +5,7 @@ import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { fetchUserProfile, hashFile } from '@/utils/general';
 import { createClient } from '@/utils/supabase/client';
-import { avatarFileSchema } from '@/utils/validation';
+import { imageFileSchema } from '@/utils/validation';
 
 export function useAvatarUpload() {
   const { addToast } = useContext(ToastsContext);
@@ -45,7 +45,7 @@ export function useAvatarUpload() {
 
       if (file) {
         try {
-          avatarFileSchema.parse(file);
+          imageFileSchema.parse(file);
           avatarPreviewUrl.current = URL.createObjectURL(file);
 
           setAvatarPreviewFile(file);

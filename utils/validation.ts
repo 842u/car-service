@@ -1,7 +1,10 @@
-import { z } from 'zod';
+import { RegisterOptions } from 'react-hook-form';
+import { z, ZodError } from 'zod';
 
-export const AVATAR_MAX_FILE_SIZE_BYTES = 1024 * 1024 * 3;
-export const AVATAR_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
+import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
+
+export const IMAGE_FILE_MAX_SIZE_BYTES = 1024 * 1024 * 3;
+export const IMAGE_FILE_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
 export const EMAIL_VALIDATION_REGEXP =
   /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i;
 export const USERNAME_VALIDATION_REGEXP =
@@ -30,23 +33,15 @@ export const correctEmails = [
 export const wrongEmails = [
   'plainaddress',
   '@missingusername.com',
-  'username@.com',
-  'username@domain..com',
   'username@domain.c',
-  'username@domain,com',
   'username@domain@domain.com',
   'username@-domain.com',
   'username@domain.com.',
-  'username@domain.c#om',
-  'username@domain..com',
   'username@.com',
   '@domain.com',
-  'username@domain..com',
   'username@domain,com',
-  'username@domain..com',
   'user name@domain.com',
   'username@domain.c@om',
-  'username@domain..com',
   'username@domain.c#om',
   'username@domain..com',
 ];
@@ -96,6 +91,129 @@ export const usernameValidationRules = {
   },
 };
 
+export const carNameValidationRules = {
+  minLength: {
+    value: 1,
+    message: 'Minimum length is 1.',
+  },
+  maxLength: {
+    value: 30,
+    message: 'Maximum length is 30.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export const carBrandValidationRules = {
+  minLength: {
+    value: 2,
+    message: 'Minimum length is 2.',
+  },
+  maxLength: {
+    value: 25,
+    message: 'Maximum length is 25.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export const carModelValidationRules = {
+  minLength: {
+    value: 1,
+    message: 'Minimum length is 1.',
+  },
+  maxLength: {
+    value: 25,
+    message: 'Maximum length is 25.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export const carLicensePlatesValidationRules = {
+  minLength: {
+    value: 1,
+    message: 'Minimum length is 1.',
+  },
+  maxLength: {
+    value: 15,
+    message: 'Maximum length is 15.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export const carVinValidationRules = {
+  minLength: {
+    value: 17,
+    message: 'VIN must be 17 characters long.',
+  },
+  maxLength: {
+    value: 17,
+    message: 'VIN must be 17 characters long.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export const carEngineCapacityValidationRules = {
+  valueAsNumber: true,
+  min: {
+    value: 0,
+    message: 'Value must be positive number.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export const carMileageValidationRules = {
+  valueAsNumber: true,
+  min: {
+    value: 0,
+    message: 'Value must be positive number.',
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export const carImageFileValidationRules = {
+  validate: (value: unknown) => {
+    if (!(value instanceof File) && value) {
+      return 'Input value is not a file.';
+    }
+
+    if (value instanceof File) {
+      try {
+        imageFileSchema.parse(value);
+      } catch (error) {
+        if (error instanceof ZodError) {
+          return error.issues[0].message;
+        } else if (error instanceof Error) {
+          return error.message;
+        }
+      }
+    }
+
+    return true;
+  },
+} satisfies RegisterOptions<AddCarFormValues>;
+
+export function getCarProductionYearValidationRules() {
+  const maxYear = new Date().getFullYear() + 5;
+  return {
+    min: {
+      value: 1885,
+      message: 'Hey! First car was made in 1885.',
+    },
+    max: {
+      value: maxYear,
+      message: `Maximum production year is ${maxYear}.`,
+    },
+  } satisfies RegisterOptions<AddCarFormValues>;
+}
+
+export function getCarDatabaseEnumTypeValidationRules<
+  T extends { [key: string]: string | undefined },
+>(databaseCarEnumTypeMapping: T): RegisterOptions<AddCarFormValues> {
+  return {
+    validate: (value: unknown) => {
+      if (
+        typeof value !== 'string' ||
+        !Object.hasOwn(databaseCarEnumTypeMapping, value)
+      ) {
+        return 'Select proper value.';
+      }
+      return true;
+    },
+  } satisfies RegisterOptions<AddCarFormValues>;
+}
+
 export const emailSchema = z
   .string()
   .trim()
@@ -109,15 +227,15 @@ export const passwordSchema = z
   .min(passwordValidationRules.minLength.value)
   .max(passwordValidationRules.maxLength.value);
 
-export const avatarFileSchema = z
+export const imageFileSchema = z
   .instanceof(File)
   .refine(
-    (file) => AVATAR_ACCEPTED_MIME_TYPES.includes(file.type),
-    `File must be of type: ${AVATAR_ACCEPTED_MIME_TYPES.join(', ')}`,
+    (file) => IMAGE_FILE_ACCEPTED_MIME_TYPES.includes(file.type),
+    `File must be of type: ${IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}`,
   )
   .refine(
-    (file) => file.size <= AVATAR_MAX_FILE_SIZE_BYTES,
+    (file) => file.size <= IMAGE_FILE_MAX_SIZE_BYTES,
     `File size must be less than ${
-      AVATAR_MAX_FILE_SIZE_BYTES / (1024 * 1024)
+      IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024)
     }MB`,
   );
