@@ -9,6 +9,8 @@ import {
   Transmission,
   transmissionTypesMapping,
 } from '@/types';
+import { hashFile } from '@/utils/general';
+import { createClient } from '@/utils/supabase/client';
 import {
   carBrandValidationRules,
   carEngineCapacityValidationRules,
@@ -96,10 +98,47 @@ export function AddCarForm() {
   };
 
   const submitHandler: SubmitHandler<AddCarFormValues> = async (data) => {
-    // eslint-disable-next-line
+    /* eslint-disable */
     console.log(data);
+
+    const supabase = createClient();
+
+    const { data: carInsertData, error: carInsertError } = await supabase
+      .from('cars')
+      .insert({ custom_name: data.name || 's' })
+      .select('id');
+
+    console.log('car insert data', carInsertData);
+    console.log('car insert error', carInsertError);
+
+    if (data.image && carInsertData?.[0].id) {
+      const hashedFile = await hashFile(data.image);
+
+      const { data: imgData, error: imgError } = await supabase.storage
+        .from('cars_images')
+        .upload(`${carInsertData[0].id}/${hashedFile}`, data.image);
+
+      console.log('image data', imgData);
+      console.log('image error', imgError);
+    }
+
+    // if (data.image) {
+    //   const hashedFile = await hashFile(data.image);
+
+    //   const { data: imgData, error: imgError } = await supabase.storage
+    //     .from('cars_images')
+    //     .upload(
+    //       `62c3e5a4-4803-48a3-9c52-7af21c803257/${hashedFile}`,
+    //       data.image,
+    //     );
+
+    //   console.log('image data', imgData);
+    //   console.log('image error', imgError);
+    // }
+
     fileInputRef.current?.reset();
     reset();
+    /* eslint-enable */
   };
 
   return (

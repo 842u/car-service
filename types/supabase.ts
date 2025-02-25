@@ -39,7 +39,8 @@ export type Database = {
           additional_fuel_type: Database['public']['Enums']['fuel'] | null;
           brand: string | null;
           created_at: string | null;
-          custom_name: string | null;
+          created_by: string | null;
+          custom_name: string;
           drive_type: Database['public']['Enums']['drive'] | null;
           engine_capacity: number | null;
           fuel_type: Database['public']['Enums']['fuel'] | null;
@@ -57,7 +58,8 @@ export type Database = {
           additional_fuel_type?: Database['public']['Enums']['fuel'] | null;
           brand?: string | null;
           created_at?: string | null;
-          custom_name?: string | null;
+          created_by?: string | null;
+          custom_name: string;
           drive_type?: Database['public']['Enums']['drive'] | null;
           engine_capacity?: number | null;
           fuel_type?: Database['public']['Enums']['fuel'] | null;
@@ -77,7 +79,8 @@ export type Database = {
           additional_fuel_type?: Database['public']['Enums']['fuel'] | null;
           brand?: string | null;
           created_at?: string | null;
-          custom_name?: string | null;
+          created_by?: string | null;
+          custom_name?: string;
           drive_type?: Database['public']['Enums']['drive'] | null;
           engine_capacity?: number | null;
           fuel_type?: Database['public']['Enums']['fuel'] | null;
