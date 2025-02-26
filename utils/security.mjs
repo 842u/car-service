@@ -48,6 +48,7 @@ export const baseContentSecurityPolicy = {
     "'self'",
     "'sha256-Ec/XLCqW9IkiT3yUDKK5ftmkQGcF3JzHW7lzlrWMZYQ='",
     "'sha256-sLdiz4PQQzticSdaUW5ty68d0bM0ZaiN4Ko1Xxbh4jA='",
+    "'sha256-+aUwzZvCg5noHa8zZgqXocOLZhkL6IC9dsa3++C9XJc='",
   ],
   'style-src': [
     "'self'",
