@@ -51,11 +51,11 @@ export const baseContentSecurityPolicy = {
   ],
   'style-src': [
     "'self'",
-
     "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
     "'sha256-VjPIq1cYqXznFbZg7dYdy285nQGu6nQh4zRwpyOevA0='",
     "'sha256-Q0BRfbzjuC2JhFhdJpVT7aFVDDzlEZ/CbsTK7RoZPas='",
     "'sha256-sPjiXln3Zc/F3lTtseqJMn52NO0hTM326TnrNNPO+5M='",
+    `${process.env.NODE_ENV === 'development' ? `'nonce-reactQueryDevtools'` : ''}`,
   ],
   'font-src': ["'self'"],
   'img-src': ["'self'", 'data:', 'blob:'],

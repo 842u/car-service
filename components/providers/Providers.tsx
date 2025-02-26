@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { ColorThemeProvider } from './ColorThemeProvider';
+import { TenStackQueryProvider } from './TenStackQueryProvider';
 import { ToastsProvider } from './ToastsProvider';
 import { UserProfileProvider } from './UserProfileProvider';
 
@@ -12,7 +13,9 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <UserProfileProvider>
       <ToastsProvider>
-        <ColorThemeProvider>{children}</ColorThemeProvider>
+        <ColorThemeProvider>
+          <TenStackQueryProvider>{children}</TenStackQueryProvider>
+        </ColorThemeProvider>
       </ToastsProvider>
     </UserProfileProvider>
   );
