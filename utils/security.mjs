@@ -42,7 +42,7 @@ export const baseContentSecurityPolicy = {
   'script-src': [
     "'self'",
     "'strict-dynamic'",
-    `${process.env.DEVELOPMENT ? "'unsafe-eval'" : ''}`,
+    `${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}`,
   ],
   'script-src-elem': [
     "'self'",
@@ -51,6 +51,7 @@ export const baseContentSecurityPolicy = {
   ],
   'style-src': [
     "'self'",
+
     "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
     "'sha256-VjPIq1cYqXznFbZg7dYdy285nQGu6nQh4zRwpyOevA0='",
     "'sha256-Q0BRfbzjuC2JhFhdJpVT7aFVDDzlEZ/CbsTK7RoZPas='",
