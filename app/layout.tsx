@@ -1,6 +1,7 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 
 import { Providers } from '@/components/providers/Providers';
 import LazyToaster from '@/components/ui/Toaster/LazyToaster';
@@ -11,11 +12,13 @@ export const metadata: Metadata = {
   description: "Car's Story Safely Managed. Store, Track, Drive.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await headers();
+
   return (
     <html suppressHydrationWarning lang="en">
       <body
