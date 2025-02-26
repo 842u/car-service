@@ -3,7 +3,7 @@ import { Route } from 'next';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { Database } from './types/supabase';
-import { generateCspWithNonce } from './utils/security.mjs';
+import { generateCspStringWithNonce } from './utils/security.mjs';
 
 export const publicRoutes: Route[] = ['/'];
 
@@ -22,19 +22,15 @@ export const authenticatedOnlyRoutes: Route[] = [
 export const authenticatedOnlyDynamicRoutes: Route[] = ['/dashboard/cars'];
 
 export async function middleware(request: NextRequest) {
-  const { csp, nonce } = generateCspWithNonce();
+  const { cspString, nonce } = generateCspStringWithNonce();
   const requestUrl = request.nextUrl.clone();
   const requestPath = requestUrl.pathname as Route;
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-nonce', nonce);
-  requestHeaders.set('content-security-policy', csp);
+  const responseHeaders = new Headers(request.headers);
+  responseHeaders.set('x-nonce', nonce);
+  responseHeaders.set('content-security-policy', cspString);
 
-  let response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
+  const response = NextResponse.next({ request, headers: responseHeaders });
 
   const { auth } = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -65,11 +61,9 @@ export async function middleware(request: NextRequest) {
     !publicRoutes.includes(requestPath) &&
     !unauthenticatedOnlyRoutes.includes(requestPath)
   ) {
-    response = NextResponse.redirect(
+    return NextResponse.redirect(
       new URL('/dashboard/sign-in' as Route, requestUrl.origin),
-      {
-        headers: requestHeaders,
-      },
+      { headers: responseHeaders },
     );
   }
 
@@ -81,16 +75,11 @@ export async function middleware(request: NextRequest) {
       requestPath.startsWith(route),
     )
   ) {
-    response = NextResponse.redirect(
+    return NextResponse.redirect(
       new URL('/dashboard' as Route, requestUrl.origin),
-      {
-        headers: requestHeaders,
-      },
+      { headers: responseHeaders },
     );
   }
-
-  response.headers.set('x-nonce', nonce);
-  response.headers.set('content-security-policy', csp);
 
   return response;
 }
@@ -108,6 +97,10 @@ export const config = {
     {
       source:
         '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+      missing: [
+        { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'purpose', value: 'prefetch' },
+      ],
     },
   ],
 };

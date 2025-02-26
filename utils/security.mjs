@@ -75,7 +75,7 @@ export function generateCspString(csp) {
   return cspString;
 }
 
-export function generateCspWithNonce() {
+export function generateCspStringWithNonce() {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   const contentSecurityPolicy = {
@@ -94,5 +94,5 @@ export function generateCspWithNonce() {
     ],
   };
 
-  return { csp: generateCspString(contentSecurityPolicy), nonce };
+  return { cspString: generateCspString(contentSecurityPolicy), nonce };
 }
