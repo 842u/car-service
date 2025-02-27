@@ -20,6 +20,7 @@ type InputProps<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   type: HTMLInputTypeAttribute;
+  required?: boolean;
   registerOptions?: RegisterOptions<T>;
   placeholder?: string;
   errorMessage?: string | undefined;
@@ -35,6 +36,7 @@ export function Input<T extends FieldValues>({
   registerOptions,
   errorMessage,
   showErrorMessage = true,
+  required = false,
   ...props
 }: InputProps<T>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(
@@ -47,7 +49,10 @@ export function Input<T extends FieldValues>({
 
   return (
     <label className="text-sm" htmlFor={name}>
-      {label}
+      <p>
+        <span>{label}</span>
+        {required && <span className="text-error-300 mx-1">*</span>}
+      </p>
       <div className="relative">
         <input
           className={twMerge(
