@@ -34,7 +34,7 @@ import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 export type AddCarFormValues = {
   image: File | undefined;
-  name: string | undefined;
+  name: string;
   brand: string | undefined;
   model: string | undefined;
   licensePlates: string | undefined;
@@ -88,7 +88,7 @@ export function AddCarForm() {
     control,
     formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<AddCarFormValues>({
-    mode: 'onChange',
+    mode: 'all',
     defaultValues: defaultAddCarFormValues,
   });
 
@@ -171,6 +171,7 @@ export function AddCarForm() {
           placeholder="Enter a name for a car ..."
           register={register}
           registerOptions={carNameValidationRules}
+          required={!!carNameValidationRules.required}
           type="text"
         />
         <Input

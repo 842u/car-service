@@ -92,6 +92,7 @@ export const usernameValidationRules = {
 };
 
 export const carNameValidationRules = {
+  required: 'This field is required.',
   minLength: {
     value: 1,
     message: 'Minimum length is 1.',
