@@ -16,6 +16,7 @@ const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
 type InputImageProps = UseControllerProps<AddCarFormValues> & {
   ref: Ref<InputImageRef>;
+  required?: boolean;
   label?: string;
   ImagePreviewComponent?: ComponentType<{ className?: string; src?: string }>;
   accept?: string;
@@ -35,6 +36,7 @@ export function InputImage({
   accept,
   className,
   errorMessage,
+  required = false,
   showErrorMessage = true,
   ...props
 }: InputImageProps) {
@@ -49,7 +51,12 @@ export function InputImage({
         className="flex flex-col items-center justify-center"
         htmlFor={props.name}
       >
-        {label && <p className="self-start py-2 text-sm">{label}</p>}
+        {label && (
+          <p className="self-start pb-2 text-sm">
+            <span>{label}</span>
+            {required && <span className="text-error-300 mx-1">*</span>}
+          </p>
+        )}
         <div
           className={twMerge(
             'border-alpha-grey-400 relative',
