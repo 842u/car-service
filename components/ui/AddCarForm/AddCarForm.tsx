@@ -9,8 +9,6 @@ import {
   Transmission,
   transmissionTypesMapping,
 } from '@/types';
-import { hashFile } from '@/utils/general';
-import { createClient } from '@/utils/supabase/client';
 import {
   carBrandValidationRules,
   carEngineCapacityValidationRules,
@@ -33,37 +31,37 @@ import { Select } from '../Select/Select';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 export type AddCarFormValues = {
-  image: File | undefined;
-  name: string;
-  brand: string | undefined;
-  model: string | undefined;
-  licensePlates: string | undefined;
-  vin: string | undefined;
-  fuelType: Fuel;
-  additionalFuelType: Fuel;
-  transmissionType: Transmission;
-  driveType: Drive;
-  productionYear: number | undefined;
-  engineCapacity: number | undefined;
-  mileage: number | undefined;
-  insuranceExpiration: string | undefined;
+  image: File | null;
+  name: string | null;
+  brand: string | null;
+  model: string | null;
+  licensePlates: string | null;
+  vin: string | null;
+  fuelType: Fuel | null;
+  additionalFuelType: Fuel | null;
+  transmissionType: Transmission | null;
+  driveType: Drive | null;
+  productionYear: number | null;
+  engineCapacity: number | null;
+  mileage: number | null;
+  insuranceExpiration: string | null;
 };
 
 export const defaultAddCarFormValues: AddCarFormValues = {
-  image: undefined,
-  name: '',
-  brand: '',
-  model: '',
-  licensePlates: '',
-  vin: '',
-  fuelType: '---',
-  additionalFuelType: '---',
-  transmissionType: '---',
-  driveType: '---',
-  productionYear: new Date().getFullYear(),
-  engineCapacity: 0,
-  mileage: 0,
-  insuranceExpiration: new Date().toISOString().split('T')[0],
+  image: null,
+  name: null,
+  brand: null,
+  model: null,
+  licensePlates: null,
+  vin: null,
+  fuelType: null,
+  additionalFuelType: null,
+  transmissionType: null,
+  driveType: null,
+  productionYear: null,
+  engineCapacity: null,
+  mileage: null,
+  insuranceExpiration: null,
 };
 
 export function AddCarForm() {
@@ -100,27 +98,47 @@ export function AddCarForm() {
   const submitHandler: SubmitHandler<AddCarFormValues> = async (data) => {
     /* eslint-disable */
     console.log(data);
+    // const dataImage = data.image;
+    // delete data.image;
 
-    const supabase = createClient();
+    // const dataToValidate = JSON.stringify(data);
 
-    const { data: carInsertData, error: carInsertError } = await supabase
-      .from('cars')
-      .insert({ custom_name: data.name || 's' })
-      .select('id');
+    // const url = new URL(window.location.origin);
+    // url.pathname = '/api/auth/car' as Route;
 
-    console.log('car insert data', carInsertData);
-    console.log('car insert error', carInsertError);
+    // const postNewCar = async () =>
+    //   fetch(url, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: dataToValidate,
+    //   });
 
-    if (data.image && carInsertData?.[0].id) {
-      const hashedFile = await hashFile(data.image);
+    // const formData = JSON.stringify(data);
 
-      const { data: imgData, error: imgError } = await supabase.storage
-        .from('cars_images')
-        .upload(`${carInsertData[0].id}/${hashedFile}`, data.image);
+    // await Promise.allSettled([]);
 
-      console.log('image data', imgData);
-      console.log('image error', imgError);
-    }
+    // const supabase = createClient();
+
+    // const { data: carInsertData, error: carInsertError } = await supabase
+    //   .from('cars')
+    //   .insert({ custom_name: data.name || 's' })
+    //   .select('id');
+
+    // console.log('car insert data', carInsertData);
+    // console.log('car insert error', carInsertError);
+
+    // if (data.image && carInsertData?.[0].id) {
+    //   const hashedFile = await hashFile(data.image);
+
+    //   const { data: imgData, error: imgError } = await supabase.storage
+    //     .from('cars_images')
+    //     .upload(`${carInsertData[0].id}/${hashedFile}`, data.image);
+
+    //   console.log('image data', imgData);
+    //   console.log('image error', imgError);
+    // }
 
     // if (data.image) {
     //   const hashedFile = await hashFile(data.image);

@@ -21,42 +21,35 @@ export type RouteHandlerResponse =
 
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
 
-export const fuelTypesMapping = {
-  '---': undefined,
+export type Fuel = Database['public']['Enums']['fuel'];
+export type FuelMapping = { [K in Fuel]: K };
+
+export type Transmission = Database['public']['Enums']['transmission'];
+export type TransmissionMapping = { [K in Transmission]: K };
+
+export type Drive = Database['public']['Enums']['drive'];
+export type DriveMapping = { [K in Drive]: K };
+
+export const fuelTypesMapping: FuelMapping = {
   diesel: 'diesel',
   gasoline: 'gasoline',
+  LPG: 'LPG',
   hybrid: 'hybrid',
   electric: 'electric',
-  LPG: 'LPG',
   CNG: 'CNG',
   ethanol: 'ethanol',
   hydrogen: 'hydrogen',
-} satisfies Record<
-  Database['public']['Enums']['fuel'],
-  Database['public']['Enums']['fuel']
-> & { '---': undefined };
+};
 
-export const transmissionTypesMapping = {
-  '---': undefined,
+export const transmissionTypesMapping: TransmissionMapping = {
   manual: 'manual',
   automatic: 'automatic',
   CVT: 'CVT',
-} satisfies Record<
-  Database['public']['Enums']['transmission'],
-  Database['public']['Enums']['transmission']
-> & { '---': undefined };
+};
 
-export const driveTypesMapping = {
-  '---': undefined,
+export const driveTypesMapping: DriveMapping = {
   FWD: 'FWD',
   RWD: 'RWD',
   AWD: 'AWD',
   '4WD': '4WD',
-} satisfies Record<
-  Database['public']['Enums']['drive'],
-  Database['public']['Enums']['drive']
-> & { '---': undefined };
-
-export type Fuel = keyof typeof fuelTypesMapping;
-export type Transmission = keyof typeof transmissionTypesMapping;
-export type Drive = keyof typeof driveTypesMapping;
+};

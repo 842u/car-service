@@ -2,6 +2,7 @@ import { RegisterOptions } from 'react-hook-form';
 import { z, ZodError } from 'zod';
 
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
+import { DriveMapping, FuelMapping, TransmissionMapping } from '@/types';
 
 export const IMAGE_FILE_MAX_SIZE_BYTES = 1024 * 1024 * 3;
 export const IMAGE_FILE_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
@@ -63,6 +64,13 @@ export const emailValidationRules = {
   },
 };
 
+export const emailSchema = z
+  .string()
+  .trim()
+  .min(emailValidationRules.minLength.value)
+  .max(emailValidationRules.maxLength.value)
+  .email();
+
 export const passwordValidationRules = {
   required: 'This field is required.',
   minLength: {
@@ -74,6 +82,12 @@ export const passwordValidationRules = {
     message: 'Maximum length is 72.',
   },
 };
+
+export const passwordSchema = z
+  .string()
+  .trim()
+  .min(passwordValidationRules.minLength.value)
+  .max(passwordValidationRules.maxLength.value);
 
 export const usernameValidationRules = {
   required: 'This field is required.',
@@ -103,6 +117,12 @@ export const carNameValidationRules = {
   },
 } satisfies RegisterOptions<AddCarFormValues>;
 
+export const carNameValidationSchema = z
+  .string()
+  .trim()
+  .min(carNameValidationRules.minLength.value)
+  .max(carNameValidationRules.maxLength.value);
+
 export const carBrandValidationRules = {
   minLength: {
     value: 2,
@@ -114,6 +134,12 @@ export const carBrandValidationRules = {
   },
 } satisfies RegisterOptions<AddCarFormValues>;
 
+export const carBrandValidationSchema = z
+  .string()
+  .trim()
+  .min(carBrandValidationRules.minLength.value)
+  .max(carBrandValidationRules.maxLength.value);
+
 export const carModelValidationRules = {
   minLength: {
     value: 1,
@@ -124,6 +150,12 @@ export const carModelValidationRules = {
     message: 'Maximum length is 25.',
   },
 } satisfies RegisterOptions<AddCarFormValues>;
+
+export const carModelValidationSchema = z
+  .string()
+  .trim()
+  .min(carModelValidationRules.minLength.value)
+  .max(carModelValidationRules.maxLength.value);
 
 export const carLicensePlatesValidationRules = {
   minLength: {
@@ -185,6 +217,19 @@ export const carImageFileValidationRules = {
   },
 } satisfies RegisterOptions<AddCarFormValues>;
 
+export const imageFileSchema = z
+  .instanceof(File)
+  .refine(
+    (file) => IMAGE_FILE_ACCEPTED_MIME_TYPES.includes(file.type),
+    `File must be of type: ${IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}`,
+  )
+  .refine(
+    (file) => file.size <= IMAGE_FILE_MAX_SIZE_BYTES,
+    `File size must be less than ${
+      IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024)
+    }MB`,
+  );
+
 export function getCarProductionYearValidationRules() {
   const maxYear = new Date().getFullYear() + 5;
   return {
@@ -200,43 +245,19 @@ export function getCarProductionYearValidationRules() {
 }
 
 export function getCarDatabaseEnumTypeValidationRules<
-  T extends { [key: string]: string | undefined },
->(databaseCarEnumTypeMapping: T): RegisterOptions<AddCarFormValues> {
+  T extends FuelMapping | TransmissionMapping | DriveMapping,
+>(carEnumMapping: T): RegisterOptions<AddCarFormValues> {
   return {
     validate: (value: unknown) => {
       if (
-        typeof value !== 'string' ||
-        !Object.hasOwn(databaseCarEnumTypeMapping, value)
+        value === null ||
+        value === '' ||
+        (typeof value === 'string' && Object.hasOwn(carEnumMapping, value))
       ) {
-        return 'Select proper value.';
+        return true;
       }
-      return true;
+
+      return 'Please choose a correct value.';
     },
   } satisfies RegisterOptions<AddCarFormValues>;
 }
-
-export const emailSchema = z
-  .string()
-  .trim()
-  .min(emailValidationRules.minLength.value)
-  .max(emailValidationRules.maxLength.value)
-  .email();
-
-export const passwordSchema = z
-  .string()
-  .trim()
-  .min(passwordValidationRules.minLength.value)
-  .max(passwordValidationRules.maxLength.value);
-
-export const imageFileSchema = z
-  .instanceof(File)
-  .refine(
-    (file) => IMAGE_FILE_ACCEPTED_MIME_TYPES.includes(file.type),
-    `File must be of type: ${IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}`,
-  )
-  .refine(
-    (file) => file.size <= IMAGE_FILE_MAX_SIZE_BYTES,
-    `File size must be less than ${
-      IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024)
-    }MB`,
-  );
