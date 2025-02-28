@@ -91,3 +91,13 @@ export function getMimeTypeExtensions(mimeTypes: string[]) {
 
   return typesExtensions;
 }
+
+export function mutateEmptyFieldsToNull(
+  data: Record<string, string | number | null>,
+) {
+  Object.keys(data).forEach((key) => {
+    if (data[key] === '' || Number.isNaN(data[key])) {
+      data[key] = null;
+    }
+  });
+}
