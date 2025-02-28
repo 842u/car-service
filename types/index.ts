@@ -15,9 +15,9 @@ export type ToastAsset = {
   icon: JSX.Element;
 };
 
-export type RouteHandlerResponse =
-  | { message: string; error: null }
-  | { message: null; error: string };
+export type RouteHandlerResponse<T = unknown> =
+  | { message: string; error: null; payload?: T }
+  | { message: null; error: string; payload?: T };
 
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
 

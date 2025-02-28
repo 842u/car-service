@@ -1,7 +1,7 @@
 import { RegisterOptions } from 'react-hook-form';
 import { z, ZodError } from 'zod';
 
-import { AddCarFormValuesToValidate } from '@/app/api/auth/car/route';
+import { AddCarFormValuesToValidate } from '@/app/api/car/route';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import {
   DriveMapping,

@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 import { validateAddCarFormData } from '@/utils/validation';
 
 export type AddCarFormValuesToValidate = Omit<AddCarFormValues, 'image'>;
+export type apiCarPostResponse = { id: string };
 
 export async function POST(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json')
@@ -60,12 +61,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json<RouteHandlerResponse>(
+  return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
     {
       error: null,
       message: 'New car successfully added.',
       payload: {
-        newCarId: data[0].id,
+        id: data[0].id,
       },
     },
     { status: 201 },
