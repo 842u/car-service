@@ -5,6 +5,7 @@ import { useRef } from 'react';
 
 import { AddCarButton } from '@/components/ui/AddCarButton/AddCarButton';
 import { AddCarForm } from '@/components/ui/AddCarForm/AddCarForm';
+import { CarCard } from '@/components/ui/CarCard/CarCard';
 import {
   DialogModal,
   DialogModalRef,
@@ -28,7 +29,9 @@ export default function CarsPage() {
 
   return (
     <main className="flex h-screen flex-col items-center justify-center">
-      {data?.map((car) => <p key={car.id}>{car.id}</p>)}
+      <div className="relative top-16 flex h-full max-w-[1920px] flex-col items-center justify-around gap-5 py-5 md:flex-row md:flex-wrap md:justify-center md:gap-10 md:pl-16">
+        {data?.map((car) => <CarCard key={car.id} car={car} />)}
+      </div>
       <DialogModal ref={addCarModalRef}>
         <AddCarForm onSubmit={() => addCarModalRef.current?.closeModal()} />
       </DialogModal>
