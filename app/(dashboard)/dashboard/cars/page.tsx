@@ -30,7 +30,7 @@ export default function CarsPage() {
     <main className="flex h-screen flex-col items-center justify-center">
       {data?.map((car) => <p key={car.id}>{car.id}</p>)}
       <DialogModal ref={addCarModalRef}>
-        <AddCarForm onSubmit={addCarModalRef.current?.closeModal} />
+        <AddCarForm onSubmit={() => addCarModalRef.current?.closeModal()} />
       </DialogModal>
       <AddCarButton
         className="fixed right-0 bottom-0 m-4 md:m-8 lg:m-12"
