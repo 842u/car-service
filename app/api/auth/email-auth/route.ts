@@ -5,12 +5,16 @@ import { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 import { emailSchema, passwordSchema } from '@/utils/validation';
 
+import { apiCarPostResponse } from '../../car/route';
+
 export const maxDuration = 10;
+
+type apiAuthEmailAuthPostResponse = { id: string };
 
 export async function POST(request: NextRequest) {
   const requestUrl = request.nextUrl.clone();
   const { searchParams } = requestUrl;
-  const type = searchParams.get('type') as EmailAuthFormType | null;
+  const type = searchParams.get('type') as EmailAuthFormType;
   const { email, password } = await request.json();
 
   const { auth } = await createClient();
@@ -21,7 +25,10 @@ export async function POST(request: NextRequest) {
       passwordSchema.parse(password);
     } catch (_error) {
       return NextResponse.json<RouteHandlerResponse>(
-        { error: 'Server validation failed. Try again.', message: null },
+        {
+          error: { message: 'Server validation failed. Try again.' },
+          data: null,
+        },
         { status: 400 },
       );
     }
@@ -36,10 +43,7 @@ export async function POST(request: NextRequest) {
       });
 
       if (error) {
-        return NextResponse.json<RouteHandlerResponse>(
-          { error: error.message, message: null },
-          { status: error.status },
-        );
+        throw new Error(error.message);
       }
 
       /*
@@ -50,50 +54,39 @@ export async function POST(request: NextRequest) {
           redirectTo: requestUrl.origin,
         });
       }
+
+      return NextResponse.json<
+        RouteHandlerResponse<apiAuthEmailAuthPostResponse>
+      >({ data: { id: data.user?.id || '' }, error: null }, { status: 200 });
     } catch (error) {
       if (error instanceof Error) {
         return NextResponse.json<RouteHandlerResponse>(
-          { error: error.message, message: null },
+          { error: { message: error.message }, data: null },
           { status: 500 },
         );
       }
     }
-
-    return NextResponse.json<RouteHandlerResponse>(
-      {
-        message:
-          'Welcome! To get started, please check your email and click the confirmation link.',
-        error: null,
-      },
-      { status: 200 },
-    );
   }
 
   if (type === 'sign-in') {
     try {
-      const { error } = await auth.signInWithPassword({
+      const { data, error } = await auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        return NextResponse.json<RouteHandlerResponse>(
-          { error: error.message, message: null },
-          { status: error.status },
-        );
+        throw new Error(error.message);
       }
 
-      return NextResponse.json<RouteHandlerResponse>(
-        {
-          message: 'Successfully signed in.',
-          error: null,
-        },
+      return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
+        { data: { id: data.user.id }, error: null },
         { status: 200 },
       );
     } catch (error) {
       if (error instanceof Error) {
         return NextResponse.json<RouteHandlerResponse>(
-          { error: error.message, message: null },
+          { error: { message: error.message }, data: null },
           { status: 500 },
         );
       }
@@ -101,7 +94,7 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json<RouteHandlerResponse>(
-    { error: 'Something went wrong.', message: null },
+    { error: { message: 'Something went wrong.' }, data: null },
     { status: 400 },
   );
 }
