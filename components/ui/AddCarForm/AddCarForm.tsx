@@ -156,6 +156,9 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         );
       message && !imageUploadError && addToast(message, 'success');
 
+      fileInputRef.current?.reset();
+      reset();
+
       return;
     }
 
