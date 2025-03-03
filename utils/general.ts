@@ -71,7 +71,7 @@ export async function signInWithOAuthHandler(provider: Provider) {
   const { auth } = createClient();
   const requestUrl = new URL(window.location.origin);
 
-  requestUrl.pathname = '/api/auth/callback' as Route;
+  requestUrl.pathname = '/api/auth/callback' satisfies Route;
 
   const response = await auth.signInWithOAuth({
     provider,

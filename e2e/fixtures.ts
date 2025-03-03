@@ -27,7 +27,7 @@ class AuthenticatedPage {
     await this.passwordInput.fill(password);
     await this.singInButton.click();
 
-    await expect(this.page).toHaveURL('/dashboard' as Route);
+    await expect(this.page).toHaveURL('/dashboard' satisfies Route);
   }
 }
 

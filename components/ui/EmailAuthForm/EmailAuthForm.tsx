@@ -58,7 +58,7 @@ export default function EmailAuthForm({
   const submitHandler: SubmitHandler<EmailAuthFormValues> = async (data) => {
     const url = new URL(window.location.origin);
 
-    url.pathname = '/api/auth/email-auth' as Route;
+    url.pathname = '/api/auth/email-auth' satisfies Route;
     url.searchParams.set('type', type);
 
     const formData = JSON.stringify(data);

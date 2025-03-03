@@ -15,7 +15,7 @@ test.describe('sign_out_flow - @authenticated', () => {
     const signOutLink = page.getByRole('link', { name: /Sign Out/i });
     await signOutLink.click();
 
-    await expect(page).toHaveURL('/' as Route);
+    await expect(page).toHaveURL('/' satisfies Route);
     expect((await page.context().cookies()).length).toBe(0);
   });
 
@@ -29,7 +29,7 @@ test.describe('sign_out_flow - @authenticated', () => {
     const signOutLink = page.getByRole('link', { name: /Sign Out/i });
     await signOutLink.click();
 
-    await expect(page).toHaveURL('/' as Route);
+    await expect(page).toHaveURL('/' satisfies Route);
     expect((await page.context().cookies()).length).toBe(0);
   });
 });

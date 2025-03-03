@@ -6,7 +6,7 @@ export function SignOutLink() {
   return (
     <a
       className="flex items-center justify-start"
-      href={'/api/auth/sign-out' as Route}
+      href={'/api/auth/sign-out' satisfies Route}
     >
       <div className="mx-2 aspect-square h-8 md:shrink-0 md:transition-colors">
         <SignOutIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-10" />
