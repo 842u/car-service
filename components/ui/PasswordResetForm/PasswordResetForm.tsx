@@ -42,11 +42,12 @@ export function PasswordResetForm() {
       },
       body: password,
     });
-    const { message, error } = (await response.json()) as RouteHandlerResponse;
+    const { data: responseData, error } =
+      (await response.json()) as RouteHandlerResponse;
 
-    message && addToast(message, 'success');
+    error && addToast(error.message, 'error');
 
-    error && addToast(error, 'error');
+    responseData && addToast('Your password has been changed.', 'success');
   };
 
   useEffect(() => reset(), [isSubmitSuccessful, reset]);
