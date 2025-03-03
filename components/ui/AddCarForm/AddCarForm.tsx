@@ -1,20 +1,24 @@
-import { useRef } from 'react';
+import { Route } from 'next';
+import { useContext, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { apiCarPostResponse } from '@/app/api/car/route';
+import { ToastsContext } from '@/context/ToastsContext';
 import {
   Drive,
   driveTypesMapping,
   Fuel,
   fuelTypesMapping,
+  RouteHandlerResponse,
   Transmission,
   transmissionTypesMapping,
 } from '@/types';
-import { hashFile } from '@/utils/general';
+import { hashFile, mutateEmptyFieldsToNull } from '@/utils/general';
 import { createClient } from '@/utils/supabase/client';
 import {
   carBrandValidationRules,
   carEngineCapacityValidationRules,
-  carImageFileValidationRules,
+  carInsuranceExpirationValidationRules,
   carLicensePlatesValidationRules,
   carMileageValidationRules,
   carModelValidationRules,
@@ -23,6 +27,7 @@ import {
   getCarDatabaseEnumTypeValidationRules,
   getCarProductionYearValidationRules,
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
+  imageFileValidationRules,
 } from '@/utils/validation';
 
 import { Button } from '../Button/Button';
@@ -33,40 +38,44 @@ import { Select } from '../Select/Select';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 export type AddCarFormValues = {
-  image: File | undefined;
-  name: string | undefined;
-  brand: string | undefined;
-  model: string | undefined;
-  licensePlates: string | undefined;
-  vin: string | undefined;
-  fuelType: Fuel;
-  additionalFuelType: Fuel;
-  transmissionType: Transmission;
-  driveType: Drive;
-  productionYear: number | undefined;
-  engineCapacity: number | undefined;
-  mileage: number | undefined;
-  insuranceExpiration: string | undefined;
+  image: File | null;
+  name: string | null;
+  brand: string | null;
+  model: string | null;
+  licensePlates: string | null;
+  vin: string | null;
+  fuelType: Fuel | null;
+  additionalFuelType: Fuel | null;
+  transmissionType: Transmission | null;
+  driveType: Drive | null;
+  productionYear: number | null;
+  engineCapacity: number | null;
+  mileage: number | null;
+  insuranceExpiration: string | null;
 };
 
 export const defaultAddCarFormValues: AddCarFormValues = {
-  image: undefined,
-  name: '',
-  brand: '',
-  model: '',
-  licensePlates: '',
-  vin: '',
-  fuelType: '---',
-  additionalFuelType: '---',
-  transmissionType: '---',
-  driveType: '---',
-  productionYear: new Date().getFullYear(),
-  engineCapacity: 0,
-  mileage: 0,
-  insuranceExpiration: new Date().toISOString().split('T')[0],
+  image: null,
+  name: null,
+  brand: null,
+  model: null,
+  licensePlates: null,
+  vin: null,
+  fuelType: null,
+  additionalFuelType: null,
+  transmissionType: null,
+  driveType: null,
+  productionYear: null,
+  engineCapacity: null,
+  mileage: null,
+  insuranceExpiration: null,
 };
 
-export function AddCarForm() {
+type AddCarFormProps = {
+  onSubmit?: () => void;
+};
+
+export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const carFuelTypeValidationRules = useRef(
     getCarDatabaseEnumTypeValidationRules(fuelTypesMapping),
   );
@@ -88,57 +97,76 @@ export function AddCarForm() {
     control,
     formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<AddCarFormValues>({
-    mode: 'onChange',
+    mode: 'all',
     defaultValues: defaultAddCarFormValues,
   });
 
-  const resetButtonHandler = () => {
+  const { addToast } = useContext(ToastsContext);
+
+  const resetForm = () => {
     fileInputRef.current?.reset();
     reset();
   };
 
-  const submitHandler: SubmitHandler<AddCarFormValues> = async (data) => {
-    /* eslint-disable */
-    console.log(data);
+  const submitHandler: SubmitHandler<AddCarFormValues> = async (formData) => {
+    onSubmit && onSubmit();
 
     const supabase = createClient();
 
-    const { data: carInsertData, error: carInsertError } = await supabase
-      .from('cars')
-      .insert({ custom_name: data.name || 's' })
-      .select('id');
+    const { image, ...data } = formData;
 
-    console.log('car insert data', carInsertData);
-    console.log('car insert error', carInsertError);
+    mutateEmptyFieldsToNull(data);
 
-    if (data.image && carInsertData?.[0].id) {
-      const hashedFile = await hashFile(data.image);
+    const jsonDataToValidate = JSON.stringify(data);
 
-      const { data: imgData, error: imgError } = await supabase.storage
-        .from('cars_images')
-        .upload(`${carInsertData[0].id}/${hashedFile}`, data.image);
+    const url = new URL(window.location.origin);
+    url.pathname = '/api/car' satisfies Route;
 
-      console.log('image data', imgData);
-      console.log('image error', imgError);
+    let newCarResponse: Response | null = null;
+    try {
+      newCarResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonDataToValidate,
+      });
+    } catch (error) {
+      if (error instanceof Error) addToast(error.message, 'error');
+
+      resetForm();
     }
 
-    // if (data.image) {
-    //   const hashedFile = await hashFile(data.image);
+    const { message, error, payload } =
+      (await newCarResponse?.json()) as RouteHandlerResponse<apiCarPostResponse>;
 
-    //   const { data: imgData, error: imgError } = await supabase.storage
-    //     .from('cars_images')
-    //     .upload(
-    //       `62c3e5a4-4803-48a3-9c52-7af21c803257/${hashedFile}`,
-    //       data.image,
-    //     );
+    if (error) {
+      addToast(error, 'error');
+      resetForm();
+    }
 
-    //   console.log('image data', imgData);
-    //   console.log('image error', imgError);
-    // }
+    if (image && payload?.id) {
+      const hashedFile = await hashFile(image);
 
-    fileInputRef.current?.reset();
-    reset();
-    /* eslint-enable */
+      const { error: imageUploadError } = await supabase.storage
+        .from('cars_images')
+        .upload(`${payload.id}/${hashedFile}`, image);
+
+      imageUploadError &&
+        addToast(
+          'Car added successfully, but image upload failed. You can edit and upload the image in your car details.',
+          'warning',
+        );
+      message && !imageUploadError && addToast(message, 'success');
+
+      resetForm();
+
+      return;
+    }
+
+    message && addToast(message, 'success');
+
+    resetForm();
   };
 
   return (
@@ -158,7 +186,7 @@ export function AddCarForm() {
           ImagePreviewComponent={CarImagePreview}
           label="Image"
           name="image"
-          rules={carImageFileValidationRules}
+          rules={imageFileValidationRules}
         />
       </div>
       <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
@@ -171,6 +199,7 @@ export function AddCarForm() {
           placeholder="Enter a name for a car ..."
           register={register}
           registerOptions={carNameValidationRules}
+          required={!!carNameValidationRules.required}
           type="text"
         />
         <Input
@@ -290,6 +319,7 @@ export function AddCarForm() {
           name="insuranceExpiration"
           placeholder="Enter insurance expiration date ..."
           register={register}
+          registerOptions={carInsuranceExpirationValidationRules}
           type="date"
         />
       </div>
@@ -297,7 +327,7 @@ export function AddCarForm() {
         <Button
           className="w-full lg:max-w-48"
           disabled={isSubmitting || !isDirty}
-          onClick={resetButtonHandler}
+          onClick={resetForm}
         >
           Reset
         </Button>

@@ -42,12 +42,13 @@ export const baseContentSecurityPolicy = {
   'script-src': [
     "'self'",
     "'strict-dynamic'",
-    `${process.env.DEVELOPMENT ? "'unsafe-eval'" : ''}`,
+    `${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}`,
   ],
   'script-src-elem': [
     "'self'",
     "'sha256-Ec/XLCqW9IkiT3yUDKK5ftmkQGcF3JzHW7lzlrWMZYQ='",
     "'sha256-sLdiz4PQQzticSdaUW5ty68d0bM0ZaiN4Ko1Xxbh4jA='",
+    "'sha256-+aUwzZvCg5noHa8zZgqXocOLZhkL6IC9dsa3++C9XJc='",
   ],
   'style-src': [
     "'self'",
@@ -55,6 +56,7 @@ export const baseContentSecurityPolicy = {
     "'sha256-VjPIq1cYqXznFbZg7dYdy285nQGu6nQh4zRwpyOevA0='",
     "'sha256-Q0BRfbzjuC2JhFhdJpVT7aFVDDzlEZ/CbsTK7RoZPas='",
     "'sha256-sPjiXln3Zc/F3lTtseqJMn52NO0hTM326TnrNNPO+5M='",
+    `${process.env.NODE_ENV === 'development' ? `'nonce-reactQueryDevtools'` : ''}`,
   ],
   'font-src': ["'self'"],
   'img-src': ["'self'", 'data:', 'blob:'],
@@ -75,7 +77,7 @@ export function generateCspString(csp) {
   return cspString;
 }
 
-export function generateCspWithNonce() {
+export function generateCspStringWithNonce() {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   const contentSecurityPolicy = {
@@ -94,5 +96,5 @@ export function generateCspWithNonce() {
     ],
   };
 
-  return { csp: generateCspString(contentSecurityPolicy), nonce };
+  return { cspString: generateCspString(contentSecurityPolicy), nonce };
 }

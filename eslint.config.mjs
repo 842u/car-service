@@ -1,5 +1,6 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginImportX from 'eslint-plugin-import-x';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
@@ -96,6 +97,7 @@ export default typescriptEslintConfig(
       'react/self-closing-comp': 'error',
     },
   },
+  ...pluginQuery.configs['flat/recommended'],
   pluginJs.configs.recommended,
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginImportX.flatConfigs.typescript,
