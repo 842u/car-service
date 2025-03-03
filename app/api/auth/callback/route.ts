@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       return NextResponse.json<RouteHandlerResponse>(
-        { error: error.message, message: null },
+        { error: { message: error.message }, data: null },
         { status: error.status },
       );
     }
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       return NextResponse.json<RouteHandlerResponse>(
-        { error: error.message, message: null },
+        { error: { message: error.message }, data: null },
         { status: error.status },
       );
     }

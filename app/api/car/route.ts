@@ -11,7 +11,7 @@ export type apiCarPostResponse = { id: string };
 export async function POST(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json')
     return NextResponse.json<RouteHandlerResponse>(
-      { error: 'Unsupported Media Type', message: null },
+      { error: { message: 'Unsupported Media Type' }, data: null },
       { status: 415 },
     );
 
@@ -24,13 +24,19 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json<RouteHandlerResponse>(
-        { error: `Server validation failed: ${error.message}`, message: null },
+        {
+          error: { message: `Server validation failed: ${error.message}` },
+          data: null,
+        },
         { status: 400 },
       );
     }
 
     return NextResponse.json<RouteHandlerResponse>(
-      { error: 'Server data validation failed. Try again.', message: null },
+      {
+        error: { message: 'Server data validation failed. Try again.' },
+        data: null,
+      },
       { status: 400 },
     );
   }
@@ -56,18 +62,18 @@ export async function POST(request: NextRequest) {
 
   if (error) {
     return NextResponse.json<RouteHandlerResponse>(
-      { error: `Database connection failed: ${error.message}`, message: null },
+      {
+        error: { message: `Database connection failed: ${error.message}` },
+        data: null,
+      },
       { status: 502 },
     );
   }
 
   return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
     {
+      data: { id: data[0].id },
       error: null,
-      message: 'New car successfully added.',
-      payload: {
-        id: data[0].id,
-      },
     },
     { status: 201 },
   );

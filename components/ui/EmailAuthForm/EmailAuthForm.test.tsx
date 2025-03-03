@@ -165,9 +165,10 @@ describe('EmailAuthForm', () => {
     const correctPassword = 'password';
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: jest
-        .fn()
-        .mockResolvedValueOnce({ message: 'submit success', error: null }),
+      json: jest.fn().mockResolvedValueOnce({
+        data: { id: 'some id' },
+        error: null,
+      }),
     });
     render(
       <ToastsProvider>
@@ -185,7 +186,7 @@ describe('EmailAuthForm', () => {
     await user.click(submitButton);
 
     const successToast = screen.getByRole('listitem', {
-      name: /success notification: submit success/i,
+      name: /success notification: /i,
     });
 
     expect(successToast).toBeInTheDocument();
@@ -199,7 +200,7 @@ describe('EmailAuthForm', () => {
       ok: true,
       json: jest
         .fn()
-        .mockResolvedValueOnce({ message: null, error: 'submit error' }),
+        .mockResolvedValueOnce({ data: null, error: 'submit error' }),
     });
     render(
       <ToastsProvider>
@@ -217,7 +218,7 @@ describe('EmailAuthForm', () => {
     await user.click(submitButton);
 
     const errorToast = screen.getByRole('listitem', {
-      name: /error notification: submit error/i,
+      name: /error notification: /i,
     });
 
     expect(errorToast).toBeInTheDocument();

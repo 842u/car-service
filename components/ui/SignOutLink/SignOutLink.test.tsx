@@ -13,7 +13,7 @@ describe('SingOutLink', () => {
   });
 
   it('should have proper api endpoint', () => {
-    const signOutApiEndpoint = '/api/auth/sign-out' as Route;
+    const signOutApiEndpoint = '/api/auth/sign-out' satisfies Route;
     render(<SignOutLink />);
 
     const signOutLink = screen.getByRole('link', { name: /sign out/i });

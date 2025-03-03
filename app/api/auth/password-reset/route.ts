@@ -6,6 +6,8 @@ import { passwordSchema } from '@/utils/validation';
 
 export const maxDuration = 10;
 
+type apiAuthPasswordResetPatchResponse = { id: string };
+
 export async function PATCH(request: NextRequest) {
   const { password, passwordConfirm } = await request.json();
 
@@ -16,25 +18,30 @@ export async function PATCH(request: NextRequest) {
     }
   } catch (_error) {
     return NextResponse.json<RouteHandlerResponse>(
-      { error: 'Server validation failed. Try again.', message: null },
+      {
+        error: { message: 'Server validation failed. Try again.' },
+        data: null,
+      },
       { status: 400 },
     );
   }
 
   const { auth } = await createClient();
 
-  const { error } = await auth.updateUser({ password });
+  const { data, error } = await auth.updateUser({ password });
 
   if (error) {
     return NextResponse.json<RouteHandlerResponse>(
-      { error: error.message, message: null },
+      { error: { message: error.message }, data: null },
       { status: error.status },
     );
   }
 
-  return NextResponse.json<RouteHandlerResponse>(
+  return NextResponse.json<
+    RouteHandlerResponse<apiAuthPasswordResetPatchResponse>
+  >(
     {
-      message: 'Your password has been changed.',
+      data: { id: data.user.id },
       error: null,
     },
     { status: 200 },

@@ -58,7 +58,7 @@ export default function EmailAuthForm({
   const submitHandler: SubmitHandler<EmailAuthFormValues> = async (data) => {
     const url = new URL(window.location.origin);
 
-    url.pathname = '/api/auth/email-auth' as Route;
+    url.pathname = '/api/auth/email-auth' satisfies Route;
     url.searchParams.set('type', type);
 
     const formData = JSON.stringify(data);
@@ -70,11 +70,21 @@ export default function EmailAuthForm({
       body: formData,
     });
 
-    const { message, error } = (await response.json()) as RouteHandlerResponse;
+    const { data: responseData, error } =
+      (await response.json()) as RouteHandlerResponse;
 
-    error && addToast(error, 'error');
+    error && addToast(error.message, 'error');
 
-    message && addToast(message, 'success');
+    if (responseData && type === 'sign-in') {
+      addToast('Successfully signed in.', 'success');
+    }
+
+    if (responseData && type === 'sign-up') {
+      addToast(
+        'Welcome! To get started, please check your email and click the confirmation link.',
+        'success',
+      );
+    }
 
     if (response.ok && type === 'sign-in') {
       const profileData = await fetchUserProfile();

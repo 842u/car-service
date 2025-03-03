@@ -133,39 +133,40 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       });
     } catch (error) {
       if (error instanceof Error) addToast(error.message, 'error');
-
       resetForm();
     }
 
-    const { message, error, payload } =
+    const { data: responseData, error } =
       (await newCarResponse?.json()) as RouteHandlerResponse<apiCarPostResponse>;
 
     if (error) {
-      addToast(error, 'error');
+      addToast(error.message, 'error');
       resetForm();
     }
 
-    if (image && payload?.id) {
+    if (image && responseData?.id) {
       const hashedFile = await hashFile(image);
 
       const { error: imageUploadError } = await supabase.storage
         .from('cars_images')
-        .upload(`${payload.id}/${hashedFile}`, image);
+        .upload(`${responseData.id}/${hashedFile}`, image);
 
       imageUploadError &&
         addToast(
           'Car added successfully, but image upload failed. You can edit and upload the image in your car details.',
           'warning',
         );
-      message && !imageUploadError && addToast(message, 'success');
+
+      data &&
+        !imageUploadError &&
+        addToast('New car successfully added.', 'success');
 
       resetForm();
 
       return;
     }
 
-    message && addToast(message, 'success');
-
+    data && addToast('New car successfully added.', 'success');
     resetForm();
   };
 

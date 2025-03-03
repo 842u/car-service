@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
     !unauthenticatedOnlyRoutes.includes(requestPath)
   ) {
     return NextResponse.redirect(
-      new URL('/dashboard/sign-in' as Route, requestUrl.origin),
+      new URL('/dashboard/sign-in' satisfies Route, requestUrl.origin),
       { headers: responseHeaders },
     );
   }
@@ -76,7 +76,7 @@ export async function middleware(request: NextRequest) {
     )
   ) {
     return NextResponse.redirect(
-      new URL('/dashboard' as Route, requestUrl.origin),
+      new URL('/dashboard' satisfies Route, requestUrl.origin),
       { headers: responseHeaders },
     );
   }
