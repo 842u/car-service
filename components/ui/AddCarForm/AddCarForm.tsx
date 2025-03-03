@@ -103,7 +103,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
 
   const { addToast } = useContext(ToastsContext);
 
-  const resetButtonHandler = () => {
+  const resetForm = () => {
     fileInputRef.current?.reset();
     reset();
   };
@@ -133,6 +133,8 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       });
     } catch (error) {
       if (error instanceof Error) addToast(error.message, 'error');
+
+      resetForm();
     }
 
     const { message, error, payload } =
@@ -140,6 +142,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
 
     if (error) {
       addToast(error, 'error');
+      resetForm();
     }
 
     if (image && payload?.id) {
@@ -156,16 +159,14 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         );
       message && !imageUploadError && addToast(message, 'success');
 
-      fileInputRef.current?.reset();
-      reset();
+      resetForm();
 
       return;
     }
 
     message && addToast(message, 'success');
 
-    fileInputRef.current?.reset();
-    reset();
+    resetForm();
   };
 
   return (
@@ -326,7 +327,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         <Button
           className="w-full lg:max-w-48"
           disabled={isSubmitting || !isDirty}
-          onClick={resetButtonHandler}
+          onClick={resetForm}
         >
           Reset
         </Button>
