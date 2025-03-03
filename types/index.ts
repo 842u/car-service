@@ -16,8 +16,8 @@ export type ToastAsset = {
 };
 
 export type RouteHandlerResponse<T = unknown> =
-  | { message: string; error: null; payload?: T }
-  | { message: null; error: string; payload?: T };
+  | { error: null; data: T }
+  | { data: null; error: { message: string } };
 
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
 
