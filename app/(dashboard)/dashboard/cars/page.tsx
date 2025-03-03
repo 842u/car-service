@@ -15,7 +15,10 @@ import { createClient } from '@/utils/supabase/client';
 const fetchCars = async () => {
   const supabase = createClient();
 
-  const { data, error } = await supabase.from('cars').select();
+  const { data, error } = await supabase
+    .from('cars')
+    .select()
+    .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
 
