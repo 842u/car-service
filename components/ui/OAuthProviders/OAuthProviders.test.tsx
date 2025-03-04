@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { signInWithOAuthHandler } from '@/utils/general';
+import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 import { OAuthProviders } from './OAuthProviders';
 

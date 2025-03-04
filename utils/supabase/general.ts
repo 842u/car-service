@@ -1,3 +1,6 @@
+import { Provider } from '@supabase/supabase-js';
+import { Route } from 'next';
+
 import { createClient } from './client';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -38,4 +41,37 @@ export async function deleteTestUser(testUserIndex: number) {
     if (error instanceof Error)
       throw new Error(error?.message || 'Error on deleting test user.');
   }
+}
+
+export const fetchUserProfile = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user?.id || '');
+
+  return profileData?.[0];
+};
+
+export async function signInWithOAuthHandler(provider: Provider) {
+  const { auth } = createClient();
+  const requestUrl = new URL(window.location.origin);
+
+  requestUrl.pathname = '/api/auth/callback' satisfies Route;
+
+  const response = await auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: requestUrl.href,
+    },
+  });
+
+  return response;
 }

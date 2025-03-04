@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 
 import { UserProfile } from '@/types/index';
-import { fetchUserProfile } from '@/utils/general';
+import { fetchUserProfile } from '@/utils/supabase/general';
 
 import { useUserProfile } from './useUserProfile';
 

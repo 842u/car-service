@@ -1,15 +1,9 @@
-// Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
-
-import { Provider } from '@supabase/supabase-js';
-import { Route } from 'next';
-
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import { Car } from '@/types';
 
-import { createClient } from './supabase/client';
-
 const DEFAULT_TIMEOUT = 9000;
 
+// Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
 export async function promiseWithTimeout<T>(
   promise: Promise<T>,
   time = DEFAULT_TIMEOUT,
@@ -51,39 +45,6 @@ export async function hashFile(file: File) {
     .join('');
 
   return hashHex;
-}
-
-export const fetchUserProfile = async () => {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return;
-
-  const { data: profileData } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user?.id || '');
-
-  return profileData?.[0];
-};
-
-export async function signInWithOAuthHandler(provider: Provider) {
-  const { auth } = createClient();
-  const requestUrl = new URL(window.location.origin);
-
-  requestUrl.pathname = '/api/auth/callback' satisfies Route;
-
-  const response = await auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo: requestUrl.href,
-    },
-  });
-
-  return response;
 }
 
 export function getMimeTypeExtensions(mimeTypes: string[]) {
