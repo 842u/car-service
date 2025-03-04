@@ -3,6 +3,9 @@
 import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
+import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
+import { Car } from '@/types';
+
 import { createClient } from './supabase/client';
 
 const DEFAULT_TIMEOUT = 9000;
@@ -100,4 +103,28 @@ export function mutateEmptyFieldsToNull(
       data[key] = null;
     }
   });
+}
+
+export function mapAddCarFormValuesToCarObject(
+  formData: AddCarFormValues,
+): Car {
+  return {
+    id: crypto.randomUUID(),
+    image_url: formData.image && URL.createObjectURL(formData.image),
+    custom_name: formData.name || 'New Car',
+    brand: formData.brand,
+    model: formData.model,
+    license_plates: formData.licensePlates,
+    additional_fuel_type: formData.additionalFuelType,
+    created_at: new Date().toISOString(),
+    drive_type: formData.driveType,
+    engine_capacity: formData.engineCapacity,
+    fuel_type: formData.fuelType,
+    mileage: formData.mileage,
+    insurance_expiration: formData.insuranceExpiration,
+    production_year: formData.productionYear,
+    transmission_type: formData.transmissionType,
+    vin: formData.vin,
+    created_by: 'optimistic update',
+  };
 }
