@@ -1,6 +1,11 @@
 import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
+import { apiCarPostResponse } from '@/app/api/car/route';
+import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
+import { RouteHandlerResponse } from '@/types';
+
+import { hashFile, mutateEmptyFieldsToNull } from '../general';
 import { createClient } from './client';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -74,4 +79,55 @@ export async function signInWithOAuthHandler(provider: Provider) {
   });
 
   return response;
+}
+
+export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
+
+export async function postNewCar(formData: AddCarFormValues) {
+  const supabase = createClient();
+
+  const { image, ...data } = formData;
+
+  mutateEmptyFieldsToNull(data);
+
+  const jsonDataToValidate = JSON.stringify(data);
+
+  const url = new URL(window.location.origin);
+  url.pathname = '/api/car' satisfies Route;
+
+  let newCarResponse: Response | null = null;
+  try {
+    newCarResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonDataToValidate,
+    });
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+
+  const { data: responseData, error } =
+    (await newCarResponse?.json()) as RouteHandlerResponse<apiCarPostResponse>;
+
+  if (error) throw new Error(error.message);
+
+  if (image && responseData?.id) {
+    const hashedFile = await hashFile(image);
+
+    const { error: imageUploadError } = await supabase.storage
+      .from('cars_images')
+      .upload(`${responseData.id}/${hashedFile}`, image);
+
+    if (imageUploadError)
+      throw new Error(
+        'Car added successfully, but image upload failed. You can edit and upload the image in your car details.',
+        {
+          cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+        },
+      );
+  }
+
+  return responseData;
 }
