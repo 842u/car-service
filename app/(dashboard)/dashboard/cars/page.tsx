@@ -1,7 +1,7 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 
 import { AddCarButton } from '@/components/ui/AddCarButton/AddCarButton';
 import { AddCarForm } from '@/components/ui/AddCarForm/AddCarForm';
@@ -10,28 +10,33 @@ import {
   DialogModal,
   DialogModalRef,
 } from '@/components/ui/DialogModal/DialogModal';
+import { Spinner } from '@/components/ui/Spinner/Spinner';
+import { ToastsContext } from '@/context/ToastsContext';
 import { fetchCars } from '@/utils/supabase/general';
 
 export default function CarsPage() {
+  const { addToast } = useContext(ToastsContext);
   const addCarModalRef = useRef<DialogModalRef>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const intersectionTargetRef = useRef<HTMLDivElement>(null);
 
   const {
     data,
     error,
-    status,
     hasNextPage,
+    isPending,
+    isError,
+    isSuccess,
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ['cars'],
     queryFn: fetchCars,
     initialPageParam: 0,
-    getNextPageParam: (lastPage, _page) => lastPage.nextPageParam,
+    getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
 
   useEffect(() => {
-    if (!bottomRef.current || !hasNextPage) return;
+    if (!intersectionTargetRef.current || !hasNextPage) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -39,25 +44,38 @@ export default function CarsPage() {
           !isFetchingNextPage && fetchNextPage();
         }
       },
-      { threshold: 1.0, rootMargin: '200px' },
+      { threshold: 0.5 },
     );
 
-    observer.observe(bottomRef.current);
+    observer.observe(intersectionTargetRef.current);
 
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  return status === 'pending' ? (
-    <p>Loading...</p>
-  ) : status === 'error' ? (
-    <p>Error: {error.message}</p>
-  ) : (
-    <main className="flex h-screen flex-col items-center justify-center">
-      <div className="relative top-16 flex h-full w-full max-w-[1920px] flex-col items-center justify-around gap-5 py-5 md:flex-row md:flex-wrap md:justify-center md:gap-10 md:pl-16">
-        {data.pages.map((page) => {
-          return page.data.map((car) => <CarCard key={car.id} car={car} />);
-        })}
-        <div ref={bottomRef} className="w-full" />
+  useEffect(() => {
+    isError && addToast(error.message, 'error');
+  }, [isError, addToast, error]);
+
+  return (
+    <main className="flex min-h-screen max-w-screen items-center justify-center pt-16 md:pl-16">
+      {isError && <p>{error.message}</p>}
+      {isPending && (
+        <Spinner className="stroke-accent-400 fill-accent-400 h-16 md:h-20 lg:h-24" />
+      )}
+      <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-[1920px]">
+        {isSuccess &&
+          data.pages.map((page) => {
+            return page.data.map((car) => <CarCard key={car.id} car={car} />);
+          })}
+        {isSuccess && (
+          <div
+            ref={intersectionTargetRef}
+            className="absolute bottom-0 left-0 h-96 w-full"
+          />
+        )}
+        {isFetchingNextPage && (
+          <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
+        )}
       </div>
       <DialogModal ref={addCarModalRef}>
         <AddCarForm onSubmit={() => addCarModalRef.current?.closeModal()} />
