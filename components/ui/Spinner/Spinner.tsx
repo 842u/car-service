@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export const SPINNER_TEST_ID = 'loading spinner';
@@ -6,10 +7,20 @@ type SpinnerProps = {
   className?: string;
 };
 
-export function Spinner({ className = '' }: SpinnerProps) {
+export function Spinner({ className }: SpinnerProps) {
+  const [isSynced, setIsSynced] = useState(false);
+
+  useEffect(() => {
+    setIsSynced(true);
+  }, []);
+
   return (
     <svg
-      className={twMerge('aspect-square h-8', className)}
+      className={twMerge(
+        'aspect-square h-8 opacity-100 transition-opacity duration-200',
+        className,
+        !isSynced && 'opacity-0',
+      )}
       data-testid={SPINNER_TEST_ID}
       viewBox="-25 -25 230 230"
     >
