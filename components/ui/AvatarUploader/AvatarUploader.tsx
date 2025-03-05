@@ -65,7 +65,7 @@ export function AvatarUploader() {
             onClick={avatarUploadHandler}
           >
             {isLoading ? (
-              <Spinner className="m-auto h-full" color="#88868c" />
+              <Spinner className="stroke-alpha-grey-900 fill-alpha-grey-900 m-auto h-full" />
             ) : (
               'Save'
             )}
