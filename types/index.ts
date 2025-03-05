@@ -21,6 +21,8 @@ export type RouteHandlerResponse<T = unknown> =
 
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
 
+export type Car = Database['public']['Tables']['cars']['Row'];
+
 export type Fuel = Database['public']['Enums']['fuel'];
 export type FuelMapping = { [K in Fuel]: K };
 

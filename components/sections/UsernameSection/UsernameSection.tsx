@@ -7,8 +7,8 @@ import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection
 import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
-import { fetchUserProfile } from '@/utils/general';
 import { createClient } from '@/utils/supabase/client';
+import { fetchUserProfile } from '@/utils/supabase/general';
 import { usernameValidationRules } from '@/utils/validation';
 
 type UsernameFormValues = {

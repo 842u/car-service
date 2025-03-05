@@ -3,8 +3,9 @@ import { ZodError } from 'zod';
 
 import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
-import { fetchUserProfile, hashFile } from '@/utils/general';
+import { hashFile } from '@/utils/general';
 import { createClient } from '@/utils/supabase/client';
+import { fetchUserProfile } from '@/utils/supabase/general';
 import { imageFileSchema } from '@/utils/validation';
 
 export function useAvatarUpload() {

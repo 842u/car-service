@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { UserProfile } from '@/types';
-import { fetchUserProfile } from '@/utils/general';
+import { fetchUserProfile } from '@/utils/supabase/general';
 
 export function useUserProfile() {
   const [userProfile, setUserProfile] = useState<UserProfile>({

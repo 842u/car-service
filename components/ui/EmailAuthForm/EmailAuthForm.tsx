@@ -10,7 +10,8 @@ import { twMerge } from 'tailwind-merge';
 import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { RouteHandlerResponse } from '@/types';
-import { fetchUserProfile, unslugify } from '@/utils/general';
+import { unslugify } from '@/utils/general';
+import { fetchUserProfile } from '@/utils/supabase/general';
 import {
   emailValidationRules,
   passwordValidationRules,

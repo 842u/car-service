@@ -35,7 +35,7 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
     <dialog
       {...props}
       ref={dialogRef}
-      className="relative m-auto bg-transparent backdrop:backdrop-blur-xs"
+      className="fixed m-auto bg-transparent backdrop:backdrop-blur-xs"
       onClick={closeModal}
     >
       <div className="absolute top-0 right-0 m-4">

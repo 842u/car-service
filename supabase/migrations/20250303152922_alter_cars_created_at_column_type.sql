@@ -1,0 +1,6 @@
+ALTER TABLE cars
+  ALTER COLUMN created_at TYPE TIMESTAMPTZ
+  USING created_at::timestamptz;
+
+ALTER TABLE cars
+  ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP;
