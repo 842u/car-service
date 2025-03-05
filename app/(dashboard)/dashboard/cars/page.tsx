@@ -10,25 +10,7 @@ import {
   DialogModal,
   DialogModalRef,
 } from '@/components/ui/DialogModal/DialogModal';
-import { createClient } from '@/utils/supabase/client';
-
-const fetchCars = async ({ pageParam }: { pageParam: number }) => {
-  const pageItemLimit = 15;
-  const rangeIndexFrom = pageParam * pageItemLimit;
-  const rangeIndexTo = (pageParam + 1) * pageItemLimit - 1;
-
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from('cars')
-    .select()
-    .order('created_at', { ascending: false })
-    .limit(pageItemLimit)
-    .range(rangeIndexFrom, rangeIndexTo);
-
-  if (error) throw new Error(error.message);
-
-  return { data, nextPageParam: pageParam + 1 };
-};
+import { fetchCars } from '@/utils/supabase/general';
 
 export default function CarsPage() {
   const addCarModalRef = useRef<DialogModalRef>(null);

@@ -131,3 +131,23 @@ export async function postNewCar(formData: AddCarFormValues) {
 
   return responseData;
 }
+
+export async function fetchCars({ pageParam }: { pageParam: number }) {
+  const pageItemLimit = 15;
+  const rangeIndexFrom = pageParam * pageItemLimit;
+  const rangeIndexTo = (pageParam + 1) * pageItemLimit - 1;
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('cars')
+    .select()
+    .order('created_at', { ascending: false })
+    .limit(pageItemLimit)
+    .range(rangeIndexFrom, rangeIndexTo);
+
+  if (error) throw new Error(error.message);
+
+  const hasMoreCars = !(data.length < pageItemLimit);
+
+  return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
+}
