@@ -1,20 +1,26 @@
-import { Route } from 'next';
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useContext, useRef } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-import { apiCarPostResponse } from '@/app/api/car/route';
 import { ToastsContext } from '@/context/ToastsContext';
 import {
+  Car,
   Drive,
   driveTypesMapping,
   Fuel,
   fuelTypesMapping,
-  RouteHandlerResponse,
   Transmission,
   transmissionTypesMapping,
 } from '@/types';
-import { hashFile, mutateEmptyFieldsToNull } from '@/utils/general';
-import { createClient } from '@/utils/supabase/client';
+import { mapAddCarFormValuesToCarObject } from '@/utils/general';
+import {
+  CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+  postNewCar,
+} from '@/utils/supabase/general';
 import {
   carBrandValidationRules,
   carEngineCapacityValidationRules,
@@ -89,6 +95,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     getCarProductionYearValidationRules(),
   );
   const fileInputRef = useRef<InputImageRef>(null);
+  const optimisticCarImageUrl = useRef<string>(undefined);
 
   const {
     register,
@@ -108,72 +115,68 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     reset();
   };
 
-  const submitHandler: SubmitHandler<AddCarFormValues> = async (formData) => {
-    onSubmit && onSubmit();
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useMutation({
+    mutationFn: (addCarFormData: AddCarFormValues) =>
+      postNewCar(addCarFormData),
+    onMutate: async (addCarFormData) => {
+      await queryClient.cancelQueries({ queryKey: ['cars'] });
 
-    const supabase = createClient();
+      const previousCarsQuery = queryClient.getQueryData(['cars']);
 
-    const { image, ...data } = formData;
+      queryClient.setQueryData(
+        ['cars'],
+        (data: InfiniteData<{ data: Car[] }>) => {
+          let carToBeAdded = mapAddCarFormValuesToCarObject(addCarFormData);
+          optimisticCarImageUrl.current = carToBeAdded.image_url || '';
+          let removedCar = null;
 
-    mutateEmptyFieldsToNull(data);
+          return {
+            ...data,
+            pages: data.pages.map((page) => {
+              removedCar = page.data.pop();
+              const updatedCarsQuery = [carToBeAdded, ...page.data];
+              if (removedCar) {
+                carToBeAdded = removedCar;
+              }
 
-    const jsonDataToValidate = JSON.stringify(data);
-
-    const url = new URL(window.location.origin);
-    url.pathname = '/api/car' satisfies Route;
-
-    let newCarResponse: Response | null = null;
-    try {
-      newCarResponse = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+              return {
+                ...page,
+                data: updatedCarsQuery,
+              };
+            }),
+          };
         },
-        body: jsonDataToValidate,
-      });
-    } catch (error) {
-      if (error instanceof Error) addToast(error.message, 'error');
-      resetForm();
-    }
+      );
 
-    const { data: responseData, error } =
-      (await newCarResponse?.json()) as RouteHandlerResponse<apiCarPostResponse>;
-
-    if (error) {
-      addToast(error.message, 'error');
-      resetForm();
-    }
-
-    if (image && responseData?.id) {
-      const hashedFile = await hashFile(image);
-
-      const { error: imageUploadError } = await supabase.storage
-        .from('cars_images')
-        .upload(`${responseData.id}/${hashedFile}`, image);
-
-      imageUploadError &&
-        addToast(
-          'Car added successfully, but image upload failed. You can edit and upload the image in your car details.',
-          'warning',
-        );
-
-      data &&
-        !imageUploadError &&
-        addToast('New car successfully added.', 'success');
-
-      resetForm();
-
-      return;
-    }
-
-    data && addToast('New car successfully added.', 'success');
-    resetForm();
-  };
+      return { previousCars: previousCarsQuery };
+    },
+    onSuccess: () => {
+      addToast('Car added successfully.', 'success');
+    },
+    onError: (error, _, context) => {
+      if (error.cause === CAR_IMAGE_UPLOAD_ERROR_CAUSE) {
+        addToast(error.message, 'warning');
+      } else {
+        addToast(error.message, 'error');
+        queryClient.setQueryData(['cars'], context?.previousCars);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['cars'] });
+      optimisticCarImageUrl.current &&
+        URL.revokeObjectURL(optimisticCarImageUrl.current);
+    },
+  });
 
   return (
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10 md:flex md:flex-wrap md:gap-x-10 lg:gap-x-5 lg:p-5"
-      onSubmit={handleSubmit(submitHandler)}
+      onSubmit={handleSubmit(async (formData) => {
+        onSubmit && onSubmit();
+        await mutateAsync(formData);
+        resetForm();
+      })}
     >
       <h2 className="text-xl">Add a new car</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />

@@ -13,15 +13,16 @@ import {
 import { createClient } from '@/utils/supabase/client';
 
 const fetchCars = async ({ pageParam }: { pageParam: number }) => {
-  const rangeIndexFrom = pageParam * 15;
-  const rangeIndexTo = (pageParam + 1) * 15 - 1;
-  const supabase = createClient();
+  const pageItemLimit = 15;
+  const rangeIndexFrom = pageParam * pageItemLimit;
+  const rangeIndexTo = (pageParam + 1) * pageItemLimit - 1;
 
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('cars')
     .select()
     .order('created_at', { ascending: false })
-    .limit(15)
+    .limit(pageItemLimit)
     .range(rangeIndexFrom, rangeIndexTo);
 
   if (error) throw new Error(error.message);
