@@ -63,6 +63,14 @@ export default function CarsPage() {
         <Spinner className="stroke-accent-400 fill-accent-400 h-16 md:h-20 lg:h-24" />
       )}
       <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-[1920px]">
+        {isSuccess && data.pages[0].data.length === 0 && (
+          <p>
+            <span className="block text-center">
+              Currently, you don&apos;t have cars.{' '}
+            </span>
+            <span className="block text-center">Feel free to add one.</span>
+          </p>
+        )}
         {isSuccess &&
           data.pages.map((page) => {
             return page.data.map((car) => <CarCard key={car.id} car={car} />);
