@@ -17,7 +17,7 @@ const mockUserProfile = {
   username: 'username',
 } as const satisfies UserProfile;
 
-jest.mock('../utils/general.ts', () => ({
+jest.mock('../utils/supabase/general.ts', () => ({
   fetchUserProfile: jest.fn(),
 }));
 

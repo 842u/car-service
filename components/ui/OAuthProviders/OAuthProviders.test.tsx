@@ -5,7 +5,7 @@ import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 import { OAuthProviders } from './OAuthProviders';
 
-jest.mock('../../../utils/general.ts', () => ({
+jest.mock('../../../utils/supabase/general.ts', () => ({
   signInWithOAuthHandler: jest.fn(),
 }));
 

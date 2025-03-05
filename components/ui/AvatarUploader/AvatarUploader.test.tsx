@@ -39,8 +39,12 @@ window.crypto.randomUUID = () =>
 
 jest.mock('../../../utils/general.ts', () => ({
   ...jest.requireActual('../../../utils/general.ts'),
-  fetchUserProfile: async () => mockUserProfile,
   hashFile: async (file: File) => file.name,
+}));
+
+jest.mock('../../../utils/supabase/general.ts', () => ({
+  ...jest.requireActual('../../../utils/supabase/general.ts'),
+  fetchUserProfile: async () => mockUserProfile,
 }));
 
 const mockSupabaseStorageFromUpload = jest.fn();
