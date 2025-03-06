@@ -1,14 +1,10 @@
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { ToastsContext } from '@/context/ToastsContext';
 import {
-  Car,
+  CarsInfiniteQueryData,
   Drive,
   driveTypesMapping,
   Fuel,
@@ -18,6 +14,7 @@ import {
 } from '@/types';
 import { mapAddCarFormValuesToCarObject } from '@/utils/general';
 import {
+  addCarToInfiniteQuery,
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
   postNewCar,
 } from '@/utils/supabase/general';
@@ -120,34 +117,25 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     mutationFn: (addCarFormData: AddCarFormValues) =>
       postNewCar(addCarFormData),
     onMutate: async (addCarFormData) => {
-      await queryClient.cancelQueries({ queryKey: ['cars'] });
+      const newCar = mapAddCarFormValuesToCarObject(addCarFormData);
+      optimisticCarImageUrl.current = newCar.image_url || '';
 
+      await queryClient.cancelQueries({ queryKey: ['cars'] });
       const previousCarsQuery = queryClient.getQueryData(['cars']);
 
-      queryClient.setQueryData(
-        ['cars'],
-        (data: InfiniteData<{ data: Car[] }>) => {
-          let carToBeAdded = mapAddCarFormValuesToCarObject(addCarFormData);
-          optimisticCarImageUrl.current = carToBeAdded.image_url || '';
-          let removedCar = null;
+      queryClient.setQueryData(['cars'], (data: CarsInfiniteQueryData) => {
+        const updatedQueryData: CarsInfiniteQueryData = {
+          pages: data.pages.map((page) => ({
+            data: [...page.data],
+            nextPageParam: page.nextPageParam,
+          })),
+          pageParams: [...data.pageParams],
+        };
 
-          return {
-            ...data,
-            pages: data.pages.map((page) => {
-              removedCar = page.data.pop();
-              const updatedCarsQuery = [carToBeAdded, ...page.data];
-              if (removedCar) {
-                carToBeAdded = removedCar;
-              }
+        addCarToInfiniteQuery(newCar, updatedQueryData, 0);
 
-              return {
-                ...page,
-                data: updatedCarsQuery,
-              };
-            }),
-          };
-        },
-      );
+        return updatedQueryData;
+      });
 
       return { previousCars: previousCarsQuery };
     },
