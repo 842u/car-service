@@ -26,8 +26,9 @@ export default function CarsPage() {
     isPending,
     isError,
     isSuccess,
-    fetchNextPage,
+    isFetching,
     isFetchingNextPage,
+    fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ['cars'],
     queryFn: fetchCars,
@@ -41,7 +42,7 @@ export default function CarsPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          !isFetchingNextPage && fetchNextPage();
+          isSuccess && !isFetching && !isFetchingNextPage && fetchNextPage();
         }
       },
       { threshold: 0.5 },
@@ -50,11 +51,13 @@ export default function CarsPage() {
     observer.observe(intersectionTargetRef.current);
 
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isFetching, isSuccess]);
 
   useEffect(() => {
     isError && addToast(error.message, 'error');
   }, [isError, addToast, error]);
+
+  const hasNoCars = isSuccess && data.pages[0].data.length === 0;
 
   return (
     <main className="flex min-h-screen max-w-screen items-center justify-center pt-16 md:pl-16">
@@ -63,7 +66,7 @@ export default function CarsPage() {
         <Spinner className="stroke-accent-400 fill-accent-400 h-16 md:h-20 lg:h-24" />
       )}
       <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-[1920px]">
-        {isSuccess && data.pages[0].data.length === 0 && (
+        {hasNoCars && (
           <p>
             <span className="block text-center">
               Currently, you don&apos;t have cars.{' '}
@@ -75,12 +78,10 @@ export default function CarsPage() {
           data.pages.map((page) => {
             return page.data.map((car) => <CarCard key={car.id} car={car} />);
           })}
-        {isSuccess && (
-          <div
-            ref={intersectionTargetRef}
-            className="absolute bottom-0 left-0 h-96 w-full"
-          />
-        )}
+        <div
+          ref={intersectionTargetRef}
+          className="absolute bottom-0 left-0 h-96 w-full"
+        />
         {isFetchingNextPage && (
           <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
         )}
