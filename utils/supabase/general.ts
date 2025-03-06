@@ -3,10 +3,13 @@ import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { RouteHandlerResponse } from '@/types';
+import { Car, CarsInfiniteQueryData, RouteHandlerResponse } from '@/types';
 
 import { hashFile, mutateEmptyFieldsToNull } from '../general';
 import { createClient } from './client';
+
+export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
+export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -81,8 +84,6 @@ export async function signInWithOAuthHandler(provider: Provider) {
   return response;
 }
 
-export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
-
 export async function postNewCar(formData: AddCarFormValues) {
   const supabase = createClient();
 
@@ -133,21 +134,57 @@ export async function postNewCar(formData: AddCarFormValues) {
 }
 
 export async function fetchCars({ pageParam }: { pageParam: number }) {
-  const pageItemLimit = 15;
-  const rangeIndexFrom = pageParam * pageItemLimit;
-  const rangeIndexTo = (pageParam + 1) * pageItemLimit - 1;
+  const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
+  const rangeIndexTo =
+    (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
 
   const supabase = createClient();
   const { data, error } = await supabase
     .from('cars')
     .select()
     .order('created_at', { ascending: false })
-    .limit(pageItemLimit)
+    .limit(CARS_INFINITE_QUERY_PAGE_DATA_LIMIT)
     .range(rangeIndexFrom, rangeIndexTo);
 
   if (error) throw new Error(error.message);
 
-  const hasMoreCars = !(data.length < pageItemLimit);
+  const hasMoreCars = !(data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT);
 
   return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
+}
+
+export function addCarToInfiniteQuery(
+  newCar: Car,
+  queryData: CarsInfiniteQueryData,
+  pageIndex: number = 0,
+) {
+  const currentPage = queryData.pages[pageIndex];
+  const nextPage = queryData?.pages[pageIndex + 1];
+
+  if (
+    currentPage.data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT &&
+    (pageIndex === 0 || pageIndex - 1 === queryData.pages.length)
+  ) {
+    currentPage.data.unshift(newCar);
+    return;
+  } else if (currentPage.data.length === CARS_INFINITE_QUERY_PAGE_DATA_LIMIT) {
+    const removedCar = currentPage.data.pop();
+    currentPage.data.unshift(newCar);
+
+    if (removedCar && currentPage.nextPageParam) {
+      if (!nextPage) {
+        queryData.pages.push({
+          data: [removedCar],
+          nextPageParam: currentPage.nextPageParam + 1,
+        });
+        queryData.pageParams.push(pageIndex + 1);
+      } else {
+        nextPage.data.unshift(removedCar);
+      }
+
+      return addCarToInfiniteQuery(removedCar, queryData, pageIndex + 1);
+    }
+  }
+
+  return;
 }
