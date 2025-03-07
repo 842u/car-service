@@ -3,13 +3,13 @@ import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Car, CarsInfiniteQueryData, RouteHandlerResponse } from '@/types';
+import { RouteHandlerResponse } from '@/types';
 
 import { hashFile, mutateEmptyFieldsToNull } from '../general';
+import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tenstack/general';
 import { createClient } from './client';
 
 export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
-export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -151,36 +151,4 @@ export async function fetchCars({ pageParam }: { pageParam: number }) {
   const hasMoreCars = !(data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT);
 
   return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
-}
-
-export function addCarToInfiniteQueryData(
-  newCar: Car,
-  queryData: CarsInfiniteQueryData,
-  pageIndex: number = 0,
-) {
-  const currentPage = queryData.pages[pageIndex];
-  const nextPage = queryData?.pages[pageIndex + 1];
-
-  currentPage.data = [{ ...newCar }, ...currentPage.data];
-
-  if (currentPage.data.length > CARS_INFINITE_QUERY_PAGE_DATA_LIMIT) {
-    const carriedCar = currentPage.data.pop();
-
-    if (!nextPage && carriedCar) {
-      queryData.pages.push({
-        data: [{ ...carriedCar }],
-        nextPageParam: pageIndex + 2,
-      });
-      queryData.pageParams.push(pageIndex + 1);
-      currentPage.nextPageParam = pageIndex + 1;
-    } else if (nextPage && carriedCar) {
-      return addCarToInfiniteQueryData(
-        { ...carriedCar },
-        queryData,
-        pageIndex + 1,
-      );
-    }
-  }
-
-  return;
 }

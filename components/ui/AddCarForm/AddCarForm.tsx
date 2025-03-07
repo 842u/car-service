@@ -6,10 +6,10 @@ import { ToastsContext } from '@/context/ToastsContext';
 import { CarsInfiniteQueryData, Drive, Fuel, Transmission } from '@/types';
 import { mapAddCarFormValuesToCarObject } from '@/utils/general';
 import {
-  addCarToInfiniteQueryData,
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
   postNewCar,
 } from '@/utils/supabase/general';
+import { addCarToInfiniteQueryData } from '@/utils/tenstack/general';
 
 import { Button } from '../Button/Button';
 import { InputImageRef } from '../InputImage/InputImage';
