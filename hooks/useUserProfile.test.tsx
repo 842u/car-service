@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 
 import { UserProfile } from '@/types/index';
-import { fetchUserProfile } from '@/utils/general';
+import { fetchUserProfile } from '@/utils/supabase/general';
 
 import { useUserProfile } from './useUserProfile';
 
@@ -17,7 +17,7 @@ const mockUserProfile = {
   username: 'username',
 } as const satisfies UserProfile;
 
-jest.mock('../utils/general.ts', () => ({
+jest.mock('../utils/supabase/general.ts', () => ({
   fetchUserProfile: jest.fn(),
 }));
 

@@ -1,3 +1,4 @@
+import { InfiniteData } from '@tanstack/react-query';
 import { JSX } from 'react';
 
 import { Database } from './supabase';
@@ -20,6 +21,8 @@ export type RouteHandlerResponse<T = unknown> =
   | { data: null; error: { message: string } };
 
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
+
+export type Car = Database['public']['Tables']['cars']['Row'];
 
 export type Fuel = Database['public']['Enums']['fuel'];
 export type FuelMapping = { [K in Fuel]: K };
@@ -53,3 +56,10 @@ export const driveTypesMapping: DriveMapping = {
   AWD: 'AWD',
   '4WD': '4WD',
 };
+
+export type CarsInfiniteQueryPageData = {
+  data: Car[];
+  nextPageParam: number | null;
+};
+
+export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;

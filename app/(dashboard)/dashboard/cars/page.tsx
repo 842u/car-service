@@ -1,41 +1,28 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useRef } from 'react';
 
 import { AddCarButton } from '@/components/ui/AddCarButton/AddCarButton';
 import { AddCarForm } from '@/components/ui/AddCarForm/AddCarForm';
+import { CarsSection } from '@/components/ui/CarsSection/CarsSection';
 import {
   DialogModal,
   DialogModalRef,
 } from '@/components/ui/DialogModal/DialogModal';
-import { createClient } from '@/utils/supabase/client';
-
-const fetchCars = async () => {
-  const supabase = createClient();
-
-  const { data, error } = await supabase.from('cars').select();
-
-  if (error) throw new Error(error.message);
-
-  return data;
-};
 
 export default function CarsPage() {
-  const addCarModalRef = useRef<DialogModalRef>(null);
-
-  const { data } = useQuery({ queryKey: ['cars'], queryFn: fetchCars });
+  const dialogModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center">
-      {data?.map((car) => <p key={car.id}>{car.id}</p>)}
-      <DialogModal ref={addCarModalRef}>
-        <AddCarForm onSubmit={() => addCarModalRef.current?.closeModal()} />
+    <main className="flex min-h-screen max-w-screen items-center justify-center pt-16 md:pl-16">
+      <CarsSection />
+      <DialogModal ref={dialogModalRef}>
+        <AddCarForm onSubmit={() => dialogModalRef.current?.closeModal()} />
       </DialogModal>
       <AddCarButton
-        className="fixed right-0 bottom-0 m-4 md:m-8 lg:m-12"
+        className="fixed right-0 bottom-40 m-4 w-16 md:m-8 lg:m-12"
         onClick={() => {
-          addCarModalRef.current?.showModal();
+          dialogModalRef.current?.showModal();
         }}
       />
     </main>

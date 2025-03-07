@@ -1,12 +1,10 @@
-// Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
+import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
+import { Car } from '@/types';
 
-import { Provider } from '@supabase/supabase-js';
-import { Route } from 'next';
-
-import { createClient } from './supabase/client';
-
+export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
 const DEFAULT_TIMEOUT = 9000;
 
+// Default vercel serverless function will timeout after 10s so promise should reject in less than that time.
 export async function promiseWithTimeout<T>(
   promise: Promise<T>,
   time = DEFAULT_TIMEOUT,
@@ -50,39 +48,6 @@ export async function hashFile(file: File) {
   return hashHex;
 }
 
-export const fetchUserProfile = async () => {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return;
-
-  const { data: profileData } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user?.id || '');
-
-  return profileData?.[0];
-};
-
-export async function signInWithOAuthHandler(provider: Provider) {
-  const { auth } = createClient();
-  const requestUrl = new URL(window.location.origin);
-
-  requestUrl.pathname = '/api/auth/callback' satisfies Route;
-
-  const response = await auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo: requestUrl.href,
-    },
-  });
-
-  return response;
-}
-
 export function getMimeTypeExtensions(mimeTypes: string[]) {
   const typesExtensions = mimeTypes
     .map((mimeType) => mimeType.split('/')[1])
@@ -100,4 +65,28 @@ export function mutateEmptyFieldsToNull(
       data[key] = null;
     }
   });
+}
+
+export function mapAddCarFormValuesToCarObject(
+  formData: AddCarFormValues,
+): Car {
+  return {
+    id: crypto.randomUUID(),
+    image_url: formData.image && URL.createObjectURL(formData.image),
+    custom_name: formData.name || 'New Car',
+    brand: formData.brand,
+    model: formData.model,
+    license_plates: formData.licensePlates,
+    additional_fuel_type: formData.additionalFuelType,
+    created_at: new Date().toISOString(),
+    drive_type: formData.driveType,
+    engine_capacity: formData.engineCapacity,
+    fuel_type: formData.fuelType,
+    mileage: formData.mileage,
+    insurance_expiration: formData.insuranceExpiration,
+    production_year: formData.productionYear,
+    transmission_type: formData.transmissionType,
+    vin: formData.vin,
+    created_by: 'optimistic update',
+  };
 }

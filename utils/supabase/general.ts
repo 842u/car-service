@@ -1,3 +1,16 @@
+import { Provider } from '@supabase/supabase-js';
+import { Route } from 'next';
+
+import { apiCarPostResponse } from '@/app/api/car/route';
+import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
+import { RouteHandlerResponse } from '@/types';
+
+import {
+  CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+  hashFile,
+  mutateEmptyFieldsToNull,
+} from '../general';
+import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tenstack/general';
 import { createClient } from './client';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -38,4 +51,106 @@ export async function deleteTestUser(testUserIndex: number) {
     if (error instanceof Error)
       throw new Error(error?.message || 'Error on deleting test user.');
   }
+}
+
+export const fetchUserProfile = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user?.id || '');
+
+  return profileData?.[0];
+};
+
+export async function signInWithOAuthHandler(provider: Provider) {
+  const { auth } = createClient();
+  const requestUrl = new URL(window.location.origin);
+
+  requestUrl.pathname = '/api/auth/callback' satisfies Route;
+
+  const response = await auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: requestUrl.href,
+    },
+  });
+
+  return response;
+}
+
+export async function postNewCar(formData: AddCarFormValues) {
+  const supabase = createClient();
+
+  const { image, ...data } = formData;
+
+  mutateEmptyFieldsToNull(data);
+
+  const jsonDataToValidate = JSON.stringify(data);
+
+  const url = new URL(window.location.origin);
+  url.pathname = '/api/car' satisfies Route;
+
+  let newCarResponse: Response | null = null;
+  try {
+    newCarResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonDataToValidate,
+    });
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+
+  const { data: responseData, error } =
+    (await newCarResponse?.json()) as RouteHandlerResponse<apiCarPostResponse>;
+
+  if (error) throw new Error(error.message);
+
+  if (image && responseData?.id) {
+    const hashedFile = await hashFile(image);
+
+    const { error: imageUploadError } = await supabase.storage
+      .from('cars_images')
+      .upload(`${responseData.id}/${hashedFile}`, image);
+
+    if (imageUploadError)
+      throw new Error(
+        'Car added successfully, but image upload failed. You can edit and upload the image in your car details.',
+        {
+          cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+        },
+      );
+  }
+
+  return responseData;
+}
+
+export async function fetchCars({ pageParam }: { pageParam: number }) {
+  const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
+  const rangeIndexTo =
+    (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('cars')
+    .select()
+    .order('created_at', { ascending: false })
+    .limit(CARS_INFINITE_QUERY_PAGE_DATA_LIMIT)
+    .range(rangeIndexFrom, rangeIndexTo);
+
+  if (error) throw new Error(error.message);
+
+  const hasMoreCars = !(data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT);
+
+  return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
 }
