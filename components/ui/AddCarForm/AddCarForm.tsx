@@ -71,7 +71,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   });
 
   const queryClient = useQueryClient();
-  const { mutateAsync } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (addCarFormData: AddCarFormValues) =>
       postNewCar(addCarFormData),
     onMutate: async (addCarFormData) => {
@@ -95,7 +95,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         return updatedQueryData;
       });
 
-      return { previousCars: previousCarsQuery };
+      return { previousCars: previousCarsQuery, newCarId: newCar.id };
     },
     onSuccess: () => {
       addToast('Car added successfully.', 'success');
@@ -105,11 +105,29 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         addToast(error.message, 'warning');
       } else {
         addToast(error.message, 'error');
-        queryClient.setQueryData(['cars'], context?.previousCars);
+        const previousCarsQuery: CarsInfiniteQueryData | undefined =
+          queryClient.getQueryData(['cars']);
+
+        if (previousCarsQuery) {
+          const updatedQueryData: CarsInfiniteQueryData = {
+            pages: previousCarsQuery.pages.map((page) => ({
+              data: page.data.map((car) => ({ ...car })),
+              nextPageParam: page.nextPageParam,
+            })),
+            pageParams: [...previousCarsQuery.pageParams],
+          };
+
+          updatedQueryData.pages.forEach((page) => {
+            page.data = page.data.filter((car) => {
+              return car.id !== context?.newCarId;
+            });
+          });
+
+          queryClient.setQueryData(['cars'], updatedQueryData);
+        }
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['cars'] });
       optimisticCarImageUrl.current &&
         URL.revokeObjectURL(optimisticCarImageUrl.current);
     },
@@ -122,7 +140,9 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
 
   const submitHandler = async (formData: AddCarFormValues) => {
     onSubmit && onSubmit();
-    await mutateAsync(formData);
+    mutate(formData, {
+      onSettled: () => queryClient.invalidateQueries({ queryKey: ['cars'] }),
+    });
     resetForm();
   };
 
