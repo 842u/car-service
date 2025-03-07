@@ -1,6 +1,7 @@
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import { Car } from '@/types';
 
+export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
 const DEFAULT_TIMEOUT = 9000;
 
 // Default vercel serverless function will timeout after 10s so promise should reject in less than that time.

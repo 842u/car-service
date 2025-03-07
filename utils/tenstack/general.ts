@@ -4,8 +4,10 @@ import { RefObject } from 'react';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import { Car, CarsInfiniteQueryData, ToastType } from '@/types';
 
-import { mapAddCarFormValuesToCarObject } from '../general';
-import { CAR_IMAGE_UPLOAD_ERROR_CAUSE } from '../supabase/general';
+import {
+  CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+  mapAddCarFormValuesToCarObject,
+} from '../general';
 
 export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
 

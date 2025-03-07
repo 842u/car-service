@@ -5,11 +5,13 @@ import { apiCarPostResponse } from '@/app/api/car/route';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import { RouteHandlerResponse } from '@/types';
 
-import { hashFile, mutateEmptyFieldsToNull } from '../general';
+import {
+  CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+  hashFile,
+  mutateEmptyFieldsToNull,
+} from '../general';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tenstack/general';
 import { createClient } from './client';
-
-export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
