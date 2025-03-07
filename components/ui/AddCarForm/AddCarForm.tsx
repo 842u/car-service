@@ -3,12 +3,12 @@ import { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { ToastsContext } from '@/context/ToastsContext';
-import { CarsInfiniteQueryData, Drive, Fuel, Transmission } from '@/types';
+import { Drive, Fuel, Transmission } from '@/types';
+import { postNewCar } from '@/utils/supabase/general';
 import {
-  CAR_IMAGE_UPLOAD_ERROR_CAUSE,
-  postNewCar,
-} from '@/utils/supabase/general';
-import { onMutateCarsInfiniteQueryMutation } from '@/utils/tenstack/general';
+  onErrorCarsInfiniteQueryMutation,
+  onMutateCarsInfiniteQueryMutation,
+} from '@/utils/tenstack/general';
 
 import { Button } from '../Button/Button';
 import { InputImageRef } from '../InputImage/InputImage';
@@ -82,33 +82,8 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     onSuccess: () => {
       addToast('Car added successfully.', 'success');
     },
-    onError: (error, _, context) => {
-      if (error.cause === CAR_IMAGE_UPLOAD_ERROR_CAUSE) {
-        addToast(error.message, 'warning');
-      } else {
-        addToast(error.message, 'error');
-        const previousCarsQuery: CarsInfiniteQueryData | undefined =
-          queryClient.getQueryData(['cars']);
-
-        if (previousCarsQuery) {
-          const updatedQueryData: CarsInfiniteQueryData = {
-            pages: previousCarsQuery.pages.map((page) => ({
-              data: page.data.map((car) => ({ ...car })),
-              nextPageParam: page.nextPageParam,
-            })),
-            pageParams: [...previousCarsQuery.pageParams],
-          };
-
-          updatedQueryData.pages.forEach((page) => {
-            page.data = page.data.filter((car) => {
-              return car.id !== context?.newCarId;
-            });
-          });
-
-          queryClient.setQueryData(['cars'], updatedQueryData);
-        }
-      }
-    },
+    onError: (error, _, context) =>
+      onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
     onSettled: () => {
       optimisticCarImageUrlRef.current &&
         URL.revokeObjectURL(optimisticCarImageUrlRef.current);
