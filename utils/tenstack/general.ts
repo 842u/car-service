@@ -41,6 +41,18 @@ export function addCarToInfiniteQueryData(
   return;
 }
 
+function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
+  const deepCopy: CarsInfiniteQueryData = {
+    pages: data.pages.map((page) => ({
+      data: page.data.map((car) => ({ ...car })),
+      nextPageParam: page.nextPageParam,
+    })),
+    pageParams: [...data.pageParams],
+  };
+
+  return deepCopy;
+}
+
 export async function onMutateCarsInfiniteQueryMutation(
   addCarFormData: AddCarFormValues,
   queryClient: QueryClient,
@@ -53,13 +65,7 @@ export async function onMutateCarsInfiniteQueryMutation(
   optimisticCarImageUrlRef.current = newCar.image_url || '';
 
   queryClient.setQueryData(['cars'], (data: CarsInfiniteQueryData) => {
-    const updatedQueryData: CarsInfiniteQueryData = {
-      pages: data.pages.map((page) => ({
-        data: page.data.map((car) => ({ ...car })),
-        nextPageParam: page.nextPageParam,
-      })),
-      pageParams: [...data.pageParams],
-    };
+    const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
 
     addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
 
@@ -88,13 +94,7 @@ export function onErrorCarsInfiniteQueryMutation(
       queryClient.getQueryData(['cars']);
 
     if (previousCarsQuery) {
-      const updatedQueryData: CarsInfiniteQueryData = {
-        pages: previousCarsQuery.pages.map((page) => ({
-          data: page.data.map((car) => ({ ...car })),
-          nextPageParam: page.nextPageParam,
-        })),
-        pageParams: [...previousCarsQuery.pageParams],
-      };
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQuery);
 
       updatedQueryData.pages.forEach((page) => {
         page.data = page.data.filter((car) => {
