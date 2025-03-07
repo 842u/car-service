@@ -4,12 +4,11 @@ import { useForm } from 'react-hook-form';
 
 import { ToastsContext } from '@/context/ToastsContext';
 import { CarsInfiniteQueryData, Drive, Fuel, Transmission } from '@/types';
-import { mapAddCarFormValuesToCarObject } from '@/utils/general';
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
   postNewCar,
 } from '@/utils/supabase/general';
-import { addCarToInfiniteQueryData } from '@/utils/tenstack/general';
+import { onMutateCarsInfiniteQueryMutation } from '@/utils/tenstack/general';
 
 import { Button } from '../Button/Button';
 import { InputImageRef } from '../InputImage/InputImage';
@@ -57,7 +56,7 @@ type AddCarFormProps = {
 export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const { addToast } = useContext(ToastsContext);
   const fileInputRef = useRef<InputImageRef>(null);
-  const optimisticCarImageUrl = useRef<string>(undefined);
+  const optimisticCarImageUrlRef = useRef<string>(undefined);
 
   const {
     register,
@@ -74,29 +73,12 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const { mutate } = useMutation({
     mutationFn: (addCarFormData: AddCarFormValues) =>
       postNewCar(addCarFormData),
-    onMutate: async (addCarFormData) => {
-      await queryClient.cancelQueries({ queryKey: ['cars'] });
-      const previousCarsQuery = queryClient.getQueryData(['cars']);
-
-      const newCar = mapAddCarFormValuesToCarObject(addCarFormData);
-      optimisticCarImageUrl.current = newCar.image_url || '';
-
-      queryClient.setQueryData(['cars'], (data: CarsInfiniteQueryData) => {
-        const updatedQueryData: CarsInfiniteQueryData = {
-          pages: data.pages.map((page) => ({
-            data: page.data.map((car) => ({ ...car })),
-            nextPageParam: page.nextPageParam,
-          })),
-          pageParams: [...data.pageParams],
-        };
-
-        addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
-
-        return updatedQueryData;
-      });
-
-      return { previousCars: previousCarsQuery, newCarId: newCar.id };
-    },
+    onMutate: (addCarFormData) =>
+      onMutateCarsInfiniteQueryMutation(
+        addCarFormData,
+        queryClient,
+        optimisticCarImageUrlRef,
+      ),
     onSuccess: () => {
       addToast('Car added successfully.', 'success');
     },
@@ -128,8 +110,8 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       }
     },
     onSettled: () => {
-      optimisticCarImageUrl.current &&
-        URL.revokeObjectURL(optimisticCarImageUrl.current);
+      optimisticCarImageUrlRef.current &&
+        URL.revokeObjectURL(optimisticCarImageUrlRef.current);
     },
   });
 
