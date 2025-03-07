@@ -153,7 +153,7 @@ export async function fetchCars({ pageParam }: { pageParam: number }) {
   return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
 }
 
-export function addCarToInfiniteQuery(
+export function addCarToInfiniteQueryData(
   newCar: Car,
   queryData: CarsInfiniteQueryData,
   pageIndex: number = 0,
@@ -161,28 +161,24 @@ export function addCarToInfiniteQuery(
   const currentPage = queryData.pages[pageIndex];
   const nextPage = queryData?.pages[pageIndex + 1];
 
-  if (
-    currentPage.data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT &&
-    (pageIndex === 0 || pageIndex - 1 === queryData.pages.length)
-  ) {
-    currentPage.data.unshift(newCar);
-    return;
-  } else if (currentPage.data.length === CARS_INFINITE_QUERY_PAGE_DATA_LIMIT) {
-    const removedCar = currentPage.data.pop();
-    currentPage.data.unshift(newCar);
+  currentPage.data = [{ ...newCar }, ...currentPage.data];
 
-    if (removedCar && currentPage.nextPageParam) {
-      if (!nextPage) {
-        queryData.pages.push({
-          data: [removedCar],
-          nextPageParam: currentPage.nextPageParam + 1,
-        });
-        queryData.pageParams.push(pageIndex + 1);
-      } else {
-        nextPage.data.unshift(removedCar);
-      }
+  if (currentPage.data.length > CARS_INFINITE_QUERY_PAGE_DATA_LIMIT) {
+    const carriedCar = currentPage.data.pop();
 
-      return addCarToInfiniteQuery(removedCar, queryData, pageIndex + 1);
+    if (!nextPage && carriedCar) {
+      queryData.pages.push({
+        data: [{ ...carriedCar }],
+        nextPageParam: pageIndex + 2,
+      });
+      queryData.pageParams.push(pageIndex + 1);
+      currentPage.nextPageParam = pageIndex + 1;
+    } else if (nextPage && carriedCar) {
+      return addCarToInfiniteQueryData(
+        { ...carriedCar },
+        queryData,
+        pageIndex + 1,
+      );
     }
   }
 

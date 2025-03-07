@@ -14,7 +14,7 @@ import {
 } from '@/types';
 import { mapAddCarFormValuesToCarObject } from '@/utils/general';
 import {
-  addCarToInfiniteQuery,
+  addCarToInfiniteQueryData,
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
   postNewCar,
 } from '@/utils/supabase/general';
@@ -132,7 +132,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
           pageParams: [...data.pageParams],
         };
 
-        addCarToInfiniteQuery(newCar, updatedQueryData, 0);
+        addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
 
         return updatedQueryData;
       });
