@@ -64,7 +64,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     reset,
     handleSubmit,
     control,
-    formState: { errors, isValid, isSubmitting, isDirty },
+    formState: { errors, isValid, isDirty },
   } = useForm<AddCarFormValues>({
     mode: 'all',
     defaultValues: defaultAddCarFormValues,
@@ -162,16 +162,12 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       <div className="mt-5 flex gap-10 md:flex-auto md:basis-full lg:justify-end lg:gap-5">
         <Button
           className="w-full lg:max-w-48"
-          disabled={isSubmitting || !isDirty}
+          disabled={!isDirty}
           onClick={resetForm}
         >
           Reset
         </Button>
-        <SubmitButton
-          className="w-full lg:max-w-48"
-          disabled={!isValid || isSubmitting}
-          isSubmitting={isSubmitting}
-        >
+        <SubmitButton className="w-full lg:max-w-48" disabled={!isValid}>
           Save
         </SubmitButton>
       </div>
