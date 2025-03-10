@@ -2,6 +2,7 @@ import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
+import { UsernameFormValues } from '@/components/sections/UsernameSection/UsernameSection';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import { RouteHandlerResponse } from '@/types';
 
@@ -118,7 +119,7 @@ export async function postNewCar(formData: AddCarFormValues) {
   return responseData;
 }
 
-export const getProfile = async () => {
+export async function getProfile() {
   const supabase = createClient();
 
   const {
@@ -136,7 +137,31 @@ export const getProfile = async () => {
     throw new Error(profileError.message || "Can't get user profile.");
 
   return profileData[0];
-};
+}
+
+export async function patchProfile(formData: UsernameFormValues) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user)
+    throw new Error("Error on updating username. Can't get user session.");
+
+  const newUsername = formData.username.trim();
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({ username: newUsername })
+    .eq('id', user.id)
+    .select();
+
+  if (error)
+    throw new Error(error.message || 'Error on updating username. Try again.');
+
+  return data;
+}
 
 export async function fetchCars({ pageParam }: { pageParam: number }) {
   const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
