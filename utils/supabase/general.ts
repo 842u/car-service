@@ -53,23 +53,6 @@ export async function deleteTestUser(testUserIndex: number) {
   }
 }
 
-export const fetchUserProfile = async () => {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return;
-
-  const { data: profileData } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user?.id || '');
-
-  return profileData?.[0];
-};
-
 export async function signInWithOAuthHandler(provider: Provider) {
   const { auth } = createClient();
   const requestUrl = new URL(window.location.origin);
@@ -134,6 +117,26 @@ export async function postNewCar(formData: AddCarFormValues) {
 
   return responseData;
 }
+
+export const getProfile = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id);
+
+  if (profileError)
+    throw new Error(profileError.message || "Can't get user profile.");
+
+  return profileData[0];
+};
 
 export async function fetchCars({ pageParam }: { pageParam: number }) {
   const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;

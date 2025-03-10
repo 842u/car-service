@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { hashFile } from '@/utils/general';
 import { createClient } from '@/utils/supabase/client';
-import { fetchUserProfile } from '@/utils/supabase/general';
+import { getProfile } from '@/utils/supabase/general';
 import { imageFileSchema } from '@/utils/validation';
 
 import { useToasts } from './useToasts';
@@ -113,7 +113,7 @@ export function useAvatarUpload() {
           throw new Error(fileUploadError.message);
         }
       } catch (error) {
-        const profileData = await fetchUserProfile();
+        const profileData = await getProfile();
         setUserProfile((previousState) => ({
           ...previousState,
           ...profileData,

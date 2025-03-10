@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 
 import { UserProfile } from '@/types/index';
-import { fetchUserProfile } from '@/utils/supabase/general';
+import { getProfile } from '@/utils/supabase/general';
 
 import { useUserProfile } from './useUserProfile';
 
@@ -65,9 +65,7 @@ describe('useUserProfile', () => {
   });
 
   it('should contain an empty user profile while there is no user session', async () => {
-    (fetchUserProfile as jest.Mock).mockImplementationOnce(
-      async () => undefined,
-    );
+    (getProfile as jest.Mock).mockImplementationOnce(async () => undefined);
     render(<TestUseUserProfile />);
 
     const userAvatar = await screen.findByLabelText('user avatar');
@@ -86,7 +84,7 @@ describe('useUserProfile', () => {
   });
 
   it('should contain user profile while a user is logged in', async () => {
-    (fetchUserProfile as jest.Mock).mockImplementationOnce(
+    (getProfile as jest.Mock).mockImplementationOnce(
       async () => mockUserProfile,
     );
     render(<TestUseUserProfile />);

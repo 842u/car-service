@@ -11,7 +11,7 @@ import { UserProfileContext } from '@/context/UserProfileContext';
 import { useToasts } from '@/hooks/useToasts';
 import { RouteHandlerResponse } from '@/types';
 import { unslugify } from '@/utils/general';
-import { fetchUserProfile } from '@/utils/supabase/general';
+import { getProfile } from '@/utils/supabase/general';
 import {
   emailValidationRules,
   passwordValidationRules,
@@ -88,7 +88,7 @@ export default function EmailAuthForm({
     }
 
     if (response.ok && type === 'sign-in') {
-      const profileData = await fetchUserProfile();
+      const profileData = await getProfile();
 
       setUserProfile((previousState) => ({
         ...previousState,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { UserProfile } from '@/types';
-import { fetchUserProfile } from '@/utils/supabase/general';
+import { getProfile } from '@/utils/supabase/general';
 
 export function useUserProfile() {
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -12,7 +12,7 @@ export function useUserProfile() {
 
   useEffect(() => {
     (async () => {
-      const profileData = await fetchUserProfile();
+      const profileData = await getProfile();
 
       setUserProfile((previousState) => ({
         ...previousState,

@@ -8,7 +8,7 @@ import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { useToasts } from '@/hooks/useToasts';
 import { createClient } from '@/utils/supabase/client';
-import { fetchUserProfile } from '@/utils/supabase/general';
+import { getProfile } from '@/utils/supabase/general';
 import { usernameValidationRules } from '@/utils/validation';
 
 type UsernameFormValues = {
@@ -49,7 +49,7 @@ export function UsernameSection() {
       .eq('id', id);
 
     if (error) {
-      const profileData = await fetchUserProfile();
+      const profileData = await getProfile();
       setUserProfile((previousState) => ({ ...previousState, ...profileData }));
 
       addToast(
