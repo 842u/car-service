@@ -1,9 +1,9 @@
 'use client';
 
 import { AnimatePresence, LazyMotion, MotionProps } from 'motion/react';
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { ToastsContext } from '@/context/ToastsContext';
+import { useToasts } from '@/hooks/useToasts';
 
 import { Toast } from '../Toast/Toast';
 
@@ -31,7 +31,7 @@ export function Toaster({
   maxToasts = 3,
   toastLifeTime = TOAST_LIFETIME,
 }: ToasterProps) {
-  const { toasts, removeToast } = useContext(ToastsContext);
+  const { toasts, removeToast } = useToasts();
 
   const toastCloseInterval = useRef<NodeJS.Timeout>(undefined);
 

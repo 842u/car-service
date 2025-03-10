@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ToastsContext } from '@/context/ToastsContext';
+import { useToasts } from '@/hooks/useToasts';
 import { Drive, Fuel, Transmission } from '@/types';
 import { postNewCar } from '@/utils/supabase/general';
 import {
@@ -54,7 +54,7 @@ type AddCarFormProps = {
 };
 
 export function AddCarForm({ onSubmit }: AddCarFormProps) {
-  const { addToast } = useContext(ToastsContext);
+  const { addToast } = useToasts();
   const fileInputRef = useRef<InputImageRef>(null);
   const optimisticCarImageUrlRef = useRef<string>(undefined);
 

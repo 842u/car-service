@@ -5,10 +5,9 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useContext } from 'react';
 
 import { ToastsProvider } from '@/components/providers/ToastsProvider';
-import { ToastsContext } from '@/context/ToastsContext';
+import { useToasts } from '@/hooks/useToasts';
 
 import { Toaster } from './Toaster';
 
@@ -20,7 +19,7 @@ crypto.randomUUID = jest.fn(
 ) as jest.Mock;
 
 function ToastAdder() {
-  const { addToast } = useContext(ToastsContext);
+  const { addToast } = useToasts();
 
   return (
     <button type="button" onClick={() => addToast(TEST_TOAST_MESSAGE, 'info')}>

@@ -1,15 +1,16 @@
 import { SyntheticEvent, useContext, useEffect, useRef, useState } from 'react';
 import { ZodError } from 'zod';
 
-import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
 import { hashFile } from '@/utils/general';
 import { createClient } from '@/utils/supabase/client';
 import { fetchUserProfile } from '@/utils/supabase/general';
 import { imageFileSchema } from '@/utils/validation';
 
+import { useToasts } from './useToasts';
+
 export function useAvatarUpload() {
-  const { addToast } = useContext(ToastsContext);
+  const { addToast } = useToasts();
   const { userProfile, setUserProfile } = useContext(UserProfileContext);
 
   const [avatarPreviewFile, setAvatarPreviewFile] = useState<File | null>(null);

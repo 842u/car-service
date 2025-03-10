@@ -1,11 +1,11 @@
 'use client';
 
-import { ComponentPropsWithoutRef, useContext } from 'react';
+import { ComponentPropsWithoutRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { GoogleIcon } from '@/components/decorative/icons/GoogleIcon';
-import { ToastsContext } from '@/context/ToastsContext';
+import { useToasts } from '@/hooks/useToasts';
 
 import { Button } from '../Button/Button';
 
@@ -14,7 +14,7 @@ type OAuthProvidersProps = ComponentPropsWithoutRef<'section'> & {
 };
 
 export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
-  const { addToast } = useContext(ToastsContext);
+  const { addToast } = useToasts();
 
   const gitHubButtonClickHandler = async () => {
     const { signInWithOAuthHandler } = await import('@/utils/supabase/general');

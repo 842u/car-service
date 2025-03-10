@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
 import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
-import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
+import { useToasts } from '@/hooks/useToasts';
 import { createClient } from '@/utils/supabase/client';
 import { fetchUserProfile } from '@/utils/supabase/general';
 import { usernameValidationRules } from '@/utils/validation';
@@ -19,7 +19,7 @@ export function UsernameSection() {
     userProfile: { username, id },
     setUserProfile,
   } = useContext(UserProfileContext);
-  const { addToast } = useContext(ToastsContext);
+  const { addToast } = useToasts();
 
   const {
     register,
