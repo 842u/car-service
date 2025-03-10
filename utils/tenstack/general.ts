@@ -125,3 +125,18 @@ export async function onMutateProfileQueryMutation(
 
   return { previousQueryData };
 }
+
+export async function onErrorProfileQueryMutation(
+  queryClient: QueryClient,
+  error: Error,
+  context:
+    | {
+        previousQueryData: unknown;
+      }
+    | undefined,
+  addToast: (message: string, type: ToastType) => void,
+) {
+  addToast(error.message, 'error');
+
+  queryClient.setQueryData(['profile'], context?.previousQueryData);
+}
