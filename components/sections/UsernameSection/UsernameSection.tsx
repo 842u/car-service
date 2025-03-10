@@ -1,13 +1,12 @@
-import { useContext, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
 import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
-import { UserProfileContext } from '@/context/UserProfileContext';
 import { useToasts } from '@/hooks/useToasts';
-import { createClient } from '@/utils/supabase/client';
 import { getProfile } from '@/utils/supabase/general';
 import { usernameValidationRules } from '@/utils/validation';
 
@@ -15,11 +14,12 @@ type UsernameFormValues = {
   username: string;
 };
 export function UsernameSection() {
-  const {
-    userProfile: { username, id },
-    setUserProfile,
-  } = useContext(UserProfileContext);
   const { addToast } = useToasts();
+
+  const { data, error, isSuccess, isError } = useQuery({
+    queryKey: ['profile'],
+    queryFn: getProfile,
+  });
 
   const {
     register,
@@ -33,38 +33,36 @@ export function UsernameSection() {
     },
   });
 
-  const submitHandler: SubmitHandler<UsernameFormValues> = async (data) => {
-    const newUsername = data.username.trim();
-
-    setUserProfile((currentState) => ({
-      ...currentState,
-      username: newUsername,
-    }));
-
-    const supabase = createClient();
-
-    const { error } = await supabase
-      .from('profiles')
-      .update({ username: newUsername })
-      .eq('id', id);
-
-    if (error) {
-      const profileData = await getProfile();
-      setUserProfile((previousState) => ({ ...previousState, ...profileData }));
-
-      addToast(
-        'Something went wrong while updating profile username. Try again.',
-        'error',
-      );
-      return;
-    }
-
-    addToast('Username changed successfully.', 'success');
+  const submitHandler: SubmitHandler<UsernameFormValues> = async () => {
+    // const newUsername = data.username.trim();
+    // setUserProfile((currentState) => ({
+    //   ...currentState,
+    //   username: newUsername,
+    // }));
+    // const supabase = createClient();
+    // const { error } = await supabase
+    //   .from('profiles')
+    //   .update({ username: newUsername })
+    //   .eq('id', id);
+    // if (error) {
+    //   const profileData = await getProfile();
+    //   setUserProfile((previousState) => ({ ...previousState, ...profileData }));
+    //   addToast(
+    //     'Something went wrong while updating profile username. Try again.',
+    //     'error',
+    //   );
+    //   return;
+    // }
+    // addToast('Username changed successfully.', 'success');
   };
 
   useEffect(() => {
-    reset({ username: username || '' });
-  }, [reset, username]);
+    isSuccess && reset({ username: data?.username || '' });
+  }, [isSuccess, reset, data?.username]);
+
+  useEffect(() => {
+    isError && addToast(error.message, 'error');
+  }, [isError, addToast, error]);
 
   return (
     <SettingsSection headingText="Username">
@@ -107,7 +105,7 @@ export function UsernameSection() {
               className="flex-1"
               disabled={isSubmitting || !isDirty}
               onClick={() => {
-                reset({ username: username || '' });
+                reset({ username: data?.username || '' });
               }}
             >
               Cancel
