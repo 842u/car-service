@@ -1,14 +1,14 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { ToastsContext } from '@/context/ToastsContext';
+import { useToasts } from '@/hooks/useToasts';
 import { fetchCars } from '@/utils/supabase/general';
 
 import { CarCard } from '../CarCard/CarCard';
 import { Spinner } from '../Spinner/Spinner';
 
 export function CarsSection() {
-  const { addToast } = useContext(ToastsContext);
+  const { addToast } = useToasts();
   const intersectionTargetRef = useRef<HTMLDivElement>(null);
 
   const {

@@ -1,9 +1,9 @@
 import * as m from 'motion/react-m';
-import { Ref, useContext } from 'react';
+import { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
-import { ToastsContext } from '@/context/ToastsContext';
+import { useToasts } from '@/hooks/useToasts';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 
@@ -20,7 +20,7 @@ export function Toast({
   ref,
   ...props
 }: ToastProps) {
-  const { removeToast } = useContext(ToastsContext);
+  const { removeToast } = useToasts();
 
   const { style, icon } = getToastAssets(type)!;
 

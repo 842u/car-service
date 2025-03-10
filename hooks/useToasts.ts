@@ -1,25 +1,9 @@
-import { useCallback, useState } from 'react';
+import { use } from 'react';
 
-import { Toast, ToastType } from '@/types';
+import { ToastsContext } from '@/context/ToastsContext';
 
 export function useToasts() {
-  const [toasts, setToasts] = useState<Toast[]>([]);
-
-  const addToast = useCallback((message: string, type: ToastType) => {
-    const newToast = {
-      id: crypto.randomUUID(),
-      message,
-      type,
-    };
-
-    setToasts((currentToasts) => [...currentToasts, newToast]);
-  }, []);
-
-  const removeToast = useCallback((id: string) => {
-    setToasts((currentToasts) =>
-      currentToasts.filter((toast) => toast.id !== id),
-    );
-  }, []);
+  const { toasts, addToast, removeToast } = use(ToastsContext);
 
   return { toasts, addToast, removeToast };
 }

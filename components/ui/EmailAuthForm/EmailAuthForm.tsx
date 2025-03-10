@@ -7,8 +7,8 @@ import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { ToastsContext } from '@/context/ToastsContext';
 import { UserProfileContext } from '@/context/UserProfileContext';
+import { useToasts } from '@/hooks/useToasts';
 import { RouteHandlerResponse } from '@/types';
 import { unslugify } from '@/utils/general';
 import { fetchUserProfile } from '@/utils/supabase/general';
@@ -41,7 +41,7 @@ export default function EmailAuthForm({
   className,
 }: EmailAuthFormProps) {
   const router = useRouter();
-  const { addToast } = useContext(ToastsContext);
+  const { addToast } = useToasts();
   const { setUserProfile } = useContext(UserProfileContext);
   const {
     register,
