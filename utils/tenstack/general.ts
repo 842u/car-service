@@ -2,7 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { RefObject } from 'react';
 
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Car, CarsInfiniteQueryData, ToastType } from '@/types';
+import { Car, CarsInfiniteQueryData, Profile, ToastType } from '@/types';
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
@@ -107,4 +107,21 @@ export function onErrorCarsInfiniteQueryMutation(
       queryClient.setQueryData(['cars'], updatedQueryData);
     }
   }
+}
+
+export async function onMutateProfileQueryMutation(
+  queryClient: QueryClient,
+  property: keyof Profile,
+  value: string,
+) {
+  await queryClient.cancelQueries({ queryKey: ['profile'] });
+  const previousQueryData = queryClient.getQueryData(['profile']);
+
+  queryClient.setQueryData(['profile'], (currentQueryData: Profile) => {
+    const updatedQueryData = { ...currentQueryData, [property]: value };
+
+    return updatedQueryData;
+  });
+
+  return { previousQueryData };
 }
