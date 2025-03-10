@@ -1,18 +1,23 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
 import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 import { useToasts } from '@/hooks/useToasts';
-import { getProfile } from '@/utils/supabase/general';
+import { getProfile, patchProfile } from '@/utils/supabase/general';
+import {
+  onErrorProfileQueryMutation,
+  onMutateProfileQueryMutation,
+} from '@/utils/tenstack/general';
 import { usernameValidationRules } from '@/utils/validation';
 
-type UsernameFormValues = {
+export type UsernameFormValues = {
   username: string;
 };
+
 export function UsernameSection() {
   const { addToast } = useToasts();
 
@@ -21,11 +26,23 @@ export function UsernameSection() {
     queryFn: getProfile,
   });
 
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: (usernameFormData: UsernameFormValues) =>
+      patchProfile('username', usernameFormData.username.trim()),
+    onMutate: (usernameFormData: UsernameFormValues) =>
+      onMutateProfileQueryMutation(
+        queryClient,
+        'username',
+        usernameFormData.username.trim(),
+      ),
+  });
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting, isValid, isDirty, errors },
+    formState: { isValid, isDirty, errors },
   } = useForm<UsernameFormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -33,27 +50,15 @@ export function UsernameSection() {
     },
   });
 
-  const submitHandler: SubmitHandler<UsernameFormValues> = async () => {
-    // const newUsername = data.username.trim();
-    // setUserProfile((currentState) => ({
-    //   ...currentState,
-    //   username: newUsername,
-    // }));
-    // const supabase = createClient();
-    // const { error } = await supabase
-    //   .from('profiles')
-    //   .update({ username: newUsername })
-    //   .eq('id', id);
-    // if (error) {
-    //   const profileData = await getProfile();
-    //   setUserProfile((previousState) => ({ ...previousState, ...profileData }));
-    //   addToast(
-    //     'Something went wrong while updating profile username. Try again.',
-    //     'error',
-    //   );
-    //   return;
-    // }
-    // addToast('Username changed successfully.', 'success');
+  const submitHandler = async (usernameFormData: UsernameFormValues) => {
+    mutate(usernameFormData, {
+      onSuccess: () => {
+        addToast('Username updated successfully.', 'success');
+      },
+      onError: (error, _, context) =>
+        onErrorProfileQueryMutation(queryClient, error, context, addToast),
+      onSettled: () => queryClient.invalidateQueries({ queryKey: ['profile'] }),
+    });
   };
 
   useEffect(() => {
@@ -95,15 +100,12 @@ export function UsernameSection() {
             </p>
           </div>
           <div className="my-4 flex justify-center gap-4">
-            <SubmitButton
-              className="flex-1"
-              disabled={isSubmitting || !isValid || !isDirty}
-            >
+            <SubmitButton className="flex-1" disabled={!isValid || !isDirty}>
               Save
             </SubmitButton>
             <Button
               className="flex-1"
-              disabled={isSubmitting || !isDirty}
+              disabled={!isDirty}
               onClick={() => {
                 reset({ username: data?.username || '' });
               }}
