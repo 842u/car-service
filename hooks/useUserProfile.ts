@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { UserProfile } from '@/types';
+import { Profile } from '@/types';
 import { getProfile } from '@/utils/supabase/general';
 
 export function useUserProfile() {
-  const [userProfile, setUserProfile] = useState<UserProfile>({
+  const [userProfile, setUserProfile] = useState<Profile>({
     avatar_url: null,
     id: '',
     username: null,

@@ -2,9 +2,8 @@ import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
-import { UsernameFormValues } from '@/components/sections/UsernameSection/UsernameSection';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { RouteHandlerResponse } from '@/types';
+import { Profile, RouteHandlerResponse } from '@/types';
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
@@ -139,7 +138,7 @@ export async function getProfile() {
   return profileData[0];
 }
 
-export async function patchProfile(formData: UsernameFormValues) {
+export async function patchProfile(property: keyof Profile, value: string) {
   const supabase = createClient();
 
   const {
@@ -147,18 +146,16 @@ export async function patchProfile(formData: UsernameFormValues) {
   } = await supabase.auth.getUser();
 
   if (!user)
-    throw new Error("Error on updating username. Can't get user session.");
-
-  const newUsername = formData.username.trim();
+    throw new Error("Error on updating profile. Can't get user session.");
 
   const { data, error } = await supabase
     .from('profiles')
-    .update({ username: newUsername })
+    .update({ [property]: value })
     .eq('id', user.id)
     .select();
 
   if (error)
-    throw new Error(error.message || 'Error on updating username. Try again.');
+    throw new Error(error.message || 'Error on updating profile. Try again.');
 
   return data;
 }

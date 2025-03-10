@@ -6,7 +6,7 @@ import { ComponentType, ReactElement } from 'react';
 
 import { ToastsProvider } from '@/components/providers/ToastsProvider';
 import { UserProfileProvider } from '@/components/providers/UserProfileProvider';
-import { UserProfile } from '@/types';
+import { Profile } from '@/types';
 import { getMimeTypeExtensions } from '@/utils/general';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
@@ -22,7 +22,7 @@ const mockUserProfile = {
   avatar_url: 'http://origin_url',
   id: 'origin_id',
   username: 'origin_username',
-} as const satisfies UserProfile;
+} as const satisfies Profile;
 
 const avatarFile = new File(
   [new Uint8Array(IMAGE_FILE_MAX_SIZE_BYTES)],

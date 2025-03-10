@@ -6,7 +6,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 
-import { UserProfile } from '@/types/index';
+import { Profile } from '@/types/index';
 import { getProfile } from '@/utils/supabase/general';
 
 import { useUserProfile } from './useUserProfile';
@@ -15,7 +15,7 @@ const mockUserProfile = {
   avatar_url: 'url',
   id: 'id',
   username: 'username',
-} as const satisfies UserProfile;
+} as const satisfies Profile;
 
 jest.mock('../utils/supabase/general.ts', () => ({
   fetchUserProfile: jest.fn(),
