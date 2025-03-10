@@ -126,7 +126,7 @@ export async function onMutateProfileQueryMutation(
   return { previousQueryData };
 }
 
-export async function onErrorProfileQueryMutation(
+export function onErrorProfileQueryMutation(
   queryClient: QueryClient,
   error: Error,
   context:
