@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { AddCarButton } from '@/components/ui/AddCarButton/AddCarButton';
 import { AddCarForm } from '@/components/ui/AddCarForm/AddCarForm';
 import { CarsSection } from '@/components/ui/CarsSection/CarsSection';
+import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
 import {
   DialogModal,
   DialogModalRef,
@@ -14,7 +15,7 @@ export default function CarsPage() {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <main className="flex min-h-screen max-w-screen items-center justify-center pt-16 md:pl-16">
+    <DashboardMain>
       <CarsSection />
       <DialogModal ref={dialogModalRef}>
         <AddCarForm onSubmit={() => dialogModalRef.current?.closeModal()} />
@@ -25,6 +26,6 @@ export default function CarsPage() {
           dialogModalRef.current?.showModal();
         }}
       />
-    </main>
+    </DashboardMain>
   );
 }
