@@ -15,6 +15,7 @@ const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
 type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
   ref: Ref<InputImageRef>;
+  onCancel?: () => void;
   withInfo?: boolean;
   required?: boolean;
   label?: string;
@@ -37,6 +38,7 @@ export function InputImage<T extends FieldValues>({
   withInfo = true,
   required = false,
   showErrorMessage = true,
+  onCancel,
   ...props
 }: InputImageProps<T>) {
   const inputElementRef = useRef<HTMLInputElement>(null);
@@ -45,6 +47,7 @@ export function InputImage<T extends FieldValues>({
     ref,
     inputElementRef,
     props,
+    onCancel,
   );
 
   return (

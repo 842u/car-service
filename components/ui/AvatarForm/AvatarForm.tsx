@@ -31,11 +31,17 @@ export function AvatarForm() {
 
   const {
     control,
+    reset,
     formState: { errors, isValid, isDirty },
   } = useForm<AvatarFormValues>({
     mode: 'onChange',
     defaultValues: defaultAvatarFormValues,
   });
+
+  const resetForm = () => {
+    reset();
+    fileInputRef.current?.reset();
+  };
 
   return (
     <form className="w-full md:flex md:gap-5">
@@ -49,6 +55,7 @@ export function AvatarForm() {
         name="avatarFile"
         rules={imageFileValidationRules}
         withInfo={false}
+        onCancel={resetForm}
       />
       <div className="md:flex md:basis-2/3 md:flex-col md:justify-evenly">
         <div className="my-4 text-sm">
@@ -61,7 +68,11 @@ export function AvatarForm() {
           </p>
         </div>
         <div className="flex gap-5">
-          <Button className="basis-1/2" disabled={!isDirty}>
+          <Button
+            className="basis-1/2"
+            disabled={!isDirty}
+            onClick={() => resetForm()}
+          >
             Reset
           </Button>
           <SubmitButton className="basis-1/2" disabled={!isValid || !isDirty}>

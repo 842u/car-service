@@ -18,6 +18,7 @@ export function useInputImage<T extends FieldValues>(
   exposedRef: Ref<InputImageRef>,
   inputElementRef: RefObject<HTMLInputElement | null>,
   props: UseControllerProps<T>,
+  onCancel?: () => void,
 ) {
   const [inputFile, setInputFile] = useState<File>();
   const inputFileUrl = useRef<string>(undefined);
@@ -28,6 +29,10 @@ export function useInputImage<T extends FieldValues>(
   inputFileUrl.current = inputFile && URL.createObjectURL(inputFile);
 
   const fileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.length === 0 && onCancel) {
+      onCancel();
+    }
+
     const file = event.target.files?.[0];
 
     inputFileUrl.current && URL.revokeObjectURL(inputFileUrl.current);
