@@ -47,10 +47,7 @@ export function InputImage<T extends FieldValues>({
   );
 
   return (
-    <label
-      className="flex flex-col items-center justify-center"
-      htmlFor={props.name}
-    >
+    <label className={className} htmlFor={props.name}>
       {label && (
         <p className="self-start pb-2 text-sm">
           <span>{label}</span>
@@ -59,35 +56,23 @@ export function InputImage<T extends FieldValues>({
       )}
       <div
         className={twMerge(
-          'border-alpha-grey-400 relative',
-          className,
+          'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border',
           errorMessage
-            ? 'border-error-500 focus:border-error-500 border-2'
+            ? 'border-error-500 focus:border-error-500 bg-error-500/10 dark:bg-error-500/10'
             : '',
         )}
       >
-        <div
-          className={twMerge(
-            'bg-light-600 dark:bg-dark-700 absolute z-0 h-full w-full',
-            errorMessage ? 'bg-error-500/10 dark:bg-error-500/10 z-10' : '',
-          )}
-        />
         {ImagePreviewComponent && (
-          <ImagePreviewComponent
-            className="absolute h-full w-full"
-            src={imagePreviewUrl}
-          />
+          <ImagePreviewComponent src={imagePreviewUrl} />
         )}
-        <div className="absolute z-20 h-full w-full cursor-pointer">
-          <input
-            ref={inputElementRef}
-            accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
-            className="invisible"
-            id={props.name}
-            type="file"
-            onChange={fileChangeHandler}
-          />
-        </div>
+        <input
+          ref={inputElementRef}
+          accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
+          className="invisible absolute"
+          id={props.name}
+          type="file"
+          onChange={fileChangeHandler}
+        />
       </div>
       {showErrorMessage && (
         <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
