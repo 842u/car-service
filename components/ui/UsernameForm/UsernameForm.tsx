@@ -30,7 +30,10 @@ export function UsernameForm() {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (usernameFormData: UsernameFormValues) =>
-      patchProfile('username', usernameFormData.username.trim()),
+      patchProfile({
+        property: 'username',
+        value: usernameFormData.username.trim(),
+      }),
     onMutate: (usernameFormData: UsernameFormValues) =>
       onMutateProfileQueryMutation(
         queryClient,

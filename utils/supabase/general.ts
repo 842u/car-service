@@ -138,7 +138,14 @@ export async function getProfile() {
   return profileData[0];
 }
 
-export async function patchProfile(property: keyof Profile, value: string) {
+type PatchProfileParameters =
+  | { property: Extract<keyof Profile, 'avatar_url'>; value: File | null }
+  | { property: Extract<keyof Profile, 'username'>; value: string | null };
+
+export async function patchProfile({
+  property,
+  value,
+}: PatchProfileParameters) {
   const supabase = createClient();
 
   const {
@@ -148,16 +155,34 @@ export async function patchProfile(property: keyof Profile, value: string) {
   if (!user)
     throw new Error("Error on updating profile. Can't get user session.");
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .update({ [property]: value })
-    .eq('id', user.id)
-    .select();
+  if (property === 'avatar_url') {
+    if (!value)
+      throw new Error(
+        'Error on uploading avatar. No file was found. Try again.',
+      );
 
-  if (error)
-    throw new Error(error.message || 'Error on updating profile. Try again.');
+    const hashedFile = await hashFile(value);
 
-  return data;
+    const { data, error } = await supabase.storage
+      .from('avatars')
+      .upload(`${user.id}/${hashedFile}`, value);
+
+    if (error)
+      throw new Error(error.message || 'Error on uploading avatar. Try again.');
+
+    return data;
+  } else {
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ [property]: value })
+      .eq('id', user.id)
+      .select();
+
+    if (error)
+      throw new Error(error.message || 'Error on updating profile. Try again.');
+
+    return data;
+  }
 }
 
 export async function fetchCars({ pageParam }: { pageParam: number }) {
