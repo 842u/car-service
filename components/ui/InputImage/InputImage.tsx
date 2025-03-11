@@ -1,5 +1,5 @@
 import { ComponentType, Ref, useRef } from 'react';
-import { UseControllerProps } from 'react-hook-form';
+import { FieldValues, UseControllerProps } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
 import { useInputImage } from '@/hooks/useInputImage';
@@ -9,12 +9,10 @@ import {
   IMAGE_FILE_MAX_SIZE_BYTES,
 } from '@/utils/validation';
 
-import { AddCarFormValues } from '../AddCarForm/AddCarForm';
-
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
-type InputImageProps = UseControllerProps<AddCarFormValues> & {
+type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
   ref: Ref<InputImageRef>;
   required?: boolean;
   label?: string;
@@ -29,7 +27,7 @@ export type InputImageRef = {
   reset: () => void;
 };
 
-export function InputImage({
+export function InputImage<T extends FieldValues>({
   ref,
   label,
   ImagePreviewComponent,
@@ -39,11 +37,14 @@ export function InputImage({
   required = false,
   showErrorMessage = true,
   ...props
-}: InputImageProps) {
+}: InputImageProps<T>) {
   const inputElementRef = useRef<HTMLInputElement>(null);
 
-  const { fileChangeHandler, imagePreviewUrl } =
-    useInputImage<AddCarFormValues>(ref, inputElementRef, props);
+  const { fileChangeHandler, imagePreviewUrl } = useInputImage<T>(
+    ref,
+    inputElementRef,
+    props,
+  );
 
   return (
     <div>
