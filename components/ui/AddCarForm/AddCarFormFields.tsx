@@ -17,7 +17,6 @@ import {
   carVinValidationRules,
   getCarDatabaseEnumTypeValidationRules,
   getCarProductionYearValidationRules,
-  IMAGE_FILE_ACCEPTED_MIME_TYPES,
   imageFileValidationRules,
 } from '@/utils/validation';
 
@@ -58,7 +57,6 @@ export function AddCarFormFields({
       <div className="md:flex md:flex-auto md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">
         <InputImage
           ref={fileInputRef}
-          accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
           className="h-64 w-64 overflow-hidden rounded-lg border"
           control={control}
           errorMessage={errors.image?.message}

@@ -17,7 +17,6 @@ type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
   required?: boolean;
   label?: string;
   ImagePreviewComponent?: ComponentType<{ className?: string; src?: string }>;
-  accept?: string;
   className?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
@@ -31,7 +30,6 @@ export function InputImage<T extends FieldValues>({
   ref,
   label,
   ImagePreviewComponent,
-  accept,
   className,
   errorMessage,
   required = false,
@@ -82,7 +80,7 @@ export function InputImage<T extends FieldValues>({
           <div className="absolute z-20 h-full w-full cursor-pointer">
             <input
               ref={inputElementRef}
-              accept={accept}
+              accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
               className="invisible"
               id={props.name}
               type="file"
