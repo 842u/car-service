@@ -14,6 +14,7 @@ const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
 type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
   ref: Ref<InputImageRef>;
+  withInfo?: boolean;
   required?: boolean;
   label?: string;
   ImagePreviewComponent?: ComponentType<{ className?: string; src?: string }>;
@@ -32,6 +33,7 @@ export function InputImage<T extends FieldValues>({
   ImagePreviewComponent,
   className,
   errorMessage,
+  withInfo = true,
   required = false,
   showErrorMessage = true,
   ...props
@@ -94,15 +96,17 @@ export function InputImage<T extends FieldValues>({
           </p>
         )}
       </label>
-      <div className="mb-5 text-sm">
-        <p>Click on the image to upload a custom one.</p>
-        <p className="text-alpha-grey-700">
-          {`Accepted file types: ${acceptedFileTypes}.`}
-        </p>
-        <p className="text-alpha-grey-700">
-          {`Max file size: ${maxFileSize}MB.`}
-        </p>
-      </div>
+      {withInfo && (
+        <div className="mb-5 text-sm">
+          <p>Click on the image to upload a custom one.</p>
+          <p className="text-alpha-grey-700">
+            {`Accepted file types: ${acceptedFileTypes}.`}
+          </p>
+          <p className="text-alpha-grey-700">
+            {`Max file size: ${maxFileSize}MB.`}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
