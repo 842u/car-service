@@ -8,7 +8,7 @@ import { getProfile } from '@/utils/supabase/general';
 
 import { Spinner } from '../Spinner/Spinner';
 
-export function AvatarImagePreview({
+export function AvatarImageWithPreview({
   previewUrl,
   className,
 }: ImageWithPreviewProps) {

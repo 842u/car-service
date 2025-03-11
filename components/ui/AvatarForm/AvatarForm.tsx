@@ -10,7 +10,7 @@ import {
   imageFileValidationRules,
 } from '@/utils/validation';
 
-import { AvatarImagePreview } from '../AvatarImagePreview/AvatarImagePreview';
+import { AvatarImageWithPreview } from '../AvatarImageWithPreview/AvatarImagePreview';
 import { Button } from '../Button/Button';
 import { InputImage, InputImageRef } from '../InputImage/InputImage';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
@@ -44,7 +44,7 @@ export function AvatarForm() {
         className="md:basis-1/3"
         control={control}
         errorMessage={errors.avatarFile?.message}
-        ImagePreviewComponent={AvatarImagePreview}
+        ImagePreviewComponent={AvatarImageWithPreview}
         label="Avatar"
         name="avatarFile"
         rules={imageFileValidationRules}
