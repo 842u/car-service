@@ -27,6 +27,7 @@ type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
 
 export type InputImageRef = {
   reset: () => void;
+  imagePreviewUrl: string | null;
 };
 
 export function InputImage<T extends FieldValues>({

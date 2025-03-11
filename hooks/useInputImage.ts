@@ -52,6 +52,7 @@ export function useInputImage<T extends FieldValues>(
       }
       setInputFile(undefined);
     },
+    imagePreviewUrl: inputFileUrl.current || null,
   }));
 
   return {
