@@ -47,55 +47,53 @@ export function InputImage<T extends FieldValues>({
   );
 
   return (
-    <div>
-      <label
-        className="flex flex-col items-center justify-center"
-        htmlFor={props.name}
-      >
-        {label && (
-          <p className="self-start pb-2 text-sm">
-            <span>{label}</span>
-            {required && <span className="text-error-300 mx-1">*</span>}
-          </p>
+    <label
+      className="flex flex-col items-center justify-center"
+      htmlFor={props.name}
+    >
+      {label && (
+        <p className="self-start pb-2 text-sm">
+          <span>{label}</span>
+          {required && <span className="text-error-300 mx-1">*</span>}
+        </p>
+      )}
+      <div
+        className={twMerge(
+          'border-alpha-grey-400 relative',
+          className,
+          errorMessage
+            ? 'border-error-500 focus:border-error-500 border-2'
+            : '',
         )}
+      >
         <div
           className={twMerge(
-            'border-alpha-grey-400 relative',
-            className,
-            errorMessage
-              ? 'border-error-500 focus:border-error-500 border-2'
-              : '',
+            'bg-light-600 dark:bg-dark-700 absolute z-0 h-full w-full',
+            errorMessage ? 'bg-error-500/10 dark:bg-error-500/10 z-10' : '',
           )}
-        >
-          <div
-            className={twMerge(
-              'bg-light-600 dark:bg-dark-700 absolute z-0 h-full w-full',
-              errorMessage ? 'bg-error-500/10 dark:bg-error-500/10 z-10' : '',
-            )}
+        />
+        {ImagePreviewComponent && (
+          <ImagePreviewComponent
+            className="absolute h-full w-full"
+            src={imagePreviewUrl}
           />
-          {ImagePreviewComponent && (
-            <ImagePreviewComponent
-              className="absolute h-full w-full"
-              src={imagePreviewUrl}
-            />
-          )}
-          <div className="absolute z-20 h-full w-full cursor-pointer">
-            <input
-              ref={inputElementRef}
-              accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
-              className="invisible"
-              id={props.name}
-              type="file"
-              onChange={fileChangeHandler}
-            />
-          </div>
-        </div>
-        {showErrorMessage && (
-          <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
-            {errorMessage || ' '}
-          </p>
         )}
-      </label>
+        <div className="absolute z-20 h-full w-full cursor-pointer">
+          <input
+            ref={inputElementRef}
+            accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
+            className="invisible"
+            id={props.name}
+            type="file"
+            onChange={fileChangeHandler}
+          />
+        </div>
+      </div>
+      {showErrorMessage && (
+        <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
+          {errorMessage || ' '}
+        </p>
+      )}
       {withInfo && (
         <div className="mb-5 text-sm">
           <p>Click on the image to upload a custom one.</p>
@@ -107,6 +105,6 @@ export function InputImage<T extends FieldValues>({
           </p>
         </div>
       )}
-    </div>
+    </label>
   );
 }
