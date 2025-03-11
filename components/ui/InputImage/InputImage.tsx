@@ -3,6 +3,7 @@ import { FieldValues, UseControllerProps } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
 import { useInputImage } from '@/hooks/useInputImage';
+import { ImageWithPreviewProps } from '@/types';
 import { getMimeTypeExtensions } from '@/utils/general';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
@@ -17,7 +18,7 @@ type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
   withInfo?: boolean;
   required?: boolean;
   label?: string;
-  ImagePreviewComponent?: ComponentType<{ className?: string; src?: string }>;
+  ImagePreviewComponent?: ComponentType<ImageWithPreviewProps>;
   className?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
@@ -63,7 +64,7 @@ export function InputImage<T extends FieldValues>({
         )}
       >
         {ImagePreviewComponent && (
-          <ImagePreviewComponent src={imagePreviewUrl} />
+          <ImagePreviewComponent previewUrl={imagePreviewUrl} />
         )}
         <input
           ref={inputElementRef}

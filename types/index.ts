@@ -63,3 +63,8 @@ export type CarsInfiniteQueryPageData = {
 };
 
 export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;
+
+export type ImageWithPreviewProps = {
+  previewUrl?: string | null;
+  className?: string;
+};
