@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   Ref,
   RefObject,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -54,6 +55,12 @@ export function useInputImage<T extends FieldValues>(
     },
     imagePreviewUrl: inputFileUrl.current || null,
   }));
+
+  useEffect(() => {
+    return () => {
+      inputFileUrl.current && URL.revokeObjectURL(inputFileUrl.current);
+    };
+  }, []);
 
   return {
     imagePreviewUrl: inputFileUrl.current,
