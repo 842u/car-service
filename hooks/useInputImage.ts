@@ -1,22 +1,12 @@
-import {
-  ChangeEvent,
-  Ref,
-  RefObject,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, RefObject, useEffect, useRef, useState } from 'react';
 import {
   FieldValues,
   useController,
   UseControllerProps,
 } from 'react-hook-form';
 
-import { InputImageRef } from '@/components/ui/InputImage/InputImage';
-
 export function useInputImage<T extends FieldValues>(
-  exposedRef: Ref<InputImageRef>,
+  // exposedRef: Ref<InputImageRef>,
   inputElementRef: RefObject<HTMLInputElement | null>,
   props: UseControllerProps<T>,
   onCancel?: () => void,
@@ -44,18 +34,18 @@ export function useInputImage<T extends FieldValues>(
     setInputFile(file);
   };
 
-  useImperativeHandle(exposedRef, () => ({
-    reset() {
-      if (inputElementRef.current) {
-        inputElementRef.current.files = new DataTransfer().files;
-      }
-      if (inputFileUrl.current) {
-        URL.revokeObjectURL(inputFileUrl.current);
-      }
-      setInputFile(undefined);
-    },
-    imagePreviewUrl: inputFileUrl.current || null,
-  }));
+  // useImperativeHandle(exposedRef, () => ({
+  //   reset() {
+  //     if (inputElementRef.current) {
+  //       inputElementRef.current.files = new DataTransfer().files;
+  //     }
+  //     if (inputFileUrl.current) {
+  //       URL.revokeObjectURL(inputFileUrl.current);
+  //     }
+  //     setInputFile(undefined);
+  //   },
+  //   imagePreviewUrl: inputFileUrl.current || null,
+  // }));
 
   useEffect(() => {
     return () => {

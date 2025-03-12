@@ -111,8 +111,8 @@ export function onErrorCarsInfiniteQueryMutation(
 
 export async function onMutateProfileQueryMutation(
   queryClient: QueryClient,
-  property: keyof Profile,
-  value: string,
+  property: Exclude<keyof Profile, 'id'>,
+  value: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: ['profile'] });
   const previousQueryData = queryClient.getQueryData(['profile']);

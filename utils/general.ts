@@ -90,3 +90,7 @@ export function mapAddCarFormValuesToCarObject(
     created_by: 'optimistic update',
   };
 }
+
+export function enqueueRevokeObjectUrl(url: string) {
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}

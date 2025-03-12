@@ -1,10 +1,20 @@
-import { ComponentType, Ref, useRef } from 'react';
-import { FieldValues, UseControllerProps } from 'react-hook-form';
+import {
+  ChangeEvent,
+  ComponentType,
+  RefObject,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
+import {
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { useInputImage } from '@/hooks/useInputImage';
 import { ImageWithPreviewProps } from '@/types';
-import { getMimeTypeExtensions } from '@/utils/general';
+import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   IMAGE_FILE_MAX_SIZE_BYTES,
@@ -13,9 +23,12 @@ import {
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
+export type InputImageRef = {
+  inputImageUrl: string | null;
+};
+
 type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
-  ref: Ref<InputImageRef>;
-  onCancel?: () => void;
+  ref?: RefObject<InputImageRef | null>;
   withInfo?: boolean;
   required?: boolean;
   label?: string;
@@ -25,34 +38,47 @@ type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
   showErrorMessage?: boolean;
 };
 
-export type InputImageRef = {
-  reset: () => void;
-  imagePreviewUrl: string | null;
-};
-
 export function InputImage<T extends FieldValues>({
   ref,
   label,
+  name,
+  control,
+  rules,
+  defaultValue,
   ImagePreviewComponent,
   className,
   errorMessage,
   withInfo = true,
   required = false,
   showErrorMessage = true,
-  onCancel,
-  ...props
 }: InputImageProps<T>) {
+  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
 
-  const { fileChangeHandler, imagePreviewUrl } = useInputImage<T>(
-    ref,
-    inputElementRef,
-    props,
-    onCancel,
-  );
+  const { field } = useController({ name, control, rules, defaultValue });
+
+  const hasBeenReset = !field.value && inputImageUrl;
+  if (hasBeenReset) {
+    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
+    setInputImageUrl(null);
+    if (inputElementRef.current?.files) {
+      inputElementRef.current.files = new DataTransfer().files;
+    }
+  }
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
+    setInputImageUrl((file && URL.createObjectURL(file)) || null);
+
+    field.onChange(file);
+  };
+
+  useImperativeHandle(ref, () => ({ inputImageUrl }), [inputImageUrl]);
 
   return (
-    <label className={className} htmlFor={props.name}>
+    <label className={className} htmlFor={name}>
       {label && (
         <p className="self-start pb-2 text-sm">
           <span>{label}</span>
@@ -68,15 +94,16 @@ export function InputImage<T extends FieldValues>({
         )}
       >
         {ImagePreviewComponent && (
-          <ImagePreviewComponent previewUrl={imagePreviewUrl} />
+          <ImagePreviewComponent previewUrl={inputImageUrl} />
         )}
         <input
           ref={inputElementRef}
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
           className="invisible absolute"
-          id={props.name}
+          id={name}
+          name={name}
           type="file"
-          onChange={fileChangeHandler}
+          onChange={handleFileChange}
         />
       </div>
       {showErrorMessage && (

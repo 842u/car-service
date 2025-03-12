@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
@@ -17,7 +17,7 @@ import {
   imageFileValidationRules,
 } from '@/utils/validation';
 
-import { AvatarImageWithPreview } from '../AvatarImageWithPreview/AvatarImagePreview';
+import { AvatarImageWithPreview } from '../AvatarImageWithPreview/AvatarImageWithPreview';
 import { Button } from '../Button/Button';
 import { InputImage, InputImageRef } from '../InputImage/InputImage';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
@@ -34,7 +34,7 @@ const defaultAvatarFormValues = {
 };
 
 export function AvatarForm() {
-  const fileInputRef = useRef<InputImageRef>(null);
+  const inputImageRef = useRef<InputImageRef>(null);
 
   const { addToast } = useToasts();
 
@@ -45,30 +45,23 @@ export function AvatarForm() {
         property: 'avatar_url',
         value: avatarFormData.avatarFile,
       }),
-    onMutate: () => {
-      if (fileInputRef.current?.imagePreviewUrl)
-        return onMutateProfileQueryMutation(
-          queryClient,
-          'avatar_url',
-          fileInputRef.current?.imagePreviewUrl,
-        );
-    },
+    onMutate: () =>
+      onMutateProfileQueryMutation(
+        queryClient,
+        'avatar_url',
+        inputImageRef.current!.inputImageUrl!,
+      ),
   });
 
   const {
     control,
     reset,
     handleSubmit,
-    formState: { errors, isValid, isDirty, isSubmitting },
+    formState: { errors, isValid, isDirty, isSubmitting, isSubmitSuccessful },
   } = useForm<AvatarFormValues>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: defaultAvatarFormValues,
   });
-
-  const resetForm = () => {
-    reset();
-    fileInputRef.current?.reset();
-  };
 
   const submitForm = async (avatarFormData: AvatarFormValues) => {
     await mutateAsync(avatarFormData, {
@@ -79,10 +72,13 @@ export function AvatarForm() {
         onErrorProfileQueryMutation(queryClient, error, context, addToast),
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: ['profile'] });
-        resetForm();
       },
     });
   };
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <form
@@ -90,16 +86,16 @@ export function AvatarForm() {
       onSubmit={handleSubmit(submitForm)}
     >
       <InputImage<AvatarFormValues>
-        ref={fileInputRef}
+        ref={inputImageRef}
         className="md:basis-1/3"
         control={control}
+        defaultValue={defaultAvatarFormValues.avatarFile}
         errorMessage={errors.avatarFile?.message}
         ImagePreviewComponent={AvatarImageWithPreview}
         label="Avatar"
         name="avatarFile"
         rules={imageFileValidationRules}
         withInfo={false}
-        onCancel={resetForm}
       />
       <div className="md:flex md:basis-2/3 md:flex-col md:justify-evenly">
         <div className="my-4 text-sm">
@@ -115,7 +111,7 @@ export function AvatarForm() {
           <Button
             className="basis-1/2"
             disabled={!isDirty || isSubmitting}
-            onClick={() => resetForm()}
+            onClick={() => reset()}
           >
             Reset
           </Button>

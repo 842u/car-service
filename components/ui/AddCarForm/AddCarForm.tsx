@@ -91,7 +91,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   });
 
   const resetForm = () => {
-    fileInputRef.current?.reset();
+    // fileInputRef.current?.reset();
     reset();
   };
 

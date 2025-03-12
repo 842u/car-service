@@ -40,6 +40,7 @@ export function AvatarImageWithPreview({
           src={previewUrl}
         />
       )}
+
       {displayProfile && data?.avatar_url && (
         <Image
           fill
@@ -48,6 +49,7 @@ export function AvatarImageWithPreview({
           src={data.avatar_url}
         />
       )}
+
       {displayDefault && (
         <UserIcon className="stroke-alpha-grey-600 stroke-1 object-contain" />
       )}
