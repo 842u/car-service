@@ -61,6 +61,13 @@ export default typescriptEslintConfig(
   {
     rules: {
       ...eslintPluginReactHooks.configs.recommended.rules,
+      'no-restricted-syntax': [
+        'warn',
+        {
+          selector: "CallExpression[callee.name='delay']",
+          message: 'Do not left delay function.',
+        },
+      ],
       'no-console': 'warn',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
