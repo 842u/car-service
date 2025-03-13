@@ -13,14 +13,14 @@ type LandingNavMenuProps = {
 export function LandingNavMenu({
   isActive = true,
   onClick,
-  className = '',
+  className,
 }: LandingNavMenuProps) {
   return (
     <nav
       aria-label="landing navigation menu"
       className={twMerge(
-        'bg-light-500 dark:bg-dark-500 absolute top-0 left-0 flex h-screen w-screen justify-center opacity-0 transition-all lg:static lg:h-full lg:w-auto lg:translate-y-0 lg:items-center lg:justify-center lg:bg-[transparent] lg:text-xs lg:opacity-100 lg:dark:bg-[transparent]',
-        isActive ? 'translate-y-0 opacity-100' : '-translate-y-full',
+        'bg-light-500 dark:bg-dark-500 absolute top-0 left-0 flex h-screen w-screen justify-center transition-transform lg:static lg:h-full lg:w-fit lg:translate-x-0 lg:items-center lg:bg-[transparent] lg:text-xs lg:dark:bg-[transparent]',
+        isActive ? 'translate-x-0' : '-translate-x-full',
         className,
       )}
       onClick={onClick}

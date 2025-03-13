@@ -18,7 +18,7 @@ export function NewCarImageWithPreview({
       {previewUrl && (
         <Image
           fill
-          alt="avatar image"
+          alt="new car image"
           className="object-contain"
           src={previewUrl}
         />

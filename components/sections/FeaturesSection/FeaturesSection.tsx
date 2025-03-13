@@ -11,7 +11,7 @@ export function FeaturesSection() {
   return (
     <Section
       aria-label="platform features"
-      className="mb-7 flex flex-col items-center justify-center gap-4 md:flex-row md:flex-wrap"
+      className="flex flex-col items-center justify-center gap-5 md:flex-row md:flex-wrap"
     >
       <div className="@container h-96 w-full md:w-1/3 md:grow">
         <Card className="relative flex h-full flex-col items-center justify-start gap-2 overflow-hidden text-center @sm:items-start @sm:text-left">

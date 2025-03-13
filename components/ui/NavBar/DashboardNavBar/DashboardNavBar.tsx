@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { NavBarBackground } from '@/components/decorative/NavBarBackground';
+
 import { BrandLabel } from '../../BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../HamburgerButton/HamburgerButton';
 import { UserBadge } from '../../UserBadge/UserBadge';
@@ -23,19 +25,16 @@ export function DashboardNavBar() {
 
   return (
     <NavBar>
+      <NavBarBackground />
       <BrandLabel className="z-10" />
-      <UserBadge />
+      <UserBadge className="z-10 py-1 md:py-2" />
       <HamburgerButton
         aria-label="toggle navigation menu"
         className="z-10 md:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
       />
-      <DashboardNavMenu
-        className="-z-10"
-        isActive={isActive}
-        onClick={navMenuClickHandler}
-      />
+      <DashboardNavMenu isActive={isActive} onClick={navMenuClickHandler} />
     </NavBar>
   );
 }

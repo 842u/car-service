@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { NavBarBackground } from '@/components/decorative/NavBarBackground';
+
 import { BrandLabel } from '../../BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../HamburgerButton/HamburgerButton';
 import { NavBar } from '../NavBar';
@@ -20,15 +22,16 @@ export function LandingNavBar() {
 
   return (
     <NavBar>
-      <BrandLabel className="z-10" />
+      <NavBarBackground />
+      <BrandLabel className="z-20" />
       <HamburgerButton
         aria-label="toggle navigation menu"
-        className="z-10 lg:hidden"
+        className="z-20 lg:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
       />
       <LandingNavMenu
-        className="-z-10 lg:z-0"
+        className="z-0 lg:z-20"
         isActive={isActive}
         onClick={navMenuClickHandler}
       />
