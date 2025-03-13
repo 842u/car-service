@@ -1,7 +1,7 @@
 import { Car } from '@/types';
 
 import { Card } from '../Card/Card';
-import { CarImagePreview } from '../CarImagePreview/CarImagePreview';
+import { NewCarImageWithPreview } from '../NewCarImageWithPreview/NewCarImageWithPreview';
 
 type CarCardProps = {
   car: Car;
@@ -10,9 +10,9 @@ type CarCardProps = {
 export function CarCard({ car }: CarCardProps) {
   return (
     <Card className="flex max-h-[520px] w-80 flex-col justify-between self-stretch">
-      <CarImagePreview
+      <NewCarImageWithPreview
         className="relative aspect-square w-full"
-        src={car.image_url}
+        previewUrl={car.image_url}
       />
       <div className="">
         <p className="my-4 text-3xl font-semibold text-wrap">

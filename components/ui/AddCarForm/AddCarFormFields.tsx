@@ -20,9 +20,9 @@ import {
   imageFileValidationRules,
 } from '@/utils/validation';
 
-import { CarImagePreview } from '../CarImagePreview/CarImagePreview';
 import { Input } from '../Input/Input';
 import { InputImage, InputImageRef } from '../InputImage/InputImage';
+import { NewCarImageWithPreview } from '../NewCarImageWithPreview/NewCarImageWithPreview';
 import { Select } from '../Select/Select';
 import { AddCarFormValues } from './AddCarForm';
 
@@ -59,7 +59,7 @@ export function AddCarFormFields({
           ref={fileInputRef}
           control={control}
           errorMessage={errors.image?.message}
-          ImagePreviewComponent={CarImagePreview}
+          ImagePreviewComponent={NewCarImageWithPreview}
           label="Image"
           name="image"
           rules={imageFileValidationRules}
