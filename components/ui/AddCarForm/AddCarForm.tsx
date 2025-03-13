@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
@@ -63,9 +63,9 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     reset,
     handleSubmit,
     control,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid, isDirty, isSubmitSuccessful },
   } = useForm<AddCarFormValues>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: defaultAddCarFormValues,
   });
 
@@ -90,18 +90,16 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     },
   });
 
-  const resetForm = () => {
-    // fileInputRef.current?.reset();
-    reset();
-  };
-
   const submitHandler = async (formData: AddCarFormValues) => {
     onSubmit && onSubmit();
     mutate(formData, {
       onSettled: () => queryClient.invalidateQueries({ queryKey: ['cars'] }),
     });
-    resetForm();
   };
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <form
@@ -120,7 +118,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         <Button
           className="w-full lg:max-w-48"
           disabled={!isDirty}
-          onClick={resetForm}
+          onClick={() => reset()}
         >
           Reset
         </Button>
