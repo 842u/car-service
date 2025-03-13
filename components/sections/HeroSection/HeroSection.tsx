@@ -4,10 +4,7 @@ import { Section } from '../Section';
 
 export function HeroSection() {
   return (
-    <Section
-      aria-label="welcome motto"
-      className="mt-0 flex h-[50vh] flex-col items-center justify-center pt-16 text-center lg:mt-0 lg:h-screen"
-    >
+    <Section className="-mt-16 flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">
         <p className="from-dark-100 to-dark-500 dark:from-light-400 dark:to-light-800 bg-linear-to-b bg-clip-text leading-tight text-[transparent]">
           Car&apos;s Story Safely Managed.
@@ -17,20 +14,20 @@ export function HeroSection() {
         </p>
       </h1>
 
-      <div className="flex flex-col items-center justify-center md:w-2/3">
-        <p className="my-6 text-sm md:text-base lg:my-10 lg:text-lg">
+      <div className="flex flex-col items-center justify-center gap-5 md:w-2/3 md:gap-10 lg:gap-14">
+        <p className="text-sm md:text-base lg:text-lg">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere
           commodi placeat atque nemo quo fugiat, iste earum omnis molestias id
           vero. Eligendi laudantium iusto at.
         </p>
-        <div className="flex gap-2">
-          <LinkButton href="/dashboard/sign-up">Sign Up</LinkButton>
+        <div className="flex gap-5 md:gap-10">
           <LinkButton
             className="border-alpha-grey-500 bg-dark-400"
             href="/dashboard/sign-in"
           >
             Sign In
           </LinkButton>
+          <LinkButton href="/dashboard/sign-up">Sign Up</LinkButton>
         </div>
       </div>
     </Section>
