@@ -1,5 +1,4 @@
 import { QueryClient } from '@tanstack/react-query';
-import { RefObject } from 'react';
 
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import { Car, CarsInfiniteQueryData, Profile, ToastType } from '@/types';
@@ -58,13 +57,14 @@ function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
 export async function onMutateCarsInfiniteQueryMutation(
   addCarFormData: AddCarFormValues,
   queryClient: QueryClient,
-  optimisticCarImageUrlRef: RefObject<string | undefined>,
+  optimisticCarImageUrl: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: ['cars'] });
   const previousCarsQuery = queryClient.getQueryData(['cars']);
 
   const newCar = mapAddCarFormValuesToCarObject(addCarFormData);
-  optimisticCarImageUrlRef.current = newCar.image_url || '';
+  newCar.image_url && URL.revokeObjectURL(newCar.image_url);
+  newCar.image_url = optimisticCarImageUrl;
 
   queryClient.setQueryData(['cars'], (data: CarsInfiniteQueryData) => {
     const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
