@@ -12,12 +12,15 @@ export function BrandLabel({ className }: BrandLabelPops) {
   return (
     <Link
       aria-label="landing page"
-      className={twMerge('md:flex md:items-center md:gap-3', className)}
+      className={twMerge(
+        'md:flex md:flex-row md:items-center md:gap-3',
+        className,
+      )}
       href="/"
     >
-      <BrandLogoMinimal className="stroke-accent-500 h-full stroke-10 md:inline-block" />
+      <BrandLogoMinimal className="stroke-accent-500 aspect-square h-full stroke-10 md:inline-block" />
       <span
-        className={`hidden md:inline-block md:text-3xl md:font-medium ${smoochSans.className}`}
+        className={`hidden md:inline-block md:text-3xl md:font-medium md:whitespace-nowrap ${smoochSans.className}`}
       >
         Car Service
       </span>
