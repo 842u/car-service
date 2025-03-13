@@ -24,7 +24,7 @@ export function AvatarImageWithPreview({
   return (
     <div
       className={twMerge(
-        'flex h-full w-full items-center justify-center p-20 md:p-10',
+        'relative flex h-full w-full items-center justify-center',
         className,
       )}
     >
@@ -36,7 +36,7 @@ export function AvatarImageWithPreview({
         <Image
           fill
           alt="avatar image"
-          className="object-contain"
+          className="object-cover"
           src={previewUrl}
         />
       )}
@@ -45,13 +45,13 @@ export function AvatarImageWithPreview({
         <Image
           fill
           alt="avatar image"
-          className="object-contain"
+          className="object-cover"
           src={data.avatar_url}
         />
       )}
 
       {displayDefault && (
-        <UserIcon className="stroke-alpha-grey-600 stroke-1 object-contain" />
+        <UserIcon className="stroke-alpha-grey-600 stroke-1 object-cover" />
       )}
     </div>
   );
