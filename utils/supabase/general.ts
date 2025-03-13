@@ -10,7 +10,7 @@ import {
   hashFile,
   mutateEmptyFieldsToNull,
 } from '../general';
-import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tenstack/general';
+import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tanstack/general';
 import { createClient } from './client';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;

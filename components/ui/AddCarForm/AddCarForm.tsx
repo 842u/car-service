@@ -8,7 +8,7 @@ import { postNewCar } from '@/utils/supabase/general';
 import {
   onErrorCarsInfiniteQueryMutation,
   onMutateCarsInfiniteQueryMutation,
-} from '@/utils/tenstack/general';
+} from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
 import { InputImageRef } from '../InputImage/InputImage';

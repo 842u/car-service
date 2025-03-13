@@ -10,7 +10,7 @@ import { patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
-} from '@/utils/tenstack/general';
+} from '@/utils/tanstack/general';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   IMAGE_FILE_MAX_SIZE_BYTES,

@@ -12,7 +12,7 @@ import { getProfile, patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
-} from '@/utils/tenstack/general';
+} from '@/utils/tanstack/general';
 import { usernameValidationRules } from '@/utils/validation';
 
 export type UsernameFormValues = {
