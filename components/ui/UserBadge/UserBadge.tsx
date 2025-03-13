@@ -1,15 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/hooks/useToasts';
 import { getProfile } from '@/utils/supabase/general';
 
-import { Avatar } from '../Avatar/Avatar';
+import { AvatarImageWithPreview } from '../AvatarImageWithPreview/AvatarImageWithPreview';
 import { Spinner } from '../Spinner/Spinner';
 
 export const USER_BADGE_TEST_ID = 'user badge';
 
-export function UserBadge() {
+type UserBadgeProps = {
+  className?: string;
+};
+
+export function UserBadge({ className }: UserBadgeProps) {
   const { addToast } = useToasts();
 
   const { data, error, isSuccess, isPending, isError } = useQuery({
@@ -23,7 +28,7 @@ export function UserBadge() {
 
   return (
     <div
-      className="z-10 p-2 md:flex md:items-center md:justify-center md:gap-2 md:overflow-hidden"
+      className={twMerge('md:flex md:items-center md:gap-3', className)}
       data-testid={USER_BADGE_TEST_ID}
     >
       {isPending && (
@@ -31,11 +36,10 @@ export function UserBadge() {
       )}
       {isSuccess && data && (
         <>
-          <p className="hidden md:block md:overflow-hidden">{data.username}</p>
-          <Avatar
-            className="aspect-square h-full w-auto"
-            src={data.avatar_url || ''}
-          />
+          <p className="hidden md:inline-block md:overflow-hidden">
+            {data.username}
+          </p>
+          <AvatarImageWithPreview className="border-alpha-grey-300 aspect-square h-full w-auto overflow-hidden rounded-full border-2" />
         </>
       )}
     </div>
