@@ -23,7 +23,7 @@ export function DashboardNavBar() {
 
   return (
     <NavBar>
-      <BrandLabel className="z-10" />
+      <BrandLabel />
       <UserBadge />
       <HamburgerButton
         aria-label="toggle navigation menu"

@@ -20,15 +20,15 @@ export function LandingNavBar() {
 
   return (
     <NavBar>
-      <BrandLabel className="z-10" />
+      <BrandLabel />
       <HamburgerButton
         aria-label="toggle navigation menu"
-        className="z-10 lg:hidden"
+        className="lg:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
       />
       <LandingNavMenu
-        className="-z-10 lg:z-0"
+        className="z-0"
         isActive={isActive}
         onClick={navMenuClickHandler}
       />
