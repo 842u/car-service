@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
-import { UserProfileProvider } from '@/components/providers/UserProfileProvider';
+import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 
 import { USER_BADGE_TEST_ID } from '../../UserBadge/UserBadge';
 import { DashboardNavBar } from './DashboardNavBar';
@@ -26,9 +26,9 @@ jest.mock('@supabase/ssr', () => ({
 describe('DashboardNavBar', () => {
   it('should render dashboard menu', async () => {
     render(
-      <UserProfileProvider>
+      <TanStackQueryProvider>
         <DashboardNavBar />
-      </UserProfileProvider>,
+      </TanStackQueryProvider>,
     );
 
     const dashboardMenu = screen.getByRole('navigation', {
@@ -40,9 +40,9 @@ describe('DashboardNavBar', () => {
 
   it('should render a brand logo link to landing page', async () => {
     render(
-      <UserProfileProvider>
+      <TanStackQueryProvider>
         <DashboardNavBar />
-      </UserProfileProvider>,
+      </TanStackQueryProvider>,
     );
 
     const landingPageLink = screen.getByRole('link', { name: /landing page/i });
@@ -52,9 +52,9 @@ describe('DashboardNavBar', () => {
 
   it('should render a hamburger button for nav menu toggle', async () => {
     render(
-      <UserProfileProvider>
+      <TanStackQueryProvider>
         <DashboardNavBar />
-      </UserProfileProvider>,
+      </TanStackQueryProvider>,
     );
 
     const menuToggleButton = screen.getByRole('button', {
@@ -66,9 +66,9 @@ describe('DashboardNavBar', () => {
 
   it('should render a user badge', async () => {
     render(
-      <UserProfileProvider>
+      <TanStackQueryProvider>
         <DashboardNavBar />
-      </UserProfileProvider>,
+      </TanStackQueryProvider>,
     );
 
     const userBadge = screen.getByTestId(USER_BADGE_TEST_ID);

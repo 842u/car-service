@@ -1,109 +1,127 @@
-import { ComponentType, Ref, useRef } from 'react';
-import { UseControllerProps } from 'react-hook-form';
+import {
+  ChangeEvent,
+  ComponentType,
+  RefObject,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
+import {
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { useInputImage } from '@/hooks/useInputImage';
-import { getMimeTypeExtensions } from '@/utils/general';
+import { ImageWithPreviewProps } from '@/types';
+import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   IMAGE_FILE_MAX_SIZE_BYTES,
 } from '@/utils/validation';
 
-import { AddCarFormValues } from '../AddCarForm/AddCarForm';
-
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
-type InputImageProps = UseControllerProps<AddCarFormValues> & {
-  ref: Ref<InputImageRef>;
+export type InputImageRef = {
+  inputImageUrl: string | null;
+};
+
+type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
+  ref?: RefObject<InputImageRef | null>;
+  withInfo?: boolean;
   required?: boolean;
   label?: string;
-  ImagePreviewComponent?: ComponentType<{ className?: string; src?: string }>;
-  accept?: string;
+  ImagePreviewComponent?: ComponentType<ImageWithPreviewProps>;
   className?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
 };
 
-export type InputImageRef = {
-  reset: () => void;
-};
-
-export function InputImage({
+export function InputImage<T extends FieldValues>({
   ref,
   label,
+  name,
+  control,
+  rules,
+  defaultValue,
   ImagePreviewComponent,
-  accept,
   className,
   errorMessage,
+  withInfo = true,
   required = false,
   showErrorMessage = true,
-  ...props
-}: InputImageProps) {
+}: InputImageProps<T>) {
+  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
 
-  const { fileChangeHandler, imagePreviewUrl } =
-    useInputImage<AddCarFormValues>(ref, inputElementRef, props);
+  const { field } = useController({ name, control, rules, defaultValue });
+
+  const hasBeenReset = !field.value && inputImageUrl;
+  if (hasBeenReset) {
+    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
+    setInputImageUrl(null);
+    if (inputElementRef.current?.files) {
+      inputElementRef.current.files = new DataTransfer().files;
+    }
+  }
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
+    setInputImageUrl((file && URL.createObjectURL(file)) || null);
+
+    field.onChange(file);
+  };
+
+  useImperativeHandle(ref, () => ({ inputImageUrl }), [inputImageUrl]);
 
   return (
-    <div>
-      <label
-        className="flex flex-col items-center justify-center"
-        htmlFor={props.name}
+    <label className={className} htmlFor={name}>
+      {label && (
+        <p className="self-start pb-2 text-sm">
+          <span>{label}</span>
+          {required && <span className="text-error-300 mx-1">*</span>}
+        </p>
+      )}
+      <div
+        className={twMerge(
+          'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border',
+          errorMessage
+            ? 'border-error-500 focus:border-error-500 bg-error-500/10 dark:bg-error-500/10'
+            : '',
+        )}
       >
-        {label && (
-          <p className="self-start pb-2 text-sm">
-            <span>{label}</span>
-            {required && <span className="text-error-300 mx-1">*</span>}
-          </p>
+        {ImagePreviewComponent && (
+          <ImagePreviewComponent previewUrl={inputImageUrl} />
         )}
-        <div
-          className={twMerge(
-            'border-alpha-grey-400 relative',
-            className,
-            errorMessage
-              ? 'border-error-500 focus:border-error-500 border-2'
-              : '',
-          )}
-        >
-          <div
-            className={twMerge(
-              'bg-light-600 dark:bg-dark-700 absolute z-0 h-full w-full',
-              errorMessage ? 'bg-error-500/10 dark:bg-error-500/10 z-10' : '',
-            )}
-          />
-          {ImagePreviewComponent && (
-            <ImagePreviewComponent
-              className="absolute h-full w-full"
-              src={imagePreviewUrl}
-            />
-          )}
-          <div className="absolute z-20 h-full w-full cursor-pointer">
-            <input
-              ref={inputElementRef}
-              accept={accept}
-              className="invisible"
-              id={props.name}
-              type="file"
-              onChange={fileChangeHandler}
-            />
-          </div>
-        </div>
-        {showErrorMessage && (
-          <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
-            {errorMessage || ' '}
-          </p>
-        )}
-      </label>
-      <div className="mb-5 text-sm">
-        <p>Click on the image to upload a custom one.</p>
-        <p className="text-alpha-grey-700">
-          {`Accepted file types: ${acceptedFileTypes}.`}
-        </p>
-        <p className="text-alpha-grey-700">
-          {`Max file size: ${maxFileSize}MB.`}
-        </p>
+        <input
+          ref={inputElementRef}
+          accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
+          className="invisible absolute"
+          id={name}
+          name={name}
+          type="file"
+          onChange={handleFileChange}
+        />
       </div>
-    </div>
+      {showErrorMessage && (
+        <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
+          {errorMessage || ' '}
+        </p>
+      )}
+      {withInfo && (
+        <div className="mb-5 text-sm">
+          <p>Click on the image to upload a custom one.</p>
+          <p className="text-alpha-grey-700">
+            {`Accepted file types: ${acceptedFileTypes}.`}
+          </p>
+          <p className="text-alpha-grey-700">
+            {`Max file size: ${maxFileSize}MB.`}
+          </p>
+        </div>
+      )}
+    </label>
   );
 }

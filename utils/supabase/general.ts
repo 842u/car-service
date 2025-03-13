@@ -3,14 +3,14 @@ import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
 import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { RouteHandlerResponse } from '@/types';
+import { Profile, RouteHandlerResponse } from '@/types';
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
   hashFile,
   mutateEmptyFieldsToNull,
 } from '../general';
-import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tenstack/general';
+import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tanstack/general';
 import { createClient } from './client';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -52,23 +52,6 @@ export async function deleteTestUser(testUserIndex: number) {
       throw new Error(error?.message || 'Error on deleting test user.');
   }
 }
-
-export const fetchUserProfile = async () => {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return;
-
-  const { data: profileData } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user?.id || '');
-
-  return profileData?.[0];
-};
 
 export async function signInWithOAuthHandler(provider: Provider) {
   const { auth } = createClient();
@@ -133,6 +116,73 @@ export async function postNewCar(formData: AddCarFormValues) {
   }
 
   return responseData;
+}
+
+export async function getProfile() {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data: profileData, error: profileError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id);
+
+  if (profileError)
+    throw new Error(profileError.message || "Can't get user profile.");
+
+  return profileData[0];
+}
+
+type PatchProfileParameters =
+  | { property: Extract<keyof Profile, 'avatar_url'>; value: File | null }
+  | { property: Extract<keyof Profile, 'username'>; value: string | null };
+
+export async function patchProfile({
+  property,
+  value,
+}: PatchProfileParameters) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user)
+    throw new Error("Error on updating profile. Can't get user session.");
+
+  if (property === 'avatar_url') {
+    if (!value)
+      throw new Error(
+        'Error on uploading avatar. No file was found. Try again.',
+      );
+
+    const hashedFile = await hashFile(value);
+
+    const { data, error } = await supabase.storage
+      .from('avatars')
+      .upload(`${user.id}/${hashedFile}`, value);
+
+    if (error)
+      throw new Error(error.message || 'Error on uploading avatar. Try again.');
+
+    return data;
+  } else {
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({ [property]: value })
+      .eq('id', user.id)
+      .select();
+
+    if (error)
+      throw new Error(error.message || 'Error on updating profile. Try again.');
+
+    return data;
+  }
 }
 
 export async function fetchCars({ pageParam }: { pageParam: number }) {

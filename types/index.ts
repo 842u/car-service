@@ -20,7 +20,7 @@ export type RouteHandlerResponse<T = unknown> =
   | { error: null; data: T }
   | { data: null; error: { message: string } };
 
-export type UserProfile = Database['public']['Tables']['profiles']['Row'];
+export type Profile = Database['public']['Tables']['profiles']['Row'];
 
 export type Car = Database['public']['Tables']['cars']['Row'];
 
@@ -63,3 +63,8 @@ export type CarsInfiniteQueryPageData = {
 };
 
 export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;
+
+export type ImageWithPreviewProps = {
+  previewUrl?: string | null;
+  className?: string;
+};

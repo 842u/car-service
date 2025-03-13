@@ -90,3 +90,13 @@ export function mapAddCarFormValuesToCarObject(
     created_by: 'optimistic update',
   };
 }
+
+export function enqueueRevokeObjectUrl(url: string) {
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+export async function delay(delayMilliseconds: number) {
+  await new Promise((resolve) =>
+    setTimeout(() => resolve(true), delayMilliseconds),
+  );
+}

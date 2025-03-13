@@ -1,16 +1,21 @@
-'use client';
-
+import { AvatarForm } from '@/components/ui/AvatarForm/AvatarForm';
 import { PasswordResetForm } from '@/components/ui/PasswordResetForm/PasswordResetForm';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
 
-import { AvatarSection } from '../AvatarSection/AvatarSection';
-import { UsernameSection } from '../UsernameSection/UsernameSection';
+import { UsernameForm } from '../../ui/UsernameForm/UsernameForm';
 
 export function AccountSettingsSection() {
   return (
-    <section className="flex flex-col items-center justify-center gap-4">
-      <UsernameSection />
-      <AvatarSection />
+    <section
+      aria-label="account settings"
+      className="flex flex-col items-center justify-center gap-4 p-5"
+    >
+      <SettingsSection headingText="Username">
+        <UsernameForm />
+      </SettingsSection>
+      <SettingsSection headingText="Avatar">
+        <AvatarForm />
+      </SettingsSection>
       <SettingsSection headingText="Reset password">
         <PasswordResetForm />
       </SettingsSection>

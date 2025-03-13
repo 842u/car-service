@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
@@ -8,7 +8,7 @@ import { postNewCar } from '@/utils/supabase/general';
 import {
   onErrorCarsInfiniteQueryMutation,
   onMutateCarsInfiniteQueryMutation,
-} from '@/utils/tenstack/general';
+} from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
 import { InputImageRef } from '../InputImage/InputImage';
@@ -56,16 +56,15 @@ type AddCarFormProps = {
 export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const { addToast } = useToasts();
   const fileInputRef = useRef<InputImageRef>(null);
-  const optimisticCarImageUrlRef = useRef<string>(undefined);
 
   const {
     register,
     reset,
     handleSubmit,
     control,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid, isDirty, isSubmitSuccessful },
   } = useForm<AddCarFormValues>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: defaultAddCarFormValues,
   });
 
@@ -77,31 +76,25 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       onMutateCarsInfiniteQueryMutation(
         addCarFormData,
         queryClient,
-        optimisticCarImageUrlRef,
+        fileInputRef.current?.inputImageUrl || null,
       ),
     onSuccess: () => {
       addToast('Car added successfully.', 'success');
     },
     onError: (error, _, context) =>
       onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
-    onSettled: () => {
-      optimisticCarImageUrlRef.current &&
-        URL.revokeObjectURL(optimisticCarImageUrlRef.current);
-    },
   });
-
-  const resetForm = () => {
-    fileInputRef.current?.reset();
-    reset();
-  };
 
   const submitHandler = async (formData: AddCarFormValues) => {
     onSubmit && onSubmit();
     mutate(formData, {
       onSettled: () => queryClient.invalidateQueries({ queryKey: ['cars'] }),
     });
-    resetForm();
   };
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <form
@@ -120,7 +113,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         <Button
           className="w-full lg:max-w-48"
           disabled={!isDirty}
-          onClick={resetForm}
+          onClick={() => reset()}
         >
           Reset
         </Button>

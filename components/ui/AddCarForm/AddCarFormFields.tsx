@@ -17,13 +17,12 @@ import {
   carVinValidationRules,
   getCarDatabaseEnumTypeValidationRules,
   getCarProductionYearValidationRules,
-  IMAGE_FILE_ACCEPTED_MIME_TYPES,
   imageFileValidationRules,
 } from '@/utils/validation';
 
-import { CarImagePreview } from '../CarImagePreview/CarImagePreview';
 import { Input } from '../Input/Input';
 import { InputImage, InputImageRef } from '../InputImage/InputImage';
+import { NewCarImageWithPreview } from '../NewCarImageWithPreview/NewCarImageWithPreview';
 import { Select } from '../Select/Select';
 import { AddCarFormValues } from './AddCarForm';
 
@@ -58,11 +57,9 @@ export function AddCarFormFields({
       <div className="md:flex md:flex-auto md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">
         <InputImage
           ref={fileInputRef}
-          accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
-          className="h-64 w-64 overflow-hidden rounded-lg border"
           control={control}
           errorMessage={errors.image?.message}
-          ImagePreviewComponent={CarImagePreview}
+          ImagePreviewComponent={NewCarImageWithPreview}
           label="Image"
           name="image"
           rules={imageFileValidationRules}
