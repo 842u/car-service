@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { NavBarBackground } from '@/components/decorative/NavBarBackground';
+
 import { BrandLabel } from '../../BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../HamburgerButton/HamburgerButton';
 import { NavBar } from '../NavBar';
@@ -20,10 +22,7 @@ export function LandingNavBar() {
 
   return (
     <NavBar>
-      <div
-        aria-hidden
-        className="border-alpha-grey-300 bg-light-500 dark:bg-dark-500 absolute top-0 left-0 z-10 h-full w-full border-b"
-      />
+      <NavBarBackground />
       <BrandLabel className="z-20" />
       <HamburgerButton
         aria-label="toggle navigation menu"
