@@ -56,7 +56,6 @@ type AddCarFormProps = {
 export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const { addToast } = useToasts();
   const fileInputRef = useRef<InputImageRef>(null);
-  const optimisticCarImageUrlRef = useRef<string>(undefined);
 
   const {
     register,
@@ -77,17 +76,13 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       onMutateCarsInfiniteQueryMutation(
         addCarFormData,
         queryClient,
-        optimisticCarImageUrlRef,
+        fileInputRef.current?.inputImageUrl || null,
       ),
     onSuccess: () => {
       addToast('Car added successfully.', 'success');
     },
     onError: (error, _, context) =>
       onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
-    onSettled: () => {
-      optimisticCarImageUrlRef.current &&
-        URL.revokeObjectURL(optimisticCarImageUrlRef.current);
-    },
   });
 
   const submitHandler = async (formData: AddCarFormValues) => {
