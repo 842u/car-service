@@ -4,7 +4,7 @@ import { Section } from '../Section';
 
 export function HeroSection() {
   return (
-    <Section className="-mt-16 flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
+    <Section className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">
         <p className="from-dark-100 to-dark-500 dark:from-light-400 dark:to-light-800 bg-linear-to-b bg-clip-text leading-tight text-[transparent]">
           Car&apos;s Story Safely Managed.
