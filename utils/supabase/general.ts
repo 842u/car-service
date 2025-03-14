@@ -204,3 +204,19 @@ export async function getCarsPage({ pageParam }: { pageParam: number }) {
 
   return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
 }
+
+export async function getCarById(id: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars')
+    .select()
+    .eq('id', id)
+    .limit(1);
+
+  if (error) throw new Error(error.message);
+
+  if (!data[0]) throw new Error("Can't get car.");
+
+  return data[0];
+}
