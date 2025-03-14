@@ -19,13 +19,13 @@ export function NewCarImageWithPreview({
         <Image
           fill
           alt="new car image"
-          className="object-contain"
+          className="object-cover"
           src={previewUrl}
         />
       )}
 
       {!previewUrl && (
-        <BrandLogoFull className="stroke-alpha-grey-600 stroke-1 object-contain" />
+        <BrandLogoFull className="stroke-alpha-grey-600 stroke-1 object-cover" />
       )}
     </div>
   );
