@@ -2,12 +2,13 @@ import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
 import { BrandLogoFull } from '@/components/decorative/icons/BrandLogoFull';
-import { ImageWithPreviewProps } from '@/types';
 
-export function NewCarImageWithPreview({
-  previewUrl,
-  className,
-}: ImageWithPreviewProps) {
+type CarImageProps = {
+  src?: string | null;
+  className?: string;
+};
+
+export function CarImage({ src, className }: CarImageProps) {
   return (
     <div
       className={twMerge(
@@ -15,16 +16,11 @@ export function NewCarImageWithPreview({
         className,
       )}
     >
-      {previewUrl && (
-        <Image
-          fill
-          alt="new car image"
-          className="object-cover"
-          src={previewUrl}
-        />
+      {src && (
+        <Image fill alt="new car image" className="object-cover" src={src} />
       )}
 
-      {!previewUrl && (
+      {!src && (
         <BrandLogoFull className="stroke-alpha-grey-600 stroke-1 object-cover" />
       )}
     </div>

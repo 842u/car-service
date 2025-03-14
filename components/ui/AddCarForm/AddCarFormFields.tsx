@@ -20,6 +20,7 @@ import {
   imageFileValidationRules,
 } from '@/utils/validation';
 
+import { CarImage } from '../CarImage/CarImage';
 import { Input } from '../Input/Input';
 import { InputImage } from '../InputImage/InputImage';
 import { Select } from '../Select/Select';
@@ -58,7 +59,9 @@ export function AddCarFormFields({
           label="Image"
           name="image"
           rules={imageFileValidationRules}
-        />
+        >
+          <CarImage />
+        </InputImage>
       </div>
       <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
         <Input

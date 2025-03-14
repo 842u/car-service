@@ -4,7 +4,7 @@ import { Car } from '@/types';
 import { getCarById } from '@/utils/supabase/general';
 
 import { Card } from '../Card/Card';
-import { NewCarImageWithPreview } from '../NewCarImageWithPreview/NewCarImageWithPreview';
+import { CarImage } from '../CarImage/CarImage';
 
 type CarCardProps = {
   car: Car;
@@ -19,9 +19,9 @@ export function CarCard({ car }: CarCardProps) {
 
   return (
     <Card className="flex w-80 flex-col justify-between self-stretch">
-      <NewCarImageWithPreview
+      <CarImage
         className="relative aspect-square w-full"
-        previewUrl={data.image_url}
+        src={data.image_url}
       />
       <div>
         <p className="my-4 text-3xl font-semibold break-words">
