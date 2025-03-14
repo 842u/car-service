@@ -39,7 +39,7 @@ export function UserBadge({ className }: UserBadgeProps) {
           <p className="hidden md:inline-block md:overflow-hidden">
             {data.username}
           </p>
-          <AvatarImageWithPreview className="border-alpha-grey-300 aspect-square h-full w-auto overflow-hidden rounded-full border-2" />
+          <AvatarImageWithPreview className="border-alpha-grey-300 aspect-square h-full w-auto overflow-hidden rounded-full border" />
         </>
       )}
     </div>
