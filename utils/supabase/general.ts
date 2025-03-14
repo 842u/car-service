@@ -185,7 +185,7 @@ export async function patchProfile({
   }
 }
 
-export async function fetchCars({ pageParam }: { pageParam: number }) {
+export async function getCarsPage({ pageParam }: { pageParam: number }) {
   const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
   const rangeIndexTo =
     (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;

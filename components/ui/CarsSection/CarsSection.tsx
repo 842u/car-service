@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
-import { fetchCars } from '@/utils/supabase/general';
+import { getCarsPage } from '@/utils/supabase/general';
 
 import { CarCard } from '../CarCard/CarCard';
 import { Spinner } from '../Spinner/Spinner';
@@ -23,7 +23,7 @@ export function CarsSection() {
     fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ['cars'],
-    queryFn: fetchCars,
+    queryFn: getCarsPage,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
