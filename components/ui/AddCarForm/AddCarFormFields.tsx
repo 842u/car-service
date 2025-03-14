@@ -30,12 +30,16 @@ type AddCarFormFieldsProps = {
   register: UseFormRegister<AddCarFormValues>;
   control: Control<AddCarFormValues>;
   errors: FieldErrors<AddCarFormValues>;
+  inputImageUrl: string | null;
+  onInputImageChange: (file: File | undefined | null) => void;
 };
 
 export function AddCarFormFields({
   register,
   control,
   errors,
+  inputImageUrl,
+  onInputImageChange,
 }: AddCarFormFieldsProps) {
   const carFuelTypeValidationRules = useRef(
     getCarDatabaseEnumTypeValidationRules(fuelTypesMapping),
@@ -59,8 +63,9 @@ export function AddCarFormFields({
           label="Image"
           name="image"
           rules={imageFileValidationRules}
+          onChange={onInputImageChange}
         >
-          <CarImage />
+          <CarImage src={inputImageUrl} />
         </InputImage>
       </div>
       <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
