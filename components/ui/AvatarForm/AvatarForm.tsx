@@ -1,11 +1,11 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { getMimeTypeExtensions } from '@/utils/general';
+import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import { patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
@@ -17,9 +17,9 @@ import {
   imageFileValidationRules,
 } from '@/utils/validation';
 
-import { AvatarImageWithPreview } from '../AvatarImageWithPreview/AvatarImageWithPreview';
+import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';
-import { InputImage, InputImageRef } from '../InputImage/InputImage';
+import { InputImage } from '../InputImage/InputImage';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
 type AvatarFormValues = {
@@ -34,7 +34,7 @@ const defaultAvatarFormValues = {
 };
 
 export function AvatarForm() {
-  const inputImageRef = useRef<InputImageRef>(null);
+  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const { addToast } = useToasts();
 
@@ -46,11 +46,7 @@ export function AvatarForm() {
         value: avatarFormData.avatarFile,
       }),
     onMutate: () =>
-      onMutateProfileQueryMutation(
-        queryClient,
-        'avatar_url',
-        inputImageRef.current!.inputImageUrl!,
-      ),
+      onMutateProfileQueryMutation(queryClient, 'avatar_url', inputImageUrl),
   });
 
   const {
@@ -76,6 +72,11 @@ export function AvatarForm() {
     });
   };
 
+  const handleInputImageChange = (file: File | undefined | null) => {
+    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
+    setInputImageUrl((file && URL.createObjectURL(file)) || null);
+  };
+
   useEffect(() => {
     reset();
   }, [isSubmitSuccessful, reset]);
@@ -86,17 +87,18 @@ export function AvatarForm() {
       onSubmit={handleSubmit(submitForm)}
     >
       <InputImage<AvatarFormValues>
-        ref={inputImageRef}
         className="md:basis-1/3"
         control={control}
         defaultValue={defaultAvatarFormValues.avatarFile}
         errorMessage={errors.avatarFile?.message}
-        ImagePreviewComponent={AvatarImageWithPreview}
         label="Avatar"
         name="avatarFile"
         rules={imageFileValidationRules}
         withInfo={false}
-      />
+        onChange={handleInputImageChange}
+      >
+        <AvatarImage src={inputImageUrl} />
+      </InputImage>
       <div className="md:flex md:basis-2/3 md:flex-col md:justify-evenly">
         <div className="my-4 text-sm">
           <p>Click on the image to upload a custom one.</p>
