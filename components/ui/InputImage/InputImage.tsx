@@ -4,7 +4,6 @@ import {
   useController,
   UseControllerProps,
 } from 'react-hook-form';
-import { twMerge } from 'tailwind-merge';
 
 import { getMimeTypeExtensions } from '@/utils/general';
 import {
@@ -72,13 +71,16 @@ export function InputImage<T extends FieldValues>({
         </p>
       )}
       <div
-        className={twMerge(
-          'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border',
+        className={`${
           errorMessage
-            ? 'border-error-500 focus:border-error-500 bg-error-500/10 dark:bg-error-500/10'
-            : '',
-        )}
+            ? 'border-error-500 focus:border-error-500 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border'
+            : 'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border'
+        }`}
       >
+        <div
+          aria-hidden
+          className={`${errorMessage ? 'bg-error-500/20 dark:bg-error-500/20 absolute z-10 h-full w-full' : 'hidden'}`}
+        />
         {children}
         <input
           ref={inputElementRef}
