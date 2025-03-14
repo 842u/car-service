@@ -12,14 +12,14 @@ export function AvatarImageWithPreview({
   previewUrl,
   className,
 }: ImageWithPreviewProps) {
-  const { data, isSuccess, isPending, isError } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
   });
 
   const displayPreview = !isPending && previewUrl;
-  const displayProfile = !previewUrl && isSuccess;
-  const displayDefault = isError && !previewUrl;
+  const displayProfile = !previewUrl && data?.avatar_url;
+  const displayDefault = !data?.avatar_url && !previewUrl;
 
   return (
     <div
@@ -51,7 +51,7 @@ export function AvatarImageWithPreview({
       )}
 
       {displayDefault && (
-        <UserIcon className="stroke-alpha-grey-600 stroke-1 object-cover" />
+        <UserIcon className="stroke-alpha-grey-600 stroke-2 object-cover" />
       )}
     </div>
   );
