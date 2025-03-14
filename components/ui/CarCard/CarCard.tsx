@@ -1,7 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { Car } from '@/types';
-import { getCarById } from '@/utils/supabase/general';
 
 import { Card } from '../Card/Card';
 import { CarImage } from '../CarImage/CarImage';
@@ -11,33 +8,24 @@ type CarCardProps = {
 };
 
 export function CarCard({ car }: CarCardProps) {
-  const { data } = useQuery({
-    queryKey: ['car', car.id],
-    queryFn: () => getCarById(car.id),
-    initialData: car,
-  });
-
   return (
     <Card className="flex w-80 flex-col justify-between self-stretch">
-      <CarImage
-        className="relative aspect-square w-full"
-        src={data.image_url}
-      />
+      <CarImage className="relative aspect-square w-full" src={car.image_url} />
       <div>
         <p className="my-4 text-3xl font-semibold break-words">
-          {data.custom_name}
+          {car.custom_name}
         </p>
         <p className="my-2 whitespace-pre-wrap">
           <span>Brand: </span>
-          <span className="text-accent-400">{data.brand || ''}</span>
+          <span className="text-accent-400">{car.brand || ''}</span>
         </p>
         <p className="my-2 whitespace-pre-wrap">
           <span>Model: </span>
-          <span className="text-accent-400">{data.model || ''}</span>
+          <span className="text-accent-400">{car.model || ''}</span>
         </p>
         <p className="my-2 whitespace-pre-wrap">
           <span>License Plates: </span>
-          <span className="text-accent-400">{data.license_plates || ''}</span>
+          <span className="text-accent-400">{car.license_plates || ''}</span>
         </p>
       </div>
     </Card>
