@@ -22,17 +22,9 @@ export type UsernameFormValues = {
 
 type UsernameFormProps = {
   data?: Profile | null;
-  error: Error | null;
-  isSuccess: boolean;
-  isError: boolean;
 };
 
-export function UsernameForm({
-  data,
-  error,
-  isSuccess,
-  isError,
-}: UsernameFormProps) {
+export function UsernameForm({ data }: UsernameFormProps) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
@@ -74,13 +66,8 @@ export function UsernameForm({
   };
 
   useEffect(() => {
-    isError &&
-      addToast(error?.message || 'Error on updating profile.', 'error');
-  }, [isError, addToast, error]);
-
-  useEffect(() => {
-    isSuccess && reset({ username: data?.username || '' });
-  }, [isSuccess, reset, data?.username]);
+    data?.username && reset({ username: data.username });
+  }, [reset, data?.username]);
 
   useEffect(() => {
     reset();
