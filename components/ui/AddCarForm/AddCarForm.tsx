@@ -103,12 +103,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     >
       <h2 className="text-xl">Add a new car</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
-      <AddCarFormFields
-        control={control}
-        errors={errors}
-        fileInputRef={fileInputRef}
-        register={register}
-      />
+      <AddCarFormFields control={control} errors={errors} register={register} />
       <div className="mt-5 flex gap-10 md:flex-auto md:basis-full lg:justify-end lg:gap-5">
         <Button
           className="w-full lg:max-w-48"
