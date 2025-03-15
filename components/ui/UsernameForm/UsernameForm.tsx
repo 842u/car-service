@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
 import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 import { useToasts } from '@/hooks/useToasts';
-import { getProfile, patchProfile } from '@/utils/supabase/general';
+import { Profile } from '@/types';
+import { patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
@@ -19,13 +20,12 @@ export type UsernameFormValues = {
   username: string;
 };
 
-export function UsernameForm() {
-  const { addToast } = useToasts();
+type UsernameFormProps = {
+  data?: Profile | null;
+};
 
-  const { data, error, isSuccess, isError } = useQuery({
-    queryKey: ['profile'],
-    queryFn: getProfile,
-  });
+export function UsernameForm({ data }: UsernameFormProps) {
+  const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -46,7 +46,7 @@ export function UsernameForm() {
     register,
     handleSubmit,
     reset,
-    formState: { isValid, isDirty, errors },
+    formState: { isValid, isDirty, errors, isSubmitSuccessful },
   } = useForm<UsernameFormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -66,12 +66,12 @@ export function UsernameForm() {
   };
 
   useEffect(() => {
-    isSuccess && reset({ username: data?.username || '' });
-  }, [isSuccess, reset, data?.username]);
+    data?.username && reset({ username: data.username });
+  }, [reset, data?.username]);
 
   useEffect(() => {
-    isError && addToast(error.message, 'error');
-  }, [isError, addToast, error]);
+    reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <form

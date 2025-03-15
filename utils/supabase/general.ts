@@ -185,7 +185,7 @@ export async function patchProfile({
   }
 }
 
-export async function fetchCars({ pageParam }: { pageParam: number }) {
+export async function getCarsPage({ pageParam }: { pageParam: number }) {
   const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
   const rangeIndexTo =
     (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
@@ -203,4 +203,20 @@ export async function fetchCars({ pageParam }: { pageParam: number }) {
   const hasMoreCars = !(data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT);
 
   return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
+}
+
+export async function getCarById(id: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars')
+    .select()
+    .eq('id', id)
+    .limit(1);
+
+  if (error) throw new Error(error.message);
+
+  if (!data[0]) throw new Error("Can't get car.");
+
+  return data[0];
 }

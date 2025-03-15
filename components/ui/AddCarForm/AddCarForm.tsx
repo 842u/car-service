@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
 import { Drive, Fuel, Transmission } from '@/types';
+import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { postNewCar } from '@/utils/supabase/general';
 import {
   onErrorCarsInfiniteQueryMutation,
@@ -11,7 +12,6 @@ import {
 } from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
-import { InputImageRef } from '../InputImage/InputImage';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 import { AddCarFormFields } from './AddCarFormFields';
 
@@ -54,8 +54,9 @@ type AddCarFormProps = {
 };
 
 export function AddCarForm({ onSubmit }: AddCarFormProps) {
+  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
+
   const { addToast } = useToasts();
-  const fileInputRef = useRef<InputImageRef>(null);
 
   const {
     register,
@@ -76,7 +77,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       onMutateCarsInfiniteQueryMutation(
         addCarFormData,
         queryClient,
-        fileInputRef.current?.inputImageUrl || null,
+        inputImageUrl,
       ),
     onSuccess: () => {
       addToast('Car added successfully.', 'success');
@@ -90,6 +91,11 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     mutate(formData, {
       onSettled: () => queryClient.invalidateQueries({ queryKey: ['cars'] }),
     });
+  };
+
+  const handleInputImageChange = (file: File | undefined | null) => {
+    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
+    setInputImageUrl((file && URL.createObjectURL(file)) || null);
   };
 
   useEffect(() => {
@@ -106,8 +112,9 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       <AddCarFormFields
         control={control}
         errors={errors}
-        fileInputRef={fileInputRef}
+        inputImageUrl={inputImageUrl}
         register={register}
+        onInputImageChange={handleInputImageChange}
       />
       <div className="mt-5 flex gap-10 md:flex-auto md:basis-full lg:justify-end lg:gap-5">
         <Button

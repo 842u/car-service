@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import { useToasts } from '@/hooks/useToasts';
 import { getProfile } from '@/utils/supabase/general';
 
-import { AvatarImageWithPreview } from '../AvatarImageWithPreview/AvatarImageWithPreview';
+import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Spinner } from '../Spinner/Spinner';
 
 export const USER_BADGE_TEST_ID = 'user badge';
@@ -39,7 +39,10 @@ export function UserBadge({ className }: UserBadgeProps) {
           <p className="hidden md:inline-block md:overflow-hidden">
             {data.username}
           </p>
-          <AvatarImageWithPreview className="border-alpha-grey-300 aspect-square h-full w-auto overflow-hidden rounded-full border-2" />
+          <AvatarImage
+            className="border-alpha-grey-300 aspect-square h-full w-auto overflow-hidden rounded-full border"
+            src={data.avatar_url}
+          />
         </>
       )}
     </div>

@@ -1,11 +1,12 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { getMimeTypeExtensions } from '@/utils/general';
+import { Profile } from '@/types';
+import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import { patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
@@ -17,24 +18,28 @@ import {
   imageFileValidationRules,
 } from '@/utils/validation';
 
-import { AvatarImageWithPreview } from '../AvatarImageWithPreview/AvatarImageWithPreview';
+import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';
-import { InputImage, InputImageRef } from '../InputImage/InputImage';
+import { InputImage } from '../InputImage/InputImage';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
+
+const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
+const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
 type AvatarFormValues = {
   avatarFile: File | null;
 };
 
-const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
-const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
-
 const defaultAvatarFormValues = {
   avatarFile: null,
 };
 
-export function AvatarForm() {
-  const inputImageRef = useRef<InputImageRef>(null);
+type AvatarFormProps = {
+  data?: Profile | null;
+};
+
+export function AvatarForm({ data }: AvatarFormProps) {
+  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const { addToast } = useToasts();
 
@@ -46,11 +51,7 @@ export function AvatarForm() {
         value: avatarFormData.avatarFile,
       }),
     onMutate: () =>
-      onMutateProfileQueryMutation(
-        queryClient,
-        'avatar_url',
-        inputImageRef.current!.inputImageUrl!,
-      ),
+      onMutateProfileQueryMutation(queryClient, 'avatar_url', inputImageUrl),
   });
 
   const {
@@ -76,6 +77,11 @@ export function AvatarForm() {
     });
   };
 
+  const handleInputImageChange = (file: File | undefined | null) => {
+    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
+    setInputImageUrl((file && URL.createObjectURL(file)) || null);
+  };
+
   useEffect(() => {
     reset();
   }, [isSubmitSuccessful, reset]);
@@ -86,17 +92,18 @@ export function AvatarForm() {
       onSubmit={handleSubmit(submitForm)}
     >
       <InputImage<AvatarFormValues>
-        ref={inputImageRef}
         className="md:basis-1/3"
         control={control}
         defaultValue={defaultAvatarFormValues.avatarFile}
         errorMessage={errors.avatarFile?.message}
-        ImagePreviewComponent={AvatarImageWithPreview}
         label="Avatar"
         name="avatarFile"
         rules={imageFileValidationRules}
         withInfo={false}
-      />
+        onChange={handleInputImageChange}
+      >
+        <AvatarImage src={inputImageUrl || data?.avatar_url} />
+      </InputImage>
       <div className="md:flex md:basis-2/3 md:flex-col md:justify-evenly">
         <div className="my-4 text-sm">
           <p>Click on the image to upload a custom one.</p>

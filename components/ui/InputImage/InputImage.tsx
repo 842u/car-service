@@ -1,20 +1,11 @@
-import {
-  ChangeEvent,
-  ComponentType,
-  RefObject,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
 import {
   FieldValues,
   useController,
   UseControllerProps,
 } from 'react-hook-form';
-import { twMerge } from 'tailwind-merge';
 
-import { ImageWithPreviewProps } from '@/types';
-import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
+import { getMimeTypeExtensions } from '@/utils/general';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   IMAGE_FILE_MAX_SIZE_BYTES,
@@ -28,54 +19,48 @@ export type InputImageRef = {
 };
 
 type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
-  ref?: RefObject<InputImageRef | null>;
+  onChange?: (file: File | undefined | null) => void;
   withInfo?: boolean;
   required?: boolean;
   label?: string;
-  ImagePreviewComponent?: ComponentType<ImageWithPreviewProps>;
+  children?: ReactNode;
   className?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
 };
 
 export function InputImage<T extends FieldValues>({
-  ref,
+  onChange,
   label,
   name,
   control,
   rules,
   defaultValue,
-  ImagePreviewComponent,
+  children,
   className,
   errorMessage,
   withInfo = true,
   required = false,
   showErrorMessage = true,
 }: InputImageProps<T>) {
-  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
 
   const { field } = useController({ name, control, rules, defaultValue });
 
-  const hasBeenReset = !field.value && inputImageUrl;
-  if (hasBeenReset) {
-    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
-    setInputImageUrl(null);
-    if (inputElementRef.current?.files) {
-      inputElementRef.current.files = new DataTransfer().files;
-    }
-  }
-
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
-    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
-    setInputImageUrl((file && URL.createObjectURL(file)) || null);
-
+    onChange && onChange(file);
     field.onChange(file);
   };
 
-  useImperativeHandle(ref, () => ({ inputImageUrl }), [inputImageUrl]);
+  useEffect(() => {
+    if (!field.value) {
+      if (inputElementRef.current?.files) {
+        inputElementRef.current.files = new DataTransfer().files;
+      }
+      onChange && onChange(null);
+    }
+  }, [field.value, onChange]);
 
   return (
     <label className={className} htmlFor={name}>
@@ -86,16 +71,17 @@ export function InputImage<T extends FieldValues>({
         </p>
       )}
       <div
-        className={twMerge(
-          'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border',
+        className={`${
           errorMessage
-            ? 'border-error-500 focus:border-error-500 bg-error-500/10 dark:bg-error-500/10'
-            : '',
-        )}
+            ? 'border-error-500 focus:border-error-500 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border'
+            : 'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border'
+        }`}
       >
-        {ImagePreviewComponent && (
-          <ImagePreviewComponent previewUrl={inputImageUrl} />
-        )}
+        <div
+          aria-hidden
+          className={`${errorMessage ? 'bg-error-500/20 dark:bg-error-500/20 absolute z-10 h-full w-full' : 'hidden'}`}
+        />
+        {children}
         <input
           ref={inputElementRef}
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}

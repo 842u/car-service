@@ -1,4 +1,4 @@
-import { RefObject, useRef } from 'react';
+import { useRef } from 'react';
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import {
@@ -20,9 +20,9 @@ import {
   imageFileValidationRules,
 } from '@/utils/validation';
 
+import { CarImage } from '../CarImage/CarImage';
 import { Input } from '../Input/Input';
-import { InputImage, InputImageRef } from '../InputImage/InputImage';
-import { NewCarImageWithPreview } from '../NewCarImageWithPreview/NewCarImageWithPreview';
+import { InputImage } from '../InputImage/InputImage';
 import { Select } from '../Select/Select';
 import { AddCarFormValues } from './AddCarForm';
 
@@ -30,14 +30,16 @@ type AddCarFormFieldsProps = {
   register: UseFormRegister<AddCarFormValues>;
   control: Control<AddCarFormValues>;
   errors: FieldErrors<AddCarFormValues>;
-  fileInputRef: RefObject<InputImageRef | null>;
+  inputImageUrl: string | null;
+  onInputImageChange: (file: File | undefined | null) => void;
 };
 
 export function AddCarFormFields({
   register,
   control,
   errors,
-  fileInputRef,
+  inputImageUrl,
+  onInputImageChange,
 }: AddCarFormFieldsProps) {
   const carFuelTypeValidationRules = useRef(
     getCarDatabaseEnumTypeValidationRules(fuelTypesMapping),
@@ -56,14 +58,15 @@ export function AddCarFormFields({
     <>
       <div className="md:flex md:flex-auto md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">
         <InputImage
-          ref={fileInputRef}
           control={control}
           errorMessage={errors.image?.message}
-          ImagePreviewComponent={NewCarImageWithPreview}
           label="Image"
           name="image"
           rules={imageFileValidationRules}
-        />
+          onChange={onInputImageChange}
+        >
+          <CarImage src={inputImageUrl} />
+        </InputImage>
       </div>
       <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
         <Input
