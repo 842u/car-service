@@ -71,7 +71,7 @@ export function CarsSection() {
           })}
           <div
             ref={intersectionTargetRef}
-            className="absolute bottom-0 left-0 h-96 w-full"
+            className="absolute bottom-0 left-0 -z-10 h-[30vh] w-full"
           />
           {isFetchingNextPage && (
             <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
