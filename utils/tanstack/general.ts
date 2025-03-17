@@ -1,7 +1,12 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Car, CarsInfiniteQueryData, Profile, ToastType } from '@/types';
+import {
+  Car,
+  CarFormValues,
+  CarsInfiniteQueryData,
+  Profile,
+  ToastType,
+} from '@/types';
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
@@ -55,7 +60,7 @@ function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
 }
 
 export async function onMutateCarsInfiniteQueryMutation(
-  addCarFormData: AddCarFormValues,
+  addCarFormData: CarFormValues,
   queryClient: QueryClient,
   optimisticCarImageUrl: string | null,
 ) {

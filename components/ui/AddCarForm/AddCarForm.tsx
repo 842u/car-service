@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { Drive, Fuel, Transmission } from '@/types';
+import { CarFormValues } from '@/types';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { postNewCar } from '@/utils/supabase/general';
 import {
@@ -15,24 +15,7 @@ import { Button } from '../Button/Button';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 import { AddCarFormFields } from './AddCarFormFields';
 
-export type AddCarFormValues = {
-  image: File | null;
-  name: string | null;
-  brand: string | null;
-  model: string | null;
-  licensePlates: string | null;
-  vin: string | null;
-  fuelType: Fuel | null;
-  additionalFuelType: Fuel | null;
-  transmissionType: Transmission | null;
-  driveType: Drive | null;
-  productionYear: number | null;
-  engineCapacity: number | null;
-  mileage: number | null;
-  insuranceExpiration: string | null;
-};
-
-export const defaultAddCarFormValues: AddCarFormValues = {
+export const defaultAddCarFormValues: CarFormValues = {
   image: null,
   name: null,
   brand: null,
@@ -64,15 +47,14 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     handleSubmit,
     control,
     formState: { errors, isValid, isDirty, isSubmitSuccessful },
-  } = useForm<AddCarFormValues>({
+  } = useForm<CarFormValues>({
     mode: 'onChange',
     defaultValues: defaultAddCarFormValues,
   });
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: (addCarFormData: AddCarFormValues) =>
-      postNewCar(addCarFormData),
+    mutationFn: (addCarFormData: CarFormValues) => postNewCar(addCarFormData),
     onMutate: (addCarFormData) =>
       onMutateCarsInfiniteQueryMutation(
         addCarFormData,
@@ -86,7 +68,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
   });
 
-  const submitHandler = async (formData: AddCarFormValues) => {
+  const submitHandler = async (formData: CarFormValues) => {
     onSubmit && onSubmit();
     mutate(formData, {
       onSettled: () => queryClient.invalidateQueries({ queryKey: ['cars'] }),

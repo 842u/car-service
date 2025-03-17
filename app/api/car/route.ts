@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { RouteHandlerResponse } from '@/types';
+import { CarFormValues, RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 import { validateAddCarFormData } from '@/utils/validation';
 
-export type AddCarFormValuesToValidate = Omit<AddCarFormValues, 'image'>;
+export type AddCarFormValuesToValidate = Omit<CarFormValues, 'image'>;
 export type apiCarPostResponse = { id: string };
 
 export async function POST(request: NextRequest) {

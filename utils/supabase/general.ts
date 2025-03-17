@@ -2,8 +2,7 @@ import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
-import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Profile, RouteHandlerResponse } from '@/types';
+import { CarFormValues, Profile, RouteHandlerResponse } from '@/types';
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
@@ -69,7 +68,7 @@ export async function signInWithOAuthHandler(provider: Provider) {
   return response;
 }
 
-export async function postNewCar(formData: AddCarFormValues) {
+export async function postNewCar(formData: CarFormValues) {
   const supabase = createClient();
 
   const { image, ...data } = formData;

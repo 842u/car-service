@@ -2,8 +2,8 @@ import { RegisterOptions } from 'react-hook-form';
 import { z, ZodError } from 'zod';
 
 import { AddCarFormValuesToValidate } from '@/app/api/car/route';
-import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
 import {
+  CarFormValues,
   DriveMapping,
   driveTypesMapping,
   FuelMapping,
@@ -75,7 +75,7 @@ export const imageFileValidationRules = {
 
     return true;
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const imageFileSchema = z
   .instanceof(File)
@@ -158,7 +158,7 @@ export const carNameValidationRules = {
     value: 30,
     message: 'Maximum name length is 30.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carNameValidationSchema = z
   .string()
@@ -181,7 +181,7 @@ export const carBrandValidationRules = {
     value: 25,
     message: 'Maximum brand length is 25.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carBrandValidationSchema = z
   .string()
@@ -205,7 +205,7 @@ export const carModelValidationRules = {
     value: 25,
     message: 'Maximum model length is 25.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carModelValidationSchema = z
   .string()
@@ -223,7 +223,7 @@ export const carLicensePlatesValidationRules = {
     value: 15,
     message: 'Maximum license plates length is 15.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carLicensePlatesValidationSchema = z
   .string()
@@ -247,7 +247,7 @@ export const carVinValidationRules = {
     value: 17,
     message: 'VIN must be 17 characters long.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carVinValidationSchema = z
   .string()
@@ -268,7 +268,7 @@ export const carEngineCapacityValidationRules = {
     value: 0,
     message: 'Engine capacity must be positive number.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carEngineCapacityValidationSchema = z
   .number()
@@ -283,7 +283,7 @@ export const carMileageValidationRules = {
     value: 0,
     message: 'Mileage must be positive number.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carMileageValidationSchema = z
   .number()
@@ -297,7 +297,7 @@ export const carInsuranceExpirationValidationRules = {
     value: '1885-01-01',
     message: 'Hey! First car was made in 1885.',
   },
-} satisfies RegisterOptions<AddCarFormValues>;
+} satisfies RegisterOptions<CarFormValues>;
 
 export const carInsuranceExpirationValidationSchema = z.coerce
   .date()
@@ -319,7 +319,7 @@ export function getCarProductionYearValidationRules() {
       value: maxYear,
       message: `Maximum production year is ${maxYear}.`,
     },
-  } satisfies RegisterOptions<AddCarFormValues>;
+  } satisfies RegisterOptions<CarFormValues>;
 }
 
 export function getCarProductionYearValidationSchema() {
@@ -337,7 +337,7 @@ export function getCarProductionYearValidationSchema() {
 
 export function getCarDatabaseEnumTypeValidationRules<
   T extends FuelMapping | TransmissionMapping | DriveMapping,
->(databaseEnumMapping: T): RegisterOptions<AddCarFormValues> {
+>(databaseEnumMapping: T): RegisterOptions<CarFormValues> {
   return {
     validate: (value: unknown) => {
       if (
@@ -350,7 +350,7 @@ export function getCarDatabaseEnumTypeValidationRules<
 
       return 'Please choose a correct value.';
     },
-  } satisfies RegisterOptions<AddCarFormValues>;
+  } satisfies RegisterOptions<CarFormValues>;
 }
 
 export function validateCarDatabaseEnumType(
