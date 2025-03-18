@@ -117,7 +117,7 @@ export async function postNewCar(formData: CarFormValues) {
   return responseData;
 }
 
-export async function getProfile() {
+export async function getCurrentSessionProfile() {
   const supabase = createClient();
 
   const {
