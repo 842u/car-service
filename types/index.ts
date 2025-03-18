@@ -24,6 +24,9 @@ export type Profile = Database['public']['Tables']['profiles']['Row'];
 
 export type Car = Database['public']['Tables']['cars']['Row'];
 
+export type CarOwnership =
+  Database['public']['Tables']['cars_ownerships']['Row'];
+
 export type Fuel = Database['public']['Enums']['fuel'];
 export type FuelMapping = { [K in Fuel]: K };
 

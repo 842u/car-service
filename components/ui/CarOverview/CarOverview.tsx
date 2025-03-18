@@ -2,12 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { CarOwnership, Profile } from '@/types';
 import {
   getCarById,
   getCarOwnershipsByCarId,
   getCurrentSessionProfile,
 } from '@/utils/supabase/general';
 
+import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { CarBadge } from '../CarBadge/CarBadge';
 
 type CarOverviewProps = {
@@ -20,7 +22,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
     queryFn: () => getCarById(carId),
   });
 
-  const { data: ownershipData } = useQuery({
+  const { data: ownershipsData } = useQuery({
     queryKey: ['ownership', carId],
     queryFn: () => getCarOwnershipsByCarId(carId),
   });
@@ -46,35 +48,64 @@ export function CarOverview({ carId }: CarOverviewProps) {
                 <th className="border-alpha-grey-200 border p-2">
                   <span className="sr-only">Select</span>
                 </th>
+                <th className="border-alpha-grey-200 hidden border p-2 md:table-cell">
+                  <span className="sr-only">Owner Avatar</span>
+                </th>
+                <th className="border-alpha-grey-200 hidden border p-2 md:table-cell">
+                  Username
+                </th>
                 <th className="border-alpha-grey-200 border p-2">Owner ID</th>
                 <th className="border-alpha-grey-200 border p-2">Main Owner</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr className="whitespace-nowrap">
-                <td className="border-alpha-grey-200 border p-2 text-center align-middle">
-                  <input type="checkbox" />
-                </td>
-                <td className="border-alpha-grey-200 max-w-[150px] overflow-auto border p-2">
-                  {sessionProfileData?.id}
-                </td>
-                <td className="border-alpha-grey-200 border p-2 text-center align-middle">
-                  {ownershipData?.find(
-                    (ownership) =>
-                      ownership.owner_id === sessionProfileData?.id &&
-                      ownership.is_primary_owner,
-                  ) ? (
-                    <input checked readOnly type="checkbox" />
-                  ) : (
-                    <input readOnly checked={false} type="checkbox" />
-                  )}
-                </td>
-              </tr>
+              <TableRow
+                ownershipsData={ownershipsData}
+                profileData={sessionProfileData}
+              />
             </tbody>
           </table>
         </div>
       </section>
     </section>
+  );
+}
+
+type TableRowProps = {
+  profileData?: Profile | null;
+  ownershipsData?: CarOwnership[];
+};
+
+function TableRow({ profileData, ownershipsData }: TableRowProps) {
+  return (
+    <tr className="whitespace-nowrap">
+      <td className="border-alpha-grey-200 border p-2 text-center align-middle">
+        <input type="checkbox" />
+      </td>
+      <td className="border-alpha-grey-200 hidden border p-2 text-center align-middle md:table-cell md:w-10">
+        <AvatarImage
+          className="aspect-square overflow-hidden rounded-full"
+          src={profileData?.avatar_url}
+        />
+      </td>
+      <td className="border-alpha-grey-200 hidden border p-2 text-center align-middle md:table-cell">
+        {profileData?.username}
+      </td>
+      <td className="border-alpha-grey-200 max-w-[150px] overflow-auto border p-2">
+        {profileData?.id}
+      </td>
+      <td className="border-alpha-grey-200 border p-2 text-center align-middle">
+        {ownershipsData?.find(
+          (ownership) =>
+            ownership.owner_id === profileData?.id &&
+            ownership.is_primary_owner,
+        ) ? (
+          <input checked readOnly type="checkbox" />
+        ) : (
+          <input readOnly checked={false} type="checkbox" />
+        )}
+      </td>
+    </tr>
   );
 }
