@@ -1,7 +1,7 @@
 import { Route } from 'next';
 import { redirect } from 'next/navigation';
 
-import CarDetailsSection from '@/components/ui/CarDetailsSection/CarDetailsSection';
+import { CarOverview } from '@/components/ui/CarOverview/CarOverview';
 import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
 import { createClient } from '@/utils/supabase/server';
 
@@ -30,8 +30,8 @@ export default async function CarPage({ params }: CarPageProps) {
   if (!ownership) redirect('/dashboard/cars' satisfies Route);
 
   return (
-    <DashboardMain className="px-5 pt-21">
-      <CarDetailsSection id={id} />
+    <DashboardMain>
+      <CarOverview carId={id} />
     </DashboardMain>
   );
 }
