@@ -1,12 +1,13 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 
 import { CarOwnership, Profile } from '@/types';
 import {
   getCarById,
   getCarOwnershipsByCarId,
   getCurrentSessionProfile,
+  getProfileById,
 } from '@/utils/supabase/general';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
@@ -30,6 +31,22 @@ export function CarOverview({ carId }: CarOverviewProps) {
   const { data: sessionProfileData } = useQuery({
     queryKey: ['profile', 'session'],
     queryFn: getCurrentSessionProfile,
+  });
+
+  const allowDependentQueries =
+    sessionProfileData && ownershipsData && ownershipsData.length;
+
+  const ownersProfiles = useQueries({
+    queries: allowDependentQueries
+      ? ownershipsData
+          .filter((ownership) => ownership.owner_id !== sessionProfileData.id)
+          .map((ownership) => {
+            return {
+              queryKey: ['profile', ownership.owner_id],
+              queryFn: () => getProfileById(ownership.owner_id),
+            };
+          })
+      : [],
   });
 
   return (
@@ -64,6 +81,16 @@ export function CarOverview({ carId }: CarOverviewProps) {
                 ownershipsData={ownershipsData}
                 profileData={sessionProfileData}
               />
+              {ownersProfiles.map(
+                (owner) =>
+                  owner.data && (
+                    <TableRow
+                      key={owner.data.id}
+                      ownershipsData={ownershipsData}
+                      profileData={owner.data}
+                    />
+                  ),
+              )}
             </tbody>
           </table>
         </div>
