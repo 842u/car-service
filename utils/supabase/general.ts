@@ -219,3 +219,16 @@ export async function getCarById(id: string) {
 
   return data[0];
 }
+
+export async function getCarOwnershipsByCarId(carId: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars_ownerships')
+    .select()
+    .eq('car_id', carId);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
