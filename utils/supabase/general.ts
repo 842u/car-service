@@ -137,6 +137,20 @@ export async function getCurrentSessionProfile() {
   return profileData[0];
 }
 
+export async function getProfileById(id: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) throw new Error(error.message || "Can't get user profile.");
+
+  return data;
+}
+
 type PatchProfileParameters =
   | { property: Extract<keyof Profile, 'avatar_url'>; value: File | null }
   | { property: Extract<keyof Profile, 'username'>; value: string | null };
