@@ -264,3 +264,17 @@ export async function deleteCarOwnershipsByOwnersIds(
 
   return data;
 }
+
+export async function postCarOwnership(carId: string, ownerId: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars_ownerships')
+    .insert({ car_id: carId, owner_id: ownerId, is_primary_owner: false })
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message || "Can't add new car owner.");
+
+  return data;
+}

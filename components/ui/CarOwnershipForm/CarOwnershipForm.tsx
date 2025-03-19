@@ -147,7 +147,7 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
         </div>
       </form>
       <DialogModal ref={newCarOwnerModalRef}>
-        <NewCarOwnerForm />
+        <NewCarOwnerForm carId={carId} />
       </DialogModal>
     </>
   );
