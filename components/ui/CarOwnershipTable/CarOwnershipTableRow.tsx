@@ -13,21 +13,31 @@ export function CarOwnershipTableRow({
 }: CarOwnershipTableRowProps) {
   return (
     <tr className="whitespace-nowrap">
-      <td className="border-alpha-grey-200 w-10 border p-2 text-center align-middle">
-        <input type="checkbox" />
+      <td className="border-alpha-grey-200 relative w-10 border">
+        <label
+          className="absolute top-0 left-0 flex h-full w-full justify-center"
+          htmlFor={profileData?.id}
+        >
+          <input id={profileData?.id} type="checkbox" />
+          <span className="sr-only">Select user</span>
+        </label>
       </td>
+
       <td className="border-alpha-grey-200 hidden border p-2 text-center align-middle md:table-cell md:w-12">
         <AvatarImage
           className="aspect-square overflow-hidden rounded-full"
           src={profileData?.avatar_url}
         />
       </td>
+
       <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border p-2 text-center align-middle md:table-cell">
         {profileData?.username}
       </td>
+
       <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border p-2 text-center align-middle">
         {profileData?.id}
       </td>
+
       <td className="border-alpha-grey-200 w-10 border p-2 text-center align-middle">
         {ownershipData?.find(
           (ownership) =>
