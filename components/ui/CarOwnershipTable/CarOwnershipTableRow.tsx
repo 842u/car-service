@@ -5,7 +5,7 @@ import { StarIcon } from '@/components/decorative/icons/StarIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
-import { CarOwnershipFormValues } from './CarOwnershipTable';
+import { CarOwnershipFormValues } from '../CarOwnershipForm/CarOwnershipForm';
 
 type CarOwnershipTableRowProps = {
   register: UseFormRegister<CarOwnershipFormValues>;

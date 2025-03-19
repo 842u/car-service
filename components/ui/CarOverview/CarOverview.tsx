@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getCarById } from '@/utils/supabase/general';
 
 import { CarBadge } from '../CarBadge/CarBadge';
-import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
+import { CarOwnershipForm } from '../CarOwnershipForm/CarOwnershipForm';
 
 type CarOverviewProps = {
   carId: string;
@@ -26,7 +26,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
       />
       <section className="my-5 overflow-x-auto">
         <h2>Car Ownership</h2>
-        <CarOwnershipTable carId={carId} />
+        <CarOwnershipForm carId={carId} />
       </section>
     </section>
   );
