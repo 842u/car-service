@@ -415,3 +415,9 @@ export function validateAddCarFormData(data: AddCarFormValuesToValidate) {
     'Incorrect transmission type value.',
   );
 }
+
+const userIdValidationSchema = z.string().uuid('Invalid ID format.');
+
+export function validateUserId(userId: string | null) {
+  userIdValidationSchema.parse(userId);
+}
