@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
@@ -20,6 +20,8 @@ import { onMutateCarOwnershipMutation } from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
+import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
+import { NewCarOwnerForm } from '../NewCarOwnerForm/NewCarOwnerForm';
 
 export type CarOwnershipFormValues = {
   ownersIds: string[];
@@ -34,6 +36,8 @@ type CarOwnershipFormProps = {
 };
 
 export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
+  const newCarOwnerModalRef = useRef<DialogModalRef>(null);
+
   const { addToast } = useToasts();
 
   const { data: carOwnershipData, error: carOwnershipError } = useQuery({
@@ -112,33 +116,39 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)}>
-      <CarOwnershipTable
-        carOwnershipData={carOwnershipData}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfilesData={ownersProfiles}
-        register={register}
-        sessionProfileData={sessionProfileData}
-      />
-      <div className="m-5 flex justify-end gap-5">
-        <Button
-          className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
-          disabled={!isDirty && !isSubmitting}
-          title="Remove selected owners"
-          type="submit"
-        >
-          <UserMinusIcon className="stroke-light-500 mx-2 h-full w-full" />
-          <span className="sr-only">Remove selected owners</span>
-        </Button>
-        <Button
-          className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
-          disabled={!isCurrentUserPrimaryOwner}
-          title="Add owner"
-        >
-          <UserPlusIcon className="stroke-light-500 mx-2 h-full w-full" />
-          <span className="sr-only">Add owner</span>
-        </Button>
-      </div>
-    </form>
+    <>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
+        <CarOwnershipTable
+          carOwnershipData={carOwnershipData}
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+          ownersProfilesData={ownersProfiles}
+          register={register}
+          sessionProfileData={sessionProfileData}
+        />
+        <div className="m-5 flex justify-end gap-5">
+          <Button
+            className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
+            disabled={!isDirty || !isSubmitting}
+            title="Remove selected owners"
+            type="submit"
+          >
+            <UserMinusIcon className="stroke-light-500 mx-2 h-full w-full" />
+            <span className="sr-only">Remove selected owners</span>
+          </Button>
+          <Button
+            className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
+            disabled={!isCurrentUserPrimaryOwner}
+            title="Add owner"
+            onClick={() => newCarOwnerModalRef.current?.showModal()}
+          >
+            <UserPlusIcon className="stroke-light-500 mx-2 h-full w-full" />
+            <span className="sr-only">Add owner</span>
+          </Button>
+        </div>
+      </form>
+      <DialogModal ref={newCarOwnerModalRef}>
+        <NewCarOwnerForm />
+      </DialogModal>
+    </>
   );
 }
