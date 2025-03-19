@@ -31,7 +31,7 @@ export function CarOwnershipTableRow({
             disabled={disabled}
             id={profileData?.id}
             type="checkbox"
-            {...register('owner')}
+            {...register('ownersIds')}
             value={profileData?.id}
           />
           <span className="sr-only">Select user</span>
