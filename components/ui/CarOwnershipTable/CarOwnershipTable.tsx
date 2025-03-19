@@ -12,6 +12,7 @@ import {
 } from '@/utils/supabase/general';
 
 import { Button } from '../Button/Button';
+import { CarOwnershipTableHead } from './CarOwnershipTableHead';
 import { CarOwnershipTableRow } from './CarOwnershipTableRow';
 
 export type CarOwnershipFormValues = {
@@ -89,21 +90,7 @@ export function CarOwnershipTable({ carId }: CarOwnershipTableProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <div className="border-alpha-grey-300 overflow-hidden rounded-lg border">
         <table className="w-full border-collapse">
-          <thead className="bg-alpha-grey-100 border-alpha-grey-200">
-            <tr className="md:whitespace-nowrap">
-              <th className="border-alpha-grey-200 border p-2">
-                <span className="sr-only">Select</span>
-              </th>
-              <th className="border-alpha-grey-200 hidden border p-2 md:table-cell">
-                <span className="sr-only">Owner Avatar</span>
-              </th>
-              <th className="border-alpha-grey-200 border p-2 md:table-cell">
-                Username
-              </th>
-              <th className="border-alpha-grey-200 border p-2">Owner ID</th>
-              <th className="border-alpha-grey-200 border p-2">Main Owner</th>
-            </tr>
-          </thead>
+          <CarOwnershipTableHead />
 
           <tbody>
             <CarOwnershipTableRow
