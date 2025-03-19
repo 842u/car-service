@@ -1,5 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
+import { useToasts } from '@/hooks/useToasts';
 import {
   getCarOwnershipsByCarId,
   getCurrentSessionProfile,
@@ -13,12 +15,14 @@ type CarOwnershipTableProps = {
 };
 
 export function CarOwnershipTable({ carId }: CarOwnershipTableProps) {
-  const { data: carOwnershipData } = useQuery({
+  const { addToast } = useToasts();
+
+  const { data: carOwnershipData, error: carOwnershipError } = useQuery({
     queryKey: ['ownership', carId],
     queryFn: () => getCarOwnershipsByCarId(carId),
   });
 
-  const { data: sessionProfileData } = useQuery({
+  const { data: sessionProfileData, error: sessionProfileError } = useQuery({
     queryKey: ['profile', 'session'],
     queryFn: getCurrentSessionProfile,
   });
@@ -38,6 +42,11 @@ export function CarOwnershipTable({ carId }: CarOwnershipTableProps) {
           })
       : [],
   });
+
+  useEffect(() => {
+    carOwnershipError && addToast(carOwnershipError.message, 'error');
+    sessionProfileError && addToast(sessionProfileError.message, 'error');
+  }, [addToast, carOwnershipError, sessionProfileError]);
 
   return (
     <table className="w-full border-collapse">
@@ -59,16 +68,16 @@ export function CarOwnershipTable({ carId }: CarOwnershipTableProps) {
 
       <tbody>
         <CarOwnershipTableRow
-          ownershipsData={carOwnershipData}
-          sessionProfileData={sessionProfileData}
+          ownershipData={carOwnershipData}
+          profileData={sessionProfileData}
         />
         {ownersProfiles.map(
           (owner) =>
             owner.data && (
               <CarOwnershipTableRow
                 key={owner.data.id}
-                ownershipsData={carOwnershipData}
-                sessionProfileData={owner.data}
+                ownershipData={carOwnershipData}
+                profileData={owner.data}
               />
             ),
         )}
