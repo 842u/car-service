@@ -1,8 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
 
+import { CarOwnershipFormValues } from '@/components/ui/CarOwnershipForm/CarOwnershipForm';
 import {
   Car,
   CarFormValues,
+  CarOwnership,
   CarsInfiniteQueryData,
   Profile,
   ToastType,
@@ -144,4 +146,31 @@ export function onErrorProfileQueryMutation(
   addToast(error.message, 'error');
 
   queryClient.setQueryData(['profile'], context?.previousQueryData);
+}
+
+export async function onMutateCarOwnershipMutation(
+  carOwnershipFormData: CarOwnershipFormValues,
+  queryClient: QueryClient,
+  carId: string,
+) {
+  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+  const previousQueryData = queryClient.getQueryData(['ownership', carId]);
+
+  queryClient.setQueryData(
+    ['ownership', carId],
+    (currentQueryData: CarOwnership[]) => {
+      const filteredQuery = currentQueryData.filter(
+        (ownership) =>
+          !carOwnershipFormData.ownersIds.includes(ownership.owner_id),
+      );
+
+      const updatedQuery = filteredQuery.map((ownership) => ({
+        ...ownership,
+      }));
+
+      return updatedQuery;
+    },
+  );
+
+  return { previousQueryData };
 }
