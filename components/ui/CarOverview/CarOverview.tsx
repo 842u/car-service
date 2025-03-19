@@ -26,9 +26,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
       />
       <section className="my-5 overflow-x-auto">
         <h2>Car Ownership</h2>
-        <div className="border-alpha-grey-300 overflow-hidden rounded-lg border">
-          <CarOwnershipTable carId={carId} />
-        </div>
+        <CarOwnershipTable carId={carId} />
       </section>
     </section>
   );
