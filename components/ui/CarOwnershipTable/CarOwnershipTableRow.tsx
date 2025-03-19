@@ -1,25 +1,39 @@
+import { UseFormRegister } from 'react-hook-form';
+import { twJoin } from 'tailwind-merge';
+
 import { StarIcon } from '@/components/decorative/icons/StarIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
+import { CarOwnershipFormValues } from './CarOwnershipTable';
 
 type CarOwnershipTableRowProps = {
+  register: UseFormRegister<CarOwnershipFormValues>;
+  disabled?: boolean;
   profileData?: Profile | null;
   ownershipData?: CarOwnership[];
 };
 
 export function CarOwnershipTableRow({
+  register,
   profileData,
   ownershipData,
+  disabled = false,
 }: CarOwnershipTableRowProps) {
   return (
-    <tr className="whitespace-nowrap">
+    <tr className={twJoin('whitespace-nowrap', disabled && 'text-light-900')}>
       <td className="border-alpha-grey-200 relative w-10 border">
         <label
           className="absolute top-0 left-0 flex h-full w-full justify-center"
           htmlFor={profileData?.id}
         >
-          <input id={profileData?.id} type="checkbox" />
+          <input
+            disabled={disabled}
+            id={profileData?.id}
+            type="checkbox"
+            {...register('owner')}
+            value={profileData?.id}
+          />
           <span className="sr-only">Select user</span>
         </label>
       </td>

@@ -1,5 +1,6 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
 import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
@@ -12,6 +13,14 @@ import {
 
 import { Button } from '../Button/Button';
 import { CarOwnershipTableRow } from './CarOwnershipTableRow';
+
+export type CarOwnershipFormValues = {
+  owner: string[];
+};
+
+const defaultCarOwnershipFormValues: CarOwnershipFormValues = {
+  owner: [],
+};
 
 type CarOwnershipTableProps = {
   carId: string;
@@ -46,13 +55,38 @@ export function CarOwnershipTable({ carId }: CarOwnershipTableProps) {
       : [],
   });
 
+  const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
+    (ownership) =>
+      ownership.owner_id === sessionProfileData?.id &&
+      ownership.is_primary_owner,
+  );
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { isDirty, isSubmitSuccessful },
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: defaultCarOwnershipFormValues,
+  });
+
+  const handleFormSubmit = (data: CarOwnershipFormValues) => {
+    // eslint-disable-next-line
+    console.log(data);
+  };
+
   useEffect(() => {
     carOwnershipError && addToast(carOwnershipError.message, 'error');
     sessionProfileError && addToast(sessionProfileError.message, 'error');
   }, [addToast, carOwnershipError, sessionProfileError]);
 
+  useEffect(() => {
+    isSubmitSuccessful && reset();
+  }, [isSubmitSuccessful, reset]);
+
   return (
-    <>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <div className="border-alpha-grey-300 overflow-hidden rounded-lg border">
         <table className="w-full border-collapse">
           <thead className="bg-alpha-grey-100 border-alpha-grey-200">
@@ -75,14 +109,17 @@ export function CarOwnershipTable({ carId }: CarOwnershipTableProps) {
             <CarOwnershipTableRow
               ownershipData={carOwnershipData}
               profileData={sessionProfileData}
+              register={register}
             />
             {ownersProfiles.map(
               (owner) =>
                 owner.data && (
                   <CarOwnershipTableRow
                     key={owner.data.id}
+                    disabled={!isCurrentUserPrimaryOwner}
                     ownershipData={carOwnershipData}
                     profileData={owner.data}
+                    register={register}
                   />
                 ),
             )}
@@ -92,19 +129,22 @@ export function CarOwnershipTable({ carId }: CarOwnershipTableProps) {
       <div className="m-5 flex justify-end gap-5">
         <Button
           className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
+          disabled={!isDirty}
           title="Remove selected owners"
+          type="submit"
         >
           <UserMinusIcon className="stroke-light-500 mx-2 h-full w-full" />
           <span className="sr-only">Remove selected owners</span>
         </Button>
         <Button
           className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
+          disabled={!isCurrentUserPrimaryOwner}
           title="Add owner"
         >
           <UserPlusIcon className="stroke-light-500 mx-2 h-full w-full" />
           <span className="sr-only">Add owner</span>
         </Button>
       </div>
-    </>
+    </form>
   );
 }
