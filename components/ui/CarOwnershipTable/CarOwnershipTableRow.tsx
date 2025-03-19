@@ -1,3 +1,4 @@
+import { StarIcon } from '@/components/decorative/icons/StarIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
@@ -44,9 +45,9 @@ export function CarOwnershipTableRow({
             ownership.owner_id === profileData?.id &&
             ownership.is_primary_owner,
         ) ? (
-          <input checked readOnly type="checkbox" />
+          <StarIcon className="stroke-accent-400 m-auto w-5 stroke-2 md:w-6" />
         ) : (
-          <input readOnly checked={false} type="checkbox" />
+          <StarIcon className="stroke-alpha-grey-300 m-auto w-5 stroke-2 md:w-6" />
         )}
       </td>
     </tr>
