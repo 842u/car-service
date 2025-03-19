@@ -246,3 +246,21 @@ export async function getCarOwnershipsByCarId(carId: string) {
 
   return data;
 }
+
+export async function deleteCarOwnershipsByOwnersIds(
+  carId: string,
+  ownersIds: string[],
+) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars_ownerships')
+    .delete()
+    .eq('car_id', carId)
+    .in('owner_id', ownersIds)
+    .select();
+
+  if (error) throw new Error(error.message || "Can't delete car owner.");
+
+  return data;
+}
