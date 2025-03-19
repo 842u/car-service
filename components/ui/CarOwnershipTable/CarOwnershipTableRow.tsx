@@ -3,13 +3,13 @@ import { CarOwnership, Profile } from '@/types';
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 
 type CarOwnershipTableRowProps = {
-  sessionProfileData?: Profile | null;
-  ownershipsData?: CarOwnership[];
+  profileData?: Profile | null;
+  ownershipData?: CarOwnership[];
 };
 
 export function CarOwnershipTableRow({
-  sessionProfileData,
-  ownershipsData,
+  profileData,
+  ownershipData,
 }: CarOwnershipTableRowProps) {
   return (
     <tr className="whitespace-nowrap">
@@ -19,19 +19,19 @@ export function CarOwnershipTableRow({
       <td className="border-alpha-grey-200 hidden border p-2 text-center align-middle md:table-cell md:w-12">
         <AvatarImage
           className="aspect-square overflow-hidden rounded-full"
-          src={sessionProfileData?.avatar_url}
+          src={profileData?.avatar_url}
         />
       </td>
       <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border p-2 text-center align-middle md:table-cell">
-        {sessionProfileData?.username}
+        {profileData?.username}
       </td>
       <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border p-2 text-center align-middle">
-        {sessionProfileData?.id}
+        {profileData?.id}
       </td>
       <td className="border-alpha-grey-200 w-10 border p-2 text-center align-middle">
-        {ownershipsData?.find(
+        {ownershipData?.find(
           (ownership) =>
-            ownership.owner_id === sessionProfileData?.id &&
+            ownership.owner_id === profileData?.id &&
             ownership.is_primary_owner,
         ) ? (
           <input checked readOnly type="checkbox" />
