@@ -148,7 +148,7 @@ export function onErrorProfileQueryMutation(
   queryClient.setQueryData(['profile'], context?.previousQueryData);
 }
 
-export async function onMutateCarOwnershipMutation(
+export async function onMutateCarOwnershipDelete(
   carOwnershipFormData: CarOwnershipFormValues,
   queryClient: QueryClient,
   carId: string,

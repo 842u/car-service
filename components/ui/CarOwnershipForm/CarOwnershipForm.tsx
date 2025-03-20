@@ -16,7 +16,7 @@ import {
   getCurrentSessionProfile,
   getProfileById,
 } from '@/utils/supabase/general';
-import { onMutateCarOwnershipMutation } from '@/utils/tanstack/general';
+import { onMutateCarOwnershipDelete } from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
@@ -77,7 +77,7 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
     mutationFn: (carOwnershipFormData: CarOwnershipFormValues) =>
       deleteCarOwnershipsByOwnersIds(carId, carOwnershipFormData.ownersIds),
     onMutate: (carOwnershipFormData: CarOwnershipFormValues) =>
-      onMutateCarOwnershipMutation(carOwnershipFormData, queryClient, carId),
+      onMutateCarOwnershipDelete(carOwnershipFormData, queryClient, carId),
     onSuccess: () => {
       addToast('Successfully removed ownerships.', 'success');
     },
