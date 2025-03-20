@@ -174,3 +174,32 @@ export async function onMutateCarOwnershipDelete(
 
   return { previousQueryData };
 }
+
+export async function onMutateCarOwnershipPost(
+  queryClient: QueryClient,
+  carId: string,
+  newOwnerId: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+  const previousQueryData = queryClient.getQueryData(['ownership', carId]);
+
+  queryClient.setQueryData(
+    ['ownership', carId],
+    (currentQueryData: CarOwnership[]) => {
+      if (!newOwnerId) return currentQueryData;
+
+      const updatedQuery: CarOwnership[] = [
+        ...currentQueryData.map((ownership) => ({ ...ownership })),
+        {
+          car_id: carId,
+          is_primary_owner: false,
+          owner_id: newOwnerId,
+        },
+      ];
+
+      return updatedQuery;
+    },
+  );
+
+  return { previousQueryData, newOwnerId };
+}

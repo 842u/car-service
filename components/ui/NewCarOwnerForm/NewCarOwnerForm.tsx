@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { ZodError } from 'zod';
 
 import { useToasts } from '@/hooks/useToasts';
-import { CarOwnership } from '@/types';
 import { postCarOwnership } from '@/utils/supabase/general';
+import { onMutateCarOwnershipPost } from '@/utils/tanstack/general';
 import { validateUserId } from '@/utils/validation';
 
 import { Button } from '../Button/Button';
@@ -40,28 +40,12 @@ export function NewCarOwnerForm({ carId }: NewCarOwnerFormProps) {
   const { mutate } = useMutation({
     mutationFn: (newCarOwnerFormData: NewCarOwnerFormValues) =>
       postCarOwnership(carId, newCarOwnerFormData.newOwnerId),
-    onMutate: async (newCarOwnerFormData: NewCarOwnerFormValues) => {
-      await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
-      const previousQueryData = queryClient.getQueryData(['ownership', carId]);
-
-      queryClient.setQueryData(
-        ['ownership', carId],
-        (currentQueryData: CarOwnership[]) => {
-          const updatedQuery: CarOwnership[] = [
-            ...currentQueryData.map((ownership) => ({ ...ownership })),
-            {
-              car_id: carId,
-              is_primary_owner: false,
-              owner_id: newCarOwnerFormData.newOwnerId || '',
-            },
-          ];
-
-          return updatedQuery;
-        },
-      );
-
-      return { previousQueryData };
-    },
+    onMutate: (newCarOwnerFormData: NewCarOwnerFormValues) =>
+      onMutateCarOwnershipPost(
+        queryClient,
+        carId,
+        newCarOwnerFormData.newOwnerId,
+      ),
     onSuccess: () => addToast('Successfully added new owner.', 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
