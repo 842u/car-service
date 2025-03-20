@@ -7,6 +7,7 @@ import {
 import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { ChangeKeyIcon } from '@/components/decorative/icons/ChangeKeyIcon';
 import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
 import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 import { useToasts } from '@/hooks/useToasts';
@@ -127,6 +128,14 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
           sessionProfileData={sessionProfileData}
         />
         <div className="m-5 flex justify-end gap-5">
+          <Button
+            className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
+            disabled={!isCurrentUserPrimaryOwner}
+            title="Grant primary ownership"
+          >
+            <ChangeKeyIcon className="stroke-light-500 mx-2 h-full w-full stroke-7" />
+            <span className="sr-only">Grant primary ownership</span>
+          </Button>
           <Button
             className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
             disabled={!isDirty && !isSubmitting}
