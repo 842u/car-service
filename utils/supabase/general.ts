@@ -262,6 +262,11 @@ export async function deleteCarOwnershipsByOwnersIds(
 
   if (error) throw new Error(error.message || "Can't delete car owner.");
 
+  if (!data.length)
+    throw new Error(
+      'Something went wrong when deleting car ownership. Try Again.',
+    );
+
   return data;
 }
 
