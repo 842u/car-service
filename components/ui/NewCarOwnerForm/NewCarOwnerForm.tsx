@@ -52,15 +52,16 @@ export function NewCarOwnerForm({ carId }: NewCarOwnerFormProps) {
     onSuccess: () => addToast('Successfully added new owner.', 'success'),
     onError: (error, _, context) =>
       onErrorCarOwnershipPost(queryClient, error, context, carId, addToast),
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['ownership', carId] }),
   });
 
   return (
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10"
       onSubmit={handleSubmit((formData: NewCarOwnerFormValues) => {
-        mutate(formData);
+        mutate(formData, {
+          onSettled: () =>
+            queryClient.invalidateQueries({ queryKey: ['ownership', carId] }),
+        });
       })}
     >
       <h2>Add new car owner</h2>
