@@ -38,12 +38,8 @@ export function NewCarOwnerForm({ carId }: NewCarOwnerFormProps) {
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: (newCarOwnerFormData: NewCarOwnerFormValues) => {
-      if (!newCarOwnerFormData.newOwnerId)
-        throw new Error('Must provide new owner id.');
-
-      return postCarOwnership(carId, newCarOwnerFormData.newOwnerId);
-    },
+    mutationFn: (newCarOwnerFormData: NewCarOwnerFormValues) =>
+      postCarOwnership(carId, newCarOwnerFormData.newOwnerId),
     onMutate: async (newCarOwnerFormData: NewCarOwnerFormValues) => {
       await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
       const previousQueryData = queryClient.getQueryData(['ownership', carId]);

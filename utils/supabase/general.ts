@@ -265,7 +265,9 @@ export async function deleteCarOwnershipsByOwnersIds(
   return data;
 }
 
-export async function postCarOwnership(carId: string, ownerId: string) {
+export async function postCarOwnership(carId: string, ownerId: string | null) {
+  if (!ownerId) throw new Error('You must provide a new owner ID.');
+
   const supabase = createClient();
 
   const { data, error } = await supabase
