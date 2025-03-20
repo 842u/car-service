@@ -24,9 +24,10 @@ const defaultNewCarOwnerFormValues: NewCarOwnerFormValues = {
 
 type NewCarOwnerFormProps = {
   carId: string;
+  onSubmit?: () => void;
 };
 
-export function NewCarOwnerForm({ carId }: NewCarOwnerFormProps) {
+export function NewCarOwnerForm({ carId, onSubmit }: NewCarOwnerFormProps) {
   const { addToast } = useToasts();
 
   const {
@@ -58,6 +59,7 @@ export function NewCarOwnerForm({ carId }: NewCarOwnerFormProps) {
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10"
       onSubmit={handleSubmit((formData: NewCarOwnerFormValues) => {
+        onSubmit && onSubmit();
         mutate(formData, {
           onSettled: () =>
             queryClient.invalidateQueries({ queryKey: ['ownership', carId] }),

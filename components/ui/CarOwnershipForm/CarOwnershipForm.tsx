@@ -128,7 +128,7 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
         <div className="m-5 flex justify-end gap-5">
           <Button
             className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
-            disabled={!isDirty || !isSubmitting}
+            disabled={!isDirty && !isSubmitting}
             title="Remove selected owners"
             type="submit"
           >
@@ -147,7 +147,10 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
         </div>
       </form>
       <DialogModal ref={newCarOwnerModalRef}>
-        <NewCarOwnerForm carId={carId} />
+        <NewCarOwnerForm
+          carId={carId}
+          onSubmit={() => newCarOwnerModalRef.current?.closeModal()}
+        />
       </DialogModal>
     </>
   );
