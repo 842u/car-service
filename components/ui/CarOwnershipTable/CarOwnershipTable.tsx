@@ -28,6 +28,7 @@ export function CarOwnershipTable({
         <CarOwnershipTableHead />
         <tbody>
           <CarOwnershipTableRow
+            disabled={isCurrentUserPrimaryOwner}
             ownershipData={carOwnershipData}
             profileData={sessionProfileData}
             register={register}

@@ -37,6 +37,7 @@ type CarOwnershipFormProps = {
 
 export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
   const newCarOwnerModalRef = useRef<DialogModalRef>(null);
+  const confirmOwnershipRemovalModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
@@ -65,12 +66,6 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
           })
       : [],
   });
-
-  const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
-    (ownership) =>
-      ownership.owner_id === sessionProfileData?.id &&
-      ownership.is_primary_owner,
-  );
 
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation({
@@ -102,6 +97,12 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
     defaultValues: defaultCarOwnershipFormValues,
   });
 
+  const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
+    (ownership) =>
+      ownership.owner_id === sessionProfileData?.id &&
+      ownership.is_primary_owner,
+  );
+
   const handleFormSubmit = async (data: CarOwnershipFormValues) => {
     await mutateAsync(data);
   };
@@ -117,7 +118,7 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <form id="carOwnershipForm" onSubmit={handleSubmit(handleFormSubmit)}>
         <CarOwnershipTable
           carOwnershipData={carOwnershipData}
           isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
@@ -130,7 +131,7 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
             className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
             disabled={!isDirty && !isSubmitting}
             title="Remove selected owners"
-            type="submit"
+            onClick={() => confirmOwnershipRemovalModalRef.current?.showModal()}
           >
             <UserMinusIcon className="stroke-light-500 mx-2 h-full w-full" />
             <span className="sr-only">Remove selected owners</span>
@@ -146,6 +147,35 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
           </Button>
         </div>
       </form>
+      <DialogModal ref={confirmOwnershipRemovalModalRef}>
+        <div className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 max-w-md rounded-xl border-2 p-10">
+          <h2>Remove ownership</h2>
+          <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
+          <p>Are you sure you want to remove ownership from selected users?</p>
+          <div className="mt-5 flex justify-evenly">
+            <Button
+              disabled={!isDirty && !isSubmitting}
+              onClick={() => {
+                reset();
+                confirmOwnershipRemovalModalRef.current?.closeModal();
+              }}
+            >
+              Reset
+            </Button>
+            <Button
+              className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800"
+              disabled={!isDirty && !isSubmitting}
+              form="carOwnershipForm"
+              type="submit"
+              onClick={() =>
+                confirmOwnershipRemovalModalRef.current?.closeModal()
+              }
+            >
+              Save
+            </Button>
+          </div>
+        </div>
+      </DialogModal>
       <DialogModal ref={newCarOwnerModalRef}>
         <NewCarOwnerForm
           carId={carId}
