@@ -203,3 +203,33 @@ export async function onMutateCarOwnershipPost(
 
   return { previousQueryData, newOwnerId };
 }
+
+export function onErrorCarOwnershipPost(
+  queryClient: QueryClient,
+  error: Error,
+  context:
+    | {
+        previousQueryData: unknown;
+        newOwnerId: string | null;
+      }
+    | undefined,
+  carId: string,
+  addToast: (message: string, type: ToastType) => void,
+) {
+  addToast(error.message, 'error');
+
+  const previousQueryData: CarOwnership[] | undefined =
+    queryClient.getQueryData(['ownership', carId]);
+
+  if (previousQueryData) {
+    const updatedQueryData: CarOwnership[] = [
+      ...previousQueryData.map((ownership) => ({ ...ownership })),
+    ];
+
+    updatedQueryData.filter(
+      (ownership) => ownership.owner_id !== context?.newOwnerId,
+    );
+
+    queryClient.setQueryData(['ownership', carId], updatedQueryData);
+  }
+}

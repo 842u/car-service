@@ -4,7 +4,10 @@ import { ZodError } from 'zod';
 
 import { useToasts } from '@/hooks/useToasts';
 import { postCarOwnership } from '@/utils/supabase/general';
-import { onMutateCarOwnershipPost } from '@/utils/tanstack/general';
+import {
+  onErrorCarOwnershipPost,
+  onMutateCarOwnershipPost,
+} from '@/utils/tanstack/general';
 import { validateUserId } from '@/utils/validation';
 
 import { Button } from '../Button/Button';
@@ -47,13 +50,8 @@ export function NewCarOwnerForm({ carId }: NewCarOwnerFormProps) {
         newCarOwnerFormData.newOwnerId,
       ),
     onSuccess: () => addToast('Successfully added new owner.', 'success'),
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(
-        ['ownership', carId],
-        context?.previousQueryData,
-      );
-    },
+    onError: (error, _, context) =>
+      onErrorCarOwnershipPost(queryClient, error, context, carId, addToast),
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: ['ownership', carId] }),
   });
