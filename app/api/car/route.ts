@@ -40,24 +40,30 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { data, error } = await supabase
-    .from('cars')
-    .insert({
-      custom_name: formData.name || 'Your new car.',
-      brand: formData.brand,
-      additional_fuel_type: formData.additionalFuelType,
-      drive_type: formData.driveType,
-      engine_capacity: formData.engineCapacity,
-      fuel_type: formData.fuelType,
-      insurance_expiration: formData.insuranceExpiration,
-      license_plates: formData.licensePlates,
-      mileage: formData.mileage,
-      model: formData.model,
-      production_year: formData.productionYear,
-      transmission_type: formData.transmissionType,
-      vin: formData.vin,
-    })
-    .select('id');
+  /*
+   * While posting new car with image, its id is needed.
+   * Due to RLS policies on "cars" table for SELECT,
+   * usage of RPC is required to immediately return a new car id.
+   * User to be able to select a car, must have ownership of that specific car,
+   * and corresponding row in "cars_ownerships" table should exist.
+   * However rows in "cars_ownerships" are created AFTER INSERT on "cars" table,
+   * so RLS restricts immediate SELECT while using "supabase.from().insert().select()".
+   */
+  const { data, error } = await supabase.rpc('create_new_car', {
+    additional_fuel_type: formData.additionalFuelType || undefined,
+    custom_name: formData.name || 'New car',
+    brand: formData.brand || undefined,
+    drive_type: formData.driveType || undefined,
+    engine_capacity: formData.engineCapacity || undefined,
+    fuel_type: formData.fuelType || undefined,
+    insurance_expiration: formData.insuranceExpiration || undefined,
+    license_plates: formData.licensePlates || undefined,
+    mileage: formData.mileage || undefined,
+    model: formData.model || undefined,
+    production_year: formData.productionYear || undefined,
+    transmission_type: formData.transmissionType || undefined,
+    vin: formData.vin || undefined,
+  });
 
   if (error) {
     return NextResponse.json<RouteHandlerResponse>(
@@ -71,7 +77,7 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
     {
-      data: { id: data[0].id },
+      data: { id: data },
       error: null,
     },
     { status: 201 },
