@@ -240,7 +240,6 @@ export async function onMutateCarOwnershipPatch(
   newPrimaryOwnerId: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
-  const previousQueryData = queryClient.getQueryData(['ownership', carId]);
 
   queryClient.setQueryData(
     ['ownership', carId],
@@ -274,18 +273,13 @@ export async function onMutateCarOwnershipPatch(
     },
   );
 
-  return { previousQueryData, newPrimaryOwnerId };
+  return { newPrimaryOwnerId };
 }
 
 export function onErrorCarOwnershipPatch(
   queryClient: QueryClient,
   error: Error,
-  context:
-    | {
-        previousQueryData: unknown;
-        newPrimaryOwnerId: string | null;
-      }
-    | undefined,
+  context: { newPrimaryOwnerId: string | null } | undefined,
   carId: string,
   addToast: (message: string, type: ToastType) => void,
 ) {
