@@ -233,3 +233,46 @@ export function onErrorCarOwnershipPost(
     queryClient.setQueryData(['ownership', carId], updatedQueryData);
   }
 }
+
+export async function onMutateCarOwnershipPatch(
+  queryClient: QueryClient,
+  carId: string,
+  newPrimaryOwnerId: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+  const previousQueryData = queryClient.getQueryData(['ownership', carId]);
+
+  queryClient.setQueryData(
+    ['ownership', carId],
+    (currentQueryData: CarOwnership[]) => {
+      if (!newPrimaryOwnerId) return currentQueryData;
+
+      const updatedQuery: CarOwnership[] = [
+        ...currentQueryData.map((ownership) => {
+          if (ownership.is_primary_owner)
+            return { ...ownership, is_primary_owner: false };
+
+          if (ownership.owner_id === newPrimaryOwnerId)
+            return { ...ownership, is_primary_owner: true };
+
+          return { ...ownership };
+        }),
+      ];
+
+      const isNewPrimaryOwnerInOwners = updatedQuery.find(
+        (ownership) => ownership.owner_id === newPrimaryOwnerId,
+      );
+
+      if (!isNewPrimaryOwnerInOwners)
+        updatedQuery.push({
+          car_id: carId,
+          is_primary_owner: true,
+          owner_id: newPrimaryOwnerId,
+        });
+
+      return updatedQuery;
+    },
+  );
+
+  return { previousQueryData, newPrimaryOwnerId };
+}
