@@ -75,7 +75,7 @@ test.describe('route_access_flow - @authenticated', () => {
     }
   });
 
-  test('authenticated user can visit authenticated only dynamic routes - @mobile @tablet @desktop', async ({
+  test("authenticated user can't' visit a car page which he isn't an owner - @mobile @tablet @desktop", async ({
     authenticatedPage,
   }) => {
     const page = authenticatedPage.page;
@@ -86,7 +86,7 @@ test.describe('route_access_flow - @authenticated', () => {
 
       await page.goto(dynamicRoute);
 
-      await expect(page).toHaveURL(dynamicRoute);
+      await expect(page).toHaveURL('/dashboard/cars' satisfies Route);
     }
   });
 
