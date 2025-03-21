@@ -181,7 +181,6 @@ export async function onMutateCarOwnershipPost(
   newOwnerId: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
-  const previousQueryData = queryClient.getQueryData(['ownership', carId]);
 
   queryClient.setQueryData(
     ['ownership', carId],
@@ -201,29 +200,25 @@ export async function onMutateCarOwnershipPost(
     },
   );
 
-  return { previousQueryData, newOwnerId };
+  return { newOwnerId };
 }
 
 export function onErrorCarOwnershipPost(
   queryClient: QueryClient,
   error: Error,
-  context:
-    | {
-        previousQueryData: unknown;
-        newOwnerId: string | null;
-      }
-    | undefined,
+  context: { newOwnerId: string | null } | undefined,
   carId: string,
   addToast: (message: string, type: ToastType) => void,
 ) {
   addToast(error.message, 'error');
 
-  const previousQueryData: CarOwnership[] | undefined =
-    queryClient.getQueryData(['ownership', carId]);
+  const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
+    ['ownership', carId],
+  );
 
-  if (previousQueryData) {
+  if (currentQueryData) {
     const updatedQueryData: CarOwnership[] = [
-      ...previousQueryData.map((ownership) => ({ ...ownership })),
+      ...currentQueryData.map((ownership) => ({ ...ownership })),
     ];
 
     updatedQueryData.filter(
