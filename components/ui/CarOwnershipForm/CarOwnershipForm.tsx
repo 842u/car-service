@@ -22,6 +22,7 @@ import { onMutateCarOwnershipDelete } from '@/utils/tanstack/general';
 import { Button } from '../Button/Button';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
 import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
+import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
 import { NewCarOwnerForm } from '../NewCarOwnerForm/NewCarOwnerForm';
 
 export type CarOwnershipFormValues = {
@@ -39,6 +40,7 @@ type CarOwnershipFormProps = {
 export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
   const newCarOwnerModalRef = useRef<DialogModalRef>(null);
   const confirmOwnershipRemovalModalRef = useRef<DialogModalRef>(null);
+  const grantPrimaryOwnershipModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
@@ -132,6 +134,7 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
             className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
             disabled={!isCurrentUserPrimaryOwner}
             title="Grant primary ownership"
+            onClick={() => grantPrimaryOwnershipModalRef.current?.showModal()}
           >
             <ChangeKeyIcon className="stroke-light-500 mx-2 h-full w-full stroke-7" />
             <span className="sr-only">Grant primary ownership</span>
@@ -156,6 +159,12 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
           </Button>
         </div>
       </form>
+      <DialogModal ref={grantPrimaryOwnershipModalRef}>
+        <GrantCarPrimaryOwnershipForm
+          carId={carId}
+          onSubmit={() => () => newCarOwnerModalRef.current?.closeModal()}
+        />
+      </DialogModal>
       <DialogModal ref={confirmOwnershipRemovalModalRef}>
         <div className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 max-w-md rounded-xl border-2 p-10">
           <h2>Remove ownership</h2>
