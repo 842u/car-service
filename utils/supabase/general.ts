@@ -285,3 +285,22 @@ export async function postCarOwnership(carId: string, ownerId: string | null) {
 
   return data;
 }
+
+export async function patchCarPrimaryOwnership(
+  newPrimaryOwnerId: string | null,
+  carId: string,
+) {
+  if (!newPrimaryOwnerId)
+    throw new Error('You must provide a new primary owner ID.');
+
+  const supabase = createClient();
+
+  const { data, error } = await supabase.rpc('switch_primary_car_owner', {
+    new_primary_owner_id: newPrimaryOwnerId,
+    target_car_id: carId,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
