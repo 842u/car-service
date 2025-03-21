@@ -1,5 +1,4 @@
-import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Car } from '@/types';
+import { Car, CarFormValues } from '@/types';
 
 export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
 const DEFAULT_TIMEOUT = 9000;
@@ -67,9 +66,7 @@ export function mutateEmptyFieldsToNull(
   });
 }
 
-export function mapAddCarFormValuesToCarObject(
-  formData: AddCarFormValues,
-): Car {
+export function mapAddCarFormValuesToCarObject(formData: CarFormValues): Car {
   return {
     id: crypto.randomUUID(),
     image_url: formData.image && URL.createObjectURL(formData.image),

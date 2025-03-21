@@ -14,16 +14,13 @@ export function CarCard({ car }: CarCardProps) {
   const staticSegment = '/dashboard/cars' satisfies Route;
 
   return (
-    <Link href={`${staticSegment}/${car.id}`}>
-      <Card className="flex w-80 flex-col justify-between self-stretch">
-        <CarImage
-          className="relative aspect-square w-full"
-          src={car.image_url}
-        />
+    <Link className="w-80" href={`${staticSegment}/${car.id}`}>
+      <Card className="flex h-full flex-col justify-between p-5">
+        <CarImage className="overflow-hidden rounded-lg" src={car.image_url} />
+        <p className="my-4 text-3xl font-semibold break-words">
+          {car.custom_name}
+        </p>
         <div>
-          <p className="my-4 text-3xl font-semibold break-words">
-            {car.custom_name}
-          </p>
           <p className="my-2 whitespace-pre-wrap">
             <span>Brand: </span>
             <span className="text-accent-400">{car.brand || ''}</span>

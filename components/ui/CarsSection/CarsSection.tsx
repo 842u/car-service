@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
@@ -8,9 +8,11 @@ import { CarCard } from '../CarCard/CarCard';
 import { Spinner } from '../Spinner/Spinner';
 
 export function CarsSection() {
-  const { addToast } = useToasts();
   const intersectionTargetRef = useRef<HTMLDivElement>(null);
 
+  const { addToast } = useToasts();
+
+  const queryClient = useQueryClient();
   const {
     data,
     error,
@@ -23,7 +25,13 @@ export function CarsSection() {
     fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ['cars'],
-    queryFn: getCarsPage,
+    queryFn: async ({ pageParam }) => {
+      const { data, nextPageParam } = await getCarsPage({ pageParam });
+
+      data.map((car) => queryClient.setQueryData(['car', car.id], car));
+
+      return { data, nextPageParam };
+    },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });

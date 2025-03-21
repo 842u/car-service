@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import {
+  CarFormValues,
   driveTypesMapping,
   fuelTypesMapping,
   transmissionTypesMapping,
@@ -24,12 +25,11 @@ import { CarImage } from '../CarImage/CarImage';
 import { Input } from '../Input/Input';
 import { InputImage } from '../InputImage/InputImage';
 import { Select } from '../Select/Select';
-import { AddCarFormValues } from './AddCarForm';
 
 type AddCarFormFieldsProps = {
-  register: UseFormRegister<AddCarFormValues>;
-  control: Control<AddCarFormValues>;
-  errors: FieldErrors<AddCarFormValues>;
+  register: UseFormRegister<CarFormValues>;
+  control: Control<CarFormValues>;
+  errors: FieldErrors<CarFormValues>;
   inputImageUrl: string | null;
   onInputImageChange: (file: File | undefined | null) => void;
 };

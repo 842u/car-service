@@ -2,8 +2,7 @@ import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
-import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Profile, RouteHandlerResponse } from '@/types';
+import { CarFormValues, Profile, RouteHandlerResponse } from '@/types';
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
@@ -69,7 +68,7 @@ export async function signInWithOAuthHandler(provider: Provider) {
   return response;
 }
 
-export async function postNewCar(formData: AddCarFormValues) {
+export async function postNewCar(formData: CarFormValues) {
   const supabase = createClient();
 
   const { image, ...data } = formData;
@@ -118,7 +117,7 @@ export async function postNewCar(formData: AddCarFormValues) {
   return responseData;
 }
 
-export async function getProfile() {
+export async function getCurrentSessionProfile() {
   const supabase = createClient();
 
   const {
@@ -136,6 +135,20 @@ export async function getProfile() {
     throw new Error(profileError.message || "Can't get user profile.");
 
   return profileData[0];
+}
+
+export async function getProfileById(id: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) throw new Error(error.message || "Can't get user profile.");
+
+  return data;
 }
 
 type PatchProfileParameters =
@@ -219,4 +232,75 @@ export async function getCarById(id: string) {
   if (!data[0]) throw new Error("Can't get car.");
 
   return data[0];
+}
+
+export async function getCarOwnershipsByCarId(carId: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars_ownerships')
+    .select()
+    .eq('car_id', carId);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function deleteCarOwnershipsByOwnersIds(
+  carId: string,
+  ownersIds: string[],
+) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars_ownerships')
+    .delete()
+    .eq('car_id', carId)
+    .in('owner_id', ownersIds)
+    .select();
+
+  if (error) throw new Error(error.message || "Can't delete car owner.");
+
+  if (!data.length)
+    throw new Error(
+      'Something went wrong when deleting car ownership. Try Again.',
+    );
+
+  return data;
+}
+
+export async function postCarOwnership(carId: string, ownerId: string | null) {
+  if (!ownerId) throw new Error('You must provide a new owner ID.');
+
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('cars_ownerships')
+    .insert({ car_id: carId, owner_id: ownerId, is_primary_owner: false })
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message || "Can't add new car owner.");
+
+  return data;
+}
+
+export async function patchCarPrimaryOwnership(
+  newPrimaryOwnerId: string | null,
+  carId: string,
+) {
+  if (!newPrimaryOwnerId)
+    throw new Error('You must provide a new primary owner ID.');
+
+  const supabase = createClient();
+
+  const { data, error } = await supabase.rpc('switch_primary_car_owner', {
+    new_primary_owner_id: newPrimaryOwnerId,
+    target_car_id: carId,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
 }

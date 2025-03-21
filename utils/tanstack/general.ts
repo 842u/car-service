@@ -1,7 +1,14 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { AddCarFormValues } from '@/components/ui/AddCarForm/AddCarForm';
-import { Car, CarsInfiniteQueryData, Profile, ToastType } from '@/types';
+import { CarOwnershipFormValues } from '@/components/ui/CarOwnershipForm/CarOwnershipForm';
+import {
+  Car,
+  CarFormValues,
+  CarOwnership,
+  CarsInfiniteQueryData,
+  Profile,
+  ToastType,
+} from '@/types';
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
@@ -55,7 +62,7 @@ function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
 }
 
 export async function onMutateCarsInfiniteQueryMutation(
-  addCarFormData: AddCarFormValues,
+  addCarFormData: CarFormValues,
   queryClient: QueryClient,
   optimisticCarImageUrl: string | null,
 ) {
@@ -139,4 +146,154 @@ export function onErrorProfileQueryMutation(
   addToast(error.message, 'error');
 
   queryClient.setQueryData(['profile'], context?.previousQueryData);
+}
+
+export async function onMutateCarOwnershipDelete(
+  carOwnershipFormData: CarOwnershipFormValues,
+  queryClient: QueryClient,
+  carId: string,
+) {
+  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+  const previousQueryData = queryClient.getQueryData(['ownership', carId]);
+
+  queryClient.setQueryData(
+    ['ownership', carId],
+    (currentQueryData: CarOwnership[]) => {
+      const filteredQuery = currentQueryData.filter(
+        (ownership) =>
+          !carOwnershipFormData.ownersIds.includes(ownership.owner_id),
+      );
+
+      const updatedQuery = filteredQuery.map((ownership) => ({
+        ...ownership,
+      }));
+
+      return updatedQuery;
+    },
+  );
+
+  return { previousQueryData };
+}
+
+export async function onMutateCarOwnershipPost(
+  queryClient: QueryClient,
+  carId: string,
+  newOwnerId: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+
+  queryClient.setQueryData(
+    ['ownership', carId],
+    (currentQueryData: CarOwnership[]) => {
+      if (!newOwnerId) return currentQueryData;
+
+      const updatedQuery: CarOwnership[] = [
+        ...currentQueryData.map((ownership) => ({ ...ownership })),
+        {
+          car_id: carId,
+          is_primary_owner: false,
+          owner_id: newOwnerId,
+        },
+      ];
+
+      return updatedQuery;
+    },
+  );
+
+  return { newOwnerId };
+}
+
+export function onErrorCarOwnershipPost(
+  queryClient: QueryClient,
+  error: Error,
+  context: { newOwnerId: string | null } | undefined,
+  carId: string,
+  addToast: (message: string, type: ToastType) => void,
+) {
+  addToast(error.message, 'error');
+
+  const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
+    ['ownership', carId],
+  );
+
+  if (currentQueryData) {
+    const updatedQueryData: CarOwnership[] = [
+      ...currentQueryData.map((ownership) => ({ ...ownership })),
+    ];
+
+    updatedQueryData.filter(
+      (ownership) => ownership.owner_id !== context?.newOwnerId,
+    );
+
+    queryClient.setQueryData(['ownership', carId], updatedQueryData);
+  }
+}
+
+export async function onMutateCarOwnershipPatch(
+  queryClient: QueryClient,
+  carId: string,
+  newPrimaryOwnerId: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+
+  queryClient.setQueryData(
+    ['ownership', carId],
+    (currentQueryData: CarOwnership[]) => {
+      if (!newPrimaryOwnerId) return currentQueryData;
+
+      const updatedQuery: CarOwnership[] = [
+        ...currentQueryData.map((ownership) => {
+          if (ownership.is_primary_owner)
+            return { ...ownership, is_primary_owner: false };
+
+          if (ownership.owner_id === newPrimaryOwnerId)
+            return { ...ownership, is_primary_owner: true };
+
+          return { ...ownership };
+        }),
+      ];
+
+      const isNewPrimaryOwnerInOwners = updatedQuery.find(
+        (ownership) => ownership.owner_id === newPrimaryOwnerId,
+      );
+
+      if (!isNewPrimaryOwnerInOwners)
+        updatedQuery.push({
+          car_id: carId,
+          is_primary_owner: true,
+          owner_id: newPrimaryOwnerId,
+        });
+
+      return updatedQuery;
+    },
+  );
+
+  return { newPrimaryOwnerId };
+}
+
+export function onErrorCarOwnershipPatch(
+  queryClient: QueryClient,
+  error: Error,
+  context: { newPrimaryOwnerId: string | null } | undefined,
+  carId: string,
+  addToast: (message: string, type: ToastType) => void,
+) {
+  addToast(error.message, 'error');
+
+  const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
+    ['ownership', carId],
+  );
+
+  if (currentQueryData) {
+    const updatedQueryData: CarOwnership[] = [
+      ...currentQueryData.map((ownership) => {
+        if (ownership.owner_id === context?.newPrimaryOwnerId) {
+          return { ...ownership, is_primary_owner: false };
+        }
+        return { ...ownership };
+      }),
+    ];
+
+    queryClient.setQueryData(['ownership', carId], updatedQueryData);
+  }
 }

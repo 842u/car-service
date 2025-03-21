@@ -12,7 +12,7 @@ export function CarImage({ src, className }: CarImageProps) {
   return (
     <div
       className={twMerge(
-        'flex h-full w-full items-center justify-center p-20 md:p-10',
+        'relative flex aspect-square w-full items-center justify-center',
         className,
       )}
     >
