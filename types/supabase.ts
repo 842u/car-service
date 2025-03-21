@@ -160,6 +160,13 @@ export type Database = {
         };
         Returns: undefined;
       };
+      switch_primary_car_owner: {
+        Args: {
+          new_primary_owner_id: string;
+          target_car_id: string;
+        };
+        Returns: string;
+      };
     };
     Enums: {
       drive: 'FWD' | 'RWD' | '4WD' | 'AWD';
