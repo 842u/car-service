@@ -276,3 +276,35 @@ export async function onMutateCarOwnershipPatch(
 
   return { previousQueryData, newPrimaryOwnerId };
 }
+
+export function onErrorCarOwnershipPatch(
+  queryClient: QueryClient,
+  error: Error,
+  context:
+    | {
+        previousQueryData: unknown;
+        newPrimaryOwnerId: string | null;
+      }
+    | undefined,
+  carId: string,
+  addToast: (message: string, type: ToastType) => void,
+) {
+  addToast(error.message, 'error');
+
+  const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
+    ['ownership', carId],
+  );
+
+  if (currentQueryData) {
+    const updatedQueryData: CarOwnership[] = [
+      ...currentQueryData.map((ownership) => {
+        if (ownership.owner_id === context?.newPrimaryOwnerId) {
+          return { ...ownership, is_primary_owner: false };
+        }
+        return { ...ownership };
+      }),
+    ];
+
+    queryClient.setQueryData(['ownership', carId], updatedQueryData);
+  }
+}
