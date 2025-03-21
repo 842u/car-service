@@ -162,7 +162,10 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
       <DialogModal ref={grantPrimaryOwnershipModalRef}>
         <GrantCarPrimaryOwnershipForm
           carId={carId}
-          onSubmit={() => () => newCarOwnerModalRef.current?.closeModal()}
+          onSubmit={() => {
+            reset();
+            grantPrimaryOwnershipModalRef.current?.closeModal();
+          }}
         />
       </DialogModal>
       <DialogModal ref={confirmOwnershipRemovalModalRef}>
@@ -197,7 +200,10 @@ export function CarOwnershipForm({ carId }: CarOwnershipFormProps) {
       <DialogModal ref={newCarOwnerModalRef}>
         <NewCarOwnerForm
           carId={carId}
-          onSubmit={() => newCarOwnerModalRef.current?.closeModal()}
+          onSubmit={() => {
+            reset();
+            newCarOwnerModalRef.current?.closeModal();
+          }}
         />
       </DialogModal>
     </>
