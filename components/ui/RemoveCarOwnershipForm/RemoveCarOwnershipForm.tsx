@@ -3,14 +3,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Route } from 'next';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Ref, useEffect, useImperativeHandle } from 'react';
+import { useFormContext, UseFormReset } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
 import { deleteCarOwnershipsByOwnersIds } from '@/utils/supabase/general';
 import { onMutateCarOwnershipDelete } from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
+
+export type RemoveCarOwnershipFormRef = {
+  reset: UseFormReset<RemoveCarOwnershipFormValues>;
+};
 
 export type RemoveCarOwnershipFormValues = {
   ownersIds: string[];
@@ -19,6 +23,7 @@ export type RemoveCarOwnershipFormValues = {
 type RemoveCarOwnershipFormProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
+  ref: Ref<RemoveCarOwnershipFormRef>;
   onReset?: () => void;
   onSubmit?: () => void;
 };
@@ -26,6 +31,7 @@ type RemoveCarOwnershipFormProps = {
 export function RemoveCarOwnershipForm({
   carId,
   isCurrentUserPrimaryOwner,
+  ref,
   onReset,
   onSubmit,
 }: RemoveCarOwnershipFormProps) {
@@ -65,6 +71,14 @@ export function RemoveCarOwnershipForm({
     !isCurrentUserPrimaryOwner &&
       router.replace('/dashboard/cars' satisfies Route);
   };
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      reset,
+    }),
+    [reset],
+  );
 
   useEffect(() => {
     isSubmitSuccessful && reset();

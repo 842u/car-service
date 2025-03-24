@@ -11,6 +11,7 @@ import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
 import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
 import {
   RemoveCarOwnershipForm,
+  RemoveCarOwnershipFormRef,
   RemoveCarOwnershipFormValues,
 } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
@@ -25,6 +26,7 @@ export function CarOwnershipControls({
   removeCarOwnershipFormMethods,
   isCurrentUserPrimaryOwner,
 }: CarOwnershipControlsProps) {
+  const removeCarOwnershipFormRef = useRef<RemoveCarOwnershipFormRef>(null);
   const newCarOwnerFormModalRef = useRef<DialogModalRef>(null);
   const removeCarOwnershipFormModalRef = useRef<DialogModalRef>(null);
   const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
@@ -34,9 +36,10 @@ export function CarOwnershipControls({
       <DialogModal ref={grantPrimaryOwnershipFormModalRef}>
         <GrantCarPrimaryOwnershipForm
           carId={carId}
-          onSubmit={() =>
-            grantPrimaryOwnershipFormModalRef.current?.closeModal()
-          }
+          onSubmit={() => {
+            removeCarOwnershipFormRef.current?.reset();
+            grantPrimaryOwnershipFormModalRef.current?.closeModal();
+          }}
         />
       </DialogModal>
       <DialogModal ref={removeCarOwnershipFormModalRef}>
@@ -44,6 +47,7 @@ export function CarOwnershipControls({
           {...removeCarOwnershipFormMethods}
         >
           <RemoveCarOwnershipForm
+            ref={removeCarOwnershipFormRef}
             carId={carId}
             isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
             onReset={() => removeCarOwnershipFormModalRef.current?.closeModal()}
