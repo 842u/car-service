@@ -29,6 +29,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
+    throwOnError: false,
     mutationFn: (usernameFormData: UsernameFormValues) =>
       patchProfile({
         property: 'username',
@@ -70,7 +71,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
   }, [reset, data?.username]);
 
   useEffect(() => {
-    reset();
+    isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
   return (

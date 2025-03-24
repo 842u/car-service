@@ -41,6 +41,7 @@ export function RemoveCarOwnershipForm({
 
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation({
+    throwOnError: false,
     mutationFn: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
       deleteCarOwnershipsByOwnersIds(carId, carOwnershipFormData.ownersIds),
     onMutate: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
@@ -72,13 +73,7 @@ export function RemoveCarOwnershipForm({
       router.replace('/dashboard/cars' satisfies Route);
   };
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      reset,
-    }),
-    [reset],
-  );
+  useImperativeHandle(ref, () => ({ reset }), [reset]);
 
   useEffect(() => {
     isSubmitSuccessful && reset();

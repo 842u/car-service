@@ -45,6 +45,7 @@ export function AddCarOwnershipForm({
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
+    throwOnError: false,
     mutationFn: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
       postCarOwnership(carId, addCarOwnershipFormData.newOwnerId),
     onMutate: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>

@@ -54,6 +54,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
+    throwOnError: false,
     mutationFn: (addCarFormData: CarFormValues) => postNewCar(addCarFormData),
     onMutate: (addCarFormData) =>
       onMutateCarsInfiniteQueryMutation(
@@ -81,7 +82,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   };
 
   useEffect(() => {
-    reset();
+    isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
   return (
