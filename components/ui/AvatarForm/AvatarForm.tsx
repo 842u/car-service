@@ -52,7 +52,17 @@ export function AvatarForm({ data }: AvatarFormProps) {
         value: avatarFormData.avatarFile,
       }),
     onMutate: () =>
-      onMutateProfileQueryMutation(queryClient, 'avatar_url', inputImageUrl),
+      onMutateProfileQueryMutation(
+        queryClient,
+        'session',
+        'avatar_url',
+        inputImageUrl,
+      ),
+    onSuccess: () => {
+      addToast('Avatar uploaded successfully.', 'success');
+    },
+    onError: (error, _, context) =>
+      onErrorProfileQueryMutation(queryClient, error, context, addToast),
   });
 
   const {
@@ -67,13 +77,8 @@ export function AvatarForm({ data }: AvatarFormProps) {
 
   const submitForm = async (avatarFormData: AvatarFormValues) => {
     await mutateAsync(avatarFormData, {
-      onSuccess: () => {
-        addToast('Avatar uploaded successfully.', 'success');
-      },
-      onError: (error, _, context) =>
-        onErrorProfileQueryMutation(queryClient, error, context, addToast),
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ['profile'] });
+        queryClient.invalidateQueries({ queryKey: ['profile', 'session'] });
       },
     });
   };
