@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { CarOwnershipFormValues } from '@/components/ui/CarOwnershipForm/CarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '@/components/ui/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import {
   Car,
   CarFormValues,
@@ -149,7 +149,7 @@ export function onErrorProfileQueryMutation(
 }
 
 export async function onMutateCarOwnershipDelete(
-  carOwnershipFormData: CarOwnershipFormValues,
+  carOwnershipFormData: RemoveCarOwnershipFormValues,
   queryClient: QueryClient,
   carId: string,
 ) {

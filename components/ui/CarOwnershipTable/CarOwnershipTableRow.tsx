@@ -5,10 +5,10 @@ import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
-import { CarOwnershipFormValues } from '../CarOwnershipForm/CarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
 type CarOwnershipTableRowProps = {
-  register: UseFormRegister<CarOwnershipFormValues>;
+  register?: UseFormRegister<RemoveCarOwnershipFormValues>;
   disabled?: boolean;
   profileData?: Profile | null;
   ownershipData?: CarOwnership[];
@@ -31,7 +31,7 @@ export function CarOwnershipTableRow({
             disabled={disabled}
             id={profileData?.id}
             type="checkbox"
-            {...register('ownersIds')}
+            {...(register ? register('ownersIds') : {})}
             value={profileData?.id}
           />
           <span className="sr-only">Select user</span>
