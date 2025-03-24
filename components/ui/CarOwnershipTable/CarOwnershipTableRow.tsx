@@ -28,6 +28,7 @@ export function CarOwnershipTableRow({
           htmlFor={profileData?.id}
         >
           <input
+            className="accent-accent-500"
             disabled={disabled}
             id={profileData?.id}
             type="checkbox"
