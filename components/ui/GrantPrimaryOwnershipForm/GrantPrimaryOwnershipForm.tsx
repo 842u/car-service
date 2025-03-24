@@ -46,6 +46,7 @@ export function GrantCarPrimaryOwnershipForm({
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
+    throwOnError: false,
     mutationFn: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
       patchCarPrimaryOwnership(newCarOwnerFormData.newOwnerId, carId),
     onMutate: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
