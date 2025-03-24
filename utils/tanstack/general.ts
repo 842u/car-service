@@ -73,13 +73,16 @@ export async function onMutateCarsInfiniteQueryMutation(
   newCar.image_url && URL.revokeObjectURL(newCar.image_url);
   newCar.image_url = optimisticCarImageUrl;
 
-  queryClient.setQueryData(['cars'], (data: CarsInfiniteQueryData) => {
-    const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
+  queryClient.setQueryData(
+    ['cars', 'infinite'],
+    (data: CarsInfiniteQueryData) => {
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
 
-    addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
+      addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
 
-    return updatedQueryData;
-  });
+      return updatedQueryData;
+    },
+  );
 
   return { previousCars: previousCarsQuery, newCarId: newCar.id };
 }
@@ -100,7 +103,7 @@ export function onErrorCarsInfiniteQueryMutation(
   } else {
     addToast(error.message, 'error');
     const previousCarsQuery: CarsInfiniteQueryData | undefined =
-      queryClient.getQueryData(['cars']);
+      queryClient.getQueryData(['cars', 'infinite']);
 
     if (previousCarsQuery) {
       const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQuery);
@@ -111,7 +114,7 @@ export function onErrorCarsInfiniteQueryMutation(
         });
       });
 
-      queryClient.setQueryData(['cars'], updatedQueryData);
+      queryClient.setQueryData(['cars', 'infinite'], updatedQueryData);
     }
   }
 }
