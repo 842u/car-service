@@ -65,7 +65,9 @@ export function GrantCarPrimaryOwnershipForm({
       onSubmit && onSubmit();
       mutate(formData, {
         onSettled: () =>
-          queryClient.invalidateQueries({ queryKey: ['ownership', carId] }),
+          queryClient.invalidateQueries({
+            queryKey: ['cars_ownerships', carId],
+          }),
       });
     },
   );

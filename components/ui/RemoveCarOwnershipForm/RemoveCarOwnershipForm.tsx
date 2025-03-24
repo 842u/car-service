@@ -52,12 +52,12 @@ export function RemoveCarOwnershipForm({
     onError: (error, _, context) => {
       addToast(error.message, 'error');
       queryClient.setQueryData(
-        ['ownership', carId],
+        ['cars_ownerships', carId],
         context?.previousQueryData,
       );
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['ownership', carId] }),
+      queryClient.invalidateQueries({ queryKey: ['cars_ownerships', carId] }),
   });
 
   const {

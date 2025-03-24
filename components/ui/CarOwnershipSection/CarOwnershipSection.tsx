@@ -25,7 +25,7 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
   const { addToast } = useToasts();
 
   const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
-    queryKey: ['ownership', carId],
+    queryKey: ['cars_ownerships', carId],
     queryFn: () => getCarOwnershipsByCarId(carId),
   });
 

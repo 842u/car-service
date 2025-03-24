@@ -164,11 +164,14 @@ export async function onMutateCarOwnershipDelete(
   queryClient: QueryClient,
   carId: string,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
-  const previousQueryData = queryClient.getQueryData(['ownership', carId]);
+  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
+  const previousQueryData = queryClient.getQueryData([
+    'cars_ownerships',
+    carId,
+  ]);
 
   queryClient.setQueryData(
-    ['ownership', carId],
+    ['cars_ownerships', carId],
     (currentQueryData: CarOwnership[]) => {
       const filteredQuery = currentQueryData.filter(
         (ownership) =>
@@ -191,10 +194,10 @@ export async function onMutateCarOwnershipPost(
   carId: string,
   newOwnerId: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
 
   queryClient.setQueryData(
-    ['ownership', carId],
+    ['cars_ownerships', carId],
     (currentQueryData: CarOwnership[]) => {
       if (!newOwnerId) return currentQueryData;
 
@@ -224,7 +227,7 @@ export function onErrorCarOwnershipPost(
   addToast(error.message, 'error');
 
   const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
-    ['ownership', carId],
+    ['cars_ownerships', carId],
   );
 
   if (currentQueryData) {
@@ -236,7 +239,7 @@ export function onErrorCarOwnershipPost(
       (ownership) => ownership.owner_id !== context?.newOwnerId,
     );
 
-    queryClient.setQueryData(['ownership', carId], updatedQueryData);
+    queryClient.setQueryData(['cars_ownerships', carId], updatedQueryData);
   }
 }
 
@@ -245,10 +248,10 @@ export async function onMutateCarOwnershipPatch(
   carId: string,
   newPrimaryOwnerId: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['ownership', carId] });
+  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
 
   queryClient.setQueryData(
-    ['ownership', carId],
+    ['cars_ownerships', carId],
     (currentQueryData: CarOwnership[]) => {
       if (!newPrimaryOwnerId) return currentQueryData;
 
@@ -292,7 +295,7 @@ export function onErrorCarOwnershipPatch(
   addToast(error.message, 'error');
 
   const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
-    ['ownership', carId],
+    ['cars_ownerships', carId],
   );
 
   if (currentQueryData) {
@@ -305,6 +308,6 @@ export function onErrorCarOwnershipPatch(
       }),
     ];
 
-    queryClient.setQueryData(['ownership', carId], updatedQueryData);
+    queryClient.setQueryData(['cars_ownerships', carId], updatedQueryData);
   }
 }
