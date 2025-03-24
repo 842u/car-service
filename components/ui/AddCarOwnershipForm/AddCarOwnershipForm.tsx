@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ZodError } from 'zod';
 
 import { useToasts } from '@/hooks/useToasts';
 import { postCarOwnership } from '@/utils/supabase/general';
@@ -85,15 +84,7 @@ export function AddCarOwnershipForm({
         name="newOwnerId"
         register={register}
         registerOptions={{
-          validate: (data) => {
-            try {
-              validateUserId(data);
-              return true;
-            } catch (error) {
-              if (error instanceof ZodError) return error.issues[0].message;
-              if (error instanceof Error) return error.message;
-            }
-          },
+          validate: (data) => validateUserId(data),
         }}
         type="text"
       />
