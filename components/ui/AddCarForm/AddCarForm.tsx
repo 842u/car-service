@@ -72,7 +72,8 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const submitHandler = async (formData: CarFormValues) => {
     onSubmit && onSubmit();
     mutate(formData, {
-      onSettled: () => queryClient.invalidateQueries({ queryKey: ['cars'] }),
+      onSettled: () =>
+        queryClient.invalidateQueries({ queryKey: ['cars', 'infinite'] }),
     });
   };
 

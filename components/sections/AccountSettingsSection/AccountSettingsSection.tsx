@@ -16,7 +16,7 @@ export function AccountSettingsSection() {
   const { addToast } = useToasts();
 
   const { data, error, isError } = useQuery({
-    queryKey: ['profile', 'session'],
+    queryKey: ['profiles', 'session'],
     queryFn: getCurrentSessionProfile,
   });
 

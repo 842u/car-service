@@ -38,6 +38,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
     onMutate: (usernameFormData: UsernameFormValues) =>
       onMutateProfileQueryMutation(
         queryClient,
+        'session',
         'username',
         usernameFormData.username.trim(),
       ),
@@ -61,8 +62,15 @@ export function UsernameForm({ data }: UsernameFormProps) {
         addToast('Username updated successfully.', 'success');
       },
       onError: (error, _, context) =>
-        onErrorProfileQueryMutation(queryClient, error, context, addToast),
-      onSettled: () => queryClient.invalidateQueries({ queryKey: ['profile'] }),
+        onErrorProfileQueryMutation(
+          queryClient,
+          'session',
+          error,
+          context,
+          addToast,
+        ),
+      onSettled: () =>
+        queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] }),
     });
   };
 
