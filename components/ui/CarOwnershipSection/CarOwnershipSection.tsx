@@ -1,10 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { ChangeKeyIcon } from '@/components/decorative/icons/ChangeKeyIcon';
-import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
-import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 import { useToasts } from '@/hooks/useToasts';
 import {
   getCarOwnershipsByCarId,
@@ -12,15 +9,9 @@ import {
   getProfileById,
 } from '@/utils/supabase/general';
 
-import { Button } from '../Button/Button';
+import { CarOwnershipControls } from '../CarOwnershipControls/CarOwnershipControls';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
-import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
-import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
-import { NewCarOwnerForm } from '../NewCarOwnerForm/NewCarOwnerForm';
-import {
-  RemoveCarOwnershipForm,
-  RemoveCarOwnershipFormValues,
-} from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
 type CarOwnershipSectionProps = {
   carId: string;
@@ -31,10 +22,6 @@ const defaultCarOwnershipFormValues: RemoveCarOwnershipFormValues = {
 };
 
 export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
-  const newCarOwnerFormModalRef = useRef<DialogModalRef>(null);
-  const removeCarOwnershipFormModalRef = useRef<DialogModalRef>(null);
-  const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
-
   const { addToast } = useToasts();
 
   const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
@@ -48,6 +35,11 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
       queryFn: getCurrentSessionProfile,
     },
   );
+
+  const removeCarOwnershipFormMethods = useForm({
+    mode: 'onChange',
+    defaultValues: defaultCarOwnershipFormValues,
+  });
 
   const allowDependentQueries =
     sessionProfileData && carOwnershipData && carOwnershipData.length;
@@ -63,11 +55,6 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
             };
           })
       : [],
-  });
-
-  const removeCarOwnershipForm = useForm({
-    mode: 'onChange',
-    defaultValues: defaultCarOwnershipFormValues,
   });
 
   const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
@@ -89,66 +76,14 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
         carOwnershipData={carOwnershipData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         ownersProfilesData={ownersProfiles}
-        register={removeCarOwnershipForm.register}
+        register={removeCarOwnershipFormMethods.register}
         sessionProfileData={sessionProfileData}
       />
-      <div className="m-5 flex justify-end gap-5">
-        <Button
-          className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
-          disabled={!isCurrentUserPrimaryOwner}
-          title="Grant primary ownership"
-          onClick={() => grantPrimaryOwnershipFormModalRef.current?.showModal()}
-        >
-          <ChangeKeyIcon className="stroke-light-500 mx-2 h-full w-full stroke-7" />
-          <span className="sr-only">Grant primary ownership</span>
-        </Button>
-        <Button
-          className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
-          disabled={
-            !removeCarOwnershipForm.formState.isDirty &&
-            !removeCarOwnershipForm.formState.isSubmitting
-          }
-          title="Remove selected owners"
-          onClick={() => removeCarOwnershipFormModalRef.current?.showModal()}
-        >
-          <UserMinusIcon className="stroke-light-500 mx-2 h-full w-full" />
-          <span className="sr-only">Remove selected owners</span>
-        </Button>
-        <Button
-          className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
-          disabled={!isCurrentUserPrimaryOwner}
-          title="Add owner"
-          onClick={() => newCarOwnerFormModalRef.current?.showModal()}
-        >
-          <UserPlusIcon className="stroke-light-500 mx-2 h-full w-full" />
-          <span className="sr-only">Add owner</span>
-        </Button>
-      </div>
-      <DialogModal ref={grantPrimaryOwnershipFormModalRef}>
-        <GrantCarPrimaryOwnershipForm
-          carId={carId}
-          onSubmit={() =>
-            grantPrimaryOwnershipFormModalRef.current?.closeModal()
-          }
-        />
-      </DialogModal>
-      <DialogModal ref={removeCarOwnershipFormModalRef}>
-        <FormProvider<RemoveCarOwnershipFormValues> {...removeCarOwnershipForm}>
-          <RemoveCarOwnershipForm
-            carId={carId}
-            onReset={() => removeCarOwnershipFormModalRef.current?.closeModal()}
-            onSubmit={() =>
-              removeCarOwnershipFormModalRef.current?.closeModal()
-            }
-          />
-        </FormProvider>
-      </DialogModal>
-      <DialogModal ref={newCarOwnerFormModalRef}>
-        <NewCarOwnerForm
-          carId={carId}
-          onSubmit={() => newCarOwnerFormModalRef.current?.closeModal()}
-        />
-      </DialogModal>
+      <CarOwnershipControls
+        carId={carId}
+        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+        removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
+      />
     </section>
   );
 }
