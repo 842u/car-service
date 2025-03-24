@@ -66,8 +66,8 @@ export async function onMutateCarsInfiniteQueryMutation(
   queryClient: QueryClient,
   optimisticCarImageUrl: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['cars'] });
-  const previousCarsQuery = queryClient.getQueryData(['cars']);
+  await queryClient.cancelQueries({ queryKey: ['cars', 'infinite'] });
+  const previousCarsQuery = queryClient.getQueryData(['cars', 'infinite']);
 
   const newCar = mapAddCarFormValuesToCarObject(addCarFormData);
   newCar.image_url && URL.revokeObjectURL(newCar.image_url);
