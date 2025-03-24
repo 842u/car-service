@@ -31,7 +31,7 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
 
   const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
     {
-      queryKey: ['profile', 'session'],
+      queryKey: ['profiles', 'session'],
       queryFn: getCurrentSessionProfile,
     },
   );
@@ -50,7 +50,7 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
           .filter((ownership) => ownership.owner_id !== sessionProfileData.id)
           .map((ownership) => {
             return {
-              queryKey: ['profile', ownership.owner_id],
+              queryKey: ['profiles', ownership.owner_id],
               queryFn: () => getProfileById(ownership.owner_id),
             };
           })

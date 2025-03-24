@@ -122,7 +122,7 @@ export async function onMutateProfileQueryMutation(
   property: Exclude<keyof Profile, 'id'>,
   value: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['profile', queryKeyId] });
+  await queryClient.cancelQueries({ queryKey: ['profiles', queryKeyId] });
   const previousQueryData = queryClient.getQueryData(['profile', queryKeyId]);
 
   queryClient.setQueryData(

@@ -18,7 +18,7 @@ export function UserBadge({ className }: UserBadgeProps) {
   const { addToast } = useToasts();
 
   const { data, error, isSuccess, isPending, isError } = useQuery({
-    queryKey: ['profile', 'session'],
+    queryKey: ['profiles', 'session'],
     queryFn: getCurrentSessionProfile,
   });
 

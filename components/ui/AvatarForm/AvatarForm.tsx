@@ -78,7 +78,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
   const submitForm = async (avatarFormData: AvatarFormValues) => {
     await mutateAsync(avatarFormData, {
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ['profile', 'session'] });
+        queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] });
       },
     });
   };

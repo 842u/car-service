@@ -64,7 +64,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
       onError: (error, _, context) =>
         onErrorProfileQueryMutation(queryClient, error, context, addToast),
       onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['profile', 'session'] }),
+        queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] }),
     });
   };
 
