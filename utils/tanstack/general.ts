@@ -118,17 +118,21 @@ export function onErrorCarsInfiniteQueryMutation(
 
 export async function onMutateProfileQueryMutation(
   queryClient: QueryClient,
+  queryKeyId: string,
   property: Exclude<keyof Profile, 'id'>,
   value: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['profile'] });
-  const previousQueryData = queryClient.getQueryData(['profile']);
+  await queryClient.cancelQueries({ queryKey: ['profile', queryKeyId] });
+  const previousQueryData = queryClient.getQueryData(['profile', queryKeyId]);
 
-  queryClient.setQueryData(['profile'], (currentQueryData: Profile) => {
-    const updatedQueryData = { ...currentQueryData, [property]: value };
+  queryClient.setQueryData(
+    ['profile', queryKeyId],
+    (currentQueryData: Profile) => {
+      const updatedQueryData = { ...currentQueryData, [property]: value };
 
-    return updatedQueryData;
-  });
+      return updatedQueryData;
+    },
+  );
 
   return { previousQueryData };
 }
