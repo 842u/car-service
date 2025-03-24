@@ -38,6 +38,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
     onMutate: (usernameFormData: UsernameFormValues) =>
       onMutateProfileQueryMutation(
         queryClient,
+        'session',
         'username',
         usernameFormData.username.trim(),
       ),
@@ -62,7 +63,8 @@ export function UsernameForm({ data }: UsernameFormProps) {
       },
       onError: (error, _, context) =>
         onErrorProfileQueryMutation(queryClient, error, context, addToast),
-      onSettled: () => queryClient.invalidateQueries({ queryKey: ['profile'] }),
+      onSettled: () =>
+        queryClient.invalidateQueries({ queryKey: ['profile', 'session'] }),
     });
   };
 
