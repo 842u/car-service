@@ -123,10 +123,10 @@ export async function onMutateProfileQueryMutation(
   value: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: ['profiles', queryKeyId] });
-  const previousQueryData = queryClient.getQueryData(['profile', queryKeyId]);
+  const previousQueryData = queryClient.getQueryData(['profiles', queryKeyId]);
 
   queryClient.setQueryData(
-    ['profile', queryKeyId],
+    ['profiles', queryKeyId],
     (currentQueryData: Profile) => {
       const updatedQueryData = { ...currentQueryData, [property]: value };
 
@@ -139,6 +139,7 @@ export async function onMutateProfileQueryMutation(
 
 export function onErrorProfileQueryMutation(
   queryClient: QueryClient,
+  queryKeyId: string,
   error: Error,
   context:
     | {
@@ -149,7 +150,10 @@ export function onErrorProfileQueryMutation(
 ) {
   addToast(error.message, 'error');
 
-  queryClient.setQueryData(['profile'], context?.previousQueryData);
+  queryClient.setQueryData(
+    ['profiles', queryKeyId],
+    context?.previousQueryData,
+  );
 }
 
 export async function onMutateCarOwnershipDelete(

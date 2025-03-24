@@ -62,7 +62,13 @@ export function UsernameForm({ data }: UsernameFormProps) {
         addToast('Username updated successfully.', 'success');
       },
       onError: (error, _, context) =>
-        onErrorProfileQueryMutation(queryClient, error, context, addToast),
+        onErrorProfileQueryMutation(
+          queryClient,
+          'session',
+          error,
+          context,
+          addToast,
+        ),
       onSettled: () =>
         queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] }),
     });

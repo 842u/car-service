@@ -62,7 +62,13 @@ export function AvatarForm({ data }: AvatarFormProps) {
       addToast('Avatar uploaded successfully.', 'success');
     },
     onError: (error, _, context) =>
-      onErrorProfileQueryMutation(queryClient, error, context, addToast),
+      onErrorProfileQueryMutation(
+        queryClient,
+        'session',
+        error,
+        context,
+        addToast,
+      ),
   });
 
   const {
