@@ -97,7 +97,7 @@ export function AddCarOwnershipForm({
         }}
         type="text"
       />
-      <div className="mt-5 flex justify-evenly">
+      <div className="mt-5 flex justify-end gap-5">
         <Button disabled={!isDirty} onClick={() => reset()}>
           Reset
         </Button>
