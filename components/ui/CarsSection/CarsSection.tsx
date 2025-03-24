@@ -28,7 +28,7 @@ export function CarsSection() {
     queryFn: async ({ pageParam }) => {
       const { data, nextPageParam } = await getCarsPage({ pageParam });
 
-      data.map((car) => queryClient.setQueryData(['car', car.id], car));
+      data.map((car) => queryClient.setQueryData(['cars', car.id], car));
 
       return { data, nextPageParam };
     },

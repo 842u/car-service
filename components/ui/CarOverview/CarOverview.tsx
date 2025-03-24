@@ -13,7 +13,7 @@ type CarOverviewProps = {
 
 export function CarOverview({ carId }: CarOverviewProps) {
   const { data: carData, isPending } = useQuery({
-    queryKey: ['car', carId],
+    queryKey: ['cars', carId],
     queryFn: () => getCarById(carId),
   });
 
