@@ -45,6 +45,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
 
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation({
+    throwOnError: false,
     mutationFn: (avatarFormData: AvatarFormValues) =>
       patchProfile({
         property: 'avatar_url',
@@ -83,7 +84,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
   };
 
   useEffect(() => {
-    reset();
+    isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
   return (
