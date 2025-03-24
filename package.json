@@ -39,7 +39,7 @@
     "@eslint/eslintrc": "3.3.0",
     "@eslint/js": "9.22.0",
     "@playwright/test": "1.51.0",
-    "@tailwindcss/postcss": "4.0.14",
+    "@tailwindcss/postcss": "4.0.15",
     "@tanstack/eslint-plugin-query": "5.68.0",
     "@tanstack/react-query-devtools": "5.69.0",
     "@testing-library/jest-dom": "6.6.3",
