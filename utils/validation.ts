@@ -419,5 +419,11 @@ export function validateAddCarFormData(data: AddCarFormValuesToValidate) {
 const userIdValidationSchema = z.string().uuid('Invalid ID format.');
 
 export function validateUserId(userId: string | null) {
-  userIdValidationSchema.parse(userId);
+  try {
+    userIdValidationSchema.parse(userId);
+    return true;
+  } catch (error) {
+    if (error instanceof ZodError) return error.issues[0].message;
+    if (error instanceof Error) return error.message;
+  }
 }
