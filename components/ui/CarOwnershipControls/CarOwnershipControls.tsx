@@ -5,10 +5,10 @@ import { ChangeKeyIcon } from '@/components/decorative/icons/ChangeKeyIcon';
 import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
 import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
+import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm';
 import { Button } from '../Button/Button';
 import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
 import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
-import { NewCarOwnerForm } from '../NewCarOwnerForm/NewCarOwnerForm';
 import {
   RemoveCarOwnershipForm,
   RemoveCarOwnershipFormValues,
@@ -53,7 +53,7 @@ export function CarOwnershipControls({
         </FormProvider>
       </DialogModal>
       <DialogModal ref={newCarOwnerFormModalRef}>
-        <NewCarOwnerForm
+        <AddCarOwnershipForm
           carId={carId}
           onSubmit={() => newCarOwnerFormModalRef.current?.closeModal()}
         />
