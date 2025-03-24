@@ -45,6 +45,7 @@ export function CarOwnershipControls({
         >
           <RemoveCarOwnershipForm
             carId={carId}
+            isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
             onReset={() => removeCarOwnershipFormModalRef.current?.closeModal()}
             onSubmit={() =>
               removeCarOwnershipFormModalRef.current?.closeModal()
