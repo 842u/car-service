@@ -31,21 +31,23 @@ const defaultCarOwnershipFormValues: RemoveCarOwnershipFormValues = {
 };
 
 export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
-  const newCarOwnerModalRef = useRef<DialogModalRef>(null);
+  const newCarOwnerFormModalRef = useRef<DialogModalRef>(null);
   const removeCarOwnershipFormModalRef = useRef<DialogModalRef>(null);
-  const grantPrimaryOwnershipModalRef = useRef<DialogModalRef>(null);
+  const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
-  const { data: carOwnershipData, error: carOwnershipError } = useQuery({
+  const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
     queryKey: ['ownership', carId],
     queryFn: () => getCarOwnershipsByCarId(carId),
   });
 
-  const { data: sessionProfileData, error: sessionProfileError } = useQuery({
-    queryKey: ['profile', 'session'],
-    queryFn: getCurrentSessionProfile,
-  });
+  const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
+    {
+      queryKey: ['profile', 'session'],
+      queryFn: getCurrentSessionProfile,
+    },
+  );
 
   const allowDependentQueries =
     sessionProfileData && carOwnershipData && carOwnershipData.length;
@@ -75,9 +77,10 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
   );
 
   useEffect(() => {
-    carOwnershipError && addToast(carOwnershipError.message, 'error');
-    sessionProfileError && addToast(sessionProfileError.message, 'error');
-  }, [addToast, carOwnershipError, sessionProfileError]);
+    carOwnershipDataError && addToast(carOwnershipDataError.message, 'error');
+    sessionProfileDataError &&
+      addToast(sessionProfileDataError.message, 'error');
+  }, [addToast, carOwnershipDataError, sessionProfileDataError]);
 
   return (
     <section className="my-5 overflow-x-auto">
@@ -94,7 +97,7 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
           className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
           disabled={!isCurrentUserPrimaryOwner}
           title="Grant primary ownership"
-          onClick={() => grantPrimaryOwnershipModalRef.current?.showModal()}
+          onClick={() => grantPrimaryOwnershipFormModalRef.current?.showModal()}
         >
           <ChangeKeyIcon className="stroke-light-500 mx-2 h-full w-full stroke-7" />
           <span className="sr-only">Grant primary ownership</span>
@@ -115,16 +118,18 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
           className="border-accent-500 bg-accent-800 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 cursor-pointer p-1.5"
           disabled={!isCurrentUserPrimaryOwner}
           title="Add owner"
-          onClick={() => newCarOwnerModalRef.current?.showModal()}
+          onClick={() => newCarOwnerFormModalRef.current?.showModal()}
         >
           <UserPlusIcon className="stroke-light-500 mx-2 h-full w-full" />
           <span className="sr-only">Add owner</span>
         </Button>
       </div>
-      <DialogModal ref={grantPrimaryOwnershipModalRef}>
+      <DialogModal ref={grantPrimaryOwnershipFormModalRef}>
         <GrantCarPrimaryOwnershipForm
           carId={carId}
-          onSubmit={() => grantPrimaryOwnershipModalRef.current?.closeModal()}
+          onSubmit={() =>
+            grantPrimaryOwnershipFormModalRef.current?.closeModal()
+          }
         />
       </DialogModal>
       <DialogModal ref={removeCarOwnershipFormModalRef}>
@@ -138,10 +143,10 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
           />
         </FormProvider>
       </DialogModal>
-      <DialogModal ref={newCarOwnerModalRef}>
+      <DialogModal ref={newCarOwnerFormModalRef}>
         <NewCarOwnerForm
           carId={carId}
-          onSubmit={() => newCarOwnerModalRef.current?.closeModal()}
+          onSubmit={() => newCarOwnerFormModalRef.current?.closeModal()}
         />
       </DialogModal>
     </section>
