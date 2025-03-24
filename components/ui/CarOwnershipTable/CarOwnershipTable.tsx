@@ -3,13 +3,13 @@ import { UseFormRegister } from 'react-hook-form';
 
 import { CarOwnership, Profile } from '@/types';
 
-import { CarOwnershipFormValues } from '../CarOwnershipForm/CarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import { CarOwnershipTableHead } from './CarOwnershipTableHead';
 import { CarOwnershipTableRow } from './CarOwnershipTableRow';
 
 type CarOwnershipTableProps = {
   ownersProfilesData: UseQueryResult<Profile, Error>[];
-  register: UseFormRegister<CarOwnershipFormValues>;
+  register?: UseFormRegister<RemoveCarOwnershipFormValues>;
   isCurrentUserPrimaryOwner: boolean;
   sessionProfileData?: Profile | null;
   carOwnershipData?: CarOwnership[];

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ZodError } from 'zod';
 
 import { useToasts } from '@/hooks/useToasts';
 import { postCarOwnership } from '@/utils/supabase/general';
@@ -14,51 +14,58 @@ import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-type NewCarOwnerFormValues = {
+type AddCarOwnershipFormValues = {
   newOwnerId: string | null;
 };
 
-const defaultNewCarOwnerFormValues: NewCarOwnerFormValues = {
+const defaultAddCarOwnershipFormValues: AddCarOwnershipFormValues = {
   newOwnerId: null,
 };
 
-type NewCarOwnerFormProps = {
+type AddCarOwnershipFormProps = {
   carId: string;
   onSubmit?: () => void;
 };
 
-export function NewCarOwnerForm({ carId, onSubmit }: NewCarOwnerFormProps) {
+export function AddCarOwnershipForm({
+  carId,
+  onSubmit,
+}: AddCarOwnershipFormProps) {
   const { addToast } = useToasts();
 
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid, isDirty },
+    formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
   } = useForm({
     mode: 'onChange',
-    defaultValues: defaultNewCarOwnerFormValues,
+    defaultValues: defaultAddCarOwnershipFormValues,
   });
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: (newCarOwnerFormData: NewCarOwnerFormValues) =>
-      postCarOwnership(carId, newCarOwnerFormData.newOwnerId),
-    onMutate: (newCarOwnerFormData: NewCarOwnerFormValues) =>
+    mutationFn: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
+      postCarOwnership(carId, addCarOwnershipFormData.newOwnerId),
+    onMutate: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
       onMutateCarOwnershipPost(
         queryClient,
         carId,
-        newCarOwnerFormData.newOwnerId,
+        addCarOwnershipFormData.newOwnerId,
       ),
-    onSuccess: () => addToast('Successfully added new owner.', 'success'),
+    onSuccess: () => addToast('Successfully added new ownership.', 'success'),
     onError: (error, _, context) =>
       onErrorCarOwnershipPost(queryClient, error, context, carId, addToast),
   });
 
+  useEffect(() => {
+    isSubmitSuccessful && reset();
+  }, [isSubmitSuccessful, reset]);
+
   return (
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10"
-      onSubmit={handleSubmit((formData: NewCarOwnerFormValues) => {
+      onSubmit={handleSubmit((formData: AddCarOwnershipFormValues) => {
         onSubmit && onSubmit();
         mutate(formData, {
           onSettled: () =>
@@ -77,19 +84,11 @@ export function NewCarOwnerForm({ carId, onSubmit }: NewCarOwnerFormProps) {
         name="newOwnerId"
         register={register}
         registerOptions={{
-          validate: (data) => {
-            try {
-              validateUserId(data);
-              return true;
-            } catch (error) {
-              if (error instanceof ZodError) return error.issues[0].message;
-              if (error instanceof Error) return error.message;
-            }
-          },
+          validate: (data) => validateUserId(data),
         }}
         type="text"
       />
-      <div className="mt-5 flex justify-evenly">
+      <div className="mt-5 flex justify-end gap-5">
         <Button disabled={!isDirty} onClick={() => reset()}>
           Reset
         </Button>

@@ -5,10 +5,10 @@ import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
-import { CarOwnershipFormValues } from '../CarOwnershipForm/CarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
 type CarOwnershipTableRowProps = {
-  register: UseFormRegister<CarOwnershipFormValues>;
+  register?: UseFormRegister<RemoveCarOwnershipFormValues>;
   disabled?: boolean;
   profileData?: Profile | null;
   ownershipData?: CarOwnership[];
@@ -22,38 +22,39 @@ export function CarOwnershipTableRow({
 }: CarOwnershipTableRowProps) {
   return (
     <tr className={twJoin('whitespace-nowrap', disabled && 'text-light-900')}>
-      <td className="border-alpha-grey-200 relative w-10 border">
+      <td className="border-alpha-grey-200 relative w-10 border-t">
         <label
           className="absolute top-0 left-0 flex h-full w-full justify-center"
           htmlFor={profileData?.id}
         >
           <input
+            className="accent-accent-500"
             disabled={disabled}
             id={profileData?.id}
             type="checkbox"
-            {...register('ownersIds')}
+            {...(register ? register('ownersIds') : {})}
             value={profileData?.id}
           />
           <span className="sr-only">Select user</span>
         </label>
       </td>
 
-      <td className="border-alpha-grey-200 hidden border p-2 text-center align-middle md:table-cell md:w-12">
+      <td className="border-alpha-grey-200 hidden border border-b-0 p-2 text-center align-middle md:table-cell md:w-12">
         <AvatarImage
           className="aspect-square overflow-hidden rounded-full"
           src={profileData?.avatar_url}
         />
       </td>
 
-      <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border p-2 text-center align-middle md:table-cell">
+      <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border border-b-0 p-2 text-center align-middle md:table-cell">
         {profileData?.username}
       </td>
 
-      <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border p-2 text-center align-middle">
+      <td className="border-alpha-grey-200 max-w-[100px] overflow-auto border border-b-0 p-2 text-center align-middle">
         {profileData?.id}
       </td>
 
-      <td className="border-alpha-grey-200 w-10 border p-2 text-center align-middle">
+      <td className="border-alpha-grey-200 w-10 border-t p-2 text-center align-middle">
         {ownershipData?.find(
           (ownership) =>
             ownership.owner_id === profileData?.id &&
