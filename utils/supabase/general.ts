@@ -147,7 +147,10 @@ export async function getProfileById(id: string) {
 }
 
 type PatchProfileParameters =
-  | { property: Extract<keyof Profile, 'avatar_url'>; value: File | null }
+  | {
+      property: Extract<keyof Profile, 'avatar_url'>;
+      value: File | null | undefined;
+    }
   | { property: Extract<keyof Profile, 'username'>; value: string | null };
 
 export async function patchProfile({
