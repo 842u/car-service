@@ -333,7 +333,7 @@ export type EmailAuthFormValues = z.infer<
   typeof signUpEmailAuthFormSchema | typeof signInEmailAuthFormSchema
 >;
 
-export const passwordResetFormSchema = z
+export const passwordChangeFormSchema = z
   .object({
     password: passwordSchema,
     passwordConfirm: passwordSchema,
@@ -343,4 +343,4 @@ export const passwordResetFormSchema = z
     path: ['passwordConfirm'],
   });
 
-export type PasswordResetFormValues = z.infer<typeof passwordResetFormSchema>;
+export type PasswordChangeFormValues = z.infer<typeof passwordChangeFormSchema>;

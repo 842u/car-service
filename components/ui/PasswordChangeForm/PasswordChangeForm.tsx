@@ -7,19 +7,19 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useToasts } from '@/hooks/useToasts';
 import { RouteHandlerResponse } from '@/types';
 import {
-  passwordResetFormSchema,
-  PasswordResetFormValues,
+  passwordChangeFormSchema,
+  PasswordChangeFormValues,
 } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-const defaultPasswordResetFormValues: PasswordResetFormValues = {
+const defaultPasswordChangeFormValues: PasswordChangeFormValues = {
   password: '',
   passwordConfirm: '',
 };
 
-export function PasswordResetForm() {
+export function PasswordChangeForm() {
   const { addToast } = useToasts();
 
   const {
@@ -27,13 +27,13 @@ export function PasswordResetForm() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<PasswordResetFormValues>({
-    resolver: zodResolver(passwordResetFormSchema),
+  } = useForm<PasswordChangeFormValues>({
+    resolver: zodResolver(passwordChangeFormSchema),
     mode: 'onTouched',
-    defaultValues: defaultPasswordResetFormValues,
+    defaultValues: defaultPasswordChangeFormValues,
   });
 
-  const submitHandler: SubmitHandler<PasswordResetFormValues> = async (
+  const submitHandler: SubmitHandler<PasswordChangeFormValues> = async (
     data,
   ) => {
     const password = JSON.stringify(data);
@@ -60,7 +60,7 @@ export function PasswordResetForm() {
 
   return (
     <form
-      aria-label="password reset"
+      aria-label="password change"
       className="flex flex-col"
       onSubmit={handleSubmit(submitHandler)}
     >
@@ -84,7 +84,7 @@ export function PasswordResetForm() {
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
-        Reset
+        Change
       </SubmitButton>
     </form>
   );

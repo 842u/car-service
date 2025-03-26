@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { PasswordResetForm } from './PasswordResetForm';
+import { PasswordChangeForm } from './PasswordChangeForm';
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
@@ -9,9 +9,9 @@ global.fetch = jest.fn(() =>
   }),
 ) as jest.Mock;
 
-describe('PasswordResetForm', () => {
+describe('PasswordChangeForm', () => {
   it('should render new password input field', () => {
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
 
@@ -19,7 +19,7 @@ describe('PasswordResetForm', () => {
   });
 
   it('should render confirm password input field', () => {
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
 
@@ -27,9 +27,9 @@ describe('PasswordResetForm', () => {
   });
 
   it('should be initially disabled', () => {
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
 
     expect(submitButton).toBeDisabled();
   });
@@ -37,10 +37,10 @@ describe('PasswordResetForm', () => {
   it('should be disabled if only new password input touched', async () => {
     const user = userEvent.setup();
     const correctPassword = 'correct';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
     await user.type(passwordInput, correctPassword);
 
     expect(submitButton).toBeDisabled();
@@ -49,10 +49,10 @@ describe('PasswordResetForm', () => {
   it('should be disabled if only confirm password input touched', async () => {
     const user = userEvent.setup();
     const correctPassword = 'correct';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
     await user.type(confirmPasswordInput, correctPassword);
 
     expect(submitButton).toBeDisabled();
@@ -62,11 +62,11 @@ describe('PasswordResetForm', () => {
     const user = userEvent.setup();
     const correctPassword = 'correct';
     const wrongPassword = 'wrong';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, wrongPassword);
@@ -82,11 +82,11 @@ describe('PasswordResetForm', () => {
   it('should be disabled if two passwords are the same but incorrect', async () => {
     const user = userEvent.setup();
     const wrongPassword = 'wrong';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
 
     await user.type(passwordInput, wrongPassword);
     await user.type(confirmPasswordInput, wrongPassword);
@@ -98,11 +98,11 @@ describe('PasswordResetForm', () => {
     const user = userEvent.setup();
     const correctPasswordOne = 'correctOne';
     const correctPasswordTwo = 'correctTwo';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
 
     await user.type(passwordInput, correctPasswordOne);
     await user.type(confirmPasswordInput, correctPasswordTwo);
@@ -118,11 +118,11 @@ describe('PasswordResetForm', () => {
   it('should be enabled if two passwords are the same and are correct', async () => {
     const user = userEvent.setup();
     const correctPassword = 'correct';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, correctPassword);
@@ -133,11 +133,11 @@ describe('PasswordResetForm', () => {
   it('should call submit handler on submit', async () => {
     const user = userEvent.setup();
     const correctPassword = 'correct';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, correctPassword);
@@ -151,11 +151,11 @@ describe('PasswordResetForm', () => {
     const user = userEvent.setup();
     const correctPassword = 'correct';
     const wrongPassword = 'wrong';
-    render(<PasswordResetForm />);
+    render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', { name: /change/i });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, wrongPassword);
