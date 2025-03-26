@@ -20,11 +20,7 @@ export default function SignInPage() {
           </h1>
           <OAuthProviders />
           <TextSeparator text="or" />
-          <EmailAuthForm
-            passwordReminder
-            strictPasswordCheck={false}
-            type="sign-in"
-          />
+          <EmailAuthForm type="sign-in" />
           <SignUpLink className="mx-auto" />
         </section>
       </div>

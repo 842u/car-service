@@ -9,9 +9,6 @@ import {
   transmissionTypesMapping,
 } from '@/types';
 
-export const EMAIL_VALIDATION_REGEXP =
-  /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i;
-
 export const correctEmails = [
   'john.doe@example.com',
   'jane_smith123@mail.org',
@@ -284,43 +281,54 @@ export type GrantCarPrimaryOwnershipFormValues = z.infer<
   typeof grantCarPrimaryOwnershipFormSchema
 >;
 
-export const emailValidationRules = {
-  required: 'This field is required.',
-  minLength: {
-    value: 6,
-    message: 'Minimum length is 6.',
-  },
-  maxLength: {
-    value: 254,
-    message: 'Maximum length is 254.',
-  },
-  pattern: {
-    value: EMAIL_VALIDATION_REGEXP,
-    message: 'Enter valid e-mail address.',
-  },
-};
+export const EMAIL_REGEXP =
+  /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i;
+export const EMAIL_REGEXP_MESSAGE = 'Enter valid e-mail address.';
+export const MIN_EMAIL_LENGTH = 6;
+export const MIN_EMAIL_LENGTH_MESSAGE = `Minimum email length is ${MIN_EMAIL_LENGTH}.`;
+export const MAX_EMAIL_LENGTH = 254;
+export const MAX_EMAIL_LENGTH_MESSAGE = `Maximum email length is ${MAX_EMAIL_LENGTH}.`;
 
 export const emailSchema = z
-  .string()
+  .string({
+    required_error: 'Email is required.',
+    invalid_type_error: 'Email must be a string.',
+  })
   .trim()
-  .min(emailValidationRules.minLength.value)
-  .max(emailValidationRules.maxLength.value)
-  .email();
+  .min(MIN_EMAIL_LENGTH, MIN_EMAIL_LENGTH_MESSAGE)
+  .max(MAX_EMAIL_LENGTH, MAX_EMAIL_LENGTH_MESSAGE)
+  .regex(EMAIL_REGEXP, EMAIL_REGEXP_MESSAGE);
 
-export const passwordValidationRules = {
-  required: 'This field is required.',
-  minLength: {
-    value: 6,
-    message: 'Minimum length is 6.',
-  },
-  maxLength: {
-    value: 72,
-    message: 'Maximum length is 72.',
-  },
-};
+export const MIN_PASSWORD_LENGTH = 6;
+export const MIN_PASSWORD_LENGTH_MESSAGE = `Minimum password length is ${MIN_PASSWORD_LENGTH}.`;
+export const MAX_PASSWORD_LENGTH = 72;
+export const MAX_PASSWORD_LENGTH_MESSAGE = `Maximum password length is ${MAX_PASSWORD_LENGTH}.`;
 
 export const passwordSchema = z
-  .string()
+  .string({
+    required_error: 'Password is required.',
+    invalid_type_error: 'Password must be a string.',
+  })
   .trim()
-  .min(passwordValidationRules.minLength.value)
-  .max(passwordValidationRules.maxLength.value);
+  .min(MIN_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH_MESSAGE)
+  .max(MAX_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH_MESSAGE);
+
+export const signUpEmailAuthFormSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
+
+export const signInEmailAuthFormSchema = z.object({
+  email: emailSchema,
+  password: z
+    .string({
+      required_error: 'Password is required.',
+      invalid_type_error: 'Password must be a string.',
+    })
+    .trim()
+    .min(1, 'Password is required.'),
+});
+
+export type EmailAuthFormValues = z.infer<
+  typeof signUpEmailAuthFormSchema | typeof signInEmailAuthFormSchema
+>;

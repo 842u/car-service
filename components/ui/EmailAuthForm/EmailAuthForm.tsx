@@ -1,5 +1,6 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Route } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,33 +12,29 @@ import { useToasts } from '@/hooks/useToasts';
 import { RouteHandlerResponse } from '@/types';
 import { unslugify } from '@/utils/general';
 import {
-  emailValidationRules,
-  passwordValidationRules,
+  EmailAuthFormValues,
+  MAX_PASSWORD_LENGTH,
+  MIN_PASSWORD_LENGTH,
+  signInEmailAuthFormSchema,
+  signUpEmailAuthFormSchema,
 } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-export type EmailAuthFormType = 'sign-up' | 'sign-in';
-
-type EmailAuthFormValues = {
-  email: string;
-  password: string;
+const defaultEmailAuthFormValues: EmailAuthFormValues = {
+  email: '',
+  password: '',
 };
+
+export type EmailAuthFormType = 'sign-up' | 'sign-in';
 
 type EmailAuthFormProps = {
   type: EmailAuthFormType;
-  strictPasswordCheck?: boolean;
-  passwordReminder?: boolean;
   className?: string;
 };
 
-export default function EmailAuthForm({
-  type,
-  strictPasswordCheck = true,
-  passwordReminder = false,
-  className,
-}: EmailAuthFormProps) {
+export default function EmailAuthForm({ type, className }: EmailAuthFormProps) {
   const router = useRouter();
 
   const { addToast } = useToasts();
@@ -48,11 +45,13 @@ export default function EmailAuthForm({
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
   } = useForm<EmailAuthFormValues>({
+    resolver: zodResolver(
+      type === 'sign-up'
+        ? signUpEmailAuthFormSchema
+        : signInEmailAuthFormSchema,
+    ),
     mode: 'onTouched',
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: defaultEmailAuthFormValues,
   });
 
   const submitHandler: SubmitHandler<EmailAuthFormValues> = async (data) => {
@@ -93,7 +92,7 @@ export default function EmailAuthForm({
   };
 
   useEffect(() => {
-    reset();
+    isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
   return (
@@ -108,27 +107,23 @@ export default function EmailAuthForm({
         name="email"
         placeholder="Enter your email ..."
         register={register}
-        registerOptions={emailValidationRules}
         type="email"
       />
       <div className="relative">
         <Input
           errorMessage={errors.password?.message}
           label="Password"
+          maxLength={(type === 'sign-up' && MAX_PASSWORD_LENGTH) || undefined}
+          minLength={(type === 'sign-up' && MIN_PASSWORD_LENGTH) || undefined}
           name="password"
           placeholder="Enter your password ..."
           register={register}
-          registerOptions={
-            strictPasswordCheck
-              ? passwordValidationRules
-              : { required: 'This field is required' }
-          }
           type="password"
         />
-        {passwordReminder && (
+        {type === 'sign-in' && (
           <Link
             className="text-light-900 dark:text-dark-200 absolute top-0 right-0 text-sm"
-            href="/dashboard/forgot-password"
+            href={'/dashboard/forgot-password' satisfies Route}
           >
             Forgot Password?
           </Link>
