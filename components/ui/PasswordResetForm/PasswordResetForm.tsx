@@ -1,54 +1,59 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
+import { createClient } from '@/utils/supabase/client';
+import {
+  passwordResetFormSchema,
+  PasswordResetFormValues,
+} from '@/utils/validation';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 import { TextSeparator } from '../TextSeparator/TextSeparator';
 
-type PasswordResetFormValues = {
-  email: string;
-};
+const defaultPasswordResetFormValues = { email: '' };
 
 export function PasswordResetForm() {
   const { addToast } = useToasts();
+
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
   } = useForm<PasswordResetFormValues>({
+    resolver: zodResolver(passwordResetFormSchema),
     mode: 'onTouched',
-    defaultValues: { email: '' },
+    defaultValues: defaultPasswordResetFormValues,
   });
 
-  const submitHandler: SubmitHandler<PasswordResetFormValues> = async (
-    data,
-  ) => {
-    const { email } = data;
-    const { createClient } = await import('@/utils/supabase/client');
-    const { auth } = createClient();
-    const { data: responseData, error: responseError } =
-      await auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin,
-      });
-    const resetPasswordMessage =
-      'Your password reset request has been received. Please check your email for further instructions.';
+  const handleFormSubmit = async (formData: PasswordResetFormValues) => {
+    const supabase = createClient();
 
-    responseData && addToast(resetPasswordMessage, 'success');
+    const { data, error } = await supabase.auth.resetPasswordForEmail(
+      formData.email,
+      { redirectTo: window.location.origin },
+    );
 
-    responseError && addToast(responseError.message, 'error');
+    error && addToast(error.message, 'error');
+
+    data &&
+      addToast(
+        'Your password reset request has been received. Please check your email for further instructions.',
+        'success',
+      );
   };
 
   useEffect(() => {
-    reset();
+    isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit(submitHandler)}>
+    <form className="flex flex-col" onSubmit={handleSubmit(handleFormSubmit)}>
       <Input
         errorMessage={errors.email?.message}
         label="Email"
