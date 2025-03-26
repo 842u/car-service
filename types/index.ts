@@ -66,20 +66,3 @@ export type CarsInfiniteQueryPageData = {
 };
 
 export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;
-
-export type CarFormValues = {
-  image: File | null;
-  name: string | null;
-  brand: string | null;
-  model: string | null;
-  licensePlates: string | null;
-  vin: string | null;
-  fuelType: Fuel | null;
-  additionalFuelType: Fuel | null;
-  transmissionType: Transmission | null;
-  driveType: Drive | null;
-  productionYear: number | null;
-  engineCapacity: number | null;
-  mileage: number | null;
-  insuranceExpiration: string | null;
-};
