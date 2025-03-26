@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,20 +9,17 @@ import {
   onErrorCarOwnershipPatch,
   onMutateCarOwnershipPatch,
 } from '@/utils/tanstack/general';
-import { validateUserId } from '@/utils/validation';
+import {
+  grantCarPrimaryOwnershipFormSchema,
+  GrantCarPrimaryOwnershipFormValues,
+} from '@/utils/validation';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-type GrantCarPrimaryOwnershipFormValues = {
-  newOwnerId: string | null;
-};
-
 const defaultGrantCarPrimaryOwnershipFormValues: GrantCarPrimaryOwnershipFormValues =
-  {
-    newOwnerId: null,
-  };
+  { userId: '' };
 
 type GrantCarPrimaryOwnershipFormProps = {
   carId: string;
@@ -40,6 +38,7 @@ export function GrantCarPrimaryOwnershipForm({
     handleSubmit,
     formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
   } = useForm({
+    resolver: zodResolver(grantCarPrimaryOwnershipFormSchema),
     mode: 'onChange',
     defaultValues: defaultGrantCarPrimaryOwnershipFormValues,
   });
@@ -48,14 +47,11 @@ export function GrantCarPrimaryOwnershipForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
-      patchCarPrimaryOwnership(newCarOwnerFormData.newOwnerId, carId),
+      patchCarPrimaryOwnership(newCarOwnerFormData.userId, carId),
     onMutate: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
-      onMutateCarOwnershipPatch(
-        queryClient,
-        carId,
-        newCarOwnerFormData.newOwnerId,
-      ),
-    onSuccess: () => addToast('Successfully added new owner.', 'success'),
+      onMutateCarOwnershipPatch(queryClient, carId, newCarOwnerFormData.userId),
+    onSuccess: () =>
+      addToast('Successfully granted primary ownership.', 'success'),
     onError: (error, _, context) =>
       onErrorCarOwnershipPatch(queryClient, error, context, carId, addToast),
   });
@@ -85,15 +81,12 @@ export function GrantCarPrimaryOwnershipForm({
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
       <Input
         required
-        errorMessage={errors.newOwnerId?.message}
+        errorMessage={errors.userId?.message}
         label="User ID"
         maxLength={36}
         minLength={36}
-        name="newOwnerId"
+        name="userId"
         register={register}
-        registerOptions={{
-          validate: (data) => validateUserId(data),
-        }}
         type="text"
       />
       <p className="text-warning-500 dark:text-warning-300">

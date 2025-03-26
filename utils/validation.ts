@@ -276,6 +276,14 @@ export type AddCarOwnershipFormValues = z.infer<
   typeof addCarOwnershipFormSchema
 >;
 
+export const grantCarPrimaryOwnershipFormSchema = z.object({
+  userId: userIdValidationSchema,
+});
+
+export type GrantCarPrimaryOwnershipFormValues = z.infer<
+  typeof grantCarPrimaryOwnershipFormSchema
+>;
+
 export const emailValidationRules = {
   required: 'This field is required.',
   minLength: {
