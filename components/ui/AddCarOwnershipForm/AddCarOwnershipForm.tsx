@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,18 +9,17 @@ import {
   onErrorCarOwnershipPost,
   onMutateCarOwnershipPost,
 } from '@/utils/tanstack/general';
-import { validateUserId } from '@/utils/validation';
+import {
+  addCarOwnershipFormSchema,
+  AddCarOwnershipFormValues,
+} from '@/utils/validation';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-type AddCarOwnershipFormValues = {
-  newOwnerId: string | null;
-};
-
 const defaultAddCarOwnershipFormValues: AddCarOwnershipFormValues = {
-  newOwnerId: null,
+  userId: '',
 };
 
 type AddCarOwnershipFormProps = {
@@ -39,6 +39,7 @@ export function AddCarOwnershipForm({
     handleSubmit,
     formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
   } = useForm({
+    resolver: zodResolver(addCarOwnershipFormSchema),
     mode: 'onChange',
     defaultValues: defaultAddCarOwnershipFormValues,
   });
@@ -47,12 +48,12 @@ export function AddCarOwnershipForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
-      postCarOwnership(carId, addCarOwnershipFormData.newOwnerId),
+      postCarOwnership(carId, addCarOwnershipFormData.userId),
     onMutate: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
       onMutateCarOwnershipPost(
         queryClient,
         carId,
-        addCarOwnershipFormData.newOwnerId,
+        addCarOwnershipFormData.userId,
       ),
     onSuccess: () => addToast('Successfully added new ownership.', 'success'),
     onError: (error, _, context) =>
@@ -80,15 +81,12 @@ export function AddCarOwnershipForm({
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
       <Input
         required
-        errorMessage={errors.newOwnerId?.message}
+        errorMessage={errors.userId?.message}
         label="User ID"
         maxLength={36}
         minLength={36}
-        name="newOwnerId"
+        name="userId"
         register={register}
-        registerOptions={{
-          validate: (data) => validateUserId(data),
-        }}
         type="text"
       />
       <div className="mt-5 flex justify-end gap-5">

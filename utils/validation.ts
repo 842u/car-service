@@ -1,4 +1,4 @@
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 
 import {
   DriveMapping,
@@ -261,6 +261,21 @@ export const usernameFormSchema = z.object({
 
 export type UsernameFormValues = z.infer<typeof usernameFormSchema>;
 
+const userIdValidationSchema = z
+  .string({
+    required_error: 'User ID is required.',
+    invalid_type_error: 'User ID must be a string.',
+  })
+  .uuid('Invalid ID format.');
+
+export const addCarOwnershipFormSchema = z.object({
+  userId: userIdValidationSchema,
+});
+
+export type AddCarOwnershipFormValues = z.infer<
+  typeof addCarOwnershipFormSchema
+>;
+
 export const emailValidationRules = {
   required: 'This field is required.',
   minLength: {
@@ -301,15 +316,3 @@ export const passwordSchema = z
   .trim()
   .min(passwordValidationRules.minLength.value)
   .max(passwordValidationRules.maxLength.value);
-
-const userIdValidationSchema = z.string().uuid('Invalid ID format.');
-
-export function validateUserId(userId: string | null) {
-  try {
-    userIdValidationSchema.parse(userId);
-    return true;
-  } catch (error) {
-    if (error instanceof ZodError) return error.issues[0].message;
-    if (error instanceof Error) return error.message;
-  }
-}
