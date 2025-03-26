@@ -8,6 +8,8 @@ import { carFormSchema, CarFormValues } from '@/utils/validation';
 export type AddCarFormValuesToValidate = Omit<CarFormValues, 'image'>;
 export type apiCarPostResponse = { id: string };
 
+export const maxDuration = 10;
+
 export async function POST(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json')
     return NextResponse.json<RouteHandlerResponse>(
