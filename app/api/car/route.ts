@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ZodError } from 'zod';
 
-import { CarFormValues, RouteHandlerResponse } from '@/types';
+import { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
-import { validateAddCarFormData } from '@/utils/validation';
+import { carFormSchema, CarFormValues } from '@/utils/validation';
 
 export type AddCarFormValuesToValidate = Omit<CarFormValues, 'image'>;
 export type apiCarPostResponse = { id: string };
@@ -19,18 +20,28 @@ export async function POST(request: NextRequest) {
   const formData = (await request.json()) as AddCarFormValuesToValidate;
 
   try {
-    validateAddCarFormData(formData);
+    carFormSchema.parse(formData);
   } catch (error) {
-    if (error instanceof Error) {
+    if (error instanceof ZodError) {
       return NextResponse.json<RouteHandlerResponse>(
         {
-          error: { message: `Server validation failed: ${error.message}` },
+          error: {
+            message: `Server validation failed: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+          },
           data: null,
         },
         { status: 400 },
       );
     }
-
+    if (error instanceof Error) {
+      return NextResponse.json<RouteHandlerResponse>(
+        {
+          error: { message: `Server validation failed: ${error.message}.` },
+          data: null,
+        },
+        { status: 400 },
+      );
+    }
     return NextResponse.json<RouteHandlerResponse>(
       {
         error: { message: 'Server data validation failed. Try again.' },
@@ -56,7 +67,10 @@ export async function POST(request: NextRequest) {
     drive_type: formData.driveType || undefined,
     engine_capacity: formData.engineCapacity || undefined,
     fuel_type: formData.fuelType || undefined,
-    insurance_expiration: formData.insuranceExpiration || undefined,
+    insurance_expiration:
+      (formData.insuranceExpiration &&
+        formData.insuranceExpiration.toISOString()) ||
+      undefined,
     license_plates: formData.licensePlates || undefined,
     mileage: formData.mileage || undefined,
     model: formData.model || undefined,
