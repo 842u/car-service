@@ -2,20 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
-import { passwordSchema } from '@/utils/validation';
+import {
+  passwordChangeFormSchema,
+  PasswordChangeFormValues,
+} from '@/utils/validation';
 
 export const maxDuration = 10;
 
-type apiAuthPasswordResetPatchResponse = { id: string };
+type apiAuthPasswordChangePatchResponse = { id: string };
 
 export async function PATCH(request: NextRequest) {
-  const { password, passwordConfirm } = await request.json();
+  const requestData = (await request.json()) as PasswordChangeFormValues;
 
   try {
-    passwordSchema.parse(password);
-    if (password !== passwordConfirm) {
-      throw new Error('Passwords not match.');
-    }
+    passwordChangeFormSchema.parse(requestData);
   } catch (_error) {
     return NextResponse.json<RouteHandlerResponse>(
       {
@@ -28,7 +28,9 @@ export async function PATCH(request: NextRequest) {
 
   const { auth } = await createClient();
 
-  const { data, error } = await auth.updateUser({ password });
+  const { data, error } = await auth.updateUser({
+    password: requestData.password,
+  });
 
   if (error) {
     return NextResponse.json<RouteHandlerResponse>(
@@ -38,7 +40,7 @@ export async function PATCH(request: NextRequest) {
   }
 
   return NextResponse.json<
-    RouteHandlerResponse<apiAuthPasswordResetPatchResponse>
+    RouteHandlerResponse<apiAuthPasswordChangePatchResponse>
   >(
     {
       data: { id: data.user.id },

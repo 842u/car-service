@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Route } from 'next';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -38,7 +39,7 @@ export function PasswordChangeForm() {
   ) => {
     const password = JSON.stringify(data);
 
-    const response = await fetch('/api/auth/password-reset', {
+    const response = await fetch('/api/auth/password-change' satisfies Route, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
