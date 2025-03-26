@@ -3,7 +3,6 @@ import { QueryClient } from '@tanstack/react-query';
 import { RemoveCarOwnershipFormValues } from '@/components/ui/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import {
   Car,
-  CarFormValues,
   CarOwnership,
   CarsInfiniteQueryData,
   Profile,
@@ -14,6 +13,7 @@ import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
   mapAddCarFormValuesToCarObject,
 } from '../general';
+import { CarFormValues } from '../validation';
 
 export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
 
