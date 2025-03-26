@@ -212,7 +212,7 @@ const carDriveTypeSchema = z.enum(
 );
 
 export const carFormSchema = z.object({
-  image: imageFileSchema.nullable(),
+  image: imageFileSchema.nullable().optional(),
   name: carNameSchema,
   brand: carBrandSchema.nullable().or(z.literal('')),
   model: carModelSchema.nullable().or(z.literal('')),
