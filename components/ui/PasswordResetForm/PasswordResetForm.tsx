@@ -1,40 +1,43 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
 import { RouteHandlerResponse } from '@/types';
-import { passwordValidationRules } from '@/utils/validation';
+import {
+  passwordResetFormSchema,
+  PasswordResetFormValues,
+} from '@/utils/validation';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-type PasswordResetFormValues = {
-  password: string;
-  passwordConfirm: string;
+const defaultPasswordResetFormValues: PasswordResetFormValues = {
+  password: '',
+  passwordConfirm: '',
 };
 
 export function PasswordResetForm() {
   const { addToast } = useToasts();
+
   const {
     register,
     handleSubmit,
-    getValues,
     reset,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
   } = useForm<PasswordResetFormValues>({
+    resolver: zodResolver(passwordResetFormSchema),
     mode: 'onTouched',
-    defaultValues: {
-      password: '',
-      passwordConfirm: '',
-    },
+    defaultValues: defaultPasswordResetFormValues,
   });
 
   const submitHandler: SubmitHandler<PasswordResetFormValues> = async (
     data,
   ) => {
     const password = JSON.stringify(data);
+
     const response = await fetch('/api/auth/password-reset', {
       method: 'PATCH',
       headers: {
@@ -42,6 +45,7 @@ export function PasswordResetForm() {
       },
       body: password,
     });
+
     const { data: responseData, error } =
       (await response.json()) as RouteHandlerResponse;
 
@@ -50,7 +54,9 @@ export function PasswordResetForm() {
     responseData && addToast('Your password has been changed.', 'success');
   };
 
-  useEffect(() => reset(), [isSubmitSuccessful, reset]);
+  useEffect(() => {
+    isSubmitSuccessful && reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <form
@@ -64,7 +70,6 @@ export function PasswordResetForm() {
         name="password"
         placeholder="Enter new password"
         register={register}
-        registerOptions={passwordValidationRules}
         type="password"
       />
       <Input
@@ -73,11 +78,6 @@ export function PasswordResetForm() {
         name="passwordConfirm"
         placeholder="Confirm password"
         register={register}
-        registerOptions={{
-          required: 'This field is required.',
-          validate: (value) =>
-            value === getValues('password') || 'Password not match.',
-        }}
         type="password"
       />
       <SubmitButton

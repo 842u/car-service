@@ -332,3 +332,15 @@ export const signInEmailAuthFormSchema = z.object({
 export type EmailAuthFormValues = z.infer<
   typeof signUpEmailAuthFormSchema | typeof signInEmailAuthFormSchema
 >;
+
+export const passwordResetFormSchema = z
+  .object({
+    password: passwordSchema,
+    passwordConfirm: passwordSchema,
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'Passwords must match.',
+    path: ['passwordConfirm'],
+  });
+
+export type PasswordResetFormValues = z.infer<typeof passwordResetFormSchema>;
