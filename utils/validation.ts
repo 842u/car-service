@@ -232,6 +232,12 @@ export const carFormSchema = z.object({
 
 export type CarFormValues = z.infer<typeof carFormSchema>;
 
+export const avatarFormSchema = z.object({
+  image: imageFileSchema.nullable().optional(),
+});
+
+export type AvatarFormValues = z.infer<typeof avatarFormSchema>;
+
 export const emailValidationRules = {
   required: 'This field is required.',
   minLength: {
