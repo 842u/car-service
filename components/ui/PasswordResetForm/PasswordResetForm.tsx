@@ -4,29 +4,28 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { emailValidationRules } from '@/utils/validation';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 import { TextSeparator } from '../TextSeparator/TextSeparator';
 
-type PasswordRemindFormValues = {
+type PasswordResetFormValues = {
   email: string;
 };
 
-export function PasswordRemindForm() {
+export function PasswordResetForm() {
   const { addToast } = useToasts();
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<PasswordRemindFormValues>({
+  } = useForm<PasswordResetFormValues>({
     mode: 'onTouched',
     defaultValues: { email: '' },
   });
 
-  const submitHandler: SubmitHandler<PasswordRemindFormValues> = async (
+  const submitHandler: SubmitHandler<PasswordResetFormValues> = async (
     data,
   ) => {
     const { email } = data;
@@ -56,7 +55,6 @@ export function PasswordRemindForm() {
         name="email"
         placeholder="Enter your email ..."
         register={register}
-        registerOptions={emailValidationRules}
         type="email"
       />
       <TextSeparator className="my-5" />

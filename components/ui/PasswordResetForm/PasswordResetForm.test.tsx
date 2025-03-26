@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { correctEmails, wrongEmails } from '@/utils/validation';
 
-import { PasswordRemindForm } from './PasswordRemindForm';
+import { PasswordResetForm } from './PasswordResetForm';
 
 jest.setTimeout(12000);
 
@@ -14,13 +14,13 @@ jest.mock('@supabase/ssr', () => ({
   })),
 }));
 
-describe('PasswordRemindForm', () => {
+describe('PasswordResetForm', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('should render an email input field', () => {
-    render(<PasswordRemindForm />);
+    render(<PasswordResetForm />);
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
 
@@ -28,7 +28,7 @@ describe('PasswordRemindForm', () => {
   });
 
   it('should render a button to send reset password email', () => {
-    render(<PasswordRemindForm />);
+    render(<PasswordResetForm />);
 
     const submitButton = screen.getByRole('button', {
       name: /send password reset email/i,
@@ -38,7 +38,7 @@ describe('PasswordRemindForm', () => {
   });
 
   it('should be disabled while not touched', () => {
-    render(<PasswordRemindForm />);
+    render(<PasswordResetForm />);
 
     const submitButton = screen.getByRole('button', {
       name: /send password reset email/i,
@@ -50,7 +50,7 @@ describe('PasswordRemindForm', () => {
   it('submit handler should not be called while wrong email provided', async () => {
     const wrongEmail = wrongEmails[0];
     const user = userEvent.setup();
-    render(<PasswordRemindForm />);
+    render(<PasswordResetForm />);
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const submitButton = screen.getByRole('button', {
@@ -66,7 +66,7 @@ describe('PasswordRemindForm', () => {
   it('submit handler should be called while correct email provided', async () => {
     const correctEmail = correctEmails[0];
     const user = userEvent.setup();
-    render(<PasswordRemindForm />);
+    render(<PasswordResetForm />);
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const submitButton = screen.getByRole('button', {
@@ -82,7 +82,7 @@ describe('PasswordRemindForm', () => {
   it('should be disabled while wrong email format provided', async () => {
     const user = userEvent.setup();
     const wrongEmail = wrongEmails[0];
-    render(<PasswordRemindForm />);
+    render(<PasswordResetForm />);
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const submitButton = screen.getByRole('button', {
@@ -96,7 +96,7 @@ describe('PasswordRemindForm', () => {
   it('should be enabled while correct email format provided', async () => {
     const user = userEvent.setup();
     const correctEmail = correctEmails[0];
-    render(<PasswordRemindForm />);
+    render(<PasswordResetForm />);
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const submitButton = screen.getByRole('button', {
