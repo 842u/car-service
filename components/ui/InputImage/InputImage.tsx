@@ -58,9 +58,10 @@ export function InputImage<T extends FieldValues>({
       if (inputElementRef.current?.files) {
         inputElementRef.current.files = new DataTransfer().files;
       }
+      field.onChange(null);
       onChange && onChange(null);
     }
-  }, [field.value, onChange]);
+  }, [field, onChange]);
 
   return (
     <label className={className} htmlFor={name}>
