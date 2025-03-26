@@ -1,5 +1,6 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,11 +15,12 @@ import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
 } from '@/utils/tanstack/general';
-import { usernameValidationRules } from '@/utils/validation';
-
-export type UsernameFormValues = {
-  username: string;
-};
+import {
+  MAX_USERNAME_LENGTH,
+  MIN_USERNAME_LENGTH,
+  usernameFormSchema,
+  UsernameFormValues,
+} from '@/utils/validation';
 
 type UsernameFormProps = {
   data?: Profile | null;
@@ -50,6 +52,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
     reset,
     formState: { isValid, isDirty, errors, isSubmitSuccessful },
   } = useForm<UsernameFormValues>({
+    resolver: zodResolver(usernameFormSchema),
     mode: 'onChange',
     defaultValues: {
       username: '',
@@ -94,8 +97,6 @@ export function UsernameForm({ data }: UsernameFormProps) {
           name="username"
           placeholder="Enter your username"
           register={register}
-          registerOptions={usernameValidationRules}
-          showErrorMessage={false}
           type="text"
         />
       </div>
@@ -107,14 +108,11 @@ export function UsernameForm({ data }: UsernameFormProps) {
           </p>
           <p className="text-alpha-grey-700">
             {`Letters, numbers and single whitespaces allowed. Length between
-              ${usernameValidationRules.minLength.value} and
-              ${usernameValidationRules.maxLength.value} characters.`}
+              ${MIN_USERNAME_LENGTH} and
+              ${MAX_USERNAME_LENGTH} characters.`}
           </p>
         </div>
         <div className="my-4 flex justify-center gap-4">
-          <SubmitButton className="flex-1" disabled={!isValid || !isDirty}>
-            Save
-          </SubmitButton>
           <Button
             className="flex-1"
             disabled={!isDirty}
@@ -122,8 +120,11 @@ export function UsernameForm({ data }: UsernameFormProps) {
               reset({ username: data?.username || '' });
             }}
           >
-            Cancel
+            Reset
           </Button>
+          <SubmitButton className="flex-1" disabled={!isValid || !isDirty}>
+            Save
+          </SubmitButton>
         </div>
       </div>
     </form>
