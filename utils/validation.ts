@@ -11,8 +11,6 @@ import {
 
 export const EMAIL_VALIDATION_REGEXP =
   /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i;
-export const USERNAME_VALIDATION_REGEXP =
-  /^(?!.*[ ]{2})[0-9\p{Letter}\p{Mark}\s]+(?<![ ])$/u;
 
 export const correctEmails = [
   'john.doe@example.com',
@@ -238,6 +236,31 @@ export const avatarFormSchema = z.object({
 
 export type AvatarFormValues = z.infer<typeof avatarFormSchema>;
 
+export const USERNAME_REGEXP =
+  /^(?!.*[ ]{2})[0-9\p{Letter}\p{Mark}\s]+(?<![ ])$/u;
+export const USERNAME_REGEXP_MESSAGE =
+  'Letters, numbers and single whitespaces allowed.';
+export const MIN_USERNAME_LENGTH = 3;
+export const MIN_USERNAME_LENGTH_MESSAGE = `Minimum username length is ${MIN_USERNAME_LENGTH}`;
+export const MAX_USERNAME_LENGTH = 32;
+export const MAX_USERNAME_LENGTH_MESSAGE = `Maximum username length is ${MAX_USERNAME_LENGTH}`;
+
+export const usernameSchema = z
+  .string({
+    required_error: 'Username is required.',
+    invalid_type_error: 'Username must be a string.',
+  })
+  .trim()
+  .min(MIN_USERNAME_LENGTH, MIN_USERNAME_LENGTH_MESSAGE)
+  .max(MAX_USERNAME_LENGTH, MAX_USERNAME_LENGTH_MESSAGE)
+  .regex(USERNAME_REGEXP, USERNAME_REGEXP_MESSAGE);
+
+export const usernameFormSchema = z.object({
+  username: usernameSchema,
+});
+
+export type UsernameFormValues = z.infer<typeof usernameFormSchema>;
+
 export const emailValidationRules = {
   required: 'This field is required.',
   minLength: {
@@ -249,7 +272,6 @@ export const emailValidationRules = {
     message: 'Maximum length is 254.',
   },
   pattern: {
-    // Old simple regexp /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
     value: EMAIL_VALIDATION_REGEXP,
     message: 'Enter valid e-mail address.',
   },
@@ -279,22 +301,6 @@ export const passwordSchema = z
   .trim()
   .min(passwordValidationRules.minLength.value)
   .max(passwordValidationRules.maxLength.value);
-
-export const usernameValidationRules = {
-  required: 'This field is required.',
-  minLength: {
-    value: 3,
-    message: 'Minimum length is 3.',
-  },
-  maxLength: {
-    value: 32,
-    message: 'Maximum length is 32.',
-  },
-  pattern: {
-    value: USERNAME_VALIDATION_REGEXP,
-    message: 'Enter a valid username.',
-  },
-};
 
 const userIdValidationSchema = z.string().uuid('Invalid ID format.');
 
