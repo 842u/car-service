@@ -1,13 +1,8 @@
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
-import {
-  driveTypesMapping,
-  fuelTypesMapping,
-  transmissionTypesMapping,
-} from '@/types';
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import {
   CAR_VIN_LENGTH,
-  CarFormValues,
   MAX_CAR_BRAND_LENGTH,
   MAX_CAR_ENGINE_CAPACITY_VALUE,
   MAX_CAR_LICENSE_PLATES_LENGTH,
@@ -23,7 +18,12 @@ import {
   MIN_CAR_MODEL_LENGTH,
   MIN_CAR_NAME_LENGTH,
   MIN_CAR_PRODUCTION_YEAR_VALUE,
-} from '@/utils/validation';
+} from '@/schemas/zod/common';
+import {
+  driveTypesMapping,
+  fuelTypesMapping,
+  transmissionTypesMapping,
+} from '@/types';
 
 import { CarImage } from '../CarImage/CarImage';
 import { Input } from '../Input/Input';

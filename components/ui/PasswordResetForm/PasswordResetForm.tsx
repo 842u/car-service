@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { createClient } from '@/utils/supabase/client';
 import {
   passwordResetFormSchema,
   PasswordResetFormValues,
-} from '@/utils/validation';
+} from '@/schemas/zod/passwordResetFormSchema';
+import { createClient } from '@/utils/supabase/client';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';

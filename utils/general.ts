@@ -1,6 +1,5 @@
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
-
-import { CarFormValues } from './validation';
 
 export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
 const DEFAULT_TIMEOUT = 9000;

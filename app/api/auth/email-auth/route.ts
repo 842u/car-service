@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { EmailAuthFormType } from '@/components/ui/EmailAuthForm/EmailAuthForm';
-import { RouteHandlerResponse } from '@/types';
-import { createClient } from '@/utils/supabase/server';
 import {
   EmailAuthFormValues,
   signUpEmailAuthFormSchema,
-} from '@/utils/validation';
+} from '@/schemas/zod/emailAuthFormSchema';
+import { RouteHandlerResponse } from '@/types';
+import { createClient } from '@/utils/supabase/server';
 
 import { apiCarPostResponse } from '../../car/route';
 

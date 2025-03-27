@@ -6,6 +6,14 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
+import {
+  avatarFormSchema,
+  AvatarFormValues,
+} from '@/schemas/zod/avatarFormSchema';
+import {
+  IMAGE_FILE_ACCEPTED_MIME_TYPES,
+  IMAGE_FILE_MAX_SIZE_BYTES,
+} from '@/schemas/zod/common';
 import { Profile } from '@/types';
 import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import { patchProfile } from '@/utils/supabase/general';
@@ -13,12 +21,6 @@ import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
 } from '@/utils/tanstack/general';
-import {
-  avatarFormSchema,
-  AvatarFormValues,
-  IMAGE_FILE_ACCEPTED_MIME_TYPES,
-  IMAGE_FILE_MAX_SIZE_BYTES,
-} from '@/utils/validation';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';

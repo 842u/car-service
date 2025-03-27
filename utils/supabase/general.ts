@@ -2,11 +2,11 @@ import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Profile, RouteHandlerResponse } from '@/types';
 
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '../general';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tanstack/general';
-import { CarFormValues } from '../validation';
 import { createClient } from './client';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;

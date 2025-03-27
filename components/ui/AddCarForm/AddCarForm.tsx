@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
+import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { postNewCar } from '@/utils/supabase/general';
 import {
   onErrorCarsInfiniteQueryMutation,
   onMutateCarsInfiniteQueryMutation,
 } from '@/utils/tanstack/general';
-import { carFormSchema, CarFormValues } from '@/utils/validation';
 
 import { Button } from '../Button/Button';
 import { SubmitButton } from '../SubmitButton/SubmitButton';

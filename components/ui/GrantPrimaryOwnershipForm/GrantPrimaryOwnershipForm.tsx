@@ -4,15 +4,15 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
+import {
+  grantCarPrimaryOwnershipFormSchema,
+  GrantCarPrimaryOwnershipFormValues,
+} from '@/schemas/zod/grantPrimaryOwnershipFormSchema';
 import { patchCarPrimaryOwnership } from '@/utils/supabase/general';
 import {
   onErrorCarOwnershipPatch,
   onMutateCarOwnershipPatch,
 } from '@/utils/tanstack/general';
-import {
-  grantCarPrimaryOwnershipFormSchema,
-  GrantCarPrimaryOwnershipFormValues,
-} from '@/utils/validation';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';

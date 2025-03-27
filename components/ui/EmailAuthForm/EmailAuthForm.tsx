@@ -9,15 +9,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/hooks/useToasts';
-import { RouteHandlerResponse } from '@/types';
-import { unslugify } from '@/utils/general';
+import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
 import {
   EmailAuthFormValues,
-  MAX_PASSWORD_LENGTH,
-  MIN_PASSWORD_LENGTH,
   signInEmailAuthFormSchema,
   signUpEmailAuthFormSchema,
-} from '@/utils/validation';
+} from '@/schemas/zod/emailAuthFormSchema';
+import { RouteHandlerResponse } from '@/types';
+import { unslugify } from '@/utils/general';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';

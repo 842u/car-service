@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
+import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
 import { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
-import { carFormSchema, CarFormValues } from '@/utils/validation';
 
 export type AddCarFormValuesToValidate = Omit<CarFormValues, 'image'>;
 export type apiCarPostResponse = { id: string };

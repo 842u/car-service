@@ -6,11 +6,11 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { RouteHandlerResponse } from '@/types';
 import {
   passwordChangeFormSchema,
   PasswordChangeFormValues,
-} from '@/utils/validation';
+} from '@/schemas/zod/passwordChangeFormSchema';
+import { RouteHandlerResponse } from '@/types';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';

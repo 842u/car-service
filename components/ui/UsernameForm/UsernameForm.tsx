@@ -9,18 +9,21 @@ import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
 import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 import { useToasts } from '@/hooks/useToasts';
+import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
+import {
+  usernameFormSchema,
+  UsernameFormValues,
+} from '@/schemas/zod/usernameFormSchema';
 import { Profile } from '@/types';
 import { patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
 } from '@/utils/tanstack/general';
-import {
-  MAX_USERNAME_LENGTH,
-  MIN_USERNAME_LENGTH,
-  usernameFormSchema,
-  UsernameFormValues,
-} from '@/utils/validation';
+
+const defaultUsernameFormValues: UsernameFormValues = {
+  username: '',
+};
 
 type UsernameFormProps = {
   data?: Profile | null;
@@ -54,12 +57,10 @@ export function UsernameForm({ data }: UsernameFormProps) {
   } = useForm<UsernameFormValues>({
     resolver: zodResolver(usernameFormSchema),
     mode: 'onChange',
-    defaultValues: {
-      username: '',
-    },
+    defaultValues: defaultUsernameFormValues,
   });
 
-  const submitHandler = async (usernameFormData: UsernameFormValues) => {
+  const handleFormSubmit = async (usernameFormData: UsernameFormValues) => {
     mutate(usernameFormData, {
       onSuccess: () => {
         addToast('Username updated successfully.', 'success');
@@ -88,7 +89,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
   return (
     <form
       className="items-center justify-between lg:flex"
-      onSubmit={handleSubmit(submitHandler)}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <div className="lg:w-1/3 lg:p-4">
         <Input
