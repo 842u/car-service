@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     fuel_type: formData.fuelType || undefined,
     insurance_expiration:
       (formData.insuranceExpiration &&
-        formData.insuranceExpiration.toISOString()) ||
+        formData.insuranceExpiration.toString()) ||
       undefined,
     license_plates: formData.licensePlates || undefined,
     mileage: formData.mileage || undefined,
