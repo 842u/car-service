@@ -2,13 +2,10 @@ import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
 import { apiCarPostResponse } from '@/app/api/car/route';
-import { CarFormValues, Profile, RouteHandlerResponse } from '@/types';
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
+import { Profile, RouteHandlerResponse } from '@/types';
 
-import {
-  CAR_IMAGE_UPLOAD_ERROR_CAUSE,
-  hashFile,
-  mutateEmptyFieldsToNull,
-} from '../general';
+import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '../general';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tanstack/general';
 import { createClient } from './client';
 
@@ -72,8 +69,6 @@ export async function postNewCar(formData: CarFormValues) {
   const supabase = createClient();
 
   const { image, ...data } = formData;
-
-  mutateEmptyFieldsToNull(data);
 
   const jsonDataToValidate = JSON.stringify(data);
 
@@ -152,7 +147,10 @@ export async function getProfileById(id: string) {
 }
 
 type PatchProfileParameters =
-  | { property: Extract<keyof Profile, 'avatar_url'>; value: File | null }
+  | {
+      property: Extract<keyof Profile, 'avatar_url'>;
+      value: File | null | undefined;
+    }
   | { property: Extract<keyof Profile, 'username'>; value: string | null };
 
 export async function patchProfile({

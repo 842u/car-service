@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { EmailAuthFormType } from '@/components/ui/EmailAuthForm/EmailAuthForm';
+import {
+  EmailAuthFormValues,
+  signUpEmailAuthFormSchema,
+} from '@/schemas/zod/emailAuthFormSchema';
 import { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
-import { emailSchema, passwordSchema } from '@/utils/validation';
 
 import { apiCarPostResponse } from '../../car/route';
 
@@ -15,14 +18,13 @@ export async function POST(request: NextRequest) {
   const requestUrl = request.nextUrl.clone();
   const { searchParams } = requestUrl;
   const type = searchParams.get('type') as EmailAuthFormType;
-  const { email, password } = await request.json();
+  const requestData = (await request.json()) as EmailAuthFormValues;
 
   const { auth } = await createClient();
 
   if (type === 'sign-up') {
     try {
-      emailSchema.parse(email);
-      passwordSchema.parse(password);
+      signUpEmailAuthFormSchema.parse(requestData);
     } catch (_error) {
       return NextResponse.json<RouteHandlerResponse>(
         {
@@ -35,8 +37,8 @@ export async function POST(request: NextRequest) {
 
     try {
       const { data, error } = await auth.signUp({
-        email,
-        password,
+        email: requestData.email,
+        password: requestData.password,
         options: {
           emailRedirectTo: requestUrl.origin,
         },
@@ -49,8 +51,8 @@ export async function POST(request: NextRequest) {
       /*
        * If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user. For users who forget that have and account send email with password reset flow.
        */
-      if (data?.user?.identities?.length === 0) {
-        await auth.resetPasswordForEmail(email, {
+      if (data.user?.identities?.length === 0) {
+        await auth.resetPasswordForEmail(requestData.email, {
           redirectTo: requestUrl.origin,
         });
       }
@@ -71,8 +73,8 @@ export async function POST(request: NextRequest) {
   if (type === 'sign-in') {
     try {
       const { data, error } = await auth.signInWithPassword({
-        email,
-        password,
+        email: requestData.email,
+        password: requestData.password,
       });
 
       if (error) {

@@ -1,10 +1,19 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
+import {
+  avatarFormSchema,
+  AvatarFormValues,
+} from '@/schemas/zod/avatarFormSchema';
+import {
+  IMAGE_FILE_ACCEPTED_MIME_TYPES,
+  IMAGE_FILE_MAX_SIZE_BYTES,
+} from '@/schemas/zod/common';
 import { Profile } from '@/types';
 import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import { patchProfile } from '@/utils/supabase/general';
@@ -12,11 +21,6 @@ import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
 } from '@/utils/tanstack/general';
-import {
-  IMAGE_FILE_ACCEPTED_MIME_TYPES,
-  IMAGE_FILE_MAX_SIZE_BYTES,
-  imageFileValidationRules,
-} from '@/utils/validation';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';
@@ -26,12 +30,8 @@ import { SubmitButton } from '../SubmitButton/SubmitButton';
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
-type AvatarFormValues = {
-  avatarFile: File | null;
-};
-
-const defaultAvatarFormValues = {
-  avatarFile: null,
+const defaultAvatarFormValues: AvatarFormValues = {
+  image: null,
 };
 
 type AvatarFormProps = {
@@ -49,7 +49,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
     mutationFn: (avatarFormData: AvatarFormValues) =>
       patchProfile({
         property: 'avatar_url',
-        value: avatarFormData.avatarFile,
+        value: avatarFormData.image,
       }),
     onMutate: () =>
       onMutateProfileQueryMutation(
@@ -77,6 +77,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
     handleSubmit,
     formState: { errors, isValid, isDirty, isSubmitting, isSubmitSuccessful },
   } = useForm<AvatarFormValues>({
+    resolver: zodResolver(avatarFormSchema),
     mode: 'onChange',
     defaultValues: defaultAvatarFormValues,
   });
@@ -106,11 +107,9 @@ export function AvatarForm({ data }: AvatarFormProps) {
       <InputImage<AvatarFormValues>
         className="md:basis-1/3"
         control={control}
-        defaultValue={defaultAvatarFormValues.avatarFile}
-        errorMessage={errors.avatarFile?.message}
+        errorMessage={errors.image?.message}
         label="Avatar"
-        name="avatarFile"
-        rules={imageFileValidationRules}
+        name="image"
         withInfo={false}
         onChange={handleInputImageChange}
       >

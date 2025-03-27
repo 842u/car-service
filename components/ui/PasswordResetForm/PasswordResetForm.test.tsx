@@ -1,167 +1,110 @@
+import { createBrowserClient } from '@supabase/ssr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { correctEmails, wrongEmails } from '@/utils/validation';
+
 import { PasswordResetForm } from './PasswordResetForm';
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve({ message: 'ok', error: null }),
-  }),
-) as jest.Mock;
+jest.setTimeout(12000);
+
+jest.mock('@supabase/ssr', () => ({
+  createBrowserClient: jest.fn(() => ({
+    auth: { resetPasswordForEmail: () => ({ data: {}, error: null }) },
+  })),
+}));
 
 describe('PasswordResetForm', () => {
-  it('should render new password input field', () => {
-    render(<PasswordResetForm />);
-
-    const passwordInput = screen.getByLabelText(/new password/i);
-
-    expect(passwordInput).toBeInTheDocument();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should render confirm password input field', () => {
+  it('should render an email input field', () => {
     render(<PasswordResetForm />);
 
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
 
-    expect(confirmPasswordInput).toBeInTheDocument();
+    expect(emailInput).toBeInTheDocument();
   });
 
-  it('should be initially disabled', () => {
+  it('should render a button to send reset password email', () => {
     render(<PasswordResetForm />);
 
-    const submitButton = screen.getByRole('button', { name: /reset/i });
+    const submitButton = screen.getByRole('button', {
+      name: /send password reset email/i,
+    });
+
+    expect(submitButton).toBeInTheDocument();
+  });
+
+  it('should be disabled while not touched', () => {
+    render(<PasswordResetForm />);
+
+    const submitButton = screen.getByRole('button', {
+      name: /send password reset email/i,
+    });
 
     expect(submitButton).toBeDisabled();
   });
 
-  it('should be disabled if only new password input touched', async () => {
+  it('submit handler should not be called while wrong email provided', async () => {
+    const wrongEmail = wrongEmails[0];
     const user = userEvent.setup();
-    const correctPassword = 'correct';
     render(<PasswordResetForm />);
 
-    const passwordInput = screen.getByLabelText(/new password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-    await user.type(passwordInput, correctPassword);
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    const submitButton = screen.getByRole('button', {
+      name: /send password reset email/i,
+    });
+    await user.type(emailInput, wrongEmail);
+    await user.click(submitButton);
+    await user.click(submitButton);
+
+    expect(createBrowserClient).not.toHaveBeenCalled();
+  });
+
+  it('submit handler should be called while correct email provided', async () => {
+    const correctEmail = correctEmails[0];
+    const user = userEvent.setup();
+    render(<PasswordResetForm />);
+
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    const submitButton = screen.getByRole('button', {
+      name: /send password reset email/i,
+    });
+    await user.type(emailInput, correctEmail);
+    await user.click(submitButton);
+    await user.click(submitButton);
+
+    expect(createBrowserClient).toHaveBeenCalledTimes(1);
+  });
+
+  it('should be disabled while wrong email format provided', async () => {
+    const user = userEvent.setup();
+    const wrongEmail = wrongEmails[0];
+    render(<PasswordResetForm />);
+
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    const submitButton = screen.getByRole('button', {
+      name: /send password reset email/i,
+    });
+    await user.type(emailInput, wrongEmail);
 
     expect(submitButton).toBeDisabled();
   });
 
-  it('should be disabled if only confirm password input touched', async () => {
+  it('should be enabled while correct email format provided', async () => {
     const user = userEvent.setup();
-    const correctPassword = 'correct';
+    const correctEmail = correctEmails[0];
     render(<PasswordResetForm />);
 
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-    await user.type(confirmPasswordInput, correctPassword);
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    const submitButton = screen.getByRole('button', {
+      name: /send password reset email/i,
+    });
 
-    expect(submitButton).toBeDisabled();
-  });
-
-  it('should be disabled if one of the fields are incorrect', async () => {
-    const user = userEvent.setup();
-    const correctPassword = 'correct';
-    const wrongPassword = 'wrong';
-    render(<PasswordResetForm />);
-
-    const passwordInput = screen.getByLabelText(/new password/i);
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-
-    await user.type(passwordInput, correctPassword);
-    await user.type(confirmPasswordInput, wrongPassword);
-
-    expect(submitButton).toBeDisabled();
-
-    await user.type(passwordInput, wrongPassword);
-    await user.type(confirmPasswordInput, correctPassword);
-
-    expect(submitButton).toBeDisabled();
-  });
-
-  it('should be disabled if two passwords are the same but incorrect', async () => {
-    const user = userEvent.setup();
-    const wrongPassword = 'wrong';
-    render(<PasswordResetForm />);
-
-    const passwordInput = screen.getByLabelText(/new password/i);
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-
-    await user.type(passwordInput, wrongPassword);
-    await user.type(confirmPasswordInput, wrongPassword);
-
-    expect(submitButton).toBeDisabled();
-  });
-
-  it('should be disabled if two passwords are correct but not the same', async () => {
-    const user = userEvent.setup();
-    const correctPasswordOne = 'correctOne';
-    const correctPasswordTwo = 'correctTwo';
-    render(<PasswordResetForm />);
-
-    const passwordInput = screen.getByLabelText(/new password/i);
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-
-    await user.type(passwordInput, correctPasswordOne);
-    await user.type(confirmPasswordInput, correctPasswordTwo);
-
-    expect(submitButton).toBeDisabled();
-
-    await user.type(passwordInput, correctPasswordTwo);
-    await user.type(confirmPasswordInput, correctPasswordOne);
-
-    expect(submitButton).toBeDisabled();
-  });
-
-  it('should be enabled if two passwords are the same and are correct', async () => {
-    const user = userEvent.setup();
-    const correctPassword = 'correct';
-    render(<PasswordResetForm />);
-
-    const passwordInput = screen.getByLabelText(/new password/i);
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-
-    await user.type(passwordInput, correctPassword);
-    await user.type(confirmPasswordInput, correctPassword);
+    await user.type(emailInput, correctEmail);
 
     expect(submitButton).toBeEnabled();
-  });
-
-  it('should call submit handler on submit', async () => {
-    const user = userEvent.setup();
-    const correctPassword = 'correct';
-    render(<PasswordResetForm />);
-
-    const passwordInput = screen.getByLabelText(/new password/i);
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-
-    await user.type(passwordInput, correctPassword);
-    await user.type(confirmPasswordInput, correctPassword);
-    await user.click(submitButton);
-    await user.click(submitButton);
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it('should not call submit handler while disabled', async () => {
-    const user = userEvent.setup();
-    const correctPassword = 'correct';
-    const wrongPassword = 'wrong';
-    render(<PasswordResetForm />);
-
-    const passwordInput = screen.getByLabelText(/new password/i);
-    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /reset/i });
-
-    await user.type(passwordInput, correctPassword);
-    await user.type(confirmPasswordInput, wrongPassword);
-    await user.click(submitButton);
-    await user.click(submitButton);
-
-    expect(fetch).toHaveBeenCalledTimes(0);
   });
 });

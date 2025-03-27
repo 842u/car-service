@@ -1,4 +1,5 @@
-import { Car, CarFormValues } from '@/types';
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
+import { Car } from '@/types';
 
 export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
 const DEFAULT_TIMEOUT = 9000;
@@ -56,33 +57,25 @@ export function getMimeTypeExtensions(mimeTypes: string[]) {
   return typesExtensions;
 }
 
-export function mutateEmptyFieldsToNull(
-  data: Record<string, string | number | null>,
-) {
-  Object.keys(data).forEach((key) => {
-    if (data[key] === '' || Number.isNaN(data[key])) {
-      data[key] = null;
-    }
-  });
-}
-
 export function mapAddCarFormValuesToCarObject(formData: CarFormValues): Car {
   return {
     id: crypto.randomUUID(),
-    image_url: formData.image && URL.createObjectURL(formData.image),
-    custom_name: formData.name || 'New Car',
+    image_url: (formData.image && URL.createObjectURL(formData.image)) || null,
+    custom_name: formData.name,
     brand: formData.brand,
     model: formData.model,
     license_plates: formData.licensePlates,
-    additional_fuel_type: formData.additionalFuelType,
+    additional_fuel_type: formData.additionalFuelType || null,
     created_at: new Date().toISOString(),
-    drive_type: formData.driveType,
+    drive_type: formData.driveType || null,
     engine_capacity: formData.engineCapacity,
-    fuel_type: formData.fuelType,
+    fuel_type: formData.fuelType || null,
     mileage: formData.mileage,
-    insurance_expiration: formData.insuranceExpiration,
+    insurance_expiration:
+      formData.insuranceExpiration &&
+      formData.insuranceExpiration.toISOString(),
     production_year: formData.productionYear,
-    transmission_type: formData.transmissionType,
+    transmission_type: formData.transmissionType || null,
     vin: formData.vin,
     created_by: 'optimistic update',
   };

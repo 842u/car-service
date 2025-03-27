@@ -1,25 +1,29 @@
-import { useRef } from 'react';
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import {
-  CarFormValues,
+  CAR_VIN_LENGTH,
+  MAX_CAR_BRAND_LENGTH,
+  MAX_CAR_ENGINE_CAPACITY_VALUE,
+  MAX_CAR_LICENSE_PLATES_LENGTH,
+  MAX_CAR_MILEAGE_VALUE,
+  MAX_CAR_MODEL_LENGTH,
+  MAX_CAR_NAME_LENGTH,
+  MAX_CAR_PRODUCTION_YEAR_VALUE,
+  MIN_CAR_BRAND_LENGTH,
+  MIN_CAR_ENGINE_CAPACITY_VALUE,
+  MIN_CAR_INSURANCE_EXPIRATION_DATE,
+  MIN_CAR_LICENSE_PLATES_LENGTH,
+  MIN_CAR_MILEAGE_VALUE,
+  MIN_CAR_MODEL_LENGTH,
+  MIN_CAR_NAME_LENGTH,
+  MIN_CAR_PRODUCTION_YEAR_VALUE,
+} from '@/schemas/zod/common';
+import {
   driveTypesMapping,
   fuelTypesMapping,
   transmissionTypesMapping,
 } from '@/types';
-import {
-  carBrandValidationRules,
-  carEngineCapacityValidationRules,
-  carInsuranceExpirationValidationRules,
-  carLicensePlatesValidationRules,
-  carMileageValidationRules,
-  carModelValidationRules,
-  carNameValidationRules,
-  carVinValidationRules,
-  getCarDatabaseEnumTypeValidationRules,
-  getCarProductionYearValidationRules,
-  imageFileValidationRules,
-} from '@/utils/validation';
 
 import { CarImage } from '../CarImage/CarImage';
 import { Input } from '../Input/Input';
@@ -41,19 +45,6 @@ export function AddCarFormFields({
   inputImageUrl,
   onInputImageChange,
 }: AddCarFormFieldsProps) {
-  const carFuelTypeValidationRules = useRef(
-    getCarDatabaseEnumTypeValidationRules(fuelTypesMapping),
-  );
-  const carTransmissionTypeValidationRules = useRef(
-    getCarDatabaseEnumTypeValidationRules(transmissionTypesMapping),
-  );
-  const carDriveTypeValidationRules = useRef(
-    getCarDatabaseEnumTypeValidationRules(driveTypesMapping),
-  );
-  const carProductionYearValidationRules = useRef(
-    getCarProductionYearValidationRules(),
-  );
-
   return (
     <>
       <div className="md:flex md:flex-auto md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">
@@ -62,7 +53,6 @@ export function AddCarFormFields({
           errorMessage={errors.image?.message}
           label="Image"
           name="image"
-          rules={imageFileValidationRules}
           onChange={onInputImageChange}
         >
           <CarImage src={inputImageUrl} />
@@ -70,59 +60,54 @@ export function AddCarFormFields({
       </div>
       <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
         <Input
+          required
           errorMessage={errors.name?.message}
           label="Name"
-          maxLength={carNameValidationRules.maxLength.value}
-          minLength={carNameValidationRules.minLength.value}
+          maxLength={MAX_CAR_NAME_LENGTH}
+          minLength={MIN_CAR_NAME_LENGTH}
           name="name"
           placeholder="Enter a name for a car ..."
           register={register}
-          registerOptions={carNameValidationRules}
-          required={!!carNameValidationRules.required}
           type="text"
         />
         <Input
           errorMessage={errors.brand?.message}
           label="Brand"
-          maxLength={carBrandValidationRules.maxLength.value}
-          minLength={carBrandValidationRules.minLength.value}
+          maxLength={MAX_CAR_BRAND_LENGTH}
+          minLength={MIN_CAR_BRAND_LENGTH}
           name="brand"
           placeholder="Enter a car brand ..."
           register={register}
-          registerOptions={carBrandValidationRules}
           type="text"
         />
         <Input
           errorMessage={errors.model?.message}
           label="Model"
-          maxLength={carModelValidationRules.maxLength.value}
-          minLength={carModelValidationRules.minLength.value}
+          maxLength={MAX_CAR_MODEL_LENGTH}
+          minLength={MIN_CAR_MODEL_LENGTH}
           name="model"
           placeholder="Enter a car model ..."
           register={register}
-          registerOptions={carModelValidationRules}
           type="text"
         />
         <Input
           errorMessage={errors.licensePlates?.message}
           label="License Plates"
-          maxLength={carLicensePlatesValidationRules.maxLength.value}
-          minLength={carLicensePlatesValidationRules.minLength.value}
+          maxLength={MAX_CAR_LICENSE_PLATES_LENGTH}
+          minLength={MIN_CAR_LICENSE_PLATES_LENGTH}
           name="licensePlates"
           placeholder="Enter a car license plates ..."
           register={register}
-          registerOptions={carLicensePlatesValidationRules}
           type="text"
         />
         <Input
           errorMessage={errors.vin?.message}
           label="VIN"
-          maxLength={carVinValidationRules.maxLength.value}
-          minLength={carVinValidationRules.minLength.value}
+          maxLength={CAR_VIN_LENGTH}
+          minLength={CAR_VIN_LENGTH}
           name="vin"
           placeholder="Enter a car VIN ..."
           register={register}
-          registerOptions={carVinValidationRules}
           type="text"
         />
       </div>
@@ -133,7 +118,6 @@ export function AddCarFormFields({
           name="fuelType"
           options={fuelTypesMapping}
           register={register}
-          registerOptions={carFuelTypeValidationRules.current}
         />
         <Select
           errorMessage={errors.additionalFuelType?.message}
@@ -141,7 +125,6 @@ export function AddCarFormFields({
           name="additionalFuelType"
           options={fuelTypesMapping}
           register={register}
-          registerOptions={carFuelTypeValidationRules.current}
         />
         <Select
           errorMessage={errors.transmissionType?.message}
@@ -149,7 +132,6 @@ export function AddCarFormFields({
           name="transmissionType"
           options={transmissionTypesMapping}
           register={register}
-          registerOptions={carTransmissionTypeValidationRules.current}
         />
         <Select
           errorMessage={errors.driveType?.message}
@@ -157,48 +139,49 @@ export function AddCarFormFields({
           name="driveType"
           options={driveTypesMapping}
           register={register}
-          registerOptions={carDriveTypeValidationRules.current}
         />
       </div>
       <div className="md:flex-auto md:basis-1/3 lg:basis-1/5">
         <Input
           errorMessage={errors.productionYear?.message}
           label="Production Year"
-          max={carProductionYearValidationRules.current.max.value}
-          min={carProductionYearValidationRules.current.min.value}
+          max={MAX_CAR_PRODUCTION_YEAR_VALUE}
+          min={MIN_CAR_PRODUCTION_YEAR_VALUE}
           name="productionYear"
           placeholder="Enter production year ..."
           register={register}
-          registerOptions={carProductionYearValidationRules.current}
+          registerOptions={{ valueAsNumber: true }}
           type="number"
         />
         <Input
           errorMessage={errors.engineCapacity?.message}
           label="Engine Capacity [cc]"
-          min={carEngineCapacityValidationRules.min.value}
+          max={MAX_CAR_ENGINE_CAPACITY_VALUE}
+          min={MIN_CAR_ENGINE_CAPACITY_VALUE}
           name="engineCapacity"
           placeholder="Enter engine capacity ..."
           register={register}
-          registerOptions={carEngineCapacityValidationRules}
+          registerOptions={{ valueAsNumber: true }}
           type="number"
         />
         <Input
           errorMessage={errors.mileage?.message}
           label="Mileage [km]"
-          min={carMileageValidationRules.min.value}
+          max={MAX_CAR_MILEAGE_VALUE}
+          min={MIN_CAR_MILEAGE_VALUE}
           name="mileage"
           placeholder="Enter a car mileage ..."
           register={register}
-          registerOptions={carMileageValidationRules}
+          registerOptions={{ valueAsNumber: true }}
           type="number"
         />
         <Input
           errorMessage={errors.insuranceExpiration?.message}
           label="Insurance Expiration Date"
+          min={MIN_CAR_INSURANCE_EXPIRATION_DATE}
           name="insuranceExpiration"
           placeholder="Enter insurance expiration date ..."
           register={register}
-          registerOptions={carInsuranceExpirationValidationRules}
           type="date"
         />
       </div>

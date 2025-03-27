@@ -1,90 +1,73 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { RouteHandlerResponse } from '@/types';
-import { passwordValidationRules } from '@/utils/validation';
+import {
+  passwordResetFormSchema,
+  PasswordResetFormValues,
+} from '@/schemas/zod/passwordResetFormSchema';
+import { createClient } from '@/utils/supabase/client';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
+import { TextSeparator } from '../TextSeparator/TextSeparator';
 
-type PasswordResetFormValues = {
-  password: string;
-  passwordConfirm: string;
-};
+const defaultPasswordResetFormValues = { email: '' };
 
 export function PasswordResetForm() {
   const { addToast } = useToasts();
+
   const {
     register,
-    handleSubmit,
-    getValues,
     reset,
+    handleSubmit,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
   } = useForm<PasswordResetFormValues>({
+    resolver: zodResolver(passwordResetFormSchema),
     mode: 'onTouched',
-    defaultValues: {
-      password: '',
-      passwordConfirm: '',
-    },
+    defaultValues: defaultPasswordResetFormValues,
   });
 
-  const submitHandler: SubmitHandler<PasswordResetFormValues> = async (
-    data,
-  ) => {
-    const password = JSON.stringify(data);
-    const response = await fetch('/api/auth/password-reset', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: password,
-    });
-    const { data: responseData, error } =
-      (await response.json()) as RouteHandlerResponse;
+  const handleFormSubmit = async (formData: PasswordResetFormValues) => {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.resetPasswordForEmail(
+      formData.email,
+      { redirectTo: window.location.origin },
+    );
 
     error && addToast(error.message, 'error');
 
-    responseData && addToast('Your password has been changed.', 'success');
+    data &&
+      addToast(
+        'Your password reset request has been received. Please check your email for further instructions.',
+        'success',
+      );
   };
 
-  useEffect(() => reset(), [isSubmitSuccessful, reset]);
+  useEffect(() => {
+    isSubmitSuccessful && reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
-    <form
-      aria-label="password reset"
-      className="flex flex-col"
-      onSubmit={handleSubmit(submitHandler)}
-    >
+    <form className="flex flex-col" onSubmit={handleSubmit(handleFormSubmit)}>
       <Input
-        errorMessage={errors.password?.message}
-        label="New password"
-        name="password"
-        placeholder="Enter new password"
+        errorMessage={errors.email?.message}
+        label="Email"
+        name="email"
+        placeholder="Enter your email ..."
         register={register}
-        registerOptions={passwordValidationRules}
-        type="password"
+        type="email"
       />
-      <Input
-        errorMessage={errors.passwordConfirm?.message}
-        label="Confirm Password"
-        name="passwordConfirm"
-        placeholder="Confirm password"
-        register={register}
-        registerOptions={{
-          required: 'This field is required.',
-          validate: (value) =>
-            value === getValues('password') || 'Password not match.',
-        }}
-        type="password"
-      />
+      <TextSeparator className="my-5" />
       <SubmitButton
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
-        Reset
+        Send password reset email
       </SubmitButton>
     </form>
   );

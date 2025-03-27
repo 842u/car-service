@@ -10,8 +10,8 @@ type SelectProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   label: string;
   name: Path<T>;
-  registerOptions: RegisterOptions<T>;
   options: Record<string, string>;
+  registerOptions?: RegisterOptions<T>;
   required?: boolean;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;

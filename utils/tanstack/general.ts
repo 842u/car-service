@@ -1,9 +1,9 @@
 import { QueryClient } from '@tanstack/react-query';
 
 import { RemoveCarOwnershipFormValues } from '@/components/ui/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import {
   Car,
-  CarFormValues,
   CarOwnership,
   CarsInfiniteQueryData,
   Profile,

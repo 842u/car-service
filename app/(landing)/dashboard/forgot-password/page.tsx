@@ -1,5 +1,5 @@
 import { Section } from '@/components/sections/Section';
-import { PasswordRemindForm } from '@/components/ui/PasswordRemindForm/PasswordRemindForm';
+import { PasswordResetForm } from '@/components/ui/PasswordResetForm/PasswordResetForm';
 import { SignInLink } from '@/components/ui/SignInLink/SignInLink';
 
 export default function ForgotPasswordPage() {
@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
             password
           </p>
         </div>
-        <PasswordRemindForm />
+        <PasswordResetForm />
         <SignInLink className="mx-auto" />
       </Section>
     </main>

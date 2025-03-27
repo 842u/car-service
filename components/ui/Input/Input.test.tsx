@@ -2,8 +2,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 
-import { passwordValidationRules } from '@/utils/validation';
-
 import { Input } from './Input';
 
 describe('Input', () => {
@@ -20,7 +18,6 @@ describe('Input', () => {
           name={identifier}
           placeholder={placeholderText}
           register={register}
-          registerOptions={passwordValidationRules}
           type="text"
         />
       );
@@ -46,7 +43,6 @@ describe('Input', () => {
           name={identifier}
           placeholder={placeholderText}
           register={register}
-          registerOptions={passwordValidationRules}
           type="text"
         />
       );
@@ -74,7 +70,6 @@ describe('Input', () => {
           name={identifier}
           placeholder={placeholderText}
           register={register}
-          registerOptions={passwordValidationRules}
           type="text"
         />
       );
@@ -100,7 +95,6 @@ describe('Input', () => {
           name={identifier}
           placeholder={placeholderText}
           register={register}
-          registerOptions={passwordValidationRules}
           type="password"
         />
       );
@@ -115,7 +109,7 @@ describe('Input', () => {
     expect(visibilityButton).toBeInTheDocument();
   });
 
-  it('should switch input type from pasword to text if visibility button is clicked', async () => {
+  it('should switch input type from password to text if visibility button is clicked', async () => {
     const user = userEvent.setup();
     const placeholderText = 'Enter your inputs ...';
     const identifier = 'test-input';
@@ -129,7 +123,6 @@ describe('Input', () => {
           name={identifier}
           placeholder={placeholderText}
           register={register}
-          registerOptions={passwordValidationRules}
           type="password"
         />
       );

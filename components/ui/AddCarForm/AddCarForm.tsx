@@ -1,9 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { CarFormValues } from '@/types';
+import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { postNewCar } from '@/utils/supabase/general';
 import {
@@ -17,7 +18,7 @@ import { AddCarFormFields } from './AddCarFormFields';
 
 export const defaultAddCarFormValues: CarFormValues = {
   image: null,
-  name: null,
+  name: '',
   brand: null,
   model: null,
   licensePlates: null,
@@ -48,6 +49,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     control,
     formState: { errors, isValid, isDirty, isSubmitSuccessful },
   } = useForm<CarFormValues>({
+    resolver: zodResolver(carFormSchema),
     mode: 'onChange',
     defaultValues: defaultAddCarFormValues,
   });
@@ -62,9 +64,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         queryClient,
         inputImageUrl,
       ),
-    onSuccess: () => {
-      addToast('Car added successfully.', 'success');
-    },
+    onSuccess: () => addToast('Car added successfully.', 'success'),
     onError: (error, _, context) =>
       onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
   });
