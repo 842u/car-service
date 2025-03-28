@@ -14,9 +14,9 @@ import {
 
 import { Button } from '../Button/Button';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
-import { AddCarFormFields } from './AddCarFormFields';
+import { CarFormFields } from './CarFormFields';
 
-export const defaultAddCarFormValues: CarFormValues = {
+export const defaultCarFormValues: CarFormValues = {
   image: null,
   name: '',
   brand: null,
@@ -33,11 +33,11 @@ export const defaultAddCarFormValues: CarFormValues = {
   insuranceExpiration: null,
 };
 
-type AddCarFormProps = {
+type CarFormProps = {
   onSubmit?: () => void;
 };
 
-export function AddCarForm({ onSubmit }: AddCarFormProps) {
+export function CarForm({ onSubmit }: CarFormProps) {
   const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const { addToast } = useToasts();
@@ -51,16 +51,16 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   } = useForm<CarFormValues>({
     resolver: zodResolver(carFormSchema),
     mode: 'onChange',
-    defaultValues: defaultAddCarFormValues,
+    defaultValues: defaultCarFormValues,
   });
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (addCarFormData: CarFormValues) => postNewCar(addCarFormData),
-    onMutate: (addCarFormData) =>
+    mutationFn: (carFormData: CarFormValues) => postNewCar(carFormData),
+    onMutate: (carFormData) =>
       onMutateCarsInfiniteQueryMutation(
-        addCarFormData,
+        carFormData,
         queryClient,
         inputImageUrl,
       ),
@@ -69,9 +69,9 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
       onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
   });
 
-  const submitHandler = async (formData: CarFormValues) => {
+  const submitHandler = async (carFormData: CarFormValues) => {
     onSubmit && onSubmit();
-    mutate(formData, {
+    mutate(carFormData, {
       onSettled: () =>
         queryClient.invalidateQueries({ queryKey: ['cars', 'infinite'] }),
     });
@@ -93,7 +93,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     >
       <h2 className="text-xl">Add a new car</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
-      <AddCarFormFields
+      <CarFormFields
         control={control}
         errors={errors}
         inputImageUrl={inputImageUrl}

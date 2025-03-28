@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 
 import { AddCarButton } from '@/components/ui/AddCarButton/AddCarButton';
-import { AddCarForm } from '@/components/ui/AddCarForm/AddCarForm';
+import { CarForm } from '@/components/ui/CarForm/CarForm';
 import { CarsSection } from '@/components/ui/CarsSection/CarsSection';
 import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
 import {
@@ -18,7 +18,7 @@ export default function CarsPage() {
     <DashboardMain>
       <CarsSection />
       <DialogModal ref={dialogModalRef}>
-        <AddCarForm onSubmit={() => dialogModalRef.current?.closeModal()} />
+        <CarForm onSubmit={() => dialogModalRef.current?.closeModal()} />
       </DialogModal>
       <AddCarButton
         className="fixed right-0 bottom-40 m-4 w-16 md:m-8 lg:m-12"
