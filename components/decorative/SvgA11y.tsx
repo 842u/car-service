@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-type SvgA11yProps = ComponentProps<'svg'>;
+export type SvgA11yProps = ComponentProps<'svg'>;
 
 export function SvgA11y(props: SvgA11yProps) {
   return (
