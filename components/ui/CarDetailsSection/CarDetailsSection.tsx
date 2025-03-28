@@ -1,4 +1,7 @@
+import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
+
+import { IconButton } from '../IconButton/IconButton';
 
 export function CarDetailsSection({ carData }: { carData: Car | undefined }) {
   return (
@@ -113,6 +116,11 @@ export function CarDetailsSection({ carData }: { carData: Car | undefined }) {
             </table>
           </div>
         </section>
+      </div>
+      <div className="m-5 flex justify-end gap-5">
+        <IconButton className="group" title="edit car">
+          <CarEditIcon className="group-disabled:stroke-light-700 h-full w-full stroke-2" />
+        </IconButton>
       </div>
     </section>
   );
