@@ -1,16 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/hooks/useToasts';
 import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
-import { postNewCar } from '@/utils/supabase/general';
-import {
-  onErrorCarsInfiniteQueryMutation,
-  onMutateCarsInfiniteQueryMutation,
-} from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
@@ -33,14 +26,18 @@ export const defaultCarFormValues: CarFormValues = {
   insuranceExpiration: null,
 };
 
-type CarFormProps = {
-  onSubmit?: () => void;
+export type CarFormRef = {
+  inputImageUrl: string | null;
 };
 
-export function CarForm({ onSubmit }: CarFormProps) {
-  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
+type CarFormProps = {
+  title: string;
+  ref: Ref<CarFormRef>;
+  onSubmit: (carFormData: CarFormValues) => void;
+};
 
-  const { addToast } = useToasts();
+export function CarForm({ title, ref, onSubmit }: CarFormProps) {
+  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const {
     register,
@@ -54,33 +51,12 @@ export function CarForm({ onSubmit }: CarFormProps) {
     defaultValues: defaultCarFormValues,
   });
 
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    throwOnError: false,
-    mutationFn: (carFormData: CarFormValues) => postNewCar(carFormData),
-    onMutate: (carFormData) =>
-      onMutateCarsInfiniteQueryMutation(
-        carFormData,
-        queryClient,
-        inputImageUrl,
-      ),
-    onSuccess: () => addToast('Car added successfully.', 'success'),
-    onError: (error, _, context) =>
-      onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
-  });
-
-  const submitHandler = async (carFormData: CarFormValues) => {
-    onSubmit && onSubmit();
-    mutate(carFormData, {
-      onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['cars', 'infinite'] }),
-    });
-  };
-
   const handleInputImageChange = (file: File | undefined | null) => {
     inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
     setInputImageUrl((file && URL.createObjectURL(file)) || null);
   };
+
+  useImperativeHandle(ref, () => ({ inputImageUrl }), [inputImageUrl]);
 
   useEffect(() => {
     isSubmitSuccessful && reset();
@@ -89,9 +65,9 @@ export function CarForm({ onSubmit }: CarFormProps) {
   return (
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10 md:flex md:flex-wrap md:gap-x-10 lg:gap-x-5 lg:p-5"
-      onSubmit={handleSubmit(submitHandler)}
+      onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="text-xl">Add a new car</h2>
+      <h2 className="text-xl">{title}</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
       <CarFormFields
         control={control}
