@@ -318,12 +318,19 @@ export async function onMutateCarsQueryPatch(
   optimisticCarImageUrl: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: ['cars', carId] });
-  const previousCarsQueryData = queryClient.getQueryData(['cars', carId]);
+  const previousCarsQueryData = queryClient.getQueryData([
+    'cars',
+    carId,
+  ]) as Car;
 
   const editedCar = mapCarFormValuesToCarObject(carFormData);
-  editedCar.image_url = optimisticCarImageUrl;
+  editedCar.image_url =
+    optimisticCarImageUrl || previousCarsQueryData.image_url;
 
-  queryClient.setQueryData(['cars', carId], () => ({ ...editedCar }));
+  queryClient.setQueryData(['cars', carId], () => ({
+    ...previousCarsQueryData,
+    ...editedCar,
+  }));
 
   return { previousCarsQueryData, carId };
 }
