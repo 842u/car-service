@@ -24,7 +24,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (carFormData: CarFormValues) =>
-      handleCarFormSubmit(carFormData, 'POST'),
+      handleCarFormSubmit(carFormData, null, 'POST'),
     onMutate: (carFormData) =>
       onMutateCarsInfiniteQueryMutation(
         carFormData,

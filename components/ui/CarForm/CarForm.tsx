@@ -3,6 +3,7 @@ import { Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
+import { Car } from '@/types';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 
 import { Button } from '../Button/Button';
@@ -34,9 +35,10 @@ type CarFormProps = {
   title: string;
   ref: Ref<CarFormRef>;
   onSubmit: (carFormData: CarFormValues) => void;
+  carData?: Car;
 };
 
-export function CarForm({ title, ref, onSubmit }: CarFormProps) {
+export function CarForm({ title, ref, onSubmit, carData }: CarFormProps) {
   const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const {
@@ -59,6 +61,26 @@ export function CarForm({ title, ref, onSubmit }: CarFormProps) {
   useImperativeHandle(ref, () => ({ inputImageUrl }), [inputImageUrl]);
 
   useEffect(() => {
+    carData &&
+      reset({
+        additionalFuelType: carData.additional_fuel_type,
+        brand: carData.brand,
+        driveType: carData.drive_type,
+        engineCapacity: carData.engine_capacity,
+        fuelType: carData.fuel_type,
+        insuranceExpiration: carData.insurance_expiration as unknown as Date,
+        licensePlates: carData.license_plates,
+        mileage: carData.mileage,
+        model: carData.model,
+        name: carData.custom_name,
+        productionYear: carData.production_year,
+        transmissionType: carData.transmission_type,
+        vin: carData.vin,
+        image: null,
+      });
+  }, [carData, reset]);
+
+  useEffect(() => {
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
@@ -72,7 +94,7 @@ export function CarForm({ title, ref, onSubmit }: CarFormProps) {
       <CarFormFields
         control={control}
         errors={errors}
-        inputImageUrl={inputImageUrl}
+        inputImageUrl={carData?.image_url || inputImageUrl}
         register={register}
         onInputImageChange={handleInputImageChange}
       />
@@ -84,7 +106,10 @@ export function CarForm({ title, ref, onSubmit }: CarFormProps) {
         >
           Reset
         </Button>
-        <SubmitButton className="w-full lg:max-w-48" disabled={!isValid}>
+        <SubmitButton
+          className="w-full lg:max-w-48"
+          disabled={!isValid || !isDirty}
+        >
           Save
         </SubmitButton>
       </div>
