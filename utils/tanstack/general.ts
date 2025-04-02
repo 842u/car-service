@@ -310,3 +310,20 @@ export function onErrorCarOwnershipPatch(
     queryClient.setQueryData(['cars_ownerships', carId], updatedQueryData);
   }
 }
+
+export async function onMutateCarsQueryPatch(
+  queryClient: QueryClient,
+  carId: string,
+  carFormData: CarFormValues,
+  optimisticCarImageUrl: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: ['cars', carId] });
+  const previousCarsQueryData = queryClient.getQueryData(['cars', carId]);
+
+  const editedCar = mapCarFormValuesToCarObject(carFormData);
+  editedCar.image_url = optimisticCarImageUrl;
+
+  queryClient.setQueryData(['cars', carId], () => ({ ...editedCar }));
+
+  return { previousCarsQueryData, carId };
+}
