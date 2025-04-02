@@ -17,8 +17,6 @@ export async function POST(request: NextRequest) {
       { status: 415 },
     );
 
-  const supabase = await createClient();
-
   const formData = (await request.json()) as AddCarFormValuesToValidate;
 
   try {
@@ -52,6 +50,8 @@ export async function POST(request: NextRequest) {
       { status: 400 },
     );
   }
+
+  const supabase = await createClient();
 
   /*
    * While posting new car with image, its id is needed.
@@ -94,6 +94,90 @@ export async function POST(request: NextRequest) {
   return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
     {
       data: { id: data },
+      error: null,
+    },
+    { status: 201 },
+  );
+}
+
+export async function PATCH(request: NextRequest) {
+  if (request.headers.get('content-type') !== 'application/json')
+    return NextResponse.json<RouteHandlerResponse>(
+      { error: { message: 'Unsupported Media Type' }, data: null },
+      { status: 415 },
+    );
+
+  const formData = (await request.json()) as AddCarFormValuesToValidate;
+
+  try {
+    carFormSchema.parse(formData);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json<RouteHandlerResponse>(
+        {
+          error: {
+            message: `Server validation failed: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+          },
+          data: null,
+        },
+        { status: 400 },
+      );
+    }
+    if (error instanceof Error) {
+      return NextResponse.json<RouteHandlerResponse>(
+        {
+          error: { message: `Server validation failed: ${error.message}.` },
+          data: null,
+        },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json<RouteHandlerResponse>(
+      {
+        error: { message: 'Server data validation failed. Try again.' },
+        data: null,
+      },
+      { status: 400 },
+    );
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from('cars')
+    .update({
+      custom_name: formData.name,
+      brand: formData.brand,
+      model: formData.model,
+      production_year: formData.productionYear,
+      engine_capacity: formData.engineCapacity,
+      fuel_type: formData.fuelType !== '' ? formData.fuelType : null,
+      additional_fuel_type:
+        formData.additionalFuelType !== '' ? formData.additionalFuelType : null,
+      drive_type: formData.driveType !== '' ? formData.driveType : null,
+      transmission_type:
+        formData.transmissionType !== '' ? formData.transmissionType : null,
+      license_plates: formData.licensePlates,
+      vin: formData.licensePlates,
+      mileage: formData.mileage,
+      insurance_expiration: formData.insuranceExpiration?.toString(),
+    })
+    .select('id')
+    .single();
+
+  if (error) {
+    return NextResponse.json<RouteHandlerResponse>(
+      {
+        error: { message: `Database connection failed: ${error.message}` },
+        data: null,
+      },
+      { status: 502 },
+    );
+  }
+
+  return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
+    {
+      data: { id: data.id },
       error: null,
     },
     { status: 201 },
