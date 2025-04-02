@@ -1,7 +1,7 @@
 import { Provider } from '@supabase/supabase-js';
 import { Route } from 'next';
 
-import { apiCarPostResponse } from '@/app/api/car/route';
+import { ApiCarRequestBody, ApiCarResponse } from '@/app/api/car/route';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Profile, RouteHandlerResponse } from '@/types';
 
@@ -67,11 +67,15 @@ export async function signInWithOAuthHandler(provider: Provider) {
 
 export async function handleCarFormSubmit(
   formData: CarFormValues,
+  carId: string | null,
   method: 'POST' | 'PATCH',
 ) {
   const { image, ...data } = formData;
 
-  const jsonDataToValidate = JSON.stringify(data);
+  const jsonDataToValidate = JSON.stringify({
+    carFormData: data,
+    carId,
+  } satisfies ApiCarRequestBody);
 
   const url = new URL(window.location.origin);
   url.pathname = '/api/car' satisfies Route;
@@ -91,7 +95,7 @@ export async function handleCarFormSubmit(
   }
 
   const { data: responseData, error } =
-    (await newCarResponse?.json()) as RouteHandlerResponse<apiCarPostResponse>;
+    (await newCarResponse?.json()) as RouteHandlerResponse<ApiCarResponse>;
 
   if (error) throw new Error(error.message);
 
