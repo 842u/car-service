@@ -12,7 +12,7 @@ import {
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
-  mapAddCarFormValuesToCarObject,
+  mapCarFormValuesToCarObject,
 } from '../general';
 
 export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
@@ -69,8 +69,7 @@ export async function onMutateCarsInfiniteQueryMutation(
   await queryClient.cancelQueries({ queryKey: ['cars', 'infinite'] });
   const previousCarsQuery = queryClient.getQueryData(['cars', 'infinite']);
 
-  const newCar = mapAddCarFormValuesToCarObject(addCarFormData);
-  newCar.image_url && URL.revokeObjectURL(newCar.image_url);
+  const newCar = mapCarFormValuesToCarObject(addCarFormData);
   newCar.image_url = optimisticCarImageUrl;
 
   queryClient.setQueryData(

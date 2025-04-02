@@ -57,10 +57,10 @@ export function getMimeTypeExtensions(mimeTypes: string[]) {
   return typesExtensions;
 }
 
-export function mapAddCarFormValuesToCarObject(formData: CarFormValues): Car {
+export function mapCarFormValuesToCarObject(formData: CarFormValues): Car {
   return {
     id: crypto.randomUUID(),
-    image_url: (formData.image && URL.createObjectURL(formData.image)) || null,
+    image_url: null,
     custom_name: formData.name,
     brand: formData.brand,
     model: formData.model,
