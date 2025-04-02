@@ -3,7 +3,7 @@ import { useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { postNewCar } from '@/utils/supabase/general';
+import { handleCarFormSubmit } from '@/utils/supabase/general';
 import {
   onErrorCarsInfiniteQueryMutation,
   onMutateCarsInfiniteQueryMutation,
@@ -23,7 +23,8 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (carFormData: CarFormValues) => postNewCar(carFormData),
+    mutationFn: (carFormData: CarFormValues) =>
+      handleCarFormSubmit(carFormData, 'POST'),
     onMutate: (carFormData) =>
       onMutateCarsInfiniteQueryMutation(
         carFormData,
