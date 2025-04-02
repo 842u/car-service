@@ -94,7 +94,7 @@ export function CarForm({ title, ref, onSubmit, carData }: CarFormProps) {
       <CarFormFields
         control={control}
         errors={errors}
-        inputImageUrl={carData?.image_url || inputImageUrl}
+        inputImageUrl={inputImageUrl || carData?.image_url || null}
         register={register}
         onInputImageChange={handleInputImageChange}
       />
