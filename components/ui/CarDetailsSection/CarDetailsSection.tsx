@@ -1,9 +1,20 @@
+import { useRef } from 'react';
+
 import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
 
+import { EditCarForm } from '../CarForm/EditCarForm';
+import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
 import { IconButton } from '../IconButton/IconButton';
 
-export function CarDetailsSection({ carData }: { carData: Car | undefined }) {
+type CarDetailsSectionProps = {
+  carId: string;
+  carData: Car | undefined;
+};
+
+export function CarDetailsSection({ carId, carData }: CarDetailsSectionProps) {
+  const dialogModalRef = useRef<DialogModalRef>(null);
+
   return (
     <section>
       <h2 className="my-2 text-xl">Details</h2>
@@ -119,9 +130,19 @@ export function CarDetailsSection({ carData }: { carData: Car | undefined }) {
       </div>
       <div className="m-5 flex justify-end gap-5">
         <IconButton className="group" title="edit car">
-          <CarEditIcon className="group-disabled:stroke-light-700 h-full w-full stroke-2" />
+          <CarEditIcon
+            className="group-disabled:stroke-light-700 h-full w-full stroke-2"
+            onClick={() => dialogModalRef.current?.showModal()}
+          />
         </IconButton>
       </div>
+      <DialogModal ref={dialogModalRef}>
+        <EditCarForm
+          carData={carData}
+          carId={carId}
+          onSubmit={() => dialogModalRef.current?.closeModal()}
+        />
+      </DialogModal>
     </section>
   );
 }

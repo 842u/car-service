@@ -25,7 +25,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
         isPending={isPending}
         name={carData?.custom_name}
       />
-      <CarDetailsSection carData={carData} />
+      <CarDetailsSection carData={carData} carId={carId} />
       <CarOwnershipSection carId={carId} />
     </section>
   );
