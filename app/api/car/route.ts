@@ -167,7 +167,7 @@ export async function PATCH(request: NextRequest) {
           ? carFormData.transmissionType
           : null,
       license_plates: carFormData.licensePlates,
-      vin: carFormData.licensePlates,
+      vin: carFormData.vin,
       mileage: carFormData.mileage,
       insurance_expiration: carFormData.insuranceExpiration?.toString(),
     })
