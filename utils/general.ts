@@ -57,6 +57,12 @@ export function getMimeTypeExtensions(mimeTypes: string[]) {
   return typesExtensions;
 }
 
+function parseDate(date: Date) {
+  const [year, month, dayWithTimezone] = date.toISOString().split('-');
+  const [day] = dayWithTimezone.split('T');
+  return [year, month, day].join('-');
+}
+
 export function mapCarFormValuesToCarObject(
   type: 'add' | 'edit',
   formData: CarFormValues,
@@ -72,7 +78,7 @@ export function mapCarFormValuesToCarObject(
         model: formData.model,
         license_plates: formData.licensePlates,
         additional_fuel_type: formData.additionalFuelType || null,
-        created_at: new Date().toISOString(),
+        created_at: parseDate(new Date()),
         drive_type: formData.driveType || null,
         engine_capacity: formData.engineCapacity,
         fuel_type: formData.fuelType || null,
@@ -99,7 +105,7 @@ export function mapCarFormValuesToCarObject(
         mileage: formData.mileage,
         insurance_expiration:
           formData.insuranceExpiration &&
-          formData.insuranceExpiration.toISOString(),
+          parseDate(formData.insuranceExpiration),
         production_year: formData.productionYear,
         transmission_type: formData.transmissionType || null,
         vin: formData.vin,
