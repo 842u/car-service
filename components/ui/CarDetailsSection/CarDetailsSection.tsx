@@ -129,11 +129,12 @@ export function CarDetailsSection({ carId, carData }: CarDetailsSectionProps) {
         </section>
       </div>
       <div className="m-5 flex justify-end gap-5">
-        <IconButton className="group" title="edit car">
-          <CarEditIcon
-            className="group-disabled:stroke-light-700 h-full w-full stroke-2"
-            onClick={() => dialogModalRef.current?.showModal()}
-          />
+        <IconButton
+          className="group"
+          title="edit car"
+          onClick={() => dialogModalRef.current?.showModal()}
+        >
+          <CarEditIcon className="group-disabled:stroke-light-700 h-full w-full stroke-2" />
         </IconButton>
       </div>
       <DialogModal ref={dialogModalRef}>
