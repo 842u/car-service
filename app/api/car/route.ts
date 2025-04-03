@@ -5,8 +5,13 @@ import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
 import { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 
-export type AddCarFormValuesToValidate = Omit<CarFormValues, 'image'>;
-export type apiCarPostResponse = { id: string };
+type CarFormValuesToValidate = Omit<CarFormValues, 'image'>;
+
+export type ApiCarResponse = { id: string };
+export type ApiCarRequestBody = {
+  carFormData: CarFormValuesToValidate;
+  carId: string | null;
+};
 
 export const maxDuration = 10;
 
@@ -17,12 +22,10 @@ export async function POST(request: NextRequest) {
       { status: 415 },
     );
 
-  const supabase = await createClient();
-
-  const formData = (await request.json()) as AddCarFormValuesToValidate;
+  const { carFormData } = (await request.json()) as ApiCarRequestBody;
 
   try {
-    carFormSchema.parse(formData);
+    carFormSchema.parse(carFormData);
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json<RouteHandlerResponse>(
@@ -53,6 +56,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const supabase = await createClient();
+
   /*
    * While posting new car with image, its id is needed.
    * Due to RLS policies on "cars" table for SELECT,
@@ -63,22 +68,22 @@ export async function POST(request: NextRequest) {
    * so RLS restricts immediate SELECT while using "supabase.from().insert().select()".
    */
   const { data, error } = await supabase.rpc('create_new_car', {
-    additional_fuel_type: formData.additionalFuelType || undefined,
-    custom_name: formData.name || 'New car',
-    brand: formData.brand || undefined,
-    drive_type: formData.driveType || undefined,
-    engine_capacity: formData.engineCapacity || undefined,
-    fuel_type: formData.fuelType || undefined,
+    additional_fuel_type: carFormData.additionalFuelType || undefined,
+    custom_name: carFormData.name || 'New car',
+    brand: carFormData.brand || undefined,
+    drive_type: carFormData.driveType || undefined,
+    engine_capacity: carFormData.engineCapacity || undefined,
+    fuel_type: carFormData.fuelType || undefined,
     insurance_expiration:
-      (formData.insuranceExpiration &&
-        formData.insuranceExpiration.toISOString()) ||
+      (carFormData.insuranceExpiration &&
+        carFormData.insuranceExpiration.toString()) ||
       undefined,
-    license_plates: formData.licensePlates || undefined,
-    mileage: formData.mileage || undefined,
-    model: formData.model || undefined,
-    production_year: formData.productionYear || undefined,
-    transmission_type: formData.transmissionType || undefined,
-    vin: formData.vin || undefined,
+    license_plates: carFormData.licensePlates || undefined,
+    mileage: carFormData.mileage || undefined,
+    model: carFormData.model || undefined,
+    production_year: carFormData.productionYear || undefined,
+    transmission_type: carFormData.transmissionType || undefined,
+    vin: carFormData.vin || undefined,
   });
 
   if (error) {
@@ -91,9 +96,98 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
+  return NextResponse.json<RouteHandlerResponse<ApiCarResponse>>(
     {
       data: { id: data },
+      error: null,
+    },
+    { status: 201 },
+  );
+}
+
+export async function PATCH(request: NextRequest) {
+  if (request.headers.get('content-type') !== 'application/json')
+    return NextResponse.json<RouteHandlerResponse>(
+      { error: { message: 'Unsupported Media Type' }, data: null },
+      { status: 415 },
+    );
+
+  const { carFormData, carId } = (await request.json()) as ApiCarRequestBody;
+
+  try {
+    carFormSchema.parse(carFormData);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json<RouteHandlerResponse>(
+        {
+          error: {
+            message: `Server validation failed: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+          },
+          data: null,
+        },
+        { status: 400 },
+      );
+    }
+    if (error instanceof Error) {
+      return NextResponse.json<RouteHandlerResponse>(
+        {
+          error: { message: `Server validation failed: ${error.message}.` },
+          data: null,
+        },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json<RouteHandlerResponse>(
+      {
+        error: { message: 'Server data validation failed. Try again.' },
+        data: null,
+      },
+      { status: 400 },
+    );
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from('cars')
+    .update({
+      custom_name: carFormData.name,
+      brand: carFormData.brand,
+      model: carFormData.model,
+      production_year: carFormData.productionYear,
+      engine_capacity: carFormData.engineCapacity,
+      fuel_type: carFormData.fuelType !== '' ? carFormData.fuelType : null,
+      additional_fuel_type:
+        carFormData.additionalFuelType !== ''
+          ? carFormData.additionalFuelType
+          : null,
+      drive_type: carFormData.driveType !== '' ? carFormData.driveType : null,
+      transmission_type:
+        carFormData.transmissionType !== ''
+          ? carFormData.transmissionType
+          : null,
+      license_plates: carFormData.licensePlates,
+      vin: carFormData.vin,
+      mileage: carFormData.mileage,
+      insurance_expiration: carFormData.insuranceExpiration?.toString(),
+    })
+    .eq('id', carId || '')
+    .select('id')
+    .single();
+
+  if (error) {
+    return NextResponse.json<RouteHandlerResponse>(
+      {
+        error: { message: `Database connection failed: ${error.message}` },
+        data: null,
+      },
+      { status: 502 },
+    );
+  }
+
+  return NextResponse.json<RouteHandlerResponse<ApiCarResponse>>(
+    {
+      data: { id: data.id },
       error: null,
     },
     { status: 201 },

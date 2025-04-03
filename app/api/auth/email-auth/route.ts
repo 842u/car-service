@@ -8,8 +8,6 @@ import {
 import { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 
-import { apiCarPostResponse } from '../../car/route';
-
 export const maxDuration = 10;
 
 type apiAuthEmailAuthPostResponse = { id: string };
@@ -81,7 +79,7 @@ export async function POST(request: NextRequest) {
         throw new Error(error.message);
       }
 
-      return NextResponse.json<RouteHandlerResponse<apiCarPostResponse>>(
+      return NextResponse.json<RouteHandlerResponse>(
         { data: { id: data.user.id }, error: null },
         { status: 200 },
       );

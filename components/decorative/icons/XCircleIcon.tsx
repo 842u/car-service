@@ -1,16 +1,14 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { SvgA11y, SvgA11yProps } from '../SvgA11y';
 
-export function XCircleIcon({ ...props }: ComponentPropsWithoutRef<'svg'>) {
+export function XCircleIcon({ ...props }: SvgA11yProps) {
   return (
-    <svg
-      fill="none"
-      viewBox="0 0 200 200"
+    <SvgA11y
       {...props}
-      stroke="#000"
       strokeLinecap="round"
       strokeLinejoin="round"
+      viewBox="0 0 200 200"
     >
       <path d="m81 81 38 38m0-38-38 38m94-19a75 75 0 1 1-150 0 75 75 0 0 1 150 0Z" />
-    </svg>
+    </SvgA11y>
   );
 }

@@ -1,22 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/hooks/useToasts';
 import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
+import { Car } from '@/types';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
-import { postNewCar } from '@/utils/supabase/general';
-import {
-  onErrorCarsInfiniteQueryMutation,
-  onMutateCarsInfiniteQueryMutation,
-} from '@/utils/tanstack/general';
 
 import { Button } from '../Button/Button';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
-import { AddCarFormFields } from './AddCarFormFields';
+import { CarFormFields } from './CarFormFields';
 
-export const defaultAddCarFormValues: CarFormValues = {
+export const defaultCarFormValues: CarFormValues = {
   image: null,
   name: '',
   brand: null,
@@ -33,14 +27,19 @@ export const defaultAddCarFormValues: CarFormValues = {
   insuranceExpiration: null,
 };
 
-type AddCarFormProps = {
-  onSubmit?: () => void;
+export type CarFormRef = {
+  inputImageUrl: string | null;
 };
 
-export function AddCarForm({ onSubmit }: AddCarFormProps) {
-  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
+type CarFormProps = {
+  title: string;
+  ref: Ref<CarFormRef>;
+  onSubmit: (carFormData: CarFormValues) => void;
+  carData?: Car;
+};
 
-  const { addToast } = useToasts();
+export function CarForm({ title, ref, onSubmit, carData }: CarFormProps) {
+  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const {
     register,
@@ -51,36 +50,35 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   } = useForm<CarFormValues>({
     resolver: zodResolver(carFormSchema),
     mode: 'onChange',
-    defaultValues: defaultAddCarFormValues,
+    defaultValues: defaultCarFormValues,
   });
-
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    throwOnError: false,
-    mutationFn: (addCarFormData: CarFormValues) => postNewCar(addCarFormData),
-    onMutate: (addCarFormData) =>
-      onMutateCarsInfiniteQueryMutation(
-        addCarFormData,
-        queryClient,
-        inputImageUrl,
-      ),
-    onSuccess: () => addToast('Car added successfully.', 'success'),
-    onError: (error, _, context) =>
-      onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
-  });
-
-  const submitHandler = async (formData: CarFormValues) => {
-    onSubmit && onSubmit();
-    mutate(formData, {
-      onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['cars', 'infinite'] }),
-    });
-  };
 
   const handleInputImageChange = (file: File | undefined | null) => {
     inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
     setInputImageUrl((file && URL.createObjectURL(file)) || null);
   };
+
+  useImperativeHandle(ref, () => ({ inputImageUrl }), [inputImageUrl]);
+
+  useEffect(() => {
+    carData &&
+      reset({
+        additionalFuelType: carData.additional_fuel_type,
+        brand: carData.brand,
+        driveType: carData.drive_type,
+        engineCapacity: carData.engine_capacity,
+        fuelType: carData.fuel_type,
+        insuranceExpiration: carData.insurance_expiration as unknown as Date,
+        licensePlates: carData.license_plates,
+        mileage: carData.mileage,
+        model: carData.model,
+        name: carData.custom_name,
+        productionYear: carData.production_year,
+        transmissionType: carData.transmission_type,
+        vin: carData.vin,
+        image: null,
+      });
+  }, [carData, reset]);
 
   useEffect(() => {
     isSubmitSuccessful && reset();
@@ -89,14 +87,14 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
   return (
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10 md:flex md:flex-wrap md:gap-x-10 lg:gap-x-5 lg:p-5"
-      onSubmit={handleSubmit(submitHandler)}
+      onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="text-xl">Add a new car</h2>
+      <h2 className="text-xl">{title}</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
-      <AddCarFormFields
+      <CarFormFields
         control={control}
         errors={errors}
-        inputImageUrl={inputImageUrl}
+        inputImageUrl={inputImageUrl || carData?.image_url || null}
         register={register}
         onInputImageChange={handleInputImageChange}
       />
@@ -108,7 +106,10 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
         >
           Reset
         </Button>
-        <SubmitButton className="w-full lg:max-w-48" disabled={!isValid}>
+        <SubmitButton
+          className="w-full lg:max-w-48"
+          disabled={!isValid || !isDirty}
+        >
           Save
         </SubmitButton>
       </div>

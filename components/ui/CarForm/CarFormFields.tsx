@@ -30,7 +30,7 @@ import { Input } from '../Input/Input';
 import { InputImage } from '../InputImage/InputImage';
 import { Select } from '../Select/Select';
 
-type AddCarFormFieldsProps = {
+type CarFormFieldsProps = {
   register: UseFormRegister<CarFormValues>;
   control: Control<CarFormValues>;
   errors: FieldErrors<CarFormValues>;
@@ -38,13 +38,13 @@ type AddCarFormFieldsProps = {
   onInputImageChange: (file: File | undefined | null) => void;
 };
 
-export function AddCarFormFields({
+export function CarFormFields({
   register,
   control,
   errors,
   inputImageUrl,
   onInputImageChange,
-}: AddCarFormFieldsProps) {
+}: CarFormFieldsProps) {
   return (
     <>
       <div className="md:flex md:flex-auto md:basis-1/3 md:items-center md:justify-center lg:basis-1/5">

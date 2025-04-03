@@ -12,7 +12,7 @@ import {
 
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
-  mapAddCarFormValuesToCarObject,
+  mapCarFormValuesToCarObject,
 } from '../general';
 
 export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
@@ -62,15 +62,14 @@ function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
 }
 
 export async function onMutateCarsInfiniteQueryMutation(
-  addCarFormData: CarFormValues,
+  carFormData: CarFormValues,
   queryClient: QueryClient,
   optimisticCarImageUrl: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: ['cars', 'infinite'] });
   const previousCarsQuery = queryClient.getQueryData(['cars', 'infinite']);
 
-  const newCar = mapAddCarFormValuesToCarObject(addCarFormData);
-  newCar.image_url && URL.revokeObjectURL(newCar.image_url);
+  const newCar = mapCarFormValuesToCarObject('add', carFormData);
   newCar.image_url = optimisticCarImageUrl;
 
   queryClient.setQueryData(
@@ -310,4 +309,32 @@ export function onErrorCarOwnershipPatch(
 
     queryClient.setQueryData(['cars_ownerships', carId], updatedQueryData);
   }
+}
+
+export async function onMutateCarsQueryPatch(
+  queryClient: QueryClient,
+  carId: string,
+  carFormData: CarFormValues,
+  optimisticCarImageUrl: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: ['cars', carId] });
+  const previousCarsQueryData = queryClient.getQueryData([
+    'cars',
+    carId,
+  ]) as Car;
+
+  const editedCar = mapCarFormValuesToCarObject(
+    'edit',
+    carFormData,
+    previousCarsQueryData,
+  );
+  editedCar.image_url =
+    optimisticCarImageUrl || previousCarsQueryData.image_url;
+
+  queryClient.setQueryData(['cars', carId], () => ({
+    ...previousCarsQueryData,
+    ...editedCar,
+  }));
+
+  return { previousCarsQueryData, carId };
 }

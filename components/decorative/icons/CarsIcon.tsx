@@ -1,15 +1,14 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { SvgA11y, SvgA11yProps } from '../SvgA11y';
 
-export function CarsIcon({ ...props }: ComponentPropsWithoutRef<'svg'>) {
+export function CarsIcon({ ...props }: SvgA11yProps) {
   return (
-    <svg
-      fill="none"
-      viewBox="0 0 200 200"
+    <SvgA11y
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
+      viewBox="0 0 200 200"
     >
       <path d="M127 129c1 3 3 4 7 3h5v2l14-2c2 0 2-5 2-5V99l-1-3m0-1v1M73 69v-5c0-5 1-6 7-7l4-5s-8-1-8-4 8-2 8-2 3 0 2 4c5-8 9-12 13-15 5-3 18-3 18-3l1 1h18l2-1s13 0 17 3c5 3 8 7 13 15-1-4 2-4 2-4s8-1 8 2c1 3-8 4-8 4l4 5c6 1 7 2 8 7v29s0 5-2 5l-14 2v-2h-5c-4 1-5 0-7-2M73 69h-1c-5 3-8 7-13 15 1-3-2-4-2-4s-8-1-8 2 8 4 8 4l-4 5c-6 1-7 2-8 8v4m28-34c5-3 16-3 16-3l2 1h18l2-1s12 0 17 3 8 7 13 15c-1-3 2-4 2-4s8-1 8 2-8 4-8 4l4 5c5 1 7 2 7 5m-109 7c-5 3-8 7-13 16 0-4-2-5-2-5s-9-1-9 2 9 4 9 4l-4 5c-6 1-8 2-8 8v28s0 5 2 5l14 2v-2h4c5 1 6 0 8-3 3 3 50 3 53 0 2 3 4 4 8 3h4v2l14-2c2 0 2-5 2-5v-28c0-6-2-7-7-8l-5-5s9-1 9-4-9-2-9-2-2 1-1 5c-5-9-9-13-13-16-5-3-18-3-18-3l-1 1H64l-2-1s-11 0-17 3Z" />
-    </svg>
+    </SvgA11y>
   );
 }
