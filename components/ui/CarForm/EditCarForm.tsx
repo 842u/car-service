@@ -47,7 +47,7 @@ export function EditCarForm({ carId, carData, onSubmit }: EditCarFormProps) {
     onSubmit && onSubmit();
     mutate(carFormData, {
       onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['cars', 'infinite'] }),
+        queryClient.invalidateQueries({ queryKey: ['cars', carId] }),
     });
   };
 
