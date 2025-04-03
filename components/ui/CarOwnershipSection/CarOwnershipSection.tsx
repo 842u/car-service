@@ -1,13 +1,7 @@
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { UseQueryResult } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/hooks/useToasts';
-import {
-  getCarOwnershipsByCarId,
-  getCurrentSessionProfile,
-  getProfileById,
-} from '@/utils/supabase/general';
+import { CarOwnership, Profile } from '@/types';
 
 import { CarOwnershipControls } from '../CarOwnershipControls/CarOwnershipControls';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
@@ -15,59 +9,27 @@ import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCa
 
 type CarOwnershipSectionProps = {
   carId: string;
+  carOwnershipData: CarOwnership[] | undefined;
+  ownersProfilesData: UseQueryResult<Profile, Error>[];
+  sessionProfileData: Profile | undefined | null;
+  isCurrentUserPrimaryOwner: boolean;
 };
 
 const defaultCarOwnershipFormValues: RemoveCarOwnershipFormValues = {
   ownersIds: [],
 };
 
-export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
-  const { addToast } = useToasts();
-
-  const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
-    queryKey: ['cars_ownerships', carId],
-    queryFn: () => getCarOwnershipsByCarId(carId),
-  });
-
-  const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
-    {
-      queryKey: ['profiles', 'session'],
-      queryFn: getCurrentSessionProfile,
-    },
-  );
-
+export function CarOwnershipSection({
+  carId,
+  carOwnershipData,
+  isCurrentUserPrimaryOwner,
+  ownersProfilesData,
+  sessionProfileData,
+}: CarOwnershipSectionProps) {
   const removeCarOwnershipFormMethods = useForm({
     mode: 'onChange',
     defaultValues: defaultCarOwnershipFormValues,
   });
-
-  const allowDependentQueries =
-    sessionProfileData && carOwnershipData && carOwnershipData.length;
-
-  const ownersProfiles = useQueries({
-    queries: allowDependentQueries
-      ? carOwnershipData
-          .filter((ownership) => ownership.owner_id !== sessionProfileData.id)
-          .map((ownership) => {
-            return {
-              queryKey: ['profiles', ownership.owner_id],
-              queryFn: () => getProfileById(ownership.owner_id),
-            };
-          })
-      : [],
-  });
-
-  const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
-    (ownership) =>
-      ownership.owner_id === sessionProfileData?.id &&
-      ownership.is_primary_owner,
-  );
-
-  useEffect(() => {
-    carOwnershipDataError && addToast(carOwnershipDataError.message, 'error');
-    sessionProfileDataError &&
-      addToast(sessionProfileDataError.message, 'error');
-  }, [addToast, carOwnershipDataError, sessionProfileDataError]);
 
   return (
     <section className="my-5 overflow-x-auto">
@@ -75,7 +37,7 @@ export function CarOwnershipSection({ carId }: CarOwnershipSectionProps) {
       <CarOwnershipTable
         carOwnershipData={carOwnershipData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfilesData={ownersProfiles}
+        ownersProfilesData={ownersProfilesData}
         register={removeCarOwnershipFormMethods.register}
         sessionProfileData={sessionProfileData}
       />
