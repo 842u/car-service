@@ -57,28 +57,57 @@ export function getMimeTypeExtensions(mimeTypes: string[]) {
   return typesExtensions;
 }
 
-export function mapCarFormValuesToCarObject(formData: CarFormValues): Car {
-  return {
-    id: crypto.randomUUID(),
-    image_url: null,
-    custom_name: formData.name,
-    brand: formData.brand,
-    model: formData.model,
-    license_plates: formData.licensePlates,
-    additional_fuel_type: formData.additionalFuelType || null,
-    created_at: new Date().toISOString(),
-    drive_type: formData.driveType || null,
-    engine_capacity: formData.engineCapacity,
-    fuel_type: formData.fuelType || null,
-    mileage: formData.mileage,
-    insurance_expiration:
-      formData.insuranceExpiration &&
-      formData.insuranceExpiration.toISOString(),
-    production_year: formData.productionYear,
-    transmission_type: formData.transmissionType || null,
-    vin: formData.vin,
-    created_by: 'optimistic update',
-  };
+export function mapCarFormValuesToCarObject(
+  type: 'add' | 'edit',
+  formData: CarFormValues,
+  editedCarData?: Car,
+): Car {
+  switch (type) {
+    case 'add':
+      return {
+        id: crypto.randomUUID(),
+        image_url: null,
+        custom_name: formData.name,
+        brand: formData.brand,
+        model: formData.model,
+        license_plates: formData.licensePlates,
+        additional_fuel_type: formData.additionalFuelType || null,
+        created_at: new Date().toISOString(),
+        drive_type: formData.driveType || null,
+        engine_capacity: formData.engineCapacity,
+        fuel_type: formData.fuelType || null,
+        mileage: formData.mileage,
+        insurance_expiration:
+          formData.insuranceExpiration &&
+          formData.insuranceExpiration.toISOString(),
+        production_year: formData.productionYear,
+        transmission_type: formData.transmissionType || null,
+        vin: formData.vin,
+        created_by: 'optimistic update',
+      };
+    case 'edit':
+      return {
+        image_url: null,
+        custom_name: formData.name,
+        brand: formData.brand,
+        model: formData.model,
+        license_plates: formData.licensePlates,
+        additional_fuel_type: formData.additionalFuelType || null,
+        drive_type: formData.driveType || null,
+        engine_capacity: formData.engineCapacity,
+        fuel_type: formData.fuelType || null,
+        mileage: formData.mileage,
+        insurance_expiration:
+          formData.insuranceExpiration &&
+          formData.insuranceExpiration.toISOString(),
+        production_year: formData.productionYear,
+        transmission_type: formData.transmissionType || null,
+        vin: formData.vin,
+        id: editedCarData?.id || '',
+        created_by: editedCarData?.created_by || null,
+        created_at: editedCarData?.created_at || null,
+      };
+  }
 }
 
 export function enqueueRevokeObjectUrl(url: string) {
