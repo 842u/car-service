@@ -10,9 +10,14 @@ import { IconButton } from '../IconButton/IconButton';
 type CarDetailsSectionProps = {
   carId: string;
   carData: Car | undefined;
+  isCurrentUserPrimaryOwner: boolean;
 };
 
-export function CarDetailsSection({ carId, carData }: CarDetailsSectionProps) {
+export function CarDetailsSection({
+  carId,
+  carData,
+  isCurrentUserPrimaryOwner,
+}: CarDetailsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
   return (
@@ -131,10 +136,11 @@ export function CarDetailsSection({ carId, carData }: CarDetailsSectionProps) {
       <div className="m-5 flex justify-end gap-5">
         <IconButton
           className="group"
+          disabled={!isCurrentUserPrimaryOwner}
           title="edit car"
           onClick={() => dialogModalRef.current?.showModal()}
         >
-          <CarEditIcon className="group-disabled:stroke-light-700 h-full w-full stroke-2" />
+          <CarEditIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
         </IconButton>
       </div>
       <DialogModal ref={dialogModalRef}>

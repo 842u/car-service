@@ -74,7 +74,11 @@ export function CarOverview({ carId }: CarOverviewProps) {
         isPending={isPending}
         name={carData?.custom_name}
       />
-      <CarDetailsSection carData={carData} carId={carId} />
+      <CarDetailsSection
+        carData={carData}
+        carId={carId}
+        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+      />
       <CarOwnershipSection
         carId={carId}
         carOwnershipData={carOwnershipData}
