@@ -6,9 +6,9 @@ export function MoonIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="M181 125A81 81 0 0 1 69 50c0-11 2-22 6-31a81 81 0 1 0 106 106Z" />
+      <path d="M45.3 31.3a20.3 20.3 0 0 1-28.1-18.8c0-2.8.5-5.4 1.5-7.8a20.3 20.3 0 1 0 26.6 26.6Z" />
     </SvgA11y>
   );
 }

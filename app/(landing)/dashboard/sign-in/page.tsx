@@ -1,4 +1,4 @@
-import { BrandLogoFull } from '@/components/decorative/icons/BrandLogoFull';
+import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
 import EmailAuthForm from '@/components/ui/EmailAuthForm/EmailAuthForm';
 import { OAuthProviders } from '@/components/ui/OAuthProviders/OAuthProviders';
 import { SignUpLink } from '@/components/ui/SignUpLink/SignUpLink';
@@ -29,7 +29,7 @@ export default function SignInPage() {
         aria-hidden
         className="from-light-500 to-light-600 dark:from-dark-450 dark:to-dark-900 fixed top-0 left-0 -z-10 hidden h-full w-full bg-linear-to-bl lg:block"
       >
-        <BrandLogoFull className="stroke-accent-500 h-full w-full" />
+        <BrandFullIcon className="stroke-accent-500 h-full w-full" />
       </div>
     </main>
   );

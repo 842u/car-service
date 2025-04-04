@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant item-active (&:is(.item-active *));
 
 @theme {
   --color-*: initial;

@@ -18,10 +18,7 @@ export function HamburgerButton({
 
   return (
     <button
-      className={twMerge(
-        'flex h-16 w-16 flex-col justify-between px-5 py-6',
-        className,
-      )}
+      className={twMerge('flex h-16 w-16 flex-col justify-between', className)}
       type="button"
       {...props}
     >

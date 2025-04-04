@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'next-themes';
 
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeButton } from './ThemeButton';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -18,9 +18,9 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-describe('ThemeSwitcher', () => {
+describe('ThemeButton', () => {
   it('should render a button', () => {
-    render(<ThemeSwitcher />);
+    render(<ThemeButton />);
 
     const button = screen.getByRole('button', { name: 'switch color theme' });
 
@@ -32,7 +32,7 @@ describe('ThemeSwitcher', () => {
 
     render(
       <ThemeProvider defaultTheme={currentTheme} enableSystem={false}>
-        <ThemeSwitcher />
+        <ThemeButton />
       </ThemeProvider>,
     );
 
@@ -46,7 +46,7 @@ describe('ThemeSwitcher', () => {
 
     render(
       <ThemeProvider defaultTheme={currentTheme} enableSystem={false}>
-        <ThemeSwitcher />
+        <ThemeButton />
       </ThemeProvider>,
     );
 
@@ -61,7 +61,7 @@ describe('ThemeSwitcher', () => {
 
     render(
       <ThemeProvider defaultTheme={currentTheme} enableSystem={false}>
-        <ThemeSwitcher />
+        <ThemeButton />
       </ThemeProvider>,
     );
 

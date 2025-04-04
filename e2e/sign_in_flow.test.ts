@@ -34,7 +34,9 @@ test.describe('sign_in_flow - @unauthenticated', () => {
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
 
-    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    const togglePasswordVisibility = page.getByRole('button', {
+      name: 'toggle visibility',
+    });
     await togglePasswordVisibility.click();
     await emailInput.fill(nonExistingEmail);
     await passwordInput.fill(password);
@@ -58,7 +60,9 @@ test.describe('sign_in_flow - @unauthenticated', () => {
     await page.goto(signInPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
-    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    const togglePasswordVisibility = page.getByRole('button', {
+      name: 'toggle visibility',
+    });
     await togglePasswordVisibility.click();
     await emailInput.fill(email);
     await passwordInput.fill(password);
