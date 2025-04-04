@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { BrandLogoMinimal } from '@/components/decorative/icons/BrandLogoMinimal';
+import { BrandSimpleIcon } from '@/components/decorative/icons/BrandSimpleIcon';
 import { smoochSans } from '@/utils/fonts';
 
 import { LinkButton } from '../LinkButton/LinkButton';
@@ -20,7 +20,7 @@ export function BrandLabel({ className }: BrandLabelPops) {
       href="/"
       variant="transparent"
     >
-      <BrandLogoMinimal className="stroke-accent-500 aspect-square h-full md:inline-block" />
+      <BrandSimpleIcon className="stroke-accent-500 aspect-square h-full md:inline-block" />
       <span
         className={`hidden md:inline-block md:text-3xl md:font-medium md:whitespace-nowrap ${smoochSans.className}`}
       >

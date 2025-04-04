@@ -1,6 +1,6 @@
 import { SvgA11y, SvgA11yProps } from '../SvgA11y';
 
-export function BrandLogoMinimal({ ...props }: SvgA11yProps) {
+export function BrandSimpleIcon({ ...props }: SvgA11yProps) {
   return (
     <SvgA11y
       {...props}
