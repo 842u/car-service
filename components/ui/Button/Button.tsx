@@ -19,7 +19,11 @@ export function Button({
     <button
       type="button"
       {...props}
-      className={twMerge(buttonVariants[variant], 'h-10', className)}
+      className={twMerge(
+        buttonVariants[variant],
+        'block h-10 px-5 py-2',
+        className,
+      )}
     >
       {children}
     </button>
