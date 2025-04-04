@@ -26,7 +26,7 @@ export function DashboardNavBar() {
   return (
     <NavBar>
       <NavBarBackground />
-      <BrandLabel className="z-10" />
+      <BrandLabel className="z-10 m-2" />
       <UserBadge className="z-10 py-1 md:py-2" />
       <HamburgerButton
         aria-label="toggle navigation menu"
