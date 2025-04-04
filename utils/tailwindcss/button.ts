@@ -1,7 +1,7 @@
 import { ButtonVariants } from '@/types';
 
 const baseClassName =
-  'cursor-pointer rounded-lg border disabled:cursor-not-allowed text-center block';
+  'cursor-pointer rounded-lg border disabled:cursor-not-allowed text-center block disabled:text-light-800';
 
 const defaultClassName = `${baseClassName} border-alpha-grey-500 bg-alpha-grey-200 disabled:bg-alpha-grey-50 disabled:border-alpha-grey-100 hover:border-alpha-grey-600 hover:bg-alpha-grey-500`;
 

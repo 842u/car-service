@@ -1,5 +1,3 @@
-import { twMerge } from 'tailwind-merge';
-
 import { Button } from '../Button/Button';
 import { Spinner } from '../Spinner/Spinner';
 
@@ -19,12 +17,10 @@ export function SubmitButton({
   return (
     <Button
       aria-label={children}
-      className={twMerge(
-        'border-accent-500 bg-accent-800 text-light-500 disabled:border-accent-700 disabled:bg-accent-900 disabled:text-light-800 transition-colors',
-        className,
-      )}
+      className={className}
       disabled={disabled}
       type="submit"
+      variant="accent"
     >
       {isSubmitting ? (
         <Spinner className="stroke-alpha-grey-900 fill-alpha-grey-900 m-auto h-full" />
