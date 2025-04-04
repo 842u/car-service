@@ -6,7 +6,9 @@ import {
   useRef,
 } from 'react';
 
-import { CloseBUtton } from '../CloseButton/CloseButton';
+import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
+
+import { IconButton } from '../IconButton/IconButton';
 
 export type DialogModalRef = {
   showModal: () => void;
@@ -39,7 +41,14 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
       onClick={closeModal}
     >
       <div className="absolute top-0 right-0 m-4">
-        <CloseBUtton onClick={closeModal} />
+        <IconButton
+          className="p-0"
+          title="close"
+          variant="accent"
+          onClick={closeModal}
+        >
+          <XCircleIcon className="h-full w-full stroke-5" />
+        </IconButton>
       </div>
       <div
         onClick={(event: SyntheticEvent) => {
