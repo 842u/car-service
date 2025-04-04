@@ -33,12 +33,12 @@ export function ThemeButton({ className, ...props }: ThemeButtonProps) {
     >
       {resolvedTheme === 'dark' ? (
         <SunIcon
-          className="stroke-light-500 h-full w-full stroke-10"
+          className="stroke-light-500 h-full w-full stroke-3"
           data-testid="light-theme-icon"
         />
       ) : (
         <MoonIcon
-          className="stroke-dark-500 h-full w-full stroke-10"
+          className="stroke-dark-500 h-full w-full stroke-3"
           data-testid="dark-theme-icon"
         />
       )}

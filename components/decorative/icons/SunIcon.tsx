@@ -6,9 +6,9 @@ export function SunIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="M100 25v19m53 3-13 13m35 40h-19m-3 53-13-13m-40 16v19m-40-35-13 13m-3-53H25m35-40L47 47m84 53a31 31 0 1 1-62 0 31 31 0 0 1 62 0Z" />
+      <path d="M25 6.3v4.6m13.3.8-3.4 3.4m8.9 9.9H39m-.8 13.3-3.4-3.4M25 39.1v4.6M15 35l-3.3 3.4M11 25H6.2m8.9-10-3.4-3.3M32.8 25a7.8 7.8 0 1 1-15.6 0 7.8 7.8 0 0 1 15.6 0Z" />
     </SvgA11y>
   );
 }
