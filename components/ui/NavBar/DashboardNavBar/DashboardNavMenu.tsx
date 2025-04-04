@@ -2,11 +2,10 @@ import { twJoin, twMerge } from 'tailwind-merge';
 
 import { CarsIcon } from '@/components/decorative/icons/CarsIcon';
 import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
+import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
-import { SignOutLink } from '../../SignOutLink/SignOutLink';
 import { ThemeButton } from '../../ThemeButton/ThemeButton';
-import { DashboardNavMenuBottomItem } from './DashboardNavMenuBottomItem';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {
@@ -40,24 +39,26 @@ export function DashboardNavMenu({
       />
       <ul className="grow">
         <DashboardNavMenuItem href="/dashboard" text="Dashboard">
-          <HomeIcon />
+          <HomeIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
-          <CarsIcon />
+          <CarsIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/account" text="Account">
-          <UserIcon />
+          <UserIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
         </DashboardNavMenuItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
-        <DashboardNavMenuBottomItem>
-          <div className="h-8">
-            <ThemeButton className="h-full w-full p-0" />
-          </div>
-        </DashboardNavMenuBottomItem>
-        <DashboardNavMenuBottomItem>
-          <SignOutLink />
-        </DashboardNavMenuBottomItem>
+        <li className="m-2 py-0">
+          <ThemeButton className="h-10 w-full px-2 py-1" />
+        </li>
+        <DashboardNavMenuItem
+          href="/api/auth/sign-out"
+          prefetch={false}
+          text="Sign out"
+        >
+          <SignOutIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
+        </DashboardNavMenuItem>
       </ul>
     </nav>
   );
