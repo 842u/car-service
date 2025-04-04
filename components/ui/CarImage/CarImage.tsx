@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
-import { BrandLogoFull } from '@/components/decorative/icons/BrandLogoFull';
+import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
 
 type CarImageProps = {
   src?: string | null;
@@ -21,7 +21,7 @@ export function CarImage({ src, className }: CarImageProps) {
       )}
 
       {!src && (
-        <BrandLogoFull className="stroke-alpha-grey-600 stroke-1 object-cover" />
+        <BrandFullIcon className="stroke-alpha-grey-600 stroke-1 object-cover" />
       )}
     </div>
   );
