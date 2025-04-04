@@ -37,6 +37,7 @@ export function CarOwnershipControls({
         className="group"
         disabled={!isCurrentUserPrimaryOwner}
         title="grant primary ownership"
+        variant="accent"
         onClick={() => grantPrimaryOwnershipFormModalRef.current?.showModal()}
       >
         <ChangeKeyIcon className="group-disabled:stroke-light-800 h-full w-full stroke-3" />
@@ -48,6 +49,7 @@ export function CarOwnershipControls({
           !removeCarOwnershipFormMethods.formState.isSubmitting
         }
         title="remove selected owners"
+        variant="accent"
         onClick={() => removeCarOwnershipFormModalRef.current?.showModal()}
       >
         <UserMinusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-[0.5]" />
@@ -56,6 +58,7 @@ export function CarOwnershipControls({
         className="group"
         disabled={!isCurrentUserPrimaryOwner}
         title="add owner"
+        variant="accent"
         onClick={() => newCarOwnerFormModalRef.current?.showModal()}
       >
         <UserPlusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-[0.5]" />

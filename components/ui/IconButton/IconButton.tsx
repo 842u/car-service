@@ -1,9 +1,13 @@
 import { ComponentProps, ReactElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { ButtonVariants } from '@/types';
+import { buttonVariants } from '@/utils/tailwindcss/button';
+
 type IconButtonProps = {
   title: string;
   children: ReactElement<ComponentProps<'svg'>, 'svg'>;
+  variant?: ButtonVariants;
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
@@ -13,6 +17,7 @@ export function IconButton({
   title,
   children,
   onClick,
+  variant = 'default',
   disabled,
   className,
 }: IconButtonProps) {
@@ -20,7 +25,8 @@ export function IconButton({
     <button
       aria-label={title}
       className={twMerge(
-        'border-accent-500 bg-accent-800 disabled:bg-accent-900 disabled:border-accent-700 hover:border-accent-300 hover:bg-accent-700 h-11 cursor-pointer overflow-hidden rounded-lg border px-3 disabled:cursor-not-allowed',
+        buttonVariants[variant],
+        'h-11 overflow-hidden px-3',
         className,
       )}
       disabled={disabled}
