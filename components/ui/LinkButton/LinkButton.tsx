@@ -20,7 +20,7 @@ export function LinkButton({
     <Link
       className={twMerge(
         buttonVariants[variant],
-        'block px-5 py-2 text-sm',
+        'block h-10 px-5 py-2 text-sm',
         className,
       )}
       {...props}
