@@ -20,7 +20,7 @@ export function IconButton({
     <button
       aria-label={title}
       className={twMerge(
-        'border-accent-500 bg-accent-800 disabled:bg-accent-900 disabled:border-accent-700 hover:border-accent-400 h-12 cursor-pointer overflow-hidden rounded-lg border px-2 disabled:cursor-not-allowed',
+        'border-accent-500 bg-accent-800 disabled:bg-accent-900 disabled:border-accent-700 hover:border-accent-400 h-12 cursor-pointer overflow-hidden rounded-lg border px-3 py-1 disabled:cursor-not-allowed',
         className,
       )}
       disabled={disabled}
