@@ -14,13 +14,13 @@ export function BrandLabel({ className }: BrandLabelPops) {
     <LinkButton
       aria-label="landing page"
       className={twMerge(
-        'py-0 md:flex md:flex-row md:items-center md:gap-3',
+        'p-0 px-1 md:flex md:flex-row md:items-center md:gap-3',
         className,
       )}
       href="/"
       variant="transparent"
     >
-      <BrandLogoMinimal className="stroke-accent-500 aspect-square h-full stroke-10 md:inline-block" />
+      <BrandLogoMinimal className="stroke-accent-500 aspect-square h-full md:inline-block" />
       <span
         className={`hidden md:inline-block md:text-3xl md:font-medium md:whitespace-nowrap ${smoochSans.className}`}
       >

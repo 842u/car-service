@@ -21,12 +21,12 @@ export function LandingNavBar() {
   };
 
   return (
-    <NavBar>
+    <NavBar className="py-1">
       <NavBarBackground />
-      <BrandLabel className="z-10 my-auto" />
+      <BrandLabel className="z-10 h-full" />
       <HamburgerButton
         aria-label="toggle navigation menu"
-        className="z-20 lg:hidden"
+        className="z-20 h-full p-5 lg:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
       />
