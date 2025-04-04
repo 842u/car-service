@@ -74,7 +74,7 @@ export function Input<T extends FieldValues>({
           {...register(name, registerOptions)}
         />
         {type === 'password' && (
-          <div className="absolute top-0 right-0 mr-2 flex h-full flex-col justify-center">
+          <div className="absolute top-0 right-0 flex h-full flex-col justify-center p-2">
             <ToggleVisibilityButton
               isVisible={isPasswordVisible}
               onClick={passwordVisibilityHandler}

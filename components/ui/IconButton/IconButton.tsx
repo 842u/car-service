@@ -31,6 +31,7 @@ export function IconButton({
       )}
       disabled={disabled}
       title={title}
+      type="button"
       onClick={onClick}
     >
       {children}
