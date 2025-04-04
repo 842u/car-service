@@ -12,7 +12,9 @@ class AuthenticatedPage {
 
   constructor(pageInstance: Page) {
     this.page = pageInstance;
-    this.passwordVisibilityButton = this.page.getByLabel(/toggle visibility/i);
+    this.passwordVisibilityButton = this.page.getByRole('button', {
+      name: 'toggle visibility',
+    });
     this.emailInput = this.page.getByPlaceholder(/enter your email/i);
     this.passwordInput = this.page.getByPlaceholder(/enter your password/i);
     this.singInButton = this.page.getByRole('button', { name: /sign in/i });
