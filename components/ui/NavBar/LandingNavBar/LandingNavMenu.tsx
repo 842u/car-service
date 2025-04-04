@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 
 import { LinkButton } from '../../LinkButton/LinkButton';
-import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
+import { ThemeButton } from '../../ThemeButton/ThemeButton';
 import { LandingNavMenuItem } from './LandingNavMenuItem';
 
 type LandingNavMenuProps = {
@@ -33,7 +33,7 @@ export function LandingNavMenu({
         </LandingNavMenuItem>
         <LandingNavMenuItem>
           <div className="my-4 flex flex-col items-center justify-center lg:w-6">
-            <ThemeSwitcher className="w-full" />
+            <ThemeButton className="w-full" />
           </div>
         </LandingNavMenuItem>
       </ul>

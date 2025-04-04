@@ -5,7 +5,7 @@ import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
 import { SignOutLink } from '../../SignOutLink/SignOutLink';
-import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
+import { ThemeButton } from '../../ThemeButton/ThemeButton';
 import { DashboardNavMenuBottomItem } from './DashboardNavMenuBottomItem';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
@@ -52,7 +52,7 @@ export function DashboardNavMenu({
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
         <DashboardNavMenuBottomItem>
           <div className="h-8 w-full">
-            <ThemeSwitcher className="h-full w-full" />
+            <ThemeButton className="h-full w-full" />
           </div>
         </DashboardNavMenuBottomItem>
         <DashboardNavMenuBottomItem>

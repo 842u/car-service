@@ -7,11 +7,11 @@ import { twMerge } from 'tailwind-merge';
 import { MoonIcon } from '@/components/decorative/icons/MoonIcon';
 import { SunIcon } from '@/components/decorative/icons/SunIcon';
 
-type ThemeSwitcherProps = ComponentProps<'button'> & {
+type ThemeButtonProps = ComponentProps<'button'> & {
   className?: string;
 };
 
-export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
+export function ThemeButton({ className, ...props }: ThemeButtonProps) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
 
