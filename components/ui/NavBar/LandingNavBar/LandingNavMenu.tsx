@@ -27,14 +27,12 @@ export function LandingNavMenu({
     >
       <ul className="relative flex w-4/5 flex-col items-center justify-center md:w-1/2 lg:w-full lg:flex-row lg:gap-4">
         <LandingNavMenuItem>
-          <LinkButton className="my-4" href="/dashboard" variant="accent">
+          <LinkButton className="my-2" href="/dashboard" variant="accent">
             Dashboard
           </LinkButton>
         </LandingNavMenuItem>
         <LandingNavMenuItem>
-          <div className="my-4 flex flex-col items-center justify-center lg:w-6">
-            <ThemeButton className="w-full" />
-          </div>
+          <ThemeButton className="my-2 w-full" />
         </LandingNavMenuItem>
       </ul>
     </nav>

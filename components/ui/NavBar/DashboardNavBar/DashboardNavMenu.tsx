@@ -51,8 +51,8 @@ export function DashboardNavMenu({
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
         <DashboardNavMenuBottomItem>
-          <div className="h-8 w-full">
-            <ThemeButton className="h-full w-full" />
+          <div className="h-8">
+            <ThemeButton className="h-full w-full p-0" />
           </div>
         </DashboardNavMenuBottomItem>
         <DashboardNavMenuBottomItem>

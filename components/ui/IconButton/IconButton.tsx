@@ -1,4 +1,4 @@
-import { ComponentProps, ReactElement } from 'react';
+import { ComponentProps, MouseEventHandler, ReactElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { ButtonVariants } from '@/types';
@@ -8,7 +8,7 @@ type IconButtonProps = {
   title: string;
   children: ReactElement<ComponentProps<'svg'>, 'svg'>;
   variant?: ButtonVariants;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   className?: string;
 };
