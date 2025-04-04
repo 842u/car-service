@@ -1,6 +1,7 @@
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { MailIcon } from '@/components/decorative/icons/MailIcon';
 import { Section } from '@/components/sections/Section';
+import { buttonVariants } from '@/utils/tailwindcss/button';
 
 import { BrandLabel } from '../BrandLabel/BrandLabel';
 
@@ -13,14 +14,19 @@ export function Footer() {
         <address className="flex h-10 items-center justify-evenly lg:justify-start lg:gap-10">
           <a
             aria-label="GitHub"
+            className={buttonVariants.transparent}
             href="https://github.com/842u/car-service"
             rel="noreferrer"
             target="_blank"
           >
-            <GitHubIcon className="fill-alpha-grey-900 dark:fill-alpha-grey-500 w-8" />
+            <GitHubIcon className="stroke-dark-500 dark:stroke-light-500 m-2 w-8 stroke-4" />
           </a>
-          <a aria-label="Mail" href="mailto:contact@842u.dev">
-            <MailIcon className="fill-alpha-grey-900 dark:fill-alpha-grey-500 w-8" />
+          <a
+            aria-label="Mail"
+            className={buttonVariants.transparent}
+            href="mailto:contact@842u.dev"
+          >
+            <MailIcon className="stroke-dark-500 dark:stroke-light-500 m-2 w-8" />
           </a>
         </address>
       </Section>
