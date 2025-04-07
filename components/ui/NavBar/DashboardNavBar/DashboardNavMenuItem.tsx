@@ -37,7 +37,7 @@ export function DashboardNavMenuItem({
         prefetch={prefetch}
         variant="transparent"
       >
-        <div className="aspect-square h-full stroke-10 md:shrink-0">
+        <div className="aspect-square h-full stroke-2 md:shrink-0">
           {children}
         </div>
         <span className="whitespace-nowrap transition-all md:translate-x-0 md:opacity-0 md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
