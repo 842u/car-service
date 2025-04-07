@@ -2,9 +2,9 @@ import { twJoin, twMerge } from 'tailwind-merge';
 
 import { CarsIcon } from '@/components/decorative/icons/CarsIcon';
 import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
-import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
+import { SignOutLink } from '../../SignOutLink/SignOutLink';
 import { ThemeButton } from '../../ThemeButton/ThemeButton';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
@@ -49,16 +49,12 @@ export function DashboardNavMenu({
         </DashboardNavMenuItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
-        <li className="m-2 py-0">
-          <ThemeButton className="h-10 w-full px-2 py-1" />
+        <li className="mx-2 my-4 h-10">
+          <ThemeButton className="w-full" />
         </li>
-        <DashboardNavMenuItem
-          href="/api/auth/sign-out"
-          prefetch={false}
-          text="Sign out"
-        >
-          <SignOutIcon />
-        </DashboardNavMenuItem>
+        <li className="mx-2 my-4 h-10">
+          <SignOutLink />
+        </li>
       </ul>
     </nav>
   );
