@@ -32,7 +32,9 @@ export function LandingNavMenu({
           </LinkButton>
         </LandingNavMenuItem>
         <LandingNavMenuItem>
-          <ThemeButton className="my-2 w-full" />
+          <div className="aspect-square h-10">
+            <ThemeButton className="h-full w-full" />
+          </div>
         </LandingNavMenuItem>
       </ul>
     </nav>
