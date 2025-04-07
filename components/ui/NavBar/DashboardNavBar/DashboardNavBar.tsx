@@ -26,10 +26,9 @@ export function DashboardNavBar() {
   return (
     <NavBar>
       <NavBarBackground />
-      <BrandLabel className="z-10 my-auto" />
-      <UserBadge className="z-10 py-1 md:py-2" />
+      <BrandLabel className="z-10 h-full" />
+      <UserBadge className="z-10" />
       <HamburgerButton
-        aria-label="toggle navigation menu"
         className="z-10 md:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
