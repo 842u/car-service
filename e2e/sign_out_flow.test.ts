@@ -10,7 +10,9 @@ test.describe('sign_out_flow - @authenticated', () => {
     const dashboardPath: Route = '/dashboard';
 
     await page.goto(dashboardPath);
-    const hamburgerButton = page.getByLabel(/toggle navigation menu/i);
+    const hamburgerButton = page.getByRole('button', {
+      name: 'toggle navigation menu',
+    });
     await hamburgerButton.click();
     const signOutLink = page.getByRole('link', { name: /Sign Out/i });
     await signOutLink.click();
