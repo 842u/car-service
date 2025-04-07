@@ -41,13 +41,8 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
       onClick={closeModal}
     >
       <div className="absolute top-0 right-0 m-4">
-        <IconButton
-          className="p-0"
-          title="close"
-          variant="accent"
-          onClick={closeModal}
-        >
-          <XCircleIcon className="h-full w-full stroke-5" />
+        <IconButton className="h-10 p-1" title="close" onClick={closeModal}>
+          <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
         </IconButton>
       </div>
       <div

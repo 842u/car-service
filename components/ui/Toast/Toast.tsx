@@ -7,6 +7,8 @@ import { useToasts } from '@/hooks/useToasts';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 
+import { IconButton } from '../IconButton/IconButton';
+
 type ToastProps = ToastObject & {
   ref?: Ref<HTMLLIElement>;
   className?: string;
@@ -42,14 +44,14 @@ export function Toast({
     >
       {icon}
       <span>{message}</span>
-      <button
+      <IconButton
         aria-label="close notification"
-        className="cursor-pointer"
-        type="button"
+        className="h-10 p-2"
+        title="close toast"
         onClick={closeButtonClickHandler}
       >
-        <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 aspect-square w-6 shrink-0 stroke-10" />
-      </button>
+        <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
+      </IconButton>
     </m.li>
   );
 }

@@ -6,9 +6,9 @@ export function XCircleIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="m81 81 38 38m0-38-38 38m94-19a75 75 0 1 1-150 0 75 75 0 0 1 150 0Z" />
+      <path d="m15 15 10 10m0 0 10 10M25 25l10-10M25 25 15 35m34-10a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" />
     </SvgA11y>
   );
 }
