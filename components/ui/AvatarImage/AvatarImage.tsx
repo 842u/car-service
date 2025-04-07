@@ -21,7 +21,9 @@ export function AvatarImage({ src, className }: AvatarImageProps) {
       )}
 
       {!src && (
-        <UserIcon className="stroke-alpha-grey-600 stroke-2 object-cover" />
+        <div className="h-full w-full py-2">
+          <UserIcon className="stroke-alpha-grey-600 h-full w-full object-cover" />
+        </div>
       )}
     </div>
   );

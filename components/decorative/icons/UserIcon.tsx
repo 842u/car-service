@@ -9,9 +9,9 @@ export function UserIcon({ ...props }: SvgA11yProps) {
       data-testid={USER_ICON_TEST_ID}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="M131.2 50a31.2 31.2 0 1 1-62.4 0 31.2 31.2 0 0 1 62.4 0Zm-32 130.3c-21.4.1-42.5-4.4-62-13.1a62 62 0 0 1 124 0 149.5 149.5 0 0 1-62 13.1Z" />
+      <path d="M34.6 10.35a9.35 9.35 0 1 1-18.7 0 9.35 9.35 0 0 1 18.7 0ZM6.54 45.06a18.46 18.46 0 0 1 36.92 0A44.3 44.3 0 0 1 25 49a44.3 44.3 0 0 1-18.46-3.94Z" />
     </SvgA11y>
   );
 }
