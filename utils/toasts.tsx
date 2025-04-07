@@ -20,7 +20,7 @@ const successIcon = (
 const successClassName = 'border-success-700';
 
 const infoIcon = (
-  <InformationCircleIcon className="stroke-alpha-grey-700 aspect-square w-6 shrink-0 stroke-10" />
+  <InformationCircleIcon className="stroke-alpha-grey-700 w-full stroke-4" />
 );
 
 export function getToastAssets(type: ToastType): ToastAsset | null {

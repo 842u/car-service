@@ -6,9 +6,9 @@ export function InformationCircleIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="M94 94h0a6 6 0 0 1 9 7l-6 23a6 6 0 0 0 9 7h0m69-31a75 75 0 1 1-150 0 75 75 0 0 1 150 0Zm-75-31h0v0h0v0Z" />
+      <path d="m22.6 21 .13-.07a2.46 2.46 0 0 1 2.57.27 2.26 2.26 0 0 1 .83 2.38l-2.26 8.8a2.26 2.26 0 0 0 .82 2.38 2.44 2.44 0 0 0 2.57.27l.14-.07M49 25.5a24 24 0 1 1-48 0 24 24 0 0 1 48 0Zm-24.51-9.77h1.02v1H24.5v-1Z" />
     </SvgA11y>
   );
 }
