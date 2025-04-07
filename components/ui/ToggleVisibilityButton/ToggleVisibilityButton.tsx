@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
-import { EyeClosedIcon } from '@/components/decorative/icons/EyeClosed';
-import { EyeOpenIcon } from '@/components/decorative/icons/EyeOpen';
+import { EyeCloseIcon } from '@/components/decorative/icons/EyeCloseIcon';
+import { EyeOpenIcon } from '@/components/decorative/icons/EyeOpenIcon';
 
 import { IconButton } from '../IconButton/IconButton';
 
@@ -16,13 +16,13 @@ export function ToggleVisibilityButton({
   return (
     <IconButton className="p-0" title="toggle visibility" {...props}>
       {isVisible ? (
-        <EyeClosedIcon
-          className="stroke-dark-500 dark:stroke-light-500 pointer-events-none h-full w-full stroke-10"
+        <EyeCloseIcon
+          className="stroke-dark-500 dark:stroke-light-500 pointer-events-none h-full w-full stroke-2"
           data-testid="eye-slash-icon"
         />
       ) : (
         <EyeOpenIcon
-          className="stroke-dark-500 dark:stroke-light-500 pointer-events-none h-full w-full stroke-10"
+          className="stroke-dark-500 dark:stroke-light-500 pointer-events-none h-full w-full stroke-2"
           data-testid="eye-icon"
         />
       )}
