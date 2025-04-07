@@ -10,7 +10,7 @@ const errorIcon = (
 const errorClassName = 'border-error-500';
 
 const warningIcon = (
-  <ExclamationTriangleIcon className="stroke-warning-600 aspect-square w-6 shrink-0 stroke-10" />
+  <ExclamationTriangleIcon className="stroke-warning-600 h-full w-full stroke-4" />
 );
 const warningClassName = 'border-warning-600';
 
