@@ -21,7 +21,7 @@ export function CarImage({ src, className }: CarImageProps) {
       )}
 
       {!src && (
-        <BrandFullIcon className="stroke-alpha-grey-600 stroke-1 object-cover" />
+        <BrandFullIcon className="stroke-alpha-grey-600 stroke-[0.1] object-cover" />
       )}
     </div>
   );

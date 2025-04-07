@@ -29,7 +29,7 @@ export default function SignInPage() {
         aria-hidden
         className="from-light-500 to-light-600 dark:from-dark-450 dark:to-dark-900 fixed top-0 left-0 -z-10 hidden h-full w-full bg-linear-to-bl lg:block"
       >
-        <BrandFullIcon className="stroke-accent-500 h-full w-full" />
+        <BrandFullIcon className="stroke-accent-500 h-full w-full stroke-[0.1]" />
       </div>
     </main>
   );
