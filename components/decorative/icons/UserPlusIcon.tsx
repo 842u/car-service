@@ -6,9 +6,9 @@ export function UserPlusIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 24 24"
+      viewBox="0 0 50 50"
     >
-      <path d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.3-4.1a3.4 3.4 0 1 1-6.7 0 3.4 3.4 0 0 1 6.8 0ZM3 19.2v0a6.4 6.4 0 0 1 12.8 0v0A12.3 12.3 0 0 1 9.3 21C7 21 4.9 20.4 3 19.2Z" />
+      <path d="M41 13v8m0 0v8m0-8h8m-8 0h-8m-6-11a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM1 44.3V44a17 17 0 1 1 34 0v.3A32.85 32.85 0 0 1 18 49a32.85 32.85 0 0 1-17-4.7v0Z" />
     </SvgA11y>
   );
 }

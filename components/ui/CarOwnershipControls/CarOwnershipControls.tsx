@@ -61,7 +61,7 @@ export function CarOwnershipControls({
         variant="accent"
         onClick={() => newCarOwnerFormModalRef.current?.showModal()}
       >
-        <UserPlusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-[0.5]" />
+        <UserPlusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
       </IconButton>
       <DialogModal ref={grantPrimaryOwnershipFormModalRef}>
         <GrantCarPrimaryOwnershipForm
