@@ -47,7 +47,7 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
         className="flex items-center justify-center gap-2 py-1.5"
         onClick={googleButtonClickHandler}
       >
-        <GoogleIcon className="fill-dark-500 dark:fill-light-500 h-full" />
+        <GoogleIcon className="fill-dark-500 dark:fill-light-500 stroke-dark-500 dark:stroke-light-500 h-full" />
         <span>Continue with Google</span>
       </Button>
     </section>
