@@ -42,7 +42,7 @@ export function Toast({
       id={id}
       {...props}
     >
-      {icon}
+      <div className="aspect-square h-10 p-2">{icon}</div>
       <span>{message}</span>
       <IconButton
         aria-label="close notification"

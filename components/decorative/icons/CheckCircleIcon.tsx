@@ -6,9 +6,9 @@ export function CheckCircleIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="m75 106 19 19 31-44m50 19a75 75 0 1 1-150 0 75 75 0 0 1 150 0Z" />
+      <path d="m12.5 26.79 9.38 10.71 15.62-25M49 25a24 24 0 1 1-48 0 24 24 0 0 1 48 0Z" />
     </SvgA11y>
   );
 }

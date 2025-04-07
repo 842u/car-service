@@ -15,9 +15,9 @@ const warningIcon = (
 const warningClassName = 'border-warning-600';
 
 const successIcon = (
-  <CheckCircleIcon className="stroke-success-700 aspect-square w-6 shrink-0 stroke-10" />
+  <CheckCircleIcon className="stroke-success-700 h-full w-full stroke-2" />
 );
-const succesClassName = 'border-success-700';
+const successClassName = 'border-success-700';
 
 const infoIcon = (
   <InformationCircleIcon className="stroke-alpha-grey-700 aspect-square w-6 shrink-0 stroke-10" />
@@ -39,7 +39,7 @@ export function getToastAssets(type: ToastType): ToastAsset | null {
 
     case 'success':
       return {
-        style: succesClassName,
+        style: successClassName,
         icon: successIcon,
       };
 
