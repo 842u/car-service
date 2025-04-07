@@ -19,14 +19,14 @@ export function Footer() {
             rel="noreferrer"
             target="_blank"
           >
-            <GitHubIcon className="stroke-dark-500 dark:stroke-light-500 m-2 w-8 stroke-4" />
+            <GitHubIcon className="stroke-dark-500 dark:stroke-light-500 m-2 w-8 stroke-2" />
           </a>
           <a
             aria-label="Mail"
             className={buttonVariants.transparent}
             href="mailto:contact@842u.dev"
           >
-            <MailIcon className="stroke-dark-500 dark:stroke-light-500 m-2 w-8" />
+            <MailIcon className="stroke-dark-500 dark:stroke-light-500 m-2 w-8 stroke-2" />
           </a>
         </address>
       </Section>
