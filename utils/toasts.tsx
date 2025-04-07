@@ -5,12 +5,12 @@ import { InformationCircleIcon } from '@/components/decorative/icons/Information
 import { ToastAsset, ToastType } from '@/types';
 
 const errorIcon = (
-  <ExclamationCircleIcon className="stroke-error-500 h-full w-full stroke-4" />
+  <ExclamationCircleIcon className="stroke-error-500 h-full w-full stroke-2" />
 );
 const errorClassName = 'border-error-500';
 
 const warningIcon = (
-  <ExclamationTriangleIcon className="stroke-warning-600 h-full w-full stroke-4" />
+  <ExclamationTriangleIcon className="stroke-warning-600 h-full w-full stroke-2" />
 );
 const warningClassName = 'border-warning-600';
 
@@ -20,7 +20,7 @@ const successIcon = (
 const successClassName = 'border-success-700';
 
 const infoIcon = (
-  <InformationCircleIcon className="stroke-alpha-grey-700 w-full stroke-4" />
+  <InformationCircleIcon className="stroke-light-500 h-full w-full stroke-2" />
 );
 
 export function getToastAssets(type: ToastType): ToastAsset | null {
