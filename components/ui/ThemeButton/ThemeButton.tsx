@@ -38,7 +38,7 @@ export function ThemeButton({ className, ...props }: ThemeButtonProps) {
         />
       ) : (
         <MoonIcon
-          className="stroke-dark-500 h-full w-full stroke-3"
+          className="stroke-dark-500 h-full w-full stroke-2"
           data-testid="dark-theme-icon"
         />
       )}

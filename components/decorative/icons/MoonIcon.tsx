@@ -8,7 +8,7 @@ export function MoonIcon({ ...props }: SvgA11yProps) {
       strokeLinejoin="round"
       viewBox="0 0 50 50"
     >
-      <path d="M45.3 31.3a20.3 20.3 0 0 1-28.1-18.8c0-2.8.5-5.4 1.5-7.8a20.3 20.3 0 1 0 26.6 26.6Z" />
+      <path d="M49 33.65A24.96 24.96 0 0 1 16.35 1 24.96 24.96 0 1 0 49 33.65Z" />
     </SvgA11y>
   );
 }
