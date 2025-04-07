@@ -23,9 +23,8 @@ export function LandingNavBar() {
   return (
     <NavBar>
       <NavBarBackground />
-      <BrandLabel className="z-20" />
+      <BrandLabel className="z-10 h-full" />
       <HamburgerButton
-        aria-label="toggle navigation menu"
         className="z-20 lg:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}

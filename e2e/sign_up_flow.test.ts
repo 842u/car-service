@@ -17,7 +17,9 @@ test.describe('sign_up_flow - @unauthenticated', () => {
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
     const submitButton = page.getByLabel('Sign Up', { exact: true });
-    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    const togglePasswordVisibility = page.getByRole('button', {
+      name: 'toggle visibility',
+    });
     await togglePasswordVisibility.click();
     await emailInput.fill(wrongFormatEmail);
     await passwordInput.fill(wrongFormatPassword);
@@ -37,7 +39,9 @@ test.describe('sign_up_flow - @unauthenticated', () => {
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
     const submitButton = page.getByLabel('Sign Up', { exact: true });
-    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    const togglePasswordVisibility = page.getByRole('button', {
+      name: 'toggle visibility',
+    });
     await togglePasswordVisibility.click();
     await emailInput.fill(testUserEmail);
     await passwordInput.fill(testUserPassword);
@@ -61,7 +65,9 @@ test.describe('sign_up_flow - @unauthenticated', () => {
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
     const submitButton = page.getByLabel('Sign Up', { exact: true });
-    const togglePasswordVisibility = page.getByLabel(/toggle visibility/i);
+    const togglePasswordVisibility = page.getByRole('button', {
+      name: 'toggle visibility',
+    });
     await togglePasswordVisibility.click();
     await emailInput.fill(email);
     await passwordInput.fill(password);

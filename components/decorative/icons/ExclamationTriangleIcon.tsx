@@ -6,9 +6,9 @@ export function ExclamationTriangleIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="M100 84v32m-78 28c-7 12 2 28 17 28h122c15 0 24-16 17-28L116 38c-7-13-25-13-32 0L22 144Zm78-3h0v0h0v0Z" />
+      <path d="M25 14.57v17.8M1.75 38.6a5.62 5.62 0 0 0 4.87 8.43h36.74a5.62 5.62 0 0 0 4.87-8.43L29.87 6.77a5.62 5.62 0 0 0-9.74 0L1.76 38.6Zm22.71-2.72h1.06v1.02h-1.06v-1.02Z" />
     </SvgA11y>
   );
 }

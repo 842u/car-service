@@ -1,19 +1,21 @@
 import { Route } from 'next';
+import { twMerge } from 'tailwind-merge';
 
 import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
+import { buttonVariants } from '@/utils/tailwindcss/button';
 
 export function SignOutLink() {
   return (
     <a
-      className="flex items-center justify-start"
+      className={twMerge(
+        'flex h-10 w-full items-center justify-start p-1',
+        buttonVariants.transparent,
+      )}
       href={'/api/auth/sign-out' satisfies Route}
+      title="sign out"
     >
-      <div className="mx-2 aspect-square h-8 md:shrink-0 md:transition-colors">
-        <SignOutIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-10" />
-      </div>
-      <span className="whitespace-nowrap md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
-        Sign Out
-      </span>
+      <SignOutIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
+      <span className="sr-only">Sign Out</span>
     </a>
   );
 }

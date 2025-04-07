@@ -5,8 +5,7 @@ import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
 import { SignOutLink } from '../../SignOutLink/SignOutLink';
-import { ThemeSwitcher } from '../../ThemeSwitcher/ThemeSwitcher';
-import { DashboardNavMenuBottomItem } from './DashboardNavMenuBottomItem';
+import { ThemeButton } from '../../ThemeButton/ThemeButton';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {
@@ -40,24 +39,22 @@ export function DashboardNavMenu({
       />
       <ul className="grow">
         <DashboardNavMenuItem href="/dashboard" text="Dashboard">
-          <HomeIcon />
+          <HomeIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
-          <CarsIcon />
+          <CarsIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/account" text="Account">
-          <UserIcon />
+          <UserIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
         </DashboardNavMenuItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
-        <DashboardNavMenuBottomItem>
-          <div className="h-8 w-full">
-            <ThemeSwitcher className="h-full w-full" />
-          </div>
-        </DashboardNavMenuBottomItem>
-        <DashboardNavMenuBottomItem>
+        <li className="mx-2 my-4 h-10">
+          <ThemeButton className="w-full" />
+        </li>
+        <li className="mx-2 my-4 h-10">
           <SignOutLink />
-        </DashboardNavMenuBottomItem>
+        </li>
       </ul>
     </nav>
   );

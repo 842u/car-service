@@ -1,8 +1,9 @@
 import { Route } from 'next';
-import Link from 'next/link';
 import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
 import { JSX } from 'react';
-import { twJoin } from 'tailwind-merge';
+import { twMerge } from 'tailwind-merge';
+
+import { LinkButton } from '../../LinkButton/LinkButton';
 
 type DashboardNavMenuItemProps = {
   href: Route;
@@ -19,43 +20,30 @@ export function DashboardNavMenuItem({
 }: DashboardNavMenuItemProps) {
   const pathname = usePathname();
   const segment = useSelectedLayoutSegment();
+
   const isActive =
     pathname === href || (pathname.startsWith(href) && href !== `/${segment}`);
 
   return (
     <li
-      className={twJoin(
-        'group hover:bg-alpha-grey-100 m-2 rounded-md md:@container md:overflow-hidden md:transition-colors',
-        isActive ? 'bg-alpha-grey-200 hover:bg-alpha-grey-200' : '',
+      className={twMerge(
+        'm-2 rounded-md md:@container md:overflow-hidden',
+        isActive ? 'item-active' : '',
       )}
     >
-      <Link
-        className="flex items-center justify-start"
+      <LinkButton
+        className="item-active:bg-alpha-grey-200 item-active:hover:bg-alpha-grey-300 flex items-center justify-start gap-2 px-2 py-1"
         href={href}
         prefetch={prefetch}
+        variant="transparent"
       >
-        <div
-          className={twJoin(
-            'm-2 aspect-square h-8 stroke-10 md:shrink-0 md:transition-colors',
-            isActive
-              ? 'stroke-accent-400'
-              : 'stroke-alpha-grey-700 group-hover:stroke-alpha-grey-900',
-          )}
-        >
+        <div className="aspect-square h-full stroke-2 md:shrink-0">
           {children}
         </div>
-
-        <span
-          className={twJoin(
-            'whitespace-nowrap md:translate-x-0 md:opacity-0 md:transition-all md:@[64px]:translate-x-1 md:@[64px]:opacity-100',
-            isActive
-              ? ''
-              : 'text-alpha-grey-700 group-hover:text-alpha-grey-900',
-          )}
-        >
+        <span className="text-alpha-grey-900 dark:text-alpha-grey-800 item-active:text-dark-500 item-active:dark:text-light-500 whitespace-nowrap transition-all md:translate-x-0 md:opacity-0 md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
           {text}
         </span>
-      </Link>
+      </LinkButton>
     </li>
   );
 }

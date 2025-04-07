@@ -32,7 +32,7 @@ export function EditCarForm({ carId, carData, onSubmit }: EditCarFormProps) {
         carFormData,
         carFormRef.current?.inputImageUrl || null,
       ),
-    onSuccess: () => addToast('Car added successfully.', 'success'),
+    onSuccess: () => addToast('Car edited successfully.', 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
 

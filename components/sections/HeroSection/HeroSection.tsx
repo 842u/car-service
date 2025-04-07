@@ -21,13 +21,10 @@ export function HeroSection() {
           vero. Eligendi laudantium iusto at.
         </p>
         <div className="flex gap-5 md:gap-10">
-          <LinkButton
-            className="border-alpha-grey-500 bg-dark-400"
-            href="/dashboard/sign-in"
-          >
-            Sign In
+          <LinkButton href="/dashboard/sign-in">Sign In</LinkButton>
+          <LinkButton href="/dashboard/sign-up" variant="accent">
+            Sign Up
           </LinkButton>
-          <LinkButton href="/dashboard/sign-up">Sign Up</LinkButton>
         </div>
       </div>
     </Section>

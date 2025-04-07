@@ -1,6 +1,8 @@
 import { ComponentProps } from 'react';
 import { twJoin, twMerge } from 'tailwind-merge';
 
+import { Button } from '../Button/Button';
+
 type HamburgerButtonProps = ComponentProps<'button'> & {
   className?: string;
   isActive: boolean;
@@ -17,14 +19,15 @@ export function HamburgerButton({
   const middleBarClass = `absolute top-0 ${outerBarClass}`;
 
   return (
-    <button
+    <Button
       className={twMerge(
-        'flex h-16 w-16 flex-col justify-between px-5 py-6',
+        'flex aspect-square h-full flex-col justify-between px-3 py-4',
         className,
       )}
-      type="button"
+      variant="transparent"
       {...props}
     >
+      <span className="sr-only">toggle navigation menu</span>
       <div
         className={twJoin(
           outerBarClass,
@@ -51,6 +54,6 @@ export function HamburgerButton({
           isActive ? 'opacity-0' : 'opacity-100',
         )}
       />
-    </button>
+    </Button>
   );
 }

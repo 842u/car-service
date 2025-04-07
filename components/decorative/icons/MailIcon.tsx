@@ -2,8 +2,13 @@ import { SvgA11y, SvgA11yProps } from '../SvgA11y';
 
 export function MailIcon({ ...props }: SvgA11yProps) {
   return (
-    <SvgA11y {...props} viewBox="0 0 512 512">
-      <path d="M464 80H48a16 16 0 00-16 16v320a16 16 0 0016 16h416a16 16 0 0016-16V96a16 16 0 00-16-16zM265.82 284.63a16 16 0 01-19.64 0L89.55 162.81l19.64-25.26L256 251.73l146.81-114.18 19.64 25.26z" />
+    <SvgA11y
+      {...props}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      viewBox="0 0 50 50"
+    >
+      <path d="M49 12.08v25.84a5.54 5.54 0 0 1-5.54 5.54H6.54A5.54 5.54 0 0 1 1 37.92V12.08m48 0a5.54 5.54 0 0 0-5.54-5.54H6.54A5.54 5.54 0 0 0 1 12.08m48 0v.6a5.54 5.54 0 0 1-2.63 4.71L27.9 28.75a5.54 5.54 0 0 1-5.8 0L3.63 17.4A5.54 5.54 0 0 1 1 12.68v-.6" />
     </SvgA11y>
   );
 }

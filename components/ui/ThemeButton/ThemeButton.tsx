@@ -7,11 +7,13 @@ import { twMerge } from 'tailwind-merge';
 import { MoonIcon } from '@/components/decorative/icons/MoonIcon';
 import { SunIcon } from '@/components/decorative/icons/SunIcon';
 
-type ThemeSwitcherProps = ComponentProps<'button'> & {
+import { IconButton } from '../IconButton/IconButton';
+
+type ThemeButtonProps = ComponentProps<'button'> & {
   className?: string;
 };
 
-export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
+export function ThemeButton({ className, ...props }: ThemeButtonProps) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
 
@@ -22,24 +24,24 @@ export function ThemeSwitcher({ className, ...props }: ThemeSwitcherProps) {
   }
 
   return (
-    <button
-      aria-label="switch color theme"
-      className={twMerge('block aspect-square h-6 cursor-pointer', className)}
-      type="button"
+    <IconButton
+      className={twMerge('aspect-square p-2', className)}
+      title="switch color theme"
+      variant="transparent"
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       {...props}
     >
       {resolvedTheme === 'dark' ? (
         <SunIcon
-          className="stroke-light-500 h-full w-full stroke-10"
+          className="stroke-light-500 h-full w-full stroke-3"
           data-testid="light-theme-icon"
         />
       ) : (
         <MoonIcon
-          className="stroke-dark-500 h-full w-full stroke-10"
+          className="stroke-dark-500 h-full w-full stroke-2"
           data-testid="dark-theme-icon"
         />
       )}
-    </button>
+    </IconButton>
   );
 }

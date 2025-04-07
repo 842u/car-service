@@ -138,9 +138,10 @@ export function CarDetailsSection({
           className="group"
           disabled={!isCurrentUserPrimaryOwner}
           title="edit car"
+          variant="accent"
           onClick={() => dialogModalRef.current?.showModal()}
         >
-          <CarEditIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
+          <CarEditIcon className="group-disabled:stroke-light-800 stroke-light-500 fill-light-500 h-full w-full stroke-[0.5]" />
         </IconButton>
       </div>
       <DialogModal ref={dialogModalRef}>

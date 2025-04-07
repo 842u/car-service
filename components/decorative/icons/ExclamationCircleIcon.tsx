@@ -6,9 +6,9 @@ export function ExclamationCircleIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="M100 75v31m75-6a75 75 0 1 1-150 0 75 75 0 0 1 150 0Zm-75 31h0v0h0v0Z" />
+      <path d="M25 14.33v17.8m24-6.63a24 24 0 1 1-48 0 24 24 0 0 1 48 0ZM24.47 35.65h1.06v1.02h-1.06v-1.02Z" />
     </SvgA11y>
   );
 }

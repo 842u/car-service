@@ -11,7 +11,7 @@ export function CTASection() {
         </p>
         <p className="md:inline-block">Store, Track, Drive.</p>
       </h2>
-      <LinkButton className="text-sm" href="/dashboard/sign-up">
+      <LinkButton href="/dashboard/sign-up" variant="accent">
         Sign Up
       </LinkButton>
     </Section>

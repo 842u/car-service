@@ -1,10 +1,14 @@
-import { ComponentProps, ReactElement } from 'react';
+import { ComponentProps, MouseEventHandler, ReactElement } from 'react';
 import { twMerge } from 'tailwind-merge';
+
+import { ButtonVariants } from '@/types';
+import { buttonVariants } from '@/utils/tailwindcss/button';
 
 type IconButtonProps = {
   title: string;
   children: ReactElement<ComponentProps<'svg'>, 'svg'>;
-  onClick?: () => void;
+  variant?: ButtonVariants;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   className?: string;
 };
@@ -13,6 +17,7 @@ export function IconButton({
   title,
   children,
   onClick,
+  variant = 'default',
   disabled,
   className,
 }: IconButtonProps) {
@@ -20,11 +25,13 @@ export function IconButton({
     <button
       aria-label={title}
       className={twMerge(
-        'border-accent-500 bg-accent-800 disabled:bg-accent-900 disabled:border-accent-700 h-12 cursor-pointer overflow-hidden rounded-lg border px-2 disabled:cursor-not-allowed',
+        buttonVariants[variant],
+        'h-12 overflow-hidden px-3 py-1',
         className,
       )}
       disabled={disabled}
       title={title}
+      type="button"
       onClick={onClick}
     >
       {children}

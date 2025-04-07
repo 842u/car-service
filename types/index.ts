@@ -66,3 +66,5 @@ export type CarsInfiniteQueryPageData = {
 };
 
 export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;
+
+export type ButtonVariants = 'default' | 'accent' | 'transparent';
