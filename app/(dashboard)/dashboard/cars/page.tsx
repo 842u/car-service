@@ -27,7 +27,7 @@ export default function CarsPage() {
         variant="accent"
         onClick={() => dialogModalRef.current?.showModal()}
       >
-        <CarPlusIcon className="stroke-2" />
+        <CarPlusIcon className="fill-light-500" />
       </IconButton>
     </DashboardMain>
   );
