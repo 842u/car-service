@@ -6,9 +6,9 @@ export function SignOutIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 200 200"
+      viewBox="0 0 50 50"
     >
-      <path d="M131 75V44a19 19 0 0 0-18-19H63a19 19 0 0 0-19 19v112a19 19 0 0 0 19 19h50a19 19 0 0 0 18-19v-31m25 0 25-25m0 0-25-25m25 25H75" />
+      <path d="M31 17V7a6 6 0 0 0-6-6H9a6 6 0 0 0-6 6v36a6 6 0 0 0 6 6h16a6 6 0 0 0 6-6V33m8 0 8-8m0 0-8-8m8 8H13" />
     </SvgA11y>
   );
 }
