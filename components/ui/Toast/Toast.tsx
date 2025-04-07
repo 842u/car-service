@@ -42,11 +42,11 @@ export function Toast({
       id={id}
       {...props}
     >
-      <div className="aspect-square h-10 p-2">{icon}</div>
-      <span>{message}</span>
+      <div className="h-10 shrink-0 p-2">{icon}</div>
+      <span className="max-h-20 overflow-auto">{message}</span>
       <IconButton
         aria-label="close notification"
-        className="h-10 p-2"
+        className="aspect-square h-10 shrink-0 p-2"
         title="close toast"
         onClick={closeButtonClickHandler}
       >
