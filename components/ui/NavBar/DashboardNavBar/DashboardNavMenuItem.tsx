@@ -40,7 +40,7 @@ export function DashboardNavMenuItem({
         <div className="aspect-square h-full stroke-2 md:shrink-0">
           {children}
         </div>
-        <span className="text-alpha-grey-800 dark:text-alpha-grey-700 item-active:text-dark-500 item-active:dark:text-light-500 whitespace-nowrap transition-all md:translate-x-0 md:opacity-0 md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
+        <span className="text-alpha-grey-900 dark:text-alpha-grey-800 item-active:text-dark-500 item-active:dark:text-light-500 whitespace-nowrap transition-all md:translate-x-0 md:opacity-0 md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
           {text}
         </span>
       </LinkButton>
