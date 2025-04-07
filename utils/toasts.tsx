@@ -5,7 +5,7 @@ import { InformationCircleIcon } from '@/components/decorative/icons/Information
 import { ToastAsset, ToastType } from '@/types';
 
 const errorIcon = (
-  <ExclamationCircleIcon className="stroke-error-500 aspect-square w-6 shrink-0 stroke-10" />
+  <ExclamationCircleIcon className="stroke-error-500 h-full w-full stroke-4" />
 );
 const errorClassName = 'border-error-500';
 
