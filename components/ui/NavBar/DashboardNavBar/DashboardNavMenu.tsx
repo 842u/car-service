@@ -39,13 +39,13 @@ export function DashboardNavMenu({
       />
       <ul className="grow">
         <DashboardNavMenuItem href="/dashboard" text="Dashboard">
-          <HomeIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
+          <HomeIcon className="stroke-alpha-grey-800 dark:stroke-alpha-grey-700 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
-          <CarsIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
+          <CarsIcon className="stroke-alpha-grey-800 dark:stroke-alpha-grey-700 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/account" text="Account">
-          <UserIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
+          <UserIcon className="stroke-alpha-grey-800 dark:stroke-alpha-grey-700 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
         </DashboardNavMenuItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
@@ -57,7 +57,7 @@ export function DashboardNavMenu({
           prefetch={false}
           text="Sign out"
         >
-          <SignOutIcon className="stroke-dark-500 dark:stroke-light-500 item-active:stroke-accent-500 item-active:dark:stroke-accent-400" />
+          <SignOutIcon />
         </DashboardNavMenuItem>
       </ul>
     </nav>
