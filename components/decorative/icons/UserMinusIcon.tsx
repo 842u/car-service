@@ -6,9 +6,9 @@ export function UserMinusIcon({ ...props }: SvgA11yProps) {
       {...props}
       strokeLinecap="round"
       strokeLinejoin="round"
-      viewBox="0 0 24 24"
+      viewBox="0 0 50 50"
     >
-      <path d="M22 10.5h-6m-2.3-4.1a3.4 3.4 0 1 1-6.7 0 3.4 3.4 0 0 1 6.8 0ZM4 19.2v0a6.4 6.4 0 0 1 12.8 0v0a12.3 12.3 0 0 1-6.4 1.8C8 21 5.9 20.4 4 19.2Z" />
+      <path d="M49 21H33m-6-11a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM1 44.3V44a17 17 0 1 1 34 0v.3A32.85 32.85 0 0 1 18 49a32.85 32.85 0 0 1-17-4.7Z" />
     </SvgA11y>
   );
 }

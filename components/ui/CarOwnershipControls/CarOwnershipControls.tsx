@@ -40,7 +40,7 @@ export function CarOwnershipControls({
         variant="accent"
         onClick={() => grantPrimaryOwnershipFormModalRef.current?.showModal()}
       >
-        <ChangeKeyIcon className="group-disabled:stroke-light-800 fill-light-500 h-full w-full stroke-[0.5]" />
+        <ChangeKeyIcon className="group-disabled:stroke-light-800 stroke-light-500 fill-light-500 h-full w-full" />
       </IconButton>
       <IconButton
         className="group"
@@ -52,7 +52,7 @@ export function CarOwnershipControls({
         variant="accent"
         onClick={() => removeCarOwnershipFormModalRef.current?.showModal()}
       >
-        <UserMinusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-[0.5]" />
+        <UserMinusIcon className="group-disabled:stroke-light-800 stroke-light-500 h-full w-full stroke-2" />
       </IconButton>
       <IconButton
         className="group"
