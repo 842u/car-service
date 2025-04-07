@@ -26,7 +26,7 @@ export function IconButton({
       aria-label={title}
       className={twMerge(
         buttonVariants[variant],
-        'h-11 overflow-hidden px-3',
+        'h-12 overflow-hidden px-3 py-1',
         className,
       )}
       disabled={disabled}
