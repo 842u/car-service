@@ -19,7 +19,7 @@ import { patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
-} from '@/utils/tanstack/general';
+} from '@/utils/tanstack/profiles';
 
 const defaultUsernameFormValues: UsernameFormValues = {
   username: '',

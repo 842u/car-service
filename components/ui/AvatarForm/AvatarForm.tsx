@@ -20,7 +20,7 @@ import { patchProfile } from '@/utils/supabase/general';
 import {
   onErrorProfileQueryMutation,
   onMutateProfileQueryMutation,
-} from '@/utils/tanstack/general';
+} from '@/utils/tanstack/profiles';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';
