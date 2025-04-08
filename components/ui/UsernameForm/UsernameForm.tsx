@@ -15,7 +15,7 @@ import {
   UsernameFormValues,
 } from '@/schemas/zod/usernameFormSchema';
 import { Profile } from '@/types';
-import { patchProfile } from '@/utils/supabase/general';
+import { updateCurrentSessionProfile } from '@/utils/supabase/general';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
@@ -34,7 +34,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (usernameFormData: UsernameFormValues) =>
-      patchProfile({
+      updateCurrentSessionProfile({
         property: 'username',
         value: usernameFormData.username.trim(),
       }),

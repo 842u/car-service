@@ -7,7 +7,7 @@ import { Ref, useEffect, useImperativeHandle } from 'react';
 import { useFormContext, UseFormReset } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { deleteCarOwnershipsByOwnersIds } from '@/utils/supabase/general';
+import { deleteCarOwnershipsByUsersIds } from '@/utils/supabase/general';
 import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
@@ -44,7 +44,7 @@ export function RemoveCarOwnershipForm({
   const { mutateAsync } = useMutation({
     throwOnError: false,
     mutationFn: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
-      deleteCarOwnershipsByOwnersIds(carId, carOwnershipFormData.ownersIds),
+      deleteCarOwnershipsByUsersIds(carId, carOwnershipFormData.ownersIds),
     onMutate: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
       carsOwnershipsDeleteOnMutate(carOwnershipFormData, queryClient, carId),
     onSuccess: () => {

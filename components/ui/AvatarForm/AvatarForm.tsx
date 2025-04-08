@@ -16,7 +16,7 @@ import {
 } from '@/schemas/zod/common';
 import { Profile } from '@/types';
 import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
-import { patchProfile } from '@/utils/supabase/general';
+import { updateCurrentSessionProfile } from '@/utils/supabase/general';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
@@ -45,7 +45,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
   const { mutateAsync } = useMutation({
     throwOnError: false,
     mutationFn: (avatarFormData: AvatarFormValues) =>
-      patchProfile({
+      updateCurrentSessionProfile({
         property: 'avatar_url',
         value: avatarFormData.image,
       }),

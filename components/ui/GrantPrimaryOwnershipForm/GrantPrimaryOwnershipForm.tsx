@@ -8,7 +8,7 @@ import {
   grantCarPrimaryOwnershipFormSchema,
   GrantCarPrimaryOwnershipFormValues,
 } from '@/schemas/zod/grantPrimaryOwnershipFormSchema';
-import { patchCarPrimaryOwnership } from '@/utils/supabase/general';
+import { updateCarPrimaryOwnershipByUserId } from '@/utils/supabase/general';
 import {
   carsOwnershipsUpdateOnError,
   carsOwnershipsUpdateOnMutate,
@@ -48,7 +48,7 @@ export function GrantCarPrimaryOwnershipForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
-      patchCarPrimaryOwnership(newCarOwnerFormData.userId, carId),
+      updateCarPrimaryOwnershipByUserId(newCarOwnerFormData.userId, carId),
     onMutate: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
       carsOwnershipsUpdateOnMutate(
         queryClient,

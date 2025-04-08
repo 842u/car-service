@@ -5,10 +5,10 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
 import {
-  getCarById,
-  getCarOwnershipsByCarId,
+  getCar,
+  getCarOwnerships,
   getCurrentSessionProfile,
-  getProfileById,
+  getProfile,
 } from '@/utils/supabase/general';
 import { queryKeys } from '@/utils/tanstack/keys';
 
@@ -26,13 +26,13 @@ export function CarOverview({ carId }: CarOverviewProps) {
   const { data: carData, isPending } = useQuery({
     throwOnError: false,
     queryKey: queryKeys.carsByCarId(carId),
-    queryFn: () => getCarById(carId),
+    queryFn: () => getCar(carId),
   });
 
   const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
     throwOnError: false,
     queryKey: queryKeys.carsOwnershipsByCarId(carId),
-    queryFn: () => getCarOwnershipsByCarId(carId),
+    queryFn: () => getCarOwnerships(carId),
   });
 
   const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
@@ -54,7 +54,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
             return {
               throwOnError: false,
               queryKey: queryKeys.profilesByUserId(ownership.owner_id),
-              queryFn: () => getProfileById(ownership.owner_id),
+              queryFn: () => getProfile(ownership.owner_id),
             };
           })
       : [],

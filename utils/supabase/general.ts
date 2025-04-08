@@ -140,20 +140,6 @@ export async function getCurrentSessionProfile() {
   return profileData[0];
 }
 
-export async function getProfileById(id: string) {
-  const supabase = createClient();
-
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (error) throw new Error(error.message || "Can't get user profile.");
-
-  return data;
-}
-
 type PatchProfileParameters =
   | {
       property: Extract<keyof Profile, 'avatar_url'>;
@@ -161,7 +147,7 @@ type PatchProfileParameters =
     }
   | { property: Extract<keyof Profile, 'username'>; value: string | null };
 
-export async function patchProfile({
+export async function updateCurrentSessionProfile({
   property,
   value,
 }: PatchProfileParameters) {
@@ -204,7 +190,21 @@ export async function patchProfile({
   }
 }
 
-export async function getCarsPage({ pageParam }: { pageParam: number }) {
+export async function getProfile(userId: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) throw new Error(error.message || "Can't get user profile.");
+
+  return data;
+}
+
+export async function getCarsByPage({ pageParam }: { pageParam: number }) {
   const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
   const rangeIndexTo =
     (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
@@ -224,13 +224,13 @@ export async function getCarsPage({ pageParam }: { pageParam: number }) {
   return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
 }
 
-export async function getCarById(id: string) {
+export async function getCar(carId: string) {
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from('cars')
     .select()
-    .eq('id', id)
+    .eq('id', carId)
     .limit(1);
 
   if (error) throw new Error(error.message);
@@ -240,7 +240,7 @@ export async function getCarById(id: string) {
   return data[0];
 }
 
-export async function getCarOwnershipsByCarId(carId: string) {
+export async function getCarOwnerships(carId: string) {
   const supabase = createClient();
 
   const { data, error } = await supabase
@@ -253,9 +253,9 @@ export async function getCarOwnershipsByCarId(carId: string) {
   return data;
 }
 
-export async function deleteCarOwnershipsByOwnersIds(
+export async function deleteCarOwnershipsByUsersIds(
   carId: string,
-  ownersIds: string[],
+  usersIds: string[],
 ) {
   const supabase = createClient();
 
@@ -263,7 +263,7 @@ export async function deleteCarOwnershipsByOwnersIds(
     .from('cars_ownerships')
     .delete()
     .eq('car_id', carId)
-    .in('owner_id', ownersIds)
+    .in('owner_id', usersIds)
     .select();
 
   if (error) throw new Error(error.message || "Can't delete car owner.");
@@ -276,14 +276,17 @@ export async function deleteCarOwnershipsByOwnersIds(
   return data;
 }
 
-export async function postCarOwnership(carId: string, ownerId: string | null) {
-  if (!ownerId) throw new Error('You must provide a new owner ID.');
+export async function addCarOwnershipByUserId(
+  carId: string,
+  userId: string | null,
+) {
+  if (!userId) throw new Error('You must provide a new owner ID.');
 
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from('cars_ownerships')
-    .insert({ car_id: carId, owner_id: ownerId, is_primary_owner: false })
+    .insert({ car_id: carId, owner_id: userId, is_primary_owner: false })
     .select()
     .single();
 
@@ -292,9 +295,9 @@ export async function postCarOwnership(carId: string, ownerId: string | null) {
   return data;
 }
 
-export async function patchCarPrimaryOwnership(
-  newPrimaryOwnerId: string | null,
+export async function updateCarPrimaryOwnershipByUserId(
   carId: string,
+  newPrimaryOwnerId: string | null,
 ) {
   if (!newPrimaryOwnerId)
     throw new Error('You must provide a new primary owner ID.');

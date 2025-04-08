@@ -8,7 +8,7 @@ import {
   addCarOwnershipFormSchema,
   AddCarOwnershipFormValues,
 } from '@/schemas/zod/addCarOwnershipFormSchema';
-import { postCarOwnership } from '@/utils/supabase/general';
+import { addCarOwnershipByUserId } from '@/utils/supabase/general';
 import {
   carsOwnershipsAddOnError,
   carsOwnershipsAddOnMutate,
@@ -49,7 +49,7 @@ export function AddCarOwnershipForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
-      postCarOwnership(carId, addCarOwnershipFormData.userId),
+      addCarOwnershipByUserId(carId, addCarOwnershipFormData.userId),
     onMutate: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
       carsOwnershipsAddOnMutate(
         queryClient,
