@@ -15,7 +15,7 @@ import {
   UsernameFormValues,
 } from '@/schemas/zod/usernameFormSchema';
 import { Profile } from '@/types';
-import { updateCurrentSessionProfile } from '@/utils/supabase/general';
+import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 

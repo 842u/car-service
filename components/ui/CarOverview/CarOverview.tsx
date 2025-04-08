@@ -4,12 +4,12 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
-import {
-  getCarOwnerships,
-  getCurrentSessionProfile,
-  getProfile,
-} from '@/utils/supabase/general';
+import { getCarOwnerships } from '@/utils/supabase/general';
 import { getCar } from '@/utils/supabase/tables/cars';
+import {
+  getCurrentSessionProfile,
+  getProfileByUserId,
+} from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarBadge } from '../CarBadge/CarBadge';
@@ -54,7 +54,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
             return {
               throwOnError: false,
               queryKey: queryKeys.profilesByUserId(ownership.owner_id),
-              queryFn: () => getProfile(ownership.owner_id),
+              queryFn: () => getProfileByUserId(ownership.owner_id),
             };
           })
       : [],
