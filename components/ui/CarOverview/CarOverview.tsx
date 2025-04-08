@@ -51,6 +51,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
           .filter((ownership) => ownership.owner_id !== sessionProfileData.id)
           .map((ownership) => {
             return {
+              throwOnError: false,
               queryKey: ['profiles', ownership.owner_id],
               queryFn: () => getProfileById(ownership.owner_id),
             };
