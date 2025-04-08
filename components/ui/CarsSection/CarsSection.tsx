@@ -24,6 +24,7 @@ export function CarsSection() {
     isFetchingNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
+    throwOnError: false,
     queryKey: ['cars', 'infinite'],
     queryFn: async ({ pageParam }) => {
       const { data, nextPageParam } = await getCarsPage({ pageParam });
