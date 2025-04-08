@@ -4,12 +4,13 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
+import { getCar } from '@/utils/supabase/tables/cars';
+import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
 import {
-  getCarById,
-  getCarOwnershipsByCarId,
   getCurrentSessionProfile,
-  getProfileById,
-} from '@/utils/supabase/general';
+  getProfileByUserId,
+} from '@/utils/supabase/tables/profiles';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarBadge } from '../CarBadge/CarBadge';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
@@ -23,18 +24,21 @@ export function CarOverview({ carId }: CarOverviewProps) {
   const { addToast } = useToasts();
 
   const { data: carData, isPending } = useQuery({
-    queryKey: ['cars', carId],
-    queryFn: () => getCarById(carId),
+    throwOnError: false,
+    queryKey: queryKeys.carsByCarId(carId),
+    queryFn: () => getCar(carId),
   });
 
   const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
-    queryKey: ['cars_ownerships', carId],
-    queryFn: () => getCarOwnershipsByCarId(carId),
+    throwOnError: false,
+    queryKey: queryKeys.carsOwnershipsByCarId(carId),
+    queryFn: () => getCarOwnerships(carId),
   });
 
   const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
     {
-      queryKey: ['profiles', 'session'],
+      throwOnError: false,
+      queryKey: queryKeys.profilesCurrentSession,
       queryFn: getCurrentSessionProfile,
     },
   );
@@ -48,8 +52,9 @@ export function CarOverview({ carId }: CarOverviewProps) {
           .filter((ownership) => ownership.owner_id !== sessionProfileData.id)
           .map((ownership) => {
             return {
-              queryKey: ['profiles', ownership.owner_id],
-              queryFn: () => getProfileById(ownership.owner_id),
+              throwOnError: false,
+              queryKey: queryKeys.profilesByUserId(ownership.owner_id),
+              queryFn: () => getProfileByUserId(ownership.owner_id),
             };
           })
       : [],

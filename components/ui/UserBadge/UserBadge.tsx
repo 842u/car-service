@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/hooks/useToasts';
-import { getCurrentSessionProfile } from '@/utils/supabase/general';
+import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Spinner } from '../Spinner/Spinner';
@@ -18,7 +19,8 @@ export function UserBadge({ className }: UserBadgeProps) {
   const { addToast } = useToasts();
 
   const { data, error, isSuccess, isPending, isError } = useQuery({
-    queryKey: ['profiles', 'session'],
+    throwOnError: false,
+    queryKey: queryKeys.profilesCurrentSession,
     queryFn: getCurrentSessionProfile,
   });
 

@@ -2,7 +2,8 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
-import { getCarsPage } from '@/utils/supabase/general';
+import { getCarsByPage } from '@/utils/supabase/tables/cars';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarCard } from '../CarCard/CarCard';
 import { Spinner } from '../Spinner/Spinner';
@@ -24,9 +25,10 @@ export function CarsSection() {
     isFetchingNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    queryKey: ['cars', 'infinite'],
+    throwOnError: false,
+    queryKey: queryKeys.infiniteCars,
     queryFn: async ({ pageParam }) => {
-      const { data, nextPageParam } = await getCarsPage({ pageParam });
+      const { data, nextPageParam } = await getCarsByPage({ pageParam });
 
       data.map((car) => queryClient.setQueryData(['cars', car.id], car));
 

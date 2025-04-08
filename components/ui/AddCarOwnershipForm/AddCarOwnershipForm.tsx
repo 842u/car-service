@@ -8,11 +8,12 @@ import {
   addCarOwnershipFormSchema,
   AddCarOwnershipFormValues,
 } from '@/schemas/zod/addCarOwnershipFormSchema';
-import { postCarOwnership } from '@/utils/supabase/general';
+import { addCarOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 import {
-  onErrorCarOwnershipPost,
-  onMutateCarOwnershipPost,
-} from '@/utils/tanstack/general';
+  carsOwnershipsAddOnError,
+  carsOwnershipsAddOnMutate,
+} from '@/utils/tanstack/cars_ownerships';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
@@ -48,17 +49,29 @@ export function AddCarOwnershipForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
-      postCarOwnership(carId, addCarOwnershipFormData.userId),
+      addCarOwnershipByUserId(carId, addCarOwnershipFormData.userId),
     onMutate: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
-      onMutateCarOwnershipPost(
+      carsOwnershipsAddOnMutate(
         queryClient,
         carId,
         addCarOwnershipFormData.userId,
       ),
     onSuccess: () => addToast('Successfully added new ownership.', 'success'),
-    onError: (error, _, context) =>
-      onErrorCarOwnershipPost(queryClient, error, context, carId, addToast),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+      carsOwnershipsAddOnError(queryClient, context, carId);
+    },
   });
+
+  const handleFormSubmit = (formData: AddCarOwnershipFormValues) => {
+    onSubmit && onSubmit();
+    mutate(formData, {
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.carsOwnershipsByCarId(carId),
+        }),
+    });
+  };
 
   useEffect(() => {
     isSubmitSuccessful && reset();
@@ -67,15 +80,7 @@ export function AddCarOwnershipForm({
   return (
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10"
-      onSubmit={handleSubmit((formData: AddCarOwnershipFormValues) => {
-        onSubmit && onSubmit();
-        mutate(formData, {
-          onSettled: () =>
-            queryClient.invalidateQueries({
-              queryKey: ['cars_ownerships', carId],
-            }),
-        });
-      })}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <h2>Add new car owner</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />

@@ -15,11 +15,9 @@ import {
   UsernameFormValues,
 } from '@/schemas/zod/usernameFormSchema';
 import { Profile } from '@/types';
-import { patchProfile } from '@/utils/supabase/general';
-import {
-  onErrorProfileQueryMutation,
-  onMutateProfileQueryMutation,
-} from '@/utils/tanstack/general';
+import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
+import { queryKeys } from '@/utils/tanstack/keys';
+import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 const defaultUsernameFormValues: UsernameFormValues = {
   username: '',
@@ -36,12 +34,12 @@ export function UsernameForm({ data }: UsernameFormProps) {
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (usernameFormData: UsernameFormValues) =>
-      patchProfile({
+      updateCurrentSessionProfile({
         property: 'username',
         value: usernameFormData.username.trim(),
       }),
     onMutate: (usernameFormData: UsernameFormValues) =>
-      onMutateProfileQueryMutation(
+      profilesUpdateOnMutate(
         queryClient,
         'session',
         'username',
@@ -65,16 +63,18 @@ export function UsernameForm({ data }: UsernameFormProps) {
       onSuccess: () => {
         addToast('Username updated successfully.', 'success');
       },
-      onError: (error, _, context) =>
-        onErrorProfileQueryMutation(
-          queryClient,
-          'session',
-          error,
-          context,
-          addToast,
-        ),
+      onError: (error, _, context) => {
+        addToast(error.message, 'error');
+
+        queryClient.setQueryData(
+          queryKeys.profilesCurrentSession,
+          context?.previousQueryData,
+        );
+      },
       onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.profilesCurrentSession,
+        }),
     });
   };
 

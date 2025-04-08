@@ -7,8 +7,9 @@ import { Ref, useEffect, useImperativeHandle } from 'react';
 import { useFormContext, UseFormReset } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { deleteCarOwnershipsByOwnersIds } from '@/utils/supabase/general';
-import { onMutateCarOwnershipDelete } from '@/utils/tanstack/general';
+import { deleteCarOwnershipsByUsersIds } from '@/utils/supabase/tables/cars_ownerships';
+import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Button } from '../Button/Button';
 
@@ -43,21 +44,23 @@ export function RemoveCarOwnershipForm({
   const { mutateAsync } = useMutation({
     throwOnError: false,
     mutationFn: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
-      deleteCarOwnershipsByOwnersIds(carId, carOwnershipFormData.ownersIds),
+      deleteCarOwnershipsByUsersIds(carId, carOwnershipFormData.ownersIds),
     onMutate: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
-      onMutateCarOwnershipDelete(carOwnershipFormData, queryClient, carId),
+      carsOwnershipsDeleteOnMutate(carOwnershipFormData, queryClient, carId),
     onSuccess: () => {
       addToast('Successfully removed ownerships.', 'success');
     },
     onError: (error, _, context) => {
       addToast(error.message, 'error');
       queryClient.setQueryData(
-        ['cars_ownerships', carId],
+        queryKeys.carsOwnershipsByCarId(carId),
         context?.previousQueryData,
       );
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['cars_ownerships', carId] }),
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.carsOwnershipsByCarId(carId),
+      }),
   });
 
   const {

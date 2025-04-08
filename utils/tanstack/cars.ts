@@ -1,0 +1,141 @@
+import { QueryClient } from '@tanstack/react-query';
+
+import { CarFormValues } from '@/schemas/zod/carFormSchema';
+import { Car, CarsInfiniteQueryData, ToastType } from '@/types';
+import {
+  CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+  mapCarFormValuesToCarObject,
+} from '@/utils/general';
+
+import { queryKeys } from './keys';
+
+export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
+
+function addCarToInfiniteQueryData(
+  newCar: Car,
+  queryData: CarsInfiniteQueryData,
+  pageIndex: number = 0,
+) {
+  const currentPage = queryData.pages[pageIndex];
+  const nextPage = queryData?.pages[pageIndex + 1];
+
+  currentPage.data = [{ ...newCar }, ...currentPage.data];
+
+  if (currentPage.data.length > CARS_INFINITE_QUERY_PAGE_DATA_LIMIT) {
+    const carriedCar = currentPage.data.pop();
+
+    if (!nextPage && carriedCar) {
+      queryData.pages.push({
+        data: [{ ...carriedCar }],
+        nextPageParam: pageIndex + 2,
+      });
+      queryData.pageParams.push(pageIndex + 1);
+      currentPage.nextPageParam = pageIndex + 1;
+    } else if (nextPage && carriedCar) {
+      return addCarToInfiniteQueryData(
+        { ...carriedCar },
+        queryData,
+        pageIndex + 1,
+      );
+    }
+  }
+
+  return;
+}
+
+function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
+  const deepCopy: CarsInfiniteQueryData = {
+    pages: data.pages.map((page) => ({
+      data: page.data.map((car) => ({ ...car })),
+      nextPageParam: page.nextPageParam,
+    })),
+    pageParams: [...data.pageParams],
+  };
+
+  return deepCopy;
+}
+
+export async function carsInfiniteAddOnMutate(
+  carFormData: CarFormValues,
+  queryClient: QueryClient,
+  optimisticCarImageUrl: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: queryKeys.infiniteCars });
+  const previousCarsQuery = queryClient.getQueryData(queryKeys.infiniteCars);
+
+  const newCar = mapCarFormValuesToCarObject('add', carFormData);
+  newCar.image_url = optimisticCarImageUrl;
+
+  queryClient.setQueryData(
+    queryKeys.infiniteCars,
+    (data: CarsInfiniteQueryData) => {
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
+
+      addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
+
+      return updatedQueryData;
+    },
+  );
+
+  return { previousCars: previousCarsQuery, newCarId: newCar.id };
+}
+
+export function carsInfiniteAddOnError(
+  error: Error,
+  context:
+    | {
+        previousCars: unknown;
+        newCarId: string;
+      }
+    | undefined,
+  queryClient: QueryClient,
+  addToast: (message: string, type: ToastType) => void,
+) {
+  if (error.cause === CAR_IMAGE_UPLOAD_ERROR_CAUSE) {
+    addToast(error.message, 'warning');
+  } else {
+    addToast(error.message, 'error');
+    const previousCarsQuery: CarsInfiniteQueryData | undefined =
+      queryClient.getQueryData(queryKeys.infiniteCars);
+
+    if (previousCarsQuery) {
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQuery);
+
+      updatedQueryData.pages.forEach((page) => {
+        page.data = page.data.filter((car) => {
+          return car.id !== context?.newCarId;
+        });
+      });
+
+      queryClient.setQueryData(queryKeys.infiniteCars, updatedQueryData);
+    }
+  }
+}
+
+export async function carsUpdateOnMutate(
+  queryClient: QueryClient,
+  carId: string,
+  carFormData: CarFormValues,
+  optimisticCarImageUrl: string | null,
+) {
+  await queryClient.cancelQueries({ queryKey: queryKeys.carsByCarId(carId) });
+  const previousCarsQueryData = queryClient.getQueryData([
+    'cars',
+    carId,
+  ]) as Car;
+
+  const editedCar = mapCarFormValuesToCarObject(
+    'edit',
+    carFormData,
+    previousCarsQueryData,
+  );
+  editedCar.image_url =
+    optimisticCarImageUrl || previousCarsQueryData.image_url;
+
+  queryClient.setQueryData(queryKeys.carsByCarId(carId), () => ({
+    ...previousCarsQueryData,
+    ...editedCar,
+  }));
+
+  return { previousCarsQueryData, carId };
+}
