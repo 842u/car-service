@@ -10,8 +10,8 @@ import {
 } from '@/schemas/zod/grantPrimaryOwnershipFormSchema';
 import { patchCarPrimaryOwnership } from '@/utils/supabase/general';
 import {
-  onErrorCarOwnershipPatch,
-  onMutateCarOwnershipPatch,
+  carsOwnershipsUpdateOnError,
+  carsOwnershipsUpdateOnMutate,
 } from '@/utils/tanstack/cars_ownerships';
 
 import { Button } from '../Button/Button';
@@ -49,11 +49,15 @@ export function GrantCarPrimaryOwnershipForm({
     mutationFn: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
       patchCarPrimaryOwnership(newCarOwnerFormData.userId, carId),
     onMutate: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
-      onMutateCarOwnershipPatch(queryClient, carId, newCarOwnerFormData.userId),
+      carsOwnershipsUpdateOnMutate(
+        queryClient,
+        carId,
+        newCarOwnerFormData.userId,
+      ),
     onSuccess: () =>
       addToast('Successfully granted primary ownership.', 'success'),
     onError: (error, _, context) =>
-      onErrorCarOwnershipPatch(queryClient, error, context, carId, addToast),
+      carsOwnershipsUpdateOnError(queryClient, error, context, carId, addToast),
   });
 
   const handleFormSubmit = handleSubmit(

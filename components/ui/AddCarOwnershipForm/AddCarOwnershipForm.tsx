@@ -10,8 +10,8 @@ import {
 } from '@/schemas/zod/addCarOwnershipFormSchema';
 import { postCarOwnership } from '@/utils/supabase/general';
 import {
-  onErrorCarOwnershipPost,
-  onMutateCarOwnershipPost,
+  carsOwnershipsAddOnError,
+  carsOwnershipsAddOnMutate,
 } from '@/utils/tanstack/cars_ownerships';
 
 import { Button } from '../Button/Button';
@@ -50,14 +50,14 @@ export function AddCarOwnershipForm({
     mutationFn: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
       postCarOwnership(carId, addCarOwnershipFormData.userId),
     onMutate: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
-      onMutateCarOwnershipPost(
+      carsOwnershipsAddOnMutate(
         queryClient,
         carId,
         addCarOwnershipFormData.userId,
       ),
     onSuccess: () => addToast('Successfully added new ownership.', 'success'),
     onError: (error, _, context) =>
-      onErrorCarOwnershipPost(queryClient, error, context, carId, addToast),
+      carsOwnershipsAddOnError(queryClient, error, context, carId, addToast),
   });
 
   useEffect(() => {

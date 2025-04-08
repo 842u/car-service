@@ -8,7 +8,7 @@ import { useFormContext, UseFormReset } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
 import { deleteCarOwnershipsByOwnersIds } from '@/utils/supabase/general';
-import { onMutateCarOwnershipDelete } from '@/utils/tanstack/cars_ownerships';
+import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
 
 import { Button } from '../Button/Button';
 
@@ -45,7 +45,7 @@ export function RemoveCarOwnershipForm({
     mutationFn: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
       deleteCarOwnershipsByOwnersIds(carId, carOwnershipFormData.ownersIds),
     onMutate: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
-      onMutateCarOwnershipDelete(carOwnershipFormData, queryClient, carId),
+      carsOwnershipsDeleteOnMutate(carOwnershipFormData, queryClient, carId),
     onSuccess: () => {
       addToast('Successfully removed ownerships.', 'success');
     },

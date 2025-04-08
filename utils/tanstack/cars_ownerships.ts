@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { RemoveCarOwnershipFormValues } from '@/components/ui/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import { CarOwnership, ToastType } from '@/types';
 
-export async function onMutateCarOwnershipDelete(
+export async function carsOwnershipsDeleteOnMutate(
   carOwnershipFormData: RemoveCarOwnershipFormValues,
   queryClient: QueryClient,
   carId: string,
@@ -33,7 +33,7 @@ export async function onMutateCarOwnershipDelete(
   return { previousQueryData };
 }
 
-export async function onMutateCarOwnershipPost(
+export async function carsOwnershipsAddOnMutate(
   queryClient: QueryClient,
   carId: string,
   newOwnerId: string | null,
@@ -61,7 +61,7 @@ export async function onMutateCarOwnershipPost(
   return { newOwnerId };
 }
 
-export function onErrorCarOwnershipPost(
+export function carsOwnershipsAddOnError(
   queryClient: QueryClient,
   error: Error,
   context: { newOwnerId: string | null } | undefined,
@@ -87,7 +87,7 @@ export function onErrorCarOwnershipPost(
   }
 }
 
-export async function onMutateCarOwnershipPatch(
+export async function carsOwnershipsUpdateOnMutate(
   queryClient: QueryClient,
   carId: string,
   newPrimaryOwnerId: string | null,
@@ -129,7 +129,7 @@ export async function onMutateCarOwnershipPatch(
   return { newPrimaryOwnerId };
 }
 
-export function onErrorCarOwnershipPatch(
+export function carsOwnershipsUpdateOnError(
   queryClient: QueryClient,
   error: Error,
   context: { newPrimaryOwnerId: string | null } | undefined,
