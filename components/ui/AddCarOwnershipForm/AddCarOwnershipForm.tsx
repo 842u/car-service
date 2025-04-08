@@ -56,8 +56,10 @@ export function AddCarOwnershipForm({
         addCarOwnershipFormData.userId,
       ),
     onSuccess: () => addToast('Successfully added new ownership.', 'success'),
-    onError: (error, _, context) =>
-      carsOwnershipsAddOnError(queryClient, error, context, carId, addToast),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+      carsOwnershipsAddOnError(queryClient, context, carId);
+    },
   });
 
   useEffect(() => {

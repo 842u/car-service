@@ -56,8 +56,10 @@ export function GrantCarPrimaryOwnershipForm({
       ),
     onSuccess: () =>
       addToast('Successfully granted primary ownership.', 'success'),
-    onError: (error, _, context) =>
-      carsOwnershipsUpdateOnError(queryClient, error, context, carId, addToast),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+      carsOwnershipsUpdateOnError(queryClient, context, carId);
+    },
   });
 
   const handleFormSubmit = handleSubmit(

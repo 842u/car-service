@@ -1,37 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 
 import { RemoveCarOwnershipFormValues } from '@/components/ui/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
-import { CarOwnership, ToastType } from '@/types';
-
-export async function carsOwnershipsDeleteOnMutate(
-  carOwnershipFormData: RemoveCarOwnershipFormValues,
-  queryClient: QueryClient,
-  carId: string,
-) {
-  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
-  const previousQueryData = queryClient.getQueryData([
-    'cars_ownerships',
-    carId,
-  ]);
-
-  queryClient.setQueryData(
-    ['cars_ownerships', carId],
-    (currentQueryData: CarOwnership[]) => {
-      const filteredQuery = currentQueryData.filter(
-        (ownership) =>
-          !carOwnershipFormData.ownersIds.includes(ownership.owner_id),
-      );
-
-      const updatedQuery = filteredQuery.map((ownership) => ({
-        ...ownership,
-      }));
-
-      return updatedQuery;
-    },
-  );
-
-  return { previousQueryData };
-}
+import { CarOwnership } from '@/types';
 
 export async function carsOwnershipsAddOnMutate(
   queryClient: QueryClient,
@@ -63,13 +33,9 @@ export async function carsOwnershipsAddOnMutate(
 
 export function carsOwnershipsAddOnError(
   queryClient: QueryClient,
-  error: Error,
   context: { newOwnerId: string | null } | undefined,
   carId: string,
-  addToast: (message: string, type: ToastType) => void,
 ) {
-  addToast(error.message, 'error');
-
   const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
     ['cars_ownerships', carId],
   );
@@ -131,13 +97,9 @@ export async function carsOwnershipsUpdateOnMutate(
 
 export function carsOwnershipsUpdateOnError(
   queryClient: QueryClient,
-  error: Error,
   context: { newPrimaryOwnerId: string | null } | undefined,
   carId: string,
-  addToast: (message: string, type: ToastType) => void,
 ) {
-  addToast(error.message, 'error');
-
   const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
     ['cars_ownerships', carId],
   );
@@ -154,4 +116,34 @@ export function carsOwnershipsUpdateOnError(
 
     queryClient.setQueryData(['cars_ownerships', carId], updatedQueryData);
   }
+}
+
+export async function carsOwnershipsDeleteOnMutate(
+  carOwnershipFormData: RemoveCarOwnershipFormValues,
+  queryClient: QueryClient,
+  carId: string,
+) {
+  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
+  const previousQueryData = queryClient.getQueryData([
+    'cars_ownerships',
+    carId,
+  ]);
+
+  queryClient.setQueryData(
+    ['cars_ownerships', carId],
+    (currentQueryData: CarOwnership[]) => {
+      const filteredQuery = currentQueryData.filter(
+        (ownership) =>
+          !carOwnershipFormData.ownersIds.includes(ownership.owner_id),
+      );
+
+      const updatedQuery = filteredQuery.map((ownership) => ({
+        ...ownership,
+      }));
+
+      return updatedQuery;
+    },
+  );
+
+  return { previousQueryData };
 }
