@@ -19,8 +19,11 @@ SET client_min_messages = warning;
 
 SET row_security = OFF;
 
-CREATE EXTENSION IF NOT EXISTS "pgsodium" WITH SCHEMA "pgsodium";
 
+/*
+ !https://github.com/supabase/cli/issues/3358
+ CREATE EXTENSION IF NOT EXISTS "pgsodium" WITH SCHEMA "pgsodium";
+ */
 CREATE SCHEMA IF NOT EXISTS "supabase_migrations";
 
 ALTER SCHEMA "supabase_migrations" OWNER TO "postgres";
@@ -50,7 +53,7 @@ CREATE TABLE IF NOT EXISTS "supabase_migrations"."schema_migrations"(
 ALTER TABLE "supabase_migrations"."schema_migrations" OWNER TO "postgres";
 
 -- ALTER TABLE ONLY "supabase_migrations"."schema_migrations"
---  ADD CONSTRAINT "schema_migrations_pkey" PRIMARY KEY ("version");
+-- ADD CONSTRAINT "schema_migrations_pkey" PRIMARY KEY ("version");
 GRANT USAGE ON SCHEMA "public" TO "postgres";
 
 GRANT USAGE ON SCHEMA "public" TO "anon";
