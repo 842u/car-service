@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { Profile, ToastType } from '@/types';
+import { Profile } from '@/types';
 
-export async function onMutateProfileQueryMutation(
+export async function profilesUpdateOnMutate(
   queryClient: QueryClient,
   queryKeyId: string,
   property: Exclude<keyof Profile, 'id'>,
@@ -21,23 +21,4 @@ export async function onMutateProfileQueryMutation(
   );
 
   return { previousQueryData };
-}
-
-export function onErrorProfileQueryMutation(
-  queryClient: QueryClient,
-  queryKeyId: string,
-  error: Error,
-  context:
-    | {
-        previousQueryData: unknown;
-      }
-    | undefined,
-  addToast: (message: string, type: ToastType) => void,
-) {
-  addToast(error.message, 'error');
-
-  queryClient.setQueryData(
-    ['profiles', queryKeyId],
-    context?.previousQueryData,
-  );
 }

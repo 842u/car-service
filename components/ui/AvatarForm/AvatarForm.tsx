@@ -17,10 +17,7 @@ import {
 import { Profile } from '@/types';
 import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import { patchProfile } from '@/utils/supabase/general';
-import {
-  onErrorProfileQueryMutation,
-  onMutateProfileQueryMutation,
-} from '@/utils/tanstack/profiles';
+import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';
@@ -52,7 +49,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
         value: avatarFormData.image,
       }),
     onMutate: () =>
-      onMutateProfileQueryMutation(
+      profilesUpdateOnMutate(
         queryClient,
         'session',
         'avatar_url',
@@ -61,14 +58,14 @@ export function AvatarForm({ data }: AvatarFormProps) {
     onSuccess: () => {
       addToast('Avatar uploaded successfully.', 'success');
     },
-    onError: (error, _, context) =>
-      onErrorProfileQueryMutation(
-        queryClient,
-        'session',
-        error,
-        context,
-        addToast,
-      ),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+
+      queryClient.setQueryData(
+        ['profiles', 'session'],
+        context?.previousQueryData,
+      );
+    },
   });
 
   const {

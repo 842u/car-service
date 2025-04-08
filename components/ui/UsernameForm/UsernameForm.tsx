@@ -16,10 +16,7 @@ import {
 } from '@/schemas/zod/usernameFormSchema';
 import { Profile } from '@/types';
 import { patchProfile } from '@/utils/supabase/general';
-import {
-  onErrorProfileQueryMutation,
-  onMutateProfileQueryMutation,
-} from '@/utils/tanstack/profiles';
+import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 const defaultUsernameFormValues: UsernameFormValues = {
   username: '',
@@ -41,7 +38,7 @@ export function UsernameForm({ data }: UsernameFormProps) {
         value: usernameFormData.username.trim(),
       }),
     onMutate: (usernameFormData: UsernameFormValues) =>
-      onMutateProfileQueryMutation(
+      profilesUpdateOnMutate(
         queryClient,
         'session',
         'username',
@@ -65,14 +62,14 @@ export function UsernameForm({ data }: UsernameFormProps) {
       onSuccess: () => {
         addToast('Username updated successfully.', 'success');
       },
-      onError: (error, _, context) =>
-        onErrorProfileQueryMutation(
-          queryClient,
-          'session',
-          error,
-          context,
-          addToast,
-        ),
+      onError: (error, _, context) => {
+        addToast(error.message, 'error');
+
+        queryClient.setQueryData(
+          ['profiles', 'session'],
+          context?.previousQueryData,
+        );
+      },
       onSettled: () =>
         queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] }),
     });
