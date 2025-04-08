@@ -23,17 +23,20 @@ export function CarOverview({ carId }: CarOverviewProps) {
   const { addToast } = useToasts();
 
   const { data: carData, isPending } = useQuery({
+    throwOnError: false,
     queryKey: ['cars', carId],
     queryFn: () => getCarById(carId),
   });
 
   const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
+    throwOnError: false,
     queryKey: ['cars_ownerships', carId],
     queryFn: () => getCarOwnershipsByCarId(carId),
   });
 
   const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
     {
+      throwOnError: false,
       queryKey: ['profiles', 'session'],
       queryFn: getCurrentSessionProfile,
     },
