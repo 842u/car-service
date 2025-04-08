@@ -10,6 +10,7 @@ import {
   getCurrentSessionProfile,
   getProfileById,
 } from '@/utils/supabase/general';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarBadge } from '../CarBadge/CarBadge';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
@@ -24,20 +25,20 @@ export function CarOverview({ carId }: CarOverviewProps) {
 
   const { data: carData, isPending } = useQuery({
     throwOnError: false,
-    queryKey: ['cars', carId],
+    queryKey: queryKeys.carsByCarId(carId),
     queryFn: () => getCarById(carId),
   });
 
   const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
     throwOnError: false,
-    queryKey: ['cars_ownerships', carId],
+    queryKey: queryKeys.carsOwnershipsByCarId(carId),
     queryFn: () => getCarOwnershipsByCarId(carId),
   });
 
   const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
     {
       throwOnError: false,
-      queryKey: ['profiles', 'session'],
+      queryKey: queryKeys.profilesCurrentSession,
       queryFn: getCurrentSessionProfile,
     },
   );
@@ -52,7 +53,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
           .map((ownership) => {
             return {
               throwOnError: false,
-              queryKey: ['profiles', ownership.owner_id],
+              queryKey: queryKeys.profilesByUserId(ownership.owner_id),
               queryFn: () => getProfileById(ownership.owner_id),
             };
           })

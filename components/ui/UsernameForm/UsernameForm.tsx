@@ -16,6 +16,7 @@ import {
 } from '@/schemas/zod/usernameFormSchema';
 import { Profile } from '@/types';
 import { patchProfile } from '@/utils/supabase/general';
+import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 const defaultUsernameFormValues: UsernameFormValues = {
@@ -66,12 +67,14 @@ export function UsernameForm({ data }: UsernameFormProps) {
         addToast(error.message, 'error');
 
         queryClient.setQueryData(
-          ['profiles', 'session'],
+          queryKeys.profilesCurrentSession,
           context?.previousQueryData,
         );
       },
       onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.profilesCurrentSession,
+        }),
     });
   };
 

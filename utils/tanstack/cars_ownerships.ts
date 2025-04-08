@@ -3,15 +3,19 @@ import { QueryClient } from '@tanstack/react-query';
 import { RemoveCarOwnershipFormValues } from '@/components/ui/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import { CarOwnership } from '@/types';
 
+import { queryKeys } from './keys';
+
 export async function carsOwnershipsAddOnMutate(
   queryClient: QueryClient,
   carId: string,
   newOwnerId: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
+  await queryClient.cancelQueries({
+    queryKey: queryKeys.carsOwnershipsByCarId(carId),
+  });
 
   queryClient.setQueryData(
-    ['cars_ownerships', carId],
+    queryKeys.carsOwnershipsByCarId(carId),
     (currentQueryData: CarOwnership[]) => {
       if (!newOwnerId) return currentQueryData;
 
@@ -37,7 +41,7 @@ export function carsOwnershipsAddOnError(
   carId: string,
 ) {
   const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
-    ['cars_ownerships', carId],
+    queryKeys.carsOwnershipsByCarId(carId),
   );
 
   if (currentQueryData) {
@@ -49,7 +53,10 @@ export function carsOwnershipsAddOnError(
       (ownership) => ownership.owner_id !== context?.newOwnerId,
     );
 
-    queryClient.setQueryData(['cars_ownerships', carId], updatedQueryData);
+    queryClient.setQueryData(
+      queryKeys.carsOwnershipsByCarId(carId),
+      updatedQueryData,
+    );
   }
 }
 
@@ -58,10 +65,12 @@ export async function carsOwnershipsUpdateOnMutate(
   carId: string,
   newPrimaryOwnerId: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
+  await queryClient.cancelQueries({
+    queryKey: queryKeys.carsOwnershipsByCarId(carId),
+  });
 
   queryClient.setQueryData(
-    ['cars_ownerships', carId],
+    queryKeys.carsOwnershipsByCarId(carId),
     (currentQueryData: CarOwnership[]) => {
       if (!newPrimaryOwnerId) return currentQueryData;
 
@@ -101,7 +110,7 @@ export function carsOwnershipsUpdateOnError(
   carId: string,
 ) {
   const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
-    ['cars_ownerships', carId],
+    queryKeys.carsOwnershipsByCarId(carId),
   );
 
   if (currentQueryData) {
@@ -114,7 +123,10 @@ export function carsOwnershipsUpdateOnError(
       }),
     ];
 
-    queryClient.setQueryData(['cars_ownerships', carId], updatedQueryData);
+    queryClient.setQueryData(
+      queryKeys.carsOwnershipsByCarId(carId),
+      updatedQueryData,
+    );
   }
 }
 
@@ -123,14 +135,16 @@ export async function carsOwnershipsDeleteOnMutate(
   queryClient: QueryClient,
   carId: string,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['cars_ownerships', carId] });
+  await queryClient.cancelQueries({
+    queryKey: queryKeys.carsOwnershipsByCarId(carId),
+  });
   const previousQueryData = queryClient.getQueryData([
     'cars_ownerships',
     carId,
   ]);
 
   queryClient.setQueryData(
-    ['cars_ownerships', carId],
+    queryKeys.carsOwnershipsByCarId(carId),
     (currentQueryData: CarOwnership[]) => {
       const filteredQuery = currentQueryData.filter(
         (ownership) =>

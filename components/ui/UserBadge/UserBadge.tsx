@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/general';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Spinner } from '../Spinner/Spinner';
@@ -19,7 +20,7 @@ export function UserBadge({ className }: UserBadgeProps) {
 
   const { data, error, isSuccess, isPending, isError } = useQuery({
     throwOnError: false,
-    queryKey: ['profiles', 'session'],
+    queryKey: queryKeys.profilesCurrentSession,
     queryFn: getCurrentSessionProfile,
   });
 

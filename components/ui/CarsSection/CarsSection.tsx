@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
 import { getCarsPage } from '@/utils/supabase/general';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarCard } from '../CarCard/CarCard';
 import { Spinner } from '../Spinner/Spinner';
@@ -25,7 +26,7 @@ export function CarsSection() {
     fetchNextPage,
   } = useInfiniteQuery({
     throwOnError: false,
-    queryKey: ['cars', 'infinite'],
+    queryKey: queryKeys.infiniteCars,
     queryFn: async ({ pageParam }) => {
       const { data, nextPageParam } = await getCarsPage({ pageParam });
 

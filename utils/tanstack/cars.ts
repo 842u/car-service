@@ -7,6 +7,8 @@ import {
   mapCarFormValuesToCarObject,
 } from '@/utils/general';
 
+import { queryKeys } from './keys';
+
 export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
 
 function addCarToInfiniteQueryData(
@@ -58,14 +60,14 @@ export async function carsInfiniteAddOnMutate(
   queryClient: QueryClient,
   optimisticCarImageUrl: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['cars', 'infinite'] });
-  const previousCarsQuery = queryClient.getQueryData(['cars', 'infinite']);
+  await queryClient.cancelQueries({ queryKey: queryKeys.infiniteCars });
+  const previousCarsQuery = queryClient.getQueryData(queryKeys.infiniteCars);
 
   const newCar = mapCarFormValuesToCarObject('add', carFormData);
   newCar.image_url = optimisticCarImageUrl;
 
   queryClient.setQueryData(
-    ['cars', 'infinite'],
+    queryKeys.infiniteCars,
     (data: CarsInfiniteQueryData) => {
       const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
 
@@ -94,7 +96,7 @@ export function carsInfiniteAddOnError(
   } else {
     addToast(error.message, 'error');
     const previousCarsQuery: CarsInfiniteQueryData | undefined =
-      queryClient.getQueryData(['cars', 'infinite']);
+      queryClient.getQueryData(queryKeys.infiniteCars);
 
     if (previousCarsQuery) {
       const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQuery);
@@ -105,7 +107,7 @@ export function carsInfiniteAddOnError(
         });
       });
 
-      queryClient.setQueryData(['cars', 'infinite'], updatedQueryData);
+      queryClient.setQueryData(queryKeys.infiniteCars, updatedQueryData);
     }
   }
 }
@@ -116,7 +118,7 @@ export async function carsUpdateOnMutate(
   carFormData: CarFormValues,
   optimisticCarImageUrl: string | null,
 ) {
-  await queryClient.cancelQueries({ queryKey: ['cars', carId] });
+  await queryClient.cancelQueries({ queryKey: queryKeys.carsByCarId(carId) });
   const previousCarsQueryData = queryClient.getQueryData([
     'cars',
     carId,
@@ -130,7 +132,7 @@ export async function carsUpdateOnMutate(
   editedCar.image_url =
     optimisticCarImageUrl || previousCarsQueryData.image_url;
 
-  queryClient.setQueryData(['cars', carId], () => ({
+  queryClient.setQueryData(queryKeys.carsByCarId(carId), () => ({
     ...previousCarsQueryData,
     ...editedCar,
   }));

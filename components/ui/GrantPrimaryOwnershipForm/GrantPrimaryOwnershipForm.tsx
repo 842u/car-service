@@ -13,6 +13,7 @@ import {
   carsOwnershipsUpdateOnError,
   carsOwnershipsUpdateOnMutate,
 } from '@/utils/tanstack/cars_ownerships';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
@@ -68,7 +69,7 @@ export function GrantCarPrimaryOwnershipForm({
       mutate(formData, {
         onSettled: () =>
           queryClient.invalidateQueries({
-            queryKey: ['cars_ownerships', carId],
+            queryKey: queryKeys.carsOwnershipsByCarId(carId),
           }),
       });
     },

@@ -9,6 +9,7 @@ import { useFormContext, UseFormReset } from 'react-hook-form';
 import { useToasts } from '@/hooks/useToasts';
 import { deleteCarOwnershipsByOwnersIds } from '@/utils/supabase/general';
 import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Button } from '../Button/Button';
 
@@ -52,12 +53,14 @@ export function RemoveCarOwnershipForm({
     onError: (error, _, context) => {
       addToast(error.message, 'error');
       queryClient.setQueryData(
-        ['cars_ownerships', carId],
+        queryKeys.carsOwnershipsByCarId(carId),
         context?.previousQueryData,
       );
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ['cars_ownerships', carId] }),
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.carsOwnershipsByCarId(carId),
+      }),
   });
 
   const {

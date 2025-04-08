@@ -17,6 +17,7 @@ import {
 import { Profile } from '@/types';
 import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
 import { patchProfile } from '@/utils/supabase/general';
+import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
@@ -62,7 +63,7 @@ export function AvatarForm({ data }: AvatarFormProps) {
       addToast(error.message, 'error');
 
       queryClient.setQueryData(
-        ['profiles', 'session'],
+        queryKeys.profilesCurrentSession,
         context?.previousQueryData,
       );
     },
@@ -82,7 +83,9 @@ export function AvatarForm({ data }: AvatarFormProps) {
   const submitForm = async (avatarFormData: AvatarFormValues) => {
     await mutateAsync(avatarFormData, {
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ['profiles', 'session'] });
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.profilesCurrentSession,
+        });
       },
     });
   };

@@ -9,6 +9,7 @@ import { PasswordChangeForm } from '@/components/ui/PasswordChangeForm/PasswordC
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
 import { useToasts } from '@/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/general';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { UsernameForm } from '../../ui/UsernameForm/UsernameForm';
 
@@ -17,7 +18,7 @@ export function AccountSettingsSection() {
 
   const { data, error, isError } = useQuery({
     throwOnError: false,
-    queryKey: ['profiles', 'session'],
+    queryKey: queryKeys.profilesCurrentSession,
     queryFn: getCurrentSessionProfile,
   });
 

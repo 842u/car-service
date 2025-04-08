@@ -6,6 +6,7 @@ import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
 import { handleCarFormSubmit } from '@/utils/supabase/general';
 import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarForm, CarFormRef } from './CarForm';
 
@@ -47,7 +48,9 @@ export function EditCarForm({ carId, carData, onSubmit }: EditCarFormProps) {
     onSubmit && onSubmit();
     mutate(carFormData, {
       onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['cars', carId] }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.carsByCarId(carId),
+        }),
     });
   };
 

@@ -8,6 +8,7 @@ import {
   carsInfiniteAddOnError,
   carsInfiniteAddOnMutate,
 } from '@/utils/tanstack/cars';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarForm, CarFormRef } from './CarForm';
 
@@ -40,7 +41,7 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     onSubmit && onSubmit();
     mutate(carFormData, {
       onSettled: () =>
-        queryClient.invalidateQueries({ queryKey: ['cars', 'infinite'] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.infiniteCars }),
     });
   };
 

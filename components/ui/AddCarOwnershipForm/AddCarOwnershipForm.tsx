@@ -13,6 +13,7 @@ import {
   carsOwnershipsAddOnError,
   carsOwnershipsAddOnMutate,
 } from '@/utils/tanstack/cars_ownerships';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
@@ -62,6 +63,16 @@ export function AddCarOwnershipForm({
     },
   });
 
+  const handleFormSubmit = (formData: AddCarOwnershipFormValues) => {
+    onSubmit && onSubmit();
+    mutate(formData, {
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.carsOwnershipsByCarId(carId),
+        }),
+    });
+  };
+
   useEffect(() => {
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
@@ -69,15 +80,7 @@ export function AddCarOwnershipForm({
   return (
     <form
       className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 rounded-xl border-2 p-10"
-      onSubmit={handleSubmit((formData: AddCarOwnershipFormValues) => {
-        onSubmit && onSubmit();
-        mutate(formData, {
-          onSettled: () =>
-            queryClient.invalidateQueries({
-              queryKey: ['cars_ownerships', carId],
-            }),
-        });
-      })}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <h2>Add new car owner</h2>
       <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
