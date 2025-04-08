@@ -4,8 +4,8 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
-import { getCarOwnerships } from '@/utils/supabase/general';
 import { getCar } from '@/utils/supabase/tables/cars';
+import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
 import {
   getCurrentSessionProfile,
   getProfileByUserId,

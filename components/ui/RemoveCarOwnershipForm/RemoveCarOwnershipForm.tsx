@@ -7,7 +7,7 @@ import { Ref, useEffect, useImperativeHandle } from 'react';
 import { useFormContext, UseFormReset } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
-import { deleteCarOwnershipsByUsersIds } from '@/utils/supabase/general';
+import { deleteCarOwnershipsByUsersIds } from '@/utils/supabase/tables/cars_ownerships';
 import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 

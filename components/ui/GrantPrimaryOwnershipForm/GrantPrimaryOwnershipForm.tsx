@@ -8,7 +8,7 @@ import {
   grantCarPrimaryOwnershipFormSchema,
   GrantCarPrimaryOwnershipFormValues,
 } from '@/schemas/zod/grantPrimaryOwnershipFormSchema';
-import { updateCarPrimaryOwnershipByUserId } from '@/utils/supabase/general';
+import { updateCarPrimaryOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 import {
   carsOwnershipsUpdateOnError,
   carsOwnershipsUpdateOnMutate,

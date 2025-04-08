@@ -8,7 +8,7 @@ import {
   addCarOwnershipFormSchema,
   AddCarOwnershipFormValues,
 } from '@/schemas/zod/addCarOwnershipFormSchema';
-import { addCarOwnershipByUserId } from '@/utils/supabase/general';
+import { addCarOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 import {
   carsOwnershipsAddOnError,
   carsOwnershipsAddOnMutate,
