@@ -5,7 +5,7 @@ import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
 import { handleCarFormSubmit } from '@/utils/supabase/general';
-import { onMutateCarsQueryPatch } from '@/utils/tanstack/general';
+import { onMutateCarsQueryPatch } from '@/utils/tanstack/cars';
 
 import { CarForm, CarFormRef } from './CarForm';
 

@@ -6,7 +6,7 @@ import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Profile, RouteHandlerResponse } from '@/types';
 
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '../general';
-import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tanstack/general';
+import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '../tanstack/cars';
 import { createClient } from './client';
 
 const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;

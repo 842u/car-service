@@ -7,7 +7,7 @@ import { handleCarFormSubmit } from '@/utils/supabase/general';
 import {
   onErrorCarsInfiniteQueryMutation,
   onMutateCarsInfiniteQueryMutation,
-} from '@/utils/tanstack/general';
+} from '@/utils/tanstack/cars';
 
 import { CarForm, CarFormRef } from './CarForm';
 
