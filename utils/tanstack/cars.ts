@@ -53,7 +53,7 @@ function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
   return deepCopy;
 }
 
-export async function onMutateCarsInfiniteQueryMutation(
+export async function carsInfiniteAddOnMutate(
   carFormData: CarFormValues,
   queryClient: QueryClient,
   optimisticCarImageUrl: string | null,
@@ -78,7 +78,7 @@ export async function onMutateCarsInfiniteQueryMutation(
   return { previousCars: previousCarsQuery, newCarId: newCar.id };
 }
 
-export function onErrorCarsInfiniteQueryMutation(
+export function carsInfiniteAddOnError(
   error: Error,
   context:
     | {
@@ -110,7 +110,7 @@ export function onErrorCarsInfiniteQueryMutation(
   }
 }
 
-export async function onMutateCarsQueryPatch(
+export async function carsUpdateOnMutate(
   queryClient: QueryClient,
   carId: string,
   carFormData: CarFormValues,

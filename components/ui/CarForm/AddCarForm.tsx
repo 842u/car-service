@@ -5,8 +5,8 @@ import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { handleCarFormSubmit } from '@/utils/supabase/general';
 import {
-  onErrorCarsInfiniteQueryMutation,
-  onMutateCarsInfiniteQueryMutation,
+  carsInfiniteAddOnError,
+  carsInfiniteAddOnMutate,
 } from '@/utils/tanstack/cars';
 
 import { CarForm, CarFormRef } from './CarForm';
@@ -26,14 +26,14 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     mutationFn: (carFormData: CarFormValues) =>
       handleCarFormSubmit(carFormData, null, 'POST'),
     onMutate: (carFormData) =>
-      onMutateCarsInfiniteQueryMutation(
+      carsInfiniteAddOnMutate(
         carFormData,
         queryClient,
         carFormRef.current?.inputImageUrl || null,
       ),
     onSuccess: () => addToast('Car added successfully.', 'success'),
     onError: (error, _, context) =>
-      onErrorCarsInfiniteQueryMutation(error, context, queryClient, addToast),
+      carsInfiniteAddOnError(error, context, queryClient, addToast),
   });
 
   const handleFormSubmit = (carFormData: CarFormValues) => {

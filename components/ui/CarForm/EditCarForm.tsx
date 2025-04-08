@@ -5,7 +5,7 @@ import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
 import { handleCarFormSubmit } from '@/utils/supabase/general';
-import { onMutateCarsQueryPatch } from '@/utils/tanstack/cars';
+import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
 
 import { CarForm, CarFormRef } from './CarForm';
 
@@ -26,7 +26,7 @@ export function EditCarForm({ carId, carData, onSubmit }: EditCarFormProps) {
     mutationFn: (carFormData: CarFormValues) =>
       handleCarFormSubmit(carFormData, carId, 'PATCH'),
     onMutate: (carFormData) =>
-      onMutateCarsQueryPatch(
+      carsUpdateOnMutate(
         queryClient,
         carId,
         carFormData,
