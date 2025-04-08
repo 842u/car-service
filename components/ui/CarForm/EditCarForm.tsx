@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
-import { handleCarFormSubmit } from '@/utils/supabase/general';
+import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 

@@ -2,7 +2,7 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
-import { getCarsByPage } from '@/utils/supabase/general';
+import { getCarsByPage } from '@/utils/supabase/tables/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarCard } from '../CarCard/CarCard';

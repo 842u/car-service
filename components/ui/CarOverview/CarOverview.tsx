@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
 import {
-  getCar,
   getCarOwnerships,
   getCurrentSessionProfile,
   getProfile,
 } from '@/utils/supabase/general';
+import { getCar } from '@/utils/supabase/tables/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarBadge } from '../CarBadge/CarBadge';

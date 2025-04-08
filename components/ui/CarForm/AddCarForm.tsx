@@ -3,7 +3,7 @@ import { useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { handleCarFormSubmit } from '@/utils/supabase/general';
+import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 import {
   carsInfiniteAddOnError,
   carsInfiniteAddOnMutate,
