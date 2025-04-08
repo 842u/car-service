@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
-    "@eslint/js": "9.23.0",
+    "@eslint/js": "9.24.0",
     "@playwright/test": "1.51.1",
     "@tailwindcss/postcss": "4.0.15",
     "@tanstack/eslint-plugin-query": "5.68.0",
