@@ -12,7 +12,7 @@ import { postCarOwnership } from '@/utils/supabase/general';
 import {
   onErrorCarOwnershipPost,
   onMutateCarOwnershipPost,
-} from '@/utils/tanstack/general';
+} from '@/utils/tanstack/cars_ownerships';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';

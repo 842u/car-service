@@ -8,7 +8,7 @@ import { useFormContext, UseFormReset } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
 import { deleteCarOwnershipsByOwnersIds } from '@/utils/supabase/general';
-import { onMutateCarOwnershipDelete } from '@/utils/tanstack/general';
+import { onMutateCarOwnershipDelete } from '@/utils/tanstack/cars_ownerships';
 
 import { Button } from '../Button/Button';
 

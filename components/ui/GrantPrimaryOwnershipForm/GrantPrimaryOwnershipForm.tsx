@@ -12,7 +12,7 @@ import { patchCarPrimaryOwnership } from '@/utils/supabase/general';
 import {
   onErrorCarOwnershipPatch,
   onMutateCarOwnershipPatch,
-} from '@/utils/tanstack/general';
+} from '@/utils/tanstack/cars_ownerships';
 
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
