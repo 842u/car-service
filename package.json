@@ -74,7 +74,7 @@
     "supabase": "2.19.7",
     "tailwindcss": "4.0.15",
     "ts-node": "10.9.2",
-    "typescript": "5.8.2",
+    "typescript": "5.8.3",
     "typescript-eslint": "8.27.0",
     "whatwg-fetch": "3.6.20"
   }
