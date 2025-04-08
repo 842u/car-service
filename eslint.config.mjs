@@ -2,7 +2,7 @@ import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
 import pluginQuery from '@tanstack/eslint-plugin-query';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginImportX from 'eslint-plugin-import-x';
+import { flatConfigs as eslintPluginImportX } from 'eslint-plugin-import-x';
 import eslintPluginJestDom from 'eslint-plugin-jest-dom';
 import eslintPluginPlaywright from 'eslint-plugin-playwright';
 import pluginReact from 'eslint-plugin-react';
@@ -106,8 +106,8 @@ export default typescriptEslintConfig(
   },
   ...pluginQuery.configs['flat/recommended'],
   pluginJs.configs.recommended,
-  eslintPluginImportX.flatConfigs.recommended,
-  eslintPluginImportX.flatConfigs.typescript,
+  eslintPluginImportX.recommended,
+  eslintPluginImportX.typescript,
   ...typescriptEslintConfigs.recommended,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat['jsx-runtime'],
