@@ -53,13 +53,15 @@ export const baseContentSecurityPolicy = {
   'style-src': [
     "'self'",
     "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
-    "'sha256-fNQvmabDUct/Q8bVROR2oAMzjWD2CYHGuJj7V7Sxgfc='",
     "'sha256-m8dEh7VmKFRCO8jEWPbmkeO1mq4SIx8omtyx50rrS/M='",
-    "'sha256-N7LtYMn8V4wJc3qizzc77tEs0O1HIy5OTDGzhMvguUs='",
     "'sha256-rZot9UVcdtXL99KiVSLfpDfxS3VtOsOY1PXjNX1ntxg='",
-    "'sha256-sShq9hrV/jIzaV2Q3pM8oaP2GaOPh4po5NUVewSCGdo='",
     "'sha256-Ylx4sWaDgn6RRamxe7jevX4yDhNtiSG3CQWrPAdPh6A='",
     "'sha256-sHwQzC2ZsVrt1faUYCjF/eo8aIoBlQbGjVstzanL9CU='",
+    // Next - START
+    "'sha256-fNQvmabDUct/Q8bVROR2oAMzjWD2CYHGuJj7V7Sxgfc='",
+    "'sha256-k1m9MgjuV56OVgoQq43A5vLIpdJFJrlq/3ANCGJD4es='",
+    "'sha256-TkUgajJ946/xb1R0Vfeuzb73k2VAKoEIF3sRGeX4aBU='",
+    // Next - END
     `${process.env.NODE_ENV === 'development' ? `'nonce-reactQueryDevtools'` : ''}`,
   ],
   'font-src': ["'self'"],
