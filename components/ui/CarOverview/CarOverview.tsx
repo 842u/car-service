@@ -13,6 +13,7 @@ import {
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarBadge } from '../CarBadge/CarBadge';
+import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
 import { CarOwnershipSection } from '../CarOwnershipSection/CarOwnershipSection';
 
@@ -90,6 +91,10 @@ export function CarOverview({ carId }: CarOverviewProps) {
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         ownersProfilesData={ownersProfilesData}
         sessionProfileData={sessionProfileData}
+      />
+      <CarDeleteSection
+        carId={carId}
+        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
     </section>
   );
