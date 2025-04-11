@@ -160,6 +160,35 @@ export function deleteCarFromInfiniteQueryData(
   return deletedCarContext;
 }
 
+export async function carsInfiniteDeleteOnMutate(
+  carId: string,
+  queryClient: QueryClient,
+) {
+  await queryClient.cancelQueries({ queryKey: queryKeys.infiniteCars });
+
+  let deletedCarContext: DeletedCarContext = {
+    deletedCar: null,
+    deletedCarPageIndex: null,
+    deletedCarPagePositionIndex: null,
+  };
+
+  queryClient.setQueryData(
+    queryKeys.infiniteCars,
+    (data: CarsInfiniteQueryData) => {
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
+
+      deletedCarContext = deleteCarFromInfiniteQueryData(
+        carId,
+        updatedQueryData,
+      );
+
+      return updatedQueryData;
+    },
+  );
+
+  return deletedCarContext;
+}
+
 export async function carsUpdateOnMutate(
   queryClient: QueryClient,
   carId: string,
