@@ -15,11 +15,16 @@ function addCarToInfiniteQueryData(
   newCar: Car,
   queryData: CarsInfiniteQueryData,
   pageIndex: number = 0,
+  carPagePositionIndex: number = 0,
 ) {
   const currentPage = queryData.pages[pageIndex];
-  const nextPage = queryData?.pages[pageIndex + 1];
+  const nextPage = queryData.pages[pageIndex + 1];
 
-  currentPage.data = [{ ...newCar }, ...currentPage.data];
+  if (!currentPage.data[carPagePositionIndex]) {
+    currentPage.data.splice(carPagePositionIndex, 1, newCar);
+  } else {
+    currentPage.data.splice(carPagePositionIndex, 0, newCar);
+  }
 
   if (currentPage.data.length > CARS_INFINITE_QUERY_PAGE_DATA_LIMIT) {
     const carriedCar = currentPage.data.pop();
@@ -46,7 +51,7 @@ function addCarToInfiniteQueryData(
 function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
   const deepCopy: CarsInfiniteQueryData = {
     pages: data.pages.map((page) => ({
-      data: page.data.map((car) => ({ ...car })),
+      data: page.data.map((car) => car && { ...car }),
       nextPageParam: page.nextPageParam,
     })),
     pageParams: [...data.pageParams],
@@ -71,7 +76,7 @@ export async function carsInfiniteAddOnMutate(
     (data: CarsInfiniteQueryData) => {
       const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
 
-      addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
+      addCarToInfiniteQueryData(newCar, updatedQueryData);
 
       return updatedQueryData;
     },
@@ -103,7 +108,7 @@ export function carsInfiniteAddOnError(
 
       updatedQueryData.pages.forEach((page) => {
         page.data = page.data.filter((car) => {
-          return car.id !== context?.newCarId;
+          return car?.id !== context?.newCarId;
         });
       });
 

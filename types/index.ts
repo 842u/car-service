@@ -61,7 +61,7 @@ export const driveTypesMapping: DriveMapping = {
 };
 
 export type CarsInfiniteQueryPageData = {
-  data: Car[];
+  data: (Car | null)[];
   nextPageParam: number | null;
 };
 
