@@ -117,6 +117,49 @@ export function carsInfiniteAddOnError(
   }
 }
 
+type DeletedCarContext = {
+  deletedCar: Car | null;
+  deletedCarPageIndex: number | null;
+  deletedCarPagePositionIndex: number | null;
+};
+
+export function deleteCarFromInfiniteQueryData(
+  carId: string,
+  queryData: CarsInfiniteQueryData,
+) {
+  let pageIndex = 0;
+  let carIndexToDelete = null;
+
+  const deletedCarContext: DeletedCarContext = {
+    deletedCar: null,
+    deletedCarPageIndex: null,
+    deletedCarPagePositionIndex: null,
+  };
+
+  while (pageIndex < queryData.pages.length) {
+    const currentPageData = queryData.pages[pageIndex]?.data;
+    const nextPage = queryData.pages[pageIndex + 1];
+
+    carIndexToDelete = currentPageData.findIndex((car) => car?.id === carId);
+
+    if (carIndexToDelete === -1 && !nextPage) break;
+
+    if (carIndexToDelete === -1 && nextPage) {
+      pageIndex++;
+    } else {
+      deletedCarContext.deletedCar = currentPageData.splice(
+        carIndexToDelete,
+        1,
+        null,
+      )[0];
+      deletedCarContext.deletedCarPageIndex = pageIndex;
+      deletedCarContext.deletedCarPagePositionIndex = carIndexToDelete;
+    }
+  }
+
+  return deletedCarContext;
+}
+
 export async function carsUpdateOnMutate(
   queryClient: QueryClient,
   carId: string,
