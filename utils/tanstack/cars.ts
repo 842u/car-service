@@ -189,6 +189,33 @@ export async function carsInfiniteDeleteOnMutate(
   return deletedCarContext;
 }
 
+export async function carsInfiniteDeleteOnError(
+  queryClient: QueryClient,
+  context: DeletedCarContext | undefined,
+) {
+  if (
+    context?.deletedCar === null ||
+    context?.deletedCarPageIndex == null ||
+    context?.deletedCarPagePositionIndex == null
+  )
+    return;
+
+  const previousCarsQueryData = queryClient.getQueryData(
+    queryKeys.infiniteCars,
+  ) as CarsInfiniteQueryData;
+
+  const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQueryData);
+
+  addCarToInfiniteQueryData(
+    context.deletedCar,
+    updatedQueryData,
+    context.deletedCarPageIndex,
+    context.deletedCarPagePositionIndex,
+  );
+
+  queryClient.setQueryData(queryKeys.infiniteCars, updatedQueryData);
+}
+
 export async function carsUpdateOnMutate(
   queryClient: QueryClient,
   carId: string,
