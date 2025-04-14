@@ -24,6 +24,14 @@ export async function getCar(carId: string) {
   return data[0];
 }
 
+export async function deleteCar(carId: string) {
+  const supabase = createClient();
+
+  const response = await supabase.from('cars').delete().eq('id', carId);
+
+  return response;
+}
+
 export async function getCarsByPage({ pageParam }: { pageParam: number }) {
   const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
   const rangeIndexTo =

@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useIsMutating,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
@@ -13,6 +17,9 @@ export function CarsSection() {
 
   const { addToast } = useToasts();
 
+  const carsInfiniteIsMutating = useIsMutating({
+    mutationKey: queryKeys.infiniteCars,
+  });
   const queryClient = useQueryClient();
   const {
     data,
@@ -26,6 +33,7 @@ export function CarsSection() {
     fetchNextPage,
   } = useInfiniteQuery({
     throwOnError: false,
+    enabled: !carsInfiniteIsMutating,
     queryKey: queryKeys.infiniteCars,
     queryFn: async ({ pageParam }) => {
       const { data, nextPageParam } = await getCarsByPage({ pageParam });
@@ -77,7 +85,9 @@ export function CarsSection() {
       {isSuccess && (
         <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-[1920px]">
           {data.pages.map((page) => {
-            return page.data.map((car) => <CarCard key={car.id} car={car} />);
+            return page.data.map(
+              (car) => car && <CarCard key={car.id} car={car} />,
+            );
           })}
           <div
             ref={intersectionTargetRef}

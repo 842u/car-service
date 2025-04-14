@@ -15,11 +15,16 @@ function addCarToInfiniteQueryData(
   newCar: Car,
   queryData: CarsInfiniteQueryData,
   pageIndex: number = 0,
+  carPagePositionIndex: number = 0,
 ) {
   const currentPage = queryData.pages[pageIndex];
-  const nextPage = queryData?.pages[pageIndex + 1];
+  const nextPage = queryData.pages[pageIndex + 1];
 
-  currentPage.data = [{ ...newCar }, ...currentPage.data];
+  if (!currentPage.data[carPagePositionIndex]) {
+    currentPage.data.splice(carPagePositionIndex, 1, newCar);
+  } else {
+    currentPage.data.splice(carPagePositionIndex, 0, newCar);
+  }
 
   if (currentPage.data.length > CARS_INFINITE_QUERY_PAGE_DATA_LIMIT) {
     const carriedCar = currentPage.data.pop();
@@ -46,7 +51,7 @@ function addCarToInfiniteQueryData(
 function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
   const deepCopy: CarsInfiniteQueryData = {
     pages: data.pages.map((page) => ({
-      data: page.data.map((car) => ({ ...car })),
+      data: page.data.map((car) => car && { ...car }),
       nextPageParam: page.nextPageParam,
     })),
     pageParams: [...data.pageParams],
@@ -61,7 +66,6 @@ export async function carsInfiniteAddOnMutate(
   optimisticCarImageUrl: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: queryKeys.infiniteCars });
-  const previousCarsQuery = queryClient.getQueryData(queryKeys.infiniteCars);
 
   const newCar = mapCarFormValuesToCarObject('add', carFormData);
   newCar.image_url = optimisticCarImageUrl;
@@ -71,23 +75,18 @@ export async function carsInfiniteAddOnMutate(
     (data: CarsInfiniteQueryData) => {
       const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
 
-      addCarToInfiniteQueryData(newCar, updatedQueryData, 0);
+      addCarToInfiniteQueryData(newCar, updatedQueryData);
 
       return updatedQueryData;
     },
   );
 
-  return { previousCars: previousCarsQuery, newCarId: newCar.id };
+  return { newCarId: newCar.id };
 }
 
 export function carsInfiniteAddOnError(
   error: Error,
-  context:
-    | {
-        previousCars: unknown;
-        newCarId: string;
-      }
-    | undefined,
+  context: Awaited<ReturnType<typeof carsInfiniteAddOnMutate>> | undefined,
   queryClient: QueryClient,
   addToast: (message: string, type: ToastType) => void,
 ) {
@@ -102,14 +101,113 @@ export function carsInfiniteAddOnError(
       const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQuery);
 
       updatedQueryData.pages.forEach((page) => {
-        page.data = page.data.filter((car) => {
-          return car.id !== context?.newCarId;
-        });
+        page.data = page.data.filter(
+          (car) => car && car.id !== context?.newCarId,
+        );
       });
 
       queryClient.setQueryData(queryKeys.infiniteCars, updatedQueryData);
     }
   }
+}
+
+type DeletedCarContext = {
+  deletedCar: Car | null;
+  deletedCarPageIndex: number | null;
+  deletedCarPagePositionIndex: number | null;
+};
+
+export function deleteCarFromInfiniteQueryData(
+  carId: string,
+  queryData: CarsInfiniteQueryData,
+) {
+  let pageIndex = 0;
+  let carIndexToDelete = null;
+
+  const deletedCarContext: DeletedCarContext = {
+    deletedCar: null,
+    deletedCarPageIndex: null,
+    deletedCarPagePositionIndex: null,
+  };
+
+  while (pageIndex < queryData.pages.length) {
+    const currentPageData = queryData.pages[pageIndex]?.data;
+    const nextPage = queryData.pages[pageIndex + 1];
+
+    carIndexToDelete = currentPageData.findIndex((car) => car?.id === carId);
+
+    if (carIndexToDelete === -1 && !nextPage) break;
+
+    if (carIndexToDelete === -1 && nextPage) {
+      pageIndex++;
+    } else {
+      deletedCarContext.deletedCar = currentPageData.splice(
+        carIndexToDelete,
+        1,
+        null,
+      )[0];
+      deletedCarContext.deletedCarPageIndex = pageIndex;
+      deletedCarContext.deletedCarPagePositionIndex = carIndexToDelete;
+    }
+  }
+
+  return deletedCarContext;
+}
+
+export async function carsInfiniteDeleteOnMutate(
+  carId: string,
+  queryClient: QueryClient,
+) {
+  await queryClient.cancelQueries({ queryKey: queryKeys.infiniteCars });
+
+  let deletedCarContext: DeletedCarContext = {
+    deletedCar: null,
+    deletedCarPageIndex: null,
+    deletedCarPagePositionIndex: null,
+  };
+
+  queryClient.setQueryData(
+    queryKeys.infiniteCars,
+    (data: CarsInfiniteQueryData) => {
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
+
+      deletedCarContext = deleteCarFromInfiniteQueryData(
+        carId,
+        updatedQueryData,
+      );
+
+      return updatedQueryData;
+    },
+  );
+
+  return deletedCarContext;
+}
+
+export async function carsInfiniteDeleteOnError(
+  queryClient: QueryClient,
+  context: Awaited<ReturnType<typeof carsInfiniteDeleteOnMutate>> | undefined,
+) {
+  if (
+    context?.deletedCar === null ||
+    context?.deletedCarPageIndex == null ||
+    context?.deletedCarPagePositionIndex == null
+  )
+    return;
+
+  const previousCarsQueryData = queryClient.getQueryData(
+    queryKeys.infiniteCars,
+  ) as CarsInfiniteQueryData;
+
+  const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQueryData);
+
+  addCarToInfiniteQueryData(
+    context.deletedCar,
+    updatedQueryData,
+    context.deletedCarPageIndex,
+    context.deletedCarPagePositionIndex,
+  );
+
+  queryClient.setQueryData(queryKeys.infiniteCars, updatedQueryData);
 }
 
 export async function carsUpdateOnMutate(

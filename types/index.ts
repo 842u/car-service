@@ -61,10 +61,10 @@ export const driveTypesMapping: DriveMapping = {
 };
 
 export type CarsInfiniteQueryPageData = {
-  data: Car[];
+  data: (Car | null)[];
   nextPageParam: number | null;
 };
 
 export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;
 
-export type ButtonVariants = 'default' | 'accent' | 'transparent';
+export type ButtonVariants = 'default' | 'accent' | 'transparent' | 'error';
