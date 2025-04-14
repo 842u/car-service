@@ -1,6 +1,6 @@
 import { SectionVariants } from '@/types';
 
-const baseClassName = 'border rounded-md p-4';
+const baseClassName = 'border rounded-md p-4 text-sm';
 
 const defaultClassName = `${baseClassName} border-alpha-grey-200 bg-alpha-grey-50`;
 
