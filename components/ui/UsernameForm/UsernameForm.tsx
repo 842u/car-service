@@ -9,12 +9,10 @@ import { Button } from '@/components/ui/Button/Button';
 import { Input } from '@/components/ui/Input/Input';
 import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 import { useToasts } from '@/hooks/useToasts';
-import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
 import {
   usernameFormSchema,
   UsernameFormValues,
 } from '@/schemas/zod/usernameFormSchema';
-import { Profile } from '@/types';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
@@ -24,10 +22,10 @@ const defaultUsernameFormValues: UsernameFormValues = {
 };
 
 type UsernameFormProps = {
-  data?: Profile | null;
+  username?: string | null;
 };
 
-export function UsernameForm({ data }: UsernameFormProps) {
+export function UsernameForm({ username }: UsernameFormProps) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
@@ -79,8 +77,8 @@ export function UsernameForm({ data }: UsernameFormProps) {
   };
 
   useEffect(() => {
-    data?.username && reset({ username: data.username });
-  }, [reset, data?.username]);
+    username && reset({ username: username });
+  }, [reset, username]);
 
   useEffect(() => {
     isSubmitSuccessful && reset();
@@ -102,23 +100,12 @@ export function UsernameForm({ data }: UsernameFormProps) {
         />
       </div>
       <div className="w-full flex-1">
-        <div className="text-sm">
-          <p>
-            Please enter your full name, or a display name you are comfortable
-            with.
-          </p>
-          <p className="text-alpha-grey-700">
-            {`Letters, numbers and single whitespaces allowed. Length between
-              ${MIN_USERNAME_LENGTH} and
-              ${MAX_USERNAME_LENGTH} characters.`}
-          </p>
-        </div>
         <div className="my-4 flex justify-center gap-4">
           <Button
             className="flex-1"
             disabled={!isDirty}
             onClick={() => {
-              reset({ username: data?.username || '' });
+              reset({ username: username || '' });
             }}
           >
             Reset
