@@ -185,7 +185,7 @@ export async function carsInfiniteDeleteOnMutate(
 
 export async function carsInfiniteDeleteOnError(
   queryClient: QueryClient,
-  context: DeletedCarContext | undefined,
+  context: Awaited<ReturnType<typeof carsInfiniteDeleteOnMutate>> | undefined,
 ) {
   if (
     context?.deletedCar === null ||
