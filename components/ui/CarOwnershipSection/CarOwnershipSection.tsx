@@ -5,6 +5,7 @@ import { CarOwnership, Profile } from '@/types';
 
 import { CarOwnershipControls } from '../CarOwnershipControls/CarOwnershipControls';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
+import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
 type CarOwnershipSectionProps = {
@@ -32,8 +33,8 @@ export function CarOwnershipSection({
   });
 
   return (
-    <section className="my-5 overflow-x-auto">
-      <h2>Car Ownership</h2>
+    <DashboardSection className="my-5 overflow-x-auto">
+      <DashboardSection.Heading>Ownership</DashboardSection.Heading>
       <CarOwnershipTable
         carOwnershipData={carOwnershipData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
@@ -46,6 +47,6 @@ export function CarOwnershipSection({
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
       />
-    </section>
+    </DashboardSection>
   );
 }

@@ -32,7 +32,7 @@ export function CarOwnershipControls({
   const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <div className="m-5 flex justify-end gap-5">
+    <div className="mt-5 flex justify-end gap-5">
       <IconButton
         className="group"
         disabled={!isCurrentUserPrimaryOwner}
