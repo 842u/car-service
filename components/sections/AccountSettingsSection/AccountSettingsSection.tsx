@@ -5,8 +5,7 @@ import { useEffect } from 'react';
 
 import { AvatarSection } from '@/components/ui/AvatarSection/AvatarSection';
 import { IdSection } from '@/components/ui/IdSection/IdSection';
-import { PasswordChangeForm } from '@/components/ui/PasswordChangeForm/PasswordChangeForm';
-import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
+import { PasswordChangeSection } from '@/components/ui/PasswordChangeSection/PasswordChangeSection';
 import { UsernameSection } from '@/components/ui/UsernameSection/UsernameSection';
 import { useToasts } from '@/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
@@ -33,9 +32,7 @@ export function AccountSettingsSection() {
       <IdSection id={data?.id} />
       <UsernameSection username={data?.username} />
       <AvatarSection avatarUrl={data?.avatar_url} />
-      <SettingsSection headingText="Change password">
-        <PasswordChangeForm />
-      </SettingsSection>
+      <PasswordChangeSection />
     </section>
   );
 }
