@@ -5,6 +5,8 @@ import { SectionVariants } from '@/types';
 import { sectionVariants } from '@/utils/tailwindcss/section';
 
 import { DashboardSectionHeading } from './DashboardSectionHeading';
+import { DashboardSectionSubtext } from './DashboardSectionSubtext';
+import { DashboardSectionText } from './DashboardSectionText';
 
 type DashboardSectionProps = ComponentProps<'section'> & {
   variant?: SectionVariants;
@@ -27,3 +29,5 @@ export function DashboardSection({
 }
 
 DashboardSection.Heading = DashboardSectionHeading;
+DashboardSection.Text = DashboardSectionText;
+DashboardSection.Subtext = DashboardSectionSubtext;

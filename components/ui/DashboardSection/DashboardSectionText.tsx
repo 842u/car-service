@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-type DashboardSectionTextProps = ComponentProps<'p'>;
+export type DashboardSectionTextProps = ComponentProps<'p'>;
 
 export function DashboardSectionText({
   children,
