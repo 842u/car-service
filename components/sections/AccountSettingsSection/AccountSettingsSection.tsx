@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { AvatarForm } from '@/components/ui/AvatarForm/AvatarForm';
+import { AvatarSection } from '@/components/ui/AvatarSection/AvatarSection';
 import { IdSection } from '@/components/ui/IdSection/IdSection';
 import { PasswordChangeForm } from '@/components/ui/PasswordChangeForm/PasswordChangeForm';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
@@ -32,9 +32,7 @@ export function AccountSettingsSection() {
     >
       <IdSection id={data?.id} />
       <UsernameSection username={data?.username} />
-      <SettingsSection headingText="Avatar">
-        <AvatarForm data={data} />
-      </SettingsSection>
+      <AvatarSection avatarUrl={data?.avatar_url} />
       <SettingsSection headingText="Change password">
         <PasswordChangeForm />
       </SettingsSection>
