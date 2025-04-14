@@ -8,7 +8,7 @@ export function DashboardSectionSubtext({
   ...props
 }: DashboardSectionTextProps) {
   return (
-    <p className={twMerge('text-alpha-grey-800', className)} {...props}>
+    <p className={twMerge('text-alpha-grey-900', className)} {...props}>
       {children}
     </p>
   );
