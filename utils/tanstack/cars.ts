@@ -66,7 +66,6 @@ export async function carsInfiniteAddOnMutate(
   optimisticCarImageUrl: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: queryKeys.infiniteCars });
-  const previousCarsQuery = queryClient.getQueryData(queryKeys.infiniteCars);
 
   const newCar = mapCarFormValuesToCarObject('add', carFormData);
   newCar.image_url = optimisticCarImageUrl;
@@ -82,17 +81,12 @@ export async function carsInfiniteAddOnMutate(
     },
   );
 
-  return { previousCars: previousCarsQuery, newCarId: newCar.id };
+  return { newCarId: newCar.id };
 }
 
 export function carsInfiniteAddOnError(
   error: Error,
-  context:
-    | {
-        previousCars: unknown;
-        newCarId: string;
-      }
-    | undefined,
+  context: Awaited<ReturnType<typeof carsInfiniteAddOnMutate>> | undefined,
   queryClient: QueryClient,
   addToast: (message: string, type: ToastType) => void,
 ) {
@@ -107,9 +101,9 @@ export function carsInfiniteAddOnError(
       const updatedQueryData = deepCopyCarsInfiniteQueryData(previousCarsQuery);
 
       updatedQueryData.pages.forEach((page) => {
-        page.data = page.data.filter((car) => {
-          return car?.id !== context?.newCarId;
-        });
+        page.data = page.data.filter(
+          (car) => car && car.id !== context?.newCarId,
+        );
       });
 
       queryClient.setQueryData(queryKeys.infiniteCars, updatedQueryData);
