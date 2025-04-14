@@ -38,14 +38,14 @@ export function CarDeleteForm({ carId, onSubmit }: CarDeleteFormProps) {
 
   const handleFormSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.replace('/dashboard/cars' satisfies Route);
-    onSubmit && onSubmit();
     mutate(undefined, {
       onSettled: () =>
         queryClient.invalidateQueries({
           queryKey: queryKeys.infiniteCars,
         }),
     });
+    router.replace('/dashboard/cars' satisfies Route);
+    onSubmit && onSubmit();
   };
 
   return (
