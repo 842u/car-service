@@ -7,11 +7,10 @@ import { AvatarForm } from '@/components/ui/AvatarForm/AvatarForm';
 import { IdSection } from '@/components/ui/IdSection/IdSection';
 import { PasswordChangeForm } from '@/components/ui/PasswordChangeForm/PasswordChangeForm';
 import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
+import { UsernameSection } from '@/components/ui/UsernameSection/UsernameSection';
 import { useToasts } from '@/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
-
-import { UsernameForm } from '../../ui/UsernameForm/UsernameForm';
 
 export function AccountSettingsSection() {
   const { addToast } = useToasts();
@@ -32,9 +31,7 @@ export function AccountSettingsSection() {
       className="flex flex-col items-center justify-center gap-4 p-5"
     >
       <IdSection id={data?.id} />
-      <SettingsSection headingText="Username">
-        <UsernameForm data={data} />
-      </SettingsSection>
+      <UsernameSection username={data?.username} />
       <SettingsSection headingText="Avatar">
         <AvatarForm data={data} />
       </SettingsSection>
