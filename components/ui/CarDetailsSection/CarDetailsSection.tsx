@@ -4,6 +4,7 @@ import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
 
 import { EditCarForm } from '../CarForm/EditCarForm';
+import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
 import { IconButton } from '../IconButton/IconButton';
 
@@ -21,11 +22,11 @@ export function CarDetailsSection({
   const dialogModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <section>
-      <h2 className="my-2 text-xl">Details</h2>
-      <div className="border-alpha-grey-300 overflow-hidden rounded-lg border p-2 md:flex md:flex-wrap md:gap-2">
+    <DashboardSection className="my-5">
+      <DashboardSection.Heading>Details</DashboardSection.Heading>
+      <div className="overflow-hidden md:flex md:flex-wrap md:gap-2">
         <section className="mb-5 md:m-0 md:w-1/3 md:grow">
-          <h3 className="my-1 text-lg">Basic</h3>
+          <h3 className="my-1 text-base">Basic</h3>
           <div className="border-alpha-grey-300 overflow-hidden rounded-lg border p-2">
             <table className="w-full">
               <caption className="sr-only">Car basic information table</caption>
@@ -51,7 +52,7 @@ export function CarDetailsSection({
           </div>
         </section>
         <section className="mb-5 md:m-0 md:w-1/3 md:grow">
-          <h3 className="my-1 text-lg">Identification</h3>
+          <h3 className="my-1 text-base">Identification</h3>
           <div className="border-alpha-grey-300 overflow-hidden rounded-lg border p-2">
             <table className="w-full">
               <caption className="sr-only">
@@ -71,7 +72,7 @@ export function CarDetailsSection({
           </div>
         </section>
         <section className="mb-5 md:m-0 md:w-1/3 md:grow">
-          <h3 className="my-1 text-lg">Powertrain</h3>
+          <h3 className="my-1 text-base">Powertrain</h3>
           <div className="border-alpha-grey-300 overflow-hidden rounded-lg border p-2">
             <table className="w-full">
               <caption className="sr-only">
@@ -109,7 +110,7 @@ export function CarDetailsSection({
           </div>
         </section>
         <section className="mb-5 md:m-0 md:w-1/3 md:grow">
-          <h3 className="my-1 text-lg">Maintenance</h3>
+          <h3 className="my-1 text-base">Maintenance</h3>
           <div className="border-alpha-grey-300 overflow-hidden rounded-lg border p-2">
             <table className="w-full">
               <caption className="sr-only">
@@ -133,7 +134,7 @@ export function CarDetailsSection({
           </div>
         </section>
       </div>
-      <div className="m-5 flex justify-end gap-5">
+      <div className="mt-5 flex justify-end gap-5">
         <IconButton
           className="group"
           disabled={!isCurrentUserPrimaryOwner}
@@ -151,6 +152,6 @@ export function CarDetailsSection({
           onSubmit={() => dialogModalRef.current?.closeModal()}
         />
       </DialogModal>
-    </section>
+    </DashboardSection>
   );
 }
