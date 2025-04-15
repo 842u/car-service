@@ -6,6 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { GoogleIcon } from '@/components/decorative/icons/GoogleIcon';
 import { useToasts } from '@/hooks/useToasts';
+import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 import { Button } from '../Button/Button';
 
@@ -17,14 +18,12 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
   const { addToast } = useToasts();
 
   const gitHubButtonClickHandler = async () => {
-    const { signInWithOAuthHandler } = await import('@/utils/supabase/general');
     const { error } = await signInWithOAuthHandler('github');
 
     error && addToast(error.message, 'error');
   };
 
   const googleButtonClickHandler = async () => {
-    const { signInWithOAuthHandler } = await import('@/utils/supabase/general');
     const { error } = await signInWithOAuthHandler('google');
 
     error && addToast(error.message, 'error');
