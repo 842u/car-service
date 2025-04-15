@@ -1,17 +1,10 @@
 'use client';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Route } from 'next';
-import { useRouter } from 'next/navigation';
-import { Ref, useEffect, useImperativeHandle } from 'react';
-import { useFormContext, UseFormReset } from 'react-hook-form';
-
-import { useToasts } from '@/hooks/useToasts';
-import { deleteCarOwnershipsByUsersIds } from '@/utils/supabase/tables/cars_ownerships';
-import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
-import { queryKeys } from '@/utils/tanstack/keys';
+import { Ref } from 'react';
+import { UseFormReset } from 'react-hook-form';
 
 import { Button } from '../Button/Button';
+import { useRemoveCarOwnershipForm } from './useRemoveCarOwnershipForm';
 
 export type RemoveCarOwnershipFormRef = {
   reset: UseFormReset<RemoveCarOwnershipFormValues>;
@@ -21,7 +14,7 @@ export type RemoveCarOwnershipFormValues = {
   ownersIds: string[];
 };
 
-type RemoveCarOwnershipFormProps = {
+export type RemoveCarOwnershipFormProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
   ref: Ref<RemoveCarOwnershipFormRef>;
@@ -36,54 +29,17 @@ export function RemoveCarOwnershipForm({
   onReset,
   onSubmit,
 }: RemoveCarOwnershipFormProps) {
-  const router = useRouter();
-
-  const { addToast } = useToasts();
-
-  const queryClient = useQueryClient();
-  const { mutateAsync } = useMutation({
-    throwOnError: false,
-    mutationFn: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
-      deleteCarOwnershipsByUsersIds(carId, carOwnershipFormData.ownersIds),
-    onMutate: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
-      carsOwnershipsDeleteOnMutate(carOwnershipFormData, queryClient, carId),
-    onSuccess: () => {
-      addToast('Successfully removed ownerships.', 'success');
-    },
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(
-        queryKeys.carsOwnershipsByCarId(carId),
-        context?.previousQueryData,
-      );
-    },
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.carsOwnershipsByCarId(carId),
-      }),
-  });
-
-  const {
-    handleSubmit,
-    reset,
-    formState: { isDirty, isSubmitting, isSubmitSuccessful },
-  } = useFormContext<RemoveCarOwnershipFormValues>();
-
-  const handleFormSubmit = async (data: RemoveCarOwnershipFormValues) => {
-    onSubmit && onSubmit();
-    await mutateAsync(data);
-    !isCurrentUserPrimaryOwner &&
-      router.replace('/dashboard/cars' satisfies Route);
-  };
-
-  useImperativeHandle(ref, () => ({ reset }), [reset]);
-
-  useEffect(() => {
-    isSubmitSuccessful && reset();
-  }, [isSubmitSuccessful, reset]);
+  const { handleFormSubmit, handleFormReset, isDirty, isSubmitting } =
+    useRemoveCarOwnershipForm({
+      carId,
+      isCurrentUserPrimaryOwner,
+      ref,
+      onReset,
+      onSubmit,
+    });
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)}>
+    <form onSubmit={handleFormSubmit}>
       <div className="border-accent-200 dark:border-accent-300 bg-light-500 dark:bg-dark-500 max-w-md rounded-xl border-2 p-10">
         <h2>Remove ownership</h2>
         <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
@@ -102,10 +58,7 @@ export function RemoveCarOwnershipForm({
         <div className="mt-5 flex justify-end gap-5">
           <Button
             disabled={!isDirty && !isSubmitting}
-            onClick={() => {
-              onReset && onReset();
-              reset();
-            }}
+            onClick={handleFormReset}
           >
             Reset
           </Button>
