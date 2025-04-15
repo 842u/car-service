@@ -52,7 +52,7 @@ export default defineConfig({
     },
     {
       name: 'Mobile Chrome',
-      use: { ...devices['Galaxy S9+'] },
+      use: { ...devices['Pixel 7'] },
       grep: /@mobile/,
     },
     {

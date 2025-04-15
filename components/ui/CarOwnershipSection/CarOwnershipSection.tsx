@@ -5,6 +5,7 @@ import { CarOwnership, Profile } from '@/types';
 
 import { CarOwnershipControls } from '../CarOwnershipControls/CarOwnershipControls';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
+import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
 type CarOwnershipSectionProps = {
@@ -32,8 +33,10 @@ export function CarOwnershipSection({
   });
 
   return (
-    <section className="my-5 overflow-x-auto">
-      <h2>Car Ownership</h2>
+    <DashboardSection className="overflow-x-auto">
+      <DashboardSection.Heading headingLevel="h2">
+        Ownership
+      </DashboardSection.Heading>
       <CarOwnershipTable
         carOwnershipData={carOwnershipData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
@@ -41,11 +44,13 @@ export function CarOwnershipSection({
         register={removeCarOwnershipFormMethods.register}
         sessionProfileData={sessionProfileData}
       />
-      <CarOwnershipControls
-        carId={carId}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
-      />
-    </section>
+      <DashboardSection.Controls className="mt-4">
+        <CarOwnershipControls
+          carId={carId}
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+          removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
+        />
+      </DashboardSection.Controls>
+    </DashboardSection>
   );
 }

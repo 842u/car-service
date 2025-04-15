@@ -1,4 +1,5 @@
 import { CarImage } from '../CarImage/CarImage';
+import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { Spinner } from '../Spinner/Spinner';
 
 type CarBadgeProps = {
@@ -9,7 +10,7 @@ type CarBadgeProps = {
 
 export function CarBadge({ imageUrl, name, isPending }: CarBadgeProps) {
   return (
-    <div className="border-alpha-grey-300 flex flex-col-reverse items-center gap-5 rounded-lg border p-2 md:flex-row">
+    <DashboardSection className="flex flex-col-reverse items-center gap-5 md:flex-row">
       <div className="w-full max-w-md overflow-hidden rounded-lg md:max-w-xs md:basis-1/4">
         {isPending && (
           <Spinner className="stroke-accent-400 fill-accent-400 h-full w-full p-20 md:p-10" />
@@ -19,6 +20,6 @@ export function CarBadge({ imageUrl, name, isPending }: CarBadgeProps) {
       <h1 className="grow text-center text-3xl break-all whitespace-pre-wrap lg:break-normal">
         {name || ' '}
       </h1>
-    </div>
+    </DashboardSection>
   );
 }

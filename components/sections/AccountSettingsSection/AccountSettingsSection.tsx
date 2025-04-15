@@ -3,15 +3,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { AvatarForm } from '@/components/ui/AvatarForm/AvatarForm';
+import { AvatarSection } from '@/components/ui/AvatarSection/AvatarSection';
 import { IdSection } from '@/components/ui/IdSection/IdSection';
-import { PasswordChangeForm } from '@/components/ui/PasswordChangeForm/PasswordChangeForm';
-import { SettingsSection } from '@/components/ui/SettingsSection/SettingsSection';
+import { PasswordChangeSection } from '@/components/ui/PasswordChangeSection/PasswordChangeSection';
+import { UsernameSection } from '@/components/ui/UsernameSection/UsernameSection';
 import { useToasts } from '@/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
-
-import { UsernameForm } from '../../ui/UsernameForm/UsernameForm';
 
 export function AccountSettingsSection() {
   const { addToast } = useToasts();
@@ -29,18 +27,12 @@ export function AccountSettingsSection() {
   return (
     <section
       aria-label="account settings"
-      className="flex flex-col items-center justify-center gap-4 p-5"
+      className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
     >
       <IdSection id={data?.id} />
-      <SettingsSection headingText="Username">
-        <UsernameForm data={data} />
-      </SettingsSection>
-      <SettingsSection headingText="Avatar">
-        <AvatarForm data={data} />
-      </SettingsSection>
-      <SettingsSection headingText="Change password">
-        <PasswordChangeForm />
-      </SettingsSection>
+      <UsernameSection username={data?.username} />
+      <AvatarSection avatarUrl={data?.avatar_url} />
+      <PasswordChangeSection />
     </section>
   );
 }

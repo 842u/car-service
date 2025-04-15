@@ -17,11 +17,11 @@ import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
 import { CarOwnershipSection } from '../CarOwnershipSection/CarOwnershipSection';
 
-type CarOverviewProps = {
+type CarSettingsSectionProps = {
   carId: string;
 };
 
-export function CarOverview({ carId }: CarOverviewProps) {
+export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
   const { addToast } = useToasts();
 
   const { data: carData, isPending } = useQuery({
@@ -74,7 +74,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
   }, [addToast, carOwnershipDataError, sessionProfileDataError]);
 
   return (
-    <section className="w-full self-start p-5">
+    <section className="flex w-full flex-col gap-5 p-5">
       <CarBadge
         imageUrl={carData?.image_url}
         isPending={isPending}

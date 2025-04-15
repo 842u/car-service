@@ -10,12 +10,7 @@ import {
   avatarFormSchema,
   AvatarFormValues,
 } from '@/schemas/zod/avatarFormSchema';
-import {
-  IMAGE_FILE_ACCEPTED_MIME_TYPES,
-  IMAGE_FILE_MAX_SIZE_BYTES,
-} from '@/schemas/zod/common';
-import { Profile } from '@/types';
-import { enqueueRevokeObjectUrl, getMimeTypeExtensions } from '@/utils/general';
+import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
@@ -25,18 +20,15 @@ import { Button } from '../Button/Button';
 import { InputImage } from '../InputImage/InputImage';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 
-const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
-const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
-
 const defaultAvatarFormValues: AvatarFormValues = {
   image: null,
 };
 
 type AvatarFormProps = {
-  data?: Profile | null;
+  avatarUrl?: string | null;
 };
 
-export function AvatarForm({ data }: AvatarFormProps) {
+export function AvatarForm({ avatarUrl }: AvatarFormProps) {
   const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const { addToast } = useToasts();
@@ -113,18 +105,9 @@ export function AvatarForm({ data }: AvatarFormProps) {
         withInfo={false}
         onChange={handleInputImageChange}
       >
-        <AvatarImage src={inputImageUrl || data?.avatar_url} />
+        <AvatarImage src={inputImageUrl || avatarUrl} />
       </InputImage>
       <div className="md:flex md:basis-2/3 md:flex-col md:justify-evenly">
-        <div className="my-4 text-sm">
-          <p>Click on the image to upload a custom one.</p>
-          <p className="text-alpha-grey-700">
-            {`Accepted file types: ${acceptedFileTypes}.`}
-          </p>
-          <p className="text-alpha-grey-700">
-            {`Max file size: ${maxFileSize}MB.`}
-          </p>
-        </div>
         <div className="flex gap-5">
           <Button
             className="basis-1/2"
