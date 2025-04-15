@@ -22,7 +22,7 @@ export function CarDetailsSection({
   const dialogModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <DashboardSection className="my-5">
+    <DashboardSection>
       <DashboardSection.Heading>Details</DashboardSection.Heading>
       <div className="my-4 overflow-hidden md:flex md:flex-wrap md:gap-2">
         <section className="mb-5 md:m-0 md:w-1/3 md:grow">

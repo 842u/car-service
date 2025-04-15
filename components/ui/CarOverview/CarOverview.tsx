@@ -74,7 +74,7 @@ export function CarOverview({ carId }: CarOverviewProps) {
   }, [addToast, carOwnershipDataError, sessionProfileDataError]);
 
   return (
-    <section className="w-full self-start p-5">
+    <section className="flex w-full flex-col gap-5 p-5">
       <CarBadge
         imageUrl={carData?.image_url}
         isPending={isPending}

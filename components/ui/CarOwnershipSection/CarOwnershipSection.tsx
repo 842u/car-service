@@ -33,7 +33,7 @@ export function CarOwnershipSection({
   });
 
   return (
-    <DashboardSection className="my-5 overflow-x-auto">
+    <DashboardSection className="overflow-x-auto">
       <DashboardSection.Heading>Ownership</DashboardSection.Heading>
       <CarOwnershipTable
         carOwnershipData={carOwnershipData}
