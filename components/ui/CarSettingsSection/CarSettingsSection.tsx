@@ -17,11 +17,11 @@ import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
 import { CarOwnershipSection } from '../CarOwnershipSection/CarOwnershipSection';
 
-type CarOverviewProps = {
+type CarSettingsSectionProps = {
   carId: string;
 };
 
-export function CarOverview({ carId }: CarOverviewProps) {
+export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
   const { addToast } = useToasts();
 
   const { data: carData, isPending } = useQuery({
