@@ -1,101 +1,32 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-
-import { useToasts } from '@/hooks/useToasts';
-import {
-  avatarFormSchema,
-  AvatarFormValues,
-} from '@/schemas/zod/avatarFormSchema';
-import { enqueueRevokeObjectUrl } from '@/utils/general';
-import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
-import { queryKeys } from '@/utils/tanstack/keys';
-import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
+import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';
 import { InputImage } from '../InputImage/InputImage';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
-
-const defaultAvatarFormValues: AvatarFormValues = {
-  image: null,
-};
+import { useAvatarForm } from './useAvatarForm';
 
 type AvatarFormProps = {
   avatarUrl?: string | null;
 };
 
 export function AvatarForm({ avatarUrl }: AvatarFormProps) {
-  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
-
-  const { addToast } = useToasts();
-
-  const queryClient = useQueryClient();
-  const { mutateAsync } = useMutation({
-    throwOnError: false,
-    mutationFn: (avatarFormData: AvatarFormValues) =>
-      updateCurrentSessionProfile({
-        property: 'avatar_url',
-        value: avatarFormData.image,
-      }),
-    onMutate: () =>
-      profilesUpdateOnMutate(
-        queryClient,
-        'session',
-        'avatar_url',
-        inputImageUrl,
-      ),
-    onSuccess: () => {
-      addToast('Avatar uploaded successfully.', 'success');
-    },
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-
-      queryClient.setQueryData(
-        queryKeys.profilesCurrentSession,
-        context?.previousQueryData,
-      );
-    },
-  });
-
   const {
+    inputImageUrl,
+    handleFormSubmit,
+    handleInputImageChange,
+    handleFormReset,
     control,
-    reset,
-    handleSubmit,
-    formState: { errors, isValid, isDirty, isSubmitting, isSubmitSuccessful },
-  } = useForm<AvatarFormValues>({
-    resolver: zodResolver(avatarFormSchema),
-    mode: 'onChange',
-    defaultValues: defaultAvatarFormValues,
-  });
-
-  const submitForm = async (avatarFormData: AvatarFormValues) => {
-    await mutateAsync(avatarFormData, {
-      onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.profilesCurrentSession,
-        });
-      },
-    });
-  };
-
-  const handleInputImageChange = (file: File | undefined | null) => {
-    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
-    setInputImageUrl((file && URL.createObjectURL(file)) || null);
-  };
-
-  useEffect(() => {
-    isSubmitSuccessful && reset();
-  }, [isSubmitSuccessful, reset]);
+    errors,
+    isDirty,
+    isSubmitting,
+    isValid,
+  } = useAvatarForm();
 
   return (
-    <form
-      className="w-full md:flex md:gap-5"
-      onSubmit={handleSubmit(submitForm)}
-    >
+    <form className="w-full md:flex md:gap-5" onSubmit={handleFormSubmit}>
       <InputImage<AvatarFormValues>
         className="md:basis-1/3"
         control={control}
@@ -112,7 +43,7 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
           <Button
             className="basis-1/2"
             disabled={!isDirty || isSubmitting}
-            onClick={() => reset()}
+            onClick={handleFormReset}
           >
             Reset
           </Button>
