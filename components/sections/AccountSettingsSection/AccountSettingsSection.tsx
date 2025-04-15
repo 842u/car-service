@@ -27,7 +27,7 @@ export function AccountSettingsSection() {
   return (
     <section
       aria-label="account settings"
-      className="flex flex-col items-center justify-center gap-4 p-5"
+      className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
     >
       <IdSection id={data?.id} />
       <UsernameSection username={data?.username} />
