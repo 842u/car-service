@@ -10,7 +10,9 @@ type UsernameSectionProps = {
 export function UsernameSection({ username }: UsernameSectionProps) {
   return (
     <DashboardSection>
-      <DashboardSection.Heading>Username</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
+        Username
+      </DashboardSection.Heading>
       <DashboardSection.Text>
         Please enter your full name, or a display name you are comfortable with.
       </DashboardSection.Text>

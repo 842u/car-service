@@ -8,7 +8,7 @@ type IdSectionProps = {
 export function IdSection({ id }: IdSectionProps) {
   return (
     <DashboardSection>
-      <DashboardSection.Heading>ID</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">ID</DashboardSection.Heading>
       <DashboardSection.Text>
         This ID uniquely identifies your profile.
       </DashboardSection.Text>

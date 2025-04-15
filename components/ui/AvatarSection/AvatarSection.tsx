@@ -17,7 +17,9 @@ type AvatarSectionProps = {
 export function AvatarSection({ avatarUrl }: AvatarSectionProps) {
   return (
     <DashboardSection>
-      <DashboardSection.Heading>Avatar</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
+        Avatar
+      </DashboardSection.Heading>
       <DashboardSection.Text>
         Click on the image to upload a custom one.
       </DashboardSection.Text>

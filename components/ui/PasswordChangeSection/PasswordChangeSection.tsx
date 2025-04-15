@@ -6,7 +6,9 @@ import { PasswordChangeForm } from '../PasswordChangeForm/PasswordChangeForm';
 export function PasswordChangeSection() {
   return (
     <DashboardSection>
-      <DashboardSection.Heading>Change Password</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
+        Change Password
+      </DashboardSection.Heading>
       <DashboardSection.Text>
         Update your current password to keep your account secure.
       </DashboardSection.Text>
