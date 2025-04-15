@@ -9,7 +9,10 @@ export function DashboardSectionControls({
   ...props
 }: DashboardSectionControlsProps) {
   return (
-    <div className={twMerge('flex justify-end gap-5', className)} {...props}>
+    <div
+      className={twMerge('flex justify-end gap-5 px-4', className)}
+      {...props}
+    >
       {children}
     </div>
   );
