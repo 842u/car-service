@@ -134,7 +134,7 @@ export function CarDetailsSection({
           </div>
         </section>
       </div>
-      <div className="mt-5 flex justify-end gap-5">
+      <DashboardSection.Controls>
         <IconButton
           className="group"
           disabled={!isCurrentUserPrimaryOwner}
@@ -144,14 +144,14 @@ export function CarDetailsSection({
         >
           <CarEditIcon className="group-disabled:stroke-light-800 stroke-light-500 fill-light-500 h-full w-full stroke-[0.5]" />
         </IconButton>
-      </div>
-      <DialogModal ref={dialogModalRef}>
-        <EditCarForm
-          carData={carData}
-          carId={carId}
-          onSubmit={() => dialogModalRef.current?.closeModal()}
-        />
-      </DialogModal>
+        <DialogModal ref={dialogModalRef}>
+          <EditCarForm
+            carData={carData}
+            carId={carId}
+            onSubmit={() => dialogModalRef.current?.closeModal()}
+          />
+        </DialogModal>
+      </DashboardSection.Controls>
     </DashboardSection>
   );
 }
