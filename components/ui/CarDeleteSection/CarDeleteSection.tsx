@@ -27,11 +27,11 @@ export function CarDeleteSection({
       <DashboardSection.Text className="text-warning-500">
         This action is irreversible and can not be undone.
       </DashboardSection.Text>
-      <DashboardSection.Subtext className="mt-4">
+      <DashboardSection.Subtext className="my-4">
         If you do not want to see that car you can pass primary ownership to
         someone else and remove yourself from the owners list.
       </DashboardSection.Subtext>
-      <div className="mt-5 flex justify-end gap-5">
+      <DashboardSection.Controls>
         <IconButton
           className="group"
           disabled={!isCurrentUserPrimaryOwner}
@@ -47,7 +47,7 @@ export function CarDeleteSection({
             onSubmit={() => dialogModalRef.current?.closeModal()}
           />
         </DialogModal>
-      </div>
+      </DashboardSection.Controls>
     </DashboardSection>
   );
 }
