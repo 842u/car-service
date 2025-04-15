@@ -32,7 +32,7 @@ export function CarOwnershipControls({
   const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <div className="mt-5 flex justify-end gap-5">
+    <>
       <IconButton
         className="group"
         disabled={!isCurrentUserPrimaryOwner}
@@ -42,6 +42,16 @@ export function CarOwnershipControls({
       >
         <ChangeKeyIcon className="group-disabled:stroke-light-800 stroke-light-500 fill-light-500 h-full w-full" />
       </IconButton>
+      <DialogModal ref={grantPrimaryOwnershipFormModalRef}>
+        <GrantCarPrimaryOwnershipForm
+          carId={carId}
+          onSubmit={() => {
+            removeCarOwnershipFormRef.current?.reset();
+            grantPrimaryOwnershipFormModalRef.current?.closeModal();
+          }}
+        />
+      </DialogModal>
+
       <IconButton
         className="group"
         disabled={
@@ -54,24 +64,6 @@ export function CarOwnershipControls({
       >
         <UserMinusIcon className="group-disabled:stroke-light-800 stroke-light-500 h-full w-full stroke-2" />
       </IconButton>
-      <IconButton
-        className="group"
-        disabled={!isCurrentUserPrimaryOwner}
-        title="add owner"
-        variant="accent"
-        onClick={() => newCarOwnerFormModalRef.current?.showModal()}
-      >
-        <UserPlusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
-      </IconButton>
-      <DialogModal ref={grantPrimaryOwnershipFormModalRef}>
-        <GrantCarPrimaryOwnershipForm
-          carId={carId}
-          onSubmit={() => {
-            removeCarOwnershipFormRef.current?.reset();
-            grantPrimaryOwnershipFormModalRef.current?.closeModal();
-          }}
-        />
-      </DialogModal>
       <DialogModal ref={removeCarOwnershipFormModalRef}>
         <FormProvider<RemoveCarOwnershipFormValues>
           {...removeCarOwnershipFormMethods}
@@ -87,12 +79,22 @@ export function CarOwnershipControls({
           />
         </FormProvider>
       </DialogModal>
+
+      <IconButton
+        className="group"
+        disabled={!isCurrentUserPrimaryOwner}
+        title="add owner"
+        variant="accent"
+        onClick={() => newCarOwnerFormModalRef.current?.showModal()}
+      >
+        <UserPlusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
+      </IconButton>
       <DialogModal ref={newCarOwnerFormModalRef}>
         <AddCarOwnershipForm
           carId={carId}
           onSubmit={() => newCarOwnerFormModalRef.current?.closeModal()}
         />
       </DialogModal>
-    </div>
+    </>
   );
 }

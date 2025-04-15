@@ -42,11 +42,13 @@ export function CarOwnershipSection({
         register={removeCarOwnershipFormMethods.register}
         sessionProfileData={sessionProfileData}
       />
-      <CarOwnershipControls
-        carId={carId}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
-      />
+      <DashboardSection.Controls className="mt-4">
+        <CarOwnershipControls
+          carId={carId}
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+          removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
+        />
+      </DashboardSection.Controls>
     </DashboardSection>
   );
 }
