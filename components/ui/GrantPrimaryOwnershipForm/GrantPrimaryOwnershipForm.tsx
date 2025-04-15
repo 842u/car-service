@@ -1,28 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-
-import { useToasts } from '@/hooks/useToasts';
-import {
-  grantCarPrimaryOwnershipFormSchema,
-  GrantCarPrimaryOwnershipFormValues,
-} from '@/schemas/zod/grantPrimaryOwnershipFormSchema';
-import { updateCarPrimaryOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
-import {
-  carsOwnershipsUpdateOnError,
-  carsOwnershipsUpdateOnMutate,
-} from '@/utils/tanstack/cars_ownerships';
-import { queryKeys } from '@/utils/tanstack/keys';
-
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
+import { useGrantPrimaryOwnershipForm } from './useGrantPrimaryOwnershipForm';
 
-const defaultGrantCarPrimaryOwnershipFormValues: GrantCarPrimaryOwnershipFormValues =
-  { userId: '' };
-
-type GrantCarPrimaryOwnershipFormProps = {
+export type GrantCarPrimaryOwnershipFormProps = {
   carId: string;
   onSubmit?: () => void;
 };
@@ -31,53 +12,15 @@ export function GrantCarPrimaryOwnershipForm({
   carId,
   onSubmit,
 }: GrantCarPrimaryOwnershipFormProps) {
-  const { addToast } = useToasts();
-
   const {
+    handleFormSubmit,
+    handleFormReset,
     register,
-    reset,
-    handleSubmit,
-    formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
-  } = useForm({
-    resolver: zodResolver(grantCarPrimaryOwnershipFormSchema),
-    mode: 'onChange',
-    defaultValues: defaultGrantCarPrimaryOwnershipFormValues,
-  });
-
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    throwOnError: false,
-    mutationFn: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
-      updateCarPrimaryOwnershipByUserId(newCarOwnerFormData.userId, carId),
-    onMutate: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
-      carsOwnershipsUpdateOnMutate(
-        queryClient,
-        carId,
-        newCarOwnerFormData.userId,
-      ),
-    onSuccess: () =>
-      addToast('Successfully granted primary ownership.', 'success'),
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      carsOwnershipsUpdateOnError(queryClient, context, carId);
-    },
-  });
-
-  const handleFormSubmit = handleSubmit(
-    (formData: GrantCarPrimaryOwnershipFormValues) => {
-      onSubmit && onSubmit();
-      mutate(formData, {
-        onSettled: () =>
-          queryClient.invalidateQueries({
-            queryKey: queryKeys.carsOwnershipsByCarId(carId),
-          }),
-      });
-    },
-  );
-
-  useEffect(() => {
-    isSubmitSuccessful && reset();
-  }, [isSubmitSuccessful, reset]);
+    errors,
+    isDirty,
+    isSubmitting,
+    isValid,
+  } = useGrantPrimaryOwnershipForm({ carId, onSubmit });
 
   return (
     <form
@@ -97,14 +40,11 @@ export function GrantCarPrimaryOwnershipForm({
         type="text"
       />
       <p className="text-warning-500 dark:text-warning-300">
-        <span className="block">Warning: </span>
-        <span>
-          Granting primary ownership to someone else will revoke your current
-          primary ownership status and the privileges that come with it.
-        </span>
+        Granting primary ownership to someone else will revoke your current
+        primary ownership status and the privileges that come with it.
       </p>
       <div className="mt-5 flex justify-end gap-5">
-        <Button disabled={!isDirty} onClick={() => reset()}>
+        <Button disabled={!isDirty} onClick={handleFormReset}>
           Reset
         </Button>
         <SubmitButton
