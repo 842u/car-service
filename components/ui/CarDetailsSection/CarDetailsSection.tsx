@@ -23,7 +23,9 @@ export function CarDetailsSection({
 
   return (
     <DashboardSection>
-      <DashboardSection.Heading>Details</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
+        Details
+      </DashboardSection.Heading>
       <div className="my-4 overflow-hidden md:flex md:flex-wrap md:gap-2">
         <section className="mb-5 md:m-0 md:w-1/3 md:grow">
           <h3 className="my-1 text-base">Basic</h3>

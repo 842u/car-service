@@ -34,7 +34,9 @@ export function CarOwnershipSection({
 
   return (
     <DashboardSection className="overflow-x-auto">
-      <DashboardSection.Heading>Ownership</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
+        Ownership
+      </DashboardSection.Heading>
       <CarOwnershipTable
         carOwnershipData={carOwnershipData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}

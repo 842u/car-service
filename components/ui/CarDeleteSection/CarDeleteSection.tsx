@@ -20,7 +20,9 @@ export function CarDeleteSection({
 
   return (
     <DashboardSection variant="errorDefault">
-      <DashboardSection.Heading>Delete Car</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
+        Delete Car
+      </DashboardSection.Heading>
       <DashboardSection.Text>
         Permanently delete this car for you and other owners.
       </DashboardSection.Text>
