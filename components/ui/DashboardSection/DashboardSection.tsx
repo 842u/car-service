@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { SectionVariants } from '@/types';
 import { sectionVariants } from '@/utils/tailwindcss/section';
 
+import { DashboardSectionControls } from './DashboardSectionControls';
 import { DashboardSectionHeading } from './DashboardSectionHeading';
 import { DashboardSectionSubtext } from './DashboardSectionSubtext';
 import { DashboardSectionText } from './DashboardSectionText';
@@ -31,3 +32,4 @@ export function DashboardSection({
 DashboardSection.Heading = DashboardSectionHeading;
 DashboardSection.Text = DashboardSectionText;
 DashboardSection.Subtext = DashboardSectionSubtext;
+DashboardSection.Controls = DashboardSectionControls;
