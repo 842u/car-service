@@ -1,30 +1,15 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Route } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { useToasts } from '@/hooks/useToasts';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
-import {
-  EmailAuthFormValues,
-  signInEmailAuthFormSchema,
-  signUpEmailAuthFormSchema,
-} from '@/schemas/zod/emailAuthFormSchema';
-import { RouteHandlerResponse } from '@/types';
 import { unslugify } from '@/utils/general';
 
 import { Input } from '../Input/Input';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
-
-const defaultEmailAuthFormValues: EmailAuthFormValues = {
-  email: '',
-  password: '',
-};
+import { useEmailAuthForm } from './useEmailAuthForm';
 
 export type EmailAuthFormType = 'sign-up' | 'sign-in';
 
@@ -34,71 +19,14 @@ type EmailAuthFormProps = {
 };
 
 export default function EmailAuthForm({ type, className }: EmailAuthFormProps) {
-  const router = useRouter();
-
-  const { addToast } = useToasts();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<EmailAuthFormValues>({
-    resolver: zodResolver(
-      type === 'sign-up'
-        ? signUpEmailAuthFormSchema
-        : signInEmailAuthFormSchema,
-    ),
-    mode: 'onTouched',
-    defaultValues: defaultEmailAuthFormValues,
-  });
-
-  const submitHandler: SubmitHandler<EmailAuthFormValues> = async (data) => {
-    const url = new URL(window.location.origin);
-
-    url.pathname = '/api/auth/email-auth' satisfies Route;
-    url.searchParams.set('type', type);
-
-    const formData = JSON.stringify(data);
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: formData,
-    });
-
-    const { data: responseData, error } =
-      (await response.json()) as RouteHandlerResponse;
-
-    error && addToast(error.message, 'error');
-
-    if (responseData && type === 'sign-in') {
-      addToast('Successfully signed in.', 'success');
-    }
-
-    if (responseData && type === 'sign-up') {
-      addToast(
-        'Welcome! To get started, please check your email and click the confirmation link.',
-        'success',
-      );
-    }
-
-    if (response.ok && type === 'sign-in') {
-      router.replace('/dashboard');
-      router.refresh();
-    }
-  };
-
-  useEffect(() => {
-    isSubmitSuccessful && reset();
-  }, [isSubmitSuccessful, reset]);
+  const { handleFormSubmit, errors, register, isSubmitting, isValid } =
+    useEmailAuthForm({ type });
 
   return (
     <form
       aria-label="Email Authentication"
       className={twMerge('flex flex-col', className)}
-      onSubmit={handleSubmit(submitHandler)}
+      onSubmit={handleFormSubmit}
     >
       <Input
         errorMessage={errors.email?.message}
@@ -112,8 +40,8 @@ export default function EmailAuthForm({ type, className }: EmailAuthFormProps) {
         <Input
           errorMessage={errors.password?.message}
           label="Password"
-          maxLength={(type === 'sign-up' && MAX_PASSWORD_LENGTH) || undefined}
-          minLength={(type === 'sign-up' && MIN_PASSWORD_LENGTH) || undefined}
+          maxLength={type === 'sign-up' ? MAX_PASSWORD_LENGTH : undefined}
+          minLength={type === 'sign-up' ? MIN_PASSWORD_LENGTH : undefined}
           name="password"
           placeholder="Enter your password ..."
           register={register}
