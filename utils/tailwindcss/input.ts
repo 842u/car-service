@@ -1,6 +1,6 @@
 import { InputVariants } from '@/types';
 
-const baseClassName = 'border rounded-md w-full mt-2 h-10 px-3';
+const baseClassName = 'border rounded-md w-full h-10 px-3';
 
 const defaultClassName = `${baseClassName} border-alpha-grey-200 bg-alpha-grey-50`;
 

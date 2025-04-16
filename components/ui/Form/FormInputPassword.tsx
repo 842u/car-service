@@ -57,7 +57,7 @@ export function FormInputPassword<T extends FieldValues>({
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'flex items-center p-0',
+          'mt-2 flex items-center p-0',
           className,
         )}
       >

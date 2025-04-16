@@ -46,6 +46,7 @@ export function FormInput<T extends FieldValues>({
       <input
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
+          'mt-2',
           className,
         )}
         id={name}
