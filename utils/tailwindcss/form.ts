@@ -1,6 +1,6 @@
 import { FormVariants } from '@/types';
 
-const baseClassName = 'p-4 text-sm w-full flex flex-col gap-4';
+const baseClassName = 'p-4 text-sm w-full flex flex-col gap-2';
 
 const defaultClassName = `${baseClassName} border rounded-md border-alpha-grey-200 bg-alpha-grey-50`;
 
