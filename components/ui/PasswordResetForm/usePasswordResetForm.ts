@@ -48,5 +48,11 @@ export function usePasswordResetForm() {
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
-  return { handleFormSubmit, register, errors, isValid, isSubmitting };
+  return {
+    handleFormSubmit,
+    register,
+    errors,
+    isDisabled: !isValid || isSubmitting,
+    isSubmitting,
+  };
 }

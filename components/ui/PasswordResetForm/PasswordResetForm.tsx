@@ -1,17 +1,16 @@
 'use client';
 
-import { Input } from '../Input/Input';
-import { SubmitButton } from '../SubmitButton/SubmitButton';
+import { Form } from '../Form/Form';
 import { TextSeparator } from '../TextSeparator/TextSeparator';
 import { usePasswordResetForm } from './usePasswordResetForm';
 
 export function PasswordResetForm() {
-  const { handleFormSubmit, errors, register, isValid, isSubmitting } =
+  const { handleFormSubmit, errors, register, isDisabled, isSubmitting } =
     usePasswordResetForm();
 
   return (
-    <form className="flex flex-col" onSubmit={handleFormSubmit}>
-      <Input
+    <Form className="flex flex-col" variant="raw" onSubmit={handleFormSubmit}>
+      <Form.Input
         errorMessage={errors.email?.message}
         label="Email"
         name="email"
@@ -19,13 +18,10 @@ export function PasswordResetForm() {
         register={register}
         type="email"
       />
-      <TextSeparator className="my-5" />
-      <SubmitButton
-        disabled={!isValid || isSubmitting}
-        isSubmitting={isSubmitting}
-      >
+      <TextSeparator className="mb-4" />
+      <Form.ButtonSubmit disabled={isDisabled} isSubmitting={isSubmitting}>
         Send password reset email
-      </SubmitButton>
-    </form>
+      </Form.ButtonSubmit>
+    </Form>
   );
 }
