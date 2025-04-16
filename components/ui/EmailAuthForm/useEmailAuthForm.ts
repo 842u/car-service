@@ -79,5 +79,11 @@ export function useEmailAuthForm({ type }: { type: EmailAuthFormType }) {
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
-  return { register, isValid, isSubmitting, errors, handleFormSubmit };
+  return {
+    register,
+    isDisabled: !isValid || isSubmitting,
+    isSubmitting,
+    errors,
+    handleFormSubmit,
+  };
 }

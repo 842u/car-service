@@ -16,7 +16,7 @@ type EmailAuthFormProps = {
 };
 
 export default function EmailAuthForm({ type }: EmailAuthFormProps) {
-  const { handleFormSubmit, errors, register, isSubmitting, isValid } =
+  const { handleFormSubmit, errors, register, isSubmitting, isDisabled } =
     useEmailAuthForm({ type });
 
   return (
@@ -52,10 +52,7 @@ export default function EmailAuthForm({ type }: EmailAuthFormProps) {
           </Link>
         )}
       </div>
-      <Form.ButtonSubmit
-        disabled={!isValid || isSubmitting}
-        isSubmitting={isSubmitting}
-      >
+      <Form.ButtonSubmit disabled={isDisabled} isSubmitting={isSubmitting}>
         {unslugify(type, true)}
       </Form.ButtonSubmit>
     </Form>
