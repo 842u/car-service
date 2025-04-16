@@ -1,6 +1,6 @@
 'use client';
 
-import { Input } from '../Input/Input';
+import { Form } from '../Form/Form';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
 import { usePasswordChangeForm } from './usePasswordChangeForm';
 
@@ -9,12 +9,14 @@ export function PasswordChangeForm() {
     usePasswordChangeForm();
 
   return (
-    <form
+    <Form
       aria-label="password change"
       className="flex flex-col"
+      variant="raw"
       onSubmit={handleFormSubmit}
     >
-      <Input
+      <Form.Input
+        className="md:w-72"
         errorMessage={errors.password?.message}
         label="New password"
         name="password"
@@ -22,7 +24,8 @@ export function PasswordChangeForm() {
         register={register}
         type="password"
       />
-      <Input
+      <Form.Input
+        className="md:w-72"
         errorMessage={errors.passwordConfirm?.message}
         label="Confirm Password"
         name="passwordConfirm"
@@ -30,12 +33,14 @@ export function PasswordChangeForm() {
         register={register}
         type="password"
       />
-      <SubmitButton
-        disabled={!isValid || isSubmitting}
-        isSubmitting={isSubmitting}
-      >
-        Change
-      </SubmitButton>
-    </form>
+      <Form.Controls>
+        <SubmitButton
+          disabled={!isValid || isSubmitting}
+          isSubmitting={isSubmitting}
+        >
+          Change
+        </SubmitButton>
+      </Form.Controls>
+    </Form>
   );
 }
