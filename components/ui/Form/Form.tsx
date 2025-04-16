@@ -7,6 +7,7 @@ import { formVariants } from '@/utils/tailwindcss/form';
 import { FormButtonSubmit } from './FormButtonSubmit';
 import { FormControls } from './FormControls';
 import { FormInput } from './FormInput';
+import { FormInputImage } from './FormInputImage';
 import { FormInputPassword } from './FormInputPassword';
 
 type FormProps = ComponentProps<'form'> & {
@@ -28,5 +29,6 @@ export function Form({
 
 Form.Input = FormInput;
 Form.InputPassword = FormInputPassword;
+Form.InputImage = FormInputImage;
 Form.ButtonSubmit = FormButtonSubmit;
 Form.Controls = FormControls;
