@@ -14,7 +14,7 @@ export function FormControls({
   return (
     <div
       className={twMerge(
-        'flex flex-col gap-4 md:flex-row md:justify-end',
+        'flex flex-col gap-4 md:flex-row md:justify-end md:px-4',
         className,
       )}
       {...props}
