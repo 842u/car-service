@@ -54,20 +54,24 @@ export function FormInputPassword<T extends FieldValues>({
         <span>{label}</span>
         {required && <span className="text-error-400 mx-1">*</span>}
       </p>
-      <div className="relative">
+      <div
+        className={twMerge(
+          errorMessage ? inputVariants['error'] : inputVariants[variant],
+          'flex items-center p-0',
+          className,
+        )}
+      >
         <input
-          className={twMerge(
-            errorMessage ? inputVariants['error'] : inputVariants[variant],
-            className,
-          )}
+          className="inline-block h-full w-full pl-3"
           id={name}
           placeholder={placeholder}
           type={passwordVisible ? 'text' : 'password'}
           {...props}
           {...register(name, registerOptions)}
         />
-        <div className="absolute top-0 right-0 flex h-8 flex-col justify-center">
+        <div className="inline-block h-full p-1">
           <ToggleVisibilityButton
+            className="h-full w-full px-1 py-0"
             isVisible={passwordVisible}
             onClick={handlePasswordVisibility}
           />
