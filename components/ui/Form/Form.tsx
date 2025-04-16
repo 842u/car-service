@@ -4,6 +4,9 @@ import { twMerge } from 'tailwind-merge';
 import { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
+import { FormInput } from './FormInput';
+import { FormInputPassword } from './FormInputPassword';
+
 type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
 };
@@ -20,3 +23,6 @@ export function Form({
     </form>
   );
 }
+
+Form.Input = FormInput;
+Form.InputPassword = FormInputPassword;
