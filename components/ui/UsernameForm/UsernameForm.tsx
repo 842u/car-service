@@ -22,7 +22,7 @@ export function UsernameForm({ username }: UsernameFormProps) {
   return (
     <Form variant="raw" onSubmit={handleFormSubmit}>
       <Form.Input
-        className="md:w-fit"
+        className="md:w-72"
         errorMessage={errors.username?.message}
         label="Username"
         name="username"
