@@ -4,8 +4,7 @@ import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { Button } from '../Button/Button';
-import { InputImage } from '../InputImage/InputImage';
-import { SubmitButton } from '../SubmitButton/SubmitButton';
+import { Form } from '../Form/Form';
 import { useAvatarForm } from './useAvatarForm';
 
 type AvatarFormProps = {
@@ -26,9 +25,9 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
   } = useAvatarForm();
 
   return (
-    <form className="w-full md:flex md:gap-5" onSubmit={handleFormSubmit}>
-      <InputImage<AvatarFormValues>
-        className="md:basis-1/3"
+    <Form variant="raw" onSubmit={handleFormSubmit}>
+      <Form.InputImage<AvatarFormValues>
+        className="md:w-72"
         control={control}
         errorMessage={errors.image?.message}
         label="Avatar"
@@ -37,25 +36,18 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
         onChange={handleInputImageChange}
       >
         <AvatarImage src={inputImageUrl || avatarUrl} />
-      </InputImage>
-      <div className="md:flex md:basis-2/3 md:flex-col md:justify-evenly">
-        <div className="flex gap-5">
-          <Button
-            className="basis-1/2"
-            disabled={!isDirty || isSubmitting}
-            onClick={handleFormReset}
-          >
-            Reset
-          </Button>
-          <SubmitButton
-            className="basis-1/2"
-            disabled={!isValid || !isDirty || isSubmitting}
-            isSubmitting={isSubmitting}
-          >
-            Save
-          </SubmitButton>
-        </div>
-      </div>
-    </form>
+      </Form.InputImage>
+      <Form.Controls>
+        <Button disabled={!isDirty || isSubmitting} onClick={handleFormReset}>
+          Reset
+        </Button>
+        <Form.ButtonSubmit
+          disabled={!isValid || !isDirty || isSubmitting}
+          isSubmitting={isSubmitting}
+        >
+          Save
+        </Form.ButtonSubmit>
+      </Form.Controls>
+    </Form>
   );
 }
