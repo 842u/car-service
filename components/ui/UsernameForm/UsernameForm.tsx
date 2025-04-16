@@ -1,9 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/Button/Button';
-import { Input } from '@/components/ui/Input/Input';
-import { SubmitButton } from '@/components/ui/SubmitButton/SubmitButton';
 
+import { Form } from '../Form/Form';
 import { useUsernameForm } from './useUsernameForm';
 
 type UsernameFormProps = {
@@ -21,34 +20,24 @@ export function UsernameForm({ username }: UsernameFormProps) {
   } = useUsernameForm({ username });
 
   return (
-    <form
-      className="items-center justify-between lg:flex"
-      onSubmit={handleFormSubmit}
-    >
-      <div className="lg:w-1/3 lg:p-4">
-        <Input
-          errorMessage={errors.username?.message}
-          label="Username"
-          name="username"
-          placeholder="Enter your username"
-          register={register}
-          type="text"
-        />
-      </div>
-      <div className="w-full flex-1">
-        <div className="my-4 flex justify-center gap-4">
-          <Button
-            className="flex-1"
-            disabled={!isDirty}
-            onClick={handleFormReset}
-          >
-            Reset
-          </Button>
-          <SubmitButton className="flex-1" disabled={!isValid || !isDirty}>
-            Save
-          </SubmitButton>
-        </div>
-      </div>
-    </form>
+    <Form variant="raw" onSubmit={handleFormSubmit}>
+      <Form.Input
+        className="md:w-fit"
+        errorMessage={errors.username?.message}
+        label="Username"
+        name="username"
+        placeholder="Enter your username"
+        register={register}
+        type="text"
+      />
+      <Form.Controls className="flex flex-col gap-4 md:flex-row md:justify-end">
+        <Button disabled={!isDirty} onClick={handleFormReset}>
+          Reset
+        </Button>
+        <Form.ButtonSubmit disabled={!isValid || !isDirty}>
+          Save
+        </Form.ButtonSubmit>
+      </Form.Controls>
+    </Form>
   );
 }
