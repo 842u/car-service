@@ -2,33 +2,30 @@
 
 import { Route } from 'next';
 import Link from 'next/link';
-import { twMerge } from 'tailwind-merge';
 
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
 import { unslugify } from '@/utils/general';
 
-import { Input } from '../Input/Input';
-import { SubmitButton } from '../SubmitButton/SubmitButton';
+import { Form } from '../Form/Form';
 import { useEmailAuthForm } from './useEmailAuthForm';
 
 export type EmailAuthFormType = 'sign-up' | 'sign-in';
 
 type EmailAuthFormProps = {
   type: EmailAuthFormType;
-  className?: string;
 };
 
-export default function EmailAuthForm({ type, className }: EmailAuthFormProps) {
+export default function EmailAuthForm({ type }: EmailAuthFormProps) {
   const { handleFormSubmit, errors, register, isSubmitting, isValid } =
     useEmailAuthForm({ type });
 
   return (
-    <form
+    <Form
       aria-label="Email Authentication"
-      className={twMerge('flex flex-col', className)}
+      variant="raw"
       onSubmit={handleFormSubmit}
     >
-      <Input
+      <Form.Input
         errorMessage={errors.email?.message}
         label="Email"
         name="email"
@@ -37,7 +34,7 @@ export default function EmailAuthForm({ type, className }: EmailAuthFormProps) {
         type="email"
       />
       <div className="relative">
-        <Input
+        <Form.InputPassword
           errorMessage={errors.password?.message}
           label="Password"
           maxLength={type === 'sign-up' ? MAX_PASSWORD_LENGTH : undefined}
@@ -45,7 +42,6 @@ export default function EmailAuthForm({ type, className }: EmailAuthFormProps) {
           name="password"
           placeholder="Enter your password ..."
           register={register}
-          type="password"
         />
         {type === 'sign-in' && (
           <Link
@@ -56,12 +52,12 @@ export default function EmailAuthForm({ type, className }: EmailAuthFormProps) {
           </Link>
         )}
       </div>
-      <SubmitButton
+      <Form.ButtonSubmit
         disabled={!isValid || isSubmitting}
         isSubmitting={isSubmitting}
       >
         {unslugify(type, true)}
-      </SubmitButton>
-    </form>
+      </Form.ButtonSubmit>
+    </Form>
   );
 }
