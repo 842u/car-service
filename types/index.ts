@@ -76,3 +76,5 @@ export type SectionVariants =
   | 'errorTransparent';
 
 export type FormVariants = 'default' | 'transparent' | 'raw';
+
+export type InputVariants = 'default' | 'transparent' | 'error';
