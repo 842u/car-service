@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { ButtonVariants } from '@/types';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
-type ButtonProps = ComponentPropsWithoutRef<'button'> & {
+export type ButtonProps = ComponentPropsWithoutRef<'button'> & {
   className?: string;
   variant?: ButtonVariants;
 };
