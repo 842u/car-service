@@ -5,7 +5,6 @@ import { Car } from '@/types';
 
 import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
-import { SubmitButton } from '../SubmitButton/SubmitButton';
 import { CarFormFields } from './CarFormFields';
 import { useCarForm } from './useCarForm';
 
@@ -54,7 +53,9 @@ export function CarForm({ ref, onSubmit, carData }: CarFormProps) {
         <Button disabled={!isDirty} onClick={handleFormReset}>
           Reset
         </Button>
-        <SubmitButton disabled={!isValid || !isDirty}>Save</SubmitButton>
+        <Form.ButtonSubmit disabled={!isValid || !isDirty}>
+          Save
+        </Form.ButtonSubmit>
       </Form.Controls>
     </Form>
   );
