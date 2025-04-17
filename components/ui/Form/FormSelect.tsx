@@ -17,6 +17,7 @@ type FormSelectProps<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   options: Record<string, string>;
+  className?: string;
   variant?: InputVariants;
   registerOptions?: RegisterOptions<T>;
   required?: boolean;
@@ -32,6 +33,7 @@ export function FormSelect<T extends FieldValues>({
   registerOptions,
   options,
   errorMessage,
+  className,
   variant = 'default',
   required = false,
   showErrorMessage = true,
@@ -43,14 +45,20 @@ export function FormSelect<T extends FieldValues>({
       <select
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'text-dark-500 dark:text-light-500 my-1',
+          className,
         )}
         id={name}
         {...register(name, registerOptions)}
       >
-        {hasEmptyOption && <option value={undefined} />}
+        {hasEmptyOption && (
+          <option className="bg-light-500 dark:bg-dark-500" value={undefined} />
+        )}
         {Object.keys(options).map((key) => (
-          <option key={key} value={options[key]}>
+          <option
+            key={key}
+            className="bg-light-500 dark:bg-dark-500"
+            value={options[key]}
+          >
             {key}
           </option>
         ))}
