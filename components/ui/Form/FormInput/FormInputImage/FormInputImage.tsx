@@ -9,6 +9,7 @@ import {
 import { getMimeTypeExtensions } from '@/utils/general';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
+import { FormInputErrorText } from '../FormInputErrorText';
 import { FormInputLabelText } from '../FormInputLabelText';
 import { useFormInputImage } from './useFormInputImage';
 
@@ -59,7 +60,7 @@ export function FormInputImage<T extends FieldValues>({
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants['default'],
-          'relative mt-1 aspect-square h-full w-full cursor-pointer overflow-clip p-0',
+          'relative my-1 aspect-square h-full w-full cursor-pointer overflow-clip p-0',
           className,
         )}
       >
@@ -79,11 +80,7 @@ export function FormInputImage<T extends FieldValues>({
         />
         {children}
       </div>
-      {showErrorMessage && (
-        <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
-          {errorMessage || ' '}
-        </p>
-      )}
+      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
       {withInfo && (
         <div className="mb-5 text-sm">
           <p>Click on the image to upload a custom one.</p>
