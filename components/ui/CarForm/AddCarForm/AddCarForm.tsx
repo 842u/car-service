@@ -1,4 +1,4 @@
-import { CarForm } from './CarForm';
+import { CarForm } from '../CarForm';
 import { useAddCarForm } from './useAddCarForm';
 
 type AddCarFormProps = {

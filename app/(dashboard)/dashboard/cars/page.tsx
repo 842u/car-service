@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 
 import { CarPlusIcon } from '@/components/decorative/icons/CarPlusIcon';
-import { AddCarForm } from '@/components/ui/CarForm/AddCarForm';
+import { AddCarForm } from '@/components/ui/CarForm/AddCarForm/AddCarForm';
 import { CarsSection } from '@/components/ui/CarsSection/CarsSection';
 import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
 import {

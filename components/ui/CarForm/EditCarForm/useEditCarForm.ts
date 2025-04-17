@@ -7,7 +7,7 @@ import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { CarFormRef } from './CarForm';
+import { CarFormRef } from '../CarForm';
 import { EditCarFormProps } from './EditCarForm';
 
 export function useEditCarForm({

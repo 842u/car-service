@@ -10,7 +10,7 @@ import {
 } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { CarFormRef } from './CarForm';
+import { CarFormRef } from '../CarForm';
 
 export function useAddCarForm({
   onSubmit,

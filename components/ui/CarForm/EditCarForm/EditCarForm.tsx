@@ -1,6 +1,6 @@
 import { Car } from '@/types';
 
-import { CarForm } from './CarForm';
+import { CarForm } from '../CarForm';
 import { useEditCarForm } from './useEditCarForm';
 
 export type EditCarFormProps = {
