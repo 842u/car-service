@@ -10,6 +10,7 @@ import { FormInput } from './FormInput/FormInput';
 import { FormInputImage } from './FormInput/FormInputImage/FormInputImage';
 import { FormInputPassword } from './FormInput/FormInputPassword';
 import { FormInputWrapper } from './FormInput/FormInputWrapper';
+import { FormSelect } from './FormSelect';
 
 type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
@@ -34,3 +35,4 @@ Form.InputImage = FormInputImage;
 Form.InputWrapper = FormInputWrapper;
 Form.ButtonSubmit = FormButtonSubmit;
 Form.Controls = FormControls;
+Form.Select = FormSelect;
