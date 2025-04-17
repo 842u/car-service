@@ -45,6 +45,7 @@ export function FormSelect<T extends FieldValues>({
       <select
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
+          'my-1',
           className,
         )}
         id={name}
