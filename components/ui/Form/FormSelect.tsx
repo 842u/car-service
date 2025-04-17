@@ -9,6 +9,7 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
+import { FormInputErrorText } from './FormInput/FormInputErrorText';
 import { FormInputLabelText } from './FormInput/FormInputLabelText';
 
 type FormSelectProps<T extends FieldValues> = {
@@ -42,7 +43,7 @@ export function FormSelect<T extends FieldValues>({
       <select
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'text-dark-500 dark:text-light-500',
+          'text-dark-500 dark:text-light-500 my-1',
         )}
         id={name}
         {...register(name, registerOptions)}
@@ -54,11 +55,7 @@ export function FormSelect<T extends FieldValues>({
           </option>
         ))}
       </select>
-      {showErrorMessage && (
-        <p className="text-error-400 my-1 text-sm whitespace-pre-wrap">
-          {errorMessage || ' '}
-        </p>
-      )}
+      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
     </label>
   );
 }
