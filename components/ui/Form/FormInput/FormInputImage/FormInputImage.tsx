@@ -59,7 +59,7 @@ export function FormInputImage<T extends FieldValues>({
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants['default'],
-          'relative aspect-square h-full w-full cursor-pointer overflow-clip p-0',
+          'relative mt-1 aspect-square h-full w-full cursor-pointer overflow-clip p-0',
           className,
         )}
       >
