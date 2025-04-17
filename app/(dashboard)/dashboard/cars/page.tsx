@@ -18,7 +18,7 @@ export default function CarsPage() {
   return (
     <DashboardMain>
       <CarsSection />
-      <DialogModal ref={dialogModalRef}>
+      <DialogModal ref={dialogModalRef} headingText="Add a car">
         <AddCarForm onSubmit={() => dialogModalRef.current?.closeModal()} />
       </DialogModal>
       <IconButton
