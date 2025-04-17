@@ -8,7 +8,12 @@ export function FormInputWrapper({
   className,
 }: FormInputWrapperProps) {
   return (
-    <div className={twMerge('flex w-full flex-col md:w-72', className)}>
+    <div
+      className={twMerge(
+        'flex w-full flex-col justify-start md:w-72',
+        className,
+      )}
+    >
       {children}
     </div>
   );
