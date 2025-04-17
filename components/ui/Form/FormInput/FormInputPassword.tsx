@@ -13,6 +13,7 @@ import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { ToggleVisibilityButton } from '../../ToggleVisibilityButton/ToggleVisibilityButton';
+import { FormInputErrorText } from './FormInputErrorText';
 import { FormInputLabelText } from './FormInputLabelText';
 
 type FormInputPasswordProps<T extends FieldValues> = Omit<
@@ -55,7 +56,7 @@ export function FormInputPassword<T extends FieldValues>({
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'mt-1 flex items-center p-0',
+          'my-1 flex items-center p-0',
           className,
         )}
       >
@@ -75,11 +76,7 @@ export function FormInputPassword<T extends FieldValues>({
           />
         </div>
       </div>
-      {showErrorMessage && (
-        <p className="text-error-400 my-1 whitespace-pre-wrap">
-          {errorMessage || ' '}
-        </p>
-      )}
+      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
     </label>
   );
 }
