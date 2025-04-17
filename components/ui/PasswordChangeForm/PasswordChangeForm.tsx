@@ -1,7 +1,6 @@
 'use client';
 
 import { Form } from '../Form/Form';
-import { SubmitButton } from '../SubmitButton/SubmitButton';
 import { usePasswordChangeForm } from './usePasswordChangeForm';
 
 export function PasswordChangeForm() {
@@ -34,12 +33,12 @@ export function PasswordChangeForm() {
         />
       </Form.InputWrapper>
       <Form.Controls>
-        <SubmitButton
+        <Form.ButtonSubmit
           disabled={!isValid || isSubmitting}
           isSubmitting={isSubmitting}
         >
           Save
-        </SubmitButton>
+        </Form.ButtonSubmit>
       </Form.Controls>
     </Form>
   );
