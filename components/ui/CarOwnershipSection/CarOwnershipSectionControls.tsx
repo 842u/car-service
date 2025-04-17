@@ -70,7 +70,7 @@ export function CarOwnershipSectionControls({
       </IconButton>
       <DialogModal
         ref={removeCarOwnershipFormModalRef}
-        headingText="Remove ownership from users"
+        headingText="Remove ownerships"
       >
         <FormProvider<RemoveCarOwnershipFormValues>
           {...removeCarOwnershipFormMethods}
