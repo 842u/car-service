@@ -10,6 +10,8 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
+import { FormInputLabelText } from './FormInputLabelText';
+
 type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
   register: UseFormRegister<T>;
   label: string;
@@ -39,14 +41,11 @@ export function FormInput<T extends FieldValues>({
 }: FormInputProps<T>) {
   return (
     <label htmlFor={name}>
-      <p>
-        <span>{label}</span>
-        {required && <span className="text-error-400 mx-1">*</span>}
-      </p>
+      <FormInputLabelText required={required} text={label} />
       <input
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'mt-2',
+          'mt-1',
           className,
         )}
         id={name}

@@ -15,28 +15,30 @@ export function PasswordChangeForm() {
       variant="raw"
       onSubmit={handleFormSubmit}
     >
-      <Form.InputPassword
-        className="md:w-72"
-        errorMessage={errors.password?.message}
-        label="New password"
-        name="password"
-        placeholder="Enter new password"
-        register={register}
-      />
-      <Form.InputPassword
-        className="md:w-72"
-        errorMessage={errors.passwordConfirm?.message}
-        label="Confirm Password"
-        name="passwordConfirm"
-        placeholder="Confirm password"
-        register={register}
-      />
+      <Form.InputWrapper>
+        <Form.InputPassword
+          className="md:w-72"
+          errorMessage={errors.password?.message}
+          label="New password"
+          name="password"
+          placeholder="Enter new password"
+          register={register}
+        />
+        <Form.InputPassword
+          className="md:w-72"
+          errorMessage={errors.passwordConfirm?.message}
+          label="Confirm Password"
+          name="passwordConfirm"
+          placeholder="Confirm password"
+          register={register}
+        />
+      </Form.InputWrapper>
       <Form.Controls>
         <SubmitButton
           disabled={!isValid || isSubmitting}
           isSubmitting={isSubmitting}
         >
-          Change
+          Save
         </SubmitButton>
       </Form.Controls>
     </Form>

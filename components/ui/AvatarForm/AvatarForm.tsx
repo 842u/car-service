@@ -26,17 +26,18 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
 
   return (
     <Form variant="raw" onSubmit={handleFormSubmit}>
-      <Form.InputImage<AvatarFormValues>
-        className="md:w-72"
-        control={control}
-        errorMessage={errors.image?.message}
-        label="Avatar"
-        name="image"
-        withInfo={false}
-        onChange={handleInputImageChange}
-      >
-        <AvatarImage src={inputImageUrl || avatarUrl} />
-      </Form.InputImage>
+      <Form.InputWrapper>
+        <Form.InputImage<AvatarFormValues>
+          control={control}
+          errorMessage={errors.image?.message}
+          label="Avatar"
+          name="image"
+          withInfo={false}
+          onChange={handleInputImageChange}
+        >
+          <AvatarImage src={inputImageUrl || avatarUrl} />
+        </Form.InputImage>
+      </Form.InputWrapper>
       <Form.Controls>
         <Button disabled={!isDirty || isSubmitting} onClick={handleFormReset}>
           Reset

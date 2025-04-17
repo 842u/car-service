@@ -6,10 +6,10 @@ import { formVariants } from '@/utils/tailwindcss/form';
 
 import { FormButtonSubmit } from './FormButtonSubmit';
 import { FormControls } from './FormControls';
-import { FormInput } from './FormInput';
-import { FormInputImage } from './FormInputImage';
-import { FormInputPassword } from './FormInputPassword';
-import { FormInputWrapper } from './FormInputWrapper';
+import { FormInput } from './FormInput/FormInput';
+import { FormInputImage } from './FormInput/FormInputImage/FormInputImage';
+import { FormInputPassword } from './FormInput/FormInputPassword';
+import { FormInputWrapper } from './FormInput/FormInputWrapper';
 
 type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;

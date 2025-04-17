@@ -12,7 +12,8 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { ToggleVisibilityButton } from '../ToggleVisibilityButton/ToggleVisibilityButton';
+import { ToggleVisibilityButton } from '../../ToggleVisibilityButton/ToggleVisibilityButton';
+import { FormInputLabelText } from './FormInputLabelText';
 
 type FormInputPasswordProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,
@@ -50,14 +51,11 @@ export function FormInputPassword<T extends FieldValues>({
 
   return (
     <label htmlFor={name}>
-      <p>
-        <span>{label}</span>
-        {required && <span className="text-error-400 mx-1">*</span>}
-      </p>
+      <FormInputLabelText required={required} text={label} />
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'mt-2 flex items-center p-0',
+          'mt-1 flex items-center p-0',
           className,
         )}
       >

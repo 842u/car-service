@@ -8,6 +8,7 @@ import {
 } from '@/schemas/zod/common';
 import { getMimeTypeExtensions } from '@/utils/general';
 
+import { FormInputLabelText } from '../FormInputLabelText';
 import { useFormInputImage } from './useFormInputImage';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
@@ -30,10 +31,10 @@ export type FormInputImageProps<T extends FieldValues> =
   };
 
 const errorClassName =
-  'border-error-500 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border';
+  'border-error-500 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border mt-1';
 
 const defaultClassName =
-  'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border';
+  'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border mt-1';
 
 export function FormInputImage<T extends FieldValues>({
   onChange,
@@ -59,12 +60,7 @@ export function FormInputImage<T extends FieldValues>({
 
   return (
     <label htmlFor={name}>
-      {label && (
-        <p className="self-start pb-2 text-sm">
-          <span>{label}</span>
-          {required && <span className="text-error-300 mx-1">*</span>}
-        </p>
-      )}
+      {label && <FormInputLabelText required={required} text={label} />}
       <div
         className={twMerge(
           errorMessage ? errorClassName : defaultClassName,

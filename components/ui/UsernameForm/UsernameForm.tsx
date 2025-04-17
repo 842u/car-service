@@ -21,15 +21,16 @@ export function UsernameForm({ username }: UsernameFormProps) {
 
   return (
     <Form variant="raw" onSubmit={handleFormSubmit}>
-      <Form.Input
-        className="md:w-72"
-        errorMessage={errors.username?.message}
-        label="Username"
-        name="username"
-        placeholder="Enter your username"
-        register={register}
-        type="text"
-      />
+      <Form.InputWrapper>
+        <Form.Input
+          errorMessage={errors.username?.message}
+          label="Username"
+          name="username"
+          placeholder="Enter your username"
+          register={register}
+          type="text"
+        />
+      </Form.InputWrapper>
       <Form.Controls className="flex flex-col gap-4 md:flex-row md:justify-end">
         <Button disabled={!isDirty} onClick={handleFormReset}>
           Reset
