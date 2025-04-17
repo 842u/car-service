@@ -31,10 +31,10 @@ export type FormInputImageProps<T extends FieldValues> =
   };
 
 const errorClassName =
-  'border-error-500 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border mt-1';
+  'border-error-500 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-md border mt-1';
 
 const defaultClassName =
-  'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-lg border mt-1';
+  'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-md border mt-1';
 
 export function FormInputImage<T extends FieldValues>({
   onChange,
