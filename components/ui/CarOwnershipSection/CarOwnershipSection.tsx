@@ -6,7 +6,7 @@ import { CarOwnership, Profile } from '@/types';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
-import { CarOwnershipControls } from './CarOwnershipControls';
+import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 
 type CarOwnershipSectionProps = {
   carId: string;
@@ -44,13 +44,11 @@ export function CarOwnershipSection({
         register={removeCarOwnershipFormMethods.register}
         sessionProfileData={sessionProfileData}
       />
-      <DashboardSection.Controls className="mt-4">
-        <CarOwnershipControls
-          carId={carId}
-          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-          removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
-        />
-      </DashboardSection.Controls>
+      <CarOwnershipSectionControls
+        carId={carId}
+        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+        removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
+      />
     </DashboardSection>
   );
 }
