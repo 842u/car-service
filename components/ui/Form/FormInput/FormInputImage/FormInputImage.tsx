@@ -7,6 +7,7 @@ import {
   IMAGE_FILE_MAX_SIZE_BYTES,
 } from '@/schemas/zod/common';
 import { getMimeTypeExtensions } from '@/utils/general';
+import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { FormInputLabelText } from '../FormInputLabelText';
 import { useFormInputImage } from './useFormInputImage';
@@ -29,12 +30,6 @@ export type FormInputImageProps<T extends FieldValues> =
     errorMessage?: string | undefined;
     showErrorMessage?: boolean;
   };
-
-const errorClassName =
-  'border-error-500 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-md border mt-1';
-
-const defaultClassName =
-  'border-alpha-grey-400 bg-light-600 dark:bg-dark-700 relative aspect-square w-full cursor-pointer overflow-clip rounded-md border mt-1';
 
 export function FormInputImage<T extends FieldValues>({
   onChange,
@@ -63,7 +58,8 @@ export function FormInputImage<T extends FieldValues>({
       {label && <FormInputLabelText required={required} text={label} />}
       <div
         className={twMerge(
-          errorMessage ? errorClassName : defaultClassName,
+          errorMessage ? inputVariants['error'] : inputVariants['default'],
+          'relative aspect-square h-full w-full cursor-pointer overflow-clip p-0',
           className,
         )}
       >
