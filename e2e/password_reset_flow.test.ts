@@ -80,7 +80,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })
@@ -116,7 +118,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })
@@ -152,7 +156,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })
@@ -192,7 +198,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })
