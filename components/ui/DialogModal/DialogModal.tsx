@@ -16,13 +16,19 @@ export type DialogModalRef = {
 };
 
 type DialogModalProps = ComponentPropsWithoutRef<'dialog'> & {
+  headingText: string;
+  headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   ref?: Ref<DialogModalRef>;
 };
 
-export function DialogModal({ children, ref, ...props }: DialogModalProps) {
+export function DialogModal({
+  headingText,
+  children,
+  ref,
+  headingLevel = 'h2',
+  ...props
+}: DialogModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const closeModal = () => dialogRef.current?.close();
 
   useImperativeHandle(ref, () => {
     return {
@@ -33,18 +39,24 @@ export function DialogModal({ children, ref, ...props }: DialogModalProps) {
     };
   }, []);
 
+  const HeadingTag = headingLevel;
+
+  const closeModal = () => dialogRef.current?.close();
+
   return (
     <dialog
       ref={dialogRef}
-      className="bg-light-500 dark:bg-dark-500 border-accent-200 dark:border-accent-300 fixed m-auto w-full rounded-md border-2 p-4 backdrop:backdrop-blur-xs"
+      className="bg-light-500 dark:bg-dark-500 border-accent-200 dark:border-accent-300 fixed m-auto w-full rounded-md border p-4 backdrop:backdrop-blur-xs md:w-auto"
       onClick={closeModal}
       {...props}
     >
-      <div className="absolute top-0 right-0 m-4">
+      <div className="flex items-end justify-between">
+        <HeadingTag className="inline-block text-xl">{headingText}</HeadingTag>
         <IconButton className="p-1" title="close" onClick={closeModal}>
           <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
         </IconButton>
       </div>
+      <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
       <div
         onClick={(event: SyntheticEvent<HTMLDivElement>) => {
           event.stopPropagation();
