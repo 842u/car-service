@@ -29,7 +29,7 @@ describe('PasswordChangeForm', () => {
   it('should be initially disabled', () => {
     render(<PasswordChangeForm />);
 
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
 
     expect(submitButton).toBeDisabled();
   });
@@ -40,7 +40,7 @@ describe('PasswordChangeForm', () => {
     render(<PasswordChangeForm />);
 
     const passwordInput = screen.getByLabelText(/new password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
     await user.type(passwordInput, correctPassword);
 
     expect(submitButton).toBeDisabled();
@@ -52,7 +52,7 @@ describe('PasswordChangeForm', () => {
     render(<PasswordChangeForm />);
 
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
     await user.type(confirmPasswordInput, correctPassword);
 
     expect(submitButton).toBeDisabled();
@@ -66,7 +66,7 @@ describe('PasswordChangeForm', () => {
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, wrongPassword);
@@ -86,7 +86,7 @@ describe('PasswordChangeForm', () => {
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
 
     await user.type(passwordInput, wrongPassword);
     await user.type(confirmPasswordInput, wrongPassword);
@@ -102,7 +102,7 @@ describe('PasswordChangeForm', () => {
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
 
     await user.type(passwordInput, correctPasswordOne);
     await user.type(confirmPasswordInput, correctPasswordTwo);
@@ -122,7 +122,7 @@ describe('PasswordChangeForm', () => {
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, correctPassword);
@@ -137,7 +137,7 @@ describe('PasswordChangeForm', () => {
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, correctPassword);
@@ -155,7 +155,7 @@ describe('PasswordChangeForm', () => {
 
     const passwordInput = screen.getByLabelText(/new password/i);
     const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-    const submitButton = screen.getByRole('button', { name: /change/i });
+    const submitButton = screen.getByRole('button', { name: 'Save' });
 
     await user.type(passwordInput, correctPassword);
     await user.type(confirmPasswordInput, wrongPassword);
