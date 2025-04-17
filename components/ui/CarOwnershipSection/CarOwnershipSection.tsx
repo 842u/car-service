@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 
 import { CarOwnership, Profile } from '@/types';
 
-import { CarOwnershipControls } from '../CarOwnershipControls/CarOwnershipControls';
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { CarOwnershipControls } from './CarOwnershipControls';
 
 type CarOwnershipSectionProps = {
   carId: string;
