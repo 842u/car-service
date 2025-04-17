@@ -50,18 +50,21 @@ export function DialogModal({
       onClick={closeModal}
       {...props}
     >
-      <div className="flex items-end justify-between">
-        <HeadingTag className="inline-block text-xl">{headingText}</HeadingTag>
-        <IconButton className="p-1" title="close" onClick={closeModal}>
-          <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
-        </IconButton>
-      </div>
-      <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
       <div
+        // Prevent dialog closing while clicking on its content
         onClick={(event: SyntheticEvent<HTMLDivElement>) => {
           event.stopPropagation();
         }}
       >
+        <div className="flex items-end justify-between">
+          <HeadingTag className="inline-block text-xl">
+            {headingText}
+          </HeadingTag>
+          <IconButton className="p-1" title="close" onClick={closeModal}>
+            <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
+          </IconButton>
+        </div>
+        <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
         {children}
       </div>
     </dialog>
