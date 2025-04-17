@@ -43,7 +43,7 @@ export function CarDeleteSection({
         >
           <TrashIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
         </IconButton>
-        <DialogModal ref={dialogModalRef}>
+        <DialogModal ref={dialogModalRef} headingText="Delete a car">
           <CarDeleteForm
             carId={carId}
             onSubmit={() => dialogModalRef.current?.closeModal()}

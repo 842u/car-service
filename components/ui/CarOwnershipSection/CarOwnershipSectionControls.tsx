@@ -6,6 +6,7 @@ import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
 import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
 import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm';
+import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
 import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
 import { IconButton } from '../IconButton/IconButton';
@@ -15,24 +16,24 @@ import {
   RemoveCarOwnershipFormValues,
 } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
-type CarOwnershipControlsProps = {
+type CarOwnershipSectionControlsProps = {
   carId: string;
   removeCarOwnershipFormMethods: UseFormReturn<RemoveCarOwnershipFormValues>;
   isCurrentUserPrimaryOwner: boolean;
 };
 
-export function CarOwnershipControls({
+export function CarOwnershipSectionControls({
   carId,
   removeCarOwnershipFormMethods,
   isCurrentUserPrimaryOwner,
-}: CarOwnershipControlsProps) {
+}: CarOwnershipSectionControlsProps) {
   const removeCarOwnershipFormRef = useRef<RemoveCarOwnershipFormRef>(null);
   const newCarOwnerFormModalRef = useRef<DialogModalRef>(null);
   const removeCarOwnershipFormModalRef = useRef<DialogModalRef>(null);
   const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <>
+    <DashboardSection.Controls className="mt-4">
       <IconButton
         className="group"
         disabled={!isCurrentUserPrimaryOwner}
@@ -42,7 +43,10 @@ export function CarOwnershipControls({
       >
         <ChangeKeyIcon className="group-disabled:stroke-light-800 stroke-light-500 fill-light-500 h-full w-full" />
       </IconButton>
-      <DialogModal ref={grantPrimaryOwnershipFormModalRef}>
+      <DialogModal
+        ref={grantPrimaryOwnershipFormModalRef}
+        headingText="Grant primary ownership"
+      >
         <GrantCarPrimaryOwnershipForm
           carId={carId}
           onSubmit={() => {
@@ -64,7 +68,10 @@ export function CarOwnershipControls({
       >
         <UserMinusIcon className="group-disabled:stroke-light-800 stroke-light-500 h-full w-full stroke-2" />
       </IconButton>
-      <DialogModal ref={removeCarOwnershipFormModalRef}>
+      <DialogModal
+        ref={removeCarOwnershipFormModalRef}
+        headingText="Remove ownerships"
+      >
         <FormProvider<RemoveCarOwnershipFormValues>
           {...removeCarOwnershipFormMethods}
         >
@@ -89,12 +96,12 @@ export function CarOwnershipControls({
       >
         <UserPlusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
       </IconButton>
-      <DialogModal ref={newCarOwnerFormModalRef}>
+      <DialogModal ref={newCarOwnerFormModalRef} headingText="Add a car owner">
         <AddCarOwnershipForm
           carId={carId}
           onSubmit={() => newCarOwnerFormModalRef.current?.closeModal()}
         />
       </DialogModal>
-    </>
+    </DashboardSection.Controls>
   );
 }

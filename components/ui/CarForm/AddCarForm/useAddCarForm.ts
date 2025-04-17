@@ -10,13 +10,13 @@ import {
 } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { CarForm, CarFormRef } from './CarForm';
+import { CarFormRef } from '../CarForm';
 
-type AddCarFormProps = {
-  onSubmit?: () => void;
-};
-
-export function AddCarForm({ onSubmit }: AddCarFormProps) {
+export function useAddCarForm({
+  onSubmit,
+}: {
+  onSubmit: (() => void) | undefined;
+}) {
   const carFormRef = useRef<CarFormRef>(null);
 
   const { addToast } = useToasts();
@@ -45,7 +45,5 @@ export function AddCarForm({ onSubmit }: AddCarFormProps) {
     });
   };
 
-  return (
-    <CarForm ref={carFormRef} title="Add a car" onSubmit={handleFormSubmit} />
-  );
+  return { handleFormSubmit, carFormRef };
 }

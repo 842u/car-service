@@ -16,7 +16,9 @@ test.describe('password_reset_flow - @unauthenticated', () => {
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
     await emailInput.pressSequentially(wrongEmail);
-    const submitButton = page.getByLabel(/send password reset email/i);
+    const submitButton = page.getByRole('button', {
+      name: 'Send password reset email',
+    });
 
     await expect(submitButton).toBeDisabled();
   });
@@ -30,7 +32,9 @@ test.describe('password_reset_flow - @unauthenticated', () => {
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
     await emailInput.pressSequentially(nonExistingEmail);
-    const submitButton = page.getByLabel(/send password reset email/i);
+    const submitButton = page.getByRole('button', {
+      name: 'Send password reset email',
+    });
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
 
@@ -47,7 +51,9 @@ test.describe('password_reset_flow - @unauthenticated', () => {
     await page.goto(passwordResetPath);
     const emailInput = page.getByPlaceholder(/enter your email/i);
     await emailInput.pressSequentially(email);
-    const submitButton = page.getByLabel(/send password reset email/i);
+    const submitButton = page.getByRole('button', {
+      name: 'Send password reset email',
+    });
     await submitButton.click();
     const successToast = page.getByLabel(/success notification/i);
 
@@ -74,7 +80,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })
@@ -110,7 +118,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })
@@ -146,7 +156,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })
@@ -186,7 +198,9 @@ test.describe('password_reset_flow - @authenticated', () => {
     await page.goto(accountSettingsPath);
     const newPasswordInput = page.getByPlaceholder(/enter new password/i);
     const confirmPasswordInput = page.getByPlaceholder(/confirm password/i);
-    const submitButton = page.getByRole('button', { name: /change/i });
+    const submitButton = page
+      .getByLabel('password change')
+      .getByRole('button', { name: 'Save' });
     const newPasswordVisibilityButton = page
       .locator('label')
       .filter({ hasText: /new password/i })

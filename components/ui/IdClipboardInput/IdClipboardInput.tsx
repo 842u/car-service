@@ -1,6 +1,8 @@
 import { SyntheticEvent } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/hooks/useToasts';
+import { inputVariants } from '@/utils/tailwindcss/input';
 
 type IdClipboardInputProps = {
   id?: string;
@@ -33,7 +35,10 @@ export function IdClipboardInput({ id }: IdClipboardInputProps) {
   return (
     <input
       readOnly
-      className="border-alpha-grey-300 mx-auto block w-xs cursor-pointer overflow-x-auto rounded-md border py-2 text-center"
+      className={twMerge(
+        inputVariants['default'],
+        'w-xs cursor-pointer overflow-x-auto text-center',
+      )}
       defaultValue={id}
       placeholder="..."
       type="text"

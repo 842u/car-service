@@ -16,7 +16,7 @@ test.describe('sign_up_flow - @unauthenticated', () => {
     await page.goto(signUpPage);
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
-    const submitButton = page.getByLabel('Sign Up', { exact: true });
+    const submitButton = page.getByRole('button', { name: 'Sign Up' });
     const togglePasswordVisibility = page.getByRole('button', {
       name: 'toggle visibility',
     });
@@ -38,7 +38,7 @@ test.describe('sign_up_flow - @unauthenticated', () => {
     await page.goto(signUpPage);
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
-    const submitButton = page.getByLabel('Sign Up', { exact: true });
+    const submitButton = page.getByRole('button', { name: 'Sign Up' });
     const togglePasswordVisibility = page.getByRole('button', {
       name: 'toggle visibility',
     });
@@ -64,7 +64,7 @@ test.describe('sign_up_flow - @unauthenticated', () => {
     await page.goto(signUpPage);
     const emailInput = page.getByPlaceholder(/enter your email/i);
     const passwordInput = page.getByPlaceholder(/enter your password/i);
-    const submitButton = page.getByLabel('Sign Up', { exact: true });
+    const submitButton = page.getByRole('button', { name: 'Sign Up' });
     const togglePasswordVisibility = page.getByRole('button', {
       name: 'toggle visibility',
     });

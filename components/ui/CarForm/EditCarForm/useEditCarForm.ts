@@ -3,25 +3,23 @@ import { useRef } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { Car } from '@/types';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { CarForm, CarFormRef } from './CarForm';
+import { CarFormRef } from '../CarForm';
+import { EditCarFormProps } from './EditCarForm';
 
-type EditCarFormProps = {
-  carId: string;
-  carData: Car | undefined;
-  onSubmit?: () => void;
-};
-
-export function EditCarForm({ carId, carData, onSubmit }: EditCarFormProps) {
+export function useEditCarForm({
+  carId,
+  onSubmit,
+}: Omit<EditCarFormProps, 'carData'>) {
   const carFormRef = useRef<CarFormRef>(null);
 
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (carFormData: CarFormValues) =>
@@ -54,12 +52,5 @@ export function EditCarForm({ carId, carData, onSubmit }: EditCarFormProps) {
     });
   };
 
-  return (
-    <CarForm
-      ref={carFormRef}
-      carData={carData}
-      title="Edit a car"
-      onSubmit={handleFormSubmit}
-    />
-  );
+  return { handleFormSubmit, carFormRef };
 }
