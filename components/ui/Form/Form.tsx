@@ -9,6 +9,7 @@ import { FormControls } from './FormControls';
 import { FormInput } from './FormInput';
 import { FormInputImage } from './FormInputImage';
 import { FormInputPassword } from './FormInputPassword';
+import { FormInputWrapper } from './FormInputWrapper';
 
 type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
@@ -30,5 +31,6 @@ export function Form({
 Form.Input = FormInput;
 Form.InputPassword = FormInputPassword;
 Form.InputImage = FormInputImage;
+Form.InputWrapper = FormInputWrapper;
 Form.ButtonSubmit = FormButtonSubmit;
 Form.Controls = FormControls;
