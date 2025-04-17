@@ -10,6 +10,7 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
+import { FormInputErrorText } from './FormInputErrorText';
 import { FormInputLabelText } from './FormInputLabelText';
 
 type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
@@ -45,7 +46,7 @@ export function FormInput<T extends FieldValues>({
       <input
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'mt-1',
+          'my-1',
           className,
         )}
         id={name}
@@ -54,11 +55,7 @@ export function FormInput<T extends FieldValues>({
         {...props}
         {...register(name, registerOptions)}
       />
-      {showErrorMessage && (
-        <p className="text-error-400 my-1 whitespace-pre-wrap">
-          {errorMessage || ' '}
-        </p>
-      )}
+      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
     </label>
   );
 }
