@@ -5,14 +5,14 @@ import { EyeOpenIcon } from '@/components/decorative/icons/EyeOpenIcon';
 
 import { IconButton } from '../../shared/IconButton/IconButton';
 
-type ToggleVisibilityButtonProps = ComponentProps<'button'> & {
+type VisibilityButtonProps = ComponentProps<'button'> & {
   isVisible?: boolean;
 };
 
-export function ToggleVisibilityButton({
+export function VisibilityButton({
   isVisible = true,
   ...props
-}: ToggleVisibilityButtonProps) {
+}: VisibilityButtonProps) {
   return (
     <IconButton className="p-0" title="toggle visibility" {...props}>
       {isVisible ? (

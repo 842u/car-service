@@ -12,7 +12,7 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { ToggleVisibilityButton } from '../../buttons/ToggleVisibilityButton/ToggleVisibilityButton';
+import { VisibilityButton } from '../../buttons/VisibilityButton/VisibilityButton';
 import { FormInputErrorText } from './FormInputErrorText';
 import { FormInputLabelText } from './FormInputLabelText';
 
@@ -69,7 +69,7 @@ export function FormInputPassword<T extends FieldValues>({
           {...register(name, registerOptions)}
         />
         <div className="inline-block h-full p-1">
-          <ToggleVisibilityButton
+          <VisibilityButton
             className="h-full w-full px-1 py-0"
             isVisible={passwordVisible}
             onClick={handlePasswordVisibility}

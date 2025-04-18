@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
-import { ToggleVisibilityButton } from './ToggleVisibilityButton';
+import { VisibilityButton } from './VisibilityButton';
 
-describe('ToggleVisibilityButton', () => {
+describe('VisibilityButton', () => {
   it('should render button', () => {
-    render(<ToggleVisibilityButton />);
+    render(<VisibilityButton />);
     const button = screen.getByRole('button', { name: 'toggle visibility' });
 
     expect(button).toBeInTheDocument();
@@ -13,7 +13,7 @@ describe('ToggleVisibilityButton', () => {
   it('should render eye icon while visibility = false', () => {
     const isVisible = false;
 
-    render(<ToggleVisibilityButton isVisible={isVisible} />);
+    render(<VisibilityButton isVisible={isVisible} />);
     const eyeIcon = screen.getByTestId('eye-icon');
 
     expect(eyeIcon).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe('ToggleVisibilityButton', () => {
   it('should render eye slash icon while visibility = true', () => {
     const isVisible = true;
 
-    render(<ToggleVisibilityButton isVisible={isVisible} />);
+    render(<VisibilityButton isVisible={isVisible} />);
     const eyeSlashIcon = screen.getByTestId('eye-slash-icon');
 
     expect(eyeSlashIcon).toBeInTheDocument();
