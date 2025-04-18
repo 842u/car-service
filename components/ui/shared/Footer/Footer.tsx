@@ -3,7 +3,7 @@ import { MailIcon } from '@/components/decorative/icons/MailIcon';
 import { LandingSection } from '@/components/ui/shared/LandingSection/LandingSection';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
-import { BrandLabel } from '../BrandLabel/BrandLabel';
+import { BrandLabel } from '../../BrandLabel/BrandLabel';
 
 export function Footer() {
   return (
