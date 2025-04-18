@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { AvatarSection } from '@/components/ui/AvatarSection/AvatarSection';
 import { IdSection } from '@/components/ui/IdSection/IdSection';
 import { PasswordChangeSection } from '@/components/ui/PasswordChangeSection/PasswordChangeSection';
+import { AvatarSection } from '@/components/ui/sections/AvatarSection/AvatarSection';
 import { UsernameSection } from '@/components/ui/UsernameSection/UsernameSection';
 import { useToasts } from '@/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
