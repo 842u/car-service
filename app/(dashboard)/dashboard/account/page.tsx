@@ -1,10 +1,41 @@
-import { AccountSettingsSection } from '@/components/sections/AccountSettingsSection/AccountSettingsSection';
-import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
+'use client';
 
-export default async function AccountPage() {
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
+import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
+import { AvatarSection } from '@/components/ui/sections/AvatarSection/AvatarSection';
+import { IdSection } from '@/components/ui/sections/IdSection/IdSection';
+import { PasswordChangeSection } from '@/components/ui/sections/PasswordChangeSection/PasswordChangeSection';
+import { UsernameSection } from '@/components/ui/sections/UsernameSection/UsernameSection';
+import { useToasts } from '@/hooks/useToasts';
+import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
+import { queryKeys } from '@/utils/tanstack/keys';
+
+export default function AccountPage() {
+  const { addToast } = useToasts();
+
+  const { data, error, isError } = useQuery({
+    throwOnError: false,
+    queryKey: queryKeys.profilesCurrentSession,
+    queryFn: getCurrentSessionProfile,
+  });
+
+  useEffect(() => {
+    isError && addToast(error.message, 'error');
+  }, [isError, addToast, error]);
+
   return (
     <DashboardMain>
-      <AccountSettingsSection />
+      <section
+        aria-label="account settings"
+        className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
+      >
+        <IdSection id={data?.id} />
+        <UsernameSection username={data?.username} />
+        <AvatarSection avatarUrl={data?.avatar_url} />
+        <PasswordChangeSection />
+      </section>
     </DashboardMain>
   );
 }
