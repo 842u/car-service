@@ -25,7 +25,7 @@ import {
   transmissionTypesMapping,
 } from '@/types';
 
-import { CarImage } from '../../CarImage/CarImage';
+import { CarImage } from '../../images/CarImage/CarImage';
 import { Form } from '../base/Form/Form';
 
 type CarFormFieldsProps = {

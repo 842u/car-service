@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Car } from '@/types';
 
 import { Card } from '../Card/Card';
-import { CarImage } from '../CarImage/CarImage';
+import { CarImage } from '../images/CarImage/CarImage';
 
 type CarCardProps = {
   car: Car;

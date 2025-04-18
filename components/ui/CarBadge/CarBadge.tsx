@@ -1,4 +1,4 @@
-import { CarImage } from '../CarImage/CarImage';
+import { CarImage } from '../images/CarImage/CarImage';
 import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
 import { Spinner } from '../Spinner/Spinner';
 
