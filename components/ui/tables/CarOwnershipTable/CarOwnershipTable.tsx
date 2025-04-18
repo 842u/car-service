@@ -3,7 +3,7 @@ import { UseFormRegister } from 'react-hook-form';
 
 import { CarOwnership, Profile } from '@/types';
 
-import { CarOwnershipDeleteFormValues } from '../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
+import { CarOwnershipDeleteFormValues } from '../../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 import { CarOwnershipTableHead } from './CarOwnershipTableHead';
 import { CarOwnershipTableRow } from './CarOwnershipTableRow';
 

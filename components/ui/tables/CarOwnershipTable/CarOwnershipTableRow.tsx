@@ -4,8 +4,8 @@ import { twJoin } from 'tailwind-merge';
 import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
 
-import { CarOwnershipDeleteFormValues } from '../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
-import { AvatarImage } from '../images/AvatarImage/AvatarImage';
+import { CarOwnershipDeleteFormValues } from '../../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
+import { AvatarImage } from '../../images/AvatarImage/AvatarImage';
 
 type CarOwnershipTableRowProps = {
   register?: UseFormRegister<CarOwnershipDeleteFormValues>;
