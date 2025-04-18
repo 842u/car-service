@@ -9,8 +9,8 @@ import { useToasts } from '@/hooks/useToasts';
 import { getCarsByPage } from '@/utils/supabase/tables/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
+import { Spinner } from '../../decorative/Spinner/Spinner';
 import { CarCard } from '../CarCard/CarCard';
-import { Spinner } from '../Spinner/Spinner';
 
 export function CarsGallery() {
   const intersectionTargetRef = useRef<HTMLDivElement>(null);

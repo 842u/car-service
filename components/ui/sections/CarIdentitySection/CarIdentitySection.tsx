@@ -1,6 +1,6 @@
+import { Spinner } from '../../../decorative/Spinner/Spinner';
 import { CarImage } from '../../images/CarImage/CarImage';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
-import { Spinner } from '../../Spinner/Spinner';
 
 type CarIdentitySectionProps = {
   name?: string;
