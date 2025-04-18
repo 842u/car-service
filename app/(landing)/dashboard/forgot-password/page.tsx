@@ -1,11 +1,11 @@
-import { Section } from '@/components/sections/Section';
-import { PasswordResetForm } from '@/components/ui/PasswordResetForm/PasswordResetForm';
+import { PasswordResetForm } from '@/components/ui/forms/PasswordResetForm/PasswordResetForm';
+import { LandingSection } from '@/components/ui/shared/LandingSection/LandingSection';
 import { SignInLink } from '@/components/ui/SignInLink/SignInLink';
 
 export default function ForgotPasswordPage() {
   return (
     <main>
-      <Section
+      <LandingSection
         aria-label="reset password"
         className="my-0 flex h-screen max-w-sm flex-col justify-center gap-7 md:my-0 lg:my-0"
       >
@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
         </div>
         <PasswordResetForm />
         <SignInLink className="mx-auto" />
-      </Section>
+      </LandingSection>
     </main>
   );
 }

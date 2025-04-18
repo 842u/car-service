@@ -7,7 +7,7 @@ import { useToasts } from '@/hooks/useToasts';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 
-import { IconButton } from '../IconButton/IconButton';
+import { IconButton } from '../shared/IconButton/IconButton';
 
 type ToastProps = ToastObject & {
   ref?: Ref<HTMLLIElement>;

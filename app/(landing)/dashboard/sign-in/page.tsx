@@ -1,8 +1,8 @@
 import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
-import EmailAuthForm from '@/components/ui/EmailAuthForm/EmailAuthForm';
-import { OAuthProviders } from '@/components/ui/OAuthProviders/OAuthProviders';
+import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
+import EmailAuthForm from '@/components/ui/forms/EmailAuthForm/EmailAuthForm';
+import { OAuthProvidersSection } from '@/components/ui/sections/OAuthProvidersSection/OAuthProvidersSection';
 import { SignUpLink } from '@/components/ui/SignUpLink/SignUpLink';
-import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
 
 export default function SignInPage() {
   return (
@@ -18,7 +18,7 @@ export default function SignInPage() {
               Sign in to your account
             </p>
           </h1>
-          <OAuthProviders />
+          <OAuthProvidersSection />
           <TextSeparator text="or" />
           <EmailAuthForm type="sign-in" />
           <SignUpLink className="mx-auto" />
