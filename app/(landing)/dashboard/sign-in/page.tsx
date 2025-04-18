@@ -1,5 +1,5 @@
 import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
-import EmailAuthForm from '@/components/ui/EmailAuthForm/EmailAuthForm';
+import EmailAuthForm from '@/components/ui/forms/EmailAuthForm/EmailAuthForm';
 import { OAuthProviders } from '@/components/ui/OAuthProviders/OAuthProviders';
 import { SignUpLink } from '@/components/ui/SignUpLink/SignUpLink';
 import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';

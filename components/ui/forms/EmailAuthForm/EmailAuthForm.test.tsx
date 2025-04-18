@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 
 import { ToastsProvider } from '@/components/providers/ToastsProvider';
 
-import { SPINNER_TEST_ID } from '../Spinner/Spinner';
-import { Toaster } from '../Toaster/Toaster';
+import { SPINNER_TEST_ID } from '../../Spinner/Spinner';
+import { Toaster } from '../../Toaster/Toaster';
 import EmailAuthForm, { EmailAuthFormType } from './EmailAuthForm';
 
 jest.mock('next/navigation', () => ({
