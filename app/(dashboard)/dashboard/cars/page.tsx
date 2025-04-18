@@ -4,12 +4,12 @@ import { useRef } from 'react';
 
 import { CarPlusIcon } from '@/components/decorative/icons/CarPlusIcon';
 import { CarsSection } from '@/components/ui/CarsSection/CarsSection';
-import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
 import { CarAddForm } from '@/components/ui/forms/CarAddForm/CarAddForm';
 import {
   DialogModal,
   DialogModalRef,
 } from '@/components/ui/shared/base/DialogModal/DialogModal';
+import { DashboardMain } from '@/components/ui/shared/DashboardMain/DashboardMain';
 import { IconButton } from '@/components/ui/shared/IconButton/IconButton';
 
 export default function CarsPage() {

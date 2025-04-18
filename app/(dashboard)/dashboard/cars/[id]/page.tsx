@@ -1,8 +1,8 @@
 import { Route } from 'next';
 import { redirect } from 'next/navigation';
 
-import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
 import { CarSettingsSection } from '@/components/ui/sections/CarSettingsSection/CarSettingsSection';
+import { DashboardMain } from '@/components/ui/shared/DashboardMain/DashboardMain';
 import { createClient } from '@/utils/supabase/server';
 
 type CarPageProps = {
