@@ -2,13 +2,17 @@ import { CarImage } from '../images/CarImage/CarImage';
 import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
 import { Spinner } from '../Spinner/Spinner';
 
-type CarBadgeProps = {
+type CarIdentitySectionProps = {
   name?: string;
   imageUrl?: string | null;
   isPending?: boolean;
 };
 
-export function CarBadge({ imageUrl, name, isPending }: CarBadgeProps) {
+export function CarIdentitySection({
+  imageUrl,
+  name,
+  isPending,
+}: CarIdentitySectionProps) {
   return (
     <DashboardSection className="flex flex-col-reverse items-center gap-5 md:flex-row">
       <div className="w-full max-w-md overflow-hidden rounded-lg md:max-w-xs md:basis-1/4">

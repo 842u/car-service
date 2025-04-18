@@ -1,6 +1,6 @@
 'use client';
 
-import { CarBadge } from '../../CarBadge/CarBadge';
+import { CarIdentitySection } from '../../CarIdentitySection/CarIdentitySection';
 import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
 import { CarOwnershipSection } from '../CarOwnershipSection/CarOwnershipSection';
@@ -22,7 +22,7 @@ export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
 
   return (
     <section className="flex w-full flex-col gap-5 p-5">
-      <CarBadge
+      <CarIdentitySection
         imageUrl={carData?.image_url}
         isPending={isPending}
         name={carData?.custom_name}
