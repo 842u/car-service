@@ -4,8 +4,8 @@ import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
 
 import { CarDetailsTable } from '../CarDetailsTable/CarDetailsTable';
-import { EditCarForm } from '../CarForm/EditCarForm/EditCarForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
+import { EditCarForm } from '../forms/EditCarForm/EditCarForm';
 import {
   DialogModal,
   DialogModalRef,
