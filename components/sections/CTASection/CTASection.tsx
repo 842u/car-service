@@ -1,10 +1,10 @@
 import { LinkButton } from '@/components/ui/shared/LinkButton/LinkButton';
 
-import { Section } from '../../ui/shared/Section/Section';
+import { LandingSection } from '../../ui/shared/LandingSection/LandingSection';
 
 export function CTASection() {
   return (
-    <Section className="flex h-[50vh] flex-col items-center justify-center gap-10 text-center">
+    <LandingSection className="flex h-[50vh] flex-col items-center justify-center gap-10 text-center">
       <h2 className="text-xl font-medium md:text-2xl">
         <p className="text-alpha-grey-900 md:mr-2 md:inline-block">
           Car&apos;s Story Safely Managed.
@@ -14,6 +14,6 @@ export function CTASection() {
       <LinkButton href="/dashboard/sign-up" variant="accent">
         Sign Up
       </LinkButton>
-    </Section>
+    </LandingSection>
   );
 }

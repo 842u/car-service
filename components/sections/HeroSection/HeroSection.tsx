@@ -1,10 +1,10 @@
 import { LinkButton } from '@/components/ui/shared/LinkButton/LinkButton';
 
-import { Section } from '../../ui/shared/Section/Section';
+import { LandingSection } from '../../ui/shared/LandingSection/LandingSection';
 
 export function HeroSection() {
   return (
-    <Section className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
+    <LandingSection className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">
         <p className="from-dark-100 to-dark-500 dark:from-light-400 dark:to-light-800 bg-linear-to-b bg-clip-text leading-tight text-[transparent]">
           Car&apos;s Story Safely Managed.
@@ -27,6 +27,6 @@ export function HeroSection() {
           </LinkButton>
         </div>
       </div>
-    </Section>
+    </LandingSection>
   );
 }

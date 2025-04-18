@@ -6,11 +6,11 @@ import { CardDescription } from '@/components/ui/Card/CardDescription';
 import { CardHeading } from '@/components/ui/Card/CardHeading';
 import { CardImage } from '@/components/ui/Card/CardImage';
 
-import { Section } from '../../ui/shared/Section/Section';
+import { LandingSection } from '../../ui/shared/LandingSection/LandingSection';
 
 export function FeaturesSection() {
   return (
-    <Section
+    <LandingSection
       aria-label="platform features"
       className="flex flex-col items-center justify-center gap-5 md:flex-row md:flex-wrap"
     >
@@ -61,6 +61,6 @@ export function FeaturesSection() {
           </CardBackgroundImage>
         </Card>
       </div>
-    </Section>
+    </LandingSection>
   );
 }

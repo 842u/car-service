@@ -1,12 +1,13 @@
-import { ComponentProps, ReactNode } from 'react';
+import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type SectionProps = ComponentProps<'section'> & {
-  className?: string;
-  children?: ReactNode;
-};
+type LandingSectionProps = ComponentProps<'section'>;
 
-export function Section({ className, children, ...props }: SectionProps) {
+export function LandingSection({
+  className,
+  children,
+  ...props
+}: LandingSectionProps) {
   return (
     <section
       className={twMerge(
