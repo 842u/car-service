@@ -1,4 +1,4 @@
-import { LinkButton } from '@/components/ui/LinkButton/LinkButton';
+import { LinkButton } from '@/components/ui/shared/LinkButton/LinkButton';
 
 import { Section } from '../Section';
 

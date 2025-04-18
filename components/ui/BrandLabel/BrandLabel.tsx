@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { BrandSimpleIcon } from '@/components/decorative/icons/BrandSimpleIcon';
 import { smoochSans } from '@/utils/fonts';
 
-import { LinkButton } from '../LinkButton/LinkButton';
+import { LinkButton } from '../shared/LinkButton/LinkButton';
 
 type BrandLabelPops = {
   className?: string;
