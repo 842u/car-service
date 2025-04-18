@@ -9,7 +9,7 @@ import { DashboardMain } from '@/components/ui/DashboardMain/DashboardMain';
 import {
   DialogModal,
   DialogModalRef,
-} from '@/components/ui/DialogModal/DialogModal';
+} from '@/components/ui/shared/base/DialogModal/DialogModal';
 import { IconButton } from '@/components/ui/shared/IconButton/IconButton';
 
 export default function CarsPage() {

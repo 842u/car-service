@@ -7,13 +7,16 @@ import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
 import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
 import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
 import {
   RemoveCarOwnershipForm,
   RemoveCarOwnershipFormRef,
   RemoveCarOwnershipFormValues,
 } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import {
+  DialogModal,
+  DialogModalRef,
+} from '../shared/base/DialogModal/DialogModal';
 import { IconButton } from '../shared/IconButton/IconButton';
 
 type CarOwnershipSectionControlsProps = {

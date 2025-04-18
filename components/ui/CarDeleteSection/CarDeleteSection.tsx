@@ -4,7 +4,10 @@ import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
 
 import { CarDeleteForm } from '../CarDeleteForm/CarDeleteForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
+import {
+  DialogModal,
+  DialogModalRef,
+} from '../shared/base/DialogModal/DialogModal';
 import { IconButton } from '../shared/IconButton/IconButton';
 
 type CarDeleteSectionProps = {
