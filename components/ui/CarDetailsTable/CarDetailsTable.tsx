@@ -1,4 +1,4 @@
-import { CarDetailsSectionProps } from '../CarDetailsSection/CarDetailsSection';
+import { CarDetailsSectionProps } from '../sections/CarDetailsSection/CarDetailsSection';
 
 type CarDetailsTableProps = Pick<CarDetailsSectionProps, 'carData'>;
 

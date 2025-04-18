@@ -3,14 +3,14 @@ import { useRef } from 'react';
 import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
 
-import { CarDetailsTable } from '../CarDetailsTable/CarDetailsTable';
-import { CarEditForm } from '../forms/CarEditForm/CarEditForm';
+import { CarDetailsTable } from '../../CarDetailsTable/CarDetailsTable';
+import { CarEditForm } from '../../forms/CarEditForm/CarEditForm';
 import {
   DialogModal,
   DialogModalRef,
-} from '../shared/base/DialogModal/DialogModal';
-import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
-import { IconButton } from '../shared/IconButton/IconButton';
+} from '../../shared/base/DialogModal/DialogModal';
+import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
+import { IconButton } from '../../shared/IconButton/IconButton';
 
 export type CarDetailsSectionProps = {
   carId: string;
