@@ -1,6 +1,6 @@
 import { LinkButton } from '@/components/ui/shared/LinkButton/LinkButton';
 
-import { LandingSection } from '../../ui/shared/LandingSection/LandingSection';
+import { LandingSection } from '../../shared/LandingSection/LandingSection';
 
 export function CTASection() {
   return (
