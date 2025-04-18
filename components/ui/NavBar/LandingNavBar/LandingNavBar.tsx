@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 
-import { NavBarBackground } from '@/components/decorative/NavBarBackground';
-
 import { BrandLabel } from '../../BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../buttons/HamburgerButton/HamburgerButton';
 import { NavBar } from '../../shared/base/NavBar/NavBar';
@@ -22,7 +20,6 @@ export function LandingNavBar() {
 
   return (
     <NavBar>
-      <NavBarBackground />
       <BrandLabel className="z-10 h-full" />
       <HamburgerButton
         className="z-20 lg:hidden"
