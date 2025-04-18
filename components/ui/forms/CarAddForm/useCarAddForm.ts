@@ -12,7 +12,7 @@ import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarFormRef } from '../../shared/CarForm/CarForm';
 
-export function useAddCarForm({
+export function useCarAddForm({
   onSubmit,
 }: {
   onSubmit: (() => void) | undefined;
