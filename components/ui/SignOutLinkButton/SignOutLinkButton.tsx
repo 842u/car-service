@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
-export function SignOutLink() {
+export function SignOutLinkButton() {
   return (
     <a
       className={twMerge(

@@ -5,7 +5,7 @@ import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
 import { ThemeButton } from '../../buttons/ThemeButton/ThemeButton';
-import { SignOutLink } from '../../SignOutLink/SignOutLink';
+import { SignOutLinkButton } from '../../SignOutLinkButton/SignOutLinkButton';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {
@@ -53,7 +53,7 @@ export function DashboardNavMenu({
           <ThemeButton className="w-full" />
         </li>
         <li className="mx-2 my-4 h-10">
-          <SignOutLink />
+          <SignOutLinkButton />
         </li>
       </ul>
     </nav>
