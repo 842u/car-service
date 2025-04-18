@@ -5,8 +5,8 @@ import { ChangeKeyIcon } from '@/components/decorative/icons/ChangeKeyIcon';
 import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
 import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
-import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
+import { AddCarOwnershipForm } from '../forms/AddCarOwnershipForm/AddCarOwnershipForm';
 import {
   CarOwnershipDeleteForm,
   CarOwnershipDeleteFormRef,

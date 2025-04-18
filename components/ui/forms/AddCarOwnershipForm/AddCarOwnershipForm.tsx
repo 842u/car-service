@@ -1,5 +1,5 @@
-import { Button } from '../shared/base/Button/Button';
-import { Form } from '../shared/base/Form/Form';
+import { Button } from '../../shared/base/Button/Button';
+import { Form } from '../../shared/base/Form/Form';
 import { useAddCarOwnershipForm } from './useAddCarOwnershipForm';
 
 export type AddCarOwnershipFormProps = {
