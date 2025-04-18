@@ -8,7 +8,7 @@ import {
 
 import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
 
-import { IconButton } from '../IconButton/IconButton';
+import { IconButton } from '../shared/IconButton/IconButton';
 
 export type DialogModalRef = {
   showModal: () => void;

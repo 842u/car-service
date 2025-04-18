@@ -9,12 +9,12 @@ import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm'
 import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
 import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
-import { IconButton } from '../IconButton/IconButton';
 import {
   RemoveCarOwnershipForm,
   RemoveCarOwnershipFormRef,
   RemoveCarOwnershipFormValues,
 } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { IconButton } from '../shared/IconButton/IconButton';
 
 type CarOwnershipSectionControlsProps = {
   carId: string;

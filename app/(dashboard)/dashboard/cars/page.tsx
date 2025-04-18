@@ -10,7 +10,7 @@ import {
   DialogModal,
   DialogModalRef,
 } from '@/components/ui/DialogModal/DialogModal';
-import { IconButton } from '@/components/ui/IconButton/IconButton';
+import { IconButton } from '@/components/ui/shared/IconButton/IconButton';
 
 export default function CarsPage() {
   const dialogModalRef = useRef<DialogModalRef>(null);

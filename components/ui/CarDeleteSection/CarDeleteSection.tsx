@@ -5,7 +5,7 @@ import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
 import { CarDeleteForm } from '../CarDeleteForm/CarDeleteForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { DialogModal, DialogModalRef } from '../DialogModal/DialogModal';
-import { IconButton } from '../IconButton/IconButton';
+import { IconButton } from '../shared/IconButton/IconButton';
 
 type CarDeleteSectionProps = {
   carId: string;
