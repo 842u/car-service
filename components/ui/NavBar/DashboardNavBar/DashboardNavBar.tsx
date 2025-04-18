@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { NavBarBackground } from '@/components/decorative/NavBarBackground';
 
 import { BrandLabel } from '../../BrandLabel/BrandLabel';
-import { HamburgerButton } from '../../HamburgerButton/HamburgerButton';
+import { HamburgerButton } from '../../buttons/HamburgerButton/HamburgerButton';
 import { UserBadge } from '../../UserBadge/UserBadge';
 import { NavBar } from '../NavBar';
 import { DashboardNavMenu } from './DashboardNavMenu';
