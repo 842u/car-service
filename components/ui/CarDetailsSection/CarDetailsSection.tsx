@@ -5,7 +5,7 @@ import { Car } from '@/types';
 
 import { CarDetailsTable } from '../CarDetailsTable/CarDetailsTable';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { EditCarForm } from '../forms/EditCarForm/EditCarForm';
+import { CarEditForm } from '../forms/CarEditForm/CarEditForm';
 import {
   DialogModal,
   DialogModalRef,
@@ -42,7 +42,7 @@ export function CarDetailsSection({
           <CarEditIcon className="group-disabled:stroke-light-800 stroke-light-500 fill-light-500 h-full w-full stroke-[0.5]" />
         </IconButton>
         <DialogModal ref={dialogModalRef} headingText="Edit a car">
-          <EditCarForm
+          <CarEditForm
             carData={carData}
             carId={carId}
             onSubmit={() => dialogModalRef.current?.closeModal()}

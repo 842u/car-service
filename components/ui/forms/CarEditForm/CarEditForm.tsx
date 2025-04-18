@@ -1,16 +1,16 @@
 import { Car } from '@/types';
 
 import { CarForm } from '../../shared/CarForm/CarForm';
-import { useEditCarForm } from './useEditCarForm';
+import { useCarEditForm } from './useCarEditForm';
 
-export type EditCarFormProps = {
+export type CarEditFormProps = {
   carId: string;
   carData: Car | undefined;
   onSubmit?: () => void;
 };
 
-export function EditCarForm({ carId, carData, onSubmit }: EditCarFormProps) {
-  const { handleFormSubmit, carFormRef } = useEditCarForm({ carId, onSubmit });
+export function CarEditForm({ carId, carData, onSubmit }: CarEditFormProps) {
+  const { handleFormSubmit, carFormRef } = useCarEditForm({ carId, onSubmit });
 
   return (
     <CarForm
