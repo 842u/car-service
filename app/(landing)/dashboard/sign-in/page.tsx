@@ -1,8 +1,8 @@
 import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
+import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import EmailAuthForm from '@/components/ui/forms/EmailAuthForm/EmailAuthForm';
 import { OAuthProvidersSection } from '@/components/ui/sections/OAuthProvidersSection/OAuthProvidersSection';
 import { SignUpLink } from '@/components/ui/SignUpLink/SignUpLink';
-import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
 
 export default function SignInPage() {
   return (

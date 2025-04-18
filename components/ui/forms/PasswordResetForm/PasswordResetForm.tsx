@@ -1,7 +1,7 @@
 'use client';
 
+import { TextSeparator } from '../../../decorative/TextSeparator/TextSeparator';
 import { Form } from '../../shared/base/Form/Form';
-import { TextSeparator } from '../../TextSeparator/TextSeparator';
 import { usePasswordResetForm } from './usePasswordResetForm';
 
 export function PasswordResetForm() {
