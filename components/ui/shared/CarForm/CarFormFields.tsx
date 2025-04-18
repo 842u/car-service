@@ -25,8 +25,8 @@ import {
   transmissionTypesMapping,
 } from '@/types';
 
-import { CarImage } from '../CarImage/CarImage';
-import { Form } from '../shared/base/Form/Form';
+import { CarImage } from '../../CarImage/CarImage';
+import { Form } from '../base/Form/Form';
 
 type CarFormFieldsProps = {
   register: UseFormRegister<CarFormValues>;
