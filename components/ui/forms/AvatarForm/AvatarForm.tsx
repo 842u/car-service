@@ -2,9 +2,9 @@
 
 import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 
-import { AvatarImage } from '../AvatarImage/AvatarImage';
-import { Button } from '../shared/base/Button/Button';
-import { Form } from '../shared/base/Form/Form';
+import { AvatarImage } from '../../AvatarImage/AvatarImage';
+import { Button } from '../../shared/base/Button/Button';
+import { Form } from '../../shared/base/Form/Form';
 import { useAvatarForm } from './useAvatarForm';
 
 type AvatarFormProps = {
