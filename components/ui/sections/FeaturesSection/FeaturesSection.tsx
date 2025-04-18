@@ -6,7 +6,7 @@ import { CardDescription } from '@/components/ui/Card/CardDescription';
 import { CardHeading } from '@/components/ui/Card/CardHeading';
 import { CardImage } from '@/components/ui/Card/CardImage';
 
-import { LandingSection } from '../../ui/shared/LandingSection/LandingSection';
+import { LandingSection } from '../../shared/LandingSection/LandingSection';
 
 export function FeaturesSection() {
   return (
