@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 
 import { CarOwnership, Profile } from '@/types';
 
-import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
-import { CarOwnershipDeleteFormValues } from '../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
-import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
+import { CarOwnershipTable } from '../../CarOwnershipTable/CarOwnershipTable';
+import { CarOwnershipDeleteFormValues } from '../../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
+import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 
 type CarOwnershipSectionProps = {

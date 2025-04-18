@@ -1,9 +1,9 @@
 'use client';
 
 import { CarBadge } from '../CarBadge/CarBadge';
-import { CarOwnershipSection } from '../CarOwnershipSection/CarOwnershipSection';
 import { CarDeleteSection } from '../sections/CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../sections/CarDetailsSection/CarDetailsSection';
+import { CarOwnershipSection } from '../sections/CarOwnershipSection/CarOwnershipSection';
 import { useCarSettingsSection } from './useCarSettingsSection';
 
 export type CarSettingsSectionProps = {
