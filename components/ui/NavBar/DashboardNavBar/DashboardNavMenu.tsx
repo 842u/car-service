@@ -4,8 +4,8 @@ import { CarsIcon } from '@/components/decorative/icons/CarsIcon';
 import { HomeIcon } from '@/components/decorative/icons/HomeIcon';
 import { UserIcon } from '@/components/decorative/icons/UserIcon';
 
+import { ThemeButton } from '../../buttons/ThemeButton/ThemeButton';
 import { SignOutLink } from '../../SignOutLink/SignOutLink';
-import { ThemeButton } from '../../ThemeButton/ThemeButton';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {

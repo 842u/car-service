@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 
+import { ThemeButton } from '../../buttons/ThemeButton/ThemeButton';
 import { LinkButton } from '../../shared/LinkButton/LinkButton';
-import { ThemeButton } from '../../ThemeButton/ThemeButton';
 import { LandingNavMenuItem } from './LandingNavMenuItem';
 
 type LandingNavMenuProps = {
