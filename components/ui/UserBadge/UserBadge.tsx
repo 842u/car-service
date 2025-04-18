@@ -6,7 +6,7 @@ import { useToasts } from '@/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { AvatarImage } from '../AvatarImage/AvatarImage';
+import { AvatarImage } from '../images/AvatarImage/AvatarImage';
 import { Spinner } from '../Spinner/Spinner';
 
 export const USER_BADGE_TEST_ID = 'user badge';
