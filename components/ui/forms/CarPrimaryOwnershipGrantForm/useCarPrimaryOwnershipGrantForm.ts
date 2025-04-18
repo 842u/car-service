@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
 import {
-  grantCarPrimaryOwnershipFormSchema,
-  GrantCarPrimaryOwnershipFormValues,
-} from '@/schemas/zod/grantPrimaryOwnershipFormSchema';
+  carPrimaryOwnershipGrantFormSchema,
+  CarPrimaryOwnershipGrantFormValues,
+} from '@/schemas/zod/carPrimaryOwnershipGrantFormSchema';
 import { updateCarPrimaryOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 import {
   carsOwnershipsUpdateOnError,
@@ -15,15 +15,15 @@ import {
 } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { GrantCarPrimaryOwnershipFormProps } from './GrantPrimaryOwnershipForm';
+import { CarPrimaryOwnershipGrantFormProps } from './CarPrimaryOwnershipGrantForm';
 
-const defaultGrantCarPrimaryOwnershipFormValues: GrantCarPrimaryOwnershipFormValues =
+const defaultCarPrimaryOwnershipGrantFormValues: CarPrimaryOwnershipGrantFormValues =
   { userId: '' };
 
-export function useGrantPrimaryOwnershipForm({
+export function useCarPrimaryOwnershipGrantForm({
   carId,
   onSubmit,
-}: GrantCarPrimaryOwnershipFormProps) {
+}: CarPrimaryOwnershipGrantFormProps) {
   const { addToast } = useToasts();
 
   const {
@@ -31,19 +31,19 @@ export function useGrantPrimaryOwnershipForm({
     reset,
     handleSubmit,
     formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
-  } = useForm<GrantCarPrimaryOwnershipFormValues>({
-    resolver: zodResolver(grantCarPrimaryOwnershipFormSchema),
+  } = useForm<CarPrimaryOwnershipGrantFormValues>({
+    resolver: zodResolver(carPrimaryOwnershipGrantFormSchema),
     mode: 'onChange',
-    defaultValues: defaultGrantCarPrimaryOwnershipFormValues,
+    defaultValues: defaultCarPrimaryOwnershipGrantFormValues,
   });
 
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
+    mutationFn: (newCarOwnerFormData: CarPrimaryOwnershipGrantFormValues) =>
       updateCarPrimaryOwnershipByUserId(newCarOwnerFormData.userId, carId),
-    onMutate: (newCarOwnerFormData: GrantCarPrimaryOwnershipFormValues) =>
+    onMutate: (newCarOwnerFormData: CarPrimaryOwnershipGrantFormValues) =>
       carsOwnershipsUpdateOnMutate(
         queryClient,
         carId,

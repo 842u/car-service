@@ -7,7 +7,7 @@ import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
 import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { GrantCarPrimaryOwnershipForm } from '../forms/GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
+import { CarPrimaryOwnershipGrantForm } from '../forms/CarPrimaryOwnershipGrantForm/CarPrimaryOwnershipGrantForm';
 import {
   RemoveCarOwnershipForm,
   RemoveCarOwnershipFormRef,
@@ -50,7 +50,7 @@ export function CarOwnershipSectionControls({
         ref={grantPrimaryOwnershipFormModalRef}
         headingText="Grant primary ownership"
       >
-        <GrantCarPrimaryOwnershipForm
+        <CarPrimaryOwnershipGrantForm
           carId={carId}
           onSubmit={() => {
             removeCarOwnershipFormRef.current?.reset();
