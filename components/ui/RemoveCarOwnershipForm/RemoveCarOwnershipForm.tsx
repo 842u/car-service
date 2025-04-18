@@ -3,8 +3,8 @@
 import { Ref } from 'react';
 import { UseFormReset } from 'react-hook-form';
 
-import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
+import { Button } from '../shared/base/Button/Button';
 import { useRemoveCarOwnershipForm } from './useRemoveCarOwnershipForm';
 
 export type RemoveCarOwnershipFormRef = {

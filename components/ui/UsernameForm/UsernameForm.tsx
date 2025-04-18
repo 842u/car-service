@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/Button/Button';
+import { Button } from '@/components/ui/shared/base/Button/Button';
 
 import { Form } from '../Form/Form';
 import { useUsernameForm } from './useUsernameForm';

@@ -8,7 +8,7 @@ import { GoogleIcon } from '@/components/decorative/icons/GoogleIcon';
 import { useToasts } from '@/hooks/useToasts';
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
-import { Button } from '../Button/Button';
+import { Button } from '../shared/base/Button/Button';
 
 type OAuthProvidersProps = ComponentPropsWithoutRef<'section'> & {
   className?: string;

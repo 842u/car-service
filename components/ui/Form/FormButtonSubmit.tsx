@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '../Button/Button';
+import { Button, ButtonProps } from '../shared/base/Button/Button';
 import { Spinner } from '../Spinner/Spinner';
 
 type FormButtonSubmit = ButtonProps & {

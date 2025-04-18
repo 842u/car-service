@@ -3,8 +3,8 @@
 import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
-import { Button } from '../Button/Button';
 import { Form } from '../Form/Form';
+import { Button } from '../shared/base/Button/Button';
 import { useAvatarForm } from './useAvatarForm';
 
 type AvatarFormProps = {
