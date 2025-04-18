@@ -1,16 +1,16 @@
 import { Button } from '../../shared/base/Button/Button';
 import { Form } from '../../shared/base/Form/Form';
-import { useAddCarOwnershipForm } from './useAddCarOwnershipForm';
+import { useCarOwnershipAddForm } from './useCarOwnershipAddForm';
 
-export type AddCarOwnershipFormProps = {
+export type CarOwnershipAddFormProps = {
   carId: string;
   onSubmit?: () => void;
 };
 
-export function AddCarOwnershipForm({
+export function CarOwnershipAddForm({
   carId,
   onSubmit,
-}: AddCarOwnershipFormProps) {
+}: CarOwnershipAddFormProps) {
   const {
     handleFormSubmit,
     handleFormReset,
@@ -19,7 +19,7 @@ export function AddCarOwnershipForm({
     isDirty,
     isValid,
     isSubmitting,
-  } = useAddCarOwnershipForm({ carId, onSubmit });
+  } = useCarOwnershipAddForm({ carId, onSubmit });
 
   return (
     <Form className="gap-4" variant="raw" onSubmit={handleFormSubmit}>

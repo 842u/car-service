@@ -6,7 +6,7 @@ import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
 import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { AddCarOwnershipForm } from '../forms/AddCarOwnershipForm/AddCarOwnershipForm';
+import { CarOwnershipAddForm } from '../forms/CarOwnershipAddForm/CarOwnershipAddForm';
 import {
   CarOwnershipDeleteForm,
   CarOwnershipDeleteFormRef,
@@ -100,7 +100,7 @@ export function CarOwnershipSectionControls({
         <UserPlusIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
       </IconButton>
       <DialogModal ref={newCarOwnerFormModalRef} headingText="Add a car owner">
-        <AddCarOwnershipForm
+        <CarOwnershipAddForm
           carId={carId}
           onSubmit={() => newCarOwnerFormModalRef.current?.closeModal()}
         />

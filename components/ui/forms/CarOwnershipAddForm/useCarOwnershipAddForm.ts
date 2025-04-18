@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/hooks/useToasts';
 import {
-  addCarOwnershipFormSchema,
-  AddCarOwnershipFormValues,
-} from '@/schemas/zod/addCarOwnershipFormSchema';
+  carOwnershipAddFormSchema,
+  CarOwnershipAddFormValues,
+} from '@/schemas/zod/carOwnershipAddFormSchema';
 import { addCarOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 import {
   carsOwnershipsAddOnError,
@@ -15,16 +15,16 @@ import {
 } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { AddCarOwnershipFormProps } from './AddCarOwnershipForm';
+import { CarOwnershipAddFormProps } from './CarOwnershipAddForm';
 
-const defaultAddCarOwnershipFormValues: AddCarOwnershipFormValues = {
+const defaultCarOwnershipAddFormValues: CarOwnershipAddFormValues = {
   userId: '',
 };
 
-export function useAddCarOwnershipForm({
+export function useCarOwnershipAddForm({
   carId,
   onSubmit,
-}: AddCarOwnershipFormProps) {
+}: CarOwnershipAddFormProps) {
   const { addToast } = useToasts();
 
   const {
@@ -32,19 +32,19 @@ export function useAddCarOwnershipForm({
     reset,
     handleSubmit,
     formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
-  } = useForm<AddCarOwnershipFormValues>({
-    resolver: zodResolver(addCarOwnershipFormSchema),
+  } = useForm<CarOwnershipAddFormValues>({
+    resolver: zodResolver(carOwnershipAddFormSchema),
     mode: 'onChange',
-    defaultValues: defaultAddCarOwnershipFormValues,
+    defaultValues: defaultCarOwnershipAddFormValues,
   });
 
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
+    mutationFn: (addCarOwnershipFormData: CarOwnershipAddFormValues) =>
       addCarOwnershipByUserId(carId, addCarOwnershipFormData.userId),
-    onMutate: (addCarOwnershipFormData: AddCarOwnershipFormValues) =>
+    onMutate: (addCarOwnershipFormData: CarOwnershipAddFormValues) =>
       carsOwnershipsAddOnMutate(
         queryClient,
         carId,
