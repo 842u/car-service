@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
 import { unslugify } from '@/utils/general';
 
-import { Form } from '../Form/Form';
+import { Form } from '../shared/base/Form/Form';
 import { useEmailAuthForm } from './useEmailAuthForm';
 
 export type EmailAuthFormType = 'sign-up' | 'sign-in';

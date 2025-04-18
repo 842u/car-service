@@ -1,6 +1,6 @@
 'use client';
 
-import { Form } from '../Form/Form';
+import { Form } from '../shared/base/Form/Form';
 import { TextSeparator } from '../TextSeparator/TextSeparator';
 import { usePasswordResetForm } from './usePasswordResetForm';
 

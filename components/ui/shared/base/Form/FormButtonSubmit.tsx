@@ -1,5 +1,6 @@
-import { Button, ButtonProps } from '../shared/base/Button/Button';
-import { Spinner } from '../Spinner/Spinner';
+import { Spinner } from '@/components/ui/Spinner/Spinner';
+
+import { Button, ButtonProps } from '../Button/Button';
 
 type FormButtonSubmit = ButtonProps & {
   children: string;

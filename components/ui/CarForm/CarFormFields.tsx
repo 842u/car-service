@@ -26,7 +26,7 @@ import {
 } from '@/types';
 
 import { CarImage } from '../CarImage/CarImage';
-import { Form } from '../Form/Form';
+import { Form } from '../shared/base/Form/Form';
 
 type CarFormFieldsProps = {
   register: UseFormRegister<CarFormValues>;
