@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
 
-import { CarDetailsTable } from '../../CarDetailsTable/CarDetailsTable';
 import { CarEditForm } from '../../forms/CarEditForm/CarEditForm';
 import {
   DialogModal,
@@ -11,6 +10,7 @@ import {
 } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../../shared/IconButton/IconButton';
+import { CarDetailsTable } from '../../tables/CarDetailsTable/CarDetailsTable';
 
 export type CarDetailsSectionProps = {
   carId: string;
