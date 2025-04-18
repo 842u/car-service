@@ -1,5 +1,5 @@
-import { Section } from '@/components/sections/Section';
 import { PasswordResetForm } from '@/components/ui/forms/PasswordResetForm/PasswordResetForm';
+import { Section } from '@/components/ui/shared/Section/Section';
 import { SignInLink } from '@/components/ui/SignInLink/SignInLink';
 
 export default function ForgotPasswordPage() {

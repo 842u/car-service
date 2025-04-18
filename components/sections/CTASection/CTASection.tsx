@@ -1,6 +1,6 @@
 import { LinkButton } from '@/components/ui/shared/LinkButton/LinkButton';
 
-import { Section } from '../Section';
+import { Section } from '../../ui/shared/Section/Section';
 
 export function CTASection() {
   return (

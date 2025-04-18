@@ -6,7 +6,7 @@ import { CardDescription } from '@/components/ui/Card/CardDescription';
 import { CardHeading } from '@/components/ui/Card/CardHeading';
 import { CardImage } from '@/components/ui/Card/CardImage';
 
-import { Section } from '../Section';
+import { Section } from '../../ui/shared/Section/Section';
 
 export function FeaturesSection() {
   return (

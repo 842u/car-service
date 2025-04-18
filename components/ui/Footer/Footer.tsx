@@ -1,6 +1,6 @@
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { MailIcon } from '@/components/decorative/icons/MailIcon';
-import { Section } from '@/components/sections/Section';
+import { Section } from '@/components/ui/shared/Section/Section';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
 import { BrandLabel } from '../BrandLabel/BrandLabel';
