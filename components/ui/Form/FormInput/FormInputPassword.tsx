@@ -12,7 +12,7 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { ToggleVisibilityButton } from '../../ToggleVisibilityButton/ToggleVisibilityButton';
+import { ToggleVisibilityButton } from '../../buttons/ToggleVisibilityButton/ToggleVisibilityButton';
 import { FormInputErrorText } from './FormInputErrorText';
 import { FormInputLabelText } from './FormInputLabelText';
 

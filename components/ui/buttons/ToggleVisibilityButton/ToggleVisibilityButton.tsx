@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 import { EyeCloseIcon } from '@/components/decorative/icons/EyeCloseIcon';
 import { EyeOpenIcon } from '@/components/decorative/icons/EyeOpenIcon';
 
-import { IconButton } from '../shared/IconButton/IconButton';
+import { IconButton } from '../../shared/IconButton/IconButton';
 
 type ToggleVisibilityButtonProps = ComponentProps<'button'> & {
   isVisible?: boolean;
