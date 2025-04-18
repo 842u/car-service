@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { IdSection } from '@/components/ui/IdSection/IdSection';
 import { AvatarSection } from '@/components/ui/sections/AvatarSection/AvatarSection';
+import { IdSection } from '@/components/ui/sections/IdSection/IdSection';
 import { PasswordChangeSection } from '@/components/ui/sections/PasswordChangeSection/PasswordChangeSection';
 import { UsernameSection } from '@/components/ui/UsernameSection/UsernameSection';
 import { useToasts } from '@/hooks/useToasts';
