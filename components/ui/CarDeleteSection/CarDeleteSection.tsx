@@ -2,8 +2,8 @@ import { useRef } from 'react';
 
 import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
 
-import { CarDeleteForm } from '../CarDeleteForm/CarDeleteForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
+import { CarDeleteForm } from '../forms/CarDeleteForm/CarDeleteForm';
 import {
   DialogModal,
   DialogModalRef,

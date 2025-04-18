@@ -1,4 +1,4 @@
-import { Form } from '../shared/base/Form/Form';
+import { Form } from '../../shared/base/Form/Form';
 import { useCarDeleteForm } from './useCarDeleteForm';
 
 export type CarDeleteFormProps = {
