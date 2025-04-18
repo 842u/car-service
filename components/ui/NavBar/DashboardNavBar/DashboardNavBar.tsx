@@ -6,8 +6,8 @@ import { NavBarBackground } from '@/components/decorative/NavBarBackground';
 
 import { BrandLabel } from '../../BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../buttons/HamburgerButton/HamburgerButton';
+import { NavBar } from '../../shared/base/NavBar/NavBar';
 import { UserBadge } from '../../UserBadge/UserBadge';
-import { NavBar } from '../NavBar';
 import { DashboardNavMenu } from './DashboardNavMenu';
 
 export function DashboardNavBar() {

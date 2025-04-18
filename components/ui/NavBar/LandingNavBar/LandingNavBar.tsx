@@ -6,7 +6,7 @@ import { NavBarBackground } from '@/components/decorative/NavBarBackground';
 
 import { BrandLabel } from '../../BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../buttons/HamburgerButton/HamburgerButton';
-import { NavBar } from '../NavBar';
+import { NavBar } from '../../shared/base/NavBar/NavBar';
 import { LandingNavMenu } from './LandingNavMenu';
 
 export function LandingNavBar() {
