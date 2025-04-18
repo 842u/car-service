@@ -3,19 +3,19 @@ import userEvent from '@testing-library/user-event';
 
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
-import { OAuthProviders } from './OAuthProviders';
+import { OAuthProvidersSection } from './OAuthProvidersSection';
 
 jest.mock('../../../utils/supabase/general.ts', () => ({
   signInWithOAuthHandler: jest.fn(),
 }));
 
-describe('OAuthProviders', () => {
+describe('OAuthProvidersSection', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('should render a button for github provider', () => {
-    render(<OAuthProviders />);
+    render(<OAuthProvidersSection />);
 
     const githubButton = screen.getByRole('button', { name: /github/i });
 
@@ -23,7 +23,7 @@ describe('OAuthProviders', () => {
   });
 
   it('should render a button for google provider ', () => {
-    render(<OAuthProviders />);
+    render(<OAuthProvidersSection />);
 
     const googleButton = screen.getByRole('button', { name: /google/i });
 
@@ -33,7 +33,7 @@ describe('OAuthProviders', () => {
   it('should call github OAuth handler on github button click', async () => {
     const user = userEvent.setup();
     (signInWithOAuthHandler as jest.Mock).mockImplementation(() => ({}));
-    render(<OAuthProviders />);
+    render(<OAuthProvidersSection />);
 
     const githubButton = screen.getByRole('button', { name: /github/i });
     await user.click(githubButton);
@@ -45,7 +45,7 @@ describe('OAuthProviders', () => {
   it('should call google OAuth handler on google button click', async () => {
     const user = userEvent.setup();
     (signInWithOAuthHandler as jest.Mock).mockImplementation(() => ({}));
-    render(<OAuthProviders />);
+    render(<OAuthProvidersSection />);
 
     const googleButton = screen.getByRole('button', { name: /google/i });
     await user.click(googleButton);

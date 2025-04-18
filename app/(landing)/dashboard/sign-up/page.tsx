@@ -1,6 +1,6 @@
 import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
 import EmailAuthForm from '@/components/ui/forms/EmailAuthForm/EmailAuthForm';
-import { OAuthProviders } from '@/components/ui/OAuthProviders/OAuthProviders';
+import { OAuthProvidersSection } from '@/components/ui/OAuthProvidersSection/OAuthProvidersSection';
 import { SignInLink } from '@/components/ui/SignInLink/SignInLink';
 import { TextSeparator } from '@/components/ui/TextSeparator/TextSeparator';
 
@@ -18,7 +18,7 @@ export default function SignUpPage() {
               Create a new account
             </p>
           </h1>
-          <OAuthProviders />
+          <OAuthProvidersSection />
           <TextSeparator text="or" />
           <EmailAuthForm type="sign-up" />
           <SignInLink className="mx-auto" />

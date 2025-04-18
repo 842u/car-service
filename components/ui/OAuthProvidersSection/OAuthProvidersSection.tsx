@@ -10,11 +10,12 @@ import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 import { Button } from '../shared/base/Button/Button';
 
-type OAuthProvidersProps = ComponentPropsWithoutRef<'section'> & {
-  className?: string;
-};
+type OAuthProvidersSectionProps = ComponentPropsWithoutRef<'section'>;
 
-export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
+export function OAuthProvidersSection({
+  className,
+  ...props
+}: OAuthProvidersSectionProps) {
   const { addToast } = useToasts();
 
   const gitHubButtonClickHandler = async () => {
@@ -31,9 +32,9 @@ export function OAuthProviders({ className, ...props }: OAuthProvidersProps) {
 
   return (
     <section
+      aria-label="OAuth Providers"
       className={twMerge('flex flex-col gap-4', className)}
       {...props}
-      aria-label="OAuth Providers"
     >
       <Button
         className="flex items-center justify-center gap-2 py-1.5"
