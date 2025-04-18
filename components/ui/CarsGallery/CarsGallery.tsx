@@ -12,7 +12,7 @@ import { queryKeys } from '@/utils/tanstack/keys';
 import { CarCard } from '../CarCard/CarCard';
 import { Spinner } from '../Spinner/Spinner';
 
-export function CarsSection() {
+export function CarsGallery() {
   const intersectionTargetRef = useRef<HTMLDivElement>(null);
 
   const { addToast } = useToasts();
