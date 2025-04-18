@@ -1,5 +1,5 @@
 import { CarImage } from '../CarImage/CarImage';
-import { DashboardSection } from '../DashboardSection/DashboardSection';
+import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
 import { Spinner } from '../Spinner/Spinner';
 
 type CarBadgeProps = {

@@ -5,7 +5,6 @@ import { ChangeKeyIcon } from '@/components/decorative/icons/ChangeKeyIcon';
 import { UserMinusIcon } from '@/components/decorative/icons/UserMinusIcon';
 import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
-import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { CarOwnershipAddForm } from '../forms/CarOwnershipAddForm/CarOwnershipAddForm';
 import {
   CarOwnershipDeleteForm,
@@ -17,6 +16,7 @@ import {
   DialogModal,
   DialogModalRef,
 } from '../shared/base/DialogModal/DialogModal';
+import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../shared/IconButton/IconButton';
 
 type CarOwnershipSectionControlsProps = {

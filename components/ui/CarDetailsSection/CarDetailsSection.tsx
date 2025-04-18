@@ -4,12 +4,12 @@ import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
 
 import { CarDetailsTable } from '../CarDetailsTable/CarDetailsTable';
-import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { CarEditForm } from '../forms/CarEditForm/CarEditForm';
 import {
   DialogModal,
   DialogModalRef,
 } from '../shared/base/DialogModal/DialogModal';
+import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../shared/IconButton/IconButton';
 
 export type CarDetailsSectionProps = {

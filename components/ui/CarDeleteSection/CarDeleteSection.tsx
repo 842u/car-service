@@ -2,12 +2,12 @@ import { useRef } from 'react';
 
 import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
 
-import { DashboardSection } from '../DashboardSection/DashboardSection';
 import { CarDeleteForm } from '../forms/CarDeleteForm/CarDeleteForm';
 import {
   DialogModal,
   DialogModalRef,
 } from '../shared/base/DialogModal/DialogModal';
+import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../shared/IconButton/IconButton';
 
 type CarDeleteSectionProps = {
