@@ -1,7 +1,7 @@
 import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
 
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { UsernameForm } from '../UsernameForm/UsernameForm';
+import { UsernameForm } from '../forms/UsernameForm/UsernameForm';
 
 type UsernameSectionProps = {
   username?: string | null;

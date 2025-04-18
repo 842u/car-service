@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/shared/base/Button/Button';
 
-import { Form } from '../shared/base/Form/Form';
+import { Form } from '../../shared/base/Form/Form';
 import { useUsernameForm } from './useUsernameForm';
 
 type UsernameFormProps = {
