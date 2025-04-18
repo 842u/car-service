@@ -1,8 +1,8 @@
 'use client';
 
-import { CarIdentitySection } from '../../CarIdentitySection/CarIdentitySection';
 import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
+import { CarIdentitySection } from '../CarIdentitySection/CarIdentitySection';
 import { CarOwnershipSection } from '../CarOwnershipSection/CarOwnershipSection';
 import { useCarSettingsSection } from './useCarSettingsSection';
 
