@@ -7,7 +7,7 @@ import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
 import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { GrantCarPrimaryOwnershipForm } from '../GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
+import { GrantCarPrimaryOwnershipForm } from '../forms/GrantPrimaryOwnershipForm/GrantPrimaryOwnershipForm';
 import {
   RemoveCarOwnershipForm,
   RemoveCarOwnershipFormRef,
