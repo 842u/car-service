@@ -2,13 +2,13 @@ import { useRef } from 'react';
 
 import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
 
-import { CarDeleteForm } from '../forms/CarDeleteForm/CarDeleteForm';
+import { CarDeleteForm } from '../../forms/CarDeleteForm/CarDeleteForm';
 import {
   DialogModal,
   DialogModalRef,
-} from '../shared/base/DialogModal/DialogModal';
-import { DashboardSection } from '../shared/DashboardSection/DashboardSection';
-import { IconButton } from '../shared/IconButton/IconButton';
+} from '../../shared/base/DialogModal/DialogModal';
+import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
+import { IconButton } from '../../shared/IconButton/IconButton';
 
 type CarDeleteSectionProps = {
   carId: string;
