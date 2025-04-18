@@ -5,7 +5,7 @@ import { CarOwnership, Profile } from '@/types';
 
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { RemoveCarOwnershipFormValues } from '../forms/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { CarOwnershipDeleteFormValues } from '../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 
 type CarOwnershipSectionProps = {
@@ -16,7 +16,7 @@ type CarOwnershipSectionProps = {
   isCurrentUserPrimaryOwner: boolean;
 };
 
-const defaultCarOwnershipFormValues: RemoveCarOwnershipFormValues = {
+const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
   ownersIds: [],
 };
 

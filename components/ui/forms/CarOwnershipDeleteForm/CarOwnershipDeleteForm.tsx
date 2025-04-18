@@ -5,33 +5,33 @@ import { UseFormReset } from 'react-hook-form';
 
 import { Button } from '../../shared/base/Button/Button';
 import { Form } from '../../shared/base/Form/Form';
-import { useRemoveCarOwnershipForm } from './useRemoveCarOwnershipForm';
+import { useCarOwnershipDeleteForm } from './useCarOwnershipDeleteForm';
 
-export type RemoveCarOwnershipFormRef = {
-  reset: UseFormReset<RemoveCarOwnershipFormValues>;
+export type CarOwnershipDeleteFormRef = {
+  reset: UseFormReset<CarOwnershipDeleteFormValues>;
 };
 
-export type RemoveCarOwnershipFormValues = {
+export type CarOwnershipDeleteFormValues = {
   ownersIds: string[];
 };
 
-export type RemoveCarOwnershipFormProps = {
+export type CarOwnershipDeleteFormProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
-  ref: Ref<RemoveCarOwnershipFormRef>;
+  ref: Ref<CarOwnershipDeleteFormRef>;
   onReset?: () => void;
   onSubmit?: () => void;
 };
 
-export function RemoveCarOwnershipForm({
+export function CarOwnershipDeleteForm({
   carId,
   isCurrentUserPrimaryOwner,
   ref,
   onReset,
   onSubmit,
-}: RemoveCarOwnershipFormProps) {
+}: CarOwnershipDeleteFormProps) {
   const { handleFormSubmit, handleFormReset, isDirty, isSubmitting } =
-    useRemoveCarOwnershipForm({
+    useCarOwnershipDeleteForm({
       carId,
       isCurrentUserPrimaryOwner,
       ref,

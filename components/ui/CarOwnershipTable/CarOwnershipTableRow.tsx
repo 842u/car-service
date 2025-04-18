@@ -5,10 +5,10 @@ import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
-import { RemoveCarOwnershipFormValues } from '../forms/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { CarOwnershipDeleteFormValues } from '../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 
 type CarOwnershipTableRowProps = {
-  register?: UseFormRegister<RemoveCarOwnershipFormValues>;
+  register?: UseFormRegister<CarOwnershipDeleteFormValues>;
   disabled?: boolean;
   profileData?: Profile | null;
   ownershipData?: CarOwnership[];

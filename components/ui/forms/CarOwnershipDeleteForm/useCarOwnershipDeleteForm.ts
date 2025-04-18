@@ -10,17 +10,17 @@ import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import {
-  RemoveCarOwnershipFormProps,
-  RemoveCarOwnershipFormValues,
-} from './RemoveCarOwnershipForm';
+  CarOwnershipDeleteFormProps,
+  CarOwnershipDeleteFormValues,
+} from './CarOwnershipDeleteForm';
 
-export function useRemoveCarOwnershipForm({
+export function useCarOwnershipDeleteForm({
   carId,
   ref,
   isCurrentUserPrimaryOwner,
   onSubmit,
   onReset,
-}: RemoveCarOwnershipFormProps) {
+}: CarOwnershipDeleteFormProps) {
   const router = useRouter();
 
   const { addToast } = useToasts();
@@ -29,9 +29,9 @@ export function useRemoveCarOwnershipForm({
 
   const { mutateAsync } = useMutation({
     throwOnError: false,
-    mutationFn: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
+    mutationFn: (carOwnershipFormData: CarOwnershipDeleteFormValues) =>
       deleteCarOwnershipsByUsersIds(carId, carOwnershipFormData.ownersIds),
-    onMutate: (carOwnershipFormData: RemoveCarOwnershipFormValues) =>
+    onMutate: (carOwnershipFormData: CarOwnershipDeleteFormValues) =>
       carsOwnershipsDeleteOnMutate(carOwnershipFormData, queryClient, carId),
     onSuccess: () => {
       addToast('Successfully removed ownerships.', 'success');
@@ -53,7 +53,7 @@ export function useRemoveCarOwnershipForm({
     handleSubmit,
     reset,
     formState: { isDirty, isSubmitting, isSubmitSuccessful },
-  } = useFormContext<RemoveCarOwnershipFormValues>();
+  } = useFormContext<CarOwnershipDeleteFormValues>();
 
   useImperativeHandle(ref, () => ({ reset }), [reset]);
 

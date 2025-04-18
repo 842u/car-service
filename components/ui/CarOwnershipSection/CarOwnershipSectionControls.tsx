@@ -7,12 +7,12 @@ import { UserPlusIcon } from '@/components/decorative/icons/UserPlusIcon';
 
 import { AddCarOwnershipForm } from '../AddCarOwnershipForm/AddCarOwnershipForm';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { CarPrimaryOwnershipGrantForm } from '../forms/CarPrimaryOwnershipGrantForm/CarPrimaryOwnershipGrantForm';
 import {
-  RemoveCarOwnershipForm,
-  RemoveCarOwnershipFormRef,
-  RemoveCarOwnershipFormValues,
-} from '../forms/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+  CarOwnershipDeleteForm,
+  CarOwnershipDeleteFormRef,
+  CarOwnershipDeleteFormValues,
+} from '../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
+import { CarPrimaryOwnershipGrantForm } from '../forms/CarPrimaryOwnershipGrantForm/CarPrimaryOwnershipGrantForm';
 import {
   DialogModal,
   DialogModalRef,
@@ -21,7 +21,7 @@ import { IconButton } from '../shared/IconButton/IconButton';
 
 type CarOwnershipSectionControlsProps = {
   carId: string;
-  removeCarOwnershipFormMethods: UseFormReturn<RemoveCarOwnershipFormValues>;
+  removeCarOwnershipFormMethods: UseFormReturn<CarOwnershipDeleteFormValues>;
   isCurrentUserPrimaryOwner: boolean;
 };
 
@@ -30,7 +30,7 @@ export function CarOwnershipSectionControls({
   removeCarOwnershipFormMethods,
   isCurrentUserPrimaryOwner,
 }: CarOwnershipSectionControlsProps) {
-  const removeCarOwnershipFormRef = useRef<RemoveCarOwnershipFormRef>(null);
+  const removeCarOwnershipFormRef = useRef<CarOwnershipDeleteFormRef>(null);
   const newCarOwnerFormModalRef = useRef<DialogModalRef>(null);
   const removeCarOwnershipFormModalRef = useRef<DialogModalRef>(null);
   const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
@@ -75,10 +75,10 @@ export function CarOwnershipSectionControls({
         ref={removeCarOwnershipFormModalRef}
         headingText="Remove ownerships"
       >
-        <FormProvider<RemoveCarOwnershipFormValues>
+        <FormProvider<CarOwnershipDeleteFormValues>
           {...removeCarOwnershipFormMethods}
         >
-          <RemoveCarOwnershipForm
+          <CarOwnershipDeleteForm
             ref={removeCarOwnershipFormRef}
             carId={carId}
             isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
