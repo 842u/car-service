@@ -1,6 +1,6 @@
 'use client';
 
-import { Form } from '../shared/base/Form/Form';
+import { Form } from '../../shared/base/Form/Form';
 import { usePasswordChangeForm } from './usePasswordChangeForm';
 
 export function PasswordChangeForm() {

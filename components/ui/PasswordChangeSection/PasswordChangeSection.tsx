@@ -1,7 +1,7 @@
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
 
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { PasswordChangeForm } from '../PasswordChangeForm/PasswordChangeForm';
+import { PasswordChangeForm } from '../forms/PasswordChangeForm/PasswordChangeForm';
 
 export function PasswordChangeSection() {
   return (
