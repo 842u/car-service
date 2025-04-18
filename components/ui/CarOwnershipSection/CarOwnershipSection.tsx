@@ -5,7 +5,7 @@ import { CarOwnership, Profile } from '@/types';
 
 import { CarOwnershipTable } from '../CarOwnershipTable/CarOwnershipTable';
 import { DashboardSection } from '../DashboardSection/DashboardSection';
-import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '../forms/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 
 type CarOwnershipSectionProps = {

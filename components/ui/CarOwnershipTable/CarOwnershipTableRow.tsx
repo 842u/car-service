@@ -5,7 +5,7 @@ import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { AvatarImage } from '../AvatarImage/AvatarImage';
-import { RemoveCarOwnershipFormValues } from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '../forms/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 
 type CarOwnershipTableRowProps = {
   register?: UseFormRegister<RemoveCarOwnershipFormValues>;

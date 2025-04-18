@@ -12,7 +12,7 @@ import {
   RemoveCarOwnershipForm,
   RemoveCarOwnershipFormRef,
   RemoveCarOwnershipFormValues,
-} from '../RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+} from '../forms/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import {
   DialogModal,
   DialogModalRef,

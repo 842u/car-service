@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { RemoveCarOwnershipFormValues } from '@/components/ui/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
+import { RemoveCarOwnershipFormValues } from '@/components/ui/forms/RemoveCarOwnershipForm/RemoveCarOwnershipForm';
 import { CarOwnership } from '@/types';
 
 import { queryKeys } from './keys';
