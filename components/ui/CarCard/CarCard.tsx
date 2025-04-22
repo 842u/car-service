@@ -15,7 +15,7 @@ export function CarCard({ car }: CarCardProps) {
 
   return (
     <Link className="w-80" href={`${staticSegment}/${car.id}`}>
-      <Card className="flex h-full flex-col justify-between p-5">
+      <Card className="flex h-full flex-col justify-between">
         <CarImage className="overflow-hidden rounded-lg" src={car.image_url} />
         <p className="my-4 text-3xl font-semibold break-words">
           {car.custom_name}
