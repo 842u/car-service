@@ -1,17 +1,78 @@
-import { ReactNode } from 'react';
+'use client';
+
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from 'motion/react';
+import { ReactNode, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
+
+const ROTATION_FACTOR = 5;
+const TRANSFORM_PERSPECTIVE_PIXELS = 1000;
 
 type CardProps = { className?: string; children?: ReactNode };
 
 export function Card({ className, children }: CardProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const xSpring = useSpring(x);
+  const ySpring = useSpring(y);
+
+  const rotateX = useTransform(
+    ySpring,
+    [-0.5, 0.5],
+    [ROTATION_FACTOR, -ROTATION_FACTOR],
+  );
+  const rotateY = useTransform(
+    xSpring,
+    [-0.5, 0.5],
+    [-ROTATION_FACTOR, ROTATION_FACTOR],
+  );
+
+  const transform = useMotionTemplate`perspective(${TRANSFORM_PERSPECTIVE_PIXELS}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+
+    const rect = ref.current.getBoundingClientRect();
+
+    const mouseXCoordinate = event.clientX - rect.left;
+    const mouseYCoordinate = event.clientY - rect.top;
+
+    const mouseXNormalized = mouseXCoordinate / rect.width - 0.5;
+    const mouseYNormalized = mouseYCoordinate / rect.height - 0.5;
+
+    x.set(mouseXNormalized);
+    y.set(mouseYNormalized);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
-    <div
+    <motion.div
+      ref={ref}
       className={twMerge(
-        'border-alpha-grey-300 from-light-600 to-light-500 dark:from-dark-600 dark:via-dark-500 dark:to-dark-450 rounded-md border bg-linear-to-tr p-4 shadow-lg drop-shadow-lg',
+        'border-alpha-grey-300 hover:border-accent-300 rounded-md border p-4 shadow-lg drop-shadow-lg transition-colors duration-700',
         className,
       )}
+      initial={false}
+      style={{
+        transformStyle: 'preserve-3d',
+        transform,
+      }}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
