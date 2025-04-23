@@ -1,21 +1,30 @@
 'use client';
 
 import {
+  HTMLMotionProps,
   motion,
   useMotionTemplate,
   useMotionValue,
   useSpring,
   useTransform,
 } from 'motion/react';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-const ROTATION_FACTOR = 5;
-const TRANSFORM_PERSPECTIVE_PIXELS = 1000;
+type CardProps = HTMLMotionProps<'div'> & {
+  rotationDirection?: 'push' | 'pull';
+  rotationFactor?: number;
+  transformPerspectivePixels?: number;
+};
 
-type CardProps = { className?: string; children?: ReactNode };
-
-export function Card({ className, children }: CardProps) {
+export function Card({
+  rotationDirection = 'push',
+  rotationFactor = 5,
+  transformPerspectivePixels = 1000,
+  className,
+  children,
+  ...props
+}: CardProps) {
   const [canAnimate, setCanAnimate] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -29,15 +38,19 @@ export function Card({ className, children }: CardProps) {
   const rotateX = useTransform(
     ySpring,
     [-0.5, 0.5],
-    [ROTATION_FACTOR, -ROTATION_FACTOR],
+    rotationDirection === 'push'
+      ? [rotationFactor, -rotationFactor]
+      : [-rotationFactor, rotationFactor],
   );
   const rotateY = useTransform(
     xSpring,
     [-0.5, 0.5],
-    [-ROTATION_FACTOR, ROTATION_FACTOR],
+    rotationDirection === 'push'
+      ? [-rotationFactor, rotationFactor]
+      : [rotationFactor, -rotationFactor],
   );
 
-  const transform = useMotionTemplate`perspective(${TRANSFORM_PERSPECTIVE_PIXELS}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  const transform = useMotionTemplate`perspective(${transformPerspectivePixels}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
   useEffect(() => setCanAnimate(true), []);
 
@@ -78,6 +91,7 @@ export function Card({ className, children }: CardProps) {
       }
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
+      {...props}
     >
       {children}
     </motion.div>
