@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 import { Car } from '@/types';
 
-import { Card } from '../Card/Card';
-import { CarImage } from '../images/CarImage/CarImage';
+import { Card } from '../../Card/Card';
+import { CarImage } from '../../images/CarImage/CarImage';
 
 type CarCardProps = {
   car: Car;
