@@ -18,6 +18,10 @@ export function useMouseTiltAnimation<T extends HTMLElement>({
   rotationFactor = 5,
   transformPerspectivePixels = 1000,
 }: UseMouseTiltAnimationOptions) {
+  /**
+   * Due to strict CSP rules, setting inline style must be deferred to take place on
+   * the client side.
+   */
   const [canAnimate, setCanAnimate] = useState(false);
 
   const elementRef = useRef<T>(null);
