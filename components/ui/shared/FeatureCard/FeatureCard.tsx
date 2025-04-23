@@ -2,13 +2,14 @@ import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { Card, CardProps } from '../base/Card/Card';
+import { FeatureCardDescription } from './FeatureCardDescription';
 import { FeatureCardHeading } from './FeatureCardHeading';
 import { FeatureCardIcon } from './FeatureCardIcon';
 
 export function FeatureCard({ className, children, ...props }: CardProps) {
   return (
     <Card className={twMerge('@container h-96 w-full', className)} {...props}>
-      <div className="flex flex-col items-center justify-start gap-4 @sm:items-start @sm:text-left">
+      <div className="flex flex-col items-center justify-start gap-4 text-center @sm:items-start @sm:text-left">
         {children as ReactNode}
       </div>
     </Card>
@@ -17,3 +18,4 @@ export function FeatureCard({ className, children, ...props }: CardProps) {
 
 FeatureCard.Icon = FeatureCardIcon;
 FeatureCard.Heading = FeatureCardHeading;
+FeatureCard.Description = FeatureCardDescription;
