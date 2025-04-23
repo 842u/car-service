@@ -14,26 +14,22 @@ export function CarCard({ car }: CarCardProps) {
   const staticSegment = '/dashboard/cars' satisfies Route;
 
   return (
-    <Link className="w-80" href={`${staticSegment}/${car.id}`}>
-      <Card className="flex h-full flex-col justify-between">
+    <Link className="w-80" href={`${staticSegment}/${car.id}`} prefetch={true}>
+      <Card className="flex h-full flex-col gap-4">
         <CarImage className="overflow-hidden rounded-lg" src={car.image_url} />
-        <p className="my-4 text-3xl font-semibold break-words">
-          {car.custom_name}
-        </p>
-        <div>
-          <p className="my-2 whitespace-pre-wrap">
-            <span>Brand: </span>
-            <span className="text-accent-400">{car.brand || ''}</span>
-          </p>
-          <p className="my-2 whitespace-pre-wrap">
-            <span>Model: </span>
-            <span className="text-accent-400">{car.model || ''}</span>
-          </p>
-          <p className="my-2 whitespace-pre-wrap">
-            <span>License Plates: </span>
-            <span className="text-accent-400">{car.license_plates || ''}</span>
-          </p>
+        <div className="overflow-hidden">
+          <p className="mb-1 text-3xl font-bold">{car.custom_name}</p>
+          <p className="text-lg">{car.license_plates}</p>
         </div>
+        <p className="overflow-hidden text-right">
+          <span>{car.brand}</span>
+          {car.model && (
+            <span>
+              <span className="mx-2">|</span>
+              {car.model}
+            </span>
+          )}
+        </p>
       </Card>
     </Link>
   );
