@@ -7,7 +7,7 @@ import {
   useSpring,
   useTransform,
 } from 'motion/react';
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const ROTATION_FACTOR = 5;
@@ -16,6 +16,8 @@ const TRANSFORM_PERSPECTIVE_PIXELS = 1000;
 type CardProps = { className?: string; children?: ReactNode };
 
 export function Card({ className, children }: CardProps) {
+  const [canAnimate, setCanAnimate] = useState(false);
+
   const ref = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
@@ -36,6 +38,8 @@ export function Card({ className, children }: CardProps) {
   );
 
   const transform = useMotionTemplate`perspective(${TRANSFORM_PERSPECTIVE_PIXELS}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+  useEffect(() => setCanAnimate(true), []);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -64,11 +68,14 @@ export function Card({ className, children }: CardProps) {
         'border-alpha-grey-300 hover:border-accent-300 rounded-md border p-4 shadow-lg drop-shadow-lg transition-colors duration-700',
         className,
       )}
-      initial={false}
-      style={{
-        transformStyle: 'preserve-3d',
-        transform,
-      }}
+      style={
+        canAnimate
+          ? {
+              transformStyle: 'preserve-3d',
+              transform,
+            }
+          : undefined
+      }
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
     >
