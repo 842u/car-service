@@ -10,7 +10,7 @@ import { getCarsByPage } from '@/utils/supabase/tables/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Spinner } from '../../decorative/Spinner/Spinner';
-import { CarCard } from '../CarCard/CarCard';
+import { CarCard } from '../shared/CarCard/CarCard';
 
 export function CarsGallery() {
   const intersectionTargetRef = useRef<HTMLDivElement>(null);
