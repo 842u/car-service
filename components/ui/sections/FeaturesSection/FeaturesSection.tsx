@@ -1,10 +1,10 @@
 import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
 import { BrandSimpleIcon } from '@/components/decorative/icons/BrandSimpleIcon';
-import { Card } from '@/components/ui/Card/Card';
 import { CardBackgroundImage } from '@/components/ui/Card/CardBackgroundImage';
 import { CardDescription } from '@/components/ui/Card/CardDescription';
 import { CardHeading } from '@/components/ui/Card/CardHeading';
 import { CardImage } from '@/components/ui/Card/CardImage';
+import { Card } from '@/components/ui/shared/base/Card/Card';
 
 import { LandingSection } from '../../shared/LandingSection/LandingSection';
 
