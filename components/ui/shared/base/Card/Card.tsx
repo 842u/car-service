@@ -11,7 +11,7 @@ import {
 const motionFeatures = () =>
   import('@/utils/motion/motion').then((module) => module.default);
 
-type CardProps = HTMLMotionProps<'div'> & UseMouseTiltAnimationOptions;
+export type CardProps = HTMLMotionProps<'div'> & UseMouseTiltAnimationOptions;
 
 export function Card({
   rotationDirection,
