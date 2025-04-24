@@ -22,6 +22,7 @@ const defaultCarFormValues: CarFormValues = {
   engineCapacity: null,
   mileage: null,
   insuranceExpiration: null,
+  technicalInspectionExpiration: null,
 };
 
 export function useCarForm({
@@ -54,6 +55,8 @@ export function useCarForm({
         engineCapacity: carData.engine_capacity,
         fuelType: carData.fuel_type,
         insuranceExpiration: carData.insurance_expiration as unknown as Date,
+        technicalInspectionExpiration:
+          carData.technical_inspection_expiration as unknown as Date,
         licensePlates: carData.license_plates,
         mileage: carData.mileage,
         model: carData.model,
