@@ -49,11 +49,11 @@ export function DashboardNavMenu({
         </DashboardNavMenuItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
-        <li className="mx-2 my-4 h-10">
-          <ThemeButton className="w-full" />
+        <li className="mx-2 my-4 h-12">
+          <ThemeButton className="h-full w-full" />
         </li>
-        <li className="mx-2 my-4 h-10">
-          <SignOutLinkButton />
+        <li className="mx-2 my-4 h-12">
+          <SignOutLinkButton className="h-full py-2" />
         </li>
       </ul>
     </nav>
