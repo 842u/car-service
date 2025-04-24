@@ -32,14 +32,12 @@ export function DashboardNavMenuItem({
       )}
     >
       <LinkButton
-        className="item-active:bg-alpha-grey-200 item-active:hover:bg-alpha-grey-300 flex items-center justify-start gap-2 px-2 py-1"
+        className="item-active:bg-alpha-grey-200 item-active:hover:bg-alpha-grey-300 flex h-12 items-center justify-start gap-2 p-0"
         href={href}
         prefetch={prefetch}
         variant="transparent"
       >
-        <div className="aspect-square h-full stroke-2 md:shrink-0">
-          {children}
-        </div>
+        <div className="h-full md:shrink-0">{children}</div>
         <span className="text-alpha-grey-900 dark:text-alpha-grey-800 item-active:text-dark-500 item-active:dark:text-light-500 whitespace-nowrap transition-all md:translate-x-0 md:opacity-0 md:@[64px]:translate-x-1 md:@[64px]:opacity-100">
           {text}
         </span>
