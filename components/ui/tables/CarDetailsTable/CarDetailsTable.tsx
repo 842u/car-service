@@ -88,12 +88,20 @@ export function CarDetailsTable({ carData }: CarDetailsTableProps) {
             <caption className="sr-only">Car maintenance details table</caption>
             <tbody>
               <tr className="even:bg-alpha-grey-100">
-                <th className="text-left font-normal">Mileage [km]</th>
+                <th className="text-left font-normal">Mileage [km]:</th>
                 <td className="text-right">{carData?.mileage}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Insurance expiration:</th>
                 <td className="text-right">{carData?.insurance_expiration}</td>
+              </tr>
+              <tr className="even:bg-alpha-grey-100">
+                <th className="text-left font-normal">
+                  Technical inspection expiration:
+                </th>
+                <td className="text-right">
+                  {carData?.technical_inspection_expiration}
+                </td>
               </tr>
             </tbody>
           </table>

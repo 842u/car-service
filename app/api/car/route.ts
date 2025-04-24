@@ -75,9 +75,9 @@ export async function POST(request: NextRequest) {
     engine_capacity: carFormData.engineCapacity || undefined,
     fuel_type: carFormData.fuelType || undefined,
     insurance_expiration:
-      (carFormData.insuranceExpiration &&
-        carFormData.insuranceExpiration.toString()) ||
-      undefined,
+      carFormData.insuranceExpiration?.toString() || undefined,
+    technical_inspection_expiration:
+      carFormData.technicalInspectionExpiration?.toString() || undefined,
     license_plates: carFormData.licensePlates || undefined,
     mileage: carFormData.mileage || undefined,
     model: carFormData.model || undefined,
@@ -165,6 +165,8 @@ export async function PATCH(request: NextRequest) {
       mileage: carFormData.mileage || undefined,
       insurance_expiration:
         carFormData.insuranceExpiration?.toString() || undefined,
+      technical_inspection_expiration:
+        carFormData.technicalInspectionExpiration?.toString() || undefined,
     })
     .eq('id', carId || '')
     .select('id')

@@ -136,6 +136,19 @@ export const carInsuranceExpirationSchema = z.coerce
     MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE,
   );
 
+export const MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE = '1885-01-01';
+export const MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_MESSAGE =
+  'Hey! First car was made in 1885.';
+
+export const carTechnicalInspectionExpirationSchema = z.coerce
+  .date({
+    required_error: 'Technical inspection expiration date is required.',
+  })
+  .min(
+    new Date(MIN_CAR_INSURANCE_EXPIRATION_DATE),
+    MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE,
+  );
+
 export const MIN_CAR_PRODUCTION_YEAR_VALUE = 1885;
 export const MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE =
   'Hey! First car was made in 1885.';

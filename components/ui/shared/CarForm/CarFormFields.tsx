@@ -18,6 +18,7 @@ import {
   MIN_CAR_MODEL_LENGTH,
   MIN_CAR_NAME_LENGTH,
   MIN_CAR_PRODUCTION_YEAR_VALUE,
+  MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE,
 } from '@/schemas/zod/common';
 import {
   driveTypesMapping,
@@ -45,7 +46,7 @@ export function CarFormFields({
 }: CarFormFieldsProps) {
   return (
     <>
-      <Form.InputWrapper>
+      <Form.InputWrapper className="md:justify-center">
         <Form.InputImage
           control={control}
           errorMessage={errors.image?.message}
@@ -89,6 +90,17 @@ export function CarFormFields({
           type="text"
         />
         <Form.Input
+          errorMessage={errors.productionYear?.message}
+          label="Production Year"
+          max={MAX_CAR_PRODUCTION_YEAR_VALUE}
+          min={MIN_CAR_PRODUCTION_YEAR_VALUE}
+          name="productionYear"
+          placeholder="Enter production year ..."
+          register={register}
+          registerOptions={{ valueAsNumber: true }}
+          type="number"
+        />
+        <Form.Input
           errorMessage={errors.licensePlates?.message}
           label="License Plates"
           maxLength={MAX_CAR_LICENSE_PLATES_LENGTH}
@@ -110,6 +122,18 @@ export function CarFormFields({
         />
       </Form.InputWrapper>
       <Form.InputWrapper>
+        <div className="bg-alpha-grey-300 mb-4 h-[1px] w-full md:block lg:hidden" />
+        <Form.Input
+          errorMessage={errors.engineCapacity?.message}
+          label="Engine Capacity [cc]"
+          max={MAX_CAR_ENGINE_CAPACITY_VALUE}
+          min={MIN_CAR_ENGINE_CAPACITY_VALUE}
+          name="engineCapacity"
+          placeholder="Enter engine capacity ..."
+          register={register}
+          registerOptions={{ valueAsNumber: true }}
+          type="number"
+        />
         <Form.Select
           errorMessage={errors.fuelType?.message}
           label="Fuel Type"
@@ -125,43 +149,23 @@ export function CarFormFields({
           register={register}
         />
         <Form.Select
-          errorMessage={errors.transmissionType?.message}
-          label="Transmission Type"
-          name="transmissionType"
-          options={transmissionTypesMapping}
-          register={register}
-        />
-        <Form.Select
           errorMessage={errors.driveType?.message}
           label="Drive Type"
           name="driveType"
           options={driveTypesMapping}
           register={register}
         />
+        <Form.Select
+          errorMessage={errors.transmissionType?.message}
+          label="Transmission Type"
+          name="transmissionType"
+          options={transmissionTypesMapping}
+          register={register}
+        />
       </Form.InputWrapper>
+
       <Form.InputWrapper>
-        <Form.Input
-          errorMessage={errors.productionYear?.message}
-          label="Production Year"
-          max={MAX_CAR_PRODUCTION_YEAR_VALUE}
-          min={MIN_CAR_PRODUCTION_YEAR_VALUE}
-          name="productionYear"
-          placeholder="Enter production year ..."
-          register={register}
-          registerOptions={{ valueAsNumber: true }}
-          type="number"
-        />
-        <Form.Input
-          errorMessage={errors.engineCapacity?.message}
-          label="Engine Capacity [cc]"
-          max={MAX_CAR_ENGINE_CAPACITY_VALUE}
-          min={MIN_CAR_ENGINE_CAPACITY_VALUE}
-          name="engineCapacity"
-          placeholder="Enter engine capacity ..."
-          register={register}
-          registerOptions={{ valueAsNumber: true }}
-          type="number"
-        />
+        <div className="bg-alpha-grey-300 mb-4 h-[1px] w-full md:block lg:hidden" />
         <Form.Input
           errorMessage={errors.mileage?.message}
           label="Mileage [km]"
@@ -179,6 +183,15 @@ export function CarFormFields({
           min={MIN_CAR_INSURANCE_EXPIRATION_DATE}
           name="insuranceExpiration"
           placeholder="Enter insurance expiration date ..."
+          register={register}
+          type="date"
+        />
+        <Form.Input
+          errorMessage={errors.technicalInspectionExpiration?.message}
+          label="Technical Inspection Expiration Date"
+          min={MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE}
+          name="technicalInspectionExpiration"
+          placeholder="Enter technical inspection expiration date ..."
           register={register}
           type="date"
         />
