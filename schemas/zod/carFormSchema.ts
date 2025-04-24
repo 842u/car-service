@@ -11,6 +11,7 @@ import {
   carModelSchema,
   carNameSchema,
   carProductionYearSchema,
+  carTechnicalInspectionExpirationSchema,
   carTransmissionTypeSchema,
   carVinSchema,
   imageFileSchema,
@@ -33,6 +34,9 @@ export const carFormSchema = z.object({
   additionalFuelType: carFuelTypeSchema.nullable().or(z.literal('')),
   transmissionType: carTransmissionTypeSchema.nullable().or(z.literal('')),
   driveType: carDriveTypeSchema.nullable().or(z.literal('')),
+  technicalInspectionExpiration: carTechnicalInspectionExpirationSchema
+    .nullable()
+    .or(z.literal('')),
 });
 
 export type CarFormValues = z.infer<typeof carFormSchema>;
