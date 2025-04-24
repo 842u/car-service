@@ -39,21 +39,21 @@ export function DashboardNavMenu({
       />
       <ul className="grow">
         <DashboardNavMenuItem href="/dashboard" text="Dashboard">
-          <HomeIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
+          <HomeIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
-          <CarsIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
+          <CarsIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </DashboardNavMenuItem>
         <DashboardNavMenuItem href="/dashboard/account" text="Account">
-          <UserIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500" />
+          <UserIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </DashboardNavMenuItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
-        <li className="mx-2 my-4 h-10">
-          <ThemeButton className="w-full" />
+        <li className="mx-2 my-4 h-12">
+          <ThemeButton className="h-full w-full" />
         </li>
-        <li className="mx-2 my-4 h-10">
-          <SignOutLinkButton />
+        <li className="mx-2 my-4 h-12">
+          <SignOutLinkButton className="h-full py-2" />
         </li>
       </ul>
     </nav>
