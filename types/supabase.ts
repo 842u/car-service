@@ -169,6 +169,7 @@ export type Database = {
           engine_capacity?: number;
           mileage?: number;
           insurance_expiration?: string;
+          technical_inspection_expiration?: string;
         };
         Returns: string;
       };
