@@ -25,14 +25,12 @@ export function DashboardNavMenuItem({
     pathname === href || (pathname.startsWith(href) && href !== `/${segment}`);
 
   return (
-    <li
-      className={twMerge(
-        'm-2 rounded-md md:@container md:overflow-hidden',
-        isActive ? 'item-active' : '',
-      )}
-    >
+    <li>
       <LinkButton
-        className="item-active:bg-alpha-grey-200 item-active:hover:bg-alpha-grey-300 flex h-12 items-center justify-start gap-2 p-0"
+        className={twMerge(
+          'm-2 flex h-12 items-center justify-start gap-2 rounded-md p-0 md:@container md:overflow-hidden',
+          isActive && 'item-active bg-alpha-grey-200 hover:bg-alpha-grey-300',
+        )}
         href={href}
         prefetch={prefetch}
         variant="transparent"
