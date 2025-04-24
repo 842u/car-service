@@ -86,6 +86,9 @@ export function mapCarFormValuesToCarObject(
         insurance_expiration:
           formData.insuranceExpiration &&
           formData.insuranceExpiration.toISOString(),
+        technical_inspection_expiration:
+          formData.technicalInspectionExpiration &&
+          formData.technicalInspectionExpiration.toISOString(),
         production_year: formData.productionYear,
         transmission_type: formData.transmissionType || null,
         vin: formData.vin,
@@ -106,6 +109,9 @@ export function mapCarFormValuesToCarObject(
         insurance_expiration:
           formData.insuranceExpiration &&
           parseDate(formData.insuranceExpiration),
+        technical_inspection_expiration:
+          formData.technicalInspectionExpiration &&
+          parseDate(formData.technicalInspectionExpiration),
         production_year: formData.productionYear,
         transmission_type: formData.transmissionType || null,
         vin: formData.vin,
