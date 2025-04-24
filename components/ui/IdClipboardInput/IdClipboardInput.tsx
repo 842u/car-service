@@ -37,7 +37,7 @@ export function IdClipboardInput({ id }: IdClipboardInputProps) {
       readOnly
       className={twMerge(
         inputVariants['default'],
-        'w-xs cursor-pointer overflow-x-auto text-center',
+        'selection:bg-accent-500 w-xs cursor-pointer overflow-x-auto text-center md:w-72 md:text-xs',
       )}
       defaultValue={id}
       placeholder="..."
