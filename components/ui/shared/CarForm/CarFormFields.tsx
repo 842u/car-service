@@ -18,6 +18,7 @@ import {
   MIN_CAR_MODEL_LENGTH,
   MIN_CAR_NAME_LENGTH,
   MIN_CAR_PRODUCTION_YEAR_VALUE,
+  MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE,
 } from '@/schemas/zod/common';
 import {
   driveTypesMapping,
@@ -179,6 +180,15 @@ export function CarFormFields({
           min={MIN_CAR_INSURANCE_EXPIRATION_DATE}
           name="insuranceExpiration"
           placeholder="Enter insurance expiration date ..."
+          register={register}
+          type="date"
+        />
+        <Form.Input
+          errorMessage={errors.technicalInspectionExpiration?.message}
+          label="Technical Inspection Expiration Date"
+          min={MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE}
+          name="technicalInspectionExpiration"
+          placeholder="Enter technical inspection expiration date ..."
           register={register}
           type="date"
         />
