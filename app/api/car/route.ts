@@ -165,6 +165,8 @@ export async function PATCH(request: NextRequest) {
       mileage: carFormData.mileage || undefined,
       insurance_expiration:
         carFormData.insuranceExpiration?.toString() || undefined,
+      technical_inspection_expiration:
+        carFormData.insuranceExpiration?.toString() || undefined,
     })
     .eq('id', carId || '')
     .select('id')
