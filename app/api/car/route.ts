@@ -152,24 +152,19 @@ export async function PATCH(request: NextRequest) {
     .from('cars')
     .update({
       custom_name: carFormData.name,
-      brand: carFormData.brand,
-      model: carFormData.model,
-      production_year: carFormData.productionYear,
-      engine_capacity: carFormData.engineCapacity,
-      fuel_type: carFormData.fuelType !== '' ? carFormData.fuelType : null,
-      additional_fuel_type:
-        carFormData.additionalFuelType !== ''
-          ? carFormData.additionalFuelType
-          : null,
-      drive_type: carFormData.driveType !== '' ? carFormData.driveType : null,
-      transmission_type:
-        carFormData.transmissionType !== ''
-          ? carFormData.transmissionType
-          : null,
-      license_plates: carFormData.licensePlates,
-      vin: carFormData.vin,
-      mileage: carFormData.mileage,
-      insurance_expiration: carFormData.insuranceExpiration?.toString(),
+      brand: carFormData.brand || undefined,
+      model: carFormData.model || undefined,
+      production_year: carFormData.productionYear || undefined,
+      engine_capacity: carFormData.engineCapacity || undefined,
+      fuel_type: carFormData.fuelType || undefined,
+      additional_fuel_type: carFormData.additionalFuelType || undefined,
+      drive_type: carFormData.driveType || undefined,
+      transmission_type: carFormData.transmissionType || undefined,
+      license_plates: carFormData.licensePlates || undefined,
+      vin: carFormData.vin || undefined,
+      mileage: carFormData.mileage || undefined,
+      insurance_expiration:
+        carFormData.insuranceExpiration?.toString() || undefined,
     })
     .eq('id', carId || '')
     .select('id')
