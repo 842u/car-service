@@ -46,7 +46,7 @@ export function CarFormFields({
 }: CarFormFieldsProps) {
   return (
     <>
-      <Form.InputWrapper>
+      <Form.InputWrapper className="md:justify-center">
         <Form.InputImage
           control={control}
           errorMessage={errors.image?.message}
@@ -122,6 +122,7 @@ export function CarFormFields({
         />
       </Form.InputWrapper>
       <Form.InputWrapper>
+        <div className="bg-alpha-grey-300 mb-4 h-[1px] w-full md:block lg:hidden" />
         <Form.Input
           errorMessage={errors.engineCapacity?.message}
           label="Engine Capacity [cc]"
@@ -162,7 +163,9 @@ export function CarFormFields({
           register={register}
         />
       </Form.InputWrapper>
+
       <Form.InputWrapper>
+        <div className="bg-alpha-grey-300 mb-4 h-[1px] w-full md:block lg:hidden" />
         <Form.Input
           errorMessage={errors.mileage?.message}
           label="Mileage [km]"
