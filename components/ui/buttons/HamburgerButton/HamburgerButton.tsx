@@ -5,12 +5,12 @@ import { Button } from '../../shared/base/Button/Button';
 
 type HamburgerButtonProps = ComponentProps<'button'> & {
   className?: string;
-  isActive: boolean;
+  isActive?: boolean;
 };
 
 export function HamburgerButton({
-  isActive,
   className,
+  isActive = false,
   ...props
 }: HamburgerButtonProps) {
   const outerBarClass =
