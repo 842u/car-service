@@ -12,7 +12,7 @@ type BrandLabelPops = {
 export function BrandLabel({ className }: BrandLabelPops) {
   return (
     <LinkButton
-      aria-label="landing page"
+      aria-label="Car Service - Home"
       className={twMerge(
         'p-0 px-1 md:flex md:flex-row md:items-center md:gap-3',
         className,
