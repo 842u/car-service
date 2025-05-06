@@ -21,8 +21,8 @@ export function useFormInputImage<T extends FieldValues>({
 
   useEffect(() => {
     if (!field.value) {
-      if (inputElementRef.current?.files) {
-        inputElementRef.current.files = new DataTransfer().files;
+      if (inputElementRef.current) {
+        inputElementRef.current.files = null;
       }
       field.onChange(null);
       onChange && onChange(null);
