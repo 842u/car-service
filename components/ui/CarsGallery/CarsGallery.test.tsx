@@ -11,15 +11,6 @@ jest.mock('../../../utils/supabase/tables/cars.ts', () => ({
   getCarsByPage: jest.fn(),
 }));
 
-Object.defineProperty(window, 'IntersectionObserver', {
-  writable: true,
-  value: jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
-  })),
-});
-
 function TestCarsGallery() {
   return (
     <TanStackQueryProvider>
