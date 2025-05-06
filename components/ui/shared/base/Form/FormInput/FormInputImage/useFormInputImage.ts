@@ -22,10 +22,10 @@ export function useFormInputImage<T extends FieldValues>({
   useEffect(() => {
     if (!field.value) {
       if (inputElementRef.current) {
-        inputElementRef.current.files = null;
+        inputElementRef.current.setAttribute('files', 'null');
       }
-      field.onChange(null);
       onChange && onChange(null);
+      field.onChange(null);
     }
   }, [field, onChange]);
 
