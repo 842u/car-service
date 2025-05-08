@@ -49,6 +49,12 @@ function addCarToInfiniteQueryData(
 }
 
 function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
+  if (!data)
+    return {
+      pages: [{ data: [null], nextPageParam: 0 }],
+      pageParams: [0],
+    } satisfies CarsInfiniteQueryData;
+
   const deepCopy: CarsInfiniteQueryData = {
     pages: data.pages.map((page) => ({
       data: page.data.map((car) => car && { ...car }),
