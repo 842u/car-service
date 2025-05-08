@@ -2,10 +2,6 @@ import { render, screen } from '@testing-library/react';
 
 import SignInPage from './page';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({ router: {} }),
-}));
-
 describe('SignInPage', () => {
   it('should render heading that indicates signing in', () => {
     render(<SignInPage />);

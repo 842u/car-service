@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react';
 import { SPINNER_TEST_ID } from '@/components/decorative/Spinner/Spinner';
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 import { Car } from '@/types';
+import { getCarsByPage } from '@/utils/supabase/tables/cars';
 
-import { getCarsByPage } from '../../../utils/supabase/tables/cars';
 import { CarsGallery } from './CarsGallery';
 
-jest.mock('../../../utils/supabase/tables/cars.ts', () => ({
+jest.mock('@/utils/supabase/tables/cars.ts', () => ({
   getCarsByPage: jest.fn(),
 }));
 

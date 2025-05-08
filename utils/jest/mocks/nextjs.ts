@@ -1,3 +1,3 @@
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({ router: {} }),
+  useRouter: jest.fn(() => ({})),
 }));
