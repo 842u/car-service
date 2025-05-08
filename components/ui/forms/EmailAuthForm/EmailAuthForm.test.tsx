@@ -18,9 +18,6 @@ jest.mock('@supabase/ssr', () => ({
 const mockFetch = jest.fn();
 window.fetch = mockFetch;
 
-window.crypto.randomUUID = () =>
-  `${Date.now()}-${Math.random()}-some-random-uuid`;
-
 describe('EmailAuthForm', () => {
   it('should render email authentication form', () => {
     render(<EmailAuthForm type="sign-in" />);

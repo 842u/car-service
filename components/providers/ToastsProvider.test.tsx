@@ -6,8 +6,6 @@ import { ToastType } from '@/types';
 
 import { ToastsProvider } from './ToastsProvider';
 
-crypto.randomUUID = jest.fn();
-
 const TOAST_TEST_ID = 'toast';
 const TOAST_MESSAGE = 'test message';
 const TOAST_TYPE: ToastType = 'info';
@@ -32,7 +30,6 @@ function TestComponent() {
 
 describe('ToastsProvider', () => {
   it('initially should have no toasts', () => {
-    (crypto.randomUUID as jest.Mock).mockReturnValueOnce('test-id');
     render(
       <ToastsProvider>
         <TestComponent />
@@ -46,7 +43,6 @@ describe('ToastsProvider', () => {
 
   it('should add toast on addToast call', async () => {
     const user = userEvent.setup();
-    (crypto.randomUUID as jest.Mock).mockReturnValueOnce('test-id');
     render(
       <ToastsProvider>
         <TestComponent />
@@ -62,7 +58,6 @@ describe('ToastsProvider', () => {
 
   it('should remove toast on removeToast call', async () => {
     const user = userEvent.setup();
-    (crypto.randomUUID as jest.Mock).mockReturnValueOnce('test-id');
     render(
       <ToastsProvider>
         <TestComponent />
