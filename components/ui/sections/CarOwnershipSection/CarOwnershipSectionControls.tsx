@@ -19,6 +19,9 @@ import {
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../../shared/IconButton/IconButton';
 
+export const CAR_OWNERSHIP_SECTION_CONTROLS_TEST_ID =
+  'car ownership section test id';
+
 type CarOwnershipSectionControlsProps = {
   carId: string;
   removeCarOwnershipFormMethods: UseFormReturn<CarOwnershipDeleteFormValues>;
@@ -36,7 +39,10 @@ export function CarOwnershipSectionControls({
   const grantPrimaryOwnershipFormModalRef = useRef<DialogModalRef>(null);
 
   return (
-    <DashboardSection.Controls className="mt-4">
+    <DashboardSection.Controls
+      className="mt-4"
+      data-testid={CAR_OWNERSHIP_SECTION_CONTROLS_TEST_ID}
+    >
       <IconButton
         className="group"
         disabled={!isCurrentUserPrimaryOwner}
