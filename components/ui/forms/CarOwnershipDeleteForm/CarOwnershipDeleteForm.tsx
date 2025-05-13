@@ -7,6 +7,9 @@ import { Button } from '../../shared/base/Button/Button';
 import { Form } from '../../shared/base/Form/Form';
 import { useCarOwnershipDeleteForm } from './useCarOwnershipDeleteForm';
 
+export const CAR_OWNERSHIP_DELETE_FORM_TEST_ID =
+  'car ownership delete form test id';
+
 export type CarOwnershipDeleteFormRef = {
   reset: UseFormReset<CarOwnershipDeleteFormValues>;
 };
@@ -40,7 +43,12 @@ export function CarOwnershipDeleteForm({
     });
 
   return (
-    <Form className="gap-4" variant="raw" onSubmit={handleFormSubmit}>
+    <Form
+      className="gap-4"
+      data-testid={CAR_OWNERSHIP_DELETE_FORM_TEST_ID}
+      variant="raw"
+      onSubmit={handleFormSubmit}
+    >
       {isCurrentUserPrimaryOwner && (
         <p>Are you sure you want to remove ownership from selected users?</p>
       )}

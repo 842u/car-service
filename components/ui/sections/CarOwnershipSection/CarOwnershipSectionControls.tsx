@@ -71,7 +71,7 @@ export function CarOwnershipSectionControls({
           !removeCarOwnershipFormMethods.formState.isDirty &&
           !removeCarOwnershipFormMethods.formState.isSubmitting
         }
-        title="remove selected owners"
+        title="remove ownerships"
         variant="accent"
         onClick={() => removeCarOwnershipFormModalRef.current?.showModal()}
       >
@@ -99,7 +99,7 @@ export function CarOwnershipSectionControls({
       <IconButton
         className="group"
         disabled={!isCurrentUserPrimaryOwner}
-        title="add owner"
+        title="add ownership"
         variant="accent"
         onClick={() => newCarOwnerFormModalRef.current?.showModal()}
       >

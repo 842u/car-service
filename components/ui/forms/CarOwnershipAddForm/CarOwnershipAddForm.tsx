@@ -2,6 +2,8 @@ import { Button } from '../../shared/base/Button/Button';
 import { Form } from '../../shared/base/Form/Form';
 import { useCarOwnershipAddForm } from './useCarOwnershipAddForm';
 
+export const CAR_OWNERSHIP_ADD_FORM_TEST_ID = 'car ownership add form test id';
+
 export type CarOwnershipAddFormProps = {
   carId: string;
   onSubmit?: () => void;
@@ -22,7 +24,12 @@ export function CarOwnershipAddForm({
   } = useCarOwnershipAddForm({ carId, onSubmit });
 
   return (
-    <Form className="gap-4" variant="raw" onSubmit={handleFormSubmit}>
+    <Form
+      className="gap-4"
+      data-testid={CAR_OWNERSHIP_ADD_FORM_TEST_ID}
+      variant="raw"
+      onSubmit={handleFormSubmit}
+    >
       <Form.InputWrapper>
         <Form.Input
           required
