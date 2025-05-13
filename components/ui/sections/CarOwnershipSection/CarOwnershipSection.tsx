@@ -16,7 +16,7 @@ type CarOwnershipSectionProps = {
   isCurrentUserPrimaryOwner: boolean;
 };
 
-const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
+export const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
   ownersIds: [],
 };
 
