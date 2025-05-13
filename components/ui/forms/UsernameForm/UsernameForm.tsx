@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/shared/base/Button/Button';
 import { Form } from '../../shared/base/Form/Form';
 import { useUsernameForm } from './useUsernameForm';
 
+export const USERNAME_FORM_TEST_ID = 'username form test id';
+
 type UsernameFormProps = {
   username?: string | null;
 };
@@ -20,7 +22,11 @@ export function UsernameForm({ username }: UsernameFormProps) {
   } = useUsernameForm({ username });
 
   return (
-    <Form variant="raw" onSubmit={handleFormSubmit}>
+    <Form
+      data-testid={USERNAME_FORM_TEST_ID}
+      variant="raw"
+      onSubmit={handleFormSubmit}
+    >
       <Form.InputWrapper>
         <Form.Input
           errorMessage={errors.username?.message}
