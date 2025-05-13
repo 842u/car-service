@@ -5,7 +5,7 @@ import { useCarEditForm } from './useCarEditForm';
 
 export type CarEditFormProps = {
   carId: string;
-  carData: Car | undefined;
+  carData?: Car;
   onSubmit?: () => void;
 };
 

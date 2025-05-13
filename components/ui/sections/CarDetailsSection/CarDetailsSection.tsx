@@ -14,8 +14,8 @@ import { CarDetailsTable } from '../../tables/CarDetailsTable/CarDetailsTable';
 
 export type CarDetailsSectionProps = {
   carId: string;
-  carData: Car | undefined;
   isCurrentUserPrimaryOwner: boolean;
+  carData?: Car;
 };
 
 export function CarDetailsSection({
