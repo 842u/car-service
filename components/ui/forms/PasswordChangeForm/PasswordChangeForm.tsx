@@ -3,6 +3,8 @@
 import { Form } from '../../shared/base/Form/Form';
 import { usePasswordChangeForm } from './usePasswordChangeForm';
 
+export const PASSWORD_CHANGE_FORM_TEST_ID = 'password change form test id';
+
 export function PasswordChangeForm() {
   const { handleFormSubmit, register, errors, isValid, isSubmitting } =
     usePasswordChangeForm();
@@ -11,6 +13,7 @@ export function PasswordChangeForm() {
     <Form
       aria-label="password change"
       className="flex flex-col"
+      data-testid={PASSWORD_CHANGE_FORM_TEST_ID}
       variant="raw"
       onSubmit={handleFormSubmit}
     >
