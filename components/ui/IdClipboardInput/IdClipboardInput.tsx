@@ -35,6 +35,7 @@ export function IdClipboardInput({ id }: IdClipboardInputProps) {
   return (
     <input
       readOnly
+      aria-label="current user ID"
       className={twMerge(
         inputVariants['default'],
         'selection:bg-accent-500 w-xs cursor-pointer overflow-x-auto text-center md:w-72 md:text-xs',
