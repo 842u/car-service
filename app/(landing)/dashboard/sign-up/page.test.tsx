@@ -2,10 +2,6 @@ import { render, screen } from '@testing-library/react';
 
 import SignUpPage from './page';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({ router: {} }),
-}));
-
 describe('SignUpPage', () => {
   it('should render heading that indicates account creation', () => {
     render(<SignUpPage />);

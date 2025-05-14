@@ -5,12 +5,12 @@ import { Button } from '../../shared/base/Button/Button';
 
 type HamburgerButtonProps = ComponentProps<'button'> & {
   className?: string;
-  isActive: boolean;
+  isActive?: boolean;
 };
 
 export function HamburgerButton({
-  isActive,
   className,
+  isActive = false,
   ...props
 }: HamburgerButtonProps) {
   const outerBarClass =
@@ -20,40 +20,39 @@ export function HamburgerButton({
 
   return (
     <Button
-      className={twMerge(
-        'flex aspect-square h-full flex-col justify-between px-3 py-4',
-        className,
-      )}
+      className={twMerge('aspect-square h-full px-3 py-4', className)}
       variant="transparent"
       {...props}
     >
       <span className="sr-only">toggle navigation menu</span>
-      <div
-        className={twJoin(
-          outerBarClass,
-          isActive ? 'opacity-0' : 'opacity-100',
-        )}
-      />
-      <div className="relative h-0.5 w-full">
+      <div aria-hidden className="flex h-full w-full flex-col justify-between">
         <div
           className={twJoin(
-            middleBarClass,
-            isActive ? 'rotate-45' : 'rotate-0',
+            outerBarClass,
+            isActive ? 'opacity-0' : 'opacity-100',
           )}
         />
+        <div className="relative h-0.5 w-full">
+          <div
+            className={twJoin(
+              middleBarClass,
+              isActive ? 'rotate-45' : 'rotate-0',
+            )}
+          />
+          <div
+            className={twJoin(
+              middleBarClass,
+              isActive ? '-rotate-45' : 'rotate-0',
+            )}
+          />
+        </div>
         <div
           className={twJoin(
-            middleBarClass,
-            isActive ? '-rotate-45' : 'rotate-0',
+            outerBarClass,
+            isActive ? 'opacity-0' : 'opacity-100',
           )}
         />
       </div>
-      <div
-        className={twJoin(
-          outerBarClass,
-          isActive ? 'opacity-0' : 'opacity-100',
-        )}
-      />
     </Button>
   );
 }

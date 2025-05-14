@@ -13,7 +13,7 @@ import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
-const defaultAvatarFormValues: AvatarFormValues = {
+export const defaultAvatarFormValues: AvatarFormValues = {
   image: null,
 };
 

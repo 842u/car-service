@@ -5,7 +5,7 @@ import { useCarEditForm } from './useCarEditForm';
 
 export type CarEditFormProps = {
   carId: string;
-  carData: Car | undefined;
+  carData?: Car;
   onSubmit?: () => void;
 };
 
@@ -13,11 +13,6 @@ export function CarEditForm({ carId, carData, onSubmit }: CarEditFormProps) {
   const { handleFormSubmit, carFormRef } = useCarEditForm({ carId, onSubmit });
 
   return (
-    <CarForm
-      ref={carFormRef}
-      carData={carData}
-      title="Edit a car"
-      onSubmit={handleFormSubmit}
-    />
+    <CarForm ref={carFormRef} carData={carData} onSubmit={handleFormSubmit} />
   );
 }

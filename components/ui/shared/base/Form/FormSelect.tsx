@@ -13,10 +13,10 @@ import { FormInputErrorText } from './FormInput/FormInputErrorText';
 import { FormInputLabelText } from './FormInput/FormInputLabelText';
 
 type FormSelectProps<T extends FieldValues> = {
-  register: UseFormRegister<T>;
   label: string;
   name: Path<T>;
   options: Record<string, string>;
+  register?: UseFormRegister<T>;
   className?: string;
   variant?: InputVariants;
   registerOptions?: RegisterOptions<T>;
@@ -49,7 +49,7 @@ export function FormSelect<T extends FieldValues>({
           className,
         )}
         id={name}
-        {...register(name, registerOptions)}
+        {...(register ? register(name, registerOptions) : {})}
       >
         {hasEmptyOption && (
           <option className="bg-light-500 dark:bg-dark-500" value={undefined} />

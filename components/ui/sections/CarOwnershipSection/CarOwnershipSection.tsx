@@ -10,13 +10,13 @@ import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 
 type CarOwnershipSectionProps = {
   carId: string;
-  carOwnershipData: CarOwnership[] | undefined;
-  ownersProfilesData: UseQueryResult<Profile, Error>[];
-  sessionProfileData: Profile | undefined | null;
   isCurrentUserPrimaryOwner: boolean;
+  ownersProfilesData?: UseQueryResult<Profile, Error>[];
+  sessionProfileData?: Profile | null;
+  carOwnershipData?: CarOwnership[];
 };
 
-const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
+export const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
   ownersIds: [],
 };
 

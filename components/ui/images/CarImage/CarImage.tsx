@@ -16,9 +16,7 @@ export function CarImage({ src, className }: CarImageProps) {
         className,
       )}
     >
-      {src && (
-        <Image fill alt="new car image" className="object-cover" src={src} />
-      )}
+      {src && <Image fill alt="car image" className="object-cover" src={src} />}
 
       {!src && (
         <BrandFullIcon className="stroke-alpha-grey-600 stroke-[0.1] object-cover" />

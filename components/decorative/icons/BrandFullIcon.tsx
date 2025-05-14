@@ -1,9 +1,12 @@
 import { SvgA11y, SvgA11yProps } from '../SvgA11y';
 
+export const BRAND_FULL_ICON_TEST_ID = 'brand full icon';
+
 export function BrandFullIcon({ ...props }: SvgA11yProps) {
   return (
     <SvgA11y
       {...props}
+      data-testid={BRAND_FULL_ICON_TEST_ID}
       strokeLinecap="round"
       strokeLinejoin="round"
       viewBox="0 0 50 50"

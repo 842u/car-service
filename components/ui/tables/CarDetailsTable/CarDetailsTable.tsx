@@ -1,10 +1,15 @@
 import { CarDetailsSectionProps } from '../../sections/CarDetailsSection/CarDetailsSection';
 
+export const CAR_DETAILS_TABLE_TEST_ID = 'car details table test id';
+
 type CarDetailsTableProps = Pick<CarDetailsSectionProps, 'carData'>;
 
 export function CarDetailsTable({ carData }: CarDetailsTableProps) {
   return (
-    <div className="my-4 overflow-hidden md:flex md:flex-wrap md:gap-2">
+    <div
+      className="my-4 overflow-hidden md:flex md:flex-wrap md:gap-2"
+      data-testid={CAR_DETAILS_TABLE_TEST_ID}
+    >
       <section className="mb-5 md:m-0 md:w-1/3 md:grow">
         <h3 className="my-1 text-base">Basic</h3>
         <div className="border-alpha-grey-300 overflow-hidden rounded-lg border p-2">

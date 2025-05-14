@@ -8,9 +8,9 @@ import { CarOwnershipTableHead } from './CarOwnershipTableHead';
 import { CarOwnershipTableRow } from './CarOwnershipTableRow';
 
 type CarOwnershipTableProps = {
-  ownersProfilesData: UseQueryResult<Profile, Error>[];
-  register?: UseFormRegister<CarOwnershipDeleteFormValues>;
   isCurrentUserPrimaryOwner: boolean;
+  ownersProfilesData?: UseQueryResult<Profile, Error>[];
+  register?: UseFormRegister<CarOwnershipDeleteFormValues>;
   sessionProfileData?: Profile | null;
   carOwnershipData?: CarOwnership[];
 };
@@ -24,7 +24,10 @@ export function CarOwnershipTable({
 }: CarOwnershipTableProps) {
   return (
     <div className="border-alpha-grey-300 overflow-hidden rounded-lg border">
-      <table className="w-full border-collapse">
+      <table
+        aria-label="car ownership table"
+        className="w-full border-collapse"
+      >
         <CarOwnershipTableHead />
         <tbody>
           <CarOwnershipTableRow
@@ -33,7 +36,7 @@ export function CarOwnershipTable({
             profileData={sessionProfileData}
             register={register}
           />
-          {ownersProfilesData.map(
+          {ownersProfilesData?.map(
             (owner) =>
               owner.data && (
                 <CarOwnershipTableRow

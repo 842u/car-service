@@ -38,14 +38,14 @@ describe('DashboardNavBar', () => {
     await waitFor(() => expect(dashboardMenu).toBeInTheDocument());
   });
 
-  it('should render a brand logo link to landing page', async () => {
+  it('should render a brand logo link to home page', async () => {
     render(
       <TanStackQueryProvider>
         <DashboardNavBar />
       </TanStackQueryProvider>,
     );
 
-    const landingPageLink = screen.getByRole('link', { name: /landing page/i });
+    const landingPageLink = screen.getByRole('link', { name: /home/i });
 
     await waitFor(() => expect(landingPageLink).toBeInTheDocument());
   });

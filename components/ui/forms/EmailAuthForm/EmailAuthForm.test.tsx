@@ -7,19 +7,12 @@ import { SPINNER_TEST_ID } from '../../../decorative/Spinner/Spinner';
 import { Toaster } from '../../Toaster/Toaster';
 import EmailAuthForm, { EmailAuthFormType } from './EmailAuthForm';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({}),
-}));
-
 jest.mock('@supabase/ssr', () => ({
   createBrowserClient: () => ({}),
 }));
 
 const mockFetch = jest.fn();
 window.fetch = mockFetch;
-
-window.crypto.randomUUID = () =>
-  `${Date.now()}-${Math.random()}-some-random-uuid`;
 
 describe('EmailAuthForm', () => {
   it('should render email authentication form', () => {

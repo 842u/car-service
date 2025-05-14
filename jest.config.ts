@@ -14,7 +14,7 @@ const config: Config = {
 
   coverageProvider: 'v8',
 
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 
   reporters: ['default', 'github-actions'],
 
@@ -30,6 +30,10 @@ const config: Config = {
   ],
 
   testEnvironment: 'jsdom',
+
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+  },
 };
 
 export default createJestConfig(config);

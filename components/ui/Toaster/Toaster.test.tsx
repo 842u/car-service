@@ -14,10 +14,6 @@ import { Toaster } from './Toaster';
 const TEST_TOAST_MESSAGE = 'test toast';
 const TOAST_LIFETIME = 500;
 
-crypto.randomUUID = jest.fn(
-  () => `${Date.now()}-${Math.random()}`,
-) as jest.Mock;
-
 function ToastAdder() {
   const { addToast } = useToasts();
 

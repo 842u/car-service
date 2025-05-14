@@ -14,10 +14,10 @@ import { FormInputErrorText } from './FormInputErrorText';
 import { FormInputLabelText } from './FormInputLabelText';
 
 type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
-  register: UseFormRegister<T>;
   label: string;
   name: Path<T>;
   type: Exclude<HTMLInputTypeAttribute, 'password'>;
+  register?: UseFormRegister<T>;
   variant?: InputVariants;
   required?: boolean;
   registerOptions?: RegisterOptions<T>;
@@ -53,7 +53,7 @@ export function FormInput<T extends FieldValues>({
         placeholder={placeholder}
         type={type}
         {...props}
-        {...register(name, registerOptions)}
+        {...(register ? register(name, registerOptions) : {})}
       />
       {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
     </label>

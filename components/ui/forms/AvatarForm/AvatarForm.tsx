@@ -7,6 +7,8 @@ import { Button } from '../../shared/base/Button/Button';
 import { Form } from '../../shared/base/Form/Form';
 import { useAvatarForm } from './useAvatarForm';
 
+export const AVATAR_FORM_TEST_ID = 'avatar form test id';
+
 type AvatarFormProps = {
   avatarUrl?: string | null;
 };
@@ -25,7 +27,11 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
   } = useAvatarForm();
 
   return (
-    <Form variant="raw" onSubmit={handleFormSubmit}>
+    <Form
+      data-testid={AVATAR_FORM_TEST_ID}
+      variant="raw"
+      onSubmit={handleFormSubmit}
+    >
       <Form.InputWrapper>
         <Form.InputImage<AvatarFormValues>
           control={control}
