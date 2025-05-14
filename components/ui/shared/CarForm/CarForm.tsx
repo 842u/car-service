@@ -4,7 +4,7 @@ import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
 
 import { Button } from '../base/Button/Button';
-import { Form } from '../base/Form/Form';
+import { Form, FormProps } from '../base/Form/Form';
 import { CarFormFields } from './CarFormFields';
 import { useCarForm } from './useCarForm';
 
@@ -12,13 +12,13 @@ export type CarFormRef = {
   inputImageUrl: string | null;
 };
 
-export type CarFormProps = {
-  ref: Ref<CarFormRef>;
-  onSubmit: (carFormData: CarFormValues) => void;
+export type CarFormProps = Omit<FormProps, 'ref' | 'onSubmit'> & {
+  ref?: Ref<CarFormRef>;
+  onSubmit?: (carFormData: CarFormValues) => void;
   carData?: Car;
 };
 
-export function CarForm({ ref, onSubmit, carData }: CarFormProps) {
+export function CarForm({ ref, onSubmit, carData, ...props }: CarFormProps) {
   const {
     inputImageUrl,
     handleFormSubmit,
@@ -40,6 +40,7 @@ export function CarForm({ ref, onSubmit, carData }: CarFormProps) {
       className="md:w-fit md:flex-row md:flex-wrap md:justify-evenly"
       variant="raw"
       onSubmit={handleFormSubmit}
+      {...props}
     >
       <CarFormFields
         control={control}

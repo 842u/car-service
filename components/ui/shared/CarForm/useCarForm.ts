@@ -77,7 +77,9 @@ export function useCarForm({
     setInputImageUrl((file && URL.createObjectURL(file)) || null);
   };
 
-  const handleFormSubmit = handleSubmit(onSubmit);
+  const handleFormSubmit = handleSubmit(
+    (formValues: CarFormValues) => onSubmit && onSubmit(formValues),
+  );
 
   const handleFormReset = () => reset();
 

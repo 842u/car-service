@@ -12,7 +12,7 @@ import { FormInputPassword } from './FormInput/FormInputPassword';
 import { FormInputWrapper } from './FormInput/FormInputWrapper';
 import { FormSelect } from './FormSelect';
 
-type FormProps = ComponentProps<'form'> & {
+export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
 };
 
