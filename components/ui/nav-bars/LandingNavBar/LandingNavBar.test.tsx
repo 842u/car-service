@@ -3,10 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { LandingNavBar } from './LandingNavBar';
 
 describe('LandingNavBar', () => {
-  it('should render a brand logo with a link to a landing page', () => {
+  it('should render a brand logo with a link to a home page', () => {
     render(<LandingNavBar />);
 
-    const landingPageLink = screen.getByRole('link', { name: /landing page/i });
+    const landingPageLink = screen.getByRole('link', { name: /home/i });
 
     expect(landingPageLink).toBeInTheDocument();
   });
