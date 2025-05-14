@@ -20,9 +20,9 @@ type FormInputPasswordProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,
   'type'
 > & {
-  register: UseFormRegister<T>;
   label: string;
   name: Path<T>;
+  register?: UseFormRegister<T>;
   variant?: InputVariants;
   required?: boolean;
   registerOptions?: RegisterOptions<T>;
@@ -66,7 +66,7 @@ export function FormInputPassword<T extends FieldValues>({
           placeholder={placeholder}
           type={passwordVisible ? 'text' : 'password'}
           {...props}
-          {...register(name, registerOptions)}
+          {...(register ? register(name, registerOptions) : {})}
         />
         <div className="inline-block h-full p-1">
           <VisibilityButton
