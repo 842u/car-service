@@ -13,7 +13,6 @@ export type CarFormRef = {
 };
 
 export type CarFormProps = {
-  title: string;
   ref: Ref<CarFormRef>;
   onSubmit: (carFormData: CarFormValues) => void;
   carData?: Car;

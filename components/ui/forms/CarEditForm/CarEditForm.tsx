@@ -13,11 +13,6 @@ export function CarEditForm({ carId, carData, onSubmit }: CarEditFormProps) {
   const { handleFormSubmit, carFormRef } = useCarEditForm({ carId, onSubmit });
 
   return (
-    <CarForm
-      ref={carFormRef}
-      carData={carData}
-      title="Edit a car"
-      onSubmit={handleFormSubmit}
-    />
+    <CarForm ref={carFormRef} carData={carData} onSubmit={handleFormSubmit} />
   );
 }

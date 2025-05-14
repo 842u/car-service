@@ -8,7 +8,5 @@ type CarAddFormProps = {
 export function CarAddForm({ onSubmit }: CarAddFormProps) {
   const { handleFormSubmit, carFormRef } = useCarAddForm({ onSubmit });
 
-  return (
-    <CarForm ref={carFormRef} title="Add a car" onSubmit={handleFormSubmit} />
-  );
+  return <CarForm ref={carFormRef} onSubmit={handleFormSubmit} />;
 }
