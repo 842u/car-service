@@ -13,6 +13,8 @@ import { FormInputErrorText } from '../FormInputErrorText';
 import { FormInputLabelText } from '../FormInputLabelText';
 import { useFormInputImage } from './useFormInputImage';
 
+export const FORM_INPUT_IMAGE_TEST_ID = 'form input image test id';
+
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
@@ -73,6 +75,7 @@ export function FormInputImage<T extends FieldValues>({
           ref={inputElementRef}
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
           className="sr-only absolute"
+          data-testid={FORM_INPUT_IMAGE_TEST_ID}
           id={name}
           name={name}
           type="file"
