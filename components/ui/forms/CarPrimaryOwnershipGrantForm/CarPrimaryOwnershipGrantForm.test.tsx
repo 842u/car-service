@@ -145,8 +145,8 @@ describe('CarPrimaryOwnershipGrantForm', () => {
     await user.click(saveButton);
 
     expect(updateCarPrimaryOwnershipByUserId).toHaveBeenCalledWith(
-      MOCK_USER_ID,
       MOCK_CAR_ID,
+      MOCK_USER_ID,
     );
   });
 });
