@@ -42,7 +42,7 @@ export function useCarPrimaryOwnershipGrantForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (newCarOwnerFormData: CarPrimaryOwnershipGrantFormValues) =>
-      updateCarPrimaryOwnershipByUserId(newCarOwnerFormData.userId, carId),
+      updateCarPrimaryOwnershipByUserId(carId, newCarOwnerFormData.userId),
     onMutate: (newCarOwnerFormData: CarPrimaryOwnershipGrantFormValues) =>
       carsOwnershipsUpdateOnMutate(
         queryClient,
