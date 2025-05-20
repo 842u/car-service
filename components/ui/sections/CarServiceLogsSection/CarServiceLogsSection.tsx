@@ -4,6 +4,7 @@ import { useRef } from 'react';
 
 import { BookIcon } from '@/components/decorative/icons/BookIcon';
 
+import { CarServiceLogAddForm } from '../../forms/CarServiceLogAddForm/CarServiceLogAddForm';
 import {
   DialogModal,
   DialogModalRef,
@@ -28,7 +29,7 @@ export function CarServiceLogsSection() {
           <BookIcon className="h-full w-full stroke-2" />
         </IconButton>
         <DialogModal ref={dialogModalRef} headingText="Add service log">
-          Service Log Form
+          <CarServiceLogAddForm />
         </DialogModal>
       </DashboardSection.Controls>
     </DashboardSection>
