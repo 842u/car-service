@@ -45,6 +45,7 @@ const serviceCostSchema = z
 const serviceDateSchema = z.coerce
   .date({
     required_error: 'Service date is required.',
+    invalid_type_error: 'Service date must be a date.',
   })
   .min(
     new Date(MIN_CAR_INSURANCE_EXPIRATION_DATE),
@@ -56,7 +57,7 @@ export const carServiceLogAddFormSchema = z.object({
   mileage: carMileageSchema,
   category: serviceCategorySchema,
   notes: serviceNotesSchema.optional().or(z.literal('')),
-  service_cost: serviceCostSchema.optional().or(z.nan()),
+  service_cost: serviceCostSchema.nullable().optional().or(z.nan()),
 } satisfies CarServiceLogAddFormSchemaShape);
 
 export type CarServiceLogAddFormValues = z.infer<
