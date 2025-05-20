@@ -2,12 +2,14 @@
 
 import { useRef } from 'react';
 
-import { Button } from '../../shared/base/Button/Button';
+import { BookIcon } from '@/components/decorative/icons/BookIcon';
+
 import {
   DialogModal,
   DialogModalRef,
 } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
+import { IconButton } from '../../shared/IconButton/IconButton';
 
 export function CarServiceLogsSection() {
   const dialogModalRef = useRef<DialogModalRef>(null);
@@ -18,12 +20,13 @@ export function CarServiceLogsSection() {
         Service Logs
       </DashboardSection.Heading>
       <DashboardSection.Controls>
-        <Button
+        <IconButton
+          title="add service log"
           variant="accent"
           onClick={() => dialogModalRef.current?.showModal()}
         >
-          Add service log
-        </Button>
+          <BookIcon className="h-full w-full stroke-2" />
+        </IconButton>
         <DialogModal ref={dialogModalRef} headingText="Add service log">
           Service Log Form
         </DialogModal>
