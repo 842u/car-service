@@ -31,8 +31,23 @@ export async function POST(request: NextRequest) {
       { status: 415 },
     );
 
-  const { formData, car_id } =
-    (await request.json()) as Partial<ServiceLogPostRouteHandlerRequest>;
+  let formData: CarServiceLogAddFormValues | undefined;
+  let car_id: string | undefined;
+
+  try {
+    ({ formData, car_id } =
+      (await request.json()) as Partial<ServiceLogPostRouteHandlerRequest>);
+  } catch (_) {
+    return NextResponse.json<RouteHandlerResponse>(
+      {
+        error: {
+          message: 'Invalid JSON.',
+        },
+        data: null,
+      },
+      { status: 400 },
+    );
+  }
 
   if (!formData) {
     return NextResponse.json<RouteHandlerResponse>(
