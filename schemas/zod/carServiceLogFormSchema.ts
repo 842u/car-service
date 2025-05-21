@@ -12,7 +12,7 @@ import {
   MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE,
 } from './common';
 
-type CarServiceLogAddFormSchemaShape = Omit<
+type CarServiceLogFormSchemaShape = Omit<
   { [K in keyof ServiceLog]: ZodType },
   'created_at' | 'created_by' | 'car_id' | 'id'
 >;
@@ -52,14 +52,12 @@ const serviceDateSchema = z.coerce
     MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE,
   );
 
-export const carServiceLogAddFormSchema = z.object({
+export const carServiceLogFormSchema = z.object({
   service_date: serviceDateSchema,
   mileage: carMileageSchema,
   category: serviceCategorySchema,
   notes: serviceNotesSchema.optional().or(z.literal('')),
   service_cost: serviceCostSchema.nullable().optional().or(z.nan()),
-} satisfies CarServiceLogAddFormSchemaShape);
+} satisfies CarServiceLogFormSchemaShape);
 
-export type CarServiceLogAddFormValues = z.infer<
-  typeof carServiceLogAddFormSchema
->;
+export type CarServiceLogFormValues = z.infer<typeof carServiceLogFormSchema>;

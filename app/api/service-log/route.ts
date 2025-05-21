@@ -2,19 +2,19 @@ import { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 
 import {
-  carServiceLogAddFormSchema,
-  CarServiceLogAddFormValues,
-} from '@/schemas/zod/carServiceLogAddFormSchema';
+  carServiceLogFormSchema,
+  CarServiceLogFormValues,
+} from '@/schemas/zod/carServiceLogFormSchema';
 import { dataResponse, errorResponse } from '@/utils/next/routeHandlers';
 import { createClient } from '@/utils/supabase/server';
 
 export type ServiceLogPostRouteHandlerRequest = {
-  formData: CarServiceLogAddFormValues;
+  formData: CarServiceLogFormValues;
   car_id: string;
 };
 
 export type ServiceLogPatchRouteHandlerRequest = {
-  formData: CarServiceLogAddFormValues;
+  formData: CarServiceLogFormValues;
   service_log_id: string;
 };
 
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let formData: CarServiceLogAddFormValues | undefined;
+  let formData: CarServiceLogFormValues | undefined;
   let car_id: string | undefined;
 
   try {
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    carServiceLogAddFormSchema.parse(formData);
+    carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
       return errorResponse(
@@ -103,7 +103,7 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
-  let formData: CarServiceLogAddFormValues | undefined;
+  let formData: CarServiceLogFormValues | undefined;
   let service_log_id: string | undefined;
 
   try {
@@ -122,7 +122,7 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    carServiceLogAddFormSchema.parse(formData);
+    carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
       return errorResponse(
