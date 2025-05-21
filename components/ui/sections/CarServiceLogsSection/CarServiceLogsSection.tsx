@@ -1,8 +1,12 @@
 'use client';
 
-import { useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 
 import { BookIcon } from '@/components/decorative/icons/BookIcon';
+import { useToasts } from '@/hooks/useToasts';
+import { queryKeys } from '@/utils/tanstack/keys';
+import { getServiceLogsByCarId } from '@/utils/tanstack/service_logs';
 
 import { CarServiceLogAddForm } from '../../forms/CarServiceLogAddForm/CarServiceLogAddForm';
 import {
@@ -12,14 +16,31 @@ import {
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../../shared/IconButton/IconButton';
 
-export function CarServiceLogsSection() {
+type CarServiceLogsSectionProps = {
+  carId: string;
+};
+
+export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
+
+  const { addToast } = useToasts();
+
+  const { data, error } = useQuery({
+    throwOnError: false,
+    queryKey: queryKeys.serviceLogsByCarId(carId),
+    queryFn: () => getServiceLogsByCarId(carId),
+  });
+
+  useEffect(() => {
+    error && addToast(error.message, 'error');
+  }, [addToast, error]);
 
   return (
     <DashboardSection>
       <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>
+      {data?.map((log) => <p key={log.id}>{`${log.id}: ${log.notes}`}</p>)}
       <DashboardSection.Controls>
         <IconButton
           title="add service log"
@@ -29,7 +50,7 @@ export function CarServiceLogsSection() {
           <BookIcon className="h-full w-full stroke-2" />
         </IconButton>
         <DialogModal ref={dialogModalRef} headingText="Add service log">
-          <CarServiceLogAddForm />
+          <CarServiceLogAddForm carId={carId} />
         </DialogModal>
       </DashboardSection.Controls>
     </DashboardSection>

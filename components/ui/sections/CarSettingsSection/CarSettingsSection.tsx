@@ -33,7 +33,7 @@ export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
         carId={carId}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
-      <CarServiceLogsSection />
+      <CarServiceLogsSection carId={carId} />
       <CarOwnershipSection
         carId={carId}
         carOwnershipData={carOwnershipData}
