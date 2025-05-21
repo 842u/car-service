@@ -1,88 +1,56 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { Route } from 'next';
 
 import {
-  carServiceLogAddFormSchema,
-  CarServiceLogAddFormValues,
-  MAX_SERVICE_NOTE_lENGTH,
-} from '@/schemas/zod/carServiceLogAddFormSchema';
-import { serviceCategoryMapping } from '@/types';
+  ServiceLogPostRouteHandlerRequest,
+  ServiceLogRouteHandlerResponse,
+} from '@/app/api/service-log/route';
+import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import { RouteHandlerResponse } from '@/types';
 
-import { Button } from '../../shared/base/Button/Button';
-import { Form } from '../../shared/base/Form/Form';
+import { FormProps } from '../../shared/base/Form/Form';
+import { CarServiceLogForm } from '../../shared/CarServiceLogForm/CarServiceLogForm';
 
-export function CarServiceLogAddForm() {
-  const {
-    handleSubmit,
-    reset,
-    register,
-    formState: { errors, isValid, isDirty },
-  } = useForm<CarServiceLogAddFormValues>({
-    resolver: zodResolver(carServiceLogAddFormSchema),
-    mode: 'onChange',
-  });
+type CarServiceLogAddFormProps = Omit<FormProps, 'onSubmit'> & {
+  carId: string;
+  onSubmit?: () => void;
+};
 
-  const handleResetButtonClick = () => reset();
+export function CarServiceLogAddForm({
+  carId,
+  onSubmit,
+  ...props
+}: CarServiceLogAddFormProps) {
+  const handleFormSubmit = async (formData: CarServiceLogFormValues) => {
+    const jsonRequestData = JSON.stringify({
+      formData,
+      car_id: carId,
+    } satisfies ServiceLogPostRouteHandlerRequest);
 
-  const handleFormSubmit = handleSubmit(
-    (formData: CarServiceLogAddFormValues) => {
-      // console.log(formData);
-      return formData;
-    },
-  );
+    const url = new URL(window.location.origin);
+    url.pathname = '/api/service-log' satisfies Route;
 
-  return (
-    <Form variant="raw" onSubmit={handleFormSubmit}>
-      <Form.Input
-        required
-        errorMessage={errors.service_date?.message}
-        label="Date"
-        name="service_date"
-        register={register}
-        type="date"
-      />
-      <Form.Input
-        required
-        errorMessage={errors.mileage?.message}
-        label="Mileage"
-        min={0}
-        name="mileage"
-        register={register}
-        registerOptions={{ valueAsNumber: true }}
-        type="number"
-      />
-      <Form.Select
-        required
-        errorMessage={errors.category?.message}
-        label="Category"
-        name="category"
-        options={serviceCategoryMapping}
-        register={register}
-      />
-      <Form.Input
-        errorMessage={errors.notes?.message}
-        label="Notes"
-        maxLength={MAX_SERVICE_NOTE_lENGTH}
-        name="notes"
-        register={register}
-        type="text"
-      />
-      <Form.Input
-        errorMessage={errors.service_cost?.message}
-        label="Cost"
-        min={0}
-        name="service_cost"
-        register={register}
-        registerOptions={{ valueAsNumber: true }}
-        step={0.01}
-        type="number"
-      />
-      <Form.Controls>
-        <Button disabled={!isDirty} onClick={handleResetButtonClick}>
-          Reset
-        </Button>
-        <Form.ButtonSubmit disabled={!isValid}>Save</Form.ButtonSubmit>
-      </Form.Controls>
-    </Form>
-  );
+    try {
+      const apiResponse = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: jsonRequestData,
+      });
+
+      const { error } =
+        (await apiResponse.json()) as RouteHandlerResponse<ServiceLogRouteHandlerResponse>;
+
+      if (!apiResponse.ok || error) {
+        throw new Error(
+          error?.message || `Request failed with status ${apiResponse.status}.`,
+        );
+      }
+    } catch (error) {
+      if (error instanceof Error) throw new Error(error.message);
+      throw new Error('Unknown error occurred.');
+    }
+
+    onSubmit && onSubmit();
+  };
+
+  return <CarServiceLogForm onSubmit={handleFormSubmit} {...props} />;
 }
