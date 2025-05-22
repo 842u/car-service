@@ -126,7 +126,7 @@ export function enqueueRevokeObjectUrl(url: string) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-export async function delay(delayMilliseconds: number) {
+export async function debugDelay(delayMilliseconds: number) {
   await new Promise((resolve) =>
     setTimeout(() => resolve(true), delayMilliseconds),
   );
