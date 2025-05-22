@@ -7,9 +7,12 @@ import {
 } from '@/app/api/service-log/route';
 import { useToasts } from '@/hooks/useToasts';
 import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import { RouteHandlerResponse, ServiceLog } from '@/types';
+import { RouteHandlerResponse } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
-import { serviceLogsByCarIdAddOnMutate } from '@/utils/tanstack/service_logs';
+import {
+  serviceLogsByCarIdAddOnError,
+  serviceLogsByCarIdAddOnMutate,
+} from '@/utils/tanstack/service_logs';
 
 import { FormProps } from '../../shared/base/Form/Form';
 import { CarServiceLogForm } from '../../shared/CarServiceLogForm/CarServiceLogForm';
@@ -69,23 +72,7 @@ export function CarServiceLogAddForm({
       serviceLogsByCarIdAddOnMutate(formData, carId, queryClient),
     onSuccess: () => addToast('Service log added successfully.', 'success'),
     onError: (error, _, context) => {
-      const previousQueryData = queryClient.getQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-      ) as ServiceLog[] | undefined;
-
-      let updatedQueryData = previousQueryData?.map((serviceLog) => ({
-        ...serviceLog,
-      }));
-
-      updatedQueryData = updatedQueryData?.filter(
-        (serviceLog) => serviceLog.id !== context?.optimisticServiceLogId,
-      );
-
-      queryClient.setQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-        updatedQueryData,
-      );
-
+      serviceLogsByCarIdAddOnError(context, carId, queryClient);
       addToast(error.message, 'error');
     },
   });

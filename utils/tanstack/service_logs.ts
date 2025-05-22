@@ -41,3 +41,28 @@ export async function serviceLogsByCarIdAddOnMutate(
 
   return { optimisticServiceLogId };
 }
+
+export async function serviceLogsByCarIdAddOnError(
+  context:
+    | Awaited<ReturnType<typeof serviceLogsByCarIdAddOnMutate>>
+    | undefined,
+  carId: string,
+  queryClient: QueryClient,
+) {
+  const previousQueryData = queryClient.getQueryData(
+    queryKeys.serviceLogsByCarId(carId),
+  ) as ServiceLog[] | undefined;
+
+  let updatedQueryData = previousQueryData?.map((serviceLog) => ({
+    ...serviceLog,
+  }));
+
+  updatedQueryData = updatedQueryData?.filter(
+    (serviceLog) => serviceLog.id !== context?.optimisticServiceLogId,
+  );
+
+  queryClient.setQueryData(
+    queryKeys.serviceLogsByCarId(carId),
+    updatedQueryData,
+  );
+}
