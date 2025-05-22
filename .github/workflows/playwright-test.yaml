@@ -2,11 +2,16 @@ name: Playwright Test
 
 on:
   workflow_dispatch:
+    inputs:
+      supabaseStartFlags:
+        description: 'flags for supabase start command'
+        required: false
+        default: ''
   workflow_call:
 
 jobs:
   playwright-test:
-    timeout-minutes: 10
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     environment:
       name: Test
@@ -68,7 +73,7 @@ jobs:
         run: npm run build
 
       - name: Run Supabase Instance
-        run: npx supabase start
+        run: npx supabase start ${{ inputs.supabaseStartFlags }}
         env:
           SUPABASE_AUTH_GITHUB_CLIENT_ID: ${{ secrets.SUPABASE_AUTH_GITHUB_CLIENT_ID }}
           SUPABASE_AUTH_GITHUB_SECRET: ${{ secrets.SUPABASE_AUTH_GITHUB_SECRET }}
