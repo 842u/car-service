@@ -35,6 +35,10 @@ export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
     error && addToast(error.message, 'error');
   }, [addToast, error]);
 
+  const handleModalClose = () => dialogModalRef.current?.closeModal();
+
+  const handleModalOpen = () => dialogModalRef.current?.showModal();
+
   return (
     <DashboardSection>
       <DashboardSection.Heading headingLevel="h2">
@@ -45,12 +49,12 @@ export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
         <IconButton
           title="add service log"
           variant="accent"
-          onClick={() => dialogModalRef.current?.showModal()}
+          onClick={handleModalOpen}
         >
           <BookIcon className="h-full w-full stroke-2" />
         </IconButton>
         <DialogModal ref={dialogModalRef} headingText="Add service log">
-          <CarServiceLogAddForm carId={carId} />
+          <CarServiceLogAddForm carId={carId} onSubmit={handleModalClose} />
         </DialogModal>
       </DashboardSection.Controls>
     </DashboardSection>
