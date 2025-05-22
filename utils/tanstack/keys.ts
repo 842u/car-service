@@ -2,6 +2,7 @@ const baseQueryKeys = {
   cars: 'cars' as const,
   profiles: 'profiles' as const,
   carsOwnerships: 'cars_ownerships' as const,
+  serviceLogs: 'service_logs' as const,
 };
 
 export const queryKeys = {
@@ -18,4 +19,7 @@ export const queryKeys = {
   carsOwnerships: [baseQueryKeys.carsOwnerships] as const,
   carsOwnershipsByCarId: (carId: string) =>
     [baseQueryKeys.profiles, carId] as const,
+
+  serviceLogsByCarId: (carId: string) =>
+    [baseQueryKeys.serviceLogs, carId] as const,
 };

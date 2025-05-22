@@ -57,7 +57,7 @@ export function getMimeTypeExtensions(mimeTypes: string[]) {
   return typesExtensions;
 }
 
-function parseDate(date: Date) {
+export function parseDateToYyyyMmDd(date: Date) {
   const [year, month, dayWithTimezone] = date.toISOString().split('-');
   const [day] = dayWithTimezone.split('T');
   return [year, month, day].join('-');
@@ -78,7 +78,7 @@ export function mapCarFormValuesToCarObject(
         model: formData.model,
         license_plates: formData.licensePlates,
         additional_fuel_type: formData.additionalFuelType || null,
-        created_at: parseDate(new Date()),
+        created_at: parseDateToYyyyMmDd(new Date()),
         drive_type: formData.driveType || null,
         engine_capacity: formData.engineCapacity,
         fuel_type: formData.fuelType || null,
@@ -108,10 +108,10 @@ export function mapCarFormValuesToCarObject(
         mileage: formData.mileage,
         insurance_expiration:
           formData.insuranceExpiration &&
-          parseDate(formData.insuranceExpiration),
+          parseDateToYyyyMmDd(formData.insuranceExpiration),
         technical_inspection_expiration:
           formData.technicalInspectionExpiration &&
-          parseDate(formData.technicalInspectionExpiration),
+          parseDateToYyyyMmDd(formData.technicalInspectionExpiration),
         production_year: formData.productionYear,
         transmission_type: formData.transmissionType || null,
         vin: formData.vin,
@@ -126,8 +126,18 @@ export function enqueueRevokeObjectUrl(url: string) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-export async function delay(delayMilliseconds: number) {
+export async function debugDelay(delayMilliseconds: number) {
   await new Promise((resolve) =>
     setTimeout(() => resolve(true), delayMilliseconds),
   );
+}
+
+export async function debugDelayRandomResponse(delayMilliseconds: number) {
+  await new Promise((resolve, reject) => {
+    if (Math.random() > 0.5) {
+      setTimeout(() => resolve(true), delayMilliseconds);
+    } else {
+      setTimeout(() => reject(new Error('debug error')), delayMilliseconds);
+    }
+  });
 }

@@ -145,6 +145,57 @@ export type Database = {
         };
         Relationships: [];
       };
+      service_logs: {
+        Row: {
+          car_id: string;
+          category: Database['public']['Enums']['service_category'];
+          created_at: string | null;
+          created_by: string;
+          id: string;
+          mileage: number | null;
+          notes: string | null;
+          service_cost: number | null;
+          service_date: string;
+        };
+        Insert: {
+          car_id: string;
+          category: Database['public']['Enums']['service_category'];
+          created_at?: string | null;
+          created_by: string;
+          id?: string;
+          mileage?: number | null;
+          notes?: string | null;
+          service_cost?: number | null;
+          service_date: string;
+        };
+        Update: {
+          car_id?: string;
+          category?: Database['public']['Enums']['service_category'];
+          created_at?: string | null;
+          created_by?: string;
+          id?: string;
+          mileage?: number | null;
+          notes?: string | null;
+          service_cost?: number | null;
+          service_date?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'service_logs_car_id_fkey';
+            columns: ['car_id'];
+            isOneToOne: false;
+            referencedRelation: 'cars';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'service_logs_created_by_fkey';
+            columns: ['created_by'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -193,6 +244,16 @@ export type Database = {
         | 'electric'
         | 'hydrogen'
         | 'ethanol';
+      service_category:
+        | 'engine'
+        | 'battery'
+        | 'brakes'
+        | 'suspension'
+        | 'tires'
+        | 'electrical'
+        | 'body'
+        | 'interior'
+        | 'other';
       transmission: 'manual' | 'automatic' | 'CVT';
     };
     CompositeTypes: {
@@ -738,6 +799,17 @@ export const Constants = {
         'electric',
         'hydrogen',
         'ethanol',
+      ],
+      service_category: [
+        'engine',
+        'battery',
+        'brakes',
+        'suspension',
+        'tires',
+        'electrical',
+        'body',
+        'interior',
+        'other',
       ],
       transmission: ['manual', 'automatic', 'CVT'],
     },
