@@ -9,6 +9,7 @@ import { useToasts } from '@/hooks/useToasts';
 import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { RouteHandlerResponse, ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
+import { serviceLogsByCarIdAddOnMutate } from '@/utils/tanstack/service_logs';
 
 import { FormProps } from '../../shared/base/Form/Form';
 import { CarServiceLogForm } from '../../shared/CarServiceLogForm/CarServiceLogForm';
@@ -64,38 +65,8 @@ export function CarServiceLogAddForm({
     throwOnError: false,
     mutationFn: (formData: CarServiceLogFormValues) =>
       submitCarServiceLogAddFormData(carId, formData),
-    onMutate: async (formData: CarServiceLogFormValues) => {
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.serviceLogsByCarId(carId),
-      });
-
-      const optimisticServiceLogId = crypto.randomUUID();
-
-      const optimisticCarServiceLog = {
-        ...formData,
-        id: optimisticServiceLogId,
-        car_id: carId,
-        created_by: 'optimistic update',
-        created_at: new Date().toISOString(),
-      } satisfies ServiceLog;
-
-      const previousQueryData = queryClient.getQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-      ) as ServiceLog[] | undefined;
-
-      const updatedQueryData = previousQueryData?.map((serviceLog) => ({
-        ...serviceLog,
-      }));
-
-      updatedQueryData?.push(optimisticCarServiceLog);
-
-      queryClient.setQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-        updatedQueryData,
-      );
-
-      return { optimisticServiceLogId };
-    },
+    onMutate: (formData: CarServiceLogFormValues) =>
+      serviceLogsByCarIdAddOnMutate(formData, carId, queryClient),
     onSuccess: () => addToast('Service log added successfully.', 'success'),
     onError: (error, _, context) => {
       const previousQueryData = queryClient.getQueryData(
