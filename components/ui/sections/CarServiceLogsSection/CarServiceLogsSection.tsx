@@ -5,8 +5,8 @@ import { useEffect, useRef } from 'react';
 
 import { BookIcon } from '@/components/decorative/icons/BookIcon';
 import { useToasts } from '@/hooks/useToasts';
+import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
-import { getServiceLogsByCarId } from '@/utils/tanstack/service_logs';
 
 import { CarServiceLogAddForm } from '../../forms/CarServiceLogAddForm/CarServiceLogAddForm';
 import {

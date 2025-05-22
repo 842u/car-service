@@ -1,4 +1,4 @@
-import { createClient } from '../supabase/client';
+import { createClient } from '../client';
 
 export async function getServiceLogsByCarId(carId: string) {
   const supabase = createClient();
