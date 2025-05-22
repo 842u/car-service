@@ -5,6 +5,7 @@ import {
   ServiceLogPostRouteHandlerRequest,
   ServiceLogRouteHandlerResponse,
 } from '@/app/api/service-log/route';
+import { useToasts } from '@/hooks/useToasts';
 import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { RouteHandlerResponse, ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
@@ -55,6 +56,8 @@ export function CarServiceLogAddForm({
   onSubmit,
   ...props
 }: CarServiceLogAddFormProps) {
+  const { addToast } = useToasts();
+
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -66,28 +69,53 @@ export function CarServiceLogAddForm({
         queryKey: queryKeys.serviceLogsByCarId(carId),
       });
 
-      const newCarServiceLog = {
+      const optimisticServiceLogId = crypto.randomUUID();
+
+      const optimisticCarServiceLog = {
         ...formData,
+        id: optimisticServiceLogId,
         car_id: carId,
-        created_at: new Date().toISOString(),
         created_by: 'optimistic update',
-        id: crypto.randomUUID(),
+        created_at: new Date().toISOString(),
       } satisfies ServiceLog;
 
-      const currentQueryData = queryClient.getQueryData(
+      const previousQueryData = queryClient.getQueryData(
         queryKeys.serviceLogsByCarId(carId),
       ) as ServiceLog[] | undefined;
 
-      const updatedQueryData = currentQueryData?.map((serviceLog) => ({
+      const updatedQueryData = previousQueryData?.map((serviceLog) => ({
         ...serviceLog,
       }));
 
-      updatedQueryData?.push(newCarServiceLog);
+      updatedQueryData?.push(optimisticCarServiceLog);
 
       queryClient.setQueryData(
         queryKeys.serviceLogsByCarId(carId),
         updatedQueryData,
       );
+
+      return { optimisticServiceLogId };
+    },
+    onSuccess: () => addToast('Service log added successfully.', 'success'),
+    onError: (error, _, context) => {
+      const previousQueryData = queryClient.getQueryData(
+        queryKeys.serviceLogsByCarId(carId),
+      ) as ServiceLog[] | undefined;
+
+      let updatedQueryData = previousQueryData?.map((serviceLog) => ({
+        ...serviceLog,
+      }));
+
+      updatedQueryData = updatedQueryData?.filter(
+        (serviceLog) => serviceLog.id !== context?.optimisticServiceLogId,
+      );
+
+      queryClient.setQueryData(
+        queryKeys.serviceLogsByCarId(carId),
+        updatedQueryData,
+      );
+
+      addToast(error.message, 'error');
     },
   });
 
@@ -98,6 +126,7 @@ export function CarServiceLogAddForm({
           queryKey: queryKeys.serviceLogsByCarId(carId),
         }),
     });
+
     onSubmit && onSubmit();
   };
 
