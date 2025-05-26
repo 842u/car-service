@@ -15,7 +15,7 @@ export function CarServiceLogsTable({
 }: CarServiceLogsTableProps) {
   return (
     <div className="my-4 max-h-80 overflow-auto">
-      <table>
+      <table className="w-full">
         <caption className="caption-bottom p-2">{caption}</caption>
         <thead className="h-10">
           <tr className="border-alpha-grey-300 border-b">
@@ -33,10 +33,10 @@ export function CarServiceLogsTable({
               key={serviceLog.id}
               className="border-alpha-grey-300 border-b first-of-type:border-t-0 last-of-type:border-b-0"
             >
-              <td className="p-2 whitespace-nowrap">
+              <td className="w-0 p-2 whitespace-nowrap">
                 {serviceLog.service_date}
               </td>
-              <td className="p-2">{serviceLog.category}</td>
+              <td className="w-0 p-2">{serviceLog.category}</td>
               <td className="max-w-16 overflow-auto p-2 lg:max-w-fit">
                 {serviceLog.mileage}
               </td>
@@ -48,7 +48,7 @@ export function CarServiceLogsTable({
                   {serviceLog.notes}
                 </p>
               </td>
-              <td className="p-2">
+              <td className="w-0 p-2">
                 <div className="flex w-auto gap-4">
                   <IconButton title="edit log" variant="accent">
                     <PencilIcon className="min-h-full min-w-full stroke-2" />
