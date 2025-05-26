@@ -15,6 +15,7 @@ import {
 } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../../shared/IconButton/IconButton';
+import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarServiceLogsTable';
 
 type CarServiceLogsSectionProps = {
   carId: string;
@@ -44,7 +45,7 @@ export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
       <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>
-      {data?.map((log) => <p key={log.id}>{`${log.id}: ${log.notes}`}</p>)}
+      <CarServiceLogsTable caption="service log table" serviceLogs={data} />
       <DashboardSection.Controls>
         <IconButton
           title="add service log"
