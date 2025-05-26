@@ -35,7 +35,6 @@ export function IconButton({
       onClick={onClick}
     >
       {children}
-      <span className="sr-only">{title}</span>
     </button>
   );
 }
