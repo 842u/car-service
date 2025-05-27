@@ -66,3 +66,79 @@ export async function serviceLogsByCarIdAddOnError(
     updatedQueryData,
   );
 }
+
+export async function serviceLogsByCarIdEditOnMutate(
+  formData: CarServiceLogFormValues,
+  carId: string,
+  serviceLogId: string,
+  queryClient: QueryClient,
+) {
+  await queryClient.cancelQueries({
+    queryKey: queryKeys.serviceLogsByCarId(carId),
+  });
+
+  const previousQueryData = queryClient.getQueryData(
+    queryKeys.serviceLogsByCarId(carId),
+  ) as ServiceLog[] | undefined;
+
+  if (!previousQueryData) return { previousServiceLog: undefined };
+
+  const updatedQueryData = previousQueryData.map((serviceLog) => ({
+    ...serviceLog,
+  }));
+
+  const updatedServiceLogIndex = updatedQueryData.findIndex(
+    (serviceLog) => serviceLog.id === serviceLogId,
+  );
+
+  if (updatedServiceLogIndex === -1) return { previousServiceLog: undefined };
+
+  const previousServiceLog = updatedQueryData[updatedServiceLogIndex];
+
+  updatedQueryData[updatedServiceLogIndex] = {
+    ...updatedQueryData[updatedServiceLogIndex],
+    ...formData,
+  };
+
+  queryClient.setQueryData(
+    queryKeys.serviceLogsByCarId(carId),
+    updatedQueryData,
+  );
+
+  return { previousServiceLog };
+}
+
+export async function serviceLogsByCarIdEditOnError(
+  context:
+    | Awaited<ReturnType<typeof serviceLogsByCarIdEditOnMutate>>
+    | undefined,
+  carId: string,
+  serviceLogId: string,
+  queryClient: QueryClient,
+) {
+  const previousQueryData = queryClient.getQueryData(
+    queryKeys.serviceLogsByCarId(carId),
+  ) as ServiceLog[] | undefined;
+
+  if (!previousQueryData) return;
+
+  const updatedQueryData = previousQueryData.map((serviceLog) => ({
+    ...serviceLog,
+  }));
+
+  const updatedServiceLogIndex = updatedQueryData.findIndex(
+    (serviceLog) => serviceLog.id === serviceLogId,
+  );
+
+  if (updatedServiceLogIndex === -1) return;
+
+  updatedQueryData[updatedServiceLogIndex] = {
+    ...updatedQueryData[updatedServiceLogIndex],
+    ...context?.previousServiceLog,
+  };
+
+  queryClient.setQueryData(
+    queryKeys.serviceLogsByCarId(carId),
+    updatedQueryData,
+  );
+}
