@@ -54,6 +54,12 @@ export function CarServiceLogForm({
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
+  useEffect(() => {
+    if (serviceLog) {
+      reset(serviceLog);
+    }
+  }, [serviceLog, reset]);
+
   const handleResetButtonClick = () => reset();
 
   const handleFormSubmit = handleSubmit(

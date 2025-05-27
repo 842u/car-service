@@ -45,7 +45,11 @@ export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
       <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>
-      <CarServiceLogsTable caption="service log table" serviceLogs={data} />
+      <CarServiceLogsTable
+        caption="service log table"
+        carId={carId}
+        serviceLogs={data}
+      />
       <DashboardSection.Controls>
         <IconButton
           title="add service log"

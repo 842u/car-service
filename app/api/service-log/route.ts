@@ -78,7 +78,6 @@ export async function POST(request: NextRequest) {
     .from('service_logs')
     .insert({
       ...formData,
-      service_date: formData.service_date.toString(),
       created_by: userData.user.id,
       car_id,
     })
@@ -142,16 +141,13 @@ export async function PATCH(request: NextRequest) {
 
   const { data: serviceLogData, error: serviceLogError } = await supabase
     .from('service_logs')
-    .update({
-      ...formData,
-      service_date: formData.service_date.toString(),
-    })
+    .update({ ...formData })
     .eq('id', service_log_id)
     .select('id')
     .single();
 
   if (serviceLogError) {
-    return errorResponse('Failed to insert service log entry.', 502);
+    return errorResponse('Failed to update service log entry.', 502);
   }
 
   return dataResponse<ServiceLogRouteHandlerResponse>(
