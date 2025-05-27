@@ -147,7 +147,7 @@ export async function PATCH(request: NextRequest) {
     .single();
 
   if (serviceLogError) {
-    return errorResponse('Failed to insert service log entry.', 502);
+    return errorResponse('Failed to update service log entry.', 502);
   }
 
   return dataResponse<ServiceLogRouteHandlerResponse>(
