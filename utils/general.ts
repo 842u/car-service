@@ -141,3 +141,9 @@ export async function debugDelayRandomResponse(delayMilliseconds: number) {
     }
   });
 }
+
+export async function debugDelayRejectResponse(delayMilliseconds: number) {
+  await new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('debug error')), delayMilliseconds),
+  );
+}
