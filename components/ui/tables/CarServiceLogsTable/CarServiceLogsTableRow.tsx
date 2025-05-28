@@ -1,12 +1,17 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
 
 import { PencilIcon } from '@/components/decorative/icons/PencilIcon';
 import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
+import { useToasts } from '@/hooks/useToasts';
 import { ServiceLog } from '@/types';
+import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
+import { Button } from '../../shared/base/Button/Button';
 import {
   DialogModal,
   DialogModalRef,
@@ -23,12 +28,88 @@ export function CarServiceLogsTableRow({
   carId,
 }: CarServiceLogsTableRowProps) {
   const editDialogModalRef = useRef<DialogModalRef>(null);
+  const deleteDialogModalRef = useRef<DialogModalRef>(null);
+
+  const { addToast } = useToasts();
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    throwOnError: false,
+    mutationFn: (serviceLogId: string) => deleteServiceLogById(serviceLogId),
+    onMutate: (serviceLogId: string) => {
+      let optimisticDeletedServiceLog: ServiceLog | undefined = undefined;
+
+      const previousQueryData = queryClient.getQueryData(
+        queryKeys.serviceLogsByCarId(carId),
+      ) as ServiceLog[] | undefined;
+
+      if (!previousQueryData) return { optimisticDeletedServiceLog };
+
+      optimisticDeletedServiceLog = previousQueryData.find(
+        (serviceLog) => serviceLog.id === serviceLogId,
+      );
+
+      if (!optimisticDeletedServiceLog) return { optimisticDeletedServiceLog };
+
+      let updatedQueryData = previousQueryData.map((serviceLog) => ({
+        ...serviceLog,
+      }));
+
+      updatedQueryData = updatedQueryData.filter(
+        (serviceLog) => serviceLog.id !== serviceLogId,
+      );
+
+      queryClient.setQueryData(
+        queryKeys.serviceLogsByCarId(carId),
+        updatedQueryData,
+      );
+
+      return { optimisticDeletedServiceLog };
+    },
+    onError: (error, _, context) => {
+      const previousQueryData = queryClient.getQueryData(
+        queryKeys.serviceLogsByCarId(carId),
+      ) as ServiceLog[] | undefined;
+
+      if (!previousQueryData || !context?.optimisticDeletedServiceLog) return;
+
+      const updatedQueryData = previousQueryData.map((serviceLog) => ({
+        ...serviceLog,
+      }));
+
+      updatedQueryData.push(context.optimisticDeletedServiceLog);
+
+      queryClient.setQueryData(
+        queryKeys.serviceLogsByCarId(carId),
+        updatedQueryData,
+      );
+
+      addToast(error.message, 'error');
+    },
+    onSuccess: () => addToast('Service log deleted successfully.', 'success'),
+  });
 
   const handleEditLogButtonClick = () =>
     editDialogModalRef.current?.showModal();
 
   const handleCarServiceLogEditFormSubmit = () =>
     editDialogModalRef.current?.closeModal();
+
+  const handleDeleteServiceLogButtonClick = () =>
+    deleteDialogModalRef.current?.showModal();
+
+  const handleCancelDeleteServiceLogButtonClick = () =>
+    deleteDialogModalRef.current?.closeModal();
+
+  const handleConfirmDeleteServiceLogButtonClick = () =>
+    mutate(serviceLog.id, {
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.serviceLogsByCarId(carId),
+        }),
+    });
+
   return (
     <tr
       key={serviceLog.id}
@@ -54,7 +135,11 @@ export function CarServiceLogsTableRow({
           >
             <PencilIcon className="min-h-full min-w-full stroke-2" />
           </IconButton>
-          <IconButton title="delete log" variant="accent">
+          <IconButton
+            title="delete log"
+            variant="error"
+            onClick={handleDeleteServiceLogButtonClick}
+          >
             <TrashIcon className="min-h-full min-w-full stroke-2" />
           </IconButton>
           <DialogModal ref={editDialogModalRef} headingText="Edit service log">
@@ -63,6 +148,23 @@ export function CarServiceLogsTableRow({
               serviceLog={serviceLog}
               onSubmit={handleCarServiceLogEditFormSubmit}
             />
+          </DialogModal>
+          <DialogModal
+            ref={deleteDialogModalRef}
+            headingText="Delete service log"
+          >
+            <p className="my-4">Are you sure you want to delete service log?</p>
+            <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
+              <Button onClick={handleCancelDeleteServiceLogButtonClick}>
+                Cancel
+              </Button>
+              <Button
+                variant="error"
+                onClick={handleConfirmDeleteServiceLogButtonClick}
+              >
+                Delete
+              </Button>
+            </div>
           </DialogModal>
         </div>
       </td>
