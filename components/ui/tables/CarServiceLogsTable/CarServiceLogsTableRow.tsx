@@ -117,10 +117,10 @@ export function CarServiceLogsTableRow({
     >
       <td className="w-0 p-2 whitespace-nowrap">{serviceLog.service_date}</td>
       <td className="w-0 p-2">{serviceLog.category}</td>
-      <td className="max-w-16 overflow-auto p-2 lg:max-w-fit">
+      <td className="w-0 max-w-16 overflow-auto p-2 lg:max-w-fit">
         {serviceLog.mileage}
       </td>
-      <td className="max-w-16 overflow-auto p-2 lg:max-w-fit">
+      <td className="w-0 max-w-16 overflow-auto p-2 lg:max-w-fit">
         {serviceLog.service_cost}
       </td>
       <td className="p-2">
