@@ -77,12 +77,12 @@ export function CarServiceLogForm({
         registerOptions={{ valueAsDate: false }}
         type="date"
       />
-      <Form.Select
+      <Form.CheckboxGroup
         required
+        checkboxLabelValueMapping={serviceCategoryMapping}
         errorMessage={errors.category?.message}
         label="Category"
         name="category"
-        options={serviceCategoryMapping}
         register={register}
       />
       <Form.Input
