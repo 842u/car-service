@@ -57,7 +57,7 @@ export function FormInputImage<T extends FieldValues>({
   });
 
   return (
-    <label htmlFor={name}>
+    <label>
       {label && <FormInputLabelText required={required} text={label} />}
       <div
         className={twMerge(
@@ -76,7 +76,6 @@ export function FormInputImage<T extends FieldValues>({
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
           className="sr-only absolute"
           data-testid={FORM_INPUT_IMAGE_TEST_ID}
-          id={name}
           name={name}
           type="file"
           onChange={handleFileChange}
