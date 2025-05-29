@@ -21,7 +21,6 @@ type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
   variant?: InputVariants;
   required?: boolean;
   registerOptions?: RegisterOptions<T>;
-  placeholder?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
 };
@@ -31,7 +30,6 @@ export function FormInput<T extends FieldValues>({
   label,
   name,
   type,
-  placeholder,
   registerOptions,
   errorMessage,
   className,
@@ -41,7 +39,7 @@ export function FormInput<T extends FieldValues>({
   ...props
 }: FormInputProps<T>) {
   return (
-    <label htmlFor={name}>
+    <label>
       <FormInputLabelText required={required} text={label} />
       <input
         className={twMerge(
@@ -49,8 +47,6 @@ export function FormInput<T extends FieldValues>({
           'my-1',
           className,
         )}
-        id={name}
-        placeholder={placeholder}
         type={type}
         {...props}
         {...(register ? register(name, registerOptions) : {})}
