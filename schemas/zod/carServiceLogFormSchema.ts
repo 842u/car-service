@@ -17,12 +17,15 @@ type CarServiceLogFormSchemaShape = Omit<
   'created_at' | 'created_by' | 'car_id' | 'id'
 >;
 
-const serviceCategorySchema = z.enum(
-  Object.values(serviceCategoryMapping) as [keyof ServiceCategoryMapping],
-  {
-    message: 'Please choose a correct value.',
-  },
-);
+const serviceCategorySchema = z
+  .enum(
+    Object.values(serviceCategoryMapping) as [keyof ServiceCategoryMapping],
+    {
+      message: 'Please choose a correct value.',
+    },
+  )
+  .array()
+  .nonempty({ message: 'Please choose at least one value.' });
 
 export const MAX_SERVICE_NOTE_lENGTH = 1000;
 const MAX_SERVICE_NOTE_LENGTH_MESSAGE = `Maximum notes length is ${MAX_SERVICE_NOTE_lENGTH}.`;

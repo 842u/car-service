@@ -1,6 +1,6 @@
 import { Spinner } from '@/components/decorative/Spinner/Spinner';
 
-import { Button, ButtonProps } from '../Button/Button';
+import { Button, ButtonProps } from '../../Button/Button';
 
 type FormButtonSubmit = ButtonProps & {
   children: string;

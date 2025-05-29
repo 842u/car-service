@@ -1,24 +1,16 @@
 'use client';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
-
 import { PencilIcon } from '@/components/decorative/icons/PencilIcon';
 import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
-import { useToasts } from '@/hooks/useToasts';
 import { ServiceLog } from '@/types';
-import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
-import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
 import { Button } from '../../shared/base/Button/Button';
-import {
-  DialogModal,
-  DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+import { DialogModal } from '../../shared/base/DialogModal/DialogModal';
 import { IconButton } from '../../shared/IconButton/IconButton';
+import { useCarServiceLogsTableRow } from './useCarServiceLogsTableRow';
 
-type CarServiceLogsTableRowProps = {
+export type CarServiceLogsTableRowProps = {
   serviceLog: ServiceLog;
   carId: string;
 };
@@ -27,88 +19,15 @@ export function CarServiceLogsTableRow({
   serviceLog,
   carId,
 }: CarServiceLogsTableRowProps) {
-  const editDialogModalRef = useRef<DialogModalRef>(null);
-  const deleteDialogModalRef = useRef<DialogModalRef>(null);
-
-  const { addToast } = useToasts();
-
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    throwOnError: false,
-    mutationFn: (serviceLogId: string) => deleteServiceLogById(serviceLogId),
-    onMutate: (serviceLogId: string) => {
-      let optimisticDeletedServiceLog: ServiceLog | undefined = undefined;
-
-      const previousQueryData = queryClient.getQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-      ) as ServiceLog[] | undefined;
-
-      if (!previousQueryData) return { optimisticDeletedServiceLog };
-
-      optimisticDeletedServiceLog = previousQueryData.find(
-        (serviceLog) => serviceLog.id === serviceLogId,
-      );
-
-      if (!optimisticDeletedServiceLog) return { optimisticDeletedServiceLog };
-
-      let updatedQueryData = previousQueryData.map((serviceLog) => ({
-        ...serviceLog,
-      }));
-
-      updatedQueryData = updatedQueryData.filter(
-        (serviceLog) => serviceLog.id !== serviceLogId,
-      );
-
-      queryClient.setQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-        updatedQueryData,
-      );
-
-      return { optimisticDeletedServiceLog };
-    },
-    onError: (error, _, context) => {
-      const previousQueryData = queryClient.getQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-      ) as ServiceLog[] | undefined;
-
-      if (!previousQueryData || !context?.optimisticDeletedServiceLog) return;
-
-      const updatedQueryData = previousQueryData.map((serviceLog) => ({
-        ...serviceLog,
-      }));
-
-      updatedQueryData.push(context.optimisticDeletedServiceLog);
-
-      queryClient.setQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-        updatedQueryData,
-      );
-
-      addToast(error.message, 'error');
-    },
-    onSuccess: () => addToast('Service log deleted successfully.', 'success'),
-  });
-
-  const handleEditLogButtonClick = () =>
-    editDialogModalRef.current?.showModal();
-
-  const handleCarServiceLogEditFormSubmit = () =>
-    editDialogModalRef.current?.closeModal();
-
-  const handleDeleteServiceLogButtonClick = () =>
-    deleteDialogModalRef.current?.showModal();
-
-  const handleCancelDeleteServiceLogButtonClick = () =>
-    deleteDialogModalRef.current?.closeModal();
-
-  const handleConfirmDeleteServiceLogButtonClick = () =>
-    mutate(serviceLog.id, {
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.serviceLogsByCarId(carId),
-        }),
-    });
+  const {
+    editDialogModalRef,
+    deleteDialogModalRef,
+    handleCancelDeleteServiceLogButtonClick,
+    handleCarServiceLogEditFormSubmit,
+    handleConfirmDeleteServiceLogButtonClick,
+    handleDeleteServiceLogButtonClick,
+    handleEditLogButtonClick,
+  } = useCarServiceLogsTableRow({ carId, serviceLog });
 
   return (
     <tr
@@ -116,7 +35,13 @@ export function CarServiceLogsTableRow({
       className="border-alpha-grey-300 border-b first-of-type:border-t-0 last-of-type:border-b-0"
     >
       <td className="w-0 p-2 whitespace-nowrap">{serviceLog.service_date}</td>
-      <td className="w-0 p-2">{serviceLog.category}</td>
+      <td className="w-0 p-2">
+        <div className="max-h-16 w-fit overflow-y-auto">
+          {serviceLog.category.map((value) => (
+            <p key={value}>{value}</p>
+          ))}
+        </div>
+      </td>
       <td className="w-0 max-w-16 overflow-auto p-2 lg:max-w-fit">
         {serviceLog.mileage}
       </td>
