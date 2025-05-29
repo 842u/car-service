@@ -35,7 +35,13 @@ export function CarServiceLogsTableRow({
       className="border-alpha-grey-300 border-b first-of-type:border-t-0 last-of-type:border-b-0"
     >
       <td className="w-0 p-2 whitespace-nowrap">{serviceLog.service_date}</td>
-      <td className="w-0 p-2">{serviceLog.category}</td>
+      <td className="w-0 p-2">
+        <div className="max-h-16 overflow-auto">
+          {serviceLog.category.map((value) => (
+            <p key={value}>{value}</p>
+          ))}
+        </div>
+      </td>
       <td className="w-0 max-w-16 overflow-auto p-2 lg:max-w-fit">
         {serviceLog.mileage}
       </td>
