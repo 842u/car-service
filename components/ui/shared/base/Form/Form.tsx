@@ -4,14 +4,14 @@ import { twMerge } from 'tailwind-merge';
 import { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
-import { FormButtonSubmit } from './FormButtonSubmit';
+import { FormButtonSubmit } from './FormButtonSubmit/FormButtonSubmit';
 import { FormCheckboxGroup } from './FormCheckboxGroup/FormCheckboxGroup';
 import { FormControls } from './FormControls';
 import { FormInput } from './FormInput/FormInput';
 import { FormInputImage } from './FormInput/FormInputImage/FormInputImage';
 import { FormInputPassword } from './FormInput/FormInputPassword';
 import { FormInputWrapper } from './FormInput/FormInputWrapper';
-import { FormSelect } from './FormSelect';
+import { FormSelect } from './FormSelect/FormSelect';
 
 export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;

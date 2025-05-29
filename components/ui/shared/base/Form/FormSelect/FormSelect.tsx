@@ -9,8 +9,8 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { FormInputErrorText } from './FormInput/FormInputErrorText';
-import { FormInputLabelText } from './FormInput/FormInputLabelText';
+import { FormInputErrorText } from '../FormInput/FormInputErrorText';
+import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
 type FormSelectProps<T extends FieldValues> = {
   label: string;
