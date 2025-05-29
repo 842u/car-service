@@ -9,6 +9,10 @@ import { useToasts } from '@/hooks/useToasts';
 import { ServiceLog } from '@/types';
 import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
+import {
+  serviceLogsByCarIdDeleteOnError,
+  serviceLogsByCarIdDeleteOnMutate,
+} from '@/utils/tanstack/service_logs';
 
 import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
 import { Button } from '../../shared/base/Button/Button';
@@ -37,54 +41,10 @@ export function CarServiceLogsTableRow({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (serviceLogId: string) => deleteServiceLogById(serviceLogId),
-    onMutate: (serviceLogId: string) => {
-      let optimisticDeletedServiceLog: ServiceLog | undefined = undefined;
-
-      const previousQueryData = queryClient.getQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-      ) as ServiceLog[] | undefined;
-
-      if (!previousQueryData) return { optimisticDeletedServiceLog };
-
-      optimisticDeletedServiceLog = previousQueryData.find(
-        (serviceLog) => serviceLog.id === serviceLogId,
-      );
-
-      if (!optimisticDeletedServiceLog) return { optimisticDeletedServiceLog };
-
-      let updatedQueryData = previousQueryData.map((serviceLog) => ({
-        ...serviceLog,
-      }));
-
-      updatedQueryData = updatedQueryData.filter(
-        (serviceLog) => serviceLog.id !== serviceLogId,
-      );
-
-      queryClient.setQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-        updatedQueryData,
-      );
-
-      return { optimisticDeletedServiceLog };
-    },
+    onMutate: (serviceLogId: string) =>
+      serviceLogsByCarIdDeleteOnMutate(carId, serviceLogId, queryClient),
     onError: (error, _, context) => {
-      const previousQueryData = queryClient.getQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-      ) as ServiceLog[] | undefined;
-
-      if (!previousQueryData || !context?.optimisticDeletedServiceLog) return;
-
-      const updatedQueryData = previousQueryData.map((serviceLog) => ({
-        ...serviceLog,
-      }));
-
-      updatedQueryData.push(context.optimisticDeletedServiceLog);
-
-      queryClient.setQueryData(
-        queryKeys.serviceLogsByCarId(carId),
-        updatedQueryData,
-      );
-
+      serviceLogsByCarIdDeleteOnError(context, carId, queryClient);
       addToast(error.message, 'error');
     },
     onSuccess: () => addToast('Service log deleted successfully.', 'success'),
