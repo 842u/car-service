@@ -1,19 +1,14 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-
 import {
-  carServiceLogFormSchema,
   CarServiceLogFormValues,
   MAX_SERVICE_NOTE_lENGTH,
 } from '@/schemas/zod/carServiceLogFormSchema';
 import { serviceCategoryMapping, ServiceLog } from '@/types';
-import { parseDateToYyyyMmDd } from '@/utils/general';
 
 import { Button } from '../base/Button/Button';
 import { Form, FormProps } from '../base/Form/Form';
+import { useCarServiceLogForm } from './useCarServiceLogForm';
 
-type CarServiceLogFormProps = Omit<FormProps, 'onSubmit'> & {
+export type CarServiceLogFormProps = Omit<FormProps, 'onSubmit'> & {
   onSubmit?: (formData: CarServiceLogFormValues) => void;
   carId?: string;
   serviceLog?: ServiceLog;
@@ -26,46 +21,13 @@ export function CarServiceLogForm({
   ...props
 }: CarServiceLogFormProps) {
   const {
-    handleSubmit,
-    reset,
+    errors,
+    handleFormSubmit,
+    handleResetButtonClick,
+    isDirty,
+    isValid,
     register,
-    formState: { errors, isValid, isDirty, isSubmitSuccessful },
-  } = useForm<CarServiceLogFormValues>({
-    resolver: zodResolver(carServiceLogFormSchema),
-    mode: 'onChange',
-    defaultValues: serviceLog
-      ? {
-          category: serviceLog.category,
-          mileage: serviceLog.mileage,
-          notes: serviceLog.notes,
-          service_cost: serviceLog.service_cost,
-          service_date: serviceLog.service_date,
-        }
-      : {
-          // Intentionally do not set required category to enforce user do it.
-          service_date: parseDateToYyyyMmDd(new Date()),
-          mileage: null,
-          notes: null,
-          service_cost: null,
-        },
-  });
-
-  useEffect(() => {
-    isSubmitSuccessful && reset();
-  }, [isSubmitSuccessful, reset]);
-
-  useEffect(() => {
-    if (serviceLog) {
-      reset(serviceLog);
-    }
-  }, [serviceLog, reset]);
-
-  const handleResetButtonClick = () => reset();
-
-  const handleFormSubmit = handleSubmit((formData: CarServiceLogFormValues) => {
-    formData.category.sort();
-    onSubmit && onSubmit(formData);
-  });
+  } = useCarServiceLogForm({ onSubmit, serviceLog });
 
   return (
     <Form variant="raw" onSubmit={handleFormSubmit} {...props}>
