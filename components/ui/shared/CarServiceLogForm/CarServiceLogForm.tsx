@@ -62,9 +62,10 @@ export function CarServiceLogForm({
 
   const handleResetButtonClick = () => reset();
 
-  const handleFormSubmit = handleSubmit(
-    (formData: CarServiceLogFormValues) => onSubmit && onSubmit(formData),
-  );
+  const handleFormSubmit = handleSubmit((formData: CarServiceLogFormValues) => {
+    formData.category.sort();
+    onSubmit && onSubmit(formData);
+  });
 
   return (
     <Form variant="raw" onSubmit={handleFormSubmit} {...props}>
