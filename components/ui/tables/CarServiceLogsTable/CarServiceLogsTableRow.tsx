@@ -36,7 +36,7 @@ export function CarServiceLogsTableRow({
     >
       <td className="w-0 p-2 whitespace-nowrap">{serviceLog.service_date}</td>
       <td className="w-0 p-2">
-        <div className="max-h-16 overflow-auto">
+        <div className="max-h-16 w-fit overflow-y-auto">
           {serviceLog.category.map((value) => (
             <p key={value}>{value}</p>
           ))}
