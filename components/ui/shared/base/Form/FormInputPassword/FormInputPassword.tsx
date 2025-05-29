@@ -13,8 +13,8 @@ import { VisibilityButton } from '@/components/ui/buttons/VisibilityButton/Visib
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { FormInputErrorText } from './FormInputErrorText';
-import { FormInputLabelText } from './FormInputLabelText';
+import { FormInputErrorText } from '../FormInput/FormInputErrorText';
+import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
 type FormInputPasswordProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,

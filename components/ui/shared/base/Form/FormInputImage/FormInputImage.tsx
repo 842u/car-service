@@ -9,8 +9,8 @@ import {
 import { getMimeTypeExtensions } from '@/utils/general';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { FormInputErrorText } from '../FormInputErrorText';
-import { FormInputLabelText } from '../FormInputLabelText';
+import { FormInputErrorText } from '../FormInput/FormInputErrorText';
+import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 import { useFormInputImage } from './useFormInputImage';
 
 export const FORM_INPUT_IMAGE_TEST_ID = 'form input image test id';

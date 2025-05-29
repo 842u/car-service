@@ -4,7 +4,7 @@ import { AriaRole } from 'react';
 
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 
-import { FORM_INPUT_IMAGE_TEST_ID } from '../base/Form/FormInput/FormInputImage/FormInputImage';
+import { FORM_INPUT_IMAGE_TEST_ID } from '../base/Form/FormInputImage/FormInputImage';
 import { CarForm } from './CarForm';
 
 const CAR_FORM_VALUES_MAP: {
