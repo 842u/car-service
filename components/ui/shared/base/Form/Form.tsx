@@ -12,6 +12,7 @@ import { FormInputWrapper } from './FormInput/FormInputWrapper';
 import { FormInputImage } from './FormInputImage/FormInputImage';
 import { FormInputPassword } from './FormInputPassword/FormInputPassword';
 import { FormSelect } from './FormSelect/FormSelect';
+import { FormTextarea } from './FormTextarea/FormTextarea';
 
 export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
@@ -38,3 +39,4 @@ Form.ButtonSubmit = FormButtonSubmit;
 Form.Controls = FormControls;
 Form.Select = FormSelect;
 Form.CheckboxGroup = FormCheckboxGroup;
+Form.Textarea = FormTextarea;
