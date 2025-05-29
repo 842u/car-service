@@ -5,6 +5,7 @@ import { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
 import { FormButtonSubmit } from './FormButtonSubmit';
+import { FormCheckboxGroup } from './FormCheckboxGroup/FormCheckboxGroup';
 import { FormControls } from './FormControls';
 import { FormInput } from './FormInput/FormInput';
 import { FormInputImage } from './FormInput/FormInputImage/FormInputImage';
@@ -36,3 +37,4 @@ Form.InputWrapper = FormInputWrapper;
 Form.ButtonSubmit = FormButtonSubmit;
 Form.Controls = FormControls;
 Form.Select = FormSelect;
+Form.CheckboxGroup = FormCheckboxGroup;
