@@ -245,15 +245,15 @@ export type Database = {
         | 'hydrogen'
         | 'ethanol';
       service_category:
-        | 'engine'
         | 'battery'
-        | 'brakes'
-        | 'suspension'
-        | 'tires'
-        | 'electrical'
         | 'body'
+        | 'brakes'
+        | 'electrical'
+        | 'engine'
         | 'interior'
-        | 'other';
+        | 'other'
+        | 'suspension'
+        | 'tires';
       transmission: 'manual' | 'automatic' | 'CVT';
     };
     CompositeTypes: {
@@ -689,15 +689,15 @@ export const Constants = {
         'ethanol',
       ],
       service_category: [
-        'engine',
         'battery',
-        'brakes',
-        'suspension',
-        'tires',
-        'electrical',
         'body',
+        'brakes',
+        'electrical',
+        'engine',
         'interior',
         'other',
+        'suspension',
+        'tires',
       ],
       transmission: ['manual', 'automatic', 'CVT'],
     },
