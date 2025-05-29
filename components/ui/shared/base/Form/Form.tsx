@@ -6,12 +6,13 @@ import { formVariants } from '@/utils/tailwindcss/form';
 
 import { FormButtonSubmit } from './FormButtonSubmit/FormButtonSubmit';
 import { FormCheckboxGroup } from './FormCheckboxGroup/FormCheckboxGroup';
-import { FormControls } from './FormControls';
+import { FormControls } from './FormControls/FormControls';
 import { FormInput } from './FormInput/FormInput';
-import { FormInputImage } from './FormInput/FormInputImage/FormInputImage';
-import { FormInputPassword } from './FormInput/FormInputPassword';
 import { FormInputWrapper } from './FormInput/FormInputWrapper';
+import { FormInputImage } from './FormInputImage/FormInputImage';
+import { FormInputPassword } from './FormInputPassword/FormInputPassword';
 import { FormSelect } from './FormSelect/FormSelect';
+import { FormTextarea } from './FormTextarea/FormTextarea';
 
 export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
@@ -38,3 +39,4 @@ Form.ButtonSubmit = FormButtonSubmit;
 Form.Controls = FormControls;
 Form.Select = FormSelect;
 Form.CheckboxGroup = FormCheckboxGroup;
+Form.Textarea = FormTextarea;

@@ -13,8 +13,8 @@ import { VisibilityButton } from '@/components/ui/buttons/VisibilityButton/Visib
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { FormInputErrorText } from './FormInputErrorText';
-import { FormInputLabelText } from './FormInputLabelText';
+import { FormInputErrorText } from '../FormInput/FormInputErrorText';
+import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
 type FormInputPasswordProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,
@@ -26,7 +26,6 @@ type FormInputPasswordProps<T extends FieldValues> = Omit<
   variant?: InputVariants;
   required?: boolean;
   registerOptions?: RegisterOptions<T>;
-  placeholder?: string;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
 };
@@ -35,7 +34,6 @@ export function FormInputPassword<T extends FieldValues>({
   register,
   label,
   name,
-  placeholder,
   registerOptions,
   errorMessage,
   className,
@@ -51,7 +49,7 @@ export function FormInputPassword<T extends FieldValues>({
   };
 
   return (
-    <label htmlFor={name}>
+    <label>
       <FormInputLabelText required={required} text={label} />
       <div
         className={twMerge(
@@ -62,8 +60,6 @@ export function FormInputPassword<T extends FieldValues>({
       >
         <input
           className="inline-block h-full w-full pl-3"
-          id={name}
-          placeholder={placeholder}
           type={passwordVisible ? 'text' : 'password'}
           {...props}
           {...(register ? register(name, registerOptions) : {})}

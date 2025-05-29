@@ -40,7 +40,7 @@ export function FormSelect<T extends FieldValues>({
   hasEmptyOption = true,
 }: FormSelectProps<T>) {
   return (
-    <label className="text-sm" htmlFor={name}>
+    <label className="text-sm">
       <FormInputLabelText required={required} text={label} />
       <select
         className={twMerge(
@@ -48,7 +48,6 @@ export function FormSelect<T extends FieldValues>({
           'my-1',
           className,
         )}
-        id={name}
         {...(register ? register(name, registerOptions) : {})}
       >
         {hasEmptyOption && (

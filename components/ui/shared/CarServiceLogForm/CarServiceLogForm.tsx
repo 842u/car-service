@@ -53,23 +53,25 @@ export function CarServiceLogForm({
         label="Mileage"
         min={0}
         name="mileage"
+        placeholder="Enter mileage"
         register={register}
         registerOptions={{ valueAsNumber: true }}
         type="number"
       />
-      <Form.Input
+      <Form.Textarea
         errorMessage={errors.notes?.message}
         label="Notes"
         maxLength={MAX_SERVICE_NOTE_lENGTH}
         name="notes"
+        placeholder="Enter notes"
         register={register}
-        type="text"
       />
       <Form.Input
         errorMessage={errors.service_cost?.message}
         label="Cost"
         min={0}
         name="service_cost"
+        placeholder="Enter cost"
         register={register}
         registerOptions={{ valueAsNumber: true }}
         step={0.01}
