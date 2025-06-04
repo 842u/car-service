@@ -2,7 +2,6 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
-import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
 import {
   getCurrentSessionProfile,
@@ -14,12 +13,6 @@ import { CarSettingsSectionProps } from './CarSettingsSection';
 
 export function useCarSettingsSection({ carId }: CarSettingsSectionProps) {
   const { addToast } = useToasts();
-
-  const { data: carData, isPending } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.carsByCarId(carId),
-    queryFn: () => getCar(carId),
-  });
 
   const { data: carOwnershipData, error: carOwnershipDataError } = useQuery({
     throwOnError: false,
@@ -65,11 +58,9 @@ export function useCarSettingsSection({ carId }: CarSettingsSectionProps) {
   );
 
   return {
-    carData,
     carOwnershipData,
     sessionProfileData,
     ownersProfilesData,
-    isPending,
     isCurrentUserPrimaryOwner,
   };
 }
