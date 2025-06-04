@@ -1,10 +1,12 @@
-import { CarDetailsSectionProps } from '../../sections/CarDetailsSection/CarDetailsSection';
+'use client';
+
+import { useCarContext } from '@/hooks/useCarContext';
 
 export const CAR_DETAILS_TABLE_TEST_ID = 'car details table test id';
 
-type CarDetailsTableProps = Pick<CarDetailsSectionProps, 'carData'>;
+export function CarDetailsTable() {
+  const car = useCarContext();
 
-export function CarDetailsTable({ carData }: CarDetailsTableProps) {
   return (
     <div
       className="my-4 overflow-hidden md:flex md:flex-wrap md:gap-2"
@@ -18,19 +20,19 @@ export function CarDetailsTable({ carData }: CarDetailsTableProps) {
             <tbody>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Name:</th>
-                <td className="text-right">{carData?.custom_name}</td>
+                <td className="text-right">{car.custom_name}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Brand:</th>
-                <td className="text-right">{carData?.brand}</td>
+                <td className="text-right">{car.brand}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Model:</th>
-                <td className="text-right">{carData?.model}</td>
+                <td className="text-right">{car.model}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Production year:</th>
-                <td className="text-right">{carData?.production_year}</td>
+                <td className="text-right">{car.production_year}</td>
               </tr>
             </tbody>
           </table>
@@ -46,11 +48,11 @@ export function CarDetailsTable({ carData }: CarDetailsTableProps) {
             <tbody>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">License plates:</th>
-                <td className="text-right">{carData?.license_plates}</td>
+                <td className="text-right">{car.license_plates}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">VIN:</th>
-                <td className="text-right">{carData?.vin}</td>
+                <td className="text-right">{car.vin}</td>
               </tr>
             </tbody>
           </table>
@@ -64,23 +66,23 @@ export function CarDetailsTable({ carData }: CarDetailsTableProps) {
             <tbody>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Engine capacity [cc]:</th>
-                <td className="text-right">{carData?.engine_capacity}</td>
+                <td className="text-right">{car.engine_capacity}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Fuel type:</th>
-                <td className="text-right">{carData?.fuel_type}</td>
+                <td className="text-right">{car.fuel_type}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Additional fuel type:</th>
-                <td className="text-right">{carData?.additional_fuel_type}</td>
+                <td className="text-right">{car.additional_fuel_type}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Drive type:</th>
-                <td className="text-right">{carData?.drive_type}</td>
+                <td className="text-right">{car.drive_type}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Transmission type:</th>
-                <td className="text-right">{carData?.transmission_type}</td>
+                <td className="text-right">{car.transmission_type}</td>
               </tr>
             </tbody>
           </table>
@@ -94,18 +96,18 @@ export function CarDetailsTable({ carData }: CarDetailsTableProps) {
             <tbody>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Mileage [km]:</th>
-                <td className="text-right">{carData?.mileage}</td>
+                <td className="text-right">{car.mileage}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">Insurance expiration:</th>
-                <td className="text-right">{carData?.insurance_expiration}</td>
+                <td className="text-right">{car.insurance_expiration}</td>
               </tr>
               <tr className="even:bg-alpha-grey-100">
                 <th className="text-left font-normal">
                   Technical inspection expiration:
                 </th>
                 <td className="text-right">
-                  {carData?.technical_inspection_expiration}
+                  {car.technical_inspection_expiration}
                 </td>
               </tr>
             </tbody>
