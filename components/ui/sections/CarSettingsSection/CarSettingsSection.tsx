@@ -1,5 +1,7 @@
 'use client';
 
+import { CarContextProvider } from '@/components/providers/CarContextProvider';
+
 import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
 import { CarIdentitySection } from '../CarIdentitySection/CarIdentitySection';
@@ -13,8 +15,6 @@ export type CarSettingsSectionProps = {
 
 export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
   const {
-    carData,
-    isPending,
     isCurrentUserPrimaryOwner,
     carOwnershipData,
     ownersProfilesData,
@@ -22,29 +22,25 @@ export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
   } = useCarSettingsSection({ carId });
 
   return (
-    <section className="flex w-full flex-col gap-5 p-5">
-      <CarIdentitySection
-        imageUrl={carData?.image_url}
-        isPending={isPending}
-        name={carData?.custom_name}
-      />
-      <CarDetailsSection
-        carData={carData}
-        carId={carId}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-      />
-      <CarServiceLogsSection carId={carId} />
-      <CarOwnershipSection
-        carId={carId}
-        carOwnershipData={carOwnershipData}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfilesData={ownersProfilesData}
-        sessionProfileData={sessionProfileData}
-      />
-      <CarDeleteSection
-        carId={carId}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-      />
-    </section>
+    <CarContextProvider carId={carId}>
+      <section className="flex w-full flex-col gap-5 p-5">
+        <CarIdentitySection />
+        <CarDetailsSection
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+        />
+        <CarServiceLogsSection carId={carId} />
+        <CarOwnershipSection
+          carId={carId}
+          carOwnershipData={carOwnershipData}
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+          ownersProfilesData={ownersProfilesData}
+          sessionProfileData={sessionProfileData}
+        />
+        <CarDeleteSection
+          carId={carId}
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+        />
+      </section>
+    </CarContextProvider>
   );
 }

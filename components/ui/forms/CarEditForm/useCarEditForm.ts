@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
 
+import { useCarContext } from '@/hooks/useCarContext';
 import { useToasts } from '@/hooks/useToasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
@@ -11,12 +12,14 @@ import { CarFormRef } from '../../shared/CarForm/CarForm';
 import { CarEditFormProps } from './CarEditForm';
 
 export function useCarEditForm({
-  carId,
   onSubmit,
 }: Omit<CarEditFormProps, 'carData'>) {
   const carFormRef = useRef<CarFormRef>(null);
 
   const { addToast } = useToasts();
+
+  const car = useCarContext();
+  const carId = car.id;
 
   const queryClient = useQueryClient();
 
@@ -52,5 +55,5 @@ export function useCarEditForm({
     });
   };
 
-  return { handleFormSubmit, carFormRef };
+  return { handleFormSubmit, carFormRef, car };
 }
