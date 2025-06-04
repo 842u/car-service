@@ -2,9 +2,16 @@ INSERT INTO STORAGE.buckets(id, NAME, public, file_size_limit, allowed_mime_type
   VALUES ('avatars', 'avatars', TRUE, 5242880, ARRAY['image/jpeg',
     'image/png', 'image/svg+xml', 'image/webp']);
 
-ALTER TABLE STORAGE.buckets ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "public read acces to avatars bucket" ON STORAGE.objects
+/*
+ * From supabase v2.24.3 RLS is enabled by default for tables in auth, storage, and realtime schemas.
+ ! To avoid error this line was commented out:
+ ! ALTER TABLE STORAGE.buckets ENABLE ROW LEVEL SECURITY;
+ * For more check:
+ * https://github.com/supabase/cli/issues/3599#issuecomment-2927614759
+ * https://github.com/orgs/supabase/discussions/34270
+ */
+CREATE POLICY "public read access to avatars bucket" ON STORAGE.objects
   FOR SELECT TO authenticated, anon
     USING (bucket_id = 'avatars');
 
