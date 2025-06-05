@@ -1,12 +1,12 @@
 'use client';
 
-import { PencilIcon } from '@/components/decorative/icons/PencilIcon';
-import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
+import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
 import { ServiceLog } from '@/types';
 
 import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
 import { Button } from '../../shared/base/Button/Button';
 import { DialogModal } from '../../shared/base/DialogModal/DialogModal';
+import { Dropdown } from '../../shared/base/Dropdown/Dropdown';
 import { IconButton } from '../../shared/IconButton/IconButton';
 import { useCarServiceLogsTableRow } from './useCarServiceLogsTableRow';
 
@@ -52,46 +52,64 @@ export function CarServiceLogsTableRow({
         <p className="max-h-16 min-w-48 overflow-y-auto">{serviceLog.notes}</p>
       </td>
       <td className="w-0 p-2">
-        <div className="flex w-auto gap-4">
-          <IconButton
-            title="edit log"
-            variant="accent"
-            onClick={handleEditLogButtonClick}
-          >
-            <PencilIcon className="min-h-full min-w-full stroke-2" />
-          </IconButton>
-          <IconButton
-            title="delete log"
-            variant="error"
-            onClick={handleDeleteServiceLogButtonClick}
-          >
-            <TrashIcon className="min-h-full min-w-full stroke-2" />
-          </IconButton>
-          <DialogModal ref={editDialogModalRef} headingText="Edit service log">
-            <CarServiceLogEditForm
-              carId={carId}
-              serviceLog={serviceLog}
-              onSubmit={handleCarServiceLogEditFormSubmit}
-            />
-          </DialogModal>
-          <DialogModal
-            ref={deleteDialogModalRef}
-            headingText="Delete service log"
-          >
-            <p className="my-4">Are you sure you want to delete service log?</p>
-            <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
-              <Button onClick={handleCancelDeleteServiceLogButtonClick}>
-                Cancel
-              </Button>
-              <Button
-                variant="error"
-                onClick={handleConfirmDeleteServiceLogButtonClick}
+        <Dropdown>
+          <Dropdown.Trigger>
+            {({ onClick, ref }) => (
+              <IconButton
+                ref={ref}
+                title="Actions"
+                variant="transparent"
+                onClick={onClick}
               >
-                Delete
-              </Button>
-            </div>
-          </DialogModal>
-        </div>
+                <EllipsisIcon className="fill-dark-500 dark:fill-light-500 w-full px-1" />
+              </IconButton>
+            )}
+          </Dropdown.Trigger>
+          <Dropdown.Content snap="bottom-right">
+            <Button
+              className="w-full"
+              variant="transparent"
+              onClick={handleEditLogButtonClick}
+            >
+              Edit
+            </Button>
+            <DialogModal
+              ref={editDialogModalRef}
+              headingText="Edit service log"
+            >
+              <CarServiceLogEditForm
+                carId={carId}
+                serviceLog={serviceLog}
+                onSubmit={handleCarServiceLogEditFormSubmit}
+              />
+            </DialogModal>
+            <Button
+              variant="transparent"
+              onClick={handleDeleteServiceLogButtonClick}
+            >
+              Delete
+            </Button>
+            <DialogModal
+              ref={deleteDialogModalRef}
+              headingText="Delete service log"
+            >
+              <p className="my-4">
+                Are you sure you want to delete service log?
+              </p>
+              <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
+                <Button onClick={handleCancelDeleteServiceLogButtonClick}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="error"
+                  onClick={handleConfirmDeleteServiceLogButtonClick}
+                >
+                  Delete
+                </Button>
+              </div>
+            </DialogModal>
+          </Dropdown.Content>
+        </Dropdown>
       </td>
     </tr>
   );
