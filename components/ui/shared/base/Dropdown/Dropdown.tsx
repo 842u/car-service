@@ -7,6 +7,8 @@ import {
   useState,
 } from 'react';
 
+import { DropdownTrigger } from './DropdownTrigger/DropdownTrigger';
+
 type DropdownContextValue = {
   isOpen: boolean;
   toggle: () => void;
@@ -44,3 +46,5 @@ export function Dropdown({
     </DropdownContext.Provider>
   );
 }
+
+Dropdown.Trigger = DropdownTrigger;
