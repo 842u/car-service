@@ -11,12 +11,8 @@ export function DropdownContent({ children }: DropdownContentProps) {
     isOpen && (
       <div
         ref={contentRef}
-        className={`absolute top-[${position.top}] left-[${position.left}] bg-light-500 dark:bg-dark-500 border-alpha-grey-500 p8 z-50 my-1 overflow-hidden rounded-lg border p-2`}
+        className={`absolute top-[${position.top}] left-[${position.left}] bg-light-500 dark:bg-dark-500 border-alpha-grey-500 z-50 my-1 overflow-hidden rounded-lg border p-1`}
       >
-        <div
-          aria-hidden
-          className="bg-alpha-grey-200 absolute top-0 left-0 h-full w-full"
-        />
         {children}
       </div>
     )
