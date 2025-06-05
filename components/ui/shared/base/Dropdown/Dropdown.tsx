@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { DropdownContent } from './DropdownContent/DropdownContent';
 import { DropdownTrigger } from './DropdownTrigger/DropdownTrigger';
@@ -43,7 +44,7 @@ export function Dropdown({
 
   return (
     <DropdownContext.Provider value={{ isOpen, toggle, close, triggerRef }}>
-      <div className={className}>{children}</div>
+      <div className={twMerge('relative', className)}>{children}</div>
     </DropdownContext.Provider>
   );
 }
