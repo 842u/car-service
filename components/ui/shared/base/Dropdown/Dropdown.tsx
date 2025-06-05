@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 
+import { DropdownContent } from './DropdownContent/DropdownContent';
 import { DropdownTrigger } from './DropdownTrigger/DropdownTrigger';
 
 type DropdownContextValue = {
@@ -48,3 +49,4 @@ export function Dropdown({
 }
 
 Dropdown.Trigger = DropdownTrigger;
+Dropdown.Content = DropdownContent;
