@@ -2,13 +2,34 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
-import { CarContext } from '@/context/CarContext';
+import { ToastsProvider } from '@/components/providers/ToastsProvider';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { MOCK_CAR } from '@/utils/jest/mocks/general';
+import { Car } from '@/types';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 
 import { CarEditForm } from './CarEditForm';
 
+const MOCK_CAR_ID = 'id';
+const MOCK_CAR_DATABASE_DATA: Car = {
+  created_at: null,
+  created_by: null,
+  id: MOCK_CAR_ID,
+  additional_fuel_type: null,
+  brand: null,
+  drive_type: null,
+  engine_capacity: null,
+  fuel_type: null,
+  insurance_expiration: null,
+  license_plates: null,
+  mileage: null,
+  model: null,
+  custom_name: 'testName',
+  production_year: null,
+  technical_inspection_expiration: null,
+  transmission_type: null,
+  vin: null,
+  image_url: null,
+};
 const MOCK_CAR_FORM_DATA: CarFormValues = {
   additionalFuelType: null,
   brand: null,
@@ -29,7 +50,7 @@ const MOCK_CAR_FORM_DATA: CarFormValues = {
 
 jest.mock('@/utils/supabase/tables/cars.ts', () => ({
   handleCarFormSubmit: jest.fn(async () =>
-    Promise.resolve({ data: { id: MOCK_CAR.id }, error: null }),
+    Promise.resolve({ data: { id: MOCK_CAR_ID }, error: null }),
   ),
 }));
 
@@ -40,9 +61,9 @@ jest.mock('@/utils/tanstack/cars.ts', () => ({
 function TestCarEditForm() {
   return (
     <TanStackQueryProvider>
-      <CarContext value={MOCK_CAR}>
-        <CarEditForm />
-      </CarContext>
+      <ToastsProvider>
+        <CarEditForm carData={MOCK_CAR_DATABASE_DATA} carId={MOCK_CAR_ID} />
+      </ToastsProvider>
     </TanStackQueryProvider>
   );
 }
@@ -65,7 +86,7 @@ describe('CarEditForm', () => {
 
     expect(handleCarFormSubmit).toHaveBeenCalledWith(
       MOCK_CAR_FORM_DATA,
-      MOCK_CAR.id,
+      MOCK_CAR_ID,
       'PATCH',
     );
   });
