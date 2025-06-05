@@ -1,10 +1,15 @@
-import { ComponentProps, MouseEventHandler, ReactElement } from 'react';
+import {
+  ComponentProps,
+  ComponentPropsWithRef,
+  MouseEventHandler,
+  ReactElement,
+} from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { ButtonVariants } from '@/types';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
-type IconButtonProps = {
+type IconButtonProps = ComponentPropsWithRef<'button'> & {
   title: string;
   children: ReactElement<ComponentProps<'svg'>, 'svg'>;
   variant?: ButtonVariants;
@@ -20,6 +25,7 @@ export function IconButton({
   variant = 'default',
   disabled,
   className,
+  ...props
 }: IconButtonProps) {
   return (
     <button
@@ -33,6 +39,7 @@ export function IconButton({
       title={title}
       type="button"
       onClick={onClick}
+      {...props}
     >
       {children}
     </button>
