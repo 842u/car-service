@@ -147,3 +147,9 @@ export async function debugDelayRejectResponse(delayMilliseconds: number) {
     setTimeout(() => reject(new Error('debug error')), delayMilliseconds),
   );
 }
+
+export function toSafeNumber(value: unknown) {
+  const number = Number(value);
+
+  return isNaN(number) ? 0 : number;
+}
