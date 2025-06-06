@@ -6,7 +6,9 @@ export async function getServiceLogsByCarId(carId: string) {
   const { data, error } = await supabase
     .from('service_logs')
     .select('*')
-    .eq('car_id', carId);
+    .eq('car_id', carId)
+    .order('service_date', { ascending: false })
+    .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
 
