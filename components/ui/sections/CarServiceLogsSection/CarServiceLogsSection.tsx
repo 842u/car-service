@@ -20,9 +20,15 @@ import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarService
 
 type CarServiceLogsSectionProps = {
   carId: string;
+  userId: string;
+  isCurrentUserPrimaryOwner: boolean;
 };
 
-export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
+export function CarServiceLogsSection({
+  carId,
+  userId,
+  isCurrentUserPrimaryOwner,
+}: CarServiceLogsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
@@ -52,7 +58,9 @@ export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
         <CarServiceLogsTable
           caption="service log table"
           carId={carId}
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
           serviceLogs={data}
+          userId={userId}
         />
       )}
       <DashboardSection.Controls>

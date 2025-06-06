@@ -14,7 +14,9 @@ import { CarServiceLogsTableRowProps } from './CarServiceLogsTableRow';
 
 export function useCarServiceLogsTableRow({
   carId,
+  userId,
   serviceLog,
+  isCurrentUserPrimaryOwner,
 }: CarServiceLogsTableRowProps) {
   const editDialogModalRef = useRef<DialogModalRef>(null);
 
@@ -56,6 +58,9 @@ export function useCarServiceLogsTableRow({
         }),
     });
 
+  const canModifyLog =
+    isCurrentUserPrimaryOwner || userId === serviceLog.created_by;
+
   return {
     handleEditLogButtonClick,
     handleCarServiceLogEditFormSubmit,
@@ -64,5 +69,6 @@ export function useCarServiceLogsTableRow({
     handleConfirmDeleteServiceLogButtonClick,
     editDialogModalRef,
     deleteDialogModalRef,
+    canModifyLog,
   };
 }

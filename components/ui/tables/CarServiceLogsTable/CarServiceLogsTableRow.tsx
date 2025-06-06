@@ -13,13 +13,18 @@ import { useCarServiceLogsTableRow } from './useCarServiceLogsTableRow';
 export type CarServiceLogsTableRowProps = {
   serviceLog: ServiceLog;
   carId: string;
+  userId: string;
+  isCurrentUserPrimaryOwner: boolean;
 };
 
 export function CarServiceLogsTableRow({
   serviceLog,
   carId,
+  userId,
+  isCurrentUserPrimaryOwner,
 }: CarServiceLogsTableRowProps) {
   const {
+    canModifyLog,
     editDialogModalRef,
     deleteDialogModalRef,
     handleCancelDeleteServiceLogButtonClick,
@@ -27,7 +32,12 @@ export function CarServiceLogsTableRow({
     handleConfirmDeleteServiceLogButtonClick,
     handleDeleteServiceLogButtonClick,
     handleEditLogButtonClick,
-  } = useCarServiceLogsTableRow({ carId, serviceLog });
+  } = useCarServiceLogsTableRow({
+    carId,
+    userId,
+    serviceLog,
+    isCurrentUserPrimaryOwner,
+  });
 
   return (
     <tr
@@ -68,6 +78,7 @@ export function CarServiceLogsTableRow({
           <Dropdown.Content snap="bottom-right">
             <Button
               className="w-full"
+              disabled={!canModifyLog}
               variant="transparent"
               onClick={handleEditLogButtonClick}
             >
@@ -84,6 +95,7 @@ export function CarServiceLogsTableRow({
               />
             </DialogModal>
             <Button
+              disabled={!canModifyLog}
               variant="transparent"
               onClick={handleDeleteServiceLogButtonClick}
             >
@@ -101,6 +113,7 @@ export function CarServiceLogsTableRow({
                   Cancel
                 </Button>
                 <Button
+                  disabled={!canModifyLog}
                   variant="error"
                   onClick={handleConfirmDeleteServiceLogButtonClick}
                 >
