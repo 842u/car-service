@@ -31,33 +31,41 @@ export function CarServiceLogForm({
 
   return (
     <Form variant="raw" onSubmit={handleFormSubmit} {...props}>
-      <Form.Input
-        required
-        errorMessage={errors.service_date?.message}
-        label="Date"
-        name="service_date"
-        register={register}
-        registerOptions={{ valueAsDate: false }}
-        type="date"
-      />
-      <Form.CheckboxGroup
-        required
-        checkboxLabelValueMapping={serviceCategoryMapping}
-        errorMessage={errors.category?.message}
-        label="Category"
-        name="category"
-        register={register}
-      />
-      <Form.Input
-        errorMessage={errors.mileage?.message}
-        label="Mileage"
-        min={0}
-        name="mileage"
-        placeholder="Enter mileage"
-        register={register}
-        registerOptions={{ valueAsNumber: true }}
-        type="number"
-      />
+      <div className="md:flex md:gap-4">
+        <Form.InputWrapper>
+          <Form.Input
+            required
+            errorMessage={errors.service_date?.message}
+            label="Date"
+            name="service_date"
+            register={register}
+            registerOptions={{ valueAsDate: false }}
+            type="date"
+          />
+        </Form.InputWrapper>
+        <Form.InputWrapper>
+          <Form.Input
+            errorMessage={errors.mileage?.message}
+            label="Mileage"
+            min={0}
+            name="mileage"
+            placeholder="Enter mileage"
+            register={register}
+            registerOptions={{ valueAsNumber: true }}
+            type="number"
+          />
+        </Form.InputWrapper>
+      </div>
+      <Form.InputWrapper>
+        <Form.CheckboxGroup
+          required
+          checkboxLabelValueMapping={serviceCategoryMapping}
+          errorMessage={errors.category?.message}
+          label="Category"
+          name="category"
+          register={register}
+        />
+      </Form.InputWrapper>
       <Form.Textarea
         errorMessage={errors.notes?.message}
         label="Notes"
@@ -66,17 +74,19 @@ export function CarServiceLogForm({
         placeholder="Enter notes"
         register={register}
       />
-      <Form.Input
-        errorMessage={errors.service_cost?.message}
-        label="Cost"
-        min={0}
-        name="service_cost"
-        placeholder="Enter cost"
-        register={register}
-        registerOptions={{ valueAsNumber: true }}
-        step={0.01}
-        type="number"
-      />
+      <Form.InputWrapper>
+        <Form.Input
+          errorMessage={errors.service_cost?.message}
+          label="Cost"
+          min={0}
+          name="service_cost"
+          placeholder="Enter cost"
+          register={register}
+          registerOptions={{ valueAsNumber: true }}
+          step={0.01}
+          type="number"
+        />
+      </Form.InputWrapper>
       <Form.Controls>
         <Button disabled={!isDirty} onClick={handleResetButtonClick}>
           Reset
