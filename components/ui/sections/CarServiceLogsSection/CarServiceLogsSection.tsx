@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
 import { BookIcon } from '@/components/decorative/icons/BookIcon';
+import { Spinner } from '@/components/decorative/Spinner/Spinner';
 import { useToasts } from '@/hooks/useToasts';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
@@ -19,14 +20,20 @@ import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarService
 
 type CarServiceLogsSectionProps = {
   carId: string;
+  userId: string;
+  isCurrentUserPrimaryOwner: boolean;
 };
 
-export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
+export function CarServiceLogsSection({
+  carId,
+  userId,
+  isCurrentUserPrimaryOwner,
+}: CarServiceLogsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
-  const { data, error } = useQuery({
+  const { data, error, isLoading } = useQuery({
     throwOnError: false,
     queryKey: queryKeys.serviceLogsByCarId(carId),
     queryFn: () => getServiceLogsByCarId(carId),
@@ -45,11 +52,17 @@ export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
       <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>
-      <CarServiceLogsTable
-        caption="service log table"
-        carId={carId}
-        serviceLogs={data}
-      />
+      {isLoading ? (
+        <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
+      ) : (
+        <CarServiceLogsTable
+          caption="service log table"
+          carId={carId}
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+          serviceLogs={data}
+          userId={userId}
+        />
+      )}
       <DashboardSection.Controls>
         <IconButton
           title="add service log"

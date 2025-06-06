@@ -4,12 +4,16 @@ import { CarServiceLogsTableRow } from './CarServiceLogsTableRow';
 
 type CarServiceLogsTableProps = {
   carId: string;
+  userId: string;
+  isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
   caption?: string;
 };
 
 export function CarServiceLogsTable({
   carId,
+  userId,
+  isCurrentUserPrimaryOwner,
   serviceLogs,
   caption,
 }: CarServiceLogsTableProps) {
@@ -32,7 +36,9 @@ export function CarServiceLogsTable({
             <CarServiceLogsTableRow
               key={serviceLog.id}
               carId={carId}
+              isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
               serviceLog={serviceLog}
+              userId={userId}
             />
           ))}
         </tbody>
