@@ -1,4 +1,9 @@
+'use client';
+
+import { useMemo } from 'react';
+
 import { ServiceLog } from '@/types';
+import { multiCriteriaServiceLogsSortComparator } from '@/utils/supabase/tables/service_logs';
 
 import { CarServiceLogsTableRow } from './CarServiceLogsTableRow';
 
@@ -17,6 +22,21 @@ export function CarServiceLogsTable({
   serviceLogs,
   caption,
 }: CarServiceLogsTableProps) {
+  const visibleServiceLogs = useMemo(() => {
+    if (!serviceLogs) return;
+
+    const sortedServiceLogs = [...serviceLogs];
+
+    sortedServiceLogs.sort((firstLog, secondLog) =>
+      multiCriteriaServiceLogsSortComparator(firstLog, secondLog, [
+        { key: 'service_date', order: 'descending' },
+        { key: 'created_at', order: 'descending' },
+      ]),
+    );
+
+    return sortedServiceLogs;
+  }, [serviceLogs]);
+
   return (
     <div className="my-4 max-h-80 overflow-auto">
       <table className="w-full">
@@ -32,7 +52,7 @@ export function CarServiceLogsTable({
           </tr>
         </thead>
         <tbody>
-          {serviceLogs?.map((serviceLog) => (
+          {visibleServiceLogs?.map((serviceLog) => (
             <CarServiceLogsTableRow
               key={serviceLog.id}
               carId={carId}
