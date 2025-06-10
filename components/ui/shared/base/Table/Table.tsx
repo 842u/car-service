@@ -2,6 +2,7 @@ import {
   ColumnDef,
   getCoreRowModel,
   Table as TanstackTable,
+  TableOptions,
   useReactTable,
 } from '@tanstack/react-table';
 import { createContext, ReactNode, use } from 'react';
@@ -24,6 +25,7 @@ type TableProps<T> = {
   columns: ColumnDef<T>[];
   data: T[];
   children: ReactNode;
+  options?: TableOptions<T>;
   className?: string;
 };
 
@@ -31,12 +33,14 @@ export function Table<T>({
   columns,
   data,
   children,
+  options,
   className,
 }: TableProps<T>) {
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
+    ...options,
   });
 
   return (
