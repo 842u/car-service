@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { createContext, use } from 'react';
 
+import { TableBody } from './TableBody';
 import { TableHead } from './TableHead';
 
 type TableContextValue<T> = { table: TanstackTable<T> };
@@ -43,6 +44,7 @@ export function Table<T>({ columns, data, options, className }: TableProps<T>) {
       <div className={className}>
         <table className="h-full w-full">
           <TableHead />
+          <TableBody />
         </table>
       </div>
     </TableContext>
