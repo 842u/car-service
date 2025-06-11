@@ -12,6 +12,8 @@ import { buttonVariants } from '@/utils/tailwindcss/button';
 type IconButtonProps = ComponentPropsWithRef<'button'> & {
   title: string;
   children: ReactElement<ComponentProps<'svg'>, 'svg'>;
+  text?: string;
+  iconSide?: 'left' | 'right';
   variant?: ButtonVariants;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
@@ -22,6 +24,8 @@ export function IconButton({
   title,
   children,
   onClick,
+  text,
+  iconSide = 'right',
   variant = 'default',
   disabled,
   className,
@@ -32,7 +36,7 @@ export function IconButton({
       aria-label={title}
       className={twMerge(
         buttonVariants[variant],
-        'overflow-hidden px-3 py-1',
+        'flex items-center justify-center gap-2 overflow-hidden px-3 py-1',
         className,
       )}
       disabled={disabled}
@@ -41,7 +45,9 @@ export function IconButton({
       onClick={onClick}
       {...props}
     >
-      {children}
+      {iconSide === 'left' && children}
+      {text && <span>{text}</span>}
+      {iconSide === 'right' && children}
     </button>
   );
 }
