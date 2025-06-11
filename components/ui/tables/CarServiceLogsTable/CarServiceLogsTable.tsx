@@ -1,68 +1,43 @@
 'use client';
 
-import { useMemo } from 'react';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 
 import { ServiceLog } from '@/types';
-import { multiCriteriaServiceLogsSortComparator } from '@/utils/supabase/tables/service_logs';
 
-import { CarServiceLogsTableRow } from './CarServiceLogsTableRow';
+import { Table } from '../../shared/base/Table/Table';
 
 type CarServiceLogsTableProps = {
-  carId: string;
-  userId: string;
-  isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
-  caption?: string;
 };
 
-export function CarServiceLogsTable({
-  carId,
-  userId,
-  isCurrentUserPrimaryOwner,
-  serviceLogs,
-  caption,
-}: CarServiceLogsTableProps) {
-  const visibleServiceLogs = useMemo(() => {
-    if (!serviceLogs) return;
+const columnsHelper = createColumnHelper<ServiceLog>();
 
-    const sortedServiceLogs = [...serviceLogs];
+const columns = [
+  columnsHelper.accessor('service_date', {
+    meta: { label: 'Date' },
+  }),
+  columnsHelper.accessor('category', {
+    meta: { label: 'Category' },
+  }),
+  columnsHelper.accessor('mileage', {
+    meta: { label: 'Mileage' },
+  }),
+  columnsHelper.accessor('service_cost', {
+    meta: { label: 'Cost' },
+  }),
+  columnsHelper.accessor('notes', {
+    meta: { label: 'Notes' },
+  }),
+  columnsHelper.display({ id: 'actions', cell: () => 'action' }),
+] as ColumnDef<ServiceLog>[];
 
-    sortedServiceLogs.sort((firstLog, secondLog) =>
-      multiCriteriaServiceLogsSortComparator(firstLog, secondLog, [
-        { key: 'service_date', order: 'descending' },
-        { key: 'created_at', order: 'descending' },
-      ]),
-    );
-
-    return sortedServiceLogs;
-  }, [serviceLogs]);
-
+export function CarServiceLogsTable({ serviceLogs }: CarServiceLogsTableProps) {
   return (
-    <div className="my-4 max-h-80 overflow-auto">
-      <table className="w-full">
-        <caption className="caption-bottom p-2">{caption}</caption>
-        <thead className="h-10">
-          <tr className="border-alpha-grey-300 border-b">
-            <th className="p-2 text-start">Date</th>
-            <th className="p-2 text-start">Category</th>
-            <th className="p-2 text-start">Mileage</th>
-            <th className="p-2 text-start">Cost</th>
-            <th className="p-2 text-start">Notes</th>
-            <th className="p-2 text-start">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {visibleServiceLogs?.map((serviceLog) => (
-            <CarServiceLogsTableRow
-              key={serviceLog.id}
-              carId={carId}
-              isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-              serviceLog={serviceLog}
-              userId={userId}
-            />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    serviceLogs && (
+      <Table columns={columns} data={serviceLogs}>
+        <Table.Head />
+        <Table.Body />
+      </Table>
+    )
   );
 }
