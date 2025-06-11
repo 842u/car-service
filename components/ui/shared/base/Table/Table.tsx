@@ -5,7 +5,7 @@ import {
   TableOptions,
   useReactTable,
 } from '@tanstack/react-table';
-import { createContext, use } from 'react';
+import { createContext, ReactNode, use } from 'react';
 
 import { TableBody } from './TableBody';
 import { TableHead } from './TableHead';
@@ -29,9 +29,16 @@ type TableProps<T> = {
   data: T[];
   options?: TableOptions<T>;
   className?: string;
+  children?: ReactNode;
 };
 
-export function Table<T>({ columns, data, options, className }: TableProps<T>) {
+export function Table<T>({
+  columns,
+  data,
+  options,
+  className,
+  children,
+}: TableProps<T>) {
   const table = useReactTable({
     columns,
     data,
@@ -42,11 +49,11 @@ export function Table<T>({ columns, data, options, className }: TableProps<T>) {
   return (
     <TableContext value={{ table }}>
       <div className={className}>
-        <table className="h-full w-full">
-          <TableHead />
-          <TableBody />
-        </table>
+        <table className="h-full w-full">{children}</table>
       </div>
     </TableContext>
   );
 }
+
+Table.Head = TableHead;
+Table.Body = TableBody;
