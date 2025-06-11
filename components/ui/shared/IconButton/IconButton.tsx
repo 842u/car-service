@@ -1,9 +1,4 @@
-import {
-  ComponentProps,
-  ComponentPropsWithRef,
-  MouseEventHandler,
-  ReactElement,
-} from 'react';
+import { ComponentPropsWithRef, MouseEventHandler, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { ButtonVariants } from '@/types';
@@ -11,7 +6,7 @@ import { buttonVariants } from '@/utils/tailwindcss/button';
 
 type IconButtonProps = ComponentPropsWithRef<'button'> & {
   title: string;
-  children: ReactElement<ComponentProps<'svg'>, 'svg'>;
+  children: ReactNode;
   text?: string;
   iconSide?: 'left' | 'right';
   variant?: ButtonVariants;
