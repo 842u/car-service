@@ -28,7 +28,7 @@ export function useTable() {
 type TableProps<T> = {
   columns: ColumnDef<T>[];
   data: T[];
-  options?: TableOptions<T>;
+  options?: Partial<TableOptions<T>>;
   className?: string;
   children?: ReactNode;
 };
