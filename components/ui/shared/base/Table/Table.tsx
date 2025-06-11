@@ -1,6 +1,7 @@
 import {
   ColumnDef,
   getCoreRowModel,
+  getSortedRowModel,
   Table as TanstackTable,
   TableOptions,
   useReactTable,
@@ -43,6 +44,7 @@ export function Table<T>({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     ...options,
   });
 

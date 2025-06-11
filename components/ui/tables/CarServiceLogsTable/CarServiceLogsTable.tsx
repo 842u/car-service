@@ -15,15 +15,18 @@ const columnsHelper = createColumnHelper<ServiceLog>();
 const columns = [
   columnsHelper.accessor('service_date', {
     meta: { label: 'Date' },
+    enableSorting: true,
   }),
   columnsHelper.accessor('category', {
     meta: { label: 'Category' },
   }),
   columnsHelper.accessor('mileage', {
     meta: { label: 'Mileage' },
+    enableSorting: true,
   }),
   columnsHelper.accessor('service_cost', {
     meta: { label: 'Cost' },
+    enableSorting: true,
   }),
   columnsHelper.accessor('notes', {
     meta: { label: 'Notes' },
