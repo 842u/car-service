@@ -10,9 +10,12 @@ export function TableBody() {
     <tbody>
       {rows.map((row) => (
         <tr key={row.id}>
-          {columns.map((column) => (
-            <td key={column.id}>{row.getValue(column.id)}</td>
-          ))}
+          {columns.map(
+            (column) =>
+              column.getIsVisible() && (
+                <td key={column.id}>{row.getValue(column.id)}</td>
+              ),
+          )}
         </tr>
       ))}
     </tbody>
