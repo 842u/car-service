@@ -5,8 +5,8 @@ import { ButtonVariants } from '@/types';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
 type IconButtonProps = ComponentPropsWithRef<'button'> & {
-  title: string;
   children: ReactNode;
+  title?: string;
   text?: string;
   iconSide?: 'left' | 'right';
   variant?: ButtonVariants;
