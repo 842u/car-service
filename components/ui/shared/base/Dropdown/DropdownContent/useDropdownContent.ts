@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { useDropdown } from '../Dropdown';
 
@@ -15,7 +15,7 @@ export function useDropdownContent({ snap }: { snap: DropdownContentSnap }) {
 
   const { isOpen, close, triggerRef } = useDropdown();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isOpen && triggerRef.current && contentRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const contentRect = contentRef.current.getBoundingClientRect();

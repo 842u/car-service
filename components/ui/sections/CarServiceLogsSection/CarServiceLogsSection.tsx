@@ -56,8 +56,6 @@ export function CarServiceLogsSection({
         <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
       ) : (
         <CarServiceLogsTable
-          caption="service log table"
-          carId={carId}
           isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
           serviceLogs={data}
           userId={userId}
