@@ -17,11 +17,14 @@ export function TableTh({ header, ...props }: TableThProps) {
   const columnId = header.column.id;
 
   return (
-    <th className="text-start" {...props}>
+    <th
+      className="w-1 px-5 py-1 text-start nth-last-of-type-[2]:w-auto"
+      {...props}
+    >
       {isSortable ? (
         <TableThDropdown columnId={columnId} label={headerLabel} />
       ) : (
-        <span className="px-1">{headerLabel}</span>
+        headerLabel
       )}
     </th>
   );

@@ -10,10 +10,13 @@ export function TableBody() {
   return (
     <tbody>
       {rows.map((row) => (
-        <tr key={row.id}>
+        <tr
+          key={row.id}
+          className="border-alpha-grey-200 text-dark-400 dark:text-light-600 border-b last-of-type:border-0"
+        >
           {row.getVisibleCells().map((cell) => {
             return (
-              <td key={cell.id}>
+              <td key={cell.id} className="px-5 py-1 whitespace-nowrap">
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             );

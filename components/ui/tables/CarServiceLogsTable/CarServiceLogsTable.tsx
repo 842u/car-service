@@ -77,6 +77,7 @@ export function CarServiceLogsTable({
   return (
     serviceLogs && (
       <Table
+        className="my-4 max-h-96 overflow-auto"
         columns={columns}
         data={serviceLogs}
         options={{
