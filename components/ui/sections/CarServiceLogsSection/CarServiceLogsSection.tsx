@@ -20,9 +20,15 @@ import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarService
 
 type CarServiceLogsSectionProps = {
   carId: string;
+  userId: string;
+  isCurrentUserPrimaryOwner: boolean;
 };
 
-export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
+export function CarServiceLogsSection({
+  carId,
+  userId,
+  isCurrentUserPrimaryOwner,
+}: CarServiceLogsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
@@ -49,7 +55,11 @@ export function CarServiceLogsSection({ carId }: CarServiceLogsSectionProps) {
       {isLoading ? (
         <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
       ) : (
-        <CarServiceLogsTable serviceLogs={data} />
+        <CarServiceLogsTable
+          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+          serviceLogs={data}
+          userId={userId}
+        />
       )}
       <DashboardSection.Controls>
         <IconButton

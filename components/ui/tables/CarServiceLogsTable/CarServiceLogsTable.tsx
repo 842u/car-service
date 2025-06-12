@@ -1,56 +1,79 @@
 'use client';
 
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { useMemo } from 'react';
 
 import { ServiceLog } from '@/types';
 
 import { Table } from '../../shared/base/Table/Table';
+import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown';
 
 type CarServiceLogsTableProps = {
+  userId: string;
+  isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
 };
 
 const columnsHelper = createColumnHelper<ServiceLog>();
 
-const columns = [
-  columnsHelper.accessor('service_date', {
-    meta: {
-      label: 'Date',
-    },
-    enableSorting: true,
-  }),
-  columnsHelper.accessor('created_at', {
-    meta: {
-      label: 'created_at',
-    },
-    enableSorting: true,
-  }),
-  columnsHelper.accessor('category', {
-    meta: {
-      label: 'Category',
-    },
-  }),
-  columnsHelper.accessor('mileage', {
-    meta: {
-      label: 'Mileage',
-    },
-    enableSorting: true,
-  }),
-  columnsHelper.accessor('service_cost', {
-    meta: {
-      label: 'Cost',
-    },
-    enableSorting: true,
-  }),
-  columnsHelper.accessor('notes', {
-    meta: {
-      label: 'Notes',
-    },
-  }),
-  columnsHelper.display({ id: 'actions', cell: () => 'action' }),
-] as ColumnDef<ServiceLog>[];
+export function CarServiceLogsTable({
+  userId,
+  isCurrentUserPrimaryOwner,
+  serviceLogs,
+}: CarServiceLogsTableProps) {
+  const columns = useMemo(
+    () =>
+      [
+        columnsHelper.accessor('service_date', {
+          meta: {
+            label: 'Date',
+          },
+          enableSorting: true,
+        }),
+        columnsHelper.accessor('created_at', {
+          meta: {
+            label: 'created_at',
+          },
+          enableSorting: true,
+        }),
+        columnsHelper.accessor('category', {
+          meta: {
+            label: 'Category',
+          },
+        }),
+        columnsHelper.accessor('mileage', {
+          meta: {
+            label: 'Mileage',
+          },
+          enableSorting: true,
+        }),
+        columnsHelper.accessor('service_cost', {
+          meta: {
+            label: 'Cost',
+          },
+          enableSorting: true,
+        }),
+        columnsHelper.accessor('notes', {
+          meta: {
+            label: 'Notes',
+          },
+        }),
+        columnsHelper.display({
+          id: 'actions',
+          cell: ({ row }) => (
+            <CarServiceLogsTableActionsDropdown
+              carId={row.original.car_id}
+              className="w-12"
+              isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+              serviceLog={row.original}
+              userId={userId}
+            />
+          ),
+        }),
+      ] as ColumnDef<ServiceLog>[],
+    [isCurrentUserPrimaryOwner, userId],
+  );
 
-export function CarServiceLogsTable({ serviceLogs }: CarServiceLogsTableProps) {
   return (
     serviceLogs && (
       <Table
@@ -60,6 +83,7 @@ export function CarServiceLogsTable({ serviceLogs }: CarServiceLogsTableProps) {
           initialState: {
             columnVisibility: {
               created_at: false,
+              actions: true,
             },
             sorting: [
               { id: 'service_date', desc: true },
