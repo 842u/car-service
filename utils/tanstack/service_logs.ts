@@ -18,6 +18,10 @@ export async function serviceLogsByCarIdAddOnMutate(
 
   const optimisticCarServiceLog = {
     ...formData,
+    mileage: Number.isNaN(formData.mileage) ? null : formData.mileage,
+    service_cost: Number.isNaN(formData.service_cost)
+      ? null
+      : formData.service_cost,
     id: optimisticServiceLogId,
     car_id: carId,
     created_by: 'optimistic update',
@@ -98,6 +102,10 @@ export async function serviceLogsByCarIdEditOnMutate(
   updatedQueryData[updatedServiceLogIndex] = {
     ...updatedQueryData[updatedServiceLogIndex],
     ...formData,
+    mileage: Number.isNaN(formData.mileage) ? null : formData.mileage,
+    service_cost: Number.isNaN(formData.service_cost)
+      ? null
+      : formData.service_cost,
   };
 
   queryClient.setQueryData(
