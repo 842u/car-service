@@ -56,6 +56,7 @@ export function CarServiceLogsTable({
         columnsHelper.accessor('notes', {
           meta: {
             label: 'Notes',
+            shouldSpan: true,
           },
         }),
         columnsHelper.display({

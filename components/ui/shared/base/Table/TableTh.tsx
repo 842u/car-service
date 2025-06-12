@@ -1,5 +1,6 @@
 import { Header } from '@tanstack/react-table';
 import { ComponentProps } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { useTable } from './Table';
 import { TableThDropdown } from './TableThDropdown';
@@ -12,13 +13,18 @@ type TableThProps = ComponentProps<'th'> & {
 export function TableTh({ header, ...props }: TableThProps) {
   useTable();
 
-  const headerLabel = header.column.columnDef.meta?.label;
-  const isSortable = header.column.columnDef.enableSorting;
-  const columnId = header.column.id;
+  const column = header.column;
+  const headerLabel = column.columnDef.meta?.label;
+  const isSortable = column.columnDef.enableSorting;
+  const columnId = column.id;
+  const shouldSpan = column.columnDef.meta?.shouldSpan;
 
   return (
     <th
-      className="w-1 px-5 py-1 text-start nth-last-of-type-[2]:w-auto"
+      className={twMerge(
+        'w-1 px-5 py-1 text-start',
+        shouldSpan ? 'w-auto' : '',
+      )}
       {...props}
     >
       {isSortable ? (
