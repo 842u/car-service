@@ -33,18 +33,21 @@ export function filterColumnByDate<T extends Record<string, any>>(
   }
 
   if (filterFromDate && !filterToDate) {
-    return rowDate >= filterFromDate;
+    return rowDate.getTime() >= filterFromDate.getTime();
   }
 
   if (!filterFromDate && filterToDate) {
-    return rowDate <= filterToDate;
+    return rowDate.getTime() <= filterToDate.getTime();
   }
 
   if (filterFromDate && filterToDate) {
-    if (filterToDate < filterFromDate) {
+    if (filterToDate.getTime() < filterFromDate.getTime()) {
       return false;
     }
-    return rowDate >= filterFromDate && rowDate <= filterToDate;
+    return (
+      rowDate.getTime() >= filterFromDate.getTime() &&
+      rowDate.getTime() <= filterToDate.getTime()
+    );
   }
 
   return true;
