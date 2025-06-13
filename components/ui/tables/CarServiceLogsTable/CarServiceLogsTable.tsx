@@ -96,6 +96,7 @@ export function CarServiceLogsTable({
           },
         }}
       >
+        <Table.SortBreadcrumb />
         <Table.Root className="my-4 max-h-96 overflow-auto">
           <Table.Head />
           <Table.Body />

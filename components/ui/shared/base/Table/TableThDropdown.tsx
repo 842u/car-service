@@ -10,9 +10,14 @@ import { useTable } from './Table';
 type TableThDropdownProps = {
   columnId: string;
   label?: string;
+  className?: string;
 };
 
-export function TableThDropdown({ columnId, label }: TableThDropdownProps) {
+export function TableThDropdown({
+  columnId,
+  label,
+  className,
+}: TableThDropdownProps) {
   const { table } = useTable();
 
   const column = table.getColumn(columnId);
@@ -72,7 +77,7 @@ export function TableThDropdown({ columnId, label }: TableThDropdownProps) {
   };
 
   return (
-    <Dropdown>
+    <Dropdown className={className}>
       <Dropdown.Trigger>
         {({ onClick, ref }) => (
           <IconButton
