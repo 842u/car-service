@@ -1,7 +1,5 @@
-import { ChevronDownIcon } from '@/components/decorative/icons/ChevronDownIcon';
-import { ChevronUpIcon } from '@/components/decorative/icons/ChevronUpIcon';
-
 import { useTable } from './Table';
+import { TableThDropdown } from './TableThDropdown';
 
 export function TableSortBreadcrumb() {
   const { table } = useTable();
@@ -9,9 +7,9 @@ export function TableSortBreadcrumb() {
   const sorting = table.getState().sorting;
 
   return (
-    <div className="">
-      <p className="my-2">Current sorting order:</p>
-      <p className="overflow-auto whitespace-nowrap">
+    <>
+      <p>Current sorting order:</p>
+      <div className="flex flex-wrap">
         {sorting.map((rule) => {
           const isIntrinsicRule =
             rule.id === table.options.meta?.intrinsicSort?.id;
@@ -19,19 +17,17 @@ export function TableSortBreadcrumb() {
           if (isIntrinsicRule) return;
 
           return (
-            <span key={rule.id} className="ml-2 overflow-auto">
-              {table.getColumn(rule.id)?.columnDef.meta?.label}
-
-              {rule.desc ? (
-                <ChevronDownIcon className="stroke-accent-600 dark:stroke-accent-300 mx-2 inline-block w-3 stroke-3" />
-              ) : (
-                <ChevronUpIcon className="stroke-accent-600 dark:stroke-accent-300 mx-2 inline-block w-3 stroke-3" />
-              )}
+            <div key={rule.id}>
+              <TableThDropdown
+                className="mx-2 inline-block"
+                columnId={rule.id}
+                label={table.getColumn(rule.id)?.columnDef.meta?.label}
+              />
               <span className="text-alpha-grey-500">{'/'}</span>
-            </span>
+            </div>
           );
         })}
-      </p>
-    </div>
+      </div>
+    </>
   );
 }
