@@ -90,11 +90,13 @@ export function TableFilterDate({ columnId }: TableFilterDateProps) {
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
 
   return (
-    <div className="my-4 w-fit">
-      <p>{columnLabel}</p>
+    <div className="my-4 flex flex-col gap-2 md:w-fit md:flex-row md:flex-wrap">
+      <p className="border-alpha-grey-300 border-b py-1 md:w-full">
+        {columnLabel}
+      </p>
 
-      <label className="inline-block">
-        <span className="text-xs">From</span>
+      <label className="md:grow">
+        <p className="my-2 text-xs">From</p>
         <input
           className={inputVariants.default}
           type="date"
@@ -111,8 +113,8 @@ export function TableFilterDate({ columnId }: TableFilterDateProps) {
         />
       </label>
 
-      <label className="inline-block">
-        <span className="text-xs">To</span>
+      <label className="md:grow">
+        <p className="my-2 text-xs">To</p>
         <input
           className={inputVariants.default}
           type="date"
