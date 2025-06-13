@@ -1,6 +1,7 @@
 import {
   ColumnDef,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   Table as TanstackTable,
   TableOptions,
@@ -9,6 +10,7 @@ import {
 import { createContext, ReactNode, use } from 'react';
 
 import { TableBody } from './TableBody';
+import { TableFilterDate } from './TableFilterDate';
 import { TableHead } from './TableHead';
 import { TableRoot } from './TableRoot';
 import { TableSortBreadcrumb } from './TableSortBreadcrumb';
@@ -40,6 +42,7 @@ export function Table<T>({ columns, data, options, children }: TableProps<T>) {
     data,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     ...options,
   });
 
@@ -50,3 +53,4 @@ Table.Root = TableRoot;
 Table.Head = TableHead;
 Table.Body = TableBody;
 Table.SortBreadcrumb = TableSortBreadcrumb;
+Table.FilterDate = TableFilterDate;

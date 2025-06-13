@@ -6,15 +6,16 @@ import { useMemo } from 'react';
 import { ServiceLog } from '@/types';
 
 import { Table } from '../../shared/base/Table/Table';
+import { filterColumnByDate } from '../../shared/base/Table/TableFilterDate';
 import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown';
+
+const columnsHelper = createColumnHelper<ServiceLog>();
 
 type CarServiceLogsTableProps = {
   userId: string;
   isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
 };
-
-const columnsHelper = createColumnHelper<ServiceLog>();
 
 export function CarServiceLogsTable({
   userId,
@@ -29,6 +30,8 @@ export function CarServiceLogsTable({
             label: 'Date',
           },
           enableSorting: true,
+          enableColumnFilter: true,
+          filterFn: filterColumnByDate,
         }),
         columnsHelper.accessor('created_at', {
           meta: {
@@ -96,6 +99,7 @@ export function CarServiceLogsTable({
           },
         }}
       >
+        <Table.FilterDate columnId="service_date" />
         <Table.SortBreadcrumb />
         <Table.Root className="my-4 max-h-96 overflow-auto">
           <Table.Head />
