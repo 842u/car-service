@@ -10,6 +10,7 @@ import { createContext, ReactNode, use } from 'react';
 
 import { TableBody } from './TableBody';
 import { TableHead } from './TableHead';
+import { TableRoot } from './TableRoot';
 
 type TableContextValue<T> = { table: TanstackTable<T> };
 
@@ -29,17 +30,10 @@ type TableProps<T> = {
   columns: ColumnDef<T>[];
   data: T[];
   options?: Partial<TableOptions<T>>;
-  className?: string;
   children?: ReactNode;
 };
 
-export function Table<T>({
-  columns,
-  data,
-  options,
-  className,
-  children,
-}: TableProps<T>) {
+export function Table<T>({ columns, data, options, children }: TableProps<T>) {
   const table = useReactTable({
     columns,
     data,
@@ -48,14 +42,9 @@ export function Table<T>({
     ...options,
   });
 
-  return (
-    <TableContext value={{ table }}>
-      <div className={className}>
-        <table className="h-full w-full">{children}</table>
-      </div>
-    </TableContext>
-  );
+  return <TableContext value={{ table }}>{children}</TableContext>;
 }
 
+Table.Root = TableRoot;
 Table.Head = TableHead;
 Table.Body = TableBody;

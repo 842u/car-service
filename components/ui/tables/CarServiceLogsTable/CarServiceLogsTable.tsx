@@ -78,7 +78,6 @@ export function CarServiceLogsTable({
   return (
     serviceLogs && (
       <Table
-        className="my-4 max-h-96 overflow-auto"
         columns={columns}
         data={serviceLogs}
         options={{
@@ -97,8 +96,10 @@ export function CarServiceLogsTable({
           },
         }}
       >
-        <Table.Head />
-        <Table.Body />
+        <Table.Root className="my-4 max-h-96 overflow-auto">
+          <Table.Head />
+          <Table.Body />
+        </Table.Root>
       </Table>
     )
   );
