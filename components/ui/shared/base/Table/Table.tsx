@@ -11,6 +11,7 @@ import { createContext, ReactNode, use } from 'react';
 import { TableBody } from './TableBody';
 import { TableHead } from './TableHead';
 import { TableRoot } from './TableRoot';
+import { TableSortBreadcrumb } from './TableSortBreadcrumb';
 
 type TableContextValue<T> = { table: TanstackTable<T> };
 
@@ -48,3 +49,4 @@ export function Table<T>({ columns, data, options, children }: TableProps<T>) {
 Table.Root = TableRoot;
 Table.Head = TableHead;
 Table.Body = TableBody;
+Table.SortBreadcrumb = TableSortBreadcrumb;
