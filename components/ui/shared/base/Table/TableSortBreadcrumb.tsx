@@ -8,7 +8,7 @@ export function TableSortBreadcrumb() {
 
   return (
     <>
-      <p>Current sorting order:</p>
+      <p className="text-xs">Sort order</p>
       <div className="flex flex-wrap">
         {sorting.map((rule) => {
           const isIntrinsicRule =
