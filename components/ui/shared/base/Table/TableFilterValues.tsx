@@ -7,11 +7,13 @@ import { useTable } from './Table';
 type TableFilterValuesProps = {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
+  className?: string;
 };
 
 export function TableFilterValues({
   columnId,
   checkboxLabelValueMapping,
+  className,
 }: TableFilterValuesProps) {
   const { table } = useTable();
 
@@ -58,7 +60,7 @@ export function TableFilterValues({
   };
 
   return (
-    <fieldset>
+    <fieldset className={className}>
       <legend>
         <p className="text-xs">Filter by {columnLabel}</p>
       </legend>
