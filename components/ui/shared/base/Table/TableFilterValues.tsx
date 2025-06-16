@@ -60,7 +60,7 @@ export function TableFilterValues({
   return (
     <fieldset>
       <legend>
-        <p>{columnLabel}</p>
+        <p className="text-xs">Filter by {columnLabel}</p>
       </legend>
       {Object.keys(checkboxLabelValueMapping).map((checkboxLabel) => {
         return (
