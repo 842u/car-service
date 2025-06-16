@@ -104,6 +104,7 @@ export function CarServiceLogsTable({
         <Table.FilterDate columnId="service_date" />
         <Table.FilterValues
           checkboxLabelValueMapping={serviceCategoryMapping}
+          className="my-4"
           columnId="category"
         />
         <Table.SortBreadcrumb />
