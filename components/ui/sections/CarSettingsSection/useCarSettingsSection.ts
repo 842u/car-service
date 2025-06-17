@@ -38,25 +38,32 @@ export function useCarSettingsSection({ carId }: CarSettingsSectionProps) {
   const allowDependentQueries =
     sessionProfileData && carOwnershipData && carOwnershipData.length;
 
-  const ownersProfilesData = useQueries({
+  const { data: ownersProfilesData } = useQueries({
     queries: allowDependentQueries
-      ? carOwnershipData
-          .filter((ownership) => ownership.owner_id !== sessionProfileData.id)
-          .map((ownership) => {
-            return {
-              throwOnError: false,
-              queryKey: queryKeys.profilesByUserId(ownership.owner_id),
-              queryFn: () => getProfileByUserId(ownership.owner_id),
-            };
-          })
+      ? carOwnershipData.map((ownership) => {
+          return {
+            throwOnError: false,
+            queryKey: queryKeys.profilesByUserId(ownership.owner_id),
+            queryFn: () => getProfileByUserId(ownership.owner_id),
+          };
+        })
       : [],
+    combine: (results) => {
+      return {
+        data: results.map((result) => result.data),
+        pending: results.some((result) => result.isPending),
+      };
+    },
   });
 
   useEffect(() => {
     carOwnershipDataError && addToast(carOwnershipDataError.message, 'error');
+  }, [addToast, carOwnershipDataError]);
+
+  useEffect(() => {
     sessionProfileDataError &&
       addToast(sessionProfileDataError.message, 'error');
-  }, [addToast, carOwnershipDataError, sessionProfileDataError]);
+  }, [addToast, sessionProfileDataError]);
 
   const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
     (ownership) =>
