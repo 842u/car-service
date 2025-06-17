@@ -13,6 +13,7 @@ export const queryKeys = {
 
   profiles: [baseQueryKeys.profiles] as const,
   profilesCurrentSession: [baseQueryKeys.profiles, 'session'] as const,
+  profilesOwners: [baseQueryKeys.profiles, 'owners'] as const,
   profilesByUserId: (userId: string) =>
     [baseQueryKeys.profiles, userId] as const,
 

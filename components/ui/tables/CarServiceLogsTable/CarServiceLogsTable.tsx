@@ -1,9 +1,11 @@
 'use client';
 
+import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { serviceCategoryMapping, ServiceLog } from '@/types';
+import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
+import { createClient } from '@/utils/supabase/client';
 
 import { Table } from '../../shared/base/Table/Table';
 import { filterColumnByDate } from '../../shared/base/Table/TableFilterDate';
@@ -14,12 +16,16 @@ const columnsHelper = createColumnHelper<ServiceLog>();
 type CarServiceLogsTableProps = {
   isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
+  ownersProfiles?: Profile[];
 };
 
 export function CarServiceLogsTable({
   isCurrentUserPrimaryOwner,
   serviceLogs,
+  ownersProfiles,
 }: CarServiceLogsTableProps) {
+  const [user, setUser] = useState<User | null>(null);
+
   const columns = useMemo(
     () =>
       [
@@ -62,6 +68,24 @@ export function CarServiceLogsTable({
             shouldSpan: true,
           },
         }),
+        columnsHelper.accessor(
+          (row) => {
+            const profile = ownersProfiles?.find(
+              (profile) => profile.id === row.created_by,
+            );
+
+            return profile?.username;
+          },
+          {
+            meta: {
+              label: 'Creator',
+            },
+            id: 'created_by',
+            enableSorting: true,
+            enableColumnFilter: true,
+            filterFn: 'includesString',
+          },
+        ),
         columnsHelper.display({
           id: 'actions',
           cell: ({ row }) => (
@@ -70,12 +94,27 @@ export function CarServiceLogsTable({
               className="w-12"
               isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
               serviceLog={row.original}
+              userId={user?.id}
             />
           ),
         }),
       ] as ColumnDef<ServiceLog>[],
-    [isCurrentUserPrimaryOwner],
+    [isCurrentUserPrimaryOwner, ownersProfiles, user?.id],
   );
+
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    getUser();
+  }, []);
 
   return (
     serviceLogs && (
@@ -104,6 +143,7 @@ export function CarServiceLogsTable({
           className="my-4"
           columnId="category"
         />
+        <Table.FilterText columnId="created_by" />
         <Table.SortBreadcrumb />
         <Table.Root className="my-4 max-h-96 overflow-auto">
           <Table.Head />

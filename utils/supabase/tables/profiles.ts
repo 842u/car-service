@@ -86,3 +86,16 @@ export async function getProfileByUserId(userId: string) {
 
   return data;
 }
+
+export async function getProfilesByUsersId(usersId: string[]) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .in('id', usersId);
+
+  if (error) throw new Error(error.message || "Can't get users profiles.");
+
+  return data;
+}

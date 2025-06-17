@@ -11,6 +11,7 @@ import { createContext, ReactNode, use } from 'react';
 
 import { TableBody } from './TableBody';
 import { TableFilterDate } from './TableFilterDate';
+import { TableFilterText } from './TableFilterText';
 import { TableFilterValues } from './TableFilterValues';
 import { TableHead } from './TableHead';
 import { TableRoot } from './TableRoot';
@@ -56,3 +57,4 @@ Table.Body = TableBody;
 Table.SortBreadcrumb = TableSortBreadcrumb;
 Table.FilterDate = TableFilterDate;
 Table.FilterValues = TableFilterValues;
+Table.FilterText = TableFilterText;
