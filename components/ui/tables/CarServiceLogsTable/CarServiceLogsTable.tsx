@@ -78,6 +78,7 @@ export function CarServiceLogsTable({
           },
           {
             id: 'created_by',
+            enableSorting: true,
             meta: {
               label: 'Creator',
             },
