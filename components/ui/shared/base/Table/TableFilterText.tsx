@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useRef } from 'react';
 
 import { inputVariants } from '@/utils/tailwindcss/input';
 
@@ -6,37 +6,47 @@ import { useTable } from './Table';
 
 type TableFilterTextProps = {
   columnId: string;
+  debounceDelay?: number;
 };
 
-export function TableFilterText({ columnId }: TableFilterTextProps) {
+export function TableFilterText({
+  columnId,
+  debounceDelay = 200,
+}: TableFilterTextProps) {
+  const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
+
   const { table } = useTable();
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
   const inputId = `filter-${columnId}`;
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
+    clearTimeout(debounceTimerRef.current);
 
-    table.setColumnFilters((currentFilters) => {
-      const currentColumnFilter = currentFilters.find(
-        (filter) => filter.id === columnId,
-      );
+    debounceTimerRef.current = setTimeout(() => {
+      const inputValue = event.target.value;
 
-      if (!currentColumnFilter) {
-        currentFilters.push({ id: columnId, value: inputValue });
-        return currentFilters;
-      } else {
-        const updatedFilters = currentFilters.map((filter) => {
-          if (filter.id === columnId) {
-            filter.value = inputValue;
-          }
+      table.setColumnFilters((currentFilters) => {
+        const currentColumnFilter = currentFilters.find(
+          (filter) => filter.id === columnId,
+        );
 
-          return { ...filter };
-        });
+        if (!currentColumnFilter) {
+          currentFilters.push({ id: columnId, value: inputValue });
+          return currentFilters;
+        } else {
+          const updatedFilters = currentFilters.map((filter) => {
+            if (filter.id === columnId) {
+              filter.value = inputValue;
+            }
 
-        return updatedFilters;
-      }
-    });
+            return { ...filter };
+          });
+
+          return updatedFilters;
+        }
+      });
+    }, debounceDelay);
   };
 
   return (
