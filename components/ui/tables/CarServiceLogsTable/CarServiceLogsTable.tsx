@@ -1,9 +1,11 @@
 'use client';
 
+import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
+import { createClient } from '@/utils/supabase/client';
 
 import { Table } from '../../shared/base/Table/Table';
 import { filterColumnByDate } from '../../shared/base/Table/TableFilterDate';
@@ -22,6 +24,8 @@ export function CarServiceLogsTable({
   serviceLogs,
   ownersProfiles,
 }: CarServiceLogsTableProps) {
+  const [user, setUser] = useState<User | null>(null);
+
   const columns = useMemo(
     () =>
       [
@@ -87,12 +91,27 @@ export function CarServiceLogsTable({
               className="w-12"
               isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
               serviceLog={row.original}
+              userId={user?.id}
             />
           ),
         }),
       ] as ColumnDef<ServiceLog>[],
-    [isCurrentUserPrimaryOwner, ownersProfiles],
+    [isCurrentUserPrimaryOwner, ownersProfiles, user?.id],
   );
+
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    getUser();
+  }, []);
 
   return (
     serviceLogs && (
