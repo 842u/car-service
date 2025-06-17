@@ -77,11 +77,13 @@ export function CarServiceLogsTable({
             return profile?.username;
           },
           {
-            id: 'created_by',
-            enableSorting: true,
             meta: {
               label: 'Creator',
             },
+            id: 'created_by',
+            enableSorting: true,
+            enableColumnFilter: true,
+            filterFn: 'includesString',
           },
         ),
         columnsHelper.display({
@@ -141,6 +143,7 @@ export function CarServiceLogsTable({
           className="my-4"
           columnId="category"
         />
+        <Table.FilterText columnId="created_by" />
         <Table.SortBreadcrumb />
         <Table.Root className="my-4 max-h-96 overflow-auto">
           <Table.Head />
