@@ -94,12 +94,8 @@ export function TableFilterDate({ columnId }: TableFilterDateProps) {
 
   return (
     <div className="my-4 flex flex-col gap-2 md:w-fit md:flex-row md:flex-wrap">
-      <p className="border-alpha-grey-300 border-b py-1 md:w-full">
-        {columnLabel}
-      </p>
-
       <label className="md:grow">
-        <p className="my-2 text-xs">From</p>
+        <p className="my-2 text-xs">From {columnLabel}</p>
         <input
           className={inputVariants.default}
           type="date"
@@ -117,7 +113,7 @@ export function TableFilterDate({ columnId }: TableFilterDateProps) {
       </label>
 
       <label className="md:grow">
-        <p className="my-2 text-xs">To</p>
+        <p className="my-2 text-xs">To {columnLabel}</p>
         <input
           className={inputVariants.default}
           type="date"
