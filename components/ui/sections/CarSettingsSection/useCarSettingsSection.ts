@@ -1,12 +1,12 @@
 import { User } from '@supabase/supabase-js';
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
 import { createClient } from '@/utils/supabase/client';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
-import { getProfileByUserId } from '@/utils/supabase/tables/profiles';
+import { getProfilesByUsersId } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarSettingsSectionProps } from './CarSettingsSection';
@@ -28,29 +28,28 @@ export function useCarSettingsSection({ carId }: CarSettingsSectionProps) {
     queryFn: () => getCarOwnerships(carId),
   });
 
-  const allowDependentQueries = carOwnershipData && carOwnershipData.length;
+  const allowDependentQueries = !!(carOwnershipData && carOwnershipData.length);
 
-  const { data: ownersProfilesData } = useQueries({
-    queries: allowDependentQueries
-      ? carOwnershipData.map((ownership) => {
-          return {
-            throwOnError: false,
-            queryKey: queryKeys.profilesByUserId(ownership.owner_id),
-            queryFn: () => getProfileByUserId(ownership.owner_id),
-          };
-        })
-      : [],
-    combine: (results) => {
-      return {
-        data: results.map((result) => result.data),
-        pending: results.some((result) => result.isPending),
-      };
+  const ownersId = carOwnershipData?.map((ownership) => ownership.owner_id);
+
+  const { data: ownersProfilesData, error: ownersProfilesDataError } = useQuery(
+    {
+      throwOnError: false,
+      // eslint-disable-next-line
+      queryKey: queryKeys.profilesOwners,
+      queryFn: () => getProfilesByUsersId(ownersId || []),
+      enabled: allowDependentQueries,
     },
-  });
+  );
 
   useEffect(() => {
     carOwnershipDataError && addToast(carOwnershipDataError.message, 'error');
   }, [addToast, carOwnershipDataError]);
+
+  useEffect(() => {
+    ownersProfilesDataError &&
+      addToast(ownersProfilesDataError.message, 'error');
+  }, [addToast, ownersProfilesDataError]);
 
   useEffect(() => {
     const getUser = async () => {
