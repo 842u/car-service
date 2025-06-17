@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { BookIcon } from '@/components/decorative/icons/BookIcon';
 import { Spinner } from '@/components/decorative/Spinner/Spinner';
 import { useToasts } from '@/hooks/useToasts';
+import { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 
@@ -21,11 +22,13 @@ import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarService
 type CarServiceLogsSectionProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
+  ownersProfiles?: Profile[];
 };
 
 export function CarServiceLogsSection({
   carId,
   isCurrentUserPrimaryOwner,
+  ownersProfiles,
 }: CarServiceLogsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
@@ -54,7 +57,9 @@ export function CarServiceLogsSection({
         <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
       ) : (
         <CarServiceLogsTable
+          key={ownersProfiles ? 'loaded' : 'loading'}
           isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+          ownersProfiles={ownersProfiles}
           serviceLogs={data}
         />
       )}

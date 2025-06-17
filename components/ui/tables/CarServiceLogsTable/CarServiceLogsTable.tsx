@@ -3,7 +3,7 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
 
-import { serviceCategoryMapping, ServiceLog } from '@/types';
+import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
 
 import { Table } from '../../shared/base/Table/Table';
 import { filterColumnByDate } from '../../shared/base/Table/TableFilterDate';
@@ -14,11 +14,13 @@ const columnsHelper = createColumnHelper<ServiceLog>();
 type CarServiceLogsTableProps = {
   isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
+  ownersProfiles?: Profile[];
 };
 
 export function CarServiceLogsTable({
   isCurrentUserPrimaryOwner,
   serviceLogs,
+  ownersProfiles,
 }: CarServiceLogsTableProps) {
   const columns = useMemo(
     () =>
@@ -62,6 +64,21 @@ export function CarServiceLogsTable({
             shouldSpan: true,
           },
         }),
+        columnsHelper.accessor(
+          (row) => {
+            const profile = ownersProfiles?.find(
+              (profile) => profile.id === row.created_by,
+            );
+
+            return profile?.username;
+          },
+          {
+            id: 'created_by',
+            meta: {
+              label: 'Creator',
+            },
+          },
+        ),
         columnsHelper.display({
           id: 'actions',
           cell: ({ row }) => (
@@ -74,7 +91,7 @@ export function CarServiceLogsTable({
           ),
         }),
       ] as ColumnDef<ServiceLog>[],
-    [isCurrentUserPrimaryOwner],
+    [isCurrentUserPrimaryOwner, ownersProfiles],
   );
 
   return (
