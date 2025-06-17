@@ -11,7 +11,6 @@ type CarOwnershipSectionProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
   ownersProfilesData?: (Profile | undefined)[];
-  sessionProfileData?: Profile | null;
   carOwnershipData?: CarOwnership[];
 };
 
@@ -24,7 +23,6 @@ export function CarOwnershipSection({
   carOwnershipData,
   isCurrentUserPrimaryOwner,
   ownersProfilesData,
-  sessionProfileData,
 }: CarOwnershipSectionProps) {
   const removeCarOwnershipFormMethods = useForm({
     mode: 'onChange',
@@ -41,7 +39,6 @@ export function CarOwnershipSection({
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         ownersProfilesData={ownersProfilesData}
         register={removeCarOwnershipFormMethods.register}
-        sessionProfileData={sessionProfileData}
       />
       <CarOwnershipSectionControls
         carId={carId}
