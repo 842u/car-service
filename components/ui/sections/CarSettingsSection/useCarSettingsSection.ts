@@ -1,18 +1,19 @@
+import { User } from '@supabase/supabase-js';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
+import { createClient } from '@/utils/supabase/client';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
-import {
-  getCurrentSessionProfile,
-  getProfileByUserId,
-} from '@/utils/supabase/tables/profiles';
+import { getProfileByUserId } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarSettingsSectionProps } from './CarSettingsSection';
 
 export function useCarSettingsSection({ carId }: CarSettingsSectionProps) {
+  const [user, setUser] = useState<User | null>(null);
+
   const { addToast } = useToasts();
 
   const { data: carData, isPending } = useQuery({
@@ -27,47 +28,52 @@ export function useCarSettingsSection({ carId }: CarSettingsSectionProps) {
     queryFn: () => getCarOwnerships(carId),
   });
 
-  const { data: sessionProfileData, error: sessionProfileDataError } = useQuery(
-    {
-      throwOnError: false,
-      queryKey: queryKeys.profilesCurrentSession,
-      queryFn: getCurrentSessionProfile,
-    },
-  );
+  const allowDependentQueries = carOwnershipData && carOwnershipData.length;
 
-  const allowDependentQueries =
-    sessionProfileData && carOwnershipData && carOwnershipData.length;
-
-  const ownersProfilesData = useQueries({
+  const { data: ownersProfilesData } = useQueries({
     queries: allowDependentQueries
-      ? carOwnershipData
-          .filter((ownership) => ownership.owner_id !== sessionProfileData.id)
-          .map((ownership) => {
-            return {
-              throwOnError: false,
-              queryKey: queryKeys.profilesByUserId(ownership.owner_id),
-              queryFn: () => getProfileByUserId(ownership.owner_id),
-            };
-          })
+      ? carOwnershipData.map((ownership) => {
+          return {
+            throwOnError: false,
+            queryKey: queryKeys.profilesByUserId(ownership.owner_id),
+            queryFn: () => getProfileByUserId(ownership.owner_id),
+          };
+        })
       : [],
+    combine: (results) => {
+      return {
+        data: results.map((result) => result.data),
+        pending: results.some((result) => result.isPending),
+      };
+    },
   });
 
   useEffect(() => {
     carOwnershipDataError && addToast(carOwnershipDataError.message, 'error');
-    sessionProfileDataError &&
-      addToast(sessionProfileDataError.message, 'error');
-  }, [addToast, carOwnershipDataError, sessionProfileDataError]);
+  }, [addToast, carOwnershipDataError]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    getUser();
+  }, []);
 
   const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
     (ownership) =>
-      ownership.owner_id === sessionProfileData?.id &&
-      ownership.is_primary_owner,
+      ownership.owner_id === user?.id && ownership.is_primary_owner,
   );
 
   return {
     carData,
     carOwnershipData,
-    sessionProfileData,
     ownersProfilesData,
     isPending,
     isCurrentUserPrimaryOwner,

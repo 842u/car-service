@@ -20,13 +20,11 @@ import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarService
 
 type CarServiceLogsSectionProps = {
   carId: string;
-  userId: string;
   isCurrentUserPrimaryOwner: boolean;
 };
 
 export function CarServiceLogsSection({
   carId,
-  userId,
   isCurrentUserPrimaryOwner,
 }: CarServiceLogsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
@@ -58,7 +56,6 @@ export function CarServiceLogsSection({
         <CarServiceLogsTable
           isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
           serviceLogs={data}
-          userId={userId}
         />
       )}
       <DashboardSection.Controls>

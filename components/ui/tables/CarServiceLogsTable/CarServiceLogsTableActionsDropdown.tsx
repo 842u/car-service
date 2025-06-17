@@ -1,9 +1,11 @@
+import { User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
 import { useToasts } from '@/hooks/useToasts';
 import { ServiceLog } from '@/types';
+import { createClient } from '@/utils/supabase/client';
 import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
@@ -23,7 +25,6 @@ import { IconButton } from '../../shared/IconButton/IconButton';
 type CarServiceLogsTableActionsDropdownProps = {
   carId: string;
   serviceLog: ServiceLog;
-  userId: string;
   isCurrentUserPrimaryOwner: boolean;
   className?: string;
 };
@@ -31,10 +32,11 @@ type CarServiceLogsTableActionsDropdownProps = {
 export function CarServiceLogsTableActionsDropdown({
   carId,
   serviceLog,
-  userId,
   isCurrentUserPrimaryOwner,
   className,
 }: CarServiceLogsTableActionsDropdownProps) {
+  const [user, setUser] = useState<User | null>(null);
+
   const editDialogModalRef = useRef<DialogModalRef>(null);
   const deleteDialogModalRef = useRef<DialogModalRef>(null);
 
@@ -75,8 +77,22 @@ export function CarServiceLogsTableActionsDropdown({
     });
   };
 
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    getUser();
+  }, []);
+
   const canTakeAction =
-    isCurrentUserPrimaryOwner || userId === serviceLog.created_by;
+    isCurrentUserPrimaryOwner || user?.id === serviceLog.created_by;
 
   return (
     <Dropdown className={className}>

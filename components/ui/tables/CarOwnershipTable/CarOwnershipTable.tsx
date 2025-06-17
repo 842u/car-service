@@ -1,4 +1,3 @@
-import { UseQueryResult } from '@tanstack/react-query';
 import { UseFormRegister } from 'react-hook-form';
 
 import { CarOwnership, Profile } from '@/types';
@@ -9,14 +8,12 @@ import { CarOwnershipTableRow } from './CarOwnershipTableRow';
 
 type CarOwnershipTableProps = {
   isCurrentUserPrimaryOwner: boolean;
-  ownersProfilesData?: UseQueryResult<Profile, Error>[];
+  ownersProfilesData?: (Profile | undefined)[];
   register?: UseFormRegister<CarOwnershipDeleteFormValues>;
-  sessionProfileData?: Profile | null;
   carOwnershipData?: CarOwnership[];
 };
 
 export function CarOwnershipTable({
-  sessionProfileData,
   ownersProfilesData,
   carOwnershipData,
   isCurrentUserPrimaryOwner,
@@ -30,20 +27,14 @@ export function CarOwnershipTable({
       >
         <CarOwnershipTableHead />
         <tbody>
-          <CarOwnershipTableRow
-            disabled={isCurrentUserPrimaryOwner}
-            ownershipData={carOwnershipData}
-            profileData={sessionProfileData}
-            register={register}
-          />
           {ownersProfilesData?.map(
             (owner) =>
-              owner.data && (
+              owner && (
                 <CarOwnershipTableRow
-                  key={owner.data.id}
+                  key={owner.id}
                   disabled={!isCurrentUserPrimaryOwner}
                   ownershipData={carOwnershipData}
-                  profileData={owner.data}
+                  profileData={owner}
                   register={register}
                 />
               ),

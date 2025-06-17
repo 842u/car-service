@@ -1,4 +1,3 @@
-import { UseQueryResult } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 import { CarOwnership, Profile } from '@/types';
@@ -11,8 +10,7 @@ import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 type CarOwnershipSectionProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
-  ownersProfilesData?: UseQueryResult<Profile, Error>[];
-  sessionProfileData?: Profile | null;
+  ownersProfilesData?: (Profile | undefined)[];
   carOwnershipData?: CarOwnership[];
 };
 
@@ -25,7 +23,6 @@ export function CarOwnershipSection({
   carOwnershipData,
   isCurrentUserPrimaryOwner,
   ownersProfilesData,
-  sessionProfileData,
 }: CarOwnershipSectionProps) {
   const removeCarOwnershipFormMethods = useForm({
     mode: 'onChange',
@@ -42,7 +39,6 @@ export function CarOwnershipSection({
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         ownersProfilesData={ownersProfilesData}
         register={removeCarOwnershipFormMethods.register}
-        sessionProfileData={sessionProfileData}
       />
       <CarOwnershipSectionControls
         carId={carId}
