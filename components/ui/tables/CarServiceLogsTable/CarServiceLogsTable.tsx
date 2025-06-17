@@ -12,13 +12,11 @@ import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActions
 const columnsHelper = createColumnHelper<ServiceLog>();
 
 type CarServiceLogsTableProps = {
-  userId: string;
   isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
 };
 
 export function CarServiceLogsTable({
-  userId,
   isCurrentUserPrimaryOwner,
   serviceLogs,
 }: CarServiceLogsTableProps) {
@@ -72,12 +70,11 @@ export function CarServiceLogsTable({
               className="w-12"
               isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
               serviceLog={row.original}
-              userId={userId}
             />
           ),
         }),
       ] as ColumnDef<ServiceLog>[],
-    [isCurrentUserPrimaryOwner, userId],
+    [isCurrentUserPrimaryOwner],
   );
 
   return (
