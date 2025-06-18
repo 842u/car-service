@@ -5,28 +5,28 @@ import { CarOwnership, Profile } from '@/types';
 import { CarOwnershipDeleteFormValues } from '../../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { CarOwnershipsTable } from '../../tables/CarOwnershipsTable/CarOwnershipsTable';
-import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
+import { CarOwnershipsSectionControls } from './CarOwnershipsSectionControls';
 
-type CarOwnershipSectionProps = {
+type CarOwnershipsSectionProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
   ownersProfiles?: Profile[];
   carOwnerships?: CarOwnership[];
 };
 
-export const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
+export const defaultCarOwnershipsFormValues: CarOwnershipDeleteFormValues = {
   ownersIds: [],
 };
 
-export function CarOwnershipSection({
+export function CarOwnershipsSection({
   carId,
   carOwnerships,
   isCurrentUserPrimaryOwner,
   ownersProfiles,
-}: CarOwnershipSectionProps) {
+}: CarOwnershipsSectionProps) {
   const removeCarOwnershipFormMethods = useForm({
     mode: 'onChange',
-    defaultValues: defaultCarOwnershipFormValues,
+    defaultValues: defaultCarOwnershipsFormValues,
   });
 
   return (
@@ -39,7 +39,7 @@ export function CarOwnershipSection({
         carOwnerships={carOwnerships}
         ownersProfiles={ownersProfiles}
       />
-      <CarOwnershipSectionControls
+      <CarOwnershipsSectionControls
         carId={carId}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}

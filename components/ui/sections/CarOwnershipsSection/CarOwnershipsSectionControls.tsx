@@ -19,20 +19,20 @@ import {
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../../shared/IconButton/IconButton';
 
-export const CAR_OWNERSHIP_SECTION_CONTROLS_TEST_ID =
+export const CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID =
   'car ownership section test id';
 
-type CarOwnershipSectionControlsProps = {
+type CarOwnershipsSectionControlsProps = {
   carId: string;
   removeCarOwnershipFormMethods: UseFormReturn<CarOwnershipDeleteFormValues>;
   isCurrentUserPrimaryOwner: boolean;
 };
 
-export function CarOwnershipSectionControls({
+export function CarOwnershipsSectionControls({
   carId,
   removeCarOwnershipFormMethods,
   isCurrentUserPrimaryOwner,
-}: CarOwnershipSectionControlsProps) {
+}: CarOwnershipsSectionControlsProps) {
   const removeCarOwnershipFormRef = useRef<CarOwnershipDeleteFormRef>(null);
   const newCarOwnerFormModalRef = useRef<DialogModalRef>(null);
   const removeCarOwnershipFormModalRef = useRef<DialogModalRef>(null);
@@ -41,7 +41,7 @@ export function CarOwnershipSectionControls({
   return (
     <DashboardSection.Controls
       className="mt-4"
-      data-testid={CAR_OWNERSHIP_SECTION_CONTROLS_TEST_ID}
+      data-testid={CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID}
     >
       <IconButton
         className="group"

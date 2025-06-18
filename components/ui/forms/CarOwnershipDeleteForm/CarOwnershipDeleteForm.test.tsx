@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 
-import { defaultCarOwnershipFormValues } from '../../sections/CarOwnershipSection/CarOwnershipSection';
+import { defaultCarOwnershipsFormValues } from '../../sections/CarOwnershipsSection/CarOwnershipsSection';
 import {
   CarOwnershipDeleteForm,
   CarOwnershipDeleteFormProps,
@@ -19,7 +19,7 @@ function TestCarOwnershipDeleteForm({
 }: Partial<CarOwnershipDeleteFormProps>) {
   const removeCarOwnershipFormMethods = useForm({
     mode: 'onChange',
-    defaultValues: defaultCarOwnershipFormValues,
+    defaultValues: defaultCarOwnershipsFormValues,
   });
 
   return (

@@ -7,20 +7,20 @@ import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvi
 import { CAR_OWNERSHIP_ADD_FORM_TEST_ID } from '../../forms/CarOwnershipAddForm/CarOwnershipAddForm';
 import { CAR_OWNERSHIP_DELETE_FORM_TEST_ID } from '../../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 import { CAR_PRIMARY_OWNERSHIP_GRANT_FORM_TEST_ID } from '../../forms/CarPrimaryOwnershipGrantForm/CarPrimaryOwnershipGrantForm';
-import { defaultCarOwnershipFormValues } from './CarOwnershipSection';
-import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
+import { defaultCarOwnershipsFormValues } from './CarOwnershipsSection';
+import { CarOwnershipsSectionControls } from './CarOwnershipsSectionControls';
 
 const MOCK_CAR_ID = 'ee4a8fa7-758e-4302-8726-01eeecee8707';
 const MOCK_USER_ID = '90902611-dbe5-4575-b41f-4b4fa799ac92';
 
-function TestOwnershipSectionControls({
+function TestOwnershipsSectionControls({
   isCurrentUserPrimaryOwner = true,
 }: {
   isCurrentUserPrimaryOwner?: boolean;
 }) {
   const removeCarOwnershipFormMethods = useForm({
     mode: 'onChange',
-    defaultValues: defaultCarOwnershipFormValues,
+    defaultValues: defaultCarOwnershipsFormValues,
   });
 
   return (
@@ -39,7 +39,7 @@ function TestOwnershipSectionControls({
         <span className="sr-only">select user</span>
       </label>
       <TanStackQueryProvider>
-        <CarOwnershipSectionControls
+        <CarOwnershipsSectionControls
           carId={MOCK_CAR_ID}
           isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
           removeCarOwnershipFormMethods={removeCarOwnershipFormMethods}
@@ -49,9 +49,9 @@ function TestOwnershipSectionControls({
   );
 }
 
-describe('CarOwnershipSectionControls', () => {
+describe('CarOwnershipsSectionControls', () => {
   it('should render a button for primary ownership granting', () => {
-    render(<TestOwnershipSectionControls />);
+    render(<TestOwnershipsSectionControls />);
 
     const primaryOwnershipButton = screen.getByRole('button', {
       name: 'grant primary ownership',
@@ -61,7 +61,7 @@ describe('CarOwnershipSectionControls', () => {
   });
 
   it('primary ownership button should be disabled if !isCurrentUserPrimaryOwner', () => {
-    render(<TestOwnershipSectionControls isCurrentUserPrimaryOwner={false} />);
+    render(<TestOwnershipsSectionControls isCurrentUserPrimaryOwner={false} />);
 
     const primaryOwnershipButton = screen.getByRole('button', {
       name: 'grant primary ownership',
@@ -71,7 +71,7 @@ describe('CarOwnershipSectionControls', () => {
   });
 
   it('should render a car primary ownership grant form', () => {
-    render(<TestOwnershipSectionControls />);
+    render(<TestOwnershipsSectionControls />);
 
     const carPrimaryOwnershipGrantForm = screen.getByTestId(
       CAR_PRIMARY_OWNERSHIP_GRANT_FORM_TEST_ID,
@@ -81,7 +81,7 @@ describe('CarOwnershipSectionControls', () => {
   });
 
   it('should render a button for removing ownership', () => {
-    render(<TestOwnershipSectionControls />);
+    render(<TestOwnershipsSectionControls />);
 
     const removeOwnershipButton = screen.getByRole('button', {
       name: 'remove ownerships',
@@ -92,7 +92,7 @@ describe('CarOwnershipSectionControls', () => {
 
   it('remove ownership button should be enabled after user was selected', async () => {
     const user = userEvent.setup();
-    render(<TestOwnershipSectionControls />);
+    render(<TestOwnershipsSectionControls />);
 
     const removeOwnershipButton = screen.getByRole('button', {
       name: 'remove ownerships',
@@ -109,7 +109,7 @@ describe('CarOwnershipSectionControls', () => {
   });
 
   it('should render a car ownership delete form', () => {
-    render(<TestOwnershipSectionControls />);
+    render(<TestOwnershipsSectionControls />);
 
     const carOwnershipDeleteForm = screen.getByTestId(
       CAR_OWNERSHIP_DELETE_FORM_TEST_ID,
@@ -119,7 +119,7 @@ describe('CarOwnershipSectionControls', () => {
   });
 
   it('should render a button for adding ownership', () => {
-    render(<TestOwnershipSectionControls />);
+    render(<TestOwnershipsSectionControls />);
 
     const addOwnershipButton = screen.getByRole('button', {
       name: 'add ownership',
@@ -129,7 +129,7 @@ describe('CarOwnershipSectionControls', () => {
   });
 
   it('add ownership button should be disabled if !isCurrentUserPrimaryOwner', () => {
-    render(<TestOwnershipSectionControls isCurrentUserPrimaryOwner={false} />);
+    render(<TestOwnershipsSectionControls isCurrentUserPrimaryOwner={false} />);
 
     const addOwnershipButton = screen.getByRole('button', {
       name: 'add ownership',
@@ -139,7 +139,7 @@ describe('CarOwnershipSectionControls', () => {
   });
 
   it('should render a car ownership add form', () => {
-    render(<TestOwnershipSectionControls />);
+    render(<TestOwnershipsSectionControls />);
 
     const carOwnershipAddForm = screen.getByTestId(
       CAR_OWNERSHIP_ADD_FORM_TEST_ID,
