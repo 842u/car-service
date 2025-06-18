@@ -9,6 +9,7 @@ import { createClient } from '@/utils/supabase/client';
 
 import { Table } from '../../shared/base/Table/Table';
 import { filterColumnByDate } from '../../shared/base/Table/TableFilterDate';
+import { UserBadge } from '../../UserBadge/UserBadge';
 import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown';
 
 const columnsHelper = createColumnHelper<ServiceLog>();
@@ -84,6 +85,20 @@ export function CarServiceLogsTable({
             enableSorting: true,
             enableColumnFilter: true,
             filterFn: 'includesString',
+            cell: ({ row }) => {
+              const profile = ownersProfiles?.find(
+                (profile) => profile.id === row.original.created_by,
+              );
+
+              return (
+                profile && (
+                  <UserBadge
+                    className="h-10 flex-row-reverse justify-end"
+                    userProfile={profile}
+                  />
+                )
+              );
+            },
           },
         ),
         columnsHelper.display({
