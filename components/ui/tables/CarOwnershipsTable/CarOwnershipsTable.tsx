@@ -36,6 +36,7 @@ export function CarOwnershipsTable({
               <KeyIcon className="stroke-alpha-grey-300 m-auto w-5 stroke-3 md:w-6" />
             );
           },
+          enableSorting: true,
         }),
         columnsHelper.accessor(
           (row) => {
@@ -65,6 +66,7 @@ export function CarOwnershipsTable({
                 )
               );
             },
+            enableSorting: true,
           },
         ),
         columnsHelper.accessor('owner_id', {
@@ -101,6 +103,7 @@ export function CarOwnershipsTable({
           },
         }}
       >
+        <Table.SortBreadcrumb />
         <Table.Root>
           <Table.Head />
           <Table.Body />
