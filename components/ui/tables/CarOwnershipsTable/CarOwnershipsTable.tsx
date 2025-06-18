@@ -1,8 +1,10 @@
+import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
+import { createClient } from '@/utils/supabase/client';
 
 import { Table } from '../../shared/base/Table/Table';
 import { UserBadge } from '../../UserBadge/UserBadge';
@@ -11,14 +13,18 @@ import { CarOwnershipsTableActionsDropdown } from './CarOwnershipsTableActionsDr
 const columnsHelper = createColumnHelper<CarOwnership>();
 
 type CarOwnershipsTableProps = {
+  isCurrentUserPrimaryOwner: boolean;
   carOwnerships?: CarOwnership[];
   ownersProfiles?: Profile[];
 };
 
 export function CarOwnershipsTable({
+  isCurrentUserPrimaryOwner,
   carOwnerships,
   ownersProfiles,
 }: CarOwnershipsTableProps) {
+  const [user, setUser] = useState<User | null>(null);
+
   const columns = useMemo(
     () =>
       [
@@ -79,11 +85,31 @@ export function CarOwnershipsTable({
         }),
         columnsHelper.display({
           id: 'actions',
-          cell: () => <CarOwnershipsTableActionsDropdown />,
+          cell: ({ row }) => (
+            <CarOwnershipsTableActionsDropdown
+              isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+              ownership={row.original}
+              userId={user?.id}
+            />
+          ),
         }),
       ] as ColumnDef<CarOwnership>[],
-    [ownersProfiles],
+    [ownersProfiles, isCurrentUserPrimaryOwner, user?.id],
   );
+
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setUser(user);
+    };
+
+    getUser();
+  }, []);
 
   return (
     carOwnerships && (

@@ -37,6 +37,7 @@ export function CarOwnershipsSection({
       <CarOwnershipsTable
         key={ownersProfiles ? 'loaded' : 'loading'}
         carOwnerships={carOwnerships}
+        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         ownersProfiles={ownersProfiles}
       />
       <CarOwnershipsSectionControls
