@@ -67,6 +67,8 @@ export function CarOwnershipsTable({
               );
             },
             enableSorting: true,
+            enableColumnFilter: true,
+            filterFn: 'includesString',
           },
         ),
         columnsHelper.accessor('owner_id', {
@@ -103,6 +105,7 @@ export function CarOwnershipsTable({
           },
         }}
       >
+        <Table.FilterText columnId="user" />
         <Table.SortBreadcrumb />
         <Table.Root>
           <Table.Head />
