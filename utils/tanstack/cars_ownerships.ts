@@ -22,6 +22,7 @@ export async function carsOwnershipsAddOnMutate(
       const updatedQuery: CarOwnership[] = [
         ...currentQueryData.map((ownership) => ({ ...ownership })),
         {
+          created_at: new Date().toISOString(),
           car_id: carId,
           is_primary_owner: false,
           owner_id: newOwnerId,
@@ -92,6 +93,7 @@ export async function carsOwnershipsUpdateOnMutate(
 
       if (!isNewPrimaryOwnerInOwners)
         updatedQuery.push({
+          created_at: new Date().toISOString(),
           car_id: carId,
           is_primary_owner: true,
           owner_id: newPrimaryOwnerId,

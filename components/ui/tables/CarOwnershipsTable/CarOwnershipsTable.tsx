@@ -22,6 +22,7 @@ export function CarOwnershipsTable({
   const columns = useMemo(
     () =>
       [
+        columnsHelper.accessor('created_at', { enableSorting: true }),
         columnsHelper.accessor('is_primary_owner', {
           meta: {
             label: 'Main Owner',
@@ -82,7 +83,24 @@ export function CarOwnershipsTable({
 
   return (
     carOwnerships && (
-      <Table columns={columns} data={carOwnerships}>
+      <Table
+        columns={columns}
+        data={carOwnerships}
+        options={{
+          initialState: {
+            columnVisibility: {
+              created_at: false,
+            },
+            sorting: [
+              { id: 'is_primary_owner', desc: true },
+              { id: 'created_at', desc: true },
+            ],
+          },
+          meta: {
+            intrinsicSort: { id: 'created_at', desc: true },
+          },
+        }}
+      >
         <Table.Root>
           <Table.Head />
           <Table.Body />
