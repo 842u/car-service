@@ -8,15 +8,15 @@ import { UserBadge } from '../../UserBadge/UserBadge';
 
 const columnsHelper = createColumnHelper<CarOwnership>();
 
-type CarOwnershipTableProps = {
+type CarOwnershipsTableProps = {
   carOwnerships?: CarOwnership[];
   ownersProfiles?: Profile[];
 };
 
-export function CarOwnershipTable({
+export function CarOwnershipsTable({
   carOwnerships,
   ownersProfiles,
-}: CarOwnershipTableProps) {
+}: CarOwnershipsTableProps) {
   const columns = useMemo(
     () =>
       [

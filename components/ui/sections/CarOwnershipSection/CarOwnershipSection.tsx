@@ -4,7 +4,7 @@ import { CarOwnership, Profile } from '@/types';
 
 import { CarOwnershipDeleteFormValues } from '../../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
-import { CarOwnershipTable } from '../../tables/CarOwnershipTable/CarOwnershipTable';
+import { CarOwnershipsTable } from '../../tables/CarOwnershipsTable/CarOwnershipsTable';
 import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 
 type CarOwnershipSectionProps = {
@@ -34,7 +34,7 @@ export function CarOwnershipSection({
       <DashboardSection.Heading headingLevel="h2">
         Ownership
       </DashboardSection.Heading>
-      <CarOwnershipTable
+      <CarOwnershipsTable
         key={ownersProfiles ? 'loaded' : 'loading'}
         carOwnerships={carOwnerships}
         ownersProfiles={ownersProfiles}
