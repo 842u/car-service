@@ -85,13 +85,20 @@ export function CarOwnershipsTable({
         }),
         columnsHelper.display({
           id: 'actions',
-          cell: ({ row }) => (
-            <CarOwnershipsTableActionsDropdown
-              isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-              ownership={row.original}
-              userId={user?.id}
-            />
-          ),
+          cell: ({ row }) => {
+            const profile = ownersProfiles?.find(
+              (profile) => profile.id === row.original.owner_id,
+            );
+
+            return (
+              <CarOwnershipsTableActionsDropdown
+                isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+                ownership={row.original}
+                ownerUsername={profile?.username}
+                userId={user?.id}
+              />
+            );
+          },
         }),
       ] as ColumnDef<CarOwnership>[],
     [ownersProfiles, isCurrentUserPrimaryOwner, user?.id],
