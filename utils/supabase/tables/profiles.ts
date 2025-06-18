@@ -8,19 +8,22 @@ export async function getCurrentSessionProfile() {
 
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
 
-  if (!user) return null;
+  if (!user || error)
+    throw new Error(error?.message || "Can't get user profile.");
 
   const { data: profileData, error: profileError } = await supabase
     .from('profiles')
     .select('*')
-    .eq('id', user.id);
+    .eq('id', user.id)
+    .single();
 
   if (profileError)
     throw new Error(profileError.message || "Can't get user profile.");
 
-  return profileData[0];
+  return profileData;
 }
 
 type PatchProfileParameters =

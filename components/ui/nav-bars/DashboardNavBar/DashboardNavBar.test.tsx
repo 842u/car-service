@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
+import { SPINNER_TEST_ID } from '@/components/decorative/Spinner/Spinner';
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 
-import { USER_BADGE_TEST_ID } from '../../UserBadge/UserBadge';
 import { DashboardNavBar } from './DashboardNavBar';
 
 jest.mock('next/navigation', () => ({
@@ -64,15 +64,15 @@ describe('DashboardNavBar', () => {
     await waitFor(() => expect(menuToggleButton).toBeInTheDocument());
   });
 
-  it('should render a user badge', async () => {
+  it('should render initial loading spinner for user badge', async () => {
     render(
       <TanStackQueryProvider>
         <DashboardNavBar />
       </TanStackQueryProvider>,
     );
 
-    const userBadge = screen.getByTestId(USER_BADGE_TEST_ID);
+    const userBadgeLoadingSpinner = screen.getByTestId(SPINNER_TEST_ID);
 
-    await waitFor(() => expect(userBadge).toBeInTheDocument());
+    await waitFor(() => expect(userBadgeLoadingSpinner).toBeInTheDocument());
   });
 });
