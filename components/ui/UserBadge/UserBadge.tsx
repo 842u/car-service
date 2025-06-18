@@ -14,14 +14,15 @@ type UserBadgeProps = {
 export function UserBadge({ userProfile, className }: UserBadgeProps) {
   return (
     <div
-      className={twMerge('md:flex md:items-center md:gap-3', className)}
+      className={twMerge(
+        'flex flex-row items-center justify-center gap-2 overflow-auto',
+        className,
+      )}
       data-testid={USER_BADGE_TEST_ID}
     >
-      <p className="hidden md:inline-block md:overflow-hidden">
-        {userProfile.username}
-      </p>
+      <p className="overflow-auto">{userProfile.username}</p>
       <AvatarImage
-        className="border-alpha-grey-300 aspect-square h-full w-auto overflow-hidden rounded-full border"
+        className="border-alpha-grey-300 aspect-square h-full w-fit shrink-0 overflow-hidden rounded-full border-2"
         src={userProfile.avatar_url}
       />
     </div>
