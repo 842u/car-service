@@ -5,6 +5,7 @@ import { CarOwnership, Profile } from '@/types';
 
 import { Table } from '../../shared/base/Table/Table';
 import { UserBadge } from '../../UserBadge/UserBadge';
+import { CarOwnershipsTableActionsDropdown } from './CarOwnershipsTableActionsDropdown';
 
 const columnsHelper = createColumnHelper<CarOwnership>();
 
@@ -31,6 +32,7 @@ export function CarOwnershipsTable({
           {
             meta: {
               label: 'Owner',
+              shouldSpan: true,
             },
             id: 'owner',
             cell: ({ row }) => {
@@ -49,7 +51,16 @@ export function CarOwnershipsTable({
             },
           },
         ),
-        columnsHelper.accessor('owner_id', { meta: { label: 'ID' } }),
+        columnsHelper.accessor('owner_id', {
+          meta: {
+            label: 'ID',
+            shouldSpan: true,
+          },
+        }),
+        columnsHelper.display({
+          id: 'actions',
+          cell: () => <CarOwnershipsTableActionsDropdown />,
+        }),
       ] as ColumnDef<CarOwnership>[],
     [ownersProfiles],
   );
