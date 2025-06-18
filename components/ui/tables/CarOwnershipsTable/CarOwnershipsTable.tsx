@@ -1,6 +1,7 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
 
+import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
 
 import { Table } from '../../shared/base/Table/Table';
@@ -21,6 +22,20 @@ export function CarOwnershipsTable({
   const columns = useMemo(
     () =>
       [
+        columnsHelper.accessor('is_primary_owner', {
+          meta: {
+            label: 'Main Owner',
+          },
+          cell: ({ row }) => {
+            const isPrimaryOwner = row.original.is_primary_owner;
+
+            return isPrimaryOwner ? (
+              <KeyIcon className="stroke-accent-400 m-auto h-full w-5 stroke-3 md:w-6" />
+            ) : (
+              <KeyIcon className="stroke-alpha-grey-300 m-auto w-5 stroke-3 md:w-6" />
+            );
+          },
+        }),
         columnsHelper.accessor(
           (row) => {
             const profile = ownersProfiles?.find(
@@ -31,10 +46,10 @@ export function CarOwnershipsTable({
           },
           {
             meta: {
-              label: 'Owner',
+              label: 'User',
               shouldSpan: true,
             },
-            id: 'owner',
+            id: 'user',
             cell: ({ row }) => {
               const profile = ownersProfiles?.find(
                 (profile) => profile.id === row.original.owner_id,
