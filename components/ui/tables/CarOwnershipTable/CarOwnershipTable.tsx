@@ -1,46 +1,67 @@
-import { UseFormRegister } from 'react-hook-form';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { useMemo } from 'react';
 
 import { CarOwnership, Profile } from '@/types';
 
-import { CarOwnershipDeleteFormValues } from '../../forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
-import { CarOwnershipTableHead } from './CarOwnershipTableHead';
-import { CarOwnershipTableRow } from './CarOwnershipTableRow';
+import { Table } from '../../shared/base/Table/Table';
+import { UserBadge } from '../../UserBadge/UserBadge';
+
+const columnsHelper = createColumnHelper<CarOwnership>();
 
 type CarOwnershipTableProps = {
-  isCurrentUserPrimaryOwner: boolean;
-  ownersProfilesData?: (Profile | undefined)[];
-  register?: UseFormRegister<CarOwnershipDeleteFormValues>;
-  carOwnershipData?: CarOwnership[];
+  carOwnerships?: CarOwnership[];
+  ownersProfiles?: Profile[];
 };
 
 export function CarOwnershipTable({
-  ownersProfilesData,
-  carOwnershipData,
-  isCurrentUserPrimaryOwner,
-  register,
+  carOwnerships,
+  ownersProfiles,
 }: CarOwnershipTableProps) {
+  const columns = useMemo(
+    () =>
+      [
+        columnsHelper.accessor(
+          (row) => {
+            const profile = ownersProfiles?.find(
+              (profile) => profile.id === row.owner_id,
+            );
+
+            return profile?.username;
+          },
+          {
+            meta: {
+              label: 'Owner',
+            },
+            id: 'owner',
+            cell: ({ row }) => {
+              const profile = ownersProfiles?.find(
+                (profile) => profile.id === row.original.owner_id,
+              );
+
+              return (
+                profile && (
+                  <UserBadge
+                    className="h-10 flex-row-reverse justify-end"
+                    userProfile={profile}
+                  />
+                )
+              );
+            },
+          },
+        ),
+        columnsHelper.accessor('owner_id', { meta: { label: 'ID' } }),
+      ] as ColumnDef<CarOwnership>[],
+    [ownersProfiles],
+  );
+
   return (
-    <div className="border-alpha-grey-300 overflow-hidden rounded-lg border">
-      <table
-        aria-label="car ownership table"
-        className="w-full border-collapse"
-      >
-        <CarOwnershipTableHead />
-        <tbody>
-          {ownersProfilesData?.map(
-            (owner) =>
-              owner && (
-                <CarOwnershipTableRow
-                  key={owner.id}
-                  disabled={!isCurrentUserPrimaryOwner}
-                  ownershipData={carOwnershipData}
-                  profileData={owner}
-                  register={register}
-                />
-              ),
-          )}
-        </tbody>
-      </table>
-    </div>
+    carOwnerships && (
+      <Table columns={columns} data={carOwnerships}>
+        <Table.Root>
+          <Table.Head />
+          <Table.Body />
+        </Table.Root>
+      </Table>
+    )
   );
 }

@@ -10,8 +10,8 @@ import { CarOwnershipSectionControls } from './CarOwnershipSectionControls';
 type CarOwnershipSectionProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
-  ownersProfilesData?: (Profile | undefined)[];
-  carOwnershipData?: CarOwnership[];
+  ownersProfiles?: Profile[];
+  carOwnerships?: CarOwnership[];
 };
 
 export const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
@@ -20,9 +20,9 @@ export const defaultCarOwnershipFormValues: CarOwnershipDeleteFormValues = {
 
 export function CarOwnershipSection({
   carId,
-  carOwnershipData,
+  carOwnerships,
   isCurrentUserPrimaryOwner,
-  ownersProfilesData,
+  ownersProfiles,
 }: CarOwnershipSectionProps) {
   const removeCarOwnershipFormMethods = useForm({
     mode: 'onChange',
@@ -35,10 +35,9 @@ export function CarOwnershipSection({
         Ownership
       </DashboardSection.Heading>
       <CarOwnershipTable
-        carOwnershipData={carOwnershipData}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfilesData={ownersProfilesData}
-        register={removeCarOwnershipFormMethods.register}
+        key={ownersProfiles ? 'loaded' : 'loading'}
+        carOwnerships={carOwnerships}
+        ownersProfiles={ownersProfiles}
       />
       <CarOwnershipSectionControls
         carId={carId}
