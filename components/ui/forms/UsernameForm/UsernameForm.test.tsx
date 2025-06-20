@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
@@ -26,32 +26,32 @@ function TestUsernameForm() {
 }
 
 describe('UsernameForm', () => {
-  it('should render a username input', () => {
+  it('should render a username input', async () => {
     render(<TestUsernameForm />);
 
     const usernameInput = screen.getByRole('textbox', { name: 'Username' });
 
-    expect(usernameInput).toBeInTheDocument();
+    await waitFor(() => expect(usernameInput).toBeInTheDocument());
   });
 
-  it('should render a form controls', () => {
+  it('should render a form controls', async () => {
     render(<TestUsernameForm />);
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const saveButton = screen.getByRole('button', { name: 'Save' });
 
-    expect(resetButton).toBeInTheDocument();
-    expect(saveButton).toBeInTheDocument();
+    await waitFor(() => expect(resetButton).toBeInTheDocument());
+    await waitFor(() => expect(saveButton).toBeInTheDocument());
   });
 
-  it('initially form controls should be disabled', () => {
+  it('initially form controls should be disabled', async () => {
     render(<TestUsernameForm />);
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const saveButton = screen.getByRole('button', { name: 'Save' });
 
-    expect(resetButton).toBeDisabled();
-    expect(saveButton).toBeDisabled();
+    await waitFor(() => expect(resetButton).toBeDisabled());
+    await waitFor(() => expect(saveButton).toBeDisabled());
   });
 
   it('reset button should be enabled on username input change', async () => {
@@ -64,7 +64,7 @@ describe('UsernameForm', () => {
 
     await user.type(usernameInput, inputText);
 
-    expect(resetButton).toBeEnabled();
+    await waitFor(() => expect(resetButton).toBeEnabled());
   });
 
   it('should reset form on reset button click', async () => {
@@ -80,11 +80,11 @@ describe('UsernameForm', () => {
     await user.clear(usernameInput);
     await user.type(usernameInput, newUsername);
 
-    expect(usernameInput.value).toBe(newUsername);
+    await waitFor(() => expect(usernameInput.value).toBe(newUsername));
 
     await user.click(resetButton);
 
-    expect(usernameInput.value).toBe(MOCK_USERNAME);
+    await waitFor(() => expect(usernameInput.value).toBe(MOCK_USERNAME));
   });
 
   it('submit button should be disabled if wrong username input provided', async () => {
@@ -103,13 +103,13 @@ describe('UsernameForm', () => {
     await user.clear(usernameInput);
     await user.type(usernameInput, tooShortUsername);
 
-    expect(saveButton).toBeDisabled();
+    await waitFor(() => expect(saveButton).toBeDisabled());
 
     await user.click(resetButton);
     await user.clear(usernameInput);
     await user.type(usernameInput, tooLongUsername);
 
-    expect(saveButton).toBeDisabled();
+    await waitFor(() => expect(saveButton).toBeDisabled());
   });
 
   it('submit button should be enabled if correct username input provided', async () => {
@@ -126,7 +126,7 @@ describe('UsernameForm', () => {
     await user.clear(usernameInput);
     await user.type(usernameInput, correctUsername);
 
-    expect(saveButton).toBeEnabled();
+    await waitFor(() => expect(saveButton).toBeEnabled());
   });
 
   it('should call proper submit handler on submit', async () => {
@@ -144,9 +144,11 @@ describe('UsernameForm', () => {
     await user.type(usernameInput, correctUsername);
     await user.click(saveButton);
 
-    expect(updateCurrentSessionProfile).toHaveBeenCalledWith({
-      property: 'username',
-      value: correctUsername,
-    });
+    await waitFor(() =>
+      expect(updateCurrentSessionProfile).toHaveBeenCalledWith({
+        property: 'username',
+        value: correctUsername,
+      }),
+    );
   });
 });
