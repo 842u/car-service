@@ -6,6 +6,19 @@ import { CarOwnership, Profile } from '@/types';
 import { CarOwnershipsSection } from './CarOwnershipsSection';
 import { CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID } from './CarOwnershipsSectionControls';
 
+jest.mock('@supabase/ssr', () => ({
+  createBrowserClient: () => ({
+    auth: {
+      getUser: async () =>
+        Promise.resolve({
+          data: {
+            user: { id: MOCK_MAIN_OWNER_PROFILE.id },
+          },
+        }),
+    },
+  }),
+}));
+
 const MOCK_CAR_ID = '2c7e021f-fdf7-4a67-aef9-35fa96164864';
 
 const MOCK_MAIN_OWNER_PROFILE: Profile = {

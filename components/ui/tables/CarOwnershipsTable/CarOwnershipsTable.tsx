@@ -1,3 +1,5 @@
+'use client';
+
 import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
