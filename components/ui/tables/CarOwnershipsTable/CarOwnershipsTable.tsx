@@ -142,6 +142,7 @@ export function CarOwnershipsTable({
         <Table.FilterText columnId="user" />
         <Table.SortBreadcrumb />
         <Table.Root className="my-4 overflow-auto">
+          <caption className="sr-only">car ownerships</caption>
           <Table.Head />
           <Table.Body />
         </Table.Root>
