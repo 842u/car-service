@@ -83,6 +83,7 @@ export function CarServiceLogsTable({
             },
             id: 'created_by',
             enableSorting: true,
+            sortingFn: 'alphanumeric',
             enableColumnFilter: true,
             filterFn: 'includesString',
             cell: ({ row }) => {

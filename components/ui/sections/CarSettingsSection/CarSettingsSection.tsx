@@ -3,7 +3,7 @@
 import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
 import { CarIdentitySection } from '../CarIdentitySection/CarIdentitySection';
-import { CarOwnershipSection } from '../CarOwnershipSection/CarOwnershipSection';
+import { CarOwnershipsSection } from '../CarOwnershipsSection/CarOwnershipsSection';
 import { CarServiceLogsSection } from '../CarServiceLogsSection/CarServiceLogsSection';
 import { useCarSettingsSection } from './useCarSettingsSection';
 
@@ -37,11 +37,11 @@ export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
         ownersProfiles={ownersProfilesData}
       />
-      <CarOwnershipSection
+      <CarOwnershipsSection
         carId={carId}
-        carOwnershipData={carOwnershipData}
+        carOwnerships={carOwnershipData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfilesData={ownersProfilesData}
+        ownersProfiles={ownersProfilesData}
       />
       <CarDeleteSection
         carId={carId}

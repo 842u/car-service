@@ -1,0 +1,224 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRef } from 'react';
+
+import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
+import { useToasts } from '@/hooks/useToasts';
+import { CarOwnership } from '@/types';
+import {
+  deleteCarOwnershipsByUsersIds,
+  updateCarPrimaryOwnershipByUserId,
+} from '@/utils/supabase/tables/cars_ownerships';
+import {
+  carsOwnershipsDeleteOnMutate,
+  carsOwnershipsUpdateOnError,
+  carsOwnershipsUpdateOnMutate,
+} from '@/utils/tanstack/cars_ownerships';
+import { queryKeys } from '@/utils/tanstack/keys';
+
+import { Button } from '../../shared/base/Button/Button';
+import {
+  DialogModal,
+  DialogModalRef,
+} from '../../shared/base/DialogModal/DialogModal';
+import { Dropdown } from '../../shared/base/Dropdown/Dropdown';
+import { IconButton } from '../../shared/IconButton/IconButton';
+
+type CarOwnershipsTableActionsDropdownProps = {
+  isCurrentUserPrimaryOwner: boolean;
+  ownership: CarOwnership;
+  ownerUsername?: string | null;
+  userId?: string;
+};
+
+export function CarOwnershipsTableActionsDropdown({
+  isCurrentUserPrimaryOwner,
+  ownership,
+  ownerUsername,
+  userId,
+}: CarOwnershipsTableActionsDropdownProps) {
+  const deleteDialogModalRef = useRef<DialogModalRef>(null);
+  const promoteDialogModalRef = useRef<DialogModalRef>(null);
+
+  const { addToast } = useToasts();
+
+  const queryClient = useQueryClient();
+
+  const carId = ownership.car_id;
+
+  const { mutate: mutateDelete } = useMutation({
+    throwOnError: false,
+    mutationFn: ({
+      carId,
+      ownerId,
+    }: {
+      carId: string;
+      ownerId: string;
+      ownerUsername?: string | null;
+    }) => deleteCarOwnershipsByUsersIds(carId, [ownerId]),
+    onMutate: ({ carId, ownerId }) =>
+      carsOwnershipsDeleteOnMutate([ownerId], queryClient, carId),
+    onSuccess: (_, variables) =>
+      addToast(
+        `Successfully removed ${variables.ownerUsername} ownership.`,
+        'success',
+      ),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+      queryClient.setQueryData(
+        queryKeys.carsOwnershipsByCarId(carId),
+        context?.previousQueryData,
+      );
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.carsOwnershipsByCarId(carId),
+      }),
+  });
+
+  const { mutate: mutateUpdate } = useMutation({
+    throwOnError: false,
+    mutationFn: ({
+      carId,
+      ownerId,
+    }: {
+      carId: string;
+      ownerId: string;
+      ownerUsername?: string | null;
+    }) => updateCarPrimaryOwnershipByUserId(carId, ownerId),
+    onMutate: ({ carId, ownerId }) =>
+      carsOwnershipsUpdateOnMutate(queryClient, carId, ownerId),
+    onSuccess: (_, variables) =>
+      addToast(
+        `Successfully promoted ${variables.ownerUsername} to main owner.`,
+        'success',
+      ),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+      carsOwnershipsUpdateOnError(queryClient, context, carId);
+    },
+  });
+
+  const handleDeleteActionButtonClick = () =>
+    deleteDialogModalRef.current?.showModal();
+
+  const handleDeleteDialogModalCancelButtonClick = () =>
+    deleteDialogModalRef.current?.closeModal();
+
+  const handleDeleteDialogModalDeleteButtonClick = () => {
+    deleteDialogModalRef.current?.closeModal();
+    mutateDelete({ carId, ownerId: ownership.owner_id, ownerUsername });
+  };
+
+  const handlePromoteActionButtonClick = () =>
+    promoteDialogModalRef.current?.showModal();
+
+  const handlePromoteDialogModalCancelButtonClick = () =>
+    promoteDialogModalRef.current?.closeModal();
+
+  const handlePromoteDialogModalPromoteButtonClick = () => {
+    promoteDialogModalRef.current?.closeModal();
+    mutateUpdate({ carId, ownerId: ownership.owner_id, ownerUsername });
+  };
+
+  const canPromote = isCurrentUserPrimaryOwner && userId !== ownership.owner_id;
+
+  const canDelete =
+    (isCurrentUserPrimaryOwner && userId !== ownership.owner_id) ||
+    (!isCurrentUserPrimaryOwner && userId === ownership.owner_id);
+
+  const canTakeAction = canPromote || canDelete;
+
+  return (
+    <Dropdown className="w-12">
+      <Dropdown.Trigger>
+        {({ onClick, ref }) => (
+          <IconButton
+            ref={ref}
+            disabled={!canTakeAction}
+            title="Actions"
+            variant="transparent"
+            onClick={onClick}
+          >
+            {canTakeAction ? (
+              <EllipsisIcon className="fill-dark-500 stroke-dark-500 dark:fill-light-500 dark:stroke-light-500 w-full px-1" />
+            ) : (
+              <EllipsisIcon className="fill-alpha-grey-500 stroke-alpha-grey-500 w-full px-1" />
+            )}
+          </IconButton>
+        )}
+      </Dropdown.Trigger>
+      <Dropdown.Content snap="bottom-right">
+        <Button
+          className="w-full"
+          disabled={!canPromote}
+          variant="transparent"
+          onClick={handlePromoteActionButtonClick}
+        >
+          Promote
+        </Button>
+        <DialogModal
+          ref={promoteDialogModalRef}
+          headingText="Grant primary ownership"
+        >
+          <p className="my-10 max-w-full text-wrap">
+            Are you sure you want to pass primary ownership to{' '}
+            <span className="font-extrabold">{ownerUsername}</span>?
+            <span className="text-warning-400 my-1 block">
+              Granting primary ownership to someone else will revoke your
+              current primary ownership status and the privileges that comes
+              with it.
+            </span>
+          </p>
+          <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
+            <Button onClick={handlePromoteDialogModalCancelButtonClick}>
+              Cancel
+            </Button>
+            <Button
+              disabled={!canPromote}
+              variant="accent"
+              onClick={handlePromoteDialogModalPromoteButtonClick}
+            >
+              Grant
+            </Button>
+          </div>
+        </DialogModal>
+
+        <Button
+          className="w-full"
+          disabled={!canDelete}
+          variant="error"
+          onClick={handleDeleteActionButtonClick}
+        >
+          Delete
+        </Button>
+        <DialogModal ref={deleteDialogModalRef} headingText="Delete ownership">
+          {userId === ownership.owner_id ? (
+            <p className="my-10 max-w-full text-wrap">
+              Are you sure you want to delete your ownership?
+              <span className="text-warning-400 my-1 block">
+                You will lose access to this car after proceeding.
+              </span>
+            </p>
+          ) : (
+            <p className="my-10 max-w-full text-wrap">
+              Are you sure you want to delete{' '}
+              <span className="font-extrabold">{ownerUsername}</span> ownership?
+            </p>
+          )}
+          <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
+            <Button onClick={handleDeleteDialogModalCancelButtonClick}>
+              Cancel
+            </Button>
+            <Button
+              disabled={!canDelete}
+              variant="error"
+              onClick={handleDeleteDialogModalDeleteButtonClick}
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogModal>
+      </Dropdown.Content>
+    </Dropdown>
+  );
+}

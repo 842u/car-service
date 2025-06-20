@@ -1,6 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { CarOwnershipDeleteFormValues } from '@/components/ui/forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 import { CarOwnership } from '@/types';
 
 import { queryKeys } from './keys';
@@ -22,6 +21,7 @@ export async function carsOwnershipsAddOnMutate(
       const updatedQuery: CarOwnership[] = [
         ...currentQueryData.map((ownership) => ({ ...ownership })),
         {
+          created_at: new Date().toISOString(),
           car_id: carId,
           is_primary_owner: false,
           owner_id: newOwnerId,
@@ -65,6 +65,8 @@ export async function carsOwnershipsUpdateOnMutate(
   carId: string,
   newPrimaryOwnerId: string | null,
 ) {
+  let previousPrimaryOwnerId = '';
+
   await queryClient.cancelQueries({
     queryKey: queryKeys.carsOwnershipsByCarId(carId),
   });
@@ -76,8 +78,10 @@ export async function carsOwnershipsUpdateOnMutate(
 
       const updatedQuery: CarOwnership[] = [
         ...currentQueryData.map((ownership) => {
-          if (ownership.is_primary_owner)
+          if (ownership.is_primary_owner) {
+            previousPrimaryOwnerId = ownership.owner_id;
             return { ...ownership, is_primary_owner: false };
+          }
 
           if (ownership.owner_id === newPrimaryOwnerId)
             return { ...ownership, is_primary_owner: true };
@@ -92,6 +96,7 @@ export async function carsOwnershipsUpdateOnMutate(
 
       if (!isNewPrimaryOwnerInOwners)
         updatedQuery.push({
+          created_at: new Date().toISOString(),
           car_id: carId,
           is_primary_owner: true,
           owner_id: newPrimaryOwnerId,
@@ -101,12 +106,12 @@ export async function carsOwnershipsUpdateOnMutate(
     },
   );
 
-  return { newPrimaryOwnerId };
+  return { newPrimaryOwnerId, previousPrimaryOwnerId };
 }
 
 export function carsOwnershipsUpdateOnError(
   queryClient: QueryClient,
-  context: { newPrimaryOwnerId: string | null } | undefined,
+  context: Awaited<ReturnType<typeof carsOwnershipsUpdateOnMutate>> | undefined,
   carId: string,
 ) {
   const currentQueryData: CarOwnership[] | undefined = queryClient.getQueryData(
@@ -118,6 +123,9 @@ export function carsOwnershipsUpdateOnError(
       ...currentQueryData.map((ownership) => {
         if (ownership.owner_id === context?.newPrimaryOwnerId) {
           return { ...ownership, is_primary_owner: false };
+        }
+        if (ownership.owner_id === context?.previousPrimaryOwnerId) {
+          return { ...ownership, is_primary_owner: true };
         }
         return { ...ownership };
       }),
@@ -131,7 +139,7 @@ export function carsOwnershipsUpdateOnError(
 }
 
 export async function carsOwnershipsDeleteOnMutate(
-  carOwnershipFormData: CarOwnershipDeleteFormValues,
+  ownersIds: string[],
   queryClient: QueryClient,
   carId: string,
 ) {
@@ -147,8 +155,7 @@ export async function carsOwnershipsDeleteOnMutate(
     queryKeys.carsOwnershipsByCarId(carId),
     (currentQueryData: CarOwnership[]) => {
       const filteredQuery = currentQueryData.filter(
-        (ownership) =>
-          !carOwnershipFormData.ownersIds.includes(ownership.owner_id),
+        (ownership) => !ownersIds.includes(ownership.owner_id),
       );
 
       const updatedQuery = filteredQuery.map((ownership) => ({

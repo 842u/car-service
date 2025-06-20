@@ -22,7 +22,7 @@ export function UserBadge({ userProfile, className }: UserBadgeProps) {
     >
       <p className="overflow-auto">{userProfile.username}</p>
       <AvatarImage
-        className="border-alpha-grey-300 aspect-square h-full w-fit shrink-0 overflow-hidden rounded-full border-2"
+        className="border-alpha-grey-300 aspect-square h-full w-fit shrink-0 overflow-hidden rounded-full border"
         src={userProfile.avatar_url}
       />
     </div>

@@ -65,7 +65,7 @@ export default typescriptEslintConfig(
         'warn',
         {
           selector:
-            "CallExpression[callee.name='debugDelay'], CallExpression[callee.name='debugDelayRandomResponse']",
+            "CallExpression[callee.name='debugDelayResolveResponse'], CallExpression[callee.name='debugDelayRandomResponse'], CallExpression[callee.name='debugDelayRejectResponse']",
           message: 'Do not left debug delayed functions.',
         },
       ],

@@ -6,7 +6,8 @@ export async function getCarOwnerships(carId: string) {
   const { data, error } = await supabase
     .from('cars_ownerships')
     .select()
-    .eq('car_id', carId);
+    .eq('car_id', carId)
+    .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
 

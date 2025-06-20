@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 
@@ -14,39 +14,39 @@ function TestAvatarSection() {
 }
 
 describe('AvatarSection', () => {
-  it('should render a section heading', () => {
+  it('should render a section heading', async () => {
     render(<TestAvatarSection />);
 
     const heading = screen.getByRole('heading', { name: 'Avatar' });
 
-    expect(heading).toBeInTheDocument();
+    await waitFor(() => expect(heading).toBeInTheDocument());
   });
 
-  it('should render info about usage', () => {
+  it('should render info about usage', async () => {
     render(<TestAvatarSection />);
 
     const usageInfo = screen.getByText(
       'Click on the image to upload a custom one.',
     );
 
-    expect(usageInfo).toBeInTheDocument();
+    await waitFor(() => expect(usageInfo).toBeInTheDocument());
   });
 
-  it('should render info about file constraints', () => {
+  it('should render info about file constraints', async () => {
     render(<TestAvatarSection />);
 
     const fileTypeInfo = screen.getByText(/file types/i);
     const fileSizeInfo = screen.getByText(/file size/i);
 
-    expect(fileTypeInfo).toBeInTheDocument();
-    expect(fileSizeInfo).toBeInTheDocument();
+    await waitFor(() => expect(fileTypeInfo).toBeInTheDocument());
+    await waitFor(() => expect(fileSizeInfo).toBeInTheDocument());
   });
 
-  it('should render avatar form', () => {
+  it('should render avatar form', async () => {
     render(<TestAvatarSection />);
 
     const avatarForm = screen.getByTestId(AVATAR_FORM_TEST_ID);
 
-    expect(avatarForm).toBeInTheDocument();
+    await waitFor(() => expect(avatarForm).toBeInTheDocument());
   });
 });

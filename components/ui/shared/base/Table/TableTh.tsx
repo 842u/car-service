@@ -22,7 +22,7 @@ export function TableTh({ header, ...props }: TableThProps) {
   return (
     <th
       className={twMerge(
-        'w-1 px-5 py-1 text-start',
+        'w-1 px-5 py-1 text-start whitespace-nowrap',
         shouldSpan ? 'w-auto' : '',
       )}
       {...props}
