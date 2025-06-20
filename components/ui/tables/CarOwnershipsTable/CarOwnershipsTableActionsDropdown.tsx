@@ -4,8 +4,15 @@ import { useRef } from 'react';
 import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
 import { useToasts } from '@/hooks/useToasts';
 import { CarOwnership } from '@/types';
-import { deleteCarOwnershipsByUsersIds } from '@/utils/supabase/tables/cars_ownerships';
-import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
+import {
+  deleteCarOwnershipsByUsersIds,
+  updateCarPrimaryOwnershipByUserId,
+} from '@/utils/supabase/tables/cars_ownerships';
+import {
+  carsOwnershipsDeleteOnMutate,
+  carsOwnershipsUpdateOnError,
+  carsOwnershipsUpdateOnMutate,
+} from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Button } from '../../shared/base/Button/Button';
@@ -30,6 +37,7 @@ export function CarOwnershipsTableActionsDropdown({
   userId,
 }: CarOwnershipsTableActionsDropdownProps) {
   const deleteDialogModalRef = useRef<DialogModalRef>(null);
+  const promoteDialogModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
@@ -37,7 +45,7 @@ export function CarOwnershipsTableActionsDropdown({
 
   const carId = ownership.car_id;
 
-  const { mutate } = useMutation({
+  const { mutate: mutateDelete } = useMutation({
     throwOnError: false,
     mutationFn: ({
       carId,
@@ -67,6 +75,29 @@ export function CarOwnershipsTableActionsDropdown({
       }),
   });
 
+  const { mutate: mutateUpdate } = useMutation({
+    throwOnError: false,
+    mutationFn: ({
+      carId,
+      ownerId,
+    }: {
+      carId: string;
+      ownerId: string;
+      ownerUsername?: string | null;
+    }) => updateCarPrimaryOwnershipByUserId(carId, ownerId),
+    onMutate: ({ carId, ownerId }) =>
+      carsOwnershipsUpdateOnMutate(queryClient, carId, ownerId),
+    onSuccess: (_, variables) =>
+      addToast(
+        `Successfully promoted ${variables.ownerUsername} to main owner.`,
+        'success',
+      ),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+      carsOwnershipsUpdateOnError(queryClient, context, carId);
+    },
+  });
+
   const handleDeleteActionButtonClick = () =>
     deleteDialogModalRef.current?.showModal();
 
@@ -75,7 +106,18 @@ export function CarOwnershipsTableActionsDropdown({
 
   const handleDeleteDialogModalDeleteButtonClick = () => {
     deleteDialogModalRef.current?.closeModal();
-    mutate({ carId, ownerId: ownership.owner_id, ownerUsername });
+    mutateDelete({ carId, ownerId: ownership.owner_id, ownerUsername });
+  };
+
+  const handlePromoteActionButtonClick = () =>
+    promoteDialogModalRef.current?.showModal();
+
+  const handlePromoteDialogModalCancelButtonClick = () =>
+    promoteDialogModalRef.current?.closeModal();
+
+  const handlePromoteDialogModalPromoteButtonClick = () => {
+    promoteDialogModalRef.current?.closeModal();
+    mutateUpdate({ carId, ownerId: ownership.owner_id, ownerUsername });
   };
 
   const canPromote = isCurrentUserPrimaryOwner && userId !== ownership.owner_id;
@@ -106,9 +148,41 @@ export function CarOwnershipsTableActionsDropdown({
         )}
       </Dropdown.Trigger>
       <Dropdown.Content snap="bottom-right">
-        <Button className="w-full" disabled={!canPromote} variant="transparent">
+        <Button
+          className="w-full"
+          disabled={!canPromote}
+          variant="transparent"
+          onClick={handlePromoteActionButtonClick}
+        >
           Promote
         </Button>
+        <DialogModal
+          ref={promoteDialogModalRef}
+          headingText="Grant primary ownership"
+        >
+          <p className="my-10 max-w-full text-wrap">
+            Are you sure you want to pass primary ownership to{' '}
+            <span className="font-extrabold">{ownerUsername}</span>?
+            <span className="text-warning-400 my-1 block">
+              Granting primary ownership to someone else will revoke your
+              current primary ownership status and the privileges that comes
+              with it.
+            </span>
+          </p>
+          <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
+            <Button onClick={handlePromoteDialogModalCancelButtonClick}>
+              Cancel
+            </Button>
+            <Button
+              disabled={!canPromote}
+              variant="accent"
+              onClick={handlePromoteDialogModalPromoteButtonClick}
+            >
+              Grant
+            </Button>
+          </div>
+        </DialogModal>
+
         <Button
           className="w-full"
           disabled={!canDelete}
@@ -128,10 +202,7 @@ export function CarOwnershipsTableActionsDropdown({
           ) : (
             <p className="my-10 max-w-full text-wrap">
               Are you sure you want to delete{' '}
-              <span className="text-warning-400 mx-1 font-extrabold">
-                {ownerUsername}
-              </span>{' '}
-              ownership?
+              <span className="font-extrabold">{ownerUsername}</span> ownership?
             </p>
           )}
           <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
