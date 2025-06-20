@@ -140,7 +140,7 @@ export function CarOwnershipsTable({
       >
         <Table.FilterText columnId="user" />
         <Table.SortBreadcrumb />
-        <Table.Root>
+        <Table.Root className="my-4 overflow-auto">
           <Table.Head />
           <Table.Body />
         </Table.Root>
