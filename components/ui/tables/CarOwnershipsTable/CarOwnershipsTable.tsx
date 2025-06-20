@@ -73,6 +73,7 @@ export function CarOwnershipsTable({
               );
             },
             enableSorting: true,
+            sortingFn: 'alphanumeric',
             enableColumnFilter: true,
             filterFn: 'includesString',
           },
