@@ -1,6 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { CarOwnershipDeleteFormValues } from '@/components/ui/forms/CarOwnershipDeleteForm/CarOwnershipDeleteForm';
 import { CarOwnership } from '@/types';
 
 import { queryKeys } from './keys';
@@ -133,7 +132,7 @@ export function carsOwnershipsUpdateOnError(
 }
 
 export async function carsOwnershipsDeleteOnMutate(
-  carOwnershipFormData: CarOwnershipDeleteFormValues,
+  ownersIds: string[],
   queryClient: QueryClient,
   carId: string,
 ) {
@@ -149,8 +148,7 @@ export async function carsOwnershipsDeleteOnMutate(
     queryKeys.carsOwnershipsByCarId(carId),
     (currentQueryData: CarOwnership[]) => {
       const filteredQuery = currentQueryData.filter(
-        (ownership) =>
-          !carOwnershipFormData.ownersIds.includes(ownership.owner_id),
+        (ownership) => !ownersIds.includes(ownership.owner_id),
       );
 
       const updatedQuery = filteredQuery.map((ownership) => ({

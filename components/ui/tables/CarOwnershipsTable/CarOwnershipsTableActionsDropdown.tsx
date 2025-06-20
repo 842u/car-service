@@ -1,7 +1,12 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
 
 import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
+import { useToasts } from '@/hooks/useToasts';
 import { CarOwnership } from '@/types';
+import { deleteCarOwnershipsByUsersIds } from '@/utils/supabase/tables/cars_ownerships';
+import { carsOwnershipsDeleteOnMutate } from '@/utils/tanstack/cars_ownerships';
+import { queryKeys } from '@/utils/tanstack/keys';
 
 import { Button } from '../../shared/base/Button/Button';
 import {
@@ -26,11 +31,52 @@ export function CarOwnershipsTableActionsDropdown({
 }: CarOwnershipsTableActionsDropdownProps) {
   const deleteDialogModalRef = useRef<DialogModalRef>(null);
 
+  const { addToast } = useToasts();
+
+  const queryClient = useQueryClient();
+
+  const carId = ownership.car_id;
+
+  const { mutate } = useMutation({
+    throwOnError: false,
+    mutationFn: ({
+      carId,
+      ownerId,
+    }: {
+      carId: string;
+      ownerId: string;
+      ownerUsername?: string | null;
+    }) => deleteCarOwnershipsByUsersIds(carId, [ownerId]),
+    onMutate: ({ carId, ownerId }) =>
+      carsOwnershipsDeleteOnMutate([ownerId], queryClient, carId),
+    onSuccess: (_, variables) =>
+      addToast(
+        `Successfully removed ${variables.ownerUsername} ownership.`,
+        'success',
+      ),
+    onError: (error, _, context) => {
+      addToast(error.message, 'error');
+      queryClient.setQueryData(
+        queryKeys.carsOwnershipsByCarId(carId),
+        context?.previousQueryData,
+      );
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.carsOwnershipsByCarId(carId),
+      }),
+  });
+
   const handleDeleteActionButtonClick = () =>
     deleteDialogModalRef.current?.showModal();
 
   const handleDeleteDialogModalCancelButtonClick = () =>
     deleteDialogModalRef.current?.closeModal();
+
+  const handleDeleteDialogModalDeleteButtonClick = () => {
+    deleteDialogModalRef.current?.closeModal();
+    mutate({ carId, ownerId: ownership.owner_id, ownerUsername });
+  };
 
   const canPromote = isCurrentUserPrimaryOwner && userId !== ownership.owner_id;
 
@@ -92,7 +138,11 @@ export function CarOwnershipsTableActionsDropdown({
             <Button onClick={handleDeleteDialogModalCancelButtonClick}>
               Cancel
             </Button>
-            <Button disabled={!canDelete} variant="error">
+            <Button
+              disabled={!canDelete}
+              variant="error"
+              onClick={handleDeleteDialogModalDeleteButtonClick}
+            >
               Delete
             </Button>
           </div>
