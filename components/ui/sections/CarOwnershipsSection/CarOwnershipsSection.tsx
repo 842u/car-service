@@ -20,7 +20,7 @@ export function CarOwnershipsSection({
   return (
     <DashboardSection className="overflow-x-auto">
       <DashboardSection.Heading headingLevel="h2">
-        Ownership
+        Ownerships
       </DashboardSection.Heading>
       <CarOwnershipsTable
         key={ownersProfiles ? 'loaded' : 'loading'}
