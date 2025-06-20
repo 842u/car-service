@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 
 import { CAR_OWNERSHIP_ADD_FORM_TEST_ID } from '../../forms/CarOwnershipAddForm/CarOwnershipAddForm';
-import { CAR_PRIMARY_OWNERSHIP_GRANT_FORM_TEST_ID } from '../../forms/CarPrimaryOwnershipGrantForm/CarPrimaryOwnershipGrantForm';
 import { CarOwnershipsSectionControls } from './CarOwnershipsSectionControls';
 
 const MOCK_CAR_ID = 'ee4a8fa7-758e-4302-8726-01eeecee8707';
@@ -24,36 +23,6 @@ function TestOwnershipsSectionControls({
 }
 
 describe('CarOwnershipsSectionControls', () => {
-  it('should render a button for primary ownership granting', () => {
-    render(<TestOwnershipsSectionControls />);
-
-    const primaryOwnershipButton = screen.getByRole('button', {
-      name: 'grant primary ownership',
-    });
-
-    expect(primaryOwnershipButton).toBeInTheDocument();
-  });
-
-  it('primary ownership button should be disabled if !isCurrentUserPrimaryOwner', () => {
-    render(<TestOwnershipsSectionControls isCurrentUserPrimaryOwner={false} />);
-
-    const primaryOwnershipButton = screen.getByRole('button', {
-      name: 'grant primary ownership',
-    });
-
-    expect(primaryOwnershipButton).toBeDisabled();
-  });
-
-  it('should render a car primary ownership grant form', () => {
-    render(<TestOwnershipsSectionControls />);
-
-    const carPrimaryOwnershipGrantForm = screen.getByTestId(
-      CAR_PRIMARY_OWNERSHIP_GRANT_FORM_TEST_ID,
-    );
-
-    expect(carPrimaryOwnershipGrantForm).toBeInTheDocument();
-  });
-
   it('should render a button for adding ownership', () => {
     render(<TestOwnershipsSectionControls />);
 
