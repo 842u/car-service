@@ -140,7 +140,7 @@ export function CarOwnershipsTableActionsDropdown({
             onClick={onClick}
           >
             {canTakeAction ? (
-              <EllipsisIcon className="fill-accent-700 stroke-accent-700 dark:fill-accent-400 dark:stroke-accent-400 w-full px-1" />
+              <EllipsisIcon className="fill-dark-500 stroke-dark-500 dark:fill-light-500 dark:stroke-light-500 w-full px-1" />
             ) : (
               <EllipsisIcon className="fill-alpha-grey-500 stroke-alpha-grey-500 w-full px-1" />
             )}
