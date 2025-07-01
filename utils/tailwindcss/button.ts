@@ -9,11 +9,14 @@ const accentClassName = `${baseClassName} border-accent-500 bg-accent-800 disabl
 
 const transparentClassName = `${baseClassName} hover:bg-alpha-grey-200 border-0`;
 
+const transparentErrorClassName = `${transparentClassName} text-error-500 dark:text-error-400`;
+
 const errorClassName = `${baseClassName} border-error-500 bg-error-700 disabled:bg-error-900 disabled:border-error-800 hover:border-error-300 hover:bg-error-600 text-light-500`;
 
 export const buttonVariants: Record<ButtonVariants, string> = {
   default: defaultClassName,
   accent: accentClassName,
   transparent: transparentClassName,
+  transparentError: transparentErrorClassName,
   error: errorClassName,
 };
