@@ -186,7 +186,7 @@ export function CarOwnershipsTableActionsDropdown({
         <Button
           className="w-full"
           disabled={!canDelete}
-          variant="error"
+          variant="transparentError"
           onClick={handleDeleteActionButtonClick}
         >
           Delete
