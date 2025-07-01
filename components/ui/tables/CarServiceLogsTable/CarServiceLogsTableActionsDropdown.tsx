@@ -110,7 +110,7 @@ export function CarServiceLogsTableActionsDropdown({
         </DialogModal>
         <Button
           disabled={!canTakeAction}
-          variant="transparent"
+          variant="transparentError"
           onClick={handleDeleteServiceLogButtonClick}
         >
           Delete
