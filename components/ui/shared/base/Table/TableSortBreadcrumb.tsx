@@ -10,6 +10,10 @@ export function TableSortBreadcrumb() {
     <>
       <p className="text-xs">Sort order</p>
       <div className="flex flex-wrap">
+        {sorting.every(
+          (rule) => rule.id === table.options.meta?.intrinsicSort?.id,
+        ) && <p className="mx-2 flex h-10 items-center px-1">none</p>}
+
         {sorting.map((rule) => {
           const isIntrinsicRule =
             rule.id === table.options.meta?.intrinsicSort?.id;
