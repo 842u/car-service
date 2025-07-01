@@ -84,6 +84,7 @@ export function CarServiceLogsTableActionsDropdown({
         {({ onClick, ref }) => (
           <IconButton
             ref={ref}
+            disabled={!canTakeAction}
             title="Actions"
             variant="transparent"
             onClick={onClick}
