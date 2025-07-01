@@ -134,16 +134,13 @@ export function CarOwnershipsTableActionsDropdown({
         {({ onClick, ref }) => (
           <IconButton
             ref={ref}
+            className="group"
             disabled={!canTakeAction}
             title="Actions"
             variant="transparent"
             onClick={onClick}
           >
-            {canTakeAction ? (
-              <EllipsisIcon className="fill-dark-500 stroke-dark-500 dark:fill-light-500 dark:stroke-light-500 w-full px-1" />
-            ) : (
-              <EllipsisIcon className="fill-alpha-grey-500 stroke-alpha-grey-500 w-full px-1" />
-            )}
+            <EllipsisIcon className="fill-dark-500 stroke-dark-500 dark:fill-light-500 dark:stroke-light-500 group-disabled:dark:fill-alpha-grey-500 group-disabled:dark:stroke-alpha-grey-500 group-disabled:fill-alpha-grey-500 group-disabled:stroke-alpha-grey-500 w-full px-1" />
           </IconButton>
         )}
       </Dropdown.Trigger>
