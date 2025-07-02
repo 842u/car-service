@@ -10,19 +10,6 @@ jest.mock('next/navigation', () => ({
   usePathname: () => '/dashboard',
 }));
 
-jest.mock('@supabase/ssr', () => ({
-  createBrowserClient: () => ({
-    from: () => ({
-      select: () => ({
-        eq: () => ({}),
-      }),
-    }),
-    auth: {
-      getUser: async () => ({ data: { user: {} } }),
-    },
-  }),
-}));
-
 describe('DashboardNavBar', () => {
   it('should render dashboard menu', async () => {
     render(

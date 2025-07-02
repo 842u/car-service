@@ -1,42 +1,14 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
-import { CarOwnership, Profile } from '@/types';
+import {
+  MOCK_CAR_ID,
+  MOCK_OWNERS_PROFILES,
+  MOCK_OWNERSHIPS,
+} from '@/utils/jest/mocks/supabase';
 
 import { CarOwnershipsSection } from './CarOwnershipsSection';
 import { CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID } from './CarOwnershipsSectionControls';
-
-jest.mock('@supabase/ssr', () => ({
-  createBrowserClient: () => ({
-    auth: {
-      getUser: async () =>
-        Promise.resolve({
-          data: {
-            user: { id: MOCK_MAIN_OWNER_PROFILE.id },
-          },
-        }),
-    },
-  }),
-}));
-
-const MOCK_CAR_ID = '2c7e021f-fdf7-4a67-aef9-35fa96164864';
-
-const MOCK_MAIN_OWNER_PROFILE: Profile = {
-  avatar_url: 'http://some.url',
-  id: 'a9132b5f-12d1-4cb6-955c-4e5d1733d1b1',
-  username: 'test user',
-};
-
-const MOCK_OWNERS_PROFILES: Profile[] = [MOCK_MAIN_OWNER_PROFILE];
-
-const MOCK_OWNERSHIPS: CarOwnership[] = [
-  {
-    car_id: MOCK_CAR_ID,
-    created_at: new Date().toISOString(),
-    is_primary_owner: true,
-    owner_id: MOCK_MAIN_OWNER_PROFILE.id,
-  },
-];
 
 function TestCarOwnershipsSection() {
   return (
@@ -52,12 +24,12 @@ function TestCarOwnershipsSection() {
 }
 
 describe('CarOwnershipsSection', () => {
-  it('should render heading', () => {
+  it('should render heading', async () => {
     render(<TestCarOwnershipsSection />);
 
     const heading = screen.getByRole('heading', { name: 'Ownerships' });
 
-    expect(heading).toBeInTheDocument();
+    await waitFor(() => expect(heading).toBeInTheDocument());
   });
 
   it('should render car ownership table', async () => {
@@ -70,13 +42,13 @@ describe('CarOwnershipsSection', () => {
     await waitFor(() => expect(carOwnershipsTable).toBeInTheDocument());
   });
 
-  it('should render section controls', () => {
+  it('should render section controls', async () => {
     render(<TestCarOwnershipsSection />);
 
     const sectionControls = screen.getByTestId(
       CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID,
     );
 
-    expect(sectionControls).toBeInTheDocument();
+    await waitFor(() => expect(sectionControls).toBeInTheDocument());
   });
 });

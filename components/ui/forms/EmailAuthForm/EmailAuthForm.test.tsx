@@ -7,10 +7,6 @@ import { SPINNER_TEST_ID } from '../../../decorative/Spinner/Spinner';
 import { Toaster } from '../../Toaster/Toaster';
 import EmailAuthForm, { EmailAuthFormType } from './EmailAuthForm';
 
-jest.mock('@supabase/ssr', () => ({
-  createBrowserClient: () => ({}),
-}));
-
 const mockFetch = jest.fn();
 window.fetch = mockFetch;
 
