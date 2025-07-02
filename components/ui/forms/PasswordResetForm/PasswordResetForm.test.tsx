@@ -8,12 +8,6 @@ import { PasswordResetForm } from './PasswordResetForm';
 
 jest.setTimeout(12000);
 
-jest.mock('@supabase/ssr', () => ({
-  createBrowserClient: jest.fn(() => ({
-    auth: { resetPasswordForEmail: () => ({ data: {}, error: null }) },
-  })),
-}));
-
 describe('PasswordResetForm', () => {
   afterEach(() => {
     jest.clearAllMocks();
