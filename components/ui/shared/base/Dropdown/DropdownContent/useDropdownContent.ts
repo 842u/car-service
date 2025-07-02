@@ -1,4 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useDropdown } from '../Dropdown';
 
@@ -10,47 +16,83 @@ export type DropdownContentSnap =
 
 export function useDropdownContent({ snap }: { snap: DropdownContentSnap }) {
   const contentRef = useRef<HTMLDivElement>(null);
-
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
-  const { isOpen, close, triggerRef } = useDropdown();
+  const { isOpen, close, triggerRef, collisionDetectionRoot } = useDropdown();
+
+  const calculatePosition = useCallback(() => {
+    if (!triggerRef.current || !contentRef.current || !collisionDetectionRoot) {
+      return { top: 0, left: 0 };
+    }
+
+    const triggerElement = triggerRef.current;
+    const contentElement = contentRef.current;
+    const containerElement = collisionDetectionRoot;
+
+    const triggerRect = triggerElement.getBoundingClientRect();
+    const contentRect = contentElement.getBoundingClientRect();
+    const containerRect = containerElement.getBoundingClientRect();
+
+    const triggerOffsetTop =
+      triggerRect.top - containerRect.top + containerElement.scrollTop;
+    const triggerOffsetLeft =
+      triggerRect.left - containerRect.left + containerElement.scrollLeft;
+
+    const triggerHeight = triggerRect.height;
+    const contentHeight = contentRect.height;
+    const containerHeight = containerRect.height;
+
+    const triggerWidth = triggerRect.width;
+    const contentWidth = contentRect.width;
+    const containerWidth = containerRect.width;
+
+    const spaceBelowTrigger =
+      containerHeight - (triggerOffsetTop + triggerHeight);
+    const spaceAboveTrigger = triggerOffsetTop;
+    const spaceBesideLeftTrigger = triggerOffsetLeft;
+    const spaceBesideRightTrigger =
+      containerWidth - (triggerOffsetLeft + triggerWidth);
+
+    const fitsBelow = spaceBelowTrigger >= contentHeight;
+    const fitsAbove = spaceAboveTrigger >= contentHeight;
+    const fitsLeft = spaceBesideLeftTrigger >= contentWidth;
+    const fitsRight = spaceBesideRightTrigger >= contentWidth;
+
+    let top = 0;
+    let left = 0;
+
+    switch (snap) {
+      case 'bottom-left':
+        top = fitsBelow ? triggerRect.height : -contentRect.height;
+        left = 0;
+        break;
+
+      case 'bottom-right':
+        top = fitsBelow ? triggerRect.height : -contentRect.height;
+        left = triggerRect.width - contentRect.width;
+        break;
+
+      case 'top-left':
+        top = -contentRect.height;
+        left = 0;
+        break;
+
+      case 'top-right':
+        top = -contentRect.height;
+        left = triggerRect.width - contentRect.width;
+        break;
+    }
+
+    return { top, left };
+  }, [triggerRef, collisionDetectionRoot, snap]);
 
   useLayoutEffect(() => {
-    if (isOpen && triggerRef.current && contentRef.current) {
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      const contentRect = contentRef.current.getBoundingClientRect();
+    if (!isOpen) return;
 
-      const contentComputedStyle = window.getComputedStyle(contentRef.current);
-      const contentTopMargin = Number.parseInt(contentComputedStyle.marginTop);
+    const newPosition = calculatePosition();
 
-      let top = 0;
-      let left = 0;
-
-      switch (snap) {
-        case 'bottom-left':
-          top = triggerRect.height;
-          left = 0;
-          break;
-
-        case 'bottom-right':
-          top = triggerRect.height;
-          left = -contentRect.width + triggerRect.width;
-          break;
-
-        case 'top-left':
-          top = -contentRect.height - 2 * contentTopMargin;
-          left = 0;
-          break;
-
-        case 'top-right':
-          top = -contentRect.height - 2 * contentTopMargin;
-          left = -contentRect.width + triggerRect.width;
-          break;
-      }
-
-      setPosition({ top, left });
-    }
-  }, [isOpen, triggerRef, snap]);
+    setPosition(newPosition);
+  }, [isOpen, calculatePosition]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -68,8 +110,10 @@ export function useDropdownContent({ snap }: { snap: DropdownContentSnap }) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [isOpen, close, triggerRef]);
 
-  return { position: position, isOpen, contentRef };
+  return { position, isOpen, contentRef };
 }

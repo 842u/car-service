@@ -14,7 +14,7 @@ export function DropdownContent({
     isOpen && (
       <div
         ref={contentRef}
-        className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 absolute z-10 my-1 rounded-lg border p-1"
+        className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 absolute z-10 rounded-lg border p-1"
         style={{ top: position.top, left: position.left }}
       >
         {children}
