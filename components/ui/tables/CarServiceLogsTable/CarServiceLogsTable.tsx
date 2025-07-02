@@ -2,7 +2,7 @@
 
 import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
 import { createClient } from '@/utils/supabase/client';
@@ -26,6 +26,8 @@ export function CarServiceLogsTable({
   ownersProfiles,
 }: CarServiceLogsTableProps) {
   const [user, setUser] = useState<User | null>(null);
+
+  const tableRef = useRef<HTMLTableElement>(null);
 
   const columns = useMemo(
     () =>
@@ -108,6 +110,7 @@ export function CarServiceLogsTable({
             <CarServiceLogsTableActionsDropdown
               carId={row.original.car_id}
               className="w-12"
+              collisionDetectionRoot={tableRef.current}
               isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
               serviceLog={row.original}
               userId={user?.id}
@@ -115,7 +118,7 @@ export function CarServiceLogsTable({
           ),
         }),
       ] as ColumnDef<ServiceLog>[],
-    [isCurrentUserPrimaryOwner, ownersProfiles, user?.id],
+    [isCurrentUserPrimaryOwner, ownersProfiles, user?.id, tableRef],
   );
 
   useEffect(() => {
@@ -161,7 +164,7 @@ export function CarServiceLogsTable({
         />
         <Table.FilterText columnId="created_by" />
         <Table.SortBreadcrumb />
-        <Table.Root className="my-4 max-h-96 overflow-auto">
+        <Table.Root ref={tableRef} className="my-4 max-h-96 overflow-auto">
           <Table.Head />
           <Table.Body />
         </Table.Root>

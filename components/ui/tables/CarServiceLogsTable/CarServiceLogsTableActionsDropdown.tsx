@@ -26,6 +26,7 @@ type CarServiceLogsTableActionsDropdownProps = {
   isCurrentUserPrimaryOwner: boolean;
   userId?: string;
   className?: string;
+  collisionDetectionRoot?: HTMLElement | null;
 };
 
 export function CarServiceLogsTableActionsDropdown({
@@ -33,6 +34,7 @@ export function CarServiceLogsTableActionsDropdown({
   userId,
   serviceLog,
   isCurrentUserPrimaryOwner,
+  collisionDetectionRoot,
   className,
 }: CarServiceLogsTableActionsDropdownProps) {
   const editDialogModalRef = useRef<DialogModalRef>(null);
@@ -79,7 +81,10 @@ export function CarServiceLogsTableActionsDropdown({
     isCurrentUserPrimaryOwner || userId === serviceLog.created_by;
 
   return (
-    <Dropdown className={className}>
+    <Dropdown
+      className={className}
+      collisionDetectionRoot={collisionDetectionRoot}
+    >
       <Dropdown.Trigger>
         {({ onClick, ref }) => (
           <IconButton
