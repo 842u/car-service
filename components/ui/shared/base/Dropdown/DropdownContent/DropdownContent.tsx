@@ -9,8 +9,12 @@ type DropdownContentProps = {
   children: ReactNode;
 } & UseDropdownContentOptions;
 
-export function DropdownContent({ children, side }: DropdownContentProps) {
-  const { isOpen, position, contentRef } = useDropdownContent({ side });
+export function DropdownContent({
+  children,
+  side,
+  align,
+}: DropdownContentProps) {
+  const { isOpen, position, contentRef } = useDropdownContent({ side, align });
 
   return (
     isOpen && (
