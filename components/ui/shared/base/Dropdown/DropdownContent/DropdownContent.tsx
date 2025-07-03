@@ -1,14 +1,16 @@
 import { ReactNode } from 'react';
 
-import { DropdownContentSnap, useDropdownContent } from './useDropdownContent';
+import {
+  useDropdownContent,
+  UseDropdownContentOptions,
+} from './useDropdownContent';
 
-type DropdownContentProps = { children: ReactNode; snap?: DropdownContentSnap };
+type DropdownContentProps = {
+  children: ReactNode;
+} & UseDropdownContentOptions;
 
-export function DropdownContent({
-  children,
-  snap = 'bottom-left',
-}: DropdownContentProps) {
-  const { isOpen, position, contentRef } = useDropdownContent({ snap });
+export function DropdownContent({ children, side }: DropdownContentProps) {
+  const { isOpen, position, contentRef } = useDropdownContent({ side });
 
   return (
     isOpen && (

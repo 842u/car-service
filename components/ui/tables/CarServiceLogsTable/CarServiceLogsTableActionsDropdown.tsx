@@ -99,7 +99,7 @@ export function CarServiceLogsTableActionsDropdown({
           </IconButton>
         )}
       </Dropdown.Trigger>
-      <Dropdown.Content snap="bottom-right">
+      <Dropdown.Content side="left">
         <Button
           className="w-full"
           disabled={!canTakeAction}

@@ -144,7 +144,7 @@ export function CarOwnershipsTableActionsDropdown({
           </IconButton>
         )}
       </Dropdown.Trigger>
-      <Dropdown.Content snap="bottom-right">
+      <Dropdown.Content>
         <Button
           className="w-full"
           disabled={!canPromote}

@@ -1,22 +1,19 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useDropdown } from '../Dropdown';
 
-export type DropdownContentSnap =
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
+export type DropdownContentSide = 'top' | 'right' | 'bottom' | 'left';
 
-export function useDropdownContent({ snap }: { snap: DropdownContentSnap }) {
-  const contentRef = useRef<HTMLDivElement>(null);
+export type UseDropdownContentOptions = {
+  side?: DropdownContentSide;
+};
+
+export function useDropdownContent({
+  side = 'bottom',
+}: UseDropdownContentOptions) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
+
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const { isOpen, close, triggerRef, collisionDetectionRoot } = useDropdown();
 
@@ -61,41 +58,33 @@ export function useDropdownContent({ snap }: { snap: DropdownContentSnap }) {
     let top = 0;
     let left = 0;
 
-    switch (snap) {
-      case 'bottom-left':
-        top = fitsBelow ? triggerRect.height : -contentRect.height;
+    switch (side) {
+      case 'top':
+        top = -contentHeight;
         left = 0;
         break;
 
-      case 'bottom-right':
-        top = fitsBelow ? triggerRect.height : -contentRect.height;
-        left = triggerRect.width - contentRect.width;
+      case 'right':
+        top = 0;
+        left = triggerWidth;
         break;
 
-      case 'top-left':
-        top = -contentRect.height;
+      case 'bottom':
+        top = triggerHeight;
         left = 0;
         break;
 
-      case 'top-right':
-        top = -contentRect.height;
-        left = triggerRect.width - contentRect.width;
+      case 'left':
+        top = 0;
+        left = -contentWidth;
         break;
     }
 
     return { top, left };
-  }, [triggerRef, collisionDetectionRoot, snap]);
+  }, [triggerRef, collisionDetectionRoot, side]);
 
-  useLayoutEffect(() => {
-    if (!isOpen) return;
-
-    const newPosition = calculatePosition();
-
-    setPosition(newPosition);
-  }, [isOpen, calculatePosition]);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
       if (
         contentRef.current &&
         !contentRef.current.contains(event.target as Node) &&
@@ -104,16 +93,27 @@ export function useDropdownContent({ snap }: { snap: DropdownContentSnap }) {
       ) {
         close();
       }
-    }
+    },
+    [close, triggerRef],
+  );
 
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const newPosition = calculatePosition();
+
+    setPosition(newPosition);
+  }, [isOpen, calculatePosition]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.addEventListener('click', handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
-  }, [isOpen, close, triggerRef]);
+  }, [isOpen, close, triggerRef, handleClickOutside]);
 
   return { position, isOpen, contentRef };
 }
