@@ -10,11 +10,16 @@ type DropdownContentProps = {
 } & UseDropdownContentOptions;
 
 export function DropdownContent({
-  children,
+  collisionDetection,
   side,
   align,
+  children,
 }: DropdownContentProps) {
-  const { isOpen, position, contentRef } = useDropdownContent({ side, align });
+  const { isOpen, position, contentRef } = useDropdownContent({
+    collisionDetection,
+    side,
+    align,
+  });
 
   return (
     isOpen && (

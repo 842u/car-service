@@ -13,11 +13,13 @@ export type DropdownContentSide = 'top' | 'right' | 'bottom' | 'left';
 export type DropdownContentAlign = 'start' | 'end';
 
 export type UseDropdownContentOptions = {
+  collisionDetection?: boolean;
   side?: DropdownContentSide;
   align?: DropdownContentAlign;
 };
 
 export function useDropdownContent({
+  collisionDetection = false,
   side = 'bottom',
   align = 'start',
 }: UseDropdownContentOptions) {
@@ -28,13 +30,13 @@ export function useDropdownContent({
   const { isOpen, close, triggerRef, collisionDetectionRoot } = useDropdown();
 
   const calculatePosition = useCallback(() => {
-    if (!triggerRef.current || !contentRef.current || !collisionDetectionRoot) {
+    if (!triggerRef.current || !contentRef.current) {
       return { top: 0, left: 0 };
     }
 
     const triggerElement = triggerRef.current;
     const contentElement = contentRef.current;
-    const containerElement = collisionDetectionRoot;
+    const containerElement = collisionDetectionRoot || document.body;
 
     const triggerRect = triggerElement.getBoundingClientRect();
     const contentRect = contentElement.getBoundingClientRect();
@@ -61,29 +63,35 @@ export function useDropdownContent({
     const spaceBesideLeftTrigger = triggerOffsetLeft;
 
     let fitsAboveTrigger = true;
-    if (side === 'top') {
-      fitsAboveTrigger = spaceAboveTrigger >= contentHeight;
-    } else if ((side === 'right' || side === 'left') && align === 'end') {
-      fitsAboveTrigger = spaceAboveTrigger >= contentHeight - triggerHeight;
-    }
     let fitsBesideRightTrigger = true;
-    if ((side === 'top' || side === 'bottom') && align === 'start') {
-      fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
-    } else if (side === 'right') {
-      fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
-    }
     let fitsBelowTrigger = true;
-    if ((side === 'right' || side === 'left') && align === 'start') {
-      fitsBelowTrigger = spaceBelowTrigger >= contentHeight - triggerHeight;
-    } else if (side === 'bottom') {
-      fitsBelowTrigger = spaceBelowTrigger >= contentHeight;
-    }
     let fitsBesideLeftTrigger = true;
-    if ((side === 'top' || side === 'bottom') && align === 'end') {
-      fitsBesideLeftTrigger =
-        spaceBesideLeftTrigger >= contentWidth - triggerWidth;
-    } else if (side === 'left') {
-      fitsBesideLeftTrigger = spaceBesideLeftTrigger >= contentWidth;
+
+    if (collisionDetection) {
+      if (side === 'top') {
+        fitsAboveTrigger = spaceAboveTrigger >= contentHeight;
+      } else if ((side === 'right' || side === 'left') && align === 'end') {
+        fitsAboveTrigger = spaceAboveTrigger >= contentHeight - triggerHeight;
+      }
+
+      if ((side === 'top' || side === 'bottom') && align === 'start') {
+        fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
+      } else if (side === 'right') {
+        fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
+      }
+
+      if ((side === 'right' || side === 'left') && align === 'start') {
+        fitsBelowTrigger = spaceBelowTrigger >= contentHeight - triggerHeight;
+      } else if (side === 'bottom') {
+        fitsBelowTrigger = spaceBelowTrigger >= contentHeight;
+      }
+
+      if ((side === 'top' || side === 'bottom') && align === 'end') {
+        fitsBesideLeftTrigger =
+          spaceBesideLeftTrigger >= contentWidth - triggerWidth;
+      } else if (side === 'left') {
+        fitsBesideLeftTrigger = spaceBesideLeftTrigger >= contentWidth;
+      }
     }
 
     let top = 0;
@@ -128,7 +136,7 @@ export function useDropdownContent({
     }
 
     return { top, left };
-  }, [triggerRef, collisionDetectionRoot, side, align]);
+  }, [triggerRef, collisionDetectionRoot, side, align, collisionDetection]);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
