@@ -28,12 +28,14 @@ type CarOwnershipsTableActionsDropdownProps = {
   ownership: CarOwnership;
   ownerUsername?: string | null;
   userId?: string;
+  collisionDetectionRoot?: HTMLElement | null;
 };
 
 export function CarOwnershipsTableActionsDropdown({
   isCurrentUserPrimaryOwner,
   ownership,
   ownerUsername,
+  collisionDetectionRoot,
   userId,
 }: CarOwnershipsTableActionsDropdownProps) {
   const deleteDialogModalRef = useRef<DialogModalRef>(null);
@@ -129,7 +131,7 @@ export function CarOwnershipsTableActionsDropdown({
   const canTakeAction = canPromote || canDelete;
 
   return (
-    <Dropdown className="w-12">
+    <Dropdown className="w-12" collisionDetectionRoot={collisionDetectionRoot}>
       <Dropdown.Trigger>
         {({ onClick, ref }) => (
           <IconButton
@@ -144,7 +146,7 @@ export function CarOwnershipsTableActionsDropdown({
           </IconButton>
         )}
       </Dropdown.Trigger>
-      <Dropdown.Content>
+      <Dropdown.Content collisionDetection align="end" side="bottom">
         <Button
           className="w-full"
           disabled={!canPromote}
