@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useDropdown } from '../Dropdown';
 
@@ -54,30 +60,31 @@ export function useDropdownContent({
       containerHeight - (triggerOffsetTop + triggerHeight);
     const spaceBesideLeftTrigger = triggerOffsetLeft;
 
-    // console.log(spaceAboveTrigger, 'spaceAboveTrigger');
-    // console.log(spaceBesideRightTrigger, 'spaceBesideRightTrigger');
-    // console.log(spaceBelowTrigger, 'spaceBelowTrigger');
-    // console.log(spaceBesideLeftTrigger, 'spaceBesideLeftTrigger');
-
     let fitsAboveTrigger = true;
     if (side === 'top') {
-      fitsAboveTrigger = spaceAboveTrigger >= contentWidth;
+      fitsAboveTrigger = spaceAboveTrigger >= contentHeight;
+    } else if ((side === 'right' || side === 'left') && align === 'end') {
+      fitsAboveTrigger = spaceAboveTrigger >= contentHeight - triggerHeight;
     }
     let fitsBesideRightTrigger = true;
-    if (side === 'top' && align === 'start') {
+    if ((side === 'top' || side === 'bottom') && align === 'start') {
+      fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
+    } else if (side === 'right') {
       fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
     }
-    const fitsBelowTrigger = true;
+    let fitsBelowTrigger = true;
+    if ((side === 'right' || side === 'left') && align === 'start') {
+      fitsBelowTrigger = spaceBelowTrigger >= contentHeight - triggerHeight;
+    } else if (side === 'bottom') {
+      fitsBelowTrigger = spaceBelowTrigger >= contentHeight;
+    }
     let fitsBesideLeftTrigger = true;
-    if (side === 'top' && align === 'end') {
+    if ((side === 'top' || side === 'bottom') && align === 'end') {
       fitsBesideLeftTrigger =
         spaceBesideLeftTrigger >= contentWidth - triggerWidth;
+    } else if (side === 'left') {
+      fitsBesideLeftTrigger = spaceBesideLeftTrigger >= contentWidth;
     }
-
-    console.log(fitsAboveTrigger, 'fitsAboveTrigger');
-    console.log(fitsBesideRightTrigger, 'fitsBesideRightTrigger');
-    console.log(fitsBelowTrigger, 'fitsBelowTrigger');
-    console.log(fitsBesideLeftTrigger, 'fitsBesideLeftTrigger');
 
     let top = 0;
     let left = 0;
@@ -93,18 +100,30 @@ export function useDropdownContent({
         break;
 
       case 'right':
-        top = 0;
-        left = triggerWidth;
+        if (align === 'start') {
+          top = fitsBelowTrigger ? 0 : -contentHeight + triggerHeight;
+        } else if (align === 'end') {
+          top = fitsAboveTrigger ? -contentHeight + triggerHeight : 0;
+        }
+        left = fitsBesideRightTrigger ? triggerWidth : -contentWidth;
         break;
 
       case 'bottom':
-        top = triggerHeight;
-        left = 0;
+        top = fitsBelowTrigger ? triggerHeight : -contentHeight;
+        if (align === 'start') {
+          left = fitsBesideRightTrigger ? 0 : -contentWidth + triggerWidth;
+        } else if (align === 'end') {
+          left = fitsBesideLeftTrigger ? -contentWidth + triggerWidth : 0;
+        }
         break;
 
       case 'left':
-        top = 0;
-        left = -contentWidth;
+        if (align === 'start') {
+          top = fitsBelowTrigger ? 0 : -contentHeight + triggerHeight;
+        } else if (align === 'end') {
+          top = fitsAboveTrigger ? -contentHeight + triggerHeight : 0;
+        }
+        left = fitsBesideLeftTrigger ? -contentWidth : triggerWidth;
         break;
     }
 
@@ -125,7 +144,7 @@ export function useDropdownContent({
     [close, triggerRef],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isOpen) return;
 
     const newPosition = calculatePosition();
