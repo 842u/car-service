@@ -226,14 +226,14 @@ export function useDropdownContent({
     if (fallbackSide !== side) {
       const fallbackSpaceRequirements = getSpaceRequirements(dimensions);
 
-      const fallbackAlignCollisionsInfo = getAlignCollision(
+      const fallbackAlignCollisions = getAlignCollision(
         collisionDetection,
         spaceRemains,
         fallbackSpaceRequirements,
-        side,
+        fallbackSide,
       );
 
-      fallbackAlign = getFallbackAlign(align, fallbackAlignCollisionsInfo);
+      fallbackAlign = getFallbackAlign(align, fallbackAlignCollisions);
     }
 
     let top = 0;
@@ -245,7 +245,7 @@ export function useDropdownContent({
         if (fallbackAlign === 'start') {
           left = 0;
         } else {
-          left = -dimensions.trigger.width;
+          left = -dimensions.content.width + dimensions.trigger.width;
         }
         break;
 
@@ -256,6 +256,24 @@ export function useDropdownContent({
           top = -dimensions.content.height + dimensions.trigger.height;
         }
         left = dimensions.trigger.width;
+        break;
+
+      case 'bottom':
+        top = dimensions.trigger.height;
+        if (fallbackAlign === 'start') {
+          left = 0;
+        } else {
+          left = -dimensions.content.width + dimensions.trigger.width;
+        }
+        break;
+
+      case 'left':
+        if (align === 'start') {
+          top = 0;
+        } else {
+          top = -dimensions.content.height + dimensions.trigger.height;
+        }
+        left = -dimensions.content.width;
     }
 
     return { top, left };
