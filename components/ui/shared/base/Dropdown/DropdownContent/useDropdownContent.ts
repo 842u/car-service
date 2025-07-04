@@ -32,6 +32,11 @@ type SideCollisions = {
   left: boolean;
 };
 
+type AlignCollisions = {
+  start: boolean;
+  end: boolean;
+};
+
 export type DropdownContentSide = 'top' | 'right' | 'bottom' | 'left';
 
 export type DropdownContentAlign = 'start' | 'end';
@@ -174,6 +179,17 @@ export function useDropdownContent({
     [],
   );
 
+  const getFallbackAlign = useCallback(
+    (align: DropdownContentAlign, alignCollisions: AlignCollisions) => {
+      return !alignCollisions[align]
+        ? align
+        : (Object.entries(alignCollisions).find(
+            ([_, collision]) => !collision,
+          )?.[0] as DropdownContentSide) || align;
+    },
+    [],
+  );
+
   const calculatePosition = useCallback(() => {
     if (!triggerRef.current || !contentRef.current) {
       return { top: 0, left: 0 };
@@ -221,9 +237,14 @@ export function useDropdownContent({
     );
 
     const fallbackSide = getFallbackSide(side, collisionInfo.sideCollisions);
+    const fallbackAlign = getFallbackAlign(
+      align,
+      collisionInfo.alignCollisions,
+    );
 
     console.log(collisionInfo);
     console.log(fallbackSide);
+    console.log(fallbackAlign);
 
     // if (collisionDetection) {
     //   if (side === 'top') {
