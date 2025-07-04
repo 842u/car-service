@@ -12,6 +12,8 @@ type Dimensions = {
   trigger: {
     width: number;
     height: number;
+    offsetTop: number;
+    offsetLeft: number;
   };
   content: {
     width: number;
@@ -58,23 +60,52 @@ export function useDropdownContent({
 
   const { isOpen, close, triggerRef, collisionDetectionRoot } = useDropdown();
 
-  const getSpaceRemains = useCallback(
+  const getDimensions = useCallback(
     (
-      dimensions: Dimensions,
-      triggerOffsetTop: number,
-      triggerOffsetLeft: number,
-    ): Spaces => {
-      const { trigger, container } = dimensions;
+      triggerElement: HTMLElement,
+      contentElement: HTMLElement,
+      collisionDetectionRootElement: HTMLElement | null,
+    ) => {
+      const containerElement = collisionDetectionRootElement || document.body;
 
-      const top = triggerOffsetTop;
-      const right = container.width - (triggerOffsetLeft + trigger.width);
-      const bottom = container.height - (triggerOffsetTop + trigger.height);
-      const left = triggerOffsetLeft;
+      const triggerRect = triggerElement.getBoundingClientRect();
+      const contentRect = contentElement.getBoundingClientRect();
+      const containerRect = containerElement.getBoundingClientRect();
 
-      return { top, right, bottom, left };
+      const dimensions = {
+        trigger: {
+          width: triggerRect.width,
+          height: triggerRect.height,
+          offsetTop:
+            triggerRect.top - containerRect.top + containerElement.scrollTop,
+          offsetLeft:
+            triggerRect.left - containerRect.left + containerElement.scrollLeft,
+        },
+        content: {
+          width: contentRect.width,
+          height: contentRect.height,
+        },
+        container: {
+          width: containerRect.width,
+          height: containerRect.height,
+        },
+      };
+
+      return dimensions;
     },
     [],
   );
+
+  const getSpaceRemains = useCallback((dimensions: Dimensions): Spaces => {
+    const { trigger, container } = dimensions;
+
+    const top = trigger.offsetTop;
+    const right = container.width - (trigger.offsetLeft + trigger.width);
+    const bottom = container.height - (trigger.offsetTop + trigger.height);
+    const left = trigger.offsetLeft;
+
+    return { top, right, bottom, left };
+  }, []);
 
   const getSpaceRequirements = useCallback(
     (dimensions: Dimensions, side: DropdownContentSide): Spaces => {
@@ -190,39 +221,13 @@ export function useDropdownContent({
       return { top: 0, left: 0 };
     }
 
-    const triggerElement = triggerRef.current;
-    const contentElement = contentRef.current;
-    const containerElement = collisionDetectionRoot || document.body;
-
-    const triggerRect = triggerElement.getBoundingClientRect();
-    const contentRect = contentElement.getBoundingClientRect();
-    const containerRect = containerElement.getBoundingClientRect();
-
-    const triggerOffsetTop =
-      triggerRect.top - containerRect.top + containerElement.scrollTop;
-    const triggerOffsetLeft =
-      triggerRect.left - containerRect.left + containerElement.scrollLeft;
-
-    const dimensions = {
-      trigger: {
-        width: triggerRect.width,
-        height: triggerRect.height,
-      },
-      content: {
-        width: contentRect.width,
-        height: contentRect.height,
-      },
-      container: {
-        width: containerRect.width,
-        height: containerRect.height,
-      },
-    };
-
-    const spaceRemains = getSpaceRemains(
-      dimensions,
-      triggerOffsetTop,
-      triggerOffsetLeft,
+    const dimensions = getDimensions(
+      triggerRef.current,
+      contentRef.current,
+      collisionDetectionRoot,
     );
+
+    const spaceRemains = getSpaceRemains(dimensions);
 
     const spaceRequirements = getSpaceRequirements(dimensions, side);
 
