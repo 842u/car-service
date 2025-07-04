@@ -63,6 +63,49 @@ export function useDropdownContent({
     [],
   );
 
+  const getSpaceRequirements = useCallback(
+    ({
+      triggerElement,
+      contentElement,
+    }: {
+      triggerElement: HTMLButtonElement;
+      contentElement: HTMLDivElement;
+    }) => {
+      const triggerRect = triggerElement.getBoundingClientRect();
+      const contentRect = contentElement.getBoundingClientRect();
+
+      const triggerHeight = triggerRect.height;
+      const contentHeight = contentRect.height;
+
+      const triggerWidth = triggerRect.width;
+      const contentWidth = contentRect.width;
+
+      switch (side) {
+        case 'top':
+        case 'bottom':
+          return {
+            top: contentHeight,
+            right:
+              align === 'start' ? Math.abs(contentWidth - triggerWidth) : 0,
+            bottom: contentHeight,
+            left: align === 'start' ? 0 : Math.abs(contentWidth - triggerWidth),
+          };
+
+        case 'right':
+        case 'left':
+          return {
+            top:
+              align === 'start' ? 0 : Math.abs(contentHeight - triggerHeight),
+            right: contentWidth,
+            bottom:
+              align === 'start' ? Math.abs(contentHeight - triggerHeight) : 0,
+            left: contentWidth,
+          };
+      }
+    },
+    [side, align],
+  );
+
   const calculatePosition = useCallback(() => {
     if (!triggerRef.current || !contentRef.current) {
       return { top: 0, left: 0 };
@@ -87,6 +130,16 @@ export function useDropdownContent({
 
     const { spaceAbove, spaceBelow, spaceLeft, spaceRight } = calculateSpaces({
       collisionDetectionRoot,
+      triggerElement,
+    });
+
+    const {
+      top: spaceAboveRequired,
+      right: spaceRightRequired,
+      bottom: spaceBottomRequired,
+      left: spaceLeftRequired,
+    } = getSpaceRequirements({
+      contentElement,
       triggerElement,
     });
 
