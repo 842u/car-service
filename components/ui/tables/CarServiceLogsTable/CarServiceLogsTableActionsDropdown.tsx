@@ -99,7 +99,7 @@ export function CarServiceLogsTableActionsDropdown({
           </IconButton>
         )}
       </Dropdown.Trigger>
-      <Dropdown.Content collisionDetection align="start" side="right">
+      <Dropdown.Content collisionDetection align="end" side="bottom">
         <Button
           className="w-full"
           disabled={!canTakeAction}
