@@ -29,6 +29,40 @@ export function useDropdownContent({
 
   const { isOpen, close, triggerRef, collisionDetectionRoot } = useDropdown();
 
+  const calculateSpaces = useCallback(
+    ({
+      triggerElement,
+      collisionDetectionRoot,
+    }: {
+      triggerElement: HTMLButtonElement;
+      collisionDetectionRoot: HTMLElement | null;
+    }) => {
+      const containerElement = collisionDetectionRoot || document.body;
+
+      const triggerRect = triggerElement.getBoundingClientRect();
+      const containerRect = containerElement.getBoundingClientRect();
+
+      const triggerHeight = triggerRect.height;
+      const containerHeight = containerRect.height;
+
+      const triggerWidth = triggerRect.width;
+      const containerWidth = containerRect.width;
+
+      const triggerOffsetTop =
+        triggerRect.top - containerRect.top + containerElement.scrollTop;
+      const triggerOffsetLeft =
+        triggerRect.left - containerRect.left + containerElement.scrollLeft;
+
+      const spaceAbove = triggerOffsetTop;
+      const spaceRight = containerWidth - (triggerOffsetLeft + triggerWidth);
+      const spaceBelow = containerHeight - (triggerOffsetTop + triggerHeight);
+      const spaceLeft = triggerOffsetLeft;
+
+      return { spaceAbove, spaceRight, spaceBelow, spaceLeft };
+    },
+    [],
+  );
+
   const calculatePosition = useCallback(() => {
     if (!triggerRef.current || !contentRef.current) {
       return { top: 0, left: 0 };
@@ -36,61 +70,49 @@ export function useDropdownContent({
 
     const triggerElement = triggerRef.current;
     const contentElement = contentRef.current;
-    const containerElement = collisionDetectionRoot || document.body;
 
     const triggerRect = triggerElement.getBoundingClientRect();
     const contentRect = contentElement.getBoundingClientRect();
-    const containerRect = containerElement.getBoundingClientRect();
-
-    const triggerOffsetTop =
-      triggerRect.top - containerRect.top + containerElement.scrollTop;
-    const triggerOffsetLeft =
-      triggerRect.left - containerRect.left + containerElement.scrollLeft;
 
     const triggerHeight = triggerRect.height;
     const contentHeight = contentRect.height;
-    const containerHeight = containerRect.height;
 
     const triggerWidth = triggerRect.width;
     const contentWidth = contentRect.width;
-    const containerWidth = containerRect.width;
-
-    const spaceAboveTrigger = triggerOffsetTop;
-    const spaceBesideRightTrigger =
-      containerWidth - (triggerOffsetLeft + triggerWidth);
-    const spaceBelowTrigger =
-      containerHeight - (triggerOffsetTop + triggerHeight);
-    const spaceBesideLeftTrigger = triggerOffsetLeft;
 
     let fitsAboveTrigger = true;
     let fitsBesideRightTrigger = true;
     let fitsBelowTrigger = true;
     let fitsBesideLeftTrigger = true;
 
+    const { spaceAbove, spaceBelow, spaceLeft, spaceRight } = calculateSpaces({
+      collisionDetectionRoot,
+      triggerElement,
+    });
+
     if (collisionDetection) {
       if (side === 'top') {
-        fitsAboveTrigger = spaceAboveTrigger >= contentHeight;
+        fitsAboveTrigger = spaceAbove >= contentHeight;
       } else if ((side === 'right' || side === 'left') && align === 'end') {
-        fitsAboveTrigger = spaceAboveTrigger >= contentHeight - triggerHeight;
+        fitsAboveTrigger = spaceAbove >= contentHeight - triggerHeight;
       }
 
       if ((side === 'top' || side === 'bottom') && align === 'start') {
-        fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
+        fitsBesideRightTrigger = spaceRight >= contentWidth;
       } else if (side === 'right') {
-        fitsBesideRightTrigger = spaceBesideRightTrigger >= contentWidth;
+        fitsBesideRightTrigger = spaceRight >= contentWidth;
       }
 
       if ((side === 'right' || side === 'left') && align === 'start') {
-        fitsBelowTrigger = spaceBelowTrigger >= contentHeight - triggerHeight;
+        fitsBelowTrigger = spaceBelow >= contentHeight - triggerHeight;
       } else if (side === 'bottom') {
-        fitsBelowTrigger = spaceBelowTrigger >= contentHeight;
+        fitsBelowTrigger = spaceBelow >= contentHeight;
       }
 
       if ((side === 'top' || side === 'bottom') && align === 'end') {
-        fitsBesideLeftTrigger =
-          spaceBesideLeftTrigger >= contentWidth - triggerWidth;
+        fitsBesideLeftTrigger = spaceLeft >= contentWidth - triggerWidth;
       } else if (side === 'left') {
-        fitsBesideLeftTrigger = spaceBesideLeftTrigger >= contentWidth;
+        fitsBesideLeftTrigger = spaceLeft >= contentWidth;
       }
     }
 
@@ -136,7 +158,14 @@ export function useDropdownContent({
     }
 
     return { top, left };
-  }, [triggerRef, collisionDetectionRoot, side, align, collisionDetection]);
+  }, [
+    triggerRef,
+    collisionDetectionRoot,
+    side,
+    align,
+    collisionDetection,
+    calculateSpaces,
+  ]);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
