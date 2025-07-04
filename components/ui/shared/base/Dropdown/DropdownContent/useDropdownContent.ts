@@ -8,6 +8,23 @@ import {
 
 import { useDropdown } from '../Dropdown';
 
+type Dimensions = {
+  trigger: {
+    width: number;
+    height: number;
+  };
+  content: {
+    width: number;
+    height: number;
+  };
+  container: {
+    width: number;
+    height: number;
+  };
+};
+
+type Spaces = { top: number; right: number; bottom: number; left: number };
+
 export type DropdownContentSide = 'top' | 'right' | 'bottom' | 'left';
 
 export type DropdownContentAlign = 'start' | 'end';
@@ -29,81 +46,124 @@ export function useDropdownContent({
 
   const { isOpen, close, triggerRef, collisionDetectionRoot } = useDropdown();
 
-  const calculateSpaces = useCallback(
-    ({
-      triggerElement,
-      collisionDetectionRoot,
-    }: {
-      triggerElement: HTMLButtonElement;
-      collisionDetectionRoot: HTMLElement | null;
-    }) => {
-      const containerElement = collisionDetectionRoot || document.body;
+  const getSpaceRemains = useCallback(
+    (
+      dimensions: Dimensions,
+      triggerOffsetTop: number,
+      triggerOffsetLeft: number,
+    ): Spaces => {
+      const { trigger, container } = dimensions;
 
-      const triggerRect = triggerElement.getBoundingClientRect();
-      const containerRect = containerElement.getBoundingClientRect();
+      const top = triggerOffsetTop;
+      const right = container.width - (triggerOffsetLeft + trigger.width);
+      const bottom = container.height - (triggerOffsetTop + trigger.height);
+      const left = triggerOffsetLeft;
 
-      const triggerHeight = triggerRect.height;
-      const containerHeight = containerRect.height;
-
-      const triggerWidth = triggerRect.width;
-      const containerWidth = containerRect.width;
-
-      const triggerOffsetTop =
-        triggerRect.top - containerRect.top + containerElement.scrollTop;
-      const triggerOffsetLeft =
-        triggerRect.left - containerRect.left + containerElement.scrollLeft;
-
-      const spaceAbove = triggerOffsetTop;
-      const spaceRight = containerWidth - (triggerOffsetLeft + triggerWidth);
-      const spaceBelow = containerHeight - (triggerOffsetTop + triggerHeight);
-      const spaceLeft = triggerOffsetLeft;
-
-      return { spaceAbove, spaceRight, spaceBelow, spaceLeft };
+      return { top, right, bottom, left };
     },
     [],
   );
 
   const getSpaceRequirements = useCallback(
-    ({
-      triggerElement,
-      contentElement,
-    }: {
-      triggerElement: HTMLButtonElement;
-      contentElement: HTMLDivElement;
-    }) => {
-      const triggerRect = triggerElement.getBoundingClientRect();
-      const contentRect = contentElement.getBoundingClientRect();
-
-      const triggerHeight = triggerRect.height;
-      const contentHeight = contentRect.height;
-
-      const triggerWidth = triggerRect.width;
-      const contentWidth = contentRect.width;
+    (dimensions: Dimensions, side: DropdownContentSide): Spaces => {
+      const { trigger, content } = dimensions;
 
       switch (side) {
         case 'top':
         case 'bottom':
           return {
-            top: contentHeight,
-            right:
-              align === 'start' ? Math.abs(contentWidth - triggerWidth) : 0,
-            bottom: contentHeight,
-            left: align === 'start' ? 0 : Math.abs(contentWidth - triggerWidth),
+            top: content.height,
+            right: Math.abs(content.width - trigger.width),
+            bottom: content.height,
+            left: Math.abs(content.width - trigger.width),
           };
 
         case 'right':
         case 'left':
           return {
-            top:
-              align === 'start' ? 0 : Math.abs(contentHeight - triggerHeight),
-            right: contentWidth,
-            bottom:
-              align === 'start' ? Math.abs(contentHeight - triggerHeight) : 0,
-            left: contentWidth,
+            top: Math.abs(content.height - trigger.height),
+            right: content.width,
+            bottom: Math.abs(content.height - trigger.height),
+            left: content.width,
           };
       }
     },
-    [side, align],
+    [],
+  );
+
+  const getCollisionInfo = useCallback(
+    (
+      collisionDetection: boolean,
+      spaceRemains: Spaces,
+      dimensions: Dimensions,
+      side: DropdownContentSide,
+    ) => {
+      if (!collisionDetection) {
+        return {
+          canFitSide: { top: true, right: true, bottom: true, left: true },
+          canFitAlign: { start: true, end: true },
+        };
+      }
+
+      const spaceRequirements = getSpaceRequirements(dimensions, side);
+
+      const canFitSide = {
+        top: spaceRemains.top >= spaceRequirements.top,
+        right: spaceRemains.right >= spaceRequirements.right,
+        bottom: spaceRemains.bottom >= spaceRequirements.bottom,
+        left: spaceRemains.left >= spaceRequirements.left,
+      };
+
+      const canFitAlign = {
+        start: true,
+        end: true,
+      };
+      switch (side) {
+        case 'top':
+        case 'bottom':
+          canFitAlign.start = spaceRemains.right >= spaceRequirements.right;
+          canFitAlign.end = spaceRemains.left >= spaceRequirements.left;
+          break;
+
+        case 'right':
+        case 'left':
+          canFitAlign.start = spaceRemains.bottom >= spaceRequirements.bottom;
+          canFitAlign.end = spaceRemains.top >= spaceRequirements.top;
+          break;
+      }
+
+      // const fallbackSide = canFitSide[side]
+      //   ? side
+      //   : (Object.entries(canFitSide).find(
+      //       ([_, fits]) => fits,
+      //     )?.[0] as DropdownContentSide) || side;
+
+      // const fallbackSideSpaceRequirements = getSpaceRequirements(
+      //   dimensions,
+      //   fallbackSide,
+      // );
+
+      // switch (fallbackSide) {
+      //   case 'top':
+      //   case 'bottom':
+      //     canFitAlign.start =
+      //       spaceRemains.right >= fallbackSideSpaceRequirements.right;
+      //     canFitAlign.end =
+      //       spaceRemains.left >= fallbackSideSpaceRequirements.left;
+      //     break;
+
+      //   case 'right':
+      //   case 'left':
+      //     canFitAlign.start =
+      //       spaceRemains.bottom >= fallbackSideSpaceRequirements.bottom;
+      //     canFitAlign.end =
+      //       spaceRemains.top >= fallbackSideSpaceRequirements.top;
+      //     break;
+      // }
+
+      return { canFitSide, canFitAlign };
+    },
+    [getSpaceRequirements],
   );
 
   const calculatePosition = useCallback(() => {
@@ -113,111 +173,122 @@ export function useDropdownContent({
 
     const triggerElement = triggerRef.current;
     const contentElement = contentRef.current;
+    const containerElement = collisionDetectionRoot || document.body;
 
     const triggerRect = triggerElement.getBoundingClientRect();
     const contentRect = contentElement.getBoundingClientRect();
+    const containerRect = containerElement.getBoundingClientRect();
 
-    const triggerHeight = triggerRect.height;
-    const contentHeight = contentRect.height;
+    const triggerOffsetTop =
+      triggerRect.top - containerRect.top + containerElement.scrollTop;
+    const triggerOffsetLeft =
+      triggerRect.left - containerRect.left + containerElement.scrollLeft;
 
-    const triggerWidth = triggerRect.width;
-    const contentWidth = contentRect.width;
+    const dimensions = {
+      trigger: {
+        width: triggerRect.width,
+        height: triggerRect.height,
+      },
+      content: {
+        width: contentRect.width,
+        height: contentRect.height,
+      },
+      container: {
+        width: containerRect.width,
+        height: containerRect.height,
+      },
+    };
 
-    let fitsAboveTrigger = true;
-    let fitsBesideRightTrigger = true;
-    let fitsBelowTrigger = true;
-    let fitsBesideLeftTrigger = true;
+    const spaceRemains = getSpaceRemains(
+      dimensions,
+      triggerOffsetTop,
+      triggerOffsetLeft,
+    );
 
-    const { spaceAbove, spaceBelow, spaceLeft, spaceRight } = calculateSpaces({
-      collisionDetectionRoot,
-      triggerElement,
-    });
+    const collisionInfo = getCollisionInfo(
+      collisionDetection,
+      spaceRemains,
+      dimensions,
+      side,
+    );
 
-    const {
-      top: spaceAboveRequired,
-      right: spaceRightRequired,
-      bottom: spaceBottomRequired,
-      left: spaceLeftRequired,
-    } = getSpaceRequirements({
-      contentElement,
-      triggerElement,
-    });
+    console.log(collisionInfo);
 
-    if (collisionDetection) {
-      if (side === 'top') {
-        fitsAboveTrigger = spaceAbove >= contentHeight;
-      } else if ((side === 'right' || side === 'left') && align === 'end') {
-        fitsAboveTrigger = spaceAbove >= contentHeight - triggerHeight;
-      }
+    // if (collisionDetection) {
+    //   if (side === 'top') {
+    //     fitsAboveTrigger = spaceAbove >= contentHeight;
+    //   } else if ((side === 'right' || side === 'left') && align === 'end') {
+    //     fitsAboveTrigger = spaceAbove >= contentHeight - triggerHeight;
+    //   }
 
-      if ((side === 'top' || side === 'bottom') && align === 'start') {
-        fitsBesideRightTrigger = spaceRight >= contentWidth;
-      } else if (side === 'right') {
-        fitsBesideRightTrigger = spaceRight >= contentWidth;
-      }
+    //   if ((side === 'top' || side === 'bottom') && align === 'start') {
+    //     fitsBesideRightTrigger = spaceRight >= contentWidth;
+    //   } else if (side === 'right') {
+    //     fitsBesideRightTrigger = spaceRight >= contentWidth;
+    //   }
 
-      if ((side === 'right' || side === 'left') && align === 'start') {
-        fitsBelowTrigger = spaceBelow >= contentHeight - triggerHeight;
-      } else if (side === 'bottom') {
-        fitsBelowTrigger = spaceBelow >= contentHeight;
-      }
+    //   if ((side === 'right' || side === 'left') && align === 'start') {
+    //     fitsBelowTrigger = spaceBelow >= contentHeight - triggerHeight;
+    //   } else if (side === 'bottom') {
+    //     fitsBelowTrigger = spaceBelow >= contentHeight;
+    //   }
 
-      if ((side === 'top' || side === 'bottom') && align === 'end') {
-        fitsBesideLeftTrigger = spaceLeft >= contentWidth - triggerWidth;
-      } else if (side === 'left') {
-        fitsBesideLeftTrigger = spaceLeft >= contentWidth;
-      }
-    }
+    //   if ((side === 'top' || side === 'bottom') && align === 'end') {
+    //     fitsBesideLeftTrigger = spaceLeft >= contentWidth - triggerWidth;
+    //   } else if (side === 'left') {
+    //     fitsBesideLeftTrigger = spaceLeft >= contentWidth;
+    //   }
+    // }
 
-    let top = 0;
-    let left = 0;
+    const top = 0;
+    const left = 0;
 
-    switch (side) {
-      case 'top':
-        top = fitsAboveTrigger ? -contentHeight : triggerHeight;
-        if (align === 'start') {
-          left = fitsBesideRightTrigger ? 0 : -triggerWidth;
-        } else if (align === 'end') {
-          left = fitsBesideLeftTrigger ? -contentWidth + triggerWidth : 0;
-        }
-        break;
+    // switch (side) {
+    //   case 'top':
+    //     top = fitsAboveTrigger ? -contentHeight : triggerHeight;
+    //     if (align === 'start') {
+    //       left = fitsBesideRightTrigger ? 0 : -triggerWidth;
+    //     } else if (align === 'end') {
+    //       left = fitsBesideLeftTrigger ? -contentWidth + triggerWidth : 0;
+    //     }
+    //     break;
 
-      case 'right':
-        if (align === 'start') {
-          top = fitsBelowTrigger ? 0 : -contentHeight + triggerHeight;
-        } else if (align === 'end') {
-          top = fitsAboveTrigger ? -contentHeight + triggerHeight : 0;
-        }
-        left = fitsBesideRightTrigger ? triggerWidth : -contentWidth;
-        break;
+    //   case 'right':
+    //     if (align === 'start') {
+    //       top = fitsBelowTrigger ? 0 : -contentHeight + triggerHeight;
+    //     } else if (align === 'end') {
+    //       top = fitsAboveTrigger ? -contentHeight + triggerHeight : 0;
+    //     }
+    //     left = fitsBesideRightTrigger ? triggerWidth : -contentWidth;
+    //     break;
 
-      case 'bottom':
-        top = fitsBelowTrigger ? triggerHeight : -contentHeight;
-        if (align === 'start') {
-          left = fitsBesideRightTrigger ? 0 : -contentWidth + triggerWidth;
-        } else if (align === 'end') {
-          left = fitsBesideLeftTrigger ? -contentWidth + triggerWidth : 0;
-        }
-        break;
+    //   case 'bottom':
+    //     top = fitsBelowTrigger ? triggerHeight : -contentHeight;
+    //     if (align === 'start') {
+    //       left = fitsBesideRightTrigger ? 0 : -contentWidth + triggerWidth;
+    //     } else if (align === 'end') {
+    //       left = fitsBesideLeftTrigger ? -contentWidth + triggerWidth : 0;
+    //     }
+    //     break;
 
-      case 'left':
-        if (align === 'start') {
-          top = fitsBelowTrigger ? 0 : -contentHeight + triggerHeight;
-        } else if (align === 'end') {
-          top = fitsAboveTrigger ? -contentHeight + triggerHeight : 0;
-        }
-        left = fitsBesideLeftTrigger ? -contentWidth : triggerWidth;
-        break;
-    }
+    //   case 'left':
+    //     if (align === 'start') {
+    //       top = fitsBelowTrigger ? 0 : -contentHeight + triggerHeight;
+    //     } else if (align === 'end') {
+    //       top = fitsAboveTrigger ? -contentHeight + triggerHeight : 0;
+    //     }
+    //     left = fitsBesideLeftTrigger ? -contentWidth : triggerWidth;
+    //     break;
+    // }
 
     return { top, left };
   }, [
     triggerRef,
-    collisionDetectionRoot,
-    side,
-    align,
     collisionDetection,
-    calculateSpaces,
+    collisionDetectionRoot,
+    getSpaceRemains,
+    side,
+    getCollisionInfo,
   ]);
 
   const handleClickOutside = useCallback(
