@@ -1,20 +1,31 @@
 import { ReactNode } from 'react';
 
-import { DropdownContentSnap, useDropdownContent } from './useDropdownContent';
+import {
+  useDropdownContent,
+  UseDropdownContentOptions,
+} from './useDropdownContent';
 
-type DropdownContentProps = { children: ReactNode; snap?: DropdownContentSnap };
+type DropdownContentProps = {
+  children: ReactNode;
+} & UseDropdownContentOptions;
 
 export function DropdownContent({
+  collisionDetection,
+  side,
+  align,
   children,
-  snap = 'bottom-left',
 }: DropdownContentProps) {
-  const { isOpen, position, contentRef } = useDropdownContent({ snap });
+  const { isOpen, position, contentRef } = useDropdownContent({
+    collisionDetection,
+    side,
+    align,
+  });
 
   return (
     isOpen && (
       <div
         ref={contentRef}
-        className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 absolute z-10 my-1 rounded-lg border p-1"
+        className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 absolute z-10 rounded-lg border p-1"
         style={{ top: position.top, left: position.left }}
       >
         {children}

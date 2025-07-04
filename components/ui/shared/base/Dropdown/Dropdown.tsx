@@ -16,6 +16,7 @@ type DropdownContextValue = {
   toggle: () => void;
   close: () => void;
   triggerRef: RefObject<HTMLButtonElement | null>;
+  collisionDetectionRoot: HTMLElement | null;
 } | null;
 
 const DropdownContext = createContext<DropdownContextValue>(null);
@@ -29,13 +30,17 @@ export function useDropdown() {
   return context;
 }
 
+type DropdownProps = {
+  children: ReactNode;
+  className?: string;
+  collisionDetectionRoot?: HTMLElement | null;
+};
+
 export function Dropdown({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+  collisionDetectionRoot = null,
+}: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
@@ -43,7 +48,9 @@ export function Dropdown({
   const close = () => setIsOpen(false);
 
   return (
-    <DropdownContext.Provider value={{ isOpen, toggle, close, triggerRef }}>
+    <DropdownContext.Provider
+      value={{ isOpen, toggle, close, triggerRef, collisionDetectionRoot }}
+    >
       <div className={twMerge('relative', className)}>{children}</div>
     </DropdownContext.Provider>
   );

@@ -2,7 +2,7 @@
 
 import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { KeyIcon } from '@/components/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
@@ -26,6 +26,8 @@ export function CarOwnershipsTable({
   ownersProfiles,
 }: CarOwnershipsTableProps) {
   const [user, setUser] = useState<User | null>(null);
+
+  const tableRef = useRef<HTMLTableElement>(null);
 
   const columns = useMemo(
     () =>
@@ -95,6 +97,7 @@ export function CarOwnershipsTable({
 
             return (
               <CarOwnershipsTableActionsDropdown
+                collisionDetectionRoot={tableRef.current}
                 isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
                 ownership={row.original}
                 ownerUsername={profile?.username}
@@ -143,7 +146,7 @@ export function CarOwnershipsTable({
       >
         <Table.FilterText columnId="user" />
         <Table.SortBreadcrumb />
-        <Table.Root className="my-4 overflow-auto">
+        <Table.Root ref={tableRef} className="my-4 overflow-auto">
           <caption className="sr-only">car ownerships</caption>
           <Table.Head />
           <Table.Body />
