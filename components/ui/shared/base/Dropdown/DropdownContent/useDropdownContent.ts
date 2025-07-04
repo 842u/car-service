@@ -103,21 +103,20 @@ export function useDropdownContent({
     [],
   );
 
-  const getCollisionInfo = useCallback(
+  const getSideCollision = useCallback(
     (
       collisionDetection: boolean,
       spaceRemains: Spaces,
-      dimensions: Dimensions,
-      side: DropdownContentSide,
+      spaceRequirements: Spaces,
     ) => {
       if (!collisionDetection) {
         return {
-          sideCollisions: { top: true, right: true, bottom: true, left: true },
-          alignCollisions: { start: true, end: true },
+          top: false,
+          right: false,
+          bottom: false,
+          left: false,
         };
       }
-
-      const spaceRequirements = getSpaceRequirements(dimensions, side);
 
       const sideCollisions = {
         top: spaceRemains.top < spaceRequirements.top,
@@ -126,46 +125,42 @@ export function useDropdownContent({
         left: spaceRemains.left < spaceRequirements.left,
       };
 
-      const alignCollisions = {
-        start: true,
-        end: true,
-      };
+      return sideCollisions;
+    },
+    [],
+  );
+
+  const getAlignCollision = useCallback(
+    (
+      collisionDetection: boolean,
+      spaceRemains: Spaces,
+      spaceRequirements: Spaces,
+      side: DropdownContentSide,
+    ) => {
+      if (!collisionDetection) {
+        return {
+          start: false,
+          end: false,
+        };
+      }
+
       switch (side) {
         case 'top':
         case 'bottom':
-          alignCollisions.start = spaceRemains.right < spaceRequirements.right;
-          alignCollisions.end = spaceRemains.left < spaceRequirements.left;
-          break;
+          return {
+            start: spaceRemains.right < spaceRequirements.right,
+            end: spaceRemains.left < spaceRequirements.left,
+          };
 
         case 'right':
         case 'left':
-          alignCollisions.start =
-            spaceRemains.bottom < spaceRequirements.bottom;
-          alignCollisions.end = spaceRemains.top < spaceRequirements.top;
-          break;
+          return {
+            start: spaceRemains.bottom < spaceRequirements.bottom,
+            end: spaceRemains.top < spaceRequirements.top,
+          };
       }
-
-      // switch (fallbackSide) {
-      //   case 'top':
-      //   case 'bottom':
-      //     canFitAlign.start =
-      //       spaceRemains.right >= fallbackSideSpaceRequirements.right;
-      //     canFitAlign.end =
-      //       spaceRemains.left >= fallbackSideSpaceRequirements.left;
-      //     break;
-
-      //   case 'right':
-      //   case 'left':
-      //     canFitAlign.start =
-      //       spaceRemains.bottom >= fallbackSideSpaceRequirements.bottom;
-      //     canFitAlign.end =
-      //       spaceRemains.top >= fallbackSideSpaceRequirements.top;
-      //     break;
-      // }
-
-      return { sideCollisions, alignCollisions };
     },
-    [getSpaceRequirements],
+    [],
   );
 
   const getFallbackSide = useCallback(
@@ -229,22 +224,42 @@ export function useDropdownContent({
       triggerOffsetLeft,
     );
 
-    const collisionInfo = getCollisionInfo(
+    const spaceRequirements = getSpaceRequirements(dimensions, side);
+
+    const sideCollisionInfo = getSideCollision(
       collisionDetection,
       spaceRemains,
-      dimensions,
-      side,
+      spaceRequirements,
     );
 
-    const fallbackSide = getFallbackSide(side, collisionInfo.sideCollisions);
-    const fallbackAlign = getFallbackAlign(
-      align,
-      collisionInfo.alignCollisions,
-    );
+    const fallbackSide = getFallbackSide(side, sideCollisionInfo);
 
-    console.log(collisionInfo);
-    console.log(fallbackSide);
-    console.log(fallbackAlign);
+    if (fallbackSide === side) {
+      const alignCollisionsInfo = getAlignCollision(
+        collisionDetection,
+        spaceRemains,
+        spaceRequirements,
+        side,
+      );
+
+      const fallbackAlign = getFallbackAlign(align, alignCollisionsInfo);
+      console.log(fallbackSide, fallbackAlign);
+    } else {
+      const fallbackSpaceRequirements = getSpaceRequirements(
+        dimensions,
+        fallbackSide,
+      );
+
+      const alignCollisionsInfo = getAlignCollision(
+        collisionDetection,
+        spaceRemains,
+        fallbackSpaceRequirements,
+        side,
+      );
+
+      const fallbackAlign = getFallbackAlign(align, alignCollisionsInfo);
+      console.log(fallbackSide, fallbackAlign);
+    }
 
     // if (collisionDetection) {
     //   if (side === 'top') {
@@ -272,8 +287,8 @@ export function useDropdownContent({
     //   }
     // }
 
-    const top = 0;
-    const left = 0;
+    // const top = 0;
+    // const left = 0;
 
     // switch (side) {
     //   case 'top':
@@ -313,15 +328,19 @@ export function useDropdownContent({
     //     break;
     // }
 
-    return { top, left };
+    return { top: 0, left: 0 };
   }, [
     triggerRef,
     collisionDetection,
     collisionDetectionRoot,
     getSpaceRemains,
     side,
-    getCollisionInfo,
+    align,
+    getAlignCollision,
+    getFallbackAlign,
     getFallbackSide,
+    getSpaceRequirements,
+    getSideCollision,
   ]);
 
   const handleClickOutside = useCallback(
