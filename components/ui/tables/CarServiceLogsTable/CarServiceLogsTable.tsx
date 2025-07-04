@@ -32,6 +32,19 @@ export function CarServiceLogsTable({
   const columns = useMemo(
     () =>
       [
+        // columnsHelper.display({
+        //   id: 'actions',
+        //   cell: ({ row }) => (
+        //     <CarServiceLogsTableActionsDropdown
+        //       carId={row.original.car_id}
+        //       className="w-12"
+        //       collisionDetectionRoot={tableRef.current}
+        //       isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+        //       serviceLog={row.original}
+        //       userId={user?.id}
+        //     />
+        //   ),
+        // }),
         columnsHelper.accessor('service_date', {
           meta: {
             label: 'Date',
