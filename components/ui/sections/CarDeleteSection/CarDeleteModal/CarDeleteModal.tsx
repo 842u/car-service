@@ -8,6 +8,7 @@ import {
   DialogModalProps,
 } from '@/components/ui/shared/base/DialogModal/DialogModal';
 import { useToasts } from '@/hooks/useToasts';
+import { Car } from '@/types';
 import { deleteCar } from '@/utils/supabase/tables/cars';
 import {
   carsInfiniteDeleteOnError,
@@ -35,12 +36,20 @@ export function CarDeleteModal({
 
   const queryClient = useQueryClient();
 
+  const carQueryData = queryClient.getQueryData<Car>(
+    queryKeys.carsByCarId(carId),
+  );
+
+  const carName = carQueryData?.custom_name;
+
   const { mutate } = useMutation({
     mutationKey: queryKeys.infiniteCars,
     throwOnError: false,
-    mutationFn: () => deleteCar(carId),
-    onMutate: () => carsInfiniteDeleteOnMutate(carId, queryClient),
-    onSuccess: () => addToast('Successfully deleted a car.', 'success'),
+    mutationFn: ({ carId }: { carId: string; carName?: string }) =>
+      deleteCar(carId),
+    onMutate: ({ carId }) => carsInfiniteDeleteOnMutate(carId, queryClient),
+    onSuccess: (_, { carName }) =>
+      addToast(`Successfully deleted ${carName} car.`, 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
       carsInfiniteDeleteOnError(queryClient, context);
@@ -54,12 +63,15 @@ export function CarDeleteModal({
   const handleDeleteButtonClick = () => {
     onConfirm && onConfirm();
 
-    mutate(undefined, {
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.infiniteCars,
-        }),
-    });
+    mutate(
+      { carId, carName },
+      {
+        onSettled: () =>
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.infiniteCars,
+          }),
+      },
+    );
 
     router.replace('/dashboard/cars' satisfies Route);
   };
