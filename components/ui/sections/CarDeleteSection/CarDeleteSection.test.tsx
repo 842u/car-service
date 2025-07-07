@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 
-import { CAR_DELETE_FORM_TEST_ID } from '../../forms/CarDeleteForm/CarDeleteForm';
+import { CAR_DELETE_MODAL_TEST_ID } from './CarDeleteModal/CarDeleteModal';
 import { CarDeleteSection } from './CarDeleteSection';
 
 const MOCK_CAR_ID = 'e5e42160-6e96-4641-8484-b851aec4167f';
@@ -61,7 +61,7 @@ describe('CarDeleteSection', () => {
     expect(additionalInfo).toBeInTheDocument();
   });
 
-  it('should render section controls', () => {
+  it('should render delete button', () => {
     render(<TestCarDeleteSection />);
 
     const deleteButton = screen.getByRole('button', { name: 'delete car' });
@@ -77,11 +77,11 @@ describe('CarDeleteSection', () => {
     expect(deleteButton).toBeDisabled();
   });
 
-  it('should render a car delete form', () => {
+  it('should render a car delete modal', () => {
     render(<TestCarDeleteSection />);
 
-    const carDeleteForm = screen.getByTestId(CAR_DELETE_FORM_TEST_ID);
+    const modal = screen.getByTestId(CAR_DELETE_MODAL_TEST_ID);
 
-    expect(carDeleteForm).toBeInTheDocument();
+    expect(modal).toBeInTheDocument();
   });
 });

@@ -15,6 +15,8 @@ import {
 } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
+export const CAR_DELETE_MODAL_TEST_ID = 'CarDeleteModal_test_id';
+
 type CarDeleteModalProps = Partial<DialogModalProps> & {
   carId: string;
   onCancel?: () => void;
@@ -63,7 +65,11 @@ export function CarDeleteModal({
   };
 
   return (
-    <DialogModal {...props} headingText="Delete a car">
+    <DialogModal
+      {...props}
+      data-testid={CAR_DELETE_MODAL_TEST_ID}
+      headingText="Delete a car"
+    >
       <p className="text-warning-500 dark:text-warning-300 my-4">
         Are you sure you want permanently delete this car?
       </p>
