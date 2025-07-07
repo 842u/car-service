@@ -15,7 +15,7 @@ export type DialogModalRef = {
   closeModal: () => void;
 };
 
-type DialogModalProps = ComponentPropsWithoutRef<'dialog'> & {
+export type DialogModalProps = ComponentPropsWithoutRef<'dialog'> & {
   headingText: string;
   headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   ref?: Ref<DialogModalRef>;
