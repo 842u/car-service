@@ -2,13 +2,10 @@ import { useRef } from 'react';
 
 import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
 
-import { CarDeleteForm } from '../../forms/CarDeleteForm/CarDeleteForm';
-import {
-  DialogModal,
-  DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { IconButton } from '../../shared/IconButton/IconButton';
+import { CarDeleteModal } from './CarDeleteModal/CarDeleteModal';
 
 type CarDeleteSectionProps = {
   carId: string;
@@ -20,6 +17,9 @@ export function CarDeleteSection({
   isCurrentUserPrimaryOwner,
 }: CarDeleteSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
+
+  const handleCarDeleteCancel = () => dialogModalRef.current?.closeModal();
+  const handleCarDeleteConfirm = () => dialogModalRef.current?.closeModal();
 
   return (
     <DashboardSection variant="errorDefault">
@@ -46,12 +46,12 @@ export function CarDeleteSection({
         >
           <TrashIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
         </IconButton>
-        <DialogModal ref={dialogModalRef} headingText="Delete a car">
-          <CarDeleteForm
-            carId={carId}
-            onSubmit={() => dialogModalRef.current?.closeModal()}
-          />
-        </DialogModal>
+        <CarDeleteModal
+          ref={dialogModalRef}
+          carId={carId}
+          onCancel={handleCarDeleteCancel}
+          onConfirm={handleCarDeleteConfirm}
+        />
       </DashboardSection.Controls>
     </DashboardSection>
   );
