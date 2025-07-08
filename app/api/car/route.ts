@@ -68,21 +68,20 @@ export async function POST(request: NextRequest) {
    * so RLS restricts immediate SELECT while using "supabase.from().insert().select()".
    */
   const { data, error } = await supabase.rpc('create_new_car', {
-    additional_fuel_type: carFormData.additionalFuelType || undefined,
-    custom_name: carFormData.name || 'New car',
+    additional_fuel_type: carFormData.additional_fuel_type || undefined,
+    custom_name: carFormData.custom_name || 'New car',
     brand: carFormData.brand || undefined,
-    drive_type: carFormData.driveType || undefined,
-    engine_capacity: carFormData.engineCapacity || undefined,
-    fuel_type: carFormData.fuelType || undefined,
-    insurance_expiration:
-      carFormData.insuranceExpiration?.toString() || undefined,
+    drive_type: carFormData.drive_type || undefined,
+    engine_capacity: carFormData.engine_capacity || undefined,
+    fuel_type: carFormData.fuel_type || undefined,
+    insurance_expiration: carFormData.insurance_expiration || undefined,
     technical_inspection_expiration:
-      carFormData.technicalInspectionExpiration?.toString() || undefined,
-    license_plates: carFormData.licensePlates || undefined,
+      carFormData.technical_inspection_expiration || undefined,
+    license_plates: carFormData.license_plates || undefined,
     mileage: carFormData.mileage || undefined,
     model: carFormData.model || undefined,
-    production_year: carFormData.productionYear || undefined,
-    transmission_type: carFormData.transmissionType || undefined,
+    production_year: carFormData.production_year || undefined,
+    transmission_type: carFormData.transmission_type || undefined,
     vin: carFormData.vin || undefined,
   });
 
@@ -151,22 +150,21 @@ export async function PATCH(request: NextRequest) {
   const { data, error } = await supabase
     .from('cars')
     .update({
-      custom_name: carFormData.name,
+      custom_name: carFormData.custom_name,
       brand: carFormData.brand || undefined,
       model: carFormData.model || undefined,
-      production_year: carFormData.productionYear || undefined,
-      engine_capacity: carFormData.engineCapacity || undefined,
-      fuel_type: carFormData.fuelType || undefined,
-      additional_fuel_type: carFormData.additionalFuelType || undefined,
-      drive_type: carFormData.driveType || undefined,
-      transmission_type: carFormData.transmissionType || undefined,
-      license_plates: carFormData.licensePlates || undefined,
+      production_year: carFormData.production_year || undefined,
+      engine_capacity: carFormData.engine_capacity || undefined,
+      fuel_type: carFormData.fuel_type || undefined,
+      additional_fuel_type: carFormData.additional_fuel_type || undefined,
+      drive_type: carFormData.drive_type || undefined,
+      transmission_type: carFormData.transmission_type || undefined,
+      license_plates: carFormData.license_plates || undefined,
       vin: carFormData.vin || undefined,
       mileage: carFormData.mileage || undefined,
-      insurance_expiration:
-        carFormData.insuranceExpiration?.toString() || undefined,
+      insurance_expiration: carFormData.insurance_expiration || undefined,
       technical_inspection_expiration:
-        carFormData.technicalInspectionExpiration?.toString() || undefined,
+        carFormData.technical_inspection_expiration || undefined,
     })
     .eq('id', carId || '')
     .select('id')
