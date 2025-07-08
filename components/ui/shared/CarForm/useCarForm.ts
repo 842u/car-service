@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useImperativeHandle, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Resolver, useForm } from 'react-hook-form';
 
 import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
@@ -9,27 +9,23 @@ import { CarFormProps } from './CarForm';
 
 const defaultCarFormValues: CarFormValues = {
   image: null,
-  name: '',
+  custom_name: '',
   brand: null,
   model: null,
-  licensePlates: null,
+  license_plates: null,
   vin: null,
-  fuelType: null,
-  additionalFuelType: null,
-  transmissionType: null,
-  driveType: null,
-  productionYear: null,
-  engineCapacity: null,
+  fuel_type: null,
+  additional_fuel_type: null,
+  transmission_type: null,
+  drive_type: null,
+  production_year: null,
+  engine_capacity: null,
   mileage: null,
-  insuranceExpiration: null,
-  technicalInspectionExpiration: null,
+  insurance_expiration: null,
+  technical_inspection_expiration: null,
 };
 
-export function useCarForm({
-  onSubmit,
-  ref,
-  carData,
-}: Omit<CarFormProps, 'title'>) {
+export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
   const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
   const {
@@ -38,8 +34,8 @@ export function useCarForm({
     handleSubmit,
     control,
     formState: { errors, isValid, isDirty, isSubmitSuccessful },
-  } = useForm<CarFormValues>({
-    resolver: zodResolver(carFormSchema),
+  } = useForm({
+    resolver: zodResolver(carFormSchema) as Resolver<CarFormValues>,
     mode: 'onChange',
     defaultValues: defaultCarFormValues,
   });
@@ -49,21 +45,7 @@ export function useCarForm({
   useEffect(() => {
     carData &&
       reset({
-        additionalFuelType: carData.additional_fuel_type,
-        brand: carData.brand,
-        driveType: carData.drive_type,
-        engineCapacity: carData.engine_capacity,
-        fuelType: carData.fuel_type,
-        insuranceExpiration: carData.insurance_expiration as unknown as Date,
-        technicalInspectionExpiration:
-          carData.technical_inspection_expiration as unknown as Date,
-        licensePlates: carData.license_plates,
-        mileage: carData.mileage,
-        model: carData.model,
-        name: carData.custom_name,
-        productionYear: carData.production_year,
-        transmissionType: carData.transmission_type,
-        vin: carData.vin,
+        ...carData,
         image: null,
       });
   }, [carData, reset]);
