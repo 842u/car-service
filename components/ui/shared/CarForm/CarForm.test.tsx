@@ -18,7 +18,7 @@ const CAR_FORM_VALUES_MAP: {
     label: 'Image',
     testId: FORM_INPUT_IMAGE_TEST_ID,
   },
-  additionalFuelType: {
+  additional_fuel_type: {
     label: 'Additional Fuel Type',
     inputRole: 'combobox',
   },
@@ -26,19 +26,19 @@ const CAR_FORM_VALUES_MAP: {
     label: 'Brand',
     inputRole: 'textbox',
   },
-  driveType: {
+  drive_type: {
     label: 'Drive Type',
     inputRole: 'combobox',
   },
-  engineCapacity: {
+  engine_capacity: {
     label: /engine capacity/i,
     inputRole: 'spinbutton',
   },
-  fuelType: {
+  fuel_type: {
     label: 'Fuel Type',
     inputRole: 'combobox',
   },
-  licensePlates: {
+  license_plates: {
     label: 'License Plates',
     inputRole: 'textbox',
   },
@@ -50,15 +50,15 @@ const CAR_FORM_VALUES_MAP: {
     label: 'Model',
     inputRole: 'textbox',
   },
-  name: {
+  custom_name: {
     label: /name/i,
     inputRole: 'textbox',
   },
-  productionYear: {
+  production_year: {
     label: 'Production Year',
     inputRole: 'spinbutton',
   },
-  transmissionType: {
+  transmission_type: {
     label: 'Transmission Type',
     inputRole: 'combobox',
   },
@@ -66,10 +66,10 @@ const CAR_FORM_VALUES_MAP: {
     label: 'VIN',
     inputRole: 'textbox',
   },
-  insuranceExpiration: {
+  insurance_expiration: {
     label: 'Insurance Expiration Date',
   },
-  technicalInspectionExpiration: {
+  technical_inspection_expiration: {
     label: 'Technical Inspection Expiration Date',
   },
 };
@@ -139,8 +139,8 @@ describe('CarForm', () => {
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const nameInput = screen.getByRole(
-      CAR_FORM_VALUES_MAP.name.inputRole || '',
-      { name: CAR_FORM_VALUES_MAP.name.label },
+      CAR_FORM_VALUES_MAP.custom_name.inputRole || '',
+      { name: CAR_FORM_VALUES_MAP.custom_name.label },
     );
 
     expect(resetButton).toBeDisabled();
@@ -157,8 +157,8 @@ describe('CarForm', () => {
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const nameInput = screen.getByRole(
-      CAR_FORM_VALUES_MAP.name.inputRole || '',
-      { name: CAR_FORM_VALUES_MAP.name.label },
+      CAR_FORM_VALUES_MAP.custom_name.inputRole || '',
+      { name: CAR_FORM_VALUES_MAP.custom_name.label },
     );
 
     await user.type(nameInput, nameInputText);
