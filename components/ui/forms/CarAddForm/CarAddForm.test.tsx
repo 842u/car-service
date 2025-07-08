@@ -9,19 +9,19 @@ import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 import { CarAddForm } from './CarAddForm';
 
 const MOCK_CAR_FORM_DATA: CarFormValues = {
-  additionalFuelType: null,
+  additional_fuel_type: null,
   brand: null,
-  driveType: null,
-  engineCapacity: null,
-  fuelType: null,
-  insuranceExpiration: null,
-  licensePlates: null,
+  drive_type: null,
+  engine_capacity: null,
+  fuel_type: null,
+  insurance_expiration: null,
+  license_plates: null,
   mileage: null,
   model: null,
-  name: '',
-  productionYear: null,
-  technicalInspectionExpiration: null,
-  transmissionType: null,
+  custom_name: '',
+  production_year: null,
+  technical_inspection_expiration: null,
+  transmission_type: null,
   vin: null,
   image: null,
 };
@@ -45,7 +45,7 @@ function TestCarAddForm() {
 describe('CarAddForm', () => {
   it('should call proper submit handler on submit', async () => {
     const validInputText = 'validInputText';
-    MOCK_CAR_FORM_DATA.name = validInputText;
+    MOCK_CAR_FORM_DATA.custom_name = validInputText;
     const user = userEvent.setup();
     render(<TestCarAddForm />);
 

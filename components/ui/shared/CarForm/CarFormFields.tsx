@@ -1,8 +1,8 @@
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import {
   CAR_VIN_LENGTH,
+  CarFormValues,
   MAX_CAR_BRAND_LENGTH,
   MAX_CAR_ENGINE_CAPACITY_VALUE,
   MAX_CAR_LICENSE_PLATES_LENGTH,
@@ -19,7 +19,7 @@ import {
   MIN_CAR_NAME_LENGTH,
   MIN_CAR_PRODUCTION_YEAR_VALUE,
   MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE,
-} from '@/schemas/zod/common';
+} from '@/schemas/zod/carFormSchema';
 import {
   driveTypesMapping,
   fuelTypesMapping,
@@ -60,11 +60,11 @@ export function CarFormFields({
       <Form.InputWrapper>
         <Form.Input
           required
-          errorMessage={errors.name?.message}
+          errorMessage={errors.custom_name?.message}
           label="Name"
           maxLength={MAX_CAR_NAME_LENGTH}
           minLength={MIN_CAR_NAME_LENGTH}
-          name="name"
+          name="custom_name"
           placeholder="Enter a name for a car ..."
           register={register}
           type="text"
@@ -90,22 +90,22 @@ export function CarFormFields({
           type="text"
         />
         <Form.Input
-          errorMessage={errors.productionYear?.message}
+          errorMessage={errors.production_year?.message}
           label="Production Year"
           max={MAX_CAR_PRODUCTION_YEAR_VALUE}
           min={MIN_CAR_PRODUCTION_YEAR_VALUE}
-          name="productionYear"
+          name="production_year"
           placeholder="Enter production year ..."
           register={register}
           registerOptions={{ valueAsNumber: true }}
           type="number"
         />
         <Form.Input
-          errorMessage={errors.licensePlates?.message}
+          errorMessage={errors.license_plates?.message}
           label="License Plates"
           maxLength={MAX_CAR_LICENSE_PLATES_LENGTH}
           minLength={MIN_CAR_LICENSE_PLATES_LENGTH}
-          name="licensePlates"
+          name="license_plates"
           placeholder="Enter a car license plates ..."
           register={register}
           type="text"
@@ -124,41 +124,41 @@ export function CarFormFields({
       <Form.InputWrapper>
         <div className="bg-alpha-grey-300 mb-4 h-[1px] w-full md:block lg:hidden" />
         <Form.Input
-          errorMessage={errors.engineCapacity?.message}
+          errorMessage={errors.engine_capacity?.message}
           label="Engine Capacity [cc]"
           max={MAX_CAR_ENGINE_CAPACITY_VALUE}
           min={MIN_CAR_ENGINE_CAPACITY_VALUE}
-          name="engineCapacity"
+          name="engine_capacity"
           placeholder="Enter engine capacity ..."
           register={register}
           registerOptions={{ valueAsNumber: true }}
           type="number"
         />
         <Form.Select
-          errorMessage={errors.fuelType?.message}
+          errorMessage={errors.fuel_type?.message}
           label="Fuel Type"
-          name="fuelType"
+          name="fuel_type"
           options={fuelTypesMapping}
           register={register}
         />
         <Form.Select
-          errorMessage={errors.additionalFuelType?.message}
+          errorMessage={errors.additional_fuel_type?.message}
           label="Additional Fuel Type"
-          name="additionalFuelType"
+          name="additional_fuel_type"
           options={fuelTypesMapping}
           register={register}
         />
         <Form.Select
-          errorMessage={errors.driveType?.message}
+          errorMessage={errors.drive_type?.message}
           label="Drive Type"
-          name="driveType"
+          name="drive_type"
           options={driveTypesMapping}
           register={register}
         />
         <Form.Select
-          errorMessage={errors.transmissionType?.message}
+          errorMessage={errors.transmission_type?.message}
           label="Transmission Type"
-          name="transmissionType"
+          name="transmission_type"
           options={transmissionTypesMapping}
           register={register}
         />
@@ -178,19 +178,19 @@ export function CarFormFields({
           type="number"
         />
         <Form.Input
-          errorMessage={errors.insuranceExpiration?.message}
+          errorMessage={errors.insurance_expiration?.message}
           label="Insurance Expiration Date"
           min={MIN_CAR_INSURANCE_EXPIRATION_DATE}
-          name="insuranceExpiration"
+          name="insurance_expiration"
           placeholder="Enter insurance expiration date ..."
           register={register}
           type="date"
         />
         <Form.Input
-          errorMessage={errors.technicalInspectionExpiration?.message}
+          errorMessage={errors.technical_inspection_expiration?.message}
           label="Technical Inspection Expiration Date"
           min={MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE}
-          name="technicalInspectionExpiration"
+          name="technical_inspection_expiration"
           placeholder="Enter technical inspection expiration date ..."
           register={register}
           type="date"

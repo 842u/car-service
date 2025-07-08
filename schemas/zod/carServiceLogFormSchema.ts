@@ -10,7 +10,7 @@ import {
   carMileageSchema,
   MIN_CAR_PRODUCTION_YEAR_VALUE,
   MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE,
-} from './common';
+} from './carFormSchema';
 
 type CarServiceLogFormSchemaShape = Omit<
   { [K in keyof ServiceLog]: ZodType },

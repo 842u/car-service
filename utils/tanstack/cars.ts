@@ -4,7 +4,7 @@ import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car, CarsInfiniteQueryData, ToastType } from '@/types';
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
-  mapCarFormValuesToCarObject,
+  parseDateToYyyyMmDd,
 } from '@/utils/general';
 
 import { queryKeys } from './keys';
@@ -73,8 +73,13 @@ export async function carsInfiniteAddOnMutate(
 ) {
   await queryClient.cancelQueries({ queryKey: queryKeys.infiniteCars });
 
-  const newCar = mapCarFormValuesToCarObject('add', carFormData);
-  newCar.image_url = optimisticCarImageUrl;
+  const newCar: Car = {
+    ...carFormData,
+    id: crypto.randomUUID(),
+    image_url: optimisticCarImageUrl,
+    created_at: parseDateToYyyyMmDd(new Date()),
+    created_by: 'optimistic update',
+  };
 
   queryClient.setQueryData(
     queryKeys.infiniteCars,
@@ -228,13 +233,11 @@ export async function carsUpdateOnMutate(
     carId,
   ]) as Car;
 
-  const editedCar = mapCarFormValuesToCarObject(
-    'edit',
-    carFormData,
-    previousCarsQueryData,
-  );
-  editedCar.image_url =
-    optimisticCarImageUrl || previousCarsQueryData.image_url;
+  const editedCar: Car = {
+    ...previousCarsQueryData,
+    ...carFormData,
+    image_url: optimisticCarImageUrl || previousCarsQueryData.image_url,
+  };
 
   queryClient.setQueryData(queryKeys.carsByCarId(carId), () => ({
     ...previousCarsQueryData,

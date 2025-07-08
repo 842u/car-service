@@ -1,6 +1,3 @@
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { Car } from '@/types';
-
 export const CAR_IMAGE_UPLOAD_ERROR_CAUSE = 'image upload error';
 const DEFAULT_TIMEOUT = 9000;
 
@@ -61,65 +58,6 @@ export function parseDateToYyyyMmDd(date: Date) {
   const [year, month, dayWithTimezone] = date.toISOString().split('-');
   const [day] = dayWithTimezone.split('T');
   return [year, month, day].join('-');
-}
-
-export function mapCarFormValuesToCarObject(
-  type: 'add' | 'edit',
-  formData: CarFormValues,
-  editedCarData?: Car,
-): Car {
-  switch (type) {
-    case 'add':
-      return {
-        id: crypto.randomUUID(),
-        image_url: null,
-        custom_name: formData.name,
-        brand: formData.brand,
-        model: formData.model,
-        license_plates: formData.licensePlates,
-        additional_fuel_type: formData.additionalFuelType || null,
-        created_at: parseDateToYyyyMmDd(new Date()),
-        drive_type: formData.driveType || null,
-        engine_capacity: formData.engineCapacity,
-        fuel_type: formData.fuelType || null,
-        mileage: formData.mileage,
-        insurance_expiration:
-          formData.insuranceExpiration &&
-          formData.insuranceExpiration.toISOString(),
-        technical_inspection_expiration:
-          formData.technicalInspectionExpiration &&
-          formData.technicalInspectionExpiration.toISOString(),
-        production_year: formData.productionYear,
-        transmission_type: formData.transmissionType || null,
-        vin: formData.vin,
-        created_by: 'optimistic update',
-      };
-    case 'edit':
-      return {
-        image_url: null,
-        custom_name: formData.name,
-        brand: formData.brand,
-        model: formData.model,
-        license_plates: formData.licensePlates,
-        additional_fuel_type: formData.additionalFuelType || null,
-        drive_type: formData.driveType || null,
-        engine_capacity: formData.engineCapacity,
-        fuel_type: formData.fuelType || null,
-        mileage: formData.mileage,
-        insurance_expiration:
-          formData.insuranceExpiration &&
-          parseDateToYyyyMmDd(formData.insuranceExpiration),
-        technical_inspection_expiration:
-          formData.technicalInspectionExpiration &&
-          parseDateToYyyyMmDd(formData.technicalInspectionExpiration),
-        production_year: formData.productionYear,
-        transmission_type: formData.transmissionType || null,
-        vin: formData.vin,
-        id: editedCarData?.id || '',
-        created_by: editedCarData?.created_by || null,
-        created_at: editedCarData?.created_at || null,
-      };
-  }
 }
 
 export function enqueueRevokeObjectUrl(url: string) {
