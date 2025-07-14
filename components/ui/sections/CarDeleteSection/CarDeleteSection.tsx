@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 
 import { CarDeleteButton } from '../../buttons/CarDeleteButton/CarDeleteButton';
+import { CarDeleteModal } from '../../modals/CarDeleteModal/CarDeleteModal';
 import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
-import { CarDeleteModal } from './CarDeleteModal/CarDeleteModal';
 
 type CarDeleteSectionProps = {
   carId: string;
@@ -14,14 +14,13 @@ export function CarDeleteSection({
   carId,
   isCurrentUserPrimaryOwner,
 }: CarDeleteSectionProps) {
-  const dialogModalRef = useRef<DialogModalRef>(null);
+  const dialogRef = useRef<DialogModalRef>(null);
 
-  const handleCarDeleteModalCancel = () => dialogModalRef.current?.closeModal();
+  const handleCarDeleteModalCancel = () => dialogRef.current?.closeModal();
 
-  const handleCarDeleteModalConfirm = () =>
-    dialogModalRef.current?.closeModal();
+  const handleCarDeleteModalConfirm = () => dialogRef.current?.closeModal();
 
-  const handleCarDeleteButtonClick = () => dialogModalRef.current?.showModal();
+  const handleCarDeleteButtonClick = () => dialogRef.current?.showModal();
 
   return (
     <DashboardSection variant="errorDefault">
@@ -44,7 +43,7 @@ export function CarDeleteSection({
           onClick={handleCarDeleteButtonClick}
         />
         <CarDeleteModal
-          ref={dialogModalRef}
+          ref={dialogRef}
           carId={carId}
           onCancel={handleCarDeleteModalCancel}
           onConfirm={handleCarDeleteModalConfirm}

@@ -4,8 +4,7 @@ import { DialogModal } from './DialogModal';
 
 describe('DialogModal', () => {
   it('should render as dialog element', () => {
-    const headingText = 'test';
-    render(<DialogModal headingText={headingText} />);
+    render(<DialogModal />);
 
     const dialogElement = screen.getByRole('dialog', { hidden: true });
 
@@ -14,7 +13,7 @@ describe('DialogModal', () => {
 
   it('should render provided heading text', () => {
     const headingText = 'test';
-    render(<DialogModal headingText={headingText} />);
+    render(<DialogModal />);
 
     const heading = screen.getByRole('heading', {
       name: headingText,
@@ -25,8 +24,7 @@ describe('DialogModal', () => {
   });
 
   it('should render close button', () => {
-    const headingText = 'test';
-    render(<DialogModal headingText={headingText} />);
+    render(<DialogModal />);
 
     const closeButton = screen.getByRole('button', {
       name: 'close',
@@ -38,9 +36,8 @@ describe('DialogModal', () => {
 
   it('should render provided children', () => {
     const childrenHeadingText = 'children test';
-    const headingText = 'test';
     render(
-      <DialogModal headingText={headingText}>
+      <DialogModal>
         <h3>{childrenHeadingText}</h3>
       </DialogModal>,
     );
