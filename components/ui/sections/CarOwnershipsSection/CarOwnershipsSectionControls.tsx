@@ -1,11 +1,8 @@
 import { useRef } from 'react';
 
 import { OwnershipAddButton } from '../../buttons/OwnershipAddButton/OwnershipAddButton';
-import { CarOwnershipAddForm } from '../../forms/CarOwnershipAddForm/CarOwnershipAddForm';
-import {
-  DialogModal,
-  DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+import { OwnershipAddModal } from '../../modals/OwnershipAddModal/OwnershipAddModal';
+import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 
 export const CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID =
@@ -20,13 +17,11 @@ export function CarOwnershipsSectionControls({
   carId,
   isCurrentUserPrimaryOwner,
 }: CarOwnershipsSectionControlsProps) {
-  const newCarOwnerFormModalRef = useRef<DialogModalRef>(null);
+  const dialogRef = useRef<DialogModalRef>(null);
 
-  const handleOwnershipAddButtonClick = () =>
-    newCarOwnerFormModalRef.current?.showModal();
+  const handleOwnershipAddButtonClick = () => dialogRef.current?.showModal();
 
-  const handleCarOwnershipAddFormSubmit = () =>
-    newCarOwnerFormModalRef.current?.closeModal();
+  const handleOwnershipAddModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
     <DashboardSection.Controls
@@ -37,12 +32,11 @@ export function CarOwnershipsSectionControls({
         disabled={!isCurrentUserPrimaryOwner}
         onClick={handleOwnershipAddButtonClick}
       />
-      <DialogModal ref={newCarOwnerFormModalRef} headingText="Add owner">
-        <CarOwnershipAddForm
-          carId={carId}
-          onSubmit={handleCarOwnershipAddFormSubmit}
-        />
-      </DialogModal>
+      <OwnershipAddModal
+        ref={dialogRef}
+        carId={carId}
+        onSubmit={handleOwnershipAddModalSubmit}
+      />
     </DashboardSection.Controls>
   );
 }
