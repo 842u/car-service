@@ -64,7 +64,7 @@ describe('CarDetailsSection', () => {
   it('should render section controls', () => {
     render(<TestCarDetailsSection />);
 
-    const editCarButton = screen.getByRole('button', { name: 'edit car' });
+    const editCarButton = screen.getByRole('button', { name: 'Edit car' });
 
     expect(editCarButton).toBeInTheDocument();
   });
@@ -72,7 +72,7 @@ describe('CarDetailsSection', () => {
   it('edit car button should be disabled if !isCurrentUserPrimaryOwner', () => {
     render(<TestCarDetailsSection isCurrentUserPrimaryOwner={false} />);
 
-    const editCarButton = screen.getByRole('button', { name: 'edit car' });
+    const editCarButton = screen.getByRole('button', { name: 'Edit car' });
 
     expect(editCarButton).toBeDisabled();
   });
