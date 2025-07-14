@@ -9,6 +9,7 @@ import {
   useRef,
 } from 'react';
 
+import { DialogModalHeading } from './DialogModalHeading';
 import { DialogModalRoot } from './DialogModalRoot';
 
 export type DialogModalRef = {
@@ -70,3 +71,4 @@ export function DialogModal({ ref, children }: DialogModalProps) {
 }
 
 DialogModal.Root = DialogModalRoot;
+DialogModal.Heading = DialogModalHeading;
