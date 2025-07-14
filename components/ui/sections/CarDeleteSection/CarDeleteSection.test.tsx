@@ -64,7 +64,7 @@ describe('CarDeleteSection', () => {
   it('should render delete button', () => {
     render(<TestCarDeleteSection />);
 
-    const deleteButton = screen.getByRole('button', { name: 'delete car' });
+    const deleteButton = screen.getByRole('button', { name: 'Delete car' });
 
     expect(deleteButton).toBeInTheDocument();
   });
@@ -72,7 +72,7 @@ describe('CarDeleteSection', () => {
   it('delete button should be disabled if !isCurrentUserPrimaryOwner', () => {
     render(<TestCarDeleteSection isCurrentUserPrimaryOwner={false} />);
 
-    const deleteButton = screen.getByRole('button', { name: 'delete car' });
+    const deleteButton = screen.getByRole('button', { name: 'Delete car' });
 
     expect(deleteButton).toBeDisabled();
   });
