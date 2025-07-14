@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
 
-import { CAR_DELETE_MODAL_TEST_ID } from './CarDeleteModal/CarDeleteModal';
+import { CAR_DELETE_MODAL_TEST_ID } from '../../modals/CarDeleteModal/CarDeleteModal';
 import { CarDeleteSection } from './CarDeleteSection';
 
 const MOCK_CAR_ID = 'e5e42160-6e96-4641-8484-b851aec4167f';
