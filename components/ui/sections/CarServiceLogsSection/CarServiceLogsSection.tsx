@@ -3,20 +3,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
-import { BookIcon } from '@/components/decorative/icons/BookIcon';
 import { Spinner } from '@/components/decorative/Spinner/Spinner';
 import { useToasts } from '@/hooks/useToasts';
 import { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 
+import { ServiceLogAddButton } from '../../buttons/ServiceLogAddButton/ServiceLogAddButton';
 import { CarServiceLogAddForm } from '../../forms/CarServiceLogAddForm/CarServiceLogAddForm';
 import {
   DialogModal,
   DialogModalRef,
 } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
-import { IconButton } from '../../shared/IconButton/IconButton';
 import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarServiceLogsTable';
 
 type CarServiceLogsSectionProps = {
@@ -44,9 +43,10 @@ export function CarServiceLogsSection({
     error && addToast(error.message, 'error');
   }, [addToast, error]);
 
-  const handleModalClose = () => dialogModalRef.current?.closeModal();
+  const handleCarServiceLogAddFormSubmit = () =>
+    dialogModalRef.current?.closeModal();
 
-  const handleModalOpen = () => dialogModalRef.current?.showModal();
+  const handleServiceLogAddButton = () => dialogModalRef.current?.showModal();
 
   return (
     <DashboardSection>
@@ -64,15 +64,12 @@ export function CarServiceLogsSection({
         />
       )}
       <DashboardSection.Controls>
-        <IconButton
-          title="add service log"
-          variant="accent"
-          onClick={handleModalOpen}
-        >
-          <BookIcon className="h-full w-full stroke-2" />
-        </IconButton>
+        <ServiceLogAddButton onClick={handleServiceLogAddButton} />
         <DialogModal ref={dialogModalRef} headingText="Add service log">
-          <CarServiceLogAddForm carId={carId} onSubmit={handleModalClose} />
+          <CarServiceLogAddForm
+            carId={carId}
+            onSubmit={handleCarServiceLogAddFormSubmit}
+          />
         </DialogModal>
       </DashboardSection.Controls>
     </DashboardSection>
