@@ -29,7 +29,6 @@ export function CarSettingsSection({ carId }: CarSettingsSectionProps) {
       />
       <CarDetailsSection
         carData={carData}
-        carId={carId}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
       <CarServiceLogsSection
