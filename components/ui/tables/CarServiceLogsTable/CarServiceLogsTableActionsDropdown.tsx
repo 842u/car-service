@@ -11,7 +11,7 @@ import {
   serviceLogsByCarIdDeleteOnMutate,
 } from '@/utils/tanstack/service_logs';
 
-import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
+import { ServiceLogEditModal } from '../../modals/ServiceLogEditModal/ServiceLogEditModal';
 import { Button } from '../../shared/base/Button/Button';
 import {
   DialogModal,
@@ -37,8 +37,8 @@ export function CarServiceLogsTableActionsDropdown({
   collisionDetectionRoot,
   className,
 }: CarServiceLogsTableActionsDropdownProps) {
-  const editDialogModalRef = useRef<DialogModalRef>(null);
-  const deleteDialogModalRef = useRef<DialogModalRef>(null);
+  const serviceLogEditModalRef = useRef<DialogModalRef>(null);
+  const serviceLogDeleteModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
@@ -56,19 +56,19 @@ export function CarServiceLogsTableActionsDropdown({
   });
 
   const handleEditLogButtonClick = () =>
-    editDialogModalRef.current?.showModal();
+    serviceLogEditModalRef.current?.showModal();
 
   const handleCarServiceLogEditFormSubmit = () =>
-    editDialogModalRef.current?.closeModal();
+    serviceLogEditModalRef.current?.closeModal();
 
   const handleDeleteServiceLogButtonClick = () =>
-    deleteDialogModalRef.current?.showModal();
+    serviceLogDeleteModalRef.current?.showModal();
 
   const handleCancelDeleteServiceLogButtonClick = () =>
-    deleteDialogModalRef.current?.closeModal();
+    serviceLogDeleteModalRef.current?.closeModal();
 
   const handleConfirmDeleteServiceLogButtonClick = () => {
-    deleteDialogModalRef.current?.closeModal();
+    serviceLogDeleteModalRef.current?.closeModal();
     mutate(serviceLog.id, {
       onSettled: () =>
         queryClient.invalidateQueries({
@@ -108,13 +108,11 @@ export function CarServiceLogsTableActionsDropdown({
         >
           Edit
         </Button>
-        <DialogModal ref={editDialogModalRef} headingText="Edit service log">
-          <CarServiceLogEditForm
-            carId={carId}
-            serviceLog={serviceLog}
-            onSubmit={handleCarServiceLogEditFormSubmit}
-          />
-        </DialogModal>
+        <ServiceLogEditModal
+          ref={serviceLogEditModalRef}
+          serviceLog={serviceLog}
+          onSubmit={handleCarServiceLogEditFormSubmit}
+        />
         <Button
           disabled={!canTakeAction}
           variant="transparentError"
@@ -122,10 +120,7 @@ export function CarServiceLogsTableActionsDropdown({
         >
           Delete
         </Button>
-        <DialogModal
-          ref={deleteDialogModalRef}
-          headingText="Delete service log"
-        >
+        <DialogModal ref={serviceLogDeleteModalRef}>
           <p className="my-4">Are you sure you want to delete service log?</p>
           <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
             <Button onClick={handleCancelDeleteServiceLogButtonClick}>
