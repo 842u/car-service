@@ -7,14 +7,17 @@ import {
 } from '@/app/api/service-log/route';
 import { useToasts } from '@/hooks/useToasts';
 import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import { RouteHandlerResponse } from '@/types';
+import { RouteHandlerResponse, ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
   serviceLogsByCarIdEditOnError,
   serviceLogsByCarIdEditOnMutate,
 } from '@/utils/tanstack/service_logs';
 
-import { CarServiceLogEditFormProps } from './CarServiceLogEditForm';
+export type UseCarServiceLogEditFormOptions = {
+  serviceLog: ServiceLog;
+  onSubmit?: () => void;
+};
 
 async function submitCarServiceLogEditFormData(
   serviceLogId: string,
@@ -51,34 +54,39 @@ async function submitCarServiceLogEditFormData(
 
 export function useCarServiceLogEditForm({
   serviceLog,
-  carId,
   onSubmit,
-}: CarServiceLogEditFormProps) {
+}: UseCarServiceLogEditFormOptions) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
 
+  const serviceLogId = serviceLog.id;
+
+  const carId = serviceLog.car_id;
+
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: (formData: CarServiceLogFormValues) =>
-      submitCarServiceLogEditFormData(serviceLog.id, formData),
+      submitCarServiceLogEditFormData(serviceLogId, formData),
     onMutate: (formData: CarServiceLogFormValues) =>
       serviceLogsByCarIdEditOnMutate(
         formData,
         carId,
-        serviceLog.id,
+        serviceLogId,
         queryClient,
       ),
   });
 
   const handleFormSubmit = async (formData: CarServiceLogFormValues) => {
+    onSubmit && onSubmit();
+
     mutate(formData, {
       onSuccess: () => addToast('Service log edited successfully.', 'success'),
       onError: (error, _, context) => {
         serviceLogsByCarIdEditOnError(
           context,
           carId,
-          serviceLog.id,
+          serviceLogId,
           queryClient,
         );
         addToast(error.message, 'error');
@@ -88,8 +96,6 @@ export function useCarServiceLogEditForm({
           queryKey: queryKeys.serviceLogsByCarId(carId),
         }),
     });
-
-    onSubmit && onSubmit();
   };
 
   return { handleFormSubmit };
