@@ -1,7 +1,10 @@
+import { Ref } from 'react';
+
+import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import { Button } from '@/components/ui/shared/base/Button/Button';
 import {
   DialogModal,
-  DialogModalProps,
+  DialogModalRef,
 } from '@/components/ui/shared/base/DialogModal/DialogModal';
 
 import {
@@ -11,33 +14,35 @@ import {
 
 export const CAR_DELETE_MODAL_TEST_ID = 'CarDeleteModal_test_id';
 
-type CarDeleteModalProps = Partial<DialogModalProps> & UseCarDeleteModalOptions;
+type CarDeleteModalProps = UseCarDeleteModalOptions & {
+  ref?: Ref<DialogModalRef | null>;
+};
 
 export function CarDeleteModal({
   carId,
+  ref,
   onCancel,
   onConfirm,
-  ...props
 }: CarDeleteModalProps) {
   const {
     handlers: { handleCancelButtonClick, handleDeleteButtonClick },
   } = useCarDeleteModal({ carId, onCancel, onConfirm });
 
   return (
-    <DialogModal
-      {...props}
-      data-testid={CAR_DELETE_MODAL_TEST_ID}
-      headingText="Delete a car"
-    >
-      <p className="text-warning-500 dark:text-warning-300 my-4">
-        Are you sure you want permanently delete this car?
-      </p>
-      <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
-        <Button onClick={handleCancelButtonClick}>Cancel</Button>
-        <Button variant="error" onClick={handleDeleteButtonClick}>
-          Delete
-        </Button>
-      </div>
+    <DialogModal ref={ref}>
+      <DialogModal.Root>
+        <DialogModal.Heading>Delete car</DialogModal.Heading>
+        <TextSeparator className="my-4" />
+        <p className="text-warning-500 dark:text-warning-300 my-4">
+          Are you sure you want permanently delete this car?
+        </p>
+        <DialogModal.Controls>
+          <Button onClick={handleCancelButtonClick}>Cancel</Button>
+          <Button variant="error" onClick={handleDeleteButtonClick}>
+            Delete
+          </Button>
+        </DialogModal.Controls>
+      </DialogModal.Root>
     </DialogModal>
   );
 }
