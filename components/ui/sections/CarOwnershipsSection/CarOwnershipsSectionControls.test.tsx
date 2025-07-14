@@ -27,7 +27,7 @@ describe('CarOwnershipsSectionControls', () => {
     render(<TestOwnershipsSectionControls />);
 
     const addOwnershipButton = screen.getByRole('button', {
-      name: 'add ownership',
+      name: 'Add owner',
     });
 
     expect(addOwnershipButton).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('CarOwnershipsSectionControls', () => {
     render(<TestOwnershipsSectionControls isCurrentUserPrimaryOwner={false} />);
 
     const addOwnershipButton = screen.getByRole('button', {
-      name: 'add ownership',
+      name: 'Add owner',
     });
 
     expect(addOwnershipButton).toBeDisabled();

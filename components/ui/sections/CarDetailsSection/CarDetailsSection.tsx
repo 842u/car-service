@@ -1,15 +1,14 @@
 import { useRef } from 'react';
 
-import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
 import { Car } from '@/types';
 
+import { CarEditButton } from '../../buttons/CarEditButton/CarEditButton';
 import { CarEditForm } from '../../forms/CarEditForm/CarEditForm';
 import {
   DialogModal,
   DialogModalRef,
 } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
-import { IconButton } from '../../shared/IconButton/IconButton';
 import { CarDetailsTable } from '../../tables/CarDetailsTable/CarDetailsTable';
 
 export type CarDetailsSectionProps = {
@@ -25,6 +24,10 @@ export function CarDetailsSection({
 }: CarDetailsSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
+  const handleEditCarButtonClick = () => dialogModalRef.current?.showModal();
+
+  const handleCarEditFormSubmit = () => dialogModalRef.current?.closeModal();
+
   return (
     <DashboardSection>
       <DashboardSection.Heading headingLevel="h2">
@@ -32,20 +35,15 @@ export function CarDetailsSection({
       </DashboardSection.Heading>
       <CarDetailsTable carData={carData} />
       <DashboardSection.Controls>
-        <IconButton
-          className="group"
+        <CarEditButton
           disabled={!isCurrentUserPrimaryOwner}
-          title="edit car"
-          variant="accent"
-          onClick={() => dialogModalRef.current?.showModal()}
-        >
-          <CarEditIcon className="group-disabled:stroke-light-800 stroke-light-500 fill-light-500 h-full w-full stroke-[0.5]" />
-        </IconButton>
+          onClick={handleEditCarButtonClick}
+        />
         <DialogModal ref={dialogModalRef} headingText="Edit a car">
           <CarEditForm
             carData={carData}
             carId={carId}
-            onSubmit={() => dialogModalRef.current?.closeModal()}
+            onSubmit={handleCarEditFormSubmit}
           />
         </DialogModal>
       </DashboardSection.Controls>
