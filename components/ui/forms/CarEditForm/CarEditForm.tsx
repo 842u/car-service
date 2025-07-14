@@ -1,16 +1,17 @@
 import { Car } from '@/types';
 
 import { CarForm } from '../../shared/CarForm/CarForm';
-import { useCarEditForm } from './useCarEditForm';
+import { useCarEditForm, UseCarEditFormOptions } from './useCarEditForm';
 
 export type CarEditFormProps = {
-  carId: string;
   carData?: Car;
-  onSubmit?: () => void;
-};
+} & Omit<UseCarEditFormOptions, 'carId'>;
 
-export function CarEditForm({ carId, carData, onSubmit }: CarEditFormProps) {
-  const { handleFormSubmit, carFormRef } = useCarEditForm({ carId, onSubmit });
+export function CarEditForm({ carData, onSubmit }: CarEditFormProps) {
+  const { handleFormSubmit, carFormRef } = useCarEditForm({
+    carId: carData?.id || '',
+    onSubmit,
+  });
 
   return (
     <CarForm ref={carFormRef} carData={carData} onSubmit={handleFormSubmit} />
