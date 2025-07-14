@@ -1,10 +1,10 @@
-import { ComponentPropsWithRef, MouseEventHandler, ReactNode } from 'react';
+import { ComponentProps, MouseEventHandler, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { ButtonVariants } from '@/types';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
-type IconButtonProps = ComponentPropsWithRef<'button'> & {
+export type IconButtonProps = ComponentProps<'button'> & {
   children: ReactNode;
   title?: string;
   text?: string;
@@ -41,7 +41,7 @@ export function IconButton({
       {...props}
     >
       {iconSide === 'left' && children}
-      {text && <span>{text}</span>}
+      {text && <span className="whitespace-nowrap">{text}</span>}
       {iconSide === 'right' && children}
     </button>
   );
