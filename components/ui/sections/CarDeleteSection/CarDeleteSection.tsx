@@ -1,10 +1,8 @@
 import { useRef } from 'react';
 
-import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
-
+import { CarDeleteButton } from '../../buttons/CarDeleteButton/CarDeleteButton';
 import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
-import { IconButton } from '../../shared/IconButton/IconButton';
 import { CarDeleteModal } from './CarDeleteModal/CarDeleteModal';
 
 type CarDeleteSectionProps = {
@@ -18,8 +16,12 @@ export function CarDeleteSection({
 }: CarDeleteSectionProps) {
   const dialogModalRef = useRef<DialogModalRef>(null);
 
-  const handleCarDeleteCancel = () => dialogModalRef.current?.closeModal();
-  const handleCarDeleteConfirm = () => dialogModalRef.current?.closeModal();
+  const handleCarDeleteModalCancel = () => dialogModalRef.current?.closeModal();
+
+  const handleCarDeleteModalConfirm = () =>
+    dialogModalRef.current?.closeModal();
+
+  const handleCarDeleteButtonClick = () => dialogModalRef.current?.showModal();
 
   return (
     <DashboardSection variant="errorDefault">
@@ -37,20 +39,15 @@ export function CarDeleteSection({
         someone else and remove yourself from the owners list.
       </DashboardSection.Subtext>
       <DashboardSection.Controls>
-        <IconButton
-          className="group"
+        <CarDeleteButton
           disabled={!isCurrentUserPrimaryOwner}
-          title="delete car"
-          variant="error"
-          onClick={() => dialogModalRef.current?.showModal()}
-        >
-          <TrashIcon className="group-disabled:stroke-light-800 h-full w-full stroke-2" />
-        </IconButton>
+          onClick={handleCarDeleteButtonClick}
+        />
         <CarDeleteModal
           ref={dialogModalRef}
           carId={carId}
-          onCancel={handleCarDeleteCancel}
-          onConfirm={handleCarDeleteConfirm}
+          onCancel={handleCarDeleteModalCancel}
+          onConfirm={handleCarDeleteModalConfirm}
         />
       </DashboardSection.Controls>
     </DashboardSection>
