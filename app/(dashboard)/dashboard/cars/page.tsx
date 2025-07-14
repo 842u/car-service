@@ -4,25 +4,24 @@ import { useRef } from 'react';
 
 import { CarAddButton } from '@/components/ui/buttons/CarAddButton/CarAddButton';
 import { CarsGallery } from '@/components/ui/CarsGallery/CarsGallery';
-import { CarAddForm } from '@/components/ui/forms/CarAddForm/CarAddForm';
-import {
-  DialogModal,
-  DialogModalRef,
-} from '@/components/ui/shared/base/DialogModal/DialogModal';
+import { CarAddModal } from '@/components/ui/modals/CarAddModal/CarAddModal';
+import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
 import { DashboardMain } from '@/components/ui/shared/DashboardMain/DashboardMain';
 
 export default function CarsPage() {
-  const dialogModalRef = useRef<DialogModalRef>(null);
+  const dialogRef = useRef<DialogModalRef>(null);
+
+  const handleCarAddButtonClick = () => dialogRef.current?.showModal();
+
+  const handleCarAddModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
     <DashboardMain>
       <CarsGallery />
-      <DialogModal ref={dialogModalRef} headingText="Add a car">
-        <CarAddForm onSubmit={() => dialogModalRef.current?.closeModal()} />
-      </DialogModal>
+      <CarAddModal ref={dialogRef} onSubmit={handleCarAddModalSubmit} />
       <CarAddButton
         className="fixed right-0 bottom-0 mx-4 my-12 md:m-12 lg:m-16"
-        onClick={() => dialogModalRef.current?.showModal()}
+        onClick={handleCarAddButtonClick}
       />
     </DashboardMain>
   );
