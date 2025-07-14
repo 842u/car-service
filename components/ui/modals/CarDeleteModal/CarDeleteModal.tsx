@@ -30,7 +30,7 @@ export function CarDeleteModal({
 
   return (
     <DialogModal ref={ref}>
-      <DialogModal.Root>
+      <DialogModal.Root data-testid={CAR_DELETE_MODAL_TEST_ID}>
         <DialogModal.Heading>Delete car</DialogModal.Heading>
         <TextSeparator className="my-4" />
         <p className="text-warning-500 dark:text-warning-300 my-4">
