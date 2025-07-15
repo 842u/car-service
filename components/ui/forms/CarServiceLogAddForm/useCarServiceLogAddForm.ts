@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Route } from 'next';
 
 import {
@@ -15,6 +19,12 @@ import {
 } from '@/utils/tanstack/service_logs';
 
 import { CarServiceLogAddFormProps } from './CarServiceLogAddForm';
+
+type MutationVariables = {
+  formData: CarServiceLogFormValues;
+  carId: string;
+  queryClient: QueryClient;
+};
 
 async function submitCarServiceLogAddFormData(
   carId: string,
@@ -59,24 +69,27 @@ export function useCarServiceLogAddForm({
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (formData: CarServiceLogFormValues) =>
+    mutationFn: ({ formData, carId }: MutationVariables) =>
       submitCarServiceLogAddFormData(carId, formData),
-    onMutate: (formData: CarServiceLogFormValues) =>
+    onMutate: ({ formData, carId, queryClient }) =>
       serviceLogsByCarIdAddOnMutate(formData, carId, queryClient),
     onSuccess: () => addToast('Service log added.', 'success'),
-    onError: (error, _, context) => {
+    onError: (error, { carId, queryClient }, context) => {
       serviceLogsByCarIdAddOnError(context, carId, queryClient);
       addToast(error.message, 'error');
     },
   });
 
   const handleFormSubmit = async (formData: CarServiceLogFormValues) => {
-    mutate(formData, {
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.serviceLogsByCarId(carId),
-        }),
-    });
+    mutate(
+      { formData, carId, queryClient },
+      {
+        onSettled: (_, __, { queryClient, carId }) =>
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.serviceLogsByCarId(carId),
+          }),
+      },
+    );
 
     onSubmit && onSubmit();
   };
