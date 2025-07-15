@@ -50,7 +50,7 @@ export function CarServiceLogsTableActionsDropdown({
       serviceLogsByCarIdDeleteOnError(context, carId, queryClient);
       addToast(error.message, 'error');
     },
-    onSuccess: () => addToast('Service log deleted successfully.', 'success'),
+    onSuccess: () => addToast('Service log deleted.', 'success'),
   });
 
   const handleServiceLogEditButtonClick = () =>

@@ -81,7 +81,7 @@ export function useCarServiceLogEditForm({
     onSubmit && onSubmit();
 
     mutate(formData, {
-      onSuccess: () => addToast('Service log edited successfully.', 'success'),
+      onSuccess: () => addToast('Service log edited.', 'success'),
       onError: (error, _, context) => {
         serviceLogsByCarIdEditOnError(
           context,
