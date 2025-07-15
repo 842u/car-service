@@ -7,7 +7,9 @@ import {
   TableOptions,
   useReactTable,
 } from '@tanstack/react-table';
-import { createContext, ReactNode, use } from 'react';
+import { createContext, ReactNode } from 'react';
+
+import { useContextGuard } from '@/hooks/useContextGuard';
 
 import { TableBody } from './TableBody';
 import { TableFilterDate } from './TableFilterDate';
@@ -23,12 +25,10 @@ type TableContextValue<T> = { table: TanstackTable<T> };
 const TableContext = createContext<TableContextValue<any> | null>(null);
 
 export function useTable() {
-  const context = use(TableContext);
-
-  if (!context)
-    throw new Error('Table related components should be wrapped in <Table>.');
-
-  return context;
+  return useContextGuard({
+    context: TableContext,
+    componentName: 'Table',
+  });
 }
 
 type TableProps<T> = {
