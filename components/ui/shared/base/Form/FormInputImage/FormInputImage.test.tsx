@@ -8,6 +8,7 @@ import {
   AvatarFormValues,
 } from '@/schemas/zod/avatarFormSchema';
 
+import { Form } from '../Form';
 import {
   FORM_INPUT_IMAGE_TEST_ID,
   FormInputImage,
@@ -26,13 +27,13 @@ function TestFormInputImage({
   });
 
   return (
-    <>
+    <Form>
       <FormInputImage<AvatarFormValues>
         control={control}
         label={INPUT_LABEL_TEXT}
         {...props}
       />
-    </>
+    </Form>
   );
 }
 
