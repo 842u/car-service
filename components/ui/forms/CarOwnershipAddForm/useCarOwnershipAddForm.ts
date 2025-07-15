@@ -64,10 +64,15 @@ export function useCarOwnershipAddForm({
   const handleFormSubmit = handleSubmit((formData) => {
     onSubmit && onSubmit();
     mutate(formData, {
-      onSettled: () =>
+      onSettled: () => {
         queryClient.invalidateQueries({
           queryKey: queryKeys.carsOwnershipsByCarId(carId),
-        }),
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.profilesOwners,
+        });
+      },
     });
   });
 
