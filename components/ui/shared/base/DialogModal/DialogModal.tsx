@@ -2,13 +2,14 @@ import {
   createContext,
   ReactNode,
   RefObject,
-  use,
   useCallback,
   useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
 } from 'react';
+
+import { useContextGuard } from '@/hooks/useContextGuard';
 
 import { DialogModalControls } from './DialogModalControls';
 import { DialogModalHeading } from './DialogModalHeading';
@@ -31,14 +32,10 @@ export type DialogModalProps = {
 const DialogModalContext = createContext<DialogModalContextValue | null>(null);
 
 export function useDialogModal() {
-  const context = use(DialogModalContext);
-
-  if (!context)
-    throw new Error(
-      'DialogModal related components should be wrapped in <DialogModal>.',
-    );
-
-  return context;
+  return useContextGuard({
+    context: DialogModalContext,
+    componentName: 'DialogModal',
+  });
 }
 
 export function DialogModal({ ref, children }: DialogModalProps) {
