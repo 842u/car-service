@@ -1,5 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -16,6 +20,12 @@ import {
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarOwnershipAddFormProps } from './CarOwnershipAddForm';
+
+type MutationVariables = {
+  formData: CarOwnershipAddFormValues;
+  carId: string;
+  queryClient: QueryClient;
+};
 
 const defaultCarOwnershipAddFormValues: CarOwnershipAddFormValues = {
   userId: '',
@@ -42,16 +52,12 @@ export function useCarOwnershipAddForm({
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (addCarOwnershipFormData: CarOwnershipAddFormValues) =>
-      addCarOwnershipByUserId(carId, addCarOwnershipFormData.userId),
-    onMutate: (addCarOwnershipFormData: CarOwnershipAddFormValues) =>
-      carsOwnershipsAddOnMutate(
-        queryClient,
-        carId,
-        addCarOwnershipFormData.userId,
-      ),
+    mutationFn: ({ formData: { userId } }: MutationVariables) =>
+      addCarOwnershipByUserId(carId, userId),
+    onMutate: ({ queryClient, carId, formData: { userId } }) =>
+      carsOwnershipsAddOnMutate(queryClient, carId, userId),
     onSuccess: () => addToast('Owner added.', 'success'),
-    onError: (error, _, context) => {
+    onError: (error, { queryClient, carId }, context) => {
       addToast(error.message, 'error');
       carsOwnershipsAddOnError(queryClient, context, carId);
     },
@@ -63,17 +69,20 @@ export function useCarOwnershipAddForm({
 
   const handleFormSubmit = handleSubmit((formData) => {
     onSubmit && onSubmit();
-    mutate(formData, {
-      onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.carsOwnershipsByCarId(carId),
-        });
+    mutate(
+      { formData, carId, queryClient },
+      {
+        onSettled: (_, __, { queryClient, carId }) => {
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.carsOwnershipsByCarId(carId),
+          });
 
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.profilesOwners,
-        });
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.profilesOwners,
+          });
+        },
       },
-    });
+    );
   });
 
   const handleFormReset = () => reset();
