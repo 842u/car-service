@@ -14,7 +14,7 @@ import { useForm } from '../Form';
 import { FormInputErrorText } from './FormInputErrorText';
 import { FormInputLabelText } from './FormInputLabelText';
 
-type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
+export type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
   label: string;
   name: Path<T>;
   type: Exclude<HTMLInputTypeAttribute, 'password'>;

@@ -1,12 +1,31 @@
 import { render, screen } from '@testing-library/react';
 
-import { FormInput } from './FormInput';
+import { Form } from '../Form';
+import { FormInput, FormInputProps } from './FormInput';
+
+// eslint-disable-next-line
+function TestFormInput({ ...props }: FormInputProps<any>) {
+  return (
+    <Form>
+      <FormInput {...props} />
+    </Form>
+  );
+}
 
 describe('FormInput', () => {
+  it('should throw if not wrapped in Form', () => {
+    const labelText = 'testLabel';
+    const name = 'testName';
+
+    expect(() =>
+      render(<FormInput label={labelText} name={name} type="text" />),
+    ).toThrow();
+  });
+
   it('should render as a input element', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<FormInput label={labelText} name={name} type="text" />);
+    render(<TestFormInput label={labelText} name={name} type="text" />);
 
     const inputElement = screen.getByRole('textbox', { name: labelText });
 
@@ -16,7 +35,7 @@ describe('FormInput', () => {
   it('should render provided label text', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<FormInput label={labelText} name={name} type="text" />);
+    render(<TestFormInput label={labelText} name={name} type="text" />);
 
     const label = screen.getByLabelText(labelText);
 
@@ -28,7 +47,7 @@ describe('FormInput', () => {
     const labelText = 'testLabel';
     const name = 'testName';
     render(
-      <FormInput
+      <TestFormInput
         errorMessage={errorMessage}
         label={labelText}
         name={name}
