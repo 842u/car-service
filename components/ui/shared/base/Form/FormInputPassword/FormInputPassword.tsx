@@ -17,7 +17,7 @@ import { useForm } from '../Form';
 import { FormInputErrorText } from '../FormInput/FormInputErrorText';
 import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
-type FormInputPasswordProps<T extends FieldValues> = Omit<
+export type FormInputPasswordProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,
   'type'
 > & {

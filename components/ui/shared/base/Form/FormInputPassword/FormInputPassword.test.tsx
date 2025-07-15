@@ -1,13 +1,32 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { FormInputPassword } from './FormInputPassword';
+import { Form } from '../Form';
+import { FormInputPassword, FormInputPasswordProps } from './FormInputPassword';
+
+// eslint-disable-next-line
+function TestFormInputPassword({ ...props }: FormInputPasswordProps<any>) {
+  return (
+    <Form>
+      <FormInputPassword {...props} />
+    </Form>
+  );
+}
 
 describe('FormInputPassword', () => {
+  it('should throw if not wrapped in Form', () => {
+    const labelText = 'testLabel';
+    const name = 'testName';
+
+    expect(() =>
+      render(<FormInputPassword label={labelText} name={name} />),
+    ).toThrow();
+  });
+
   it('should render as a input of type="password"', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<FormInputPassword label={labelText} name={name} />);
+    render(<TestFormInputPassword label={labelText} name={name} />);
 
     const inputElement = screen.getByLabelText(labelText);
 
@@ -18,7 +37,7 @@ describe('FormInputPassword', () => {
   it('should render a button for toggling password visibility', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<FormInputPassword label={labelText} name={name} />);
+    render(<TestFormInputPassword label={labelText} name={name} />);
 
     const visibilityButton = screen.getByRole('button', {
       name: 'toggle visibility',
@@ -31,7 +50,7 @@ describe('FormInputPassword', () => {
     const user = userEvent.setup();
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<FormInputPassword label={labelText} name={name} />);
+    render(<TestFormInputPassword label={labelText} name={name} />);
 
     const inputElement = screen.getByLabelText(labelText);
     const visibilityButton = screen.getByRole('button', {
@@ -54,7 +73,7 @@ describe('FormInputPassword', () => {
     const labelText = 'testLabel';
     const name = 'testName';
     render(
-      <FormInputPassword
+      <TestFormInputPassword
         errorMessage={errorMessage}
         label={labelText}
         name={name}
