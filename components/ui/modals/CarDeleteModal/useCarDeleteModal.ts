@@ -41,7 +41,7 @@ export function useCarDeleteModal({
       deleteCar(carId),
     onMutate: ({ carId }) => carsInfiniteDeleteOnMutate(carId, queryClient),
     onSuccess: (_, { carName }) =>
-      addToast(`Successfully deleted ${carName} car.`, 'success'),
+      addToast(`Car ${carName} deleted.`, 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
       carsInfiniteDeleteOnError(queryClient, context);
