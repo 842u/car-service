@@ -4,6 +4,7 @@ import {
   Ref,
   use,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -65,6 +66,35 @@ export function DialogModal({ ref, children }: DialogModalProps) {
   useImperativeHandle(ref, () => {
     return contextValue;
   }, [contextValue]);
+
+  useEffect(() => {
+    const dialogElement = dialogRef.current;
+
+    if (!dialogElement) return;
+
+    const handleOpenChange = () => {
+      if (dialogElement.open) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    };
+
+    const observer = new MutationObserver(handleOpenChange);
+
+    observer.observe(dialogElement, {
+      attributes: true,
+      attributeFilter: ['open'],
+    });
+
+    handleOpenChange();
+
+    return () => {
+      document.body.style.overflow = 'auto';
+
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <DialogModalContext value={contextValue}>{children}</DialogModalContext>
