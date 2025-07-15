@@ -37,7 +37,6 @@ function TestCarDetailsSection({
     <TanStackQueryProvider>
       <CarDetailsSection
         carData={MOCK_CAR_DATA}
-        carId={MOCK_CAR_ID}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
     </TanStackQueryProvider>

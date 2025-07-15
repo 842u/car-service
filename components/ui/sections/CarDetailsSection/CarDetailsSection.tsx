@@ -3,30 +3,25 @@ import { useRef } from 'react';
 import { Car } from '@/types';
 
 import { CarEditButton } from '../../buttons/CarEditButton/CarEditButton';
-import { CarEditForm } from '../../forms/CarEditForm/CarEditForm';
-import {
-  DialogModal,
-  DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+import { CarEditModal } from '../../modals/CarEditModal/CarEditModal';
+import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { CarDetailsTable } from '../../tables/CarDetailsTable/CarDetailsTable';
 
 export type CarDetailsSectionProps = {
-  carId: string;
   isCurrentUserPrimaryOwner: boolean;
   carData?: Car;
 };
 
 export function CarDetailsSection({
-  carId,
-  carData,
   isCurrentUserPrimaryOwner,
+  carData,
 }: CarDetailsSectionProps) {
-  const dialogModalRef = useRef<DialogModalRef>(null);
+  const dialogRef = useRef<DialogModalRef>(null);
 
-  const handleEditCarButtonClick = () => dialogModalRef.current?.showModal();
+  const handleCarEditButtonClick = () => dialogRef.current?.showModal();
 
-  const handleCarEditFormSubmit = () => dialogModalRef.current?.closeModal();
+  const handleCarEditModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
     <DashboardSection>
@@ -37,15 +32,13 @@ export function CarDetailsSection({
       <DashboardSection.Controls>
         <CarEditButton
           disabled={!isCurrentUserPrimaryOwner}
-          onClick={handleEditCarButtonClick}
+          onClick={handleCarEditButtonClick}
         />
-        <DialogModal ref={dialogModalRef} headingText="Edit a car">
-          <CarEditForm
-            carData={carData}
-            carId={carId}
-            onSubmit={handleCarEditFormSubmit}
-          />
-        </DialogModal>
+        <CarEditModal
+          ref={dialogRef}
+          carData={carData}
+          onSubmit={handleCarEditModalSubmit}
+        />
       </DashboardSection.Controls>
     </DashboardSection>
   );

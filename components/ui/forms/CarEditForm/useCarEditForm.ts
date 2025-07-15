@@ -8,12 +8,13 @@ import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarFormRef } from '../../shared/CarForm/CarForm';
-import { CarEditFormProps } from './CarEditForm';
 
-export function useCarEditForm({
-  carId,
-  onSubmit,
-}: Omit<CarEditFormProps, 'carData'>) {
+export type UseCarEditFormOptions = {
+  carId: string;
+  onSubmit?: () => void;
+};
+
+export function useCarEditForm({ carId, onSubmit }: UseCarEditFormOptions) {
   const carFormRef = useRef<CarFormRef>(null);
 
   const { addToast } = useToasts();
@@ -44,6 +45,7 @@ export function useCarEditForm({
 
   const handleFormSubmit = (carFormData: CarFormValues) => {
     onSubmit && onSubmit();
+
     mutate(carFormData, {
       onSettled: () =>
         queryClient.invalidateQueries({

@@ -1,72 +1,106 @@
 import {
-  ComponentPropsWithoutRef,
-  Ref,
-  SyntheticEvent,
+  createContext,
+  ReactNode,
+  RefObject,
+  use,
+  useCallback,
+  useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from 'react';
 
-import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
-
-import { IconButton } from '../../IconButton/IconButton';
+import { DialogModalControls } from './DialogModalControls';
+import { DialogModalHeading } from './DialogModalHeading';
+import { DialogModalRoot } from './DialogModalRoot';
 
 export type DialogModalRef = {
   showModal: () => void;
   closeModal: () => void;
 };
 
-export type DialogModalProps = ComponentPropsWithoutRef<'dialog'> & {
-  headingText: string;
-  headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  ref?: Ref<DialogModalRef>;
+type DialogModalContextValue = DialogModalRef & {
+  dialogRef: RefObject<HTMLDialogElement | null>;
 };
 
-export function DialogModal({
-  headingText,
-  children,
-  ref,
-  headingLevel = 'h2',
-  ...props
-}: DialogModalProps) {
+export type DialogModalProps = {
+  ref?: RefObject<DialogModalRef | null>;
+  children?: ReactNode;
+};
+
+const DialogModalContext = createContext<DialogModalContextValue | null>(null);
+
+export function useDialogModal() {
+  const context = use(DialogModalContext);
+
+  if (!context)
+    throw new Error(
+      'DialogModal related components should be wrapped in <DialogModal>.',
+    );
+
+  return context;
+}
+
+export function DialogModal({ ref, children }: DialogModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  useImperativeHandle(ref, () => {
-    return {
-      showModal() {
-        dialogRef.current?.showModal();
-      },
+  const showModal = useCallback(
+    () => dialogRef.current?.showModal() || (() => {}),
+    [],
+  );
+
+  const closeModal = useCallback(
+    () => dialogRef.current?.close() || (() => {}),
+    [],
+  );
+
+  const contextValue: DialogModalContextValue = useMemo(
+    () => ({
+      showModal,
       closeModal,
+      dialogRef,
+    }),
+    [showModal, closeModal],
+  );
+
+  useImperativeHandle(ref, () => {
+    return contextValue;
+  }, [contextValue]);
+
+  useEffect(() => {
+    const dialogElement = dialogRef.current;
+
+    if (!dialogElement) return;
+
+    const handleOpenChange = () => {
+      if (dialogElement.open) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    };
+
+    const observer = new MutationObserver(handleOpenChange);
+
+    observer.observe(dialogElement, {
+      attributes: true,
+      attributeFilter: ['open'],
+    });
+
+    handleOpenChange();
+
+    return () => {
+      document.body.style.overflow = 'auto';
+
+      observer.disconnect();
     };
   }, []);
 
-  const HeadingTag = headingLevel;
-
-  const closeModal = () => dialogRef.current?.close();
-
   return (
-    <dialog
-      ref={dialogRef}
-      className="bg-light-500 dark:bg-dark-500 border-accent-200 dark:border-accent-300 fixed m-auto w-full rounded-md border p-4 backdrop:backdrop-blur-xs md:w-fit"
-      onClick={closeModal}
-      {...props}
-    >
-      <div
-        // Prevent dialog closing while clicking on its content
-        onClick={(event: SyntheticEvent<HTMLDivElement>) => {
-          event.stopPropagation();
-        }}
-      >
-        <div className="flex items-end justify-between">
-          <HeadingTag className="inline-block text-xl">
-            {headingText}
-          </HeadingTag>
-          <IconButton className="p-1" title="close" onClick={closeModal}>
-            <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
-          </IconButton>
-        </div>
-        <div className="bg-alpha-grey-200 my-4 h-[1px] w-full" />
-        {children}
-      </div>
-    </dialog>
+    <DialogModalContext value={contextValue}>{children}</DialogModalContext>
   );
 }
+
+DialogModal.Root = DialogModalRoot;
+DialogModal.Heading = DialogModalHeading;
+DialogModal.Controls = DialogModalControls;

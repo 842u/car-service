@@ -15,11 +15,10 @@ import {
 } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
+import { OwnershipDeleteModal } from '../../modals/OwnershipDeleteModal/OwnershipDeleteModal';
+import { OwnershipPromoteModal } from '../../modals/OwnershipPromoteModal/OwnershipPromoteModal';
 import { Button } from '../../shared/base/Button/Button';
-import {
-  DialogModal,
-  DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { Dropdown } from '../../shared/base/Dropdown/Dropdown';
 import { IconButton } from '../../shared/IconButton/IconButton';
 
@@ -38,8 +37,8 @@ export function CarOwnershipsTableActionsDropdown({
   collisionDetectionRoot,
   userId,
 }: CarOwnershipsTableActionsDropdownProps) {
-  const deleteDialogModalRef = useRef<DialogModalRef>(null);
-  const promoteDialogModalRef = useRef<DialogModalRef>(null);
+  const ownershipDeleteModalRef = useRef<DialogModalRef>(null);
+  const ownershipPromoteModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
@@ -100,25 +99,27 @@ export function CarOwnershipsTableActionsDropdown({
     },
   });
 
-  const handleDeleteActionButtonClick = () =>
-    deleteDialogModalRef.current?.showModal();
+  const handleActionDeleteButtonClick = () =>
+    ownershipDeleteModalRef.current?.showModal();
 
-  const handleDeleteDialogModalCancelButtonClick = () =>
-    deleteDialogModalRef.current?.closeModal();
+  const handleOwnershipDeleteModalCancel = () =>
+    ownershipDeleteModalRef.current?.closeModal();
 
-  const handleDeleteDialogModalDeleteButtonClick = () => {
-    deleteDialogModalRef.current?.closeModal();
+  const handleOwnershipDeleteModalConfirm = () => {
+    ownershipDeleteModalRef.current?.closeModal();
+
     mutateDelete({ carId, ownerId: ownership.owner_id, ownerUsername });
   };
 
   const handlePromoteActionButtonClick = () =>
-    promoteDialogModalRef.current?.showModal();
+    ownershipPromoteModalRef.current?.showModal();
 
-  const handlePromoteDialogModalCancelButtonClick = () =>
-    promoteDialogModalRef.current?.closeModal();
+  const handleOwnershipPromoteModalCancel = () =>
+    ownershipPromoteModalRef.current?.closeModal();
 
-  const handlePromoteDialogModalPromoteButtonClick = () => {
-    promoteDialogModalRef.current?.closeModal();
+  const handleOwnershipPromoteModalConfirm = () => {
+    ownershipPromoteModalRef.current?.closeModal();
+
     mutateUpdate({ carId, ownerId: ownership.owner_id, ownerUsername });
   };
 
@@ -155,68 +156,30 @@ export function CarOwnershipsTableActionsDropdown({
         >
           Promote
         </Button>
-        <DialogModal
-          ref={promoteDialogModalRef}
-          headingText="Grant primary ownership"
-        >
-          <p className="my-10 max-w-full text-wrap">
-            Are you sure you want to pass primary ownership to{' '}
-            <span className="font-extrabold">{ownerUsername}</span>?
-            <span className="text-warning-400 my-1 block">
-              Granting primary ownership to someone else will revoke your
-              current primary ownership status and the privileges that comes
-              with it.
-            </span>
-          </p>
-          <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
-            <Button onClick={handlePromoteDialogModalCancelButtonClick}>
-              Cancel
-            </Button>
-            <Button
-              disabled={!canPromote}
-              variant="accent"
-              onClick={handlePromoteDialogModalPromoteButtonClick}
-            >
-              Grant
-            </Button>
-          </div>
-        </DialogModal>
-
+        <OwnershipPromoteModal
+          ref={ownershipPromoteModalRef}
+          canTakeAction={canPromote}
+          ownerUsername={ownerUsername}
+          onCancel={handleOwnershipPromoteModalCancel}
+          onConfirm={handleOwnershipPromoteModalConfirm}
+        />
         <Button
           className="w-full"
           disabled={!canDelete}
           variant="transparentError"
-          onClick={handleDeleteActionButtonClick}
+          onClick={handleActionDeleteButtonClick}
         >
           Delete
         </Button>
-        <DialogModal ref={deleteDialogModalRef} headingText="Delete ownership">
-          {userId === ownership.owner_id ? (
-            <p className="my-10 max-w-full text-wrap">
-              Are you sure you want to delete your ownership?
-              <span className="text-warning-400 my-1 block">
-                You will lose access to this car after proceeding.
-              </span>
-            </p>
-          ) : (
-            <p className="my-10 max-w-full text-wrap">
-              Are you sure you want to delete{' '}
-              <span className="font-extrabold">{ownerUsername}</span> ownership?
-            </p>
-          )}
-          <div className="flex w-full flex-col gap-4 md:flex-row md:justify-end md:px-4">
-            <Button onClick={handleDeleteDialogModalCancelButtonClick}>
-              Cancel
-            </Button>
-            <Button
-              disabled={!canDelete}
-              variant="error"
-              onClick={handleDeleteDialogModalDeleteButtonClick}
-            >
-              Delete
-            </Button>
-          </div>
-        </DialogModal>
+        <OwnershipDeleteModal
+          ref={ownershipDeleteModalRef}
+          canTakeAction={canDelete}
+          ownership={ownership}
+          ownerUsername={ownerUsername}
+          userId={userId}
+          onCancel={handleOwnershipDeleteModalCancel}
+          onConfirm={handleOwnershipDeleteModalConfirm}
+        />
       </Dropdown.Content>
     </Dropdown>
   );

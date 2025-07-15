@@ -62,7 +62,7 @@ function TestCarEditForm() {
   return (
     <TanStackQueryProvider>
       <ToastsProvider>
-        <CarEditForm carData={MOCK_CAR_DATABASE_DATA} carId={MOCK_CAR_ID} />
+        <CarEditForm carData={MOCK_CAR_DATABASE_DATA} />
       </ToastsProvider>
     </TanStackQueryProvider>
   );
