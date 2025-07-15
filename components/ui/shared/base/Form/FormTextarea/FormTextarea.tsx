@@ -10,6 +10,7 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
+import { useForm } from '../Form';
 import { FormInputErrorText } from '../FormInput/FormInputErrorText';
 import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
@@ -36,6 +37,8 @@ export function FormTextarea<T extends FieldValues>({
   showErrorMessage = true,
   ...props
 }: FormTextareaProps<T>) {
+  useForm();
+
   return (
     <label>
       <FormInputLabelText required={required} text={label} />

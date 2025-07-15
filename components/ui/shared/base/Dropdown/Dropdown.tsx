@@ -1,12 +1,7 @@
-import {
-  createContext,
-  ReactNode,
-  RefObject,
-  use,
-  useRef,
-  useState,
-} from 'react';
+import { createContext, ReactNode, RefObject, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+
+import { useContextGuard } from '@/hooks/useContextGuard';
 
 import { DropdownContent } from './DropdownContent/DropdownContent';
 import { DropdownTrigger } from './DropdownTrigger/DropdownTrigger';
@@ -22,12 +17,10 @@ type DropdownContextValue = {
 const DropdownContext = createContext<DropdownContextValue>(null);
 
 export function useDropdown() {
-  const context = use(DropdownContext);
-
-  if (!context)
-    throw new Error('Dropdown components must be used inside <Dropdown>');
-
-  return context;
+  return useContextGuard({
+    context: DropdownContext,
+    componentName: 'Dropdown',
+  });
 }
 
 type DropdownProps = {
@@ -48,11 +41,11 @@ export function Dropdown({
   const close = () => setIsOpen(false);
 
   return (
-    <DropdownContext.Provider
+    <DropdownContext
       value={{ isOpen, toggle, close, triggerRef, collisionDetectionRoot }}
     >
       <div className={twMerge('relative', className)}>{children}</div>
-    </DropdownContext.Provider>
+    </DropdownContext>
   );
 }
 

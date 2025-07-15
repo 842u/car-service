@@ -1,6 +1,7 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, createContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { useContextGuard } from '@/hooks/useContextGuard';
 import { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
@@ -18,6 +19,17 @@ export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
 };
 
+type FormContextValue = true;
+
+const FormContext = createContext<FormContextValue | null>(null);
+
+export function useForm() {
+  return useContextGuard({
+    context: FormContext,
+    componentName: 'Form',
+  });
+}
+
 export function Form({
   children,
   className,
@@ -25,9 +37,11 @@ export function Form({
   ...props
 }: FormProps) {
   return (
-    <form className={twMerge(formVariants[variant], className)} {...props}>
-      {children}
-    </form>
+    <FormContext value={true}>
+      <form className={twMerge(formVariants[variant], className)} {...props}>
+        {children}
+      </form>
+    </FormContext>
   );
 }
 

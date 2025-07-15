@@ -9,10 +9,11 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
+import { useForm } from '../Form';
 import { FormInputErrorText } from '../FormInput/FormInputErrorText';
 import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
-type FormSelectProps<T extends FieldValues> = {
+export type FormSelectProps<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   options: Record<string, string>;
@@ -39,6 +40,8 @@ export function FormSelect<T extends FieldValues>({
   showErrorMessage = true,
   hasEmptyOption = true,
 }: FormSelectProps<T>) {
+  useForm();
+
   return (
     <label className="text-sm">
       <FormInputLabelText required={required} text={label} />
