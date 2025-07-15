@@ -1,7 +1,7 @@
 import {
   createContext,
   ReactNode,
-  Ref,
+  RefObject,
   use,
   useCallback,
   useEffect,
@@ -20,11 +20,11 @@ export type DialogModalRef = {
 };
 
 type DialogModalContextValue = DialogModalRef & {
-  dialogRef: Ref<HTMLDialogElement>;
+  dialogRef: RefObject<HTMLDialogElement | null>;
 };
 
 export type DialogModalProps = {
-  ref?: Ref<DialogModalRef>;
+  ref?: RefObject<DialogModalRef | null>;
   children?: ReactNode;
 };
 

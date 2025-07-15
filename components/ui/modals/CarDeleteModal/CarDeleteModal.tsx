@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { RefObject } from 'react';
 
 import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import { Button } from '@/components/ui/shared/base/Button/Button';
@@ -15,7 +15,7 @@ import {
 export const CAR_DELETE_MODAL_TEST_ID = 'CarDeleteModal_test_id';
 
 type CarDeleteModalProps = UseCarDeleteModalOptions & {
-  ref?: Ref<DialogModalRef | null>;
+  ref?: RefObject<DialogModalRef | null>;
 };
 
 export function CarDeleteModal({

@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { RefObject } from 'react';
 
 import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 
@@ -11,7 +11,7 @@ import {
 type OwnershipPromoteModalProps = {
   canTakeAction: boolean;
   ownerUsername?: string | null;
-  ref?: Ref<DialogModalRef | null>;
+  ref?: RefObject<DialogModalRef | null>;
   onConfirm?: () => void;
   onCancel?: () => void;
 };

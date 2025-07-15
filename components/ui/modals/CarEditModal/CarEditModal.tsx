@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { RefObject } from 'react';
 
 import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import { Car } from '@/types';
@@ -10,7 +10,7 @@ import {
 } from '../../shared/base/DialogModal/DialogModal';
 
 type CarEditModalProps = {
-  ref?: Ref<DialogModalRef | null>;
+  ref?: RefObject<DialogModalRef | null>;
   carData?: Car;
   onSubmit?: () => void;
 };

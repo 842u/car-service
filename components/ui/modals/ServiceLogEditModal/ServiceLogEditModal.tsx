@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { RefObject } from 'react';
 
 import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import { ServiceLog } from '@/types';
@@ -11,7 +11,7 @@ import {
 
 type ServiceLogEditModalProps = {
   serviceLog: ServiceLog;
-  ref?: Ref<DialogModalRef | null>;
+  ref?: RefObject<DialogModalRef | null>;
   onSubmit?: () => void;
 };
 

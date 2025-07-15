@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { RefObject } from 'react';
 
 import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import { CarOwnership } from '@/types';
@@ -12,7 +12,7 @@ import {
 type OwnershipDeleteModalProps = {
   canTakeAction: boolean;
   ownership: CarOwnership;
-  ref?: Ref<DialogModalRef | null>;
+  ref?: RefObject<DialogModalRef | null>;
   userId?: string;
   ownerUsername?: string | null;
   onConfirm?: () => void;

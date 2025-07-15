@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { RefObject } from 'react';
 
 import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 
@@ -9,7 +9,7 @@ import {
 } from '../../shared/base/DialogModal/DialogModal';
 
 type CarAddModalProps = {
-  ref?: Ref<DialogModalRef | null>;
+  ref?: RefObject<DialogModalRef | null>;
   onSubmit?: () => void;
 };
 
