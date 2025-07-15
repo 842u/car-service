@@ -59,10 +59,7 @@ export function CarOwnershipsTableActionsDropdown({
     onMutate: ({ carId, ownerId }) =>
       carsOwnershipsDeleteOnMutate([ownerId], queryClient, carId),
     onSuccess: (_, variables) =>
-      addToast(
-        `Successfully removed ${variables.ownerUsername} ownership.`,
-        'success',
-      ),
+      addToast(`Owner ${variables.ownerUsername} removed.`, 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
       queryClient.setQueryData(
@@ -89,14 +86,15 @@ export function CarOwnershipsTableActionsDropdown({
     onMutate: ({ carId, ownerId }) =>
       carsOwnershipsUpdateOnMutate(queryClient, carId, ownerId),
     onSuccess: (_, variables) =>
-      addToast(
-        `Successfully promoted ${variables.ownerUsername} to main owner.`,
-        'success',
-      ),
+      addToast(`Owner ${variables.ownerUsername} promoted.`, 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
       carsOwnershipsUpdateOnError(queryClient, context, carId);
     },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.carsOwnershipsByCarId(carId),
+      }),
   });
 
   const handleActionDeleteButtonClick = () =>
