@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 
+import { useForm } from '../Form';
 import { FormInputImageProps } from './FormInputImage';
 
 type UseFormInputImageOptions<T extends FieldValues> = Pick<
@@ -18,6 +19,8 @@ export function useFormInputImage<T extends FieldValues>({
   const inputElementRef = useRef<HTMLInputElement>(null);
 
   const { field } = useController({ name, control, rules, defaultValue });
+
+  useForm();
 
   useEffect(() => {
     if (!field.value) {

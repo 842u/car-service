@@ -13,6 +13,7 @@ import { VisibilityButton } from '@/components/ui/buttons/VisibilityButton/Visib
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
+import { useForm } from '../Form';
 import { FormInputErrorText } from '../FormInput/FormInputErrorText';
 import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
@@ -43,6 +44,8 @@ export function FormInputPassword<T extends FieldValues>({
   ...props
 }: FormInputPasswordProps<T>) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  useForm();
 
   const handlePasswordVisibility = () => {
     setPasswordVisible((currentState) => !currentState);

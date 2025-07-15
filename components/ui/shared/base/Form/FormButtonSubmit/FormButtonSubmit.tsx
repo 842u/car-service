@@ -1,6 +1,7 @@
 import { Spinner } from '@/components/decorative/Spinner/Spinner';
 
 import { Button, ButtonProps } from '../../Button/Button';
+import { useForm } from '../Form';
 
 type FormButtonSubmit = ButtonProps & {
   children: string;
@@ -12,6 +13,8 @@ export function FormButtonSubmit({
   isSubmitting = false,
   ...props
 }: FormButtonSubmit) {
+  useForm();
+
   return (
     <Button type="submit" variant="accent" {...props}>
       {isSubmitting ? (

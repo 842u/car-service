@@ -5,6 +5,7 @@ import {
   UseFormRegister,
 } from 'react-hook-form';
 
+import { useForm } from '../Form';
 import { FormInputErrorText } from '../FormInput/FormInputErrorText';
 import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
@@ -29,6 +30,8 @@ export function FormCheckboxGroup<T extends FieldValues>({
   required = false,
   showErrorMessage = true,
 }: FormCheckboxGroupProps<T>) {
+  useForm();
+
   return (
     <fieldset>
       <legend>
