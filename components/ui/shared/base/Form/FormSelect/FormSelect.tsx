@@ -13,7 +13,7 @@ import { useForm } from '../Form';
 import { FormInputErrorText } from '../FormInput/FormInputErrorText';
 import { FormInputLabelText } from '../FormInput/FormInputLabelText';
 
-type FormSelectProps<T extends FieldValues> = {
+export type FormSelectProps<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   options: Record<string, string>;
