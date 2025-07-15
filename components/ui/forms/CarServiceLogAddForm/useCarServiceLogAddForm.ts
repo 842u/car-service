@@ -63,7 +63,7 @@ export function useCarServiceLogAddForm({
       submitCarServiceLogAddFormData(carId, formData),
     onMutate: (formData: CarServiceLogFormValues) =>
       serviceLogsByCarIdAddOnMutate(formData, carId, queryClient),
-    onSuccess: () => addToast('Service log added successfully.', 'success'),
+    onSuccess: () => addToast('Service log added.', 'success'),
     onError: (error, _, context) => {
       serviceLogsByCarIdAddOnError(context, carId, queryClient);
       addToast(error.message, 'error');
