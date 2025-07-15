@@ -1,5 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -11,6 +15,11 @@ import {
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
+
+type MutationVariables = {
+  formData: UsernameFormValues;
+  queryClient: QueryClient;
+};
 
 const defaultUsernameFormValues: UsernameFormValues = {
   username: '',
@@ -27,17 +36,17 @@ export function useUsernameForm({
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (usernameFormData: UsernameFormValues) =>
+    mutationFn: ({ formData: { username } }: MutationVariables) =>
       updateCurrentSessionProfile({
         property: 'username',
-        value: usernameFormData.username.trim(),
+        value: username.trim(),
       }),
-    onMutate: (usernameFormData: UsernameFormValues) =>
+    onMutate: ({ queryClient, formData: { username } }) =>
       profilesUpdateOnMutate(
         queryClient,
         'session',
         'username',
-        usernameFormData.username.trim(),
+        username.trim(),
       ),
   });
 
@@ -53,24 +62,27 @@ export function useUsernameForm({
   });
 
   const handleFormSubmit = handleSubmit(
-    async (usernameFormData: UsernameFormValues) => {
-      mutate(usernameFormData, {
-        onSuccess: () => {
-          addToast('Username updated successfully.', 'success');
-        },
-        onError: (error, _, context) => {
-          addToast(error.message, 'error');
+    async (formData: UsernameFormValues) => {
+      mutate(
+        { formData, queryClient },
+        {
+          onSuccess: () => {
+            addToast('Username updated successfully.', 'success');
+          },
+          onError: (error, { queryClient }, context) => {
+            addToast(error.message, 'error');
 
-          queryClient.setQueryData(
-            queryKeys.profilesCurrentSession,
-            context?.previousQueryData,
-          );
+            queryClient.setQueryData(
+              queryKeys.profilesCurrentSession,
+              context?.previousQueryData,
+            );
+          },
+          onSettled: (_, __, { queryClient }) =>
+            queryClient.invalidateQueries({
+              queryKey: queryKeys.profilesCurrentSession,
+            }),
         },
-        onSettled: () =>
-          queryClient.invalidateQueries({
-            queryKey: queryKeys.profilesCurrentSession,
-          }),
-      });
+      );
     },
   );
 
