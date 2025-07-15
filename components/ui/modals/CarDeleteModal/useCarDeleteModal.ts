@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
@@ -15,6 +19,12 @@ export type UseCarDeleteModalOptions = {
   carId: string;
   onCancel?: () => void;
   onConfirm?: () => void;
+};
+
+type MutationVariables = {
+  carId: string;
+  carName?: string;
+  queryClient: QueryClient;
 };
 
 export function useCarDeleteModal({
@@ -37,12 +47,12 @@ export function useCarDeleteModal({
   const { mutate } = useMutation({
     mutationKey: queryKeys.infiniteCars,
     throwOnError: false,
-    mutationFn: ({ carId }: { carId: string; carName?: string }) =>
-      deleteCar(carId),
-    onMutate: ({ carId }) => carsInfiniteDeleteOnMutate(carId, queryClient),
+    mutationFn: ({ carId }: MutationVariables) => deleteCar(carId),
+    onMutate: ({ carId, queryClient }) =>
+      carsInfiniteDeleteOnMutate(carId, queryClient),
     onSuccess: (_, { carName }) =>
       addToast(`Car ${carName} deleted.`, 'success'),
-    onError: (error, _, context) => {
+    onError: (error, { queryClient }, context) => {
       addToast(error.message, 'error');
       carsInfiniteDeleteOnError(queryClient, context);
     },
@@ -56,9 +66,9 @@ export function useCarDeleteModal({
     onConfirm && onConfirm();
 
     mutate(
-      { carId, carName },
+      { carId, carName, queryClient },
       {
-        onSettled: () =>
+        onSettled: (_, __, { queryClient }) =>
           queryClient.invalidateQueries({
             queryKey: queryKeys.infiniteCars,
           }),
