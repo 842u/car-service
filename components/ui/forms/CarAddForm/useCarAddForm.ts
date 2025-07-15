@@ -32,7 +32,8 @@ export function useCarAddForm({
         queryClient,
         carFormRef.current?.inputImageUrl || null,
       ),
-    onSuccess: () => addToast('Car added successfully.', 'success'),
+    onSuccess: (_, variables) =>
+      addToast(`Car ${variables.custom_name} added.`, 'success'),
     onError: (error, _, context) =>
       carsInfiniteAddOnError(error, context, queryClient, addToast),
   });
