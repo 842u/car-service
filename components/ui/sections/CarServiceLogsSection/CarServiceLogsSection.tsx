@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { Spinner } from '@/components/decorative/Spinner/Spinner';
 import { useToasts } from '@/hooks/useToasts';
@@ -9,14 +9,14 @@ import { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { ServiceLogAddButton } from '../../buttons/ServiceLogAddButton/ServiceLogAddButton';
-import { ServiceLogAddModal } from '../../modals/ServiceLogAddModal/ServiceLogAddModal';
-import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarServiceLogsTable';
+import {
+  CarServiceLogsSectionControls,
+  CarServiceLogsSectionControlsProps,
+} from './CarServiceLogsSectionControls/CarServiceLogsSectionControls';
 
-type CarServiceLogsSectionProps = {
-  carId: string;
+type CarServiceLogsSectionProps = CarServiceLogsSectionControlsProps & {
   isCurrentUserPrimaryOwner: boolean;
   ownersProfiles?: Profile[];
 };
@@ -26,8 +26,6 @@ export function CarServiceLogsSection({
   isCurrentUserPrimaryOwner,
   ownersProfiles,
 }: CarServiceLogsSectionProps) {
-  const dialogRef = useRef<DialogModalRef>(null);
-
   const { addToast } = useToasts();
 
   const { data, error, isLoading } = useQuery({
@@ -39,10 +37,6 @@ export function CarServiceLogsSection({
   useEffect(() => {
     error && addToast(error.message, 'error');
   }, [addToast, error]);
-
-  const handleServiceLogAddModalSubmit = () => dialogRef.current?.closeModal();
-
-  const handleServiceLogAddButtonClick = () => dialogRef.current?.showModal();
 
   return (
     <DashboardSection>
@@ -59,14 +53,7 @@ export function CarServiceLogsSection({
           serviceLogs={data}
         />
       )}
-      <DashboardSection.Controls>
-        <ServiceLogAddButton onClick={handleServiceLogAddButtonClick} />
-        <ServiceLogAddModal
-          ref={dialogRef}
-          carId={carId}
-          onSubmit={handleServiceLogAddModalSubmit}
-        />
-      </DashboardSection.Controls>
+      <CarServiceLogsSectionControls carId={carId} />
     </DashboardSection>
   );
 }

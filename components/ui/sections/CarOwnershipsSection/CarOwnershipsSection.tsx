@@ -2,11 +2,12 @@ import { CarOwnership, Profile } from '@/types';
 
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 import { CarOwnershipsTable } from '../../tables/CarOwnershipsTable/CarOwnershipsTable';
-import { CarOwnershipsSectionControls } from './CarOwnershipsSectionControls';
+import {
+  CarOwnershipsSectionControls,
+  CarOwnershipsSectionControlsProps,
+} from './CarOwnershipsSectionControls/CarOwnershipsSectionControls';
 
-type CarOwnershipsSectionProps = {
-  carId: string;
-  isCurrentUserPrimaryOwner: boolean;
+type CarOwnershipsSectionProps = CarOwnershipsSectionControlsProps & {
   ownersProfiles?: Profile[];
   carOwnerships?: CarOwnership[];
 };

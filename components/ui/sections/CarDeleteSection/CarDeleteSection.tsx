@@ -1,27 +1,15 @@
-import { useRef } from 'react';
-
-import { CarDeleteButton } from '../../buttons/CarDeleteButton/CarDeleteButton';
-import { CarDeleteModal } from '../../modals/CarDeleteModal/CarDeleteModal';
-import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
+import {
+  CarDeleteSectionControls,
+  CarDeleteSectionControlsProps,
+} from './CarDeleteSectionControls/CarDeleteSectionControls';
 
-type CarDeleteSectionProps = {
-  carId: string;
-  isCurrentUserPrimaryOwner: boolean;
-};
+type CarDeleteSectionProps = CarDeleteSectionControlsProps;
 
 export function CarDeleteSection({
   carId,
   isCurrentUserPrimaryOwner,
 }: CarDeleteSectionProps) {
-  const dialogRef = useRef<DialogModalRef>(null);
-
-  const handleCarDeleteModalCancel = () => dialogRef.current?.closeModal();
-
-  const handleCarDeleteModalConfirm = () => dialogRef.current?.closeModal();
-
-  const handleCarDeleteButtonClick = () => dialogRef.current?.showModal();
-
   return (
     <DashboardSection variant="errorDefault">
       <DashboardSection.Heading headingLevel="h2">
@@ -37,18 +25,10 @@ export function CarDeleteSection({
         If you do not want to see that car you can pass primary ownership to
         someone else and remove yourself from the owners list.
       </DashboardSection.Subtext>
-      <DashboardSection.Controls>
-        <CarDeleteButton
-          disabled={!isCurrentUserPrimaryOwner}
-          onClick={handleCarDeleteButtonClick}
-        />
-        <CarDeleteModal
-          ref={dialogRef}
-          carId={carId}
-          onCancel={handleCarDeleteModalCancel}
-          onConfirm={handleCarDeleteModalConfirm}
-        />
-      </DashboardSection.Controls>
+      <CarDeleteSectionControls
+        carId={carId}
+        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
+      />
     </DashboardSection>
   );
 }
