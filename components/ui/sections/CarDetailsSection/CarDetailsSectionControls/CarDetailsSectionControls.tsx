@@ -4,13 +4,17 @@ import { CarEditButton } from '@/components/ui/buttons/CarEditButton/CarEditButt
 import { CarEditModal } from '@/components/ui/modals/CarEditModal/CarEditModal';
 import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '@/components/ui/shared/DashboardSection/DashboardSection';
+import { Car } from '@/types';
 
-import { CarDetailsSectionProps } from '../CarDetailsSection';
+export type CarDetailsSectionControlsProps = {
+  isCurrentUserPrimaryOwner: boolean;
+  carData?: Car;
+};
 
 export function CarDetailsSectionControls({
   isCurrentUserPrimaryOwner,
   carData,
-}: CarDetailsSectionProps) {
+}: CarDetailsSectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
   const handleCarEditButtonClick = () => dialogRef.current?.showModal();
