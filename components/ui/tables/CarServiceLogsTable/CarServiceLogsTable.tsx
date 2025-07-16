@@ -10,7 +10,7 @@ import { createClient } from '@/utils/supabase/client';
 import { Table } from '../../shared/base/Table/Table';
 import { filterColumnByDate } from '../../shared/base/Table/TableFilterDate';
 import { UserBadge } from '../../UserBadge/UserBadge';
-import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown';
+import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown/CarServiceLogsTableActionsDropdown';
 
 const columnsHelper = createColumnHelper<ServiceLog>();
 
