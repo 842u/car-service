@@ -5,7 +5,7 @@ import { CarOwnershipsTable } from '../../tables/CarOwnershipsTable/CarOwnership
 import {
   CarOwnershipsSectionControls,
   CarOwnershipsSectionControlsProps,
-} from './CarOwnershipsSectionControls';
+} from './CarOwnershipsSectionControls/CarOwnershipsSectionControls';
 
 type CarOwnershipsSectionProps = CarOwnershipsSectionControlsProps & {
   ownersProfiles?: Profile[];

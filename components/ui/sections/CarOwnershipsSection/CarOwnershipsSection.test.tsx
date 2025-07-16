@@ -8,7 +8,7 @@ import {
 } from '@/utils/jest/mocks/supabase';
 
 import { CarOwnershipsSection } from './CarOwnershipsSection';
-import { CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID } from './CarOwnershipsSectionControls';
+import { CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID } from './CarOwnershipsSectionControls/CarOwnershipsSectionControls';
 
 function TestCarOwnershipsSection() {
   return (
