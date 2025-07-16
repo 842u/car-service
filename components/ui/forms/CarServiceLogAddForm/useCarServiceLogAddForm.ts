@@ -4,6 +4,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { Route } from 'next';
+import { useEffect, useState } from 'react';
 
 import {
   ServiceLogPostRouteHandlerRequest,
@@ -12,6 +13,7 @@ import {
 import { useToasts } from '@/hooks/useToasts';
 import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { RouteHandlerResponse } from '@/types';
+import { createClient } from '@/utils/supabase/client';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
   serviceLogsByCarIdAddOnError,
@@ -23,6 +25,7 @@ import { CarServiceLogAddFormProps } from './CarServiceLogAddForm';
 type MutationVariables = {
   formData: CarServiceLogFormValues;
   carId: string;
+  userId?: string;
   queryClient: QueryClient;
 };
 
@@ -63,6 +66,8 @@ export function useCarServiceLogAddForm({
   carId,
   onSubmit,
 }: Pick<CarServiceLogAddFormProps, 'carId' | 'onSubmit'>) {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
@@ -71,8 +76,8 @@ export function useCarServiceLogAddForm({
     throwOnError: false,
     mutationFn: ({ formData, carId }: MutationVariables) =>
       submitCarServiceLogAddFormData(carId, formData),
-    onMutate: ({ formData, carId, queryClient }) =>
-      serviceLogsByCarIdAddOnMutate(formData, carId, queryClient),
+    onMutate: ({ formData, carId, userId, queryClient }) =>
+      serviceLogsByCarIdAddOnMutate(formData, carId, userId, queryClient),
     onSuccess: () => addToast('Service log added.', 'success'),
     onError: (error, { carId, queryClient }, context) => {
       serviceLogsByCarIdAddOnError(context, carId, queryClient);
@@ -80,9 +85,23 @@ export function useCarServiceLogAddForm({
     },
   });
 
+  useEffect(() => {
+    const getUserId = async () => {
+      const supabase = createClient();
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setUserId(session?.user.id);
+    };
+
+    getUserId();
+  }, []);
+
   const handleFormSubmit = async (formData: CarServiceLogFormValues) => {
     mutate(
-      { formData, carId, queryClient },
+      { formData, carId, queryClient, userId },
       {
         onSettled: (_, __, { queryClient, carId }) =>
           queryClient.invalidateQueries({
