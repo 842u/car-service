@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useRef } from 'react';
 
 import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
@@ -27,6 +31,12 @@ type CarServiceLogsTableActionsDropdownProps = {
   collisionDetectionRoot?: HTMLElement | null;
 };
 
+type MutationVariables = {
+  carId: string;
+  serviceLogId: string;
+  queryClient: QueryClient;
+};
+
 export function CarServiceLogsTableActionsDropdown({
   carId,
   userId,
@@ -43,14 +53,15 @@ export function CarServiceLogsTableActionsDropdown({
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (serviceLogId: string) => deleteServiceLogById(serviceLogId),
-    onMutate: (serviceLogId: string) =>
+    mutationFn: ({ serviceLogId }: MutationVariables) =>
+      deleteServiceLogById(serviceLogId),
+    onMutate: ({ carId, serviceLogId, queryClient }) =>
       serviceLogsByCarIdDeleteOnMutate(carId, serviceLogId, queryClient),
-    onError: (error, _, context) => {
+    onError: (error, { carId, queryClient }, context) => {
       serviceLogsByCarIdDeleteOnError(context, carId, queryClient);
       addToast(error.message, 'error');
     },
-    onSuccess: () => addToast('Service log deleted successfully.', 'success'),
+    onSuccess: () => addToast('Service log deleted.', 'success'),
   });
 
   const handleServiceLogEditButtonClick = () =>
@@ -68,12 +79,15 @@ export function CarServiceLogsTableActionsDropdown({
   const handleServiceLogModalConfirm = () => {
     serviceLogDeleteModalRef.current?.closeModal();
 
-    mutate(serviceLog.id, {
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.serviceLogsByCarId(carId),
-        }),
-    });
+    mutate(
+      { carId, queryClient, serviceLogId: serviceLog.id },
+      {
+        onSettled: (_, __, { queryClient, carId }) =>
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.serviceLogsByCarId(carId),
+          }),
+      },
+    );
   };
 
   const canTakeAction =

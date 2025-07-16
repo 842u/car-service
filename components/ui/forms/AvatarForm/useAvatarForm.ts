@@ -1,5 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -17,6 +21,12 @@ export const defaultAvatarFormValues: AvatarFormValues = {
   image: null,
 };
 
+type MutationVariables = {
+  formData: AvatarFormValues;
+  queryClient: QueryClient;
+  inputImageUrl: string | null;
+};
+
 export function useAvatarForm() {
   const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
 
@@ -25,12 +35,12 @@ export function useAvatarForm() {
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation({
     throwOnError: false,
-    mutationFn: (avatarFormData: AvatarFormValues) =>
+    mutationFn: ({ formData: { image } }: MutationVariables) =>
       updateCurrentSessionProfile({
         property: 'avatar_url',
-        value: avatarFormData.image,
+        value: image,
       }),
-    onMutate: () =>
+    onMutate: ({ queryClient, inputImageUrl }) =>
       profilesUpdateOnMutate(
         queryClient,
         'session',
@@ -40,7 +50,7 @@ export function useAvatarForm() {
     onSuccess: () => {
       addToast('Avatar uploaded successfully.', 'success');
     },
-    onError: (error, _, context) => {
+    onError: (error, { queryClient }, context) => {
       addToast(error.message, 'error');
 
       queryClient.setQueryData(
@@ -61,17 +71,18 @@ export function useAvatarForm() {
     defaultValues: defaultAvatarFormValues,
   });
 
-  const handleFormSubmit = handleSubmit(
-    async (avatarFormData: AvatarFormValues) => {
-      await mutateAsync(avatarFormData, {
-        onSettled: () => {
+  const handleFormSubmit = handleSubmit(async (formData: AvatarFormValues) => {
+    await mutateAsync(
+      { formData, queryClient, inputImageUrl },
+      {
+        onSettled: (_, __, { queryClient }) => {
           queryClient.invalidateQueries({
             queryKey: queryKeys.profilesCurrentSession,
           });
         },
-      });
-    },
-  );
+      },
+    );
+  });
 
   const handleInputImageChange = (file: File | undefined | null) => {
     inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);

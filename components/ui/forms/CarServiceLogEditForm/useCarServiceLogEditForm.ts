@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Route } from 'next';
 
 import {
@@ -17,6 +21,13 @@ import {
 export type UseCarServiceLogEditFormOptions = {
   serviceLog: ServiceLog;
   onSubmit?: () => void;
+};
+
+type MutationVariables = {
+  formData: CarServiceLogFormValues;
+  carId: string;
+  serviceLogId: string;
+  queryClient: QueryClient;
 };
 
 async function submitCarServiceLogEditFormData(
@@ -66,9 +77,9 @@ export function useCarServiceLogEditForm({
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (formData: CarServiceLogFormValues) =>
+    mutationFn: ({ formData, serviceLogId }: MutationVariables) =>
       submitCarServiceLogEditFormData(serviceLogId, formData),
-    onMutate: (formData: CarServiceLogFormValues) =>
+    onMutate: ({ formData, carId, serviceLogId, queryClient }) =>
       serviceLogsByCarIdEditOnMutate(
         formData,
         carId,
@@ -80,22 +91,25 @@ export function useCarServiceLogEditForm({
   const handleFormSubmit = async (formData: CarServiceLogFormValues) => {
     onSubmit && onSubmit();
 
-    mutate(formData, {
-      onSuccess: () => addToast('Service log edited successfully.', 'success'),
-      onError: (error, _, context) => {
-        serviceLogsByCarIdEditOnError(
-          context,
-          carId,
-          serviceLogId,
-          queryClient,
-        );
-        addToast(error.message, 'error');
+    mutate(
+      { formData, carId, queryClient, serviceLogId },
+      {
+        onSuccess: () => addToast('Service log edited.', 'success'),
+        onError: (error, { carId, serviceLogId, queryClient }, context) => {
+          serviceLogsByCarIdEditOnError(
+            context,
+            carId,
+            serviceLogId,
+            queryClient,
+          );
+          addToast(error.message, 'error');
+        },
+        onSettled: (_, __, { queryClient }) =>
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.serviceLogsByCarId(carId),
+          }),
       },
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.serviceLogsByCarId(carId),
-        }),
-    });
+    );
   };
 
   return { handleFormSubmit };

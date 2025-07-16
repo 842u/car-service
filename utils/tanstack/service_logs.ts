@@ -8,6 +8,7 @@ import { queryKeys } from './keys';
 export async function serviceLogsByCarIdAddOnMutate(
   formData: CarServiceLogFormValues,
   carId: string,
+  userId: string | undefined,
   queryClient: QueryClient,
 ) {
   await queryClient.cancelQueries({
@@ -24,7 +25,7 @@ export async function serviceLogsByCarIdAddOnMutate(
       : formData.service_cost,
     id: optimisticServiceLogId,
     car_id: carId,
-    created_by: 'optimistic update',
+    created_by: userId || 'optimistic update',
     created_at: new Date().toISOString(),
   } satisfies ServiceLog;
 

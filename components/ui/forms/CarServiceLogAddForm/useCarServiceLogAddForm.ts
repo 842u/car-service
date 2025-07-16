@@ -1,5 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Route } from 'next';
+import { useEffect, useState } from 'react';
 
 import {
   ServiceLogPostRouteHandlerRequest,
@@ -8,6 +13,7 @@ import {
 import { useToasts } from '@/hooks/useToasts';
 import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { RouteHandlerResponse } from '@/types';
+import { createClient } from '@/utils/supabase/client';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
   serviceLogsByCarIdAddOnError,
@@ -15,6 +21,13 @@ import {
 } from '@/utils/tanstack/service_logs';
 
 import { CarServiceLogAddFormProps } from './CarServiceLogAddForm';
+
+type MutationVariables = {
+  formData: CarServiceLogFormValues;
+  carId: string;
+  userId?: string;
+  queryClient: QueryClient;
+};
 
 async function submitCarServiceLogAddFormData(
   carId: string,
@@ -53,30 +66,49 @@ export function useCarServiceLogAddForm({
   carId,
   onSubmit,
 }: Pick<CarServiceLogAddFormProps, 'carId' | 'onSubmit'>) {
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: (formData: CarServiceLogFormValues) =>
+    mutationFn: ({ formData, carId }: MutationVariables) =>
       submitCarServiceLogAddFormData(carId, formData),
-    onMutate: (formData: CarServiceLogFormValues) =>
-      serviceLogsByCarIdAddOnMutate(formData, carId, queryClient),
-    onSuccess: () => addToast('Service log added successfully.', 'success'),
-    onError: (error, _, context) => {
+    onMutate: ({ formData, carId, userId, queryClient }) =>
+      serviceLogsByCarIdAddOnMutate(formData, carId, userId, queryClient),
+    onSuccess: () => addToast('Service log added.', 'success'),
+    onError: (error, { carId, queryClient }, context) => {
       serviceLogsByCarIdAddOnError(context, carId, queryClient);
       addToast(error.message, 'error');
     },
   });
 
+  useEffect(() => {
+    const getUserId = async () => {
+      const supabase = createClient();
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setUserId(session?.user.id);
+    };
+
+    getUserId();
+  }, []);
+
   const handleFormSubmit = async (formData: CarServiceLogFormValues) => {
-    mutate(formData, {
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.serviceLogsByCarId(carId),
-        }),
-    });
+    mutate(
+      { formData, carId, queryClient, userId },
+      {
+        onSettled: (_, __, { queryClient, carId }) =>
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.serviceLogsByCarId(carId),
+          }),
+      },
+    );
 
     onSubmit && onSubmit();
   };
