@@ -3,6 +3,8 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { Route } from 'next';
+import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
 import { OwnershipDeleteModal } from '@/components/ui/modals/OwnershipDeleteModal/OwnershipDeleteModal';
@@ -34,8 +36,9 @@ export type CarOwnershipsTableActionsDropdownContentProps = {
 type MutationVariables = {
   carId: string;
   ownerId: string;
-  ownerUsername?: string | null;
   queryClient: QueryClient;
+  ownerUsername?: string | null;
+  userId?: string;
 };
 
 export function CarOwnershipsTableActionsDropdownContent({
@@ -47,6 +50,8 @@ export function CarOwnershipsTableActionsDropdownContent({
 }: CarOwnershipsTableActionsDropdownContentProps) {
   const ownershipDeleteModalRef = useRef<DialogModalRef>(null);
   const ownershipPromoteModalRef = useRef<DialogModalRef>(null);
+
+  const router = useRouter();
 
   const { addToast } = useToasts();
 
@@ -65,10 +70,17 @@ export function CarOwnershipsTableActionsDropdownContent({
         context?.previousQueryData,
       );
     },
-    onSettled: (_, __, { queryClient, carId }) =>
+    onSettled: (_, __, { queryClient, carId, ownerId, userId }) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.carsOwnershipsByCarId(carId),
-      }),
+      });
+
+      if (userId === ownerId) {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.infiniteCars,
+        });
+      }
+    },
   });
 
   const queryClient = useQueryClient();
@@ -104,7 +116,12 @@ export function CarOwnershipsTableActionsDropdownContent({
   const handleOwnershipDeleteModalConfirm = () => {
     ownershipDeleteModalRef.current?.closeModal();
 
+    if (userId === ownerId) {
+      router.replace('/dashboard/cars' satisfies Route);
+    }
+
     mutateDelete({
+      userId,
       carId,
       ownerId,
       ownerUsername,
