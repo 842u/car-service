@@ -18,15 +18,16 @@ export async function carsOwnershipsAddOnMutate(
     (currentQueryData: CarOwnership[]) => {
       if (!newOwnerId) return currentQueryData;
 
-      const updatedQuery: CarOwnership[] = [
-        ...currentQueryData.map((ownership) => ({ ...ownership })),
-        {
-          created_at: new Date().toISOString(),
-          car_id: carId,
-          is_primary_owner: false,
-          owner_id: newOwnerId,
-        },
-      ];
+      const updatedQuery: CarOwnership[] = currentQueryData.map(
+        (ownership) => ({ ...ownership }),
+      );
+
+      updatedQuery.push({
+        created_at: new Date().toISOString(),
+        car_id: carId,
+        is_primary_owner: false,
+        owner_id: newOwnerId,
+      });
 
       return updatedQuery;
     },
@@ -45,11 +46,11 @@ export function carsOwnershipsAddOnError(
   );
 
   if (currentQueryData) {
-    const updatedQueryData: CarOwnership[] = [
-      ...currentQueryData.map((ownership) => ({ ...ownership })),
-    ];
+    let updatedQueryData: CarOwnership[] = currentQueryData.map(
+      (ownership) => ({ ...ownership }),
+    );
 
-    updatedQueryData.filter(
+    updatedQueryData = updatedQueryData.filter(
       (ownership) => ownership.owner_id !== context?.newOwnerId,
     );
 
@@ -76,19 +77,17 @@ export async function carsOwnershipsUpdateOnMutate(
     (currentQueryData: CarOwnership[]) => {
       if (!newPrimaryOwnerId) return currentQueryData;
 
-      const updatedQuery: CarOwnership[] = [
-        ...currentQueryData.map((ownership) => {
-          if (ownership.is_primary_owner) {
-            previousPrimaryOwnerId = ownership.owner_id;
-            return { ...ownership, is_primary_owner: false };
-          }
+      const updatedQuery: CarOwnership[] = currentQueryData.map((ownership) => {
+        if (ownership.is_primary_owner) {
+          previousPrimaryOwnerId = ownership.owner_id;
+          return { ...ownership, is_primary_owner: false };
+        }
 
-          if (ownership.owner_id === newPrimaryOwnerId)
-            return { ...ownership, is_primary_owner: true };
+        if (ownership.owner_id === newPrimaryOwnerId)
+          return { ...ownership, is_primary_owner: true };
 
-          return { ...ownership };
-        }),
-      ];
+        return { ...ownership };
+      });
 
       const isNewPrimaryOwnerInOwners = updatedQuery.find(
         (ownership) => ownership.owner_id === newPrimaryOwnerId,
@@ -119,8 +118,8 @@ export function carsOwnershipsUpdateOnError(
   );
 
   if (currentQueryData) {
-    const updatedQueryData: CarOwnership[] = [
-      ...currentQueryData.map((ownership) => {
+    const updatedQueryData: CarOwnership[] = currentQueryData.map(
+      (ownership) => {
         if (ownership.owner_id === context?.newPrimaryOwnerId) {
           return { ...ownership, is_primary_owner: false };
         }
@@ -128,8 +127,8 @@ export function carsOwnershipsUpdateOnError(
           return { ...ownership, is_primary_owner: true };
         }
         return { ...ownership };
-      }),
-    ];
+      },
+    );
 
     queryClient.setQueryData(
       queryKeys.carsOwnershipsByCarId(carId),
@@ -146,6 +145,7 @@ export async function carsOwnershipsDeleteOnMutate(
   await queryClient.cancelQueries({
     queryKey: queryKeys.carsOwnershipsByCarId(carId),
   });
+
   const previousQueryData = queryClient.getQueryData([
     'cars_ownerships',
     carId,
