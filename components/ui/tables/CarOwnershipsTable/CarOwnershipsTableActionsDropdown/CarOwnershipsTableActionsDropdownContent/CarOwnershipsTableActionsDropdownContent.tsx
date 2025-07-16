@@ -5,7 +5,11 @@ import {
 } from '@tanstack/react-query';
 import { useRef } from 'react';
 
-import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
+import { OwnershipDeleteModal } from '@/components/ui/modals/OwnershipDeleteModal/OwnershipDeleteModal';
+import { OwnershipPromoteModal } from '@/components/ui/modals/OwnershipPromoteModal/OwnershipPromoteModal';
+import { Button } from '@/components/ui/shared/base/Button/Button';
+import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
+import { Dropdown } from '@/components/ui/shared/base/Dropdown/Dropdown';
 import { useToasts } from '@/hooks/useToasts';
 import { CarOwnership } from '@/types';
 import {
@@ -19,19 +23,12 @@ import {
 } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { OwnershipDeleteModal } from '../../modals/OwnershipDeleteModal/OwnershipDeleteModal';
-import { OwnershipPromoteModal } from '../../modals/OwnershipPromoteModal/OwnershipPromoteModal';
-import { Button } from '../../shared/base/Button/Button';
-import { DialogModalRef } from '../../shared/base/DialogModal/DialogModal';
-import { Dropdown } from '../../shared/base/Dropdown/Dropdown';
-import { IconButton } from '../../shared/IconButton/IconButton';
-
-type CarOwnershipsTableActionsDropdownProps = {
-  isCurrentUserPrimaryOwner: boolean;
+export type CarOwnershipsTableActionsDropdownContentProps = {
   ownership: CarOwnership;
+  canPromote: boolean;
+  canDelete: boolean;
   ownerUsername?: string | null;
   userId?: string;
-  collisionDetectionRoot?: HTMLElement | null;
 };
 
 type MutationVariables = {
@@ -41,21 +38,17 @@ type MutationVariables = {
   queryClient: QueryClient;
 };
 
-export function CarOwnershipsTableActionsDropdown({
-  isCurrentUserPrimaryOwner,
+export function CarOwnershipsTableActionsDropdownContent({
   ownership,
+  canDelete,
+  canPromote,
   ownerUsername,
-  collisionDetectionRoot,
   userId,
-}: CarOwnershipsTableActionsDropdownProps) {
+}: CarOwnershipsTableActionsDropdownContentProps) {
   const ownershipDeleteModalRef = useRef<DialogModalRef>(null);
   const ownershipPromoteModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
-
-  const queryClient = useQueryClient();
-
-  const carId = ownership.car_id;
 
   const { mutate: mutateDelete } = useMutation({
     throwOnError: false,
@@ -78,6 +71,8 @@ export function CarOwnershipsTableActionsDropdown({
       }),
   });
 
+  const queryClient = useQueryClient();
+
   const { mutate: mutateUpdate } = useMutation({
     throwOnError: false,
     mutationFn: ({ carId, ownerId }: MutationVariables) =>
@@ -96,6 +91,10 @@ export function CarOwnershipsTableActionsDropdown({
       }),
   });
 
+  const carId = ownership.car_id;
+
+  const ownerId = ownership.owner_id;
+
   const handleActionDeleteButtonClick = () =>
     ownershipDeleteModalRef.current?.showModal();
 
@@ -107,7 +106,7 @@ export function CarOwnershipsTableActionsDropdown({
 
     mutateDelete({
       carId,
-      ownerId: ownership.owner_id,
+      ownerId,
       ownerUsername,
       queryClient,
     });
@@ -124,70 +123,46 @@ export function CarOwnershipsTableActionsDropdown({
 
     mutateUpdate({
       carId,
-      ownerId: ownership.owner_id,
+      ownerId,
       ownerUsername,
       queryClient,
     });
   };
 
-  const canPromote = isCurrentUserPrimaryOwner && userId !== ownership.owner_id;
-
-  const canDelete =
-    (isCurrentUserPrimaryOwner && userId !== ownership.owner_id) ||
-    (!isCurrentUserPrimaryOwner && userId === ownership.owner_id);
-
-  const canTakeAction = canPromote || canDelete;
-
   return (
-    <Dropdown className="w-12" collisionDetectionRoot={collisionDetectionRoot}>
-      <Dropdown.Trigger>
-        {({ onClick, ref }) => (
-          <IconButton
-            ref={ref}
-            className="group"
-            disabled={!canTakeAction}
-            title="Actions"
-            variant="transparent"
-            onClick={onClick}
-          >
-            <EllipsisIcon className="fill-dark-500 stroke-dark-500 dark:fill-light-500 dark:stroke-light-500 group-disabled:dark:fill-alpha-grey-500 group-disabled:dark:stroke-alpha-grey-500 group-disabled:fill-alpha-grey-500 group-disabled:stroke-alpha-grey-500 w-full px-1" />
-          </IconButton>
-        )}
-      </Dropdown.Trigger>
-      <Dropdown.Content collisionDetection align="end" side="bottom">
-        <Button
-          className="w-full"
-          disabled={!canPromote}
-          variant="transparent"
-          onClick={handlePromoteActionButtonClick}
-        >
-          Promote
-        </Button>
-        <OwnershipPromoteModal
-          ref={ownershipPromoteModalRef}
-          canTakeAction={canPromote}
-          ownerUsername={ownerUsername}
-          onCancel={handleOwnershipPromoteModalCancel}
-          onConfirm={handleOwnershipPromoteModalConfirm}
-        />
-        <Button
-          className="w-full"
-          disabled={!canDelete}
-          variant="transparentError"
-          onClick={handleActionDeleteButtonClick}
-        >
-          Delete
-        </Button>
-        <OwnershipDeleteModal
-          ref={ownershipDeleteModalRef}
-          canTakeAction={canDelete}
-          ownership={ownership}
-          ownerUsername={ownerUsername}
-          userId={userId}
-          onCancel={handleOwnershipDeleteModalCancel}
-          onConfirm={handleOwnershipDeleteModalConfirm}
-        />
-      </Dropdown.Content>
-    </Dropdown>
+    <Dropdown.Content collisionDetection align="end" side="bottom">
+      <Button
+        className="w-full"
+        disabled={!canPromote}
+        variant="transparent"
+        onClick={handlePromoteActionButtonClick}
+      >
+        Promote
+      </Button>
+      <OwnershipPromoteModal
+        ref={ownershipPromoteModalRef}
+        canTakeAction={canPromote}
+        ownerUsername={ownerUsername}
+        onCancel={handleOwnershipPromoteModalCancel}
+        onConfirm={handleOwnershipPromoteModalConfirm}
+      />
+      <Button
+        className="w-full"
+        disabled={!canDelete}
+        variant="transparentError"
+        onClick={handleActionDeleteButtonClick}
+      >
+        Delete
+      </Button>
+      <OwnershipDeleteModal
+        ref={ownershipDeleteModalRef}
+        canTakeAction={canDelete}
+        ownership={ownership}
+        ownerUsername={ownerUsername}
+        userId={userId}
+        onCancel={handleOwnershipDeleteModalCancel}
+        onConfirm={handleOwnershipDeleteModalConfirm}
+      />
+    </Dropdown.Content>
   );
 }
