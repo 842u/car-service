@@ -5,7 +5,7 @@ import {
   authenticatedOnlyRoutes,
   publicRoutes,
   unauthenticatedOnlyRoutes,
-} from '../middleware';
+} from '../src/middleware';
 import { expect, test } from './fixtures';
 
 test.describe('route_access_flow - @unauthenticated', () => {

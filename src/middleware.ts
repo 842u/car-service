@@ -2,8 +2,11 @@ import { createServerClient } from '@supabase/ssr';
 import { Route } from 'next';
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { Database } from './src/types/supabase';
-import { generateCspStringWithNonce } from './src/utils/security.mjs';
+import {
+  baseContentSecurityPolicy,
+  generateCspStringWithNonce,
+} from './security/content-security-policy';
+import { Database } from './types/supabase';
 
 export const publicRoutes: Route[] = ['/'];
 
@@ -22,7 +25,9 @@ export const authenticatedOnlyRoutes: Route[] = [
 export const authenticatedOnlyDynamicRoutes: Route[] = ['/dashboard/cars'];
 
 export async function middleware(request: NextRequest) {
-  const { cspString, nonce } = generateCspStringWithNonce();
+  const { cspString, nonce } = generateCspStringWithNonce(
+    baseContentSecurityPolicy,
+  );
   const requestUrl = request.nextUrl.clone();
   const requestPath = requestUrl.pathname as Route;
 

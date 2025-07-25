@@ -1,0 +1,134 @@
+interface Directive {
+  name: string;
+  value: string[];
+}
+
+interface ContentSecurityPolicy {
+  [key: Directive['name']]: Directive['value'];
+}
+
+const defaultSrcDirective: Directive = {
+  name: 'default-src',
+  value: ["'self'"],
+};
+
+const baseUriDirective: Directive = {
+  name: 'base-uri',
+  value: ["'self'"],
+};
+
+const connectSrcDirective: Directive = {
+  name: 'connect-src',
+  value: [
+    "'self'",
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/`,
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/`,
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/`,
+  ],
+};
+
+const scriptSrcDirective: Directive = {
+  name: 'script-src',
+  value: [
+    "'self'",
+    "'strict-dynamic'",
+    `${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}`,
+  ],
+};
+
+const scriptSrcElemDirective: Directive = {
+  name: 'script-src-elem',
+  value: [
+    "'self'",
+    "'sha256-rbbnijHn7DZ6ps39myQ3cVQF1H+U/PJfHh5ei/Q2kb8='",
+    "'sha256-Vz0fwWS/RBGfX0CgDk4ZXv/OwIIEUP030prvqFa/e9s='",
+    "'sha256-P+ENKuy1ajGdnkDBoylo2F59ICER0m6CNM4eemaFB+4='",
+  ],
+};
+
+const styleSrcDirective: Directive = {
+  name: 'style-src',
+  value: [
+    "'self'",
+    "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
+    "'sha256-rZot9UVcdtXL99KiVSLfpDfxS3VtOsOY1PXjNX1ntxg='",
+    "'sha256-sHwQzC2ZsVrt1faUYCjF/eo8aIoBlQbGjVstzanL9CU='",
+    // Next - START
+    "'sha256-m8dEh7VmKFRCO8jEWPbmkeO1mq4SIx8omtyx50rrS/M='",
+    "'sha256-Ylx4sWaDgn6RRamxe7jevX4yDhNtiSG3CQWrPAdPh6A='",
+    "'sha256-fNQvmabDUct/Q8bVROR2oAMzjWD2CYHGuJj7V7Sxgfc='",
+    "'sha256-k1m9MgjuV56OVgoQq43A5vLIpdJFJrlq/3ANCGJD4es='",
+    "'sha256-TkUgajJ946/xb1R0Vfeuzb73k2VAKoEIF3sRGeX4aBU='",
+    // Next - END
+    `${process.env.NODE_ENV === 'development' ? `'nonce-reactQueryDevtools'` : ''}`,
+  ],
+};
+
+const fontSrcDirective: Directive = {
+  name: 'font-src',
+  value: ["'self'"],
+};
+
+const imgSrcDirective: Directive = {
+  name: 'img-src',
+  value: ["'self'", 'data:', 'blob:'],
+};
+
+const workerSrcDirective: Directive = {
+  name: 'worker-src',
+  value: ["'self'"],
+};
+
+const frameAncestorsDirective: Directive = {
+  name: 'frame-ancestors',
+  value: ["'none'"],
+};
+
+const formActionDirective: Directive = {
+  name: 'form-action',
+  value: ["'self'"],
+} as const;
+
+function generateCspString(contentSecurityPolicy: ContentSecurityPolicy) {
+  const directivesNames = Object.keys(contentSecurityPolicy);
+  const directivesString = directivesNames.map(
+    (directiveName) =>
+      `${directiveName} ${contentSecurityPolicy[directiveName].join(' ')}`,
+  );
+  const cspString = directivesString.join('; ');
+
+  return cspString;
+}
+
+export const baseContentSecurityPolicy: ContentSecurityPolicy = {
+  [defaultSrcDirective.name]: defaultSrcDirective.value,
+  [baseUriDirective.name]: baseUriDirective.value,
+  [connectSrcDirective.name]: connectSrcDirective.value,
+  [scriptSrcDirective.name]: scriptSrcDirective.value,
+  [scriptSrcElemDirective.name]: scriptSrcElemDirective.value,
+  [styleSrcDirective.name]: styleSrcDirective.value,
+  [fontSrcDirective.name]: fontSrcDirective.value,
+  [imgSrcDirective.name]: imgSrcDirective.value,
+  [workerSrcDirective.name]: workerSrcDirective.value,
+  [frameAncestorsDirective.name]: frameAncestorsDirective.value,
+  [formActionDirective.name]: formActionDirective.value,
+};
+
+export function generateCspStringWithNonce(
+  contentSecurityPolicy: ContentSecurityPolicy,
+) {
+  const nonceHash = Buffer.from(crypto.randomUUID()).toString('base64');
+  const nonceString = `'nonce-${nonceHash}'`;
+  const contentSecurityPolicyWithNonce = {
+    ...contentSecurityPolicy,
+  };
+
+  contentSecurityPolicyWithNonce[scriptSrcDirective.name].push(nonceString);
+  contentSecurityPolicyWithNonce[scriptSrcElemDirective.name].push(nonceString);
+  contentSecurityPolicyWithNonce[styleSrcDirective.name].push(nonceString);
+
+  return {
+    cspString: generateCspString(contentSecurityPolicy),
+    nonce: nonceHash,
+  };
+}

@@ -1,7 +1,7 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 
-import { securityHeaders } from './security/headers';
+import { securityHeaders } from './src/security/headers';
 
 const configWithBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
