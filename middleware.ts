@@ -2,8 +2,8 @@ import { createServerClient } from '@supabase/ssr';
 import { Route } from 'next';
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { Database } from './types/supabase';
-import { generateCspStringWithNonce } from './utils/security.mjs';
+import { Database } from './src/types/supabase';
+import { generateCspStringWithNonce } from './src/utils/security.mjs';
 
 export const publicRoutes: Route[] = ['/'];
 

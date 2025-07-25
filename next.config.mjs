@@ -1,6 +1,6 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
 
-import { securityHeaders } from './utils/security.mjs';
+import { securityHeaders } from './src/utils/security.mjs';
 
 const configWithBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
