@@ -1,13 +1,13 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
+import type { NextConfig } from 'next';
 
-import { securityHeaders } from './src/utils/security.mjs';
+import { securityHeaders } from './security/headers';
 
 const configWithBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
     typedRoutes: true,
   },
@@ -22,7 +22,6 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
       },
       {
-        protocol: process.env.APP_PROTOCOL,
         hostname: `${process.env.APP_DOMAIN}/**`,
         port: process.env.APP_API_PORT || '',
       },
