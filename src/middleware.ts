@@ -6,30 +6,14 @@ import {
   baseContentSecurityPolicy,
   generateCspStringWithNonce,
 } from './security/content-security-policy';
+import { getRouteAccessRedirection } from './security/route-access';
 import { Database } from './types/supabase';
-
-export const publicRoutes: Route[] = ['/'];
-
-export const unauthenticatedOnlyRoutes: Route[] = [
-  '/dashboard/sign-in',
-  '/dashboard/sign-up',
-  '/dashboard/forgot-password',
-];
-
-export const authenticatedOnlyRoutes: Route[] = [
-  '/dashboard',
-  '/dashboard/account',
-  '/dashboard/cars',
-];
-
-export const authenticatedOnlyDynamicRoutes: Route[] = ['/dashboard/cars'];
 
 export async function middleware(request: NextRequest) {
   const { cspString, nonce } = generateCspStringWithNonce(
     baseContentSecurityPolicy,
   );
   const requestUrl = request.nextUrl.clone();
-  const requestPath = requestUrl.pathname as Route;
 
   const responseHeaders = new Headers(request.headers);
   responseHeaders.set('x-nonce', nonce);
@@ -61,29 +45,15 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await auth.getUser();
 
-  if (
-    !user &&
-    !publicRoutes.includes(requestPath) &&
-    !unauthenticatedOnlyRoutes.includes(requestPath)
-  ) {
-    return NextResponse.redirect(
-      new URL('/dashboard/sign-in' satisfies Route, requestUrl.origin),
-      { headers: responseHeaders },
-    );
-  }
+  const redirectTo = getRouteAccessRedirection(
+    !!user,
+    requestUrl.pathname as Route,
+  );
 
-  if (
-    user &&
-    !publicRoutes.includes(requestPath) &&
-    !authenticatedOnlyRoutes.includes(requestPath) &&
-    !authenticatedOnlyDynamicRoutes.some((route) =>
-      requestPath.startsWith(route),
-    )
-  ) {
-    return NextResponse.redirect(
-      new URL('/dashboard' satisfies Route, requestUrl.origin),
-      { headers: responseHeaders },
-    );
+  if (redirectTo) {
+    return NextResponse.redirect(new URL(redirectTo, requestUrl.origin), {
+      headers: responseHeaders,
+    });
   }
 
   return response;
