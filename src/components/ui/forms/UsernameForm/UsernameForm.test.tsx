@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
 import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 

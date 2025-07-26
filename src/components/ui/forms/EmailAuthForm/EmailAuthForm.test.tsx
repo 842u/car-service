@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ToastsProvider } from '@/components/providers/ToastsProvider';
+import { ToastsProvider } from '@/features/common/providers/ToastsProvider';
 
 import { SPINNER_TEST_ID } from '../../../decorative/Spinner/Spinner';
 import { Toaster } from '../../Toaster/Toaster';

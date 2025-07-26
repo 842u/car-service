@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
-import { ToastsProvider } from '@/components/providers/ToastsProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
+import { ToastsProvider } from '@/features/common/providers/ToastsProvider';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';

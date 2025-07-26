@@ -3,8 +3,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 
-import { Providers } from '@/components/providers/Providers';
 import LazyToaster from '@/components/ui/Toaster/LazyToaster';
+import { Providers } from '@/features/common/providers/Providers';
 import { inter } from '@/utils/fonts';
 
 export const metadata: Metadata = {

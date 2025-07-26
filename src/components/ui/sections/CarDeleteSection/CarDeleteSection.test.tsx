@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { TanStackQueryProvider } from '@/components/providers/TanStackQueryProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
 
 import { CAR_DELETE_MODAL_TEST_ID } from '../../modals/CarDeleteModal/CarDeleteModal';
 import { CarDeleteSection } from './CarDeleteSection';
