@@ -1,6 +1,8 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 
+import { allowedOrigins } from '@/security/allowed-origins';
+
 import { securityHeaders } from './src/security/headers';
 
 const configWithBundleAnalyzer = bundleAnalyzer({
@@ -14,16 +16,22 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
+        protocol: allowedOrigins.google.avatars.protocol.replace(':', '') as
+          | 'https'
+          | 'http',
+        hostname: allowedOrigins.google.avatars.hostname,
       },
       {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
+        protocol: allowedOrigins.github.avatars.protocol.replace(':', '') as
+          | 'https'
+          | 'http',
+        hostname: allowedOrigins.github.avatars.hostname,
       },
       {
-        hostname: `${process.env.APP_DOMAIN}/**`,
-        port: process.env.APP_API_PORT || '',
+        protocol: allowedOrigins.supabase.app.protocol.replace(':', '') as
+          | 'https'
+          | 'http',
+        hostname: allowedOrigins.supabase.app.hostname,
       },
     ],
   },

@@ -1,3 +1,5 @@
+import { allowedOrigins } from './allowed-origins';
+
 interface Directive {
   name: string;
   value: string[];
@@ -21,9 +23,9 @@ const connectSrcDirective: Directive = {
   name: 'connect-src',
   value: [
     "'self'",
-    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/`,
-    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/`,
-    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/`,
+    `${allowedOrigins.supabase.auth.href}`,
+    `${allowedOrigins.supabase.rest.href}`,
+    `${allowedOrigins.supabase.storage.href}`,
   ],
 };
 
