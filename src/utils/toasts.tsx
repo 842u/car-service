@@ -1,7 +1,7 @@
-import { CheckCircleIcon } from '@/components/decorative/icons/CheckCircleIcon';
-import { ExclamationCircleIcon } from '@/components/decorative/icons/ExclamationCircleIcon';
-import { ExclamationTriangleIcon } from '@/components/decorative/icons/ExclamationTriangleIcon';
-import { InformationCircleIcon } from '@/components/decorative/icons/InformationCircleIcon';
+import { CheckCircleIcon } from '@/features/common/ui/decorative/icons/CheckCircleIcon';
+import { ExclamationCircleIcon } from '@/features/common/ui/decorative/icons/ExclamationCircleIcon';
+import { ExclamationTriangleIcon } from '@/features/common/ui/decorative/icons/ExclamationTriangleIcon';
+import { InformationCircleIcon } from '@/features/common/ui/decorative/icons/InformationCircleIcon';
 import { ToastAsset, ToastType } from '@/types';
 
 const errorIcon = (

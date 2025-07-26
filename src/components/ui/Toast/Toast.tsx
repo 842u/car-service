@@ -2,8 +2,8 @@ import * as m from 'motion/react-m';
 import { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
 import { useToasts } from '@/features/common/hooks/useToasts';
+import { XCircleIcon } from '@/features/common/ui/decorative/icons/XCircleIcon';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 

@@ -1,4 +1,4 @@
-import { Spinner } from '@/components/decorative/Spinner/Spinner';
+import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 
 import { Button, ButtonProps } from '../../Button/Button';
 import { useForm } from '../Form';

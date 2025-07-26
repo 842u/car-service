@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { SPINNER_TEST_ID } from '@/components/decorative/Spinner/Spinner';
+import { SPINNER_TEST_ID } from '@/features/common/ui/decorative/Spinner/Spinner';
 
 import { Form } from '../Form';
 import { FormButtonSubmit, FormButtonSubmitProps } from './FormButtonSubmit';

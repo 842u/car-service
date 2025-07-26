@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
-import { EyeCloseIcon } from '@/components/decorative/icons/EyeCloseIcon';
-import { EyeOpenIcon } from '@/components/decorative/icons/EyeOpenIcon';
+import { EyeCloseIcon } from '@/features/common/ui/decorative/icons/EyeCloseIcon';
+import { EyeOpenIcon } from '@/features/common/ui/decorative/icons/EyeOpenIcon';
 
 import { IconButton } from '../../shared/IconButton/IconButton';
 

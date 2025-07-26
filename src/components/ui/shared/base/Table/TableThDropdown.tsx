@@ -1,7 +1,7 @@
-import { ChevronDownIcon } from '@/components/decorative/icons/ChevronDownIcon';
-import { ChevronUpDownIcon } from '@/components/decorative/icons/ChevronUpDownIcon';
-import { ChevronUpIcon } from '@/components/decorative/icons/ChevronUpIcon';
-import { XMarkIcon } from '@/components/decorative/icons/XMarkIcon';
+import { ChevronDownIcon } from '@/features/common/ui/decorative/icons/ChevronDownIcon';
+import { ChevronUpDownIcon } from '@/features/common/ui/decorative/icons/ChevronUpDownIcon';
+import { ChevronUpIcon } from '@/features/common/ui/decorative/icons/ChevronUpIcon';
+import { XMarkIcon } from '@/features/common/ui/decorative/icons/XMarkIcon';
 
 import { IconButton } from '../../IconButton/IconButton';
 import { Dropdown } from '../Dropdown/Dropdown';

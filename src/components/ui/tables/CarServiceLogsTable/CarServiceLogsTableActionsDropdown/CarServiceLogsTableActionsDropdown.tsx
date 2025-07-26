@@ -1,4 +1,4 @@
-import { EllipsisIcon } from '@/components/decorative/icons/EllipsisIcon';
+import { EllipsisIcon } from '@/features/common/ui/decorative/icons/EllipsisIcon';
 import { ServiceLog } from '@/types';
 
 import { Dropdown } from '../../../shared/base/Dropdown/Dropdown';

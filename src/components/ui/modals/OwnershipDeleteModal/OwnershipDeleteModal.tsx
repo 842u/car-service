@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
 
-import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
+import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 import { CarOwnership } from '@/types';
 
 import { Button } from '../../shared/base/Button/Button';

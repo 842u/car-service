@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { BrandSimpleIcon } from '@/components/decorative/icons/BrandSimpleIcon';
+import { BrandSimpleIcon } from '@/features/common/ui/decorative/icons/BrandSimpleIcon';
 import { smoochSans } from '@/utils/fonts';
 
 import { LinkButton } from '../shared/LinkButton/LinkButton';

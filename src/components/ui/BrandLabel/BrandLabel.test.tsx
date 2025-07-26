@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { BRAND_SIMPLE_ICON_TEST_ID } from '@/components/decorative/icons/BrandSimpleIcon';
+import { BRAND_SIMPLE_ICON_TEST_ID } from '@/features/common/ui/decorative/icons/BrandSimpleIcon';
 
 import { BrandLabel } from './BrandLabel';
 

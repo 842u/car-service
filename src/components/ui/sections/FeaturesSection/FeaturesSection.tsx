@@ -1,5 +1,5 @@
-import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
-import { BrandSimpleIcon } from '@/components/decorative/icons/BrandSimpleIcon';
+import { BrandFullIcon } from '@/features/common/ui/decorative/icons/BrandFullIcon';
+import { BrandSimpleIcon } from '@/features/common/ui/decorative/icons/BrandSimpleIcon';
 
 import { FeatureCard } from '../../shared/FeatureCard/FeatureCard';
 import { LandingSection } from '../../shared/LandingSection/LandingSection';

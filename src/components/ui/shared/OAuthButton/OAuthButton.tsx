@@ -3,10 +3,10 @@
 import { Provider } from '@supabase/supabase-js';
 import { JSX, useState } from 'react';
 
-import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
-import { GoogleIcon } from '@/components/decorative/icons/GoogleIcon';
-import { Spinner } from '@/components/decorative/Spinner/Spinner';
 import { useToasts } from '@/features/common/hooks/useToasts';
+import { GitHubIcon } from '@/features/common/ui/decorative/icons/GitHubIcon';
+import { GoogleIcon } from '@/features/common/ui/decorative/icons/GoogleIcon';
+import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 import { Button } from '../base/Button/Button';

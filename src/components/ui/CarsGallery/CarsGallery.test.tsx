@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
-import { SPINNER_TEST_ID } from '@/components/decorative/Spinner/Spinner';
 import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
+import { SPINNER_TEST_ID } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { Car } from '@/types';
 import { getCarsByPage } from '@/utils/supabase/tables/cars';
 

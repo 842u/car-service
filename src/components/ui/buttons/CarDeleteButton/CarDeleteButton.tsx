@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { TrashIcon } from '@/components/decorative/icons/TrashIcon';
+import { TrashIcon } from '@/features/common/ui/decorative/icons/TrashIcon';
 
 import {
   IconButton,

@@ -2,7 +2,7 @@ import { Route } from 'next';
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { SignOutIcon } from '@/components/decorative/icons/SignOutIcon';
+import { SignOutIcon } from '@/features/common/ui/decorative/icons/SignOutIcon';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
 type SignOutLinkButtonProps = ComponentProps<'a'>;

@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
 
-import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
+import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 import { Car } from '@/types';
 
 import { CarEditForm } from '../../forms/CarEditForm/CarEditForm';

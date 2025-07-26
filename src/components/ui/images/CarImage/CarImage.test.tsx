@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { BRAND_FULL_ICON_TEST_ID } from '@/components/decorative/icons/BrandFullIcon';
+import { BRAND_FULL_ICON_TEST_ID } from '@/features/common/ui/decorative/icons/BrandFullIcon';
 
 import { CarImage } from './CarImage';
 

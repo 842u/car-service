@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { CarEditIcon } from '@/components/decorative/icons/CarEditIcon';
+import { CarEditIcon } from '@/features/common/ui/decorative/icons/CarEditIcon';
 
 import {
   IconButton,

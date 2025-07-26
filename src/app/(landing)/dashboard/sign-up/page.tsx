@@ -1,8 +1,8 @@
-import { BrandFullIcon } from '@/components/decorative/icons/BrandFullIcon';
-import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import EmailAuthForm from '@/components/ui/forms/EmailAuthForm/EmailAuthForm';
 import { OAuthProvidersSection } from '@/components/ui/sections/OAuthProvidersSection/OAuthProvidersSection';
 import { SignInLink } from '@/components/ui/SignInLink/SignInLink';
+import { BrandFullIcon } from '@/features/common/ui/decorative/icons/BrandFullIcon';
+import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 
 export default function SignUpPage() {
   return (

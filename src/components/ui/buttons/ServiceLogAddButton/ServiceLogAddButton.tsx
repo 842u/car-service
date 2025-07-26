@@ -1,4 +1,4 @@
-import { BookIcon } from '@/components/decorative/icons/BookIcon';
+import { BookIcon } from '@/features/common/ui/decorative/icons/BookIcon';
 
 import {
   IconButton,

@@ -1,4 +1,4 @@
-import { SvgA11y, SvgA11yProps } from '@/components/decorative/SvgA11y';
+import { SvgA11y, SvgA11yProps } from '../SvgA11y';
 
 export function CarEditIcon({ ...props }: SvgA11yProps) {
   return (

@@ -1,11 +1,11 @@
 import { RefObject } from 'react';
 
-import { TextSeparator } from '@/components/decorative/TextSeparator/TextSeparator';
 import { Button } from '@/components/ui/shared/base/Button/Button';
 import {
   DialogModal,
   DialogModalRef,
 } from '@/components/ui/shared/base/DialogModal/DialogModal';
+import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 
 import {
   useCarDeleteModal,
