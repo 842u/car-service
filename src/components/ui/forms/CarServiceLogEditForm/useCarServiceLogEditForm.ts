@@ -9,7 +9,7 @@ import {
   ServiceLogPatchRouteHandlerRequest,
   ServiceLogRouteHandlerResponse,
 } from '@/app/api/service-log/route';
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { RouteHandlerResponse, ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';

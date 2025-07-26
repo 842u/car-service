@@ -10,7 +10,7 @@ import { ServiceLogEditModal } from '@/components/ui/modals/ServiceLogEditModal/
 import { Button } from '@/components/ui/shared/base/Button/Button';
 import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
 import { Dropdown } from '@/components/ui/shared/base/Dropdown/Dropdown';
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 import { ServiceLog } from '@/types';
 import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';

@@ -9,7 +9,7 @@ import {
   useRef,
 } from 'react';
 
-import { useContextGuard } from '@/hooks/useContextGuard';
+import { useContextGuard } from '@/features/common/hooks/useContextGuard';
 
 import { DialogModalControls } from './DialogModalControls';
 import { DialogModalHeading } from './DialogModalHeading';

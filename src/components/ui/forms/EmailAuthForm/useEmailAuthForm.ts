@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 import {
   EmailAuthFormValues,
   signInEmailAuthFormSchema,

@@ -12,7 +12,7 @@ import { OwnershipPromoteModal } from '@/components/ui/modals/OwnershipPromoteMo
 import { Button } from '@/components/ui/shared/base/Button/Button';
 import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
 import { Dropdown } from '@/components/ui/shared/base/Dropdown/Dropdown';
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 import { CarOwnership } from '@/types';
 import {
   deleteCarOwnershipsByUsersIds,

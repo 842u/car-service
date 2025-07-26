@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-table';
 import { createContext, ReactNode } from 'react';
 
-import { useContextGuard } from '@/hooks/useContextGuard';
+import { useContextGuard } from '@/features/common/hooks/useContextGuard';
 
 import { TableBody } from './TableBody';
 import { TableFilterDate } from './TableFilterDate';

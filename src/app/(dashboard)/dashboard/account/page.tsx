@@ -8,7 +8,7 @@ import { IdSection } from '@/components/ui/sections/IdSection/IdSection';
 import { PasswordChangeSection } from '@/components/ui/sections/PasswordChangeSection/PasswordChangeSection';
 import { UsernameSection } from '@/components/ui/sections/UsernameSection/UsernameSection';
 import { DashboardMain } from '@/components/ui/shared/DashboardMain/DashboardMain';
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 

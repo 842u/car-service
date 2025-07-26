@@ -6,7 +6,7 @@ import { JSX, useState } from 'react';
 import { GitHubIcon } from '@/components/decorative/icons/GitHubIcon';
 import { GoogleIcon } from '@/components/decorative/icons/GoogleIcon';
 import { Spinner } from '@/components/decorative/Spinner/Spinner';
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 import { Button } from '../base/Button/Button';

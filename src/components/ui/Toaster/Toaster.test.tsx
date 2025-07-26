@@ -7,7 +7,7 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import { ToastsProvider } from '@/components/providers/ToastsProvider';
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 
 import { Toaster } from './Toaster';
 

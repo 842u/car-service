@@ -3,7 +3,7 @@ import { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { XCircleIcon } from '@/components/decorative/icons/XCircleIcon';
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 

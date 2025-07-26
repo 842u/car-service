@@ -3,7 +3,7 @@
 import { AnimatePresence, LazyMotion, MotionProps } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
-import { useToasts } from '@/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/useToasts';
 
 import { Toast } from '../Toast/Toast';
 
