@@ -3,11 +3,11 @@ import { RefObject } from 'react';
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 import { ServiceLog } from '@/types';
 
-import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+} from '../../../../features/common/ui/DialogModal/DialogModal';
+import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
 
 type ServiceLogEditModalProps = {
   serviceLog: ServiceLog;

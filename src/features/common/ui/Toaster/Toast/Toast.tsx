@@ -7,7 +7,7 @@ import { XCircleIcon } from '@/features/common/ui/decorative/icons/XCircleIcon';
 import { Toast as ToastObject } from '@/types';
 import { getToastAssets } from '@/utils/toasts';
 
-import { IconButton } from '../shared/IconButton/IconButton';
+import { IconButton } from '../../IconButton/IconButton';
 
 type ToastProps = ToastObject & {
   ref?: Ref<HTMLLIElement>;

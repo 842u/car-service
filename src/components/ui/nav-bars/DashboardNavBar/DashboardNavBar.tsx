@@ -8,9 +8,9 @@ import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { BrandLabel } from '../../BrandLabel/BrandLabel';
-import { HamburgerButton } from '../../buttons/HamburgerButton/HamburgerButton';
-import { NavBar } from '../../shared/base/NavBar/NavBar';
+import { BrandLabel } from '../../../../features/common/ui/BrandLabel/BrandLabel';
+import { HamburgerButton } from '../../../../features/common/ui/HamburgerButton/HamburgerButton';
+import { NavBar } from '../../../../features/common/ui/NavBar/NavBar';
 import { UserBadge } from '../../UserBadge/UserBadge';
 import { DashboardNavMenu } from './DashboardNavMenu';
 

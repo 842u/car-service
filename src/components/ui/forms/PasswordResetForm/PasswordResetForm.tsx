@@ -2,7 +2,7 @@
 
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 
-import { Form } from '../../shared/base/Form/Form';
+import { Form } from '../../../../features/common/ui/Form/Form';
 import { usePasswordResetForm } from './usePasswordResetForm';
 
 export function PasswordResetForm() {

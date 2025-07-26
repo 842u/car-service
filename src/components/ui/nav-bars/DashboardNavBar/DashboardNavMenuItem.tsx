@@ -3,7 +3,7 @@ import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
 import { JSX } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { LinkButton } from '../../shared/LinkButton/LinkButton';
+import { LinkButton } from '../../../../features/common/ui/LinkButton/LinkButton';
 
 type DashboardNavMenuItemProps = {
   href: Route;

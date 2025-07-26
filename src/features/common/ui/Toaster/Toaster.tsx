@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/features/common/hooks/useToasts';
 
-import { Toast } from '../Toast/Toast';
+import { Toast } from './Toast/Toast';
 
 const TOAST_LIFETIME = 6000;
 

@@ -7,10 +7,10 @@ import { useRef } from 'react';
 
 import { ServiceLogDeleteModal } from '@/components/ui/modals/ServiceLogDeleteModal/ServiceLogDeleteModal';
 import { ServiceLogEditModal } from '@/components/ui/modals/ServiceLogEditModal/ServiceLogEditModal';
-import { Button } from '@/components/ui/shared/base/Button/Button';
-import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
-import { Dropdown } from '@/components/ui/shared/base/Dropdown/Dropdown';
 import { useToasts } from '@/features/common/hooks/useToasts';
+import { Button } from '@/features/common/ui/Button/Button';
+import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { Dropdown } from '@/features/common/ui/Dropdown/Dropdown';
 import { ServiceLog } from '@/types';
 import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';

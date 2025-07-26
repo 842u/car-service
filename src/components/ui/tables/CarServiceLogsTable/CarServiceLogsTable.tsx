@@ -7,8 +7,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 
-import { Table } from '../../shared/base/Table/Table';
-import { filterColumnByDate } from '../../shared/base/Table/TableFilterDate';
+import { Table } from '../../../../features/common/ui/Table/Table';
+import { filterColumnByDate } from '../../../../features/common/ui/Table/TableFilterDate';
 import { UserBadge } from '../../UserBadge/UserBadge';
 import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown/CarServiceLogsTableActionsDropdown';
 

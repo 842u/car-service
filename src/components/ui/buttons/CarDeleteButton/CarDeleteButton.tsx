@@ -5,7 +5,7 @@ import { TrashIcon } from '@/features/common/ui/decorative/icons/TrashIcon';
 import {
   IconButton,
   IconButtonProps,
-} from '../../shared/IconButton/IconButton';
+} from '../../../../features/common/ui/IconButton/IconButton';
 
 type CarDeleteButtonProps = Partial<IconButtonProps>;
 

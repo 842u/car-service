@@ -9,10 +9,10 @@ import { useRef } from 'react';
 
 import { OwnershipDeleteModal } from '@/components/ui/modals/OwnershipDeleteModal/OwnershipDeleteModal';
 import { OwnershipPromoteModal } from '@/components/ui/modals/OwnershipPromoteModal/OwnershipPromoteModal';
-import { Button } from '@/components/ui/shared/base/Button/Button';
-import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
-import { Dropdown } from '@/components/ui/shared/base/Dropdown/Dropdown';
 import { useToasts } from '@/features/common/hooks/useToasts';
+import { Button } from '@/features/common/ui/Button/Button';
+import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { Dropdown } from '@/features/common/ui/Dropdown/Dropdown';
 import { CarOwnership } from '@/types';
 import {
   deleteCarOwnershipsByUsersIds,

@@ -2,11 +2,11 @@ import { RefObject } from 'react';
 
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 
-import { Button } from '../../shared/base/Button/Button';
+import { Button } from '../../../../features/common/ui/Button/Button';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+} from '../../../../features/common/ui/DialogModal/DialogModal';
 
 type ServiceLogDeleteModalProps = {
   canTakeAction: boolean;

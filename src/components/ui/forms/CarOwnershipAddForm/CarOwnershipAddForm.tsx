@@ -1,5 +1,5 @@
-import { Button } from '../../shared/base/Button/Button';
-import { Form } from '../../shared/base/Form/Form';
+import { Button } from '../../../../features/common/ui/Button/Button';
+import { Form } from '../../../../features/common/ui/Form/Form';
 import { useCarOwnershipAddForm } from './useCarOwnershipAddForm';
 
 export const CAR_OWNERSHIP_ADD_FORM_TEST_ID = 'car ownership add form test id';

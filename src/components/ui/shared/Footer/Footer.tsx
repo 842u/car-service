@@ -3,7 +3,7 @@ import { GitHubIcon } from '@/features/common/ui/decorative/icons/GitHubIcon';
 import { MailIcon } from '@/features/common/ui/decorative/icons/MailIcon';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
-import { BrandLabel } from '../../BrandLabel/BrandLabel';
+import { BrandLabel } from '../../../../features/common/ui/BrandLabel/BrandLabel';
 
 export function Footer() {
   return (

@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/shared/base/Button/Button';
+import { Button } from '@/features/common/ui/Button/Button';
 
-import { Form } from '../../shared/base/Form/Form';
+import { Form } from '../../../../features/common/ui/Form/Form';
 import { useUsernameForm } from './useUsernameForm';
 
 export const USERNAME_FORM_TEST_ID = 'username form test id';

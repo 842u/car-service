@@ -2,11 +2,11 @@ import { RefObject } from 'react';
 
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 
-import { CarServiceLogAddForm } from '../../forms/CarServiceLogAddForm/CarServiceLogAddForm';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+} from '../../../../features/common/ui/DialogModal/DialogModal';
+import { CarServiceLogAddForm } from '../../forms/CarServiceLogAddForm/CarServiceLogAddForm';
 
 type ServiceLogAddModalProps = {
   carId: string;

@@ -3,8 +3,8 @@ import { ChevronUpDownIcon } from '@/features/common/ui/decorative/icons/Chevron
 import { ChevronUpIcon } from '@/features/common/ui/decorative/icons/ChevronUpIcon';
 import { XMarkIcon } from '@/features/common/ui/decorative/icons/XMarkIcon';
 
-import { IconButton } from '../../IconButton/IconButton';
 import { Dropdown } from '../Dropdown/Dropdown';
+import { IconButton } from '../IconButton/IconButton';
 import { useTable } from './Table';
 
 type TableThDropdownProps = {

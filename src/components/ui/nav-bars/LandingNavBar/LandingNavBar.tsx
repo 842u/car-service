@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-import { BrandLabel } from '../../BrandLabel/BrandLabel';
-import { HamburgerButton } from '../../buttons/HamburgerButton/HamburgerButton';
-import { NavBar } from '../../shared/base/NavBar/NavBar';
+import { BrandLabel } from '../../../../features/common/ui/BrandLabel/BrandLabel';
+import { HamburgerButton } from '../../../../features/common/ui/HamburgerButton/HamburgerButton';
+import { NavBar } from '../../../../features/common/ui/NavBar/NavBar';
 import { LandingNavMenu } from './LandingNavMenu';
 
 export function LandingNavBar() {

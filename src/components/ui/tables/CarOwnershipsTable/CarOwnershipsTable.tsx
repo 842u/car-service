@@ -8,7 +8,7 @@ import { KeyIcon } from '@/features/common/ui/decorative/icons/KeyIcon';
 import { CarOwnership, Profile } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 
-import { Table } from '../../shared/base/Table/Table';
+import { Table } from '../../../../features/common/ui/Table/Table';
 import { UserBadge } from '../../UserBadge/UserBadge';
 import { CarOwnershipsTableActionsDropdown } from './CarOwnershipsTableActionsDropdown/CarOwnershipsTableActionsDropdown';
 

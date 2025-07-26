@@ -1,4 +1,4 @@
-import { LinkButton } from '@/components/ui/shared/LinkButton/LinkButton';
+import { LinkButton } from '@/features/common/ui/LinkButton/LinkButton';
 
 import { LandingSection } from '../../shared/LandingSection/LandingSection';
 

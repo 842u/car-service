@@ -4,8 +4,8 @@ import {
 } from '@/schemas/zod/carServiceLogFormSchema';
 import { serviceCategoryMapping, ServiceLog } from '@/types';
 
-import { Button } from '../base/Button/Button';
-import { Form, FormProps } from '../base/Form/Form';
+import { Button } from '../../../../features/common/ui/Button/Button';
+import { Form, FormProps } from '../../../../features/common/ui/Form/Form';
 import { useCarServiceLogForm } from './useCarServiceLogForm';
 
 export type CarServiceLogFormProps = Omit<FormProps, 'onSubmit'> & {

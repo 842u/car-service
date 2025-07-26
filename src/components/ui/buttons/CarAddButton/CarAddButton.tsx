@@ -3,7 +3,7 @@ import { CarPlusIcon } from '@/features/common/ui/decorative/icons/CarPlusIcon';
 import {
   IconButton,
   IconButtonProps,
-} from '../../shared/IconButton/IconButton';
+} from '../../../../features/common/ui/IconButton/IconButton';
 
 type CarAddButtonProps = Partial<IconButtonProps>;
 

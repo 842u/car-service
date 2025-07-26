@@ -3,11 +3,11 @@ import { RefObject } from 'react';
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 import { Car } from '@/types';
 
-import { CarEditForm } from '../../forms/CarEditForm/CarEditForm';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../shared/base/DialogModal/DialogModal';
+} from '../../../../features/common/ui/DialogModal/DialogModal';
+import { CarEditForm } from '../../forms/CarEditForm/CarEditForm';
 
 type CarEditModalProps = {
   ref?: RefObject<DialogModalRef | null>;

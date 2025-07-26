@@ -3,8 +3,8 @@ import { Ref } from 'react';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
 
-import { Button } from '../base/Button/Button';
-import { Form, FormProps } from '../base/Form/Form';
+import { Button } from '../../../../features/common/ui/Button/Button';
+import { Form, FormProps } from '../../../../features/common/ui/Form/Form';
 import { CarFormFields } from './CarFormFields';
 import { useCarForm } from './useCarForm';
 

@@ -2,9 +2,9 @@
 
 import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 
+import { Button } from '../../../../features/common/ui/Button/Button';
+import { Form } from '../../../../features/common/ui/Form/Form';
 import { AvatarImage } from '../../images/AvatarImage/AvatarImage';
-import { Button } from '../../shared/base/Button/Button';
-import { Form } from '../../shared/base/Form/Form';
 import { useAvatarForm } from './useAvatarForm';
 
 export const AVATAR_FORM_TEST_ID = 'avatar form test id';

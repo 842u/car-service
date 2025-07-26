@@ -2,8 +2,8 @@ import { useRef } from 'react';
 
 import { CarEditButton } from '@/components/ui/buttons/CarEditButton/CarEditButton';
 import { CarEditModal } from '@/components/ui/modals/CarEditModal/CarEditModal';
-import { DialogModalRef } from '@/components/ui/shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '@/components/ui/shared/DashboardSection/DashboardSection';
+import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
 import { Car } from '@/types';
 
 export type CarDetailsSectionControlsProps = {

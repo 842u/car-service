@@ -3,9 +3,9 @@ import { twJoin, twMerge } from 'tailwind-merge';
 import { CarsIcon } from '@/features/common/ui/decorative/icons/CarsIcon';
 import { HomeIcon } from '@/features/common/ui/decorative/icons/HomeIcon';
 import { UserIcon } from '@/features/common/ui/decorative/icons/UserIcon';
+import { ThemeButton } from '@/features/common/ui/ThemeButton/ThemeButton';
 
 import { SignOutLinkButton } from '../../buttons/SignOutLinkButton/SignOutLinkButton';
-import { ThemeButton } from '../../buttons/ThemeButton/ThemeButton';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {

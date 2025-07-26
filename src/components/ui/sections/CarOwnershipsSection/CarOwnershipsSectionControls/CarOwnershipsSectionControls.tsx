@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 
+import { DialogModalRef } from '../../../../../features/common/ui/DialogModal/DialogModal';
 import { OwnershipAddButton } from '../../../buttons/OwnershipAddButton/OwnershipAddButton';
 import { OwnershipAddModal } from '../../../modals/OwnershipAddModal/OwnershipAddModal';
-import { DialogModalRef } from '../../../shared/base/DialogModal/DialogModal';
 import { DashboardSection } from '../../../shared/DashboardSection/DashboardSection';
 
 export const CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID =
