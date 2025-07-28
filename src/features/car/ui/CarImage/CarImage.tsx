@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
-import { BrandFullIcon } from '@/features/common/ui/decorative/icons/BrandFullIcon';
+import { BrandFullIcon } from '@/features/common/ui/decorative/icons/brand-full';
 
 type CarImageProps = {
   src?: string | null;

@@ -1,7 +1,7 @@
 import EmailAuthForm from '@/features/auth/ui/EmailAuthForm/EmailAuthForm';
 import { OAuthProvidersSection } from '@/features/auth/ui/OAuthProvidersSection/OAuthProvidersSection';
 import { SignInLink } from '@/features/auth/ui/SignInLink/SignInLink';
-import { BrandFullIcon } from '@/features/common/ui/decorative/icons/BrandFullIcon';
+import { BrandFullIcon } from '@/features/common/ui/decorative/icons/brand-full';
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 
 export default function SignUpPage() {

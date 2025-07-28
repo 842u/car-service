@@ -1,6 +1,6 @@
 import { BrandLabel } from '@/features/common/ui/brand-label/brand-label';
-import { GitHubIcon } from '@/features/common/ui/decorative/icons/GitHubIcon';
-import { MailIcon } from '@/features/common/ui/decorative/icons/MailIcon';
+import { GitHubIcon } from '@/features/common/ui/decorative/icons/github';
+import { MailIcon } from '@/features/common/ui/decorative/icons/mail';
 import { LandingSection } from '@/features/landing/ui/LandingSection/LandingSection';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 

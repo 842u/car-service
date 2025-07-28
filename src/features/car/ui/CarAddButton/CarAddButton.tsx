@@ -1,4 +1,4 @@
-import { CarPlusIcon } from '@/features/common/ui/decorative/icons/CarPlusIcon';
+import { CarPlusIcon } from '@/features/common/ui/decorative/icons/car-plus';
 
 import {
   IconButton,

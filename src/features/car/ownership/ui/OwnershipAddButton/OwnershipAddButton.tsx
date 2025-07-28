@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { UserPlusIcon } from '@/features/common/ui/decorative/icons/UserPlusIcon';
+import { UserPlusIcon } from '@/features/common/ui/decorative/icons/user-plus';
 import {
   IconButton,
   IconButtonProps,

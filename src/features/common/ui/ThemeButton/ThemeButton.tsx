@@ -4,8 +4,8 @@ import { useTheme } from 'next-themes';
 import { ComponentProps, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { MoonIcon } from '@/features/common/ui/decorative/icons/MoonIcon';
-import { SunIcon } from '@/features/common/ui/decorative/icons/SunIcon';
+import { MoonIcon } from '@/features/common/ui/decorative/icons/moon';
+import { SunIcon } from '@/features/common/ui/decorative/icons/sun';
 
 import { IconButton } from '../../../../features/common/ui/IconButton/IconButton';
 

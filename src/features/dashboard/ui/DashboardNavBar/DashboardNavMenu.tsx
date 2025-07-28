@@ -1,9 +1,9 @@
 import { twJoin, twMerge } from 'tailwind-merge';
 
 import { SignOutLinkButton } from '@/features/auth/ui/SignOutLinkButton/SignOutLinkButton';
-import { CarsIcon } from '@/features/common/ui/decorative/icons/CarsIcon';
-import { HomeIcon } from '@/features/common/ui/decorative/icons/HomeIcon';
-import { UserIcon } from '@/features/common/ui/decorative/icons/UserIcon';
+import { CarsIcon } from '@/features/common/ui/decorative/icons/cars';
+import { HomeIcon } from '@/features/common/ui/decorative/icons/home';
+import { UserIcon } from '@/features/common/ui/decorative/icons/user';
 import { ThemeButton } from '@/features/common/ui/ThemeButton/ThemeButton';
 
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
