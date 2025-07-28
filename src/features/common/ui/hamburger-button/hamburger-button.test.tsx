@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { HamburgerButton } from './HamburgerButton';
+import { HamburgerButton } from './hamburger-button';
 
 describe('HamburgerButton', () => {
   it('should render as button', () => {

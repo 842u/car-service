@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import { BrandLabel } from '@/features/common/ui/brand-label/brand-label';
 
-import { HamburgerButton } from '../../../../features/common/ui/HamburgerButton/HamburgerButton';
 import { NavBar } from '../../../../features/common/ui/NavBar/NavBar';
+import { HamburgerButton } from '../../../common/ui/hamburger-button/hamburger-button';
 import { LandingNavMenu } from './LandingNavMenu';
 
 export function LandingNavBar() {
