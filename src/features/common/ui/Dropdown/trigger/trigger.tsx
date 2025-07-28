@@ -1,6 +1,6 @@
 import { MouseEventHandler, Ref } from 'react';
 
-import { useDropdown } from '../Dropdown';
+import { useDropdown } from '../dropdown';
 
 type DropdownTriggerProps = {
   children: ({

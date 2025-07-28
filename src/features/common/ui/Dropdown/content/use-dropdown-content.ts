@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 
-import { useDropdown } from '../Dropdown';
+import { useDropdown } from '../dropdown';
 
 type Dimensions = {
   trigger: {

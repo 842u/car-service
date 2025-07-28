@@ -1,5 +1,5 @@
 import { EllipsisIcon } from '@/features/common/ui/decorative/icons/elipsis';
-import { Dropdown } from '@/features/common/ui/Dropdown/Dropdown';
+import { Dropdown } from '@/features/common/ui/dropdown/dropdown';
 import { IconButton } from '@/features/common/ui/IconButton/IconButton';
 import { ServiceLog } from '@/types';
 

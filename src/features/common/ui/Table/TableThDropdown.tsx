@@ -3,7 +3,7 @@ import { ChevronUpIcon } from '@/features/common/ui/decorative/icons/chevron-up'
 import { ChevronUpDownIcon } from '@/features/common/ui/decorative/icons/chevron-up-down';
 import { XMarkIcon } from '@/features/common/ui/decorative/icons/x-mark';
 
-import { Dropdown } from '../Dropdown/Dropdown';
+import { Dropdown } from '../dropdown/dropdown';
 import { IconButton } from '../IconButton/IconButton';
 import { useTable } from './Table';
 

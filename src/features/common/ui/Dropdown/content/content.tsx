@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import {
   useDropdownContent,
   UseDropdownContentOptions,
-} from './useDropdownContent';
+} from './use-dropdown-content';
 
 type DropdownContentProps = {
   children: ReactNode;
