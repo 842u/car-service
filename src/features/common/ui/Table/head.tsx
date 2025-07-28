@@ -1,5 +1,5 @@
-import { useTable } from './Table';
-import { TableTh } from './TableTh';
+import { useTable } from './table';
+import { TableTh } from './th';
 
 export function TableHead() {
   const { table } = useTable();

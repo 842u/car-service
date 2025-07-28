@@ -11,13 +11,13 @@ import { createContext, ReactNode } from 'react';
 
 import { useContextGuard } from '@/features/common/hooks/use-context-guard';
 
-import { TableBody } from './TableBody';
-import { TableFilterDate } from './TableFilterDate';
-import { TableFilterText } from './TableFilterText';
-import { TableFilterValues } from './TableFilterValues';
-import { TableHead } from './TableHead';
-import { TableRoot } from './TableRoot';
-import { TableSortBreadcrumb } from './TableSortBreadcrumb';
+import { TableBody } from './body';
+import { TableFilterDate } from './filter-date';
+import { TableFilterText } from './filter-text';
+import { TableFilterValues } from './filter-values';
+import { TableHead } from './head';
+import { TableRoot } from './root';
+import { TableSortBreadcrumb } from './sort-breadcrumb';
 
 type TableContextValue<T> = { table: TanstackTable<T> };
 

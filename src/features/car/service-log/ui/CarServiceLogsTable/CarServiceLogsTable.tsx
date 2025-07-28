@@ -4,8 +4,8 @@ import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Table } from '@/features/common/ui/Table/Table';
-import { filterColumnByDate } from '@/features/common/ui/Table/TableFilterDate';
+import { filterColumnByDate } from '@/features/common/ui/table/filter-date';
+import { Table } from '@/features/common/ui/table/table';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
 import { createClient } from '@/utils/supabase/client';

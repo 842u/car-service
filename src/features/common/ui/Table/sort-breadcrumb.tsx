@@ -1,5 +1,5 @@
-import { useTable } from './Table';
-import { TableThDropdown } from './TableThDropdown';
+import { useTable } from './table';
+import { TableThDropdown } from './th-dropdown';
 
 export function TableSortBreadcrumb() {
   const { table } = useTable();

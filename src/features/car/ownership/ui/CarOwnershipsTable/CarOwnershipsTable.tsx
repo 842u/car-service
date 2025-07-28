@@ -5,7 +5,7 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { KeyIcon } from '@/features/common/ui/decorative/icons/key';
-import { Table } from '@/features/common/ui/Table/Table';
+import { Table } from '@/features/common/ui/table/table';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { CarOwnership, Profile } from '@/types';
 import { createClient } from '@/utils/supabase/client';

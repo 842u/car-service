@@ -2,7 +2,7 @@ import { ColumnFiltersState, Row } from '@tanstack/react-table';
 
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { useTable } from './Table';
+import { useTable } from './table';
 
 type DateFilter = { from?: string; to?: string };
 

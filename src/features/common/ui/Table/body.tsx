@@ -1,6 +1,6 @@
 import { flexRender } from '@tanstack/react-table';
 
-import { useTable } from './Table';
+import { useTable } from './table';
 
 export function TableBody() {
   const { table } = useTable();

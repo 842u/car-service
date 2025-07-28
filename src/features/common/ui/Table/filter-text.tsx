@@ -2,7 +2,7 @@ import { ChangeEvent, useRef } from 'react';
 
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { useTable } from './Table';
+import { useTable } from './table';
 
 type TableFilterTextProps = {
   columnId: string;

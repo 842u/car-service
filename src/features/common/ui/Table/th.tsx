@@ -2,8 +2,8 @@ import { Header } from '@tanstack/react-table';
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useTable } from './Table';
-import { TableThDropdown } from './TableThDropdown';
+import { useTable } from './table';
+import { TableThDropdown } from './th-dropdown';
 
 type TableThProps = ComponentProps<'th'> & {
   // eslint-disable-next-line

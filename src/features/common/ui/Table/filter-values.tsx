@@ -2,7 +2,7 @@
 
 import { ChangeEvent } from 'react';
 
-import { useTable } from './Table';
+import { useTable } from './table';
 
 type TableFilterValuesProps = {
   columnId: string;

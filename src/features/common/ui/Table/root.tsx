@@ -1,6 +1,6 @@
 import { ComponentProps, ReactNode } from 'react';
 
-import { useTable } from './Table';
+import { useTable } from './table';
 
 type TableRootProps = ComponentProps<'table'> & {
   className?: string;
