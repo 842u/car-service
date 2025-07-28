@@ -21,9 +21,9 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/common/*": ["./src/features/common/*"],
       "@/ui/*": ["./src/features/common/ui/*"],
+      "@/common/*": ["./src/features/common/*"],
+      "@/*": ["./src/*"],
       "@/landing/*": ["./src/features/landing/*"]
     }
   },

@@ -4,9 +4,8 @@ import { useState } from 'react';
 
 import { Nav } from '@/landing/ui/nav-bar/nav/nav';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
+import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar as BaseNavBar } from '@/ui/nav-bar/nav-bar';
-
-import { HamburgerButton } from '../../../common/ui/hamburger-button/hamburger-button';
 
 export function NavBar() {
   const [isActive, setIsActive] = useState(false);
