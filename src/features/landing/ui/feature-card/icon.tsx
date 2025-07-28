@@ -1,13 +1,9 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type FeatureCardIconProps = ComponentProps<'div'>;
+type IconProps = ComponentProps<'div'>;
 
-export function FeatureCardIcon({
-  className,
-  children,
-  ...props
-}: FeatureCardIconProps) {
+export function Icon({ className, children, ...props }: IconProps) {
   return (
     <div
       className={twMerge(

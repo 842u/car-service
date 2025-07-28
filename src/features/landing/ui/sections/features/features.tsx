@@ -1,4 +1,4 @@
-import { FeatureCard } from '@/landing/ui/FeatureCard/FeatureCard';
+import { FeatureCard } from '@/landing/ui/feature-card/feature-card';
 import { Section } from '@/landing/ui/section/section';
 import { BrandFullIcon } from '@/ui/decorative/icons/brand-full';
 import { BrandSimpleIcon } from '@/ui/decorative/icons/brand-simple';

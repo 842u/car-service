@@ -1,13 +1,9 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type FeatureCardBackgroundProps = ComponentProps<'div'>;
+type BackgroundProps = ComponentProps<'div'>;
 
-export function FeatureCardBackground({
-  className,
-  children,
-  ...props
-}: FeatureCardBackgroundProps) {
+export function Background({ className, children, ...props }: BackgroundProps) {
   return (
     <div
       aria-hidden
