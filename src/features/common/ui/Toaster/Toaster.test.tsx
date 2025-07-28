@@ -6,9 +6,9 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { useToasts } from '@/features/common/hooks/use-toasts';
+import { useToasts } from '@/common/hooks/use-toasts';
+import { ToastsProvider } from '@/common/providers/toasts/toasts';
 
-import { ToastsProvider } from '../../providers/toasts/toasts';
 import { Toaster } from './toaster';
 
 const TEST_TOAST_MESSAGE = 'test toast';

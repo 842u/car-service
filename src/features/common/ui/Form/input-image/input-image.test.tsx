@@ -11,15 +11,13 @@ import {
 import { Form } from '../form';
 import {
   FORM_INPUT_IMAGE_TEST_ID,
-  FormInputImage,
-  FormInputImageProps,
+  InputImage,
+  InputImageProps,
 } from './input-image';
 
 const INPUT_LABEL_TEXT = 'testLabel';
 
-function TestFormInputImage({
-  ...props
-}: FormInputImageProps<AvatarFormValues>) {
+function TestInputImage({ ...props }: InputImageProps<AvatarFormValues>) {
   const { control } = useForm<AvatarFormValues>({
     resolver: zodResolver(avatarFormSchema),
     mode: 'onChange',
@@ -28,7 +26,7 @@ function TestFormInputImage({
 
   return (
     <Form>
-      <FormInputImage<AvatarFormValues>
+      <InputImage<AvatarFormValues>
         control={control}
         label={INPUT_LABEL_TEXT}
         {...props}
@@ -37,9 +35,9 @@ function TestFormInputImage({
   );
 }
 
-describe('FormInputImage', () => {
+describe('InputImage', () => {
   it('should render as a input element of type="file"', () => {
-    render(<TestFormInputImage name="image" />);
+    render(<TestInputImage name="image" />);
 
     const inputElement = screen.getByTestId(FORM_INPUT_IMAGE_TEST_ID);
 
@@ -48,7 +46,7 @@ describe('FormInputImage', () => {
   });
 
   it('should render usage info if withInfo', () => {
-    render(<TestFormInputImage name="image" withInfo={true} />);
+    render(<TestInputImage name="image" withInfo={true} />);
 
     const usageInfo = screen.getByText(
       'Click on the image to upload a custom one.',
@@ -64,7 +62,7 @@ describe('FormInputImage', () => {
   it('should render error if showErrorMessage & errorMessage', () => {
     const errorMessage = 'testError';
     render(
-      <TestFormInputImage
+      <TestInputImage
         errorMessage={errorMessage}
         name="image"
         showErrorMessage={true}

@@ -4,10 +4,10 @@ import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { filterColumnByDate } from '@/features/common/ui/table/filter-date';
-import { Table } from '@/features/common/ui/table/table';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
+import { filterColumnByDate } from '@/ui/table/date-filter';
+import { Table } from '@/ui/table/table';
 import { createClient } from '@/utils/supabase/client';
 
 import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown/CarServiceLogsTableActionsDropdown';
@@ -156,13 +156,13 @@ export function CarServiceLogsTable({
           },
         }}
       >
-        <Table.FilterDate columnId="service_date" />
-        <Table.FilterValues
+        <Table.DateFilter columnId="service_date" />
+        <Table.ValuesFilter
           checkboxLabelValueMapping={serviceCategoryMapping}
           className="my-4"
           columnId="category"
         />
-        <Table.FilterText columnId="created_by" />
+        <Table.TextFilter columnId="created_by" />
         <Table.SortBreadcrumb />
         <Table.Root ref={tableRef} className="my-4 max-h-96 overflow-auto">
           <Table.Head />

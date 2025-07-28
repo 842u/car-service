@@ -2,15 +2,15 @@ import { Header } from '@tanstack/react-table';
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { Dropdown } from './dropdown';
 import { useTable } from './table';
-import { TableThDropdown } from './th-dropdown';
 
-type TableThProps = ComponentProps<'th'> & {
+type ThProps = ComponentProps<'th'> & {
   // eslint-disable-next-line
   header: Header<any, unknown>;
 };
 
-export function TableTh({ header, ...props }: TableThProps) {
+export function Th({ header, ...props }: ThProps) {
   useTable();
 
   const column = header.column;
@@ -28,7 +28,7 @@ export function TableTh({ header, ...props }: TableThProps) {
       {...props}
     >
       {isSortable ? (
-        <TableThDropdown columnId={columnId} label={headerLabel} />
+        <Dropdown columnId={columnId} label={headerLabel} />
       ) : (
         headerLabel
       )}

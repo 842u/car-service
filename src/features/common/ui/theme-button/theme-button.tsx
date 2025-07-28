@@ -4,10 +4,9 @@ import { useTheme } from 'next-themes';
 import { ComponentProps, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { MoonIcon } from '@/features/common/ui/decorative/icons/moon';
-import { SunIcon } from '@/features/common/ui/decorative/icons/sun';
-
-import { IconButton } from '../icon-button/icon-button';
+import { MoonIcon } from '@/ui/decorative/icons/moon';
+import { SunIcon } from '@/ui/decorative/icons/sun';
+import { IconButton } from '@/ui/icon-button/icon-button';
 
 type ThemeButtonProps = ComponentProps<'button'> & {
   className?: string;

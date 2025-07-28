@@ -5,16 +5,16 @@ import {
   UseDropdownContentOptions,
 } from './use-dropdown-content';
 
-type DropdownContentProps = {
+type ContentProps = {
   children: ReactNode;
 } & UseDropdownContentOptions;
 
-export function DropdownContent({
+export function Content({
   collisionDetection,
   side,
   align,
   children,
-}: DropdownContentProps) {
+}: ContentProps) {
   const { isOpen, position, contentRef } = useDropdownContent({
     collisionDetection,
     side,

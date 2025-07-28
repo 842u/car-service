@@ -9,32 +9,31 @@ import {
 import { getMimeTypeExtensions } from '@/utils/general';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { FormInputErrorText } from '../input/input-error-text';
-import { FormInputLabelText } from '../input/input-label-text';
-import { useFormInputImage } from './use-form-input-image';
+import { ErrorText } from '../input/error-text';
+import { LabelText } from '../input/label-text';
+import { useInputImage } from './use-input-image';
 
 export const FORM_INPUT_IMAGE_TEST_ID = 'form input image test id';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
-export type FormInputImageRef = {
+export type InputImageRef = {
   inputImageUrl: string | null;
 };
 
-export type FormInputImageProps<T extends FieldValues> =
-  UseControllerProps<T> & {
-    onChange?: (file: File | undefined | null) => void;
-    withInfo?: boolean;
-    required?: boolean;
-    label?: string;
-    children?: ReactNode;
-    className?: string;
-    errorMessage?: string | undefined;
-    showErrorMessage?: boolean;
-  };
+export type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
+  onChange?: (file: File | undefined | null) => void;
+  withInfo?: boolean;
+  required?: boolean;
+  label?: string;
+  children?: ReactNode;
+  className?: string;
+  errorMessage?: string | undefined;
+  showErrorMessage?: boolean;
+};
 
-export function FormInputImage<T extends FieldValues>({
+export function InputImage<T extends FieldValues>({
   onChange,
   label,
   name,
@@ -47,8 +46,8 @@ export function FormInputImage<T extends FieldValues>({
   withInfo = true,
   required = false,
   showErrorMessage = true,
-}: FormInputImageProps<T>) {
-  const { handleFileChange, inputElementRef } = useFormInputImage({
+}: InputImageProps<T>) {
+  const { handleFileChange, inputElementRef } = useInputImage({
     name,
     control,
     defaultValue,
@@ -58,7 +57,7 @@ export function FormInputImage<T extends FieldValues>({
 
   return (
     <label>
-      {label && <FormInputLabelText required={required} text={label} />}
+      {label && <LabelText required={required} text={label} />}
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants['default'],
@@ -82,7 +81,7 @@ export function FormInputImage<T extends FieldValues>({
         />
         {children}
       </div>
-      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
       {withInfo && (
         <div className="mb-5 text-sm">
           <p>Click on the image to upload a custom one.</p>

@@ -1,19 +1,16 @@
 import { ReactNode } from 'react';
 
-import { XCircleIcon } from '@/features/common/ui/decorative/icons/x-circle';
+import { XCircleIcon } from '@/ui/decorative/icons/x-circle';
+import { IconButton } from '@/ui/icon-button/icon-button';
 
-import { IconButton } from '../icon-button/icon-button';
 import { useDialogModal } from './dialog-modal';
 
-type DialogModalHeadingProps = {
+type HeadingProps = {
   headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   children?: ReactNode;
 };
 
-export function DialogModalHeading({
-  headingLevel = 'h2',
-  children,
-}: DialogModalHeadingProps) {
+export function Heading({ headingLevel = 'h2', children }: HeadingProps) {
   const { closeModal } = useDialogModal();
 
   const HeadingTag = headingLevel;

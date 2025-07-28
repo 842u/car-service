@@ -3,16 +3,12 @@ import { twMerge } from 'tailwind-merge';
 
 import { useForm } from '../form';
 
-type FormControlsProps = ComponentProps<'div'> & {
+type ControlsProps = ComponentProps<'div'> & {
   children: ReactNode;
   className?: string;
 };
 
-export function FormControls({
-  children,
-  className,
-  ...props
-}: FormControlsProps) {
+export function Controls({ children, className, ...props }: ControlsProps) {
   useForm();
 
   return (

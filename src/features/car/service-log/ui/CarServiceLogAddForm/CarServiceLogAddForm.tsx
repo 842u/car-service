@@ -1,4 +1,4 @@
-import { FormProps } from '@/features/common/ui/form/form';
+import { FormProps } from '@/ui/form/form';
 
 import { CarServiceLogForm } from '../CarServiceLogForm/CarServiceLogForm';
 import { useCarServiceLogAddForm } from './useCarServiceLogAddForm';

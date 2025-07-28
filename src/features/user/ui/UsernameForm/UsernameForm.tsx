@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/features/common/ui/button/button';
-import { Form } from '@/features/common/ui/form/form';
+import { Form } from '@/ui/form/form';
 
 import { useUsernameForm } from './useUsernameForm';
 

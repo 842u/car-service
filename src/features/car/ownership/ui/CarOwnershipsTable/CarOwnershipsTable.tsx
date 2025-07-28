@@ -4,10 +4,10 @@ import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { KeyIcon } from '@/features/common/ui/decorative/icons/key';
-import { Table } from '@/features/common/ui/table/table';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { CarOwnership, Profile } from '@/types';
+import { KeyIcon } from '@/ui/decorative/icons/key';
+import { Table } from '@/ui/table/table';
 import { createClient } from '@/utils/supabase/client';
 
 import { CarOwnershipsTableActionsDropdown } from './CarOwnershipsTableActionsDropdown/CarOwnershipsTableActionsDropdown';
@@ -144,7 +144,7 @@ export function CarOwnershipsTable({
           },
         }}
       >
-        <Table.FilterText columnId="user" />
+        <Table.TextFilter columnId="user" />
         <Table.SortBreadcrumb />
         <Table.Root ref={tableRef} className="my-4 overflow-auto">
           <caption className="sr-only">car ownerships</caption>

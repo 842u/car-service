@@ -1,10 +1,10 @@
 import { createContext, ReactNode, RefObject, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useContextGuard } from '@/features/common/hooks/use-context-guard';
+import { useContextGuard } from '@/common/hooks/use-context-guard';
 
-import { DropdownContent } from './content/content';
-import { DropdownTrigger } from './trigger/trigger';
+import { Content } from './content/content';
+import { Trigger } from './trigger/trigger';
 
 type DropdownContextValue = {
   isOpen: boolean;
@@ -49,5 +49,5 @@ export function Dropdown({
   );
 }
 
-Dropdown.Trigger = DropdownTrigger;
-Dropdown.Content = DropdownContent;
+Dropdown.Trigger = Trigger;
+Dropdown.Content = Content;

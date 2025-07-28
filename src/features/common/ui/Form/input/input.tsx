@@ -11,10 +11,10 @@ import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useForm } from '../form';
-import { FormInputErrorText } from './input-error-text';
-import { FormInputLabelText } from './input-label-text';
+import { ErrorText } from './error-text';
+import { LabelText } from './label-text';
 
-export type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
+export type InputProps<T extends FieldValues> = ComponentProps<'input'> & {
   label: string;
   name: Path<T>;
   type: Exclude<HTMLInputTypeAttribute, 'password'>;
@@ -26,7 +26,7 @@ export type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
   showErrorMessage?: boolean;
 };
 
-export function FormInput<T extends FieldValues>({
+export function Input<T extends FieldValues>({
   register,
   label,
   name,
@@ -38,12 +38,12 @@ export function FormInput<T extends FieldValues>({
   showErrorMessage = true,
   required = false,
   ...props
-}: FormInputProps<T>) {
+}: InputProps<T>) {
   useForm();
 
   return (
     <label>
-      <FormInputLabelText required={required} text={label} />
+      <LabelText required={required} text={label} />
       <input
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
@@ -54,7 +54,7 @@ export function FormInput<T extends FieldValues>({
         {...props}
         {...(register ? register(name, registerOptions) : {})}
       />
-      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
     </label>
   );
 }

@@ -2,20 +2,20 @@ import { ChangeEvent, useEffect, useRef } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 
 import { useForm } from '../form';
-import { FormInputImageProps } from './input-image';
+import { InputImageProps } from './input-image';
 
-type UseFormInputImageOptions<T extends FieldValues> = Pick<
-  FormInputImageProps<T>,
+type UseInputImageOptions<T extends FieldValues> = Pick<
+  InputImageProps<T>,
   'control' | 'defaultValue' | 'name' | 'rules' | 'onChange'
 >;
 
-export function useFormInputImage<T extends FieldValues>({
+export function useInputImage<T extends FieldValues>({
   control,
   defaultValue,
   name,
   rules,
   onChange,
-}: UseFormInputImageOptions<T>) {
+}: UseInputImageOptions<T>) {
   const inputElementRef = useRef<HTMLInputElement>(null);
 
   const { field } = useController({ name, control, rules, defaultValue });

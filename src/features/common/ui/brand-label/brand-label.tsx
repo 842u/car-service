@@ -1,9 +1,8 @@
 import { twMerge } from 'tailwind-merge';
 
-import { BrandSimpleIcon } from '@/features/common/ui/decorative/icons/brand-simple';
+import { BrandSimpleIcon } from '@/ui/decorative/icons/brand-simple';
+import { LinkButton } from '@/ui/link-button/link-button';
 import { smoochSans } from '@/utils/fonts';
-
-import { LinkButton } from '../link-button/link-button';
 
 type BrandLabelPops = {
   className?: string;

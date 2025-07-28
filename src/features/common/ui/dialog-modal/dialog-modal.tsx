@@ -9,11 +9,11 @@ import {
   useRef,
 } from 'react';
 
-import { useContextGuard } from '@/features/common/hooks/use-context-guard';
+import { useContextGuard } from '@/common/hooks/use-context-guard';
 
-import { DialogModalControls } from './controls';
-import { DialogModalHeading } from './heading';
-import { DialogModalRoot } from './root';
+import { Controls } from './controls';
+import { Heading } from './heading';
+import { Root } from './root';
 
 export type DialogModalRef = {
   showModal: () => void;
@@ -98,6 +98,6 @@ export function DialogModal({ ref, children }: DialogModalProps) {
   );
 }
 
-DialogModal.Root = DialogModalRoot;
-DialogModal.Heading = DialogModalHeading;
-DialogModal.Controls = DialogModalControls;
+DialogModal.Root = Root;
+DialogModal.Heading = Heading;
+DialogModal.Controls = Controls;

@@ -4,17 +4,17 @@ import { ChangeEvent } from 'react';
 
 import { useTable } from './table';
 
-type TableFilterValuesProps = {
+type ValuesFilterProps = {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
   className?: string;
 };
 
-export function TableFilterValues({
+export function ValuesFilter({
   columnId,
   checkboxLabelValueMapping,
   className,
-}: TableFilterValuesProps) {
+}: ValuesFilterProps) {
   const { table } = useTable();
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;

@@ -7,11 +7,11 @@ import { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
-import { useToasts } from '@/features/common/hooks/use-toasts';
-import { Button } from '@/features/common/ui/button/button';
-import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
-import { Dropdown } from '@/features/common/ui/dropdown/dropdown';
+import { useToasts } from '@/common/hooks/use-toasts';
 import { CarOwnership } from '@/types';
+import { Button } from '@/ui/button/button';
+import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import { Dropdown } from '@/ui/dropdown/dropdown';
 import {
   deleteCarOwnershipsByUsersIds,
   updateCarPrimaryOwnershipByUserId,

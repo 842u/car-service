@@ -10,10 +10,10 @@ import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useForm } from '../form';
-import { FormInputErrorText } from '../input/input-error-text';
-import { FormInputLabelText } from '../input/input-label-text';
+import { ErrorText } from '../input/error-text';
+import { LabelText } from '../input/label-text';
 
-export type FormSelectProps<T extends FieldValues> = {
+export type SelectProps<T extends FieldValues> = {
   label: string;
   name: Path<T>;
   options: Record<string, string>;
@@ -27,7 +27,7 @@ export type FormSelectProps<T extends FieldValues> = {
   hasEmptyOption?: boolean;
 };
 
-export function FormSelect<T extends FieldValues>({
+export function Select<T extends FieldValues>({
   register,
   label,
   name,
@@ -39,12 +39,12 @@ export function FormSelect<T extends FieldValues>({
   required = false,
   showErrorMessage = true,
   hasEmptyOption = true,
-}: FormSelectProps<T>) {
+}: SelectProps<T>) {
   useForm();
 
   return (
     <label className="text-sm">
-      <FormInputLabelText required={required} text={label} />
+      <LabelText required={required} text={label} />
       <select
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
@@ -66,7 +66,7 @@ export function FormSelect<T extends FieldValues>({
           </option>
         ))}
       </select>
-      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
     </label>
   );
 }

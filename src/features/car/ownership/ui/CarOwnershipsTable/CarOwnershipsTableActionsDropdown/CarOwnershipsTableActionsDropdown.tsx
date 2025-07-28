@@ -1,6 +1,6 @@
-import { EllipsisIcon } from '@/features/common/ui/decorative/icons/elipsis';
-import { Dropdown } from '@/features/common/ui/dropdown/dropdown';
 import { IconButton } from '@/features/common/ui/icon-button/icon-button';
+import { EllipsisIcon } from '@/ui/decorative/icons/ellipsis';
+import { Dropdown } from '@/ui/dropdown/dropdown';
 
 import {
   CarOwnershipsTableActionsDropdownContent,

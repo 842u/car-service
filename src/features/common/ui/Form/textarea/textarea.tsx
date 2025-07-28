@@ -11,10 +11,10 @@ import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useForm } from '../form';
-import { FormInputErrorText } from '../input/input-error-text';
-import { FormInputLabelText } from '../input/input-label-text';
+import { ErrorText } from '../input/error-text';
+import { LabelText } from '../input/label-text';
 
-type FormTextareaProps<T extends FieldValues> = ComponentProps<'textarea'> & {
+type TextareaProps<T extends FieldValues> = ComponentProps<'textarea'> & {
   label: string;
   name: Path<T>;
   register: UseFormRegister<T>;
@@ -25,7 +25,7 @@ type FormTextareaProps<T extends FieldValues> = ComponentProps<'textarea'> & {
   errorMessage?: string;
 };
 
-export function FormTextarea<T extends FieldValues>({
+export function Textarea<T extends FieldValues>({
   label,
   name,
   className,
@@ -36,12 +36,12 @@ export function FormTextarea<T extends FieldValues>({
   variant = 'default',
   showErrorMessage = true,
   ...props
-}: FormTextareaProps<T>) {
+}: TextareaProps<T>) {
   useForm();
 
   return (
     <label>
-      <FormInputLabelText required={required} text={label} />
+      <LabelText required={required} text={label} />
       <textarea
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
@@ -52,7 +52,7 @@ export function FormTextarea<T extends FieldValues>({
         {...props}
         {...register(name, registerOptions)}
       />
-      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
     </label>
   );
 }

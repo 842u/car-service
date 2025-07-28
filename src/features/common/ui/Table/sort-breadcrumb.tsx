@@ -1,7 +1,7 @@
+import { Dropdown } from './dropdown';
 import { useTable } from './table';
-import { TableThDropdown } from './th-dropdown';
 
-export function TableSortBreadcrumb() {
+export function SortBreadcrumb() {
   const { table } = useTable();
 
   const sorting = table.getState().sorting;
@@ -22,7 +22,7 @@ export function TableSortBreadcrumb() {
 
           return (
             <div key={rule.id}>
-              <TableThDropdown
+              <Dropdown
                 className="mx-2 inline-block"
                 columnId={rule.id}
                 label={table.getColumn(rule.id)?.columnDef.meta?.label}

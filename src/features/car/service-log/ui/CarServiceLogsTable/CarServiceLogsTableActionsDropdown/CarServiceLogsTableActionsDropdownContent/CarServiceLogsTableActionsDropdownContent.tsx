@@ -5,13 +5,13 @@ import {
 } from '@tanstack/react-query';
 import { useRef } from 'react';
 
+import { useToasts } from '@/common/hooks/use-toasts';
 import { ServiceLogDeleteModal } from '@/features/car/service-log/ui/ServiceLogDeleteModal/ServiceLogDeleteModal';
 import { ServiceLogEditModal } from '@/features/car/service-log/ui/ServiceLogEditModal/ServiceLogEditModal';
-import { useToasts } from '@/features/common/hooks/use-toasts';
-import { Button } from '@/features/common/ui/button/button';
-import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
-import { Dropdown } from '@/features/common/ui/dropdown/dropdown';
 import { ServiceLog } from '@/types';
+import { Button } from '@/ui/button/button';
+import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import { Dropdown } from '@/ui/dropdown/dropdown';
 import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {

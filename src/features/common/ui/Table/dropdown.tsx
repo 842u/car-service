@@ -1,23 +1,19 @@
-import { ChevronDownIcon } from '@/features/common/ui/decorative/icons/chevron-down';
-import { ChevronUpIcon } from '@/features/common/ui/decorative/icons/chevron-up';
-import { ChevronUpDownIcon } from '@/features/common/ui/decorative/icons/chevron-up-down';
-import { XMarkIcon } from '@/features/common/ui/decorative/icons/x-mark';
+import { ChevronDownIcon } from '@/ui/decorative/icons/chevron-down';
+import { ChevronUpIcon } from '@/ui/decorative/icons/chevron-up';
+import { ChevronUpDownIcon } from '@/ui/decorative/icons/chevron-up-down';
+import { XMarkIcon } from '@/ui/decorative/icons/x-mark';
+import { Dropdown as BaseDropdown } from '@/ui/dropdown/dropdown';
+import { IconButton } from '@/ui/icon-button/icon-button';
 
-import { Dropdown } from '../dropdown/dropdown';
-import { IconButton } from '../icon-button/icon-button';
 import { useTable } from './table';
 
-type TableThDropdownProps = {
+type DropdownProps = {
   columnId: string;
   label?: string;
   className?: string;
 };
 
-export function TableThDropdown({
-  columnId,
-  label,
-  className,
-}: TableThDropdownProps) {
+export function Dropdown({ columnId, label, className }: DropdownProps) {
   const { table } = useTable();
 
   const column = table.getColumn(columnId);
@@ -77,8 +73,8 @@ export function TableThDropdown({
   };
 
   return (
-    <Dropdown className={className}>
-      <Dropdown.Trigger>
+    <BaseDropdown className={className}>
+      <BaseDropdown.Trigger>
         {({ onClick, ref }) => (
           <IconButton
             ref={ref}
@@ -99,8 +95,8 @@ export function TableThDropdown({
             )}
           </IconButton>
         )}
-      </Dropdown.Trigger>
-      <Dropdown.Content>
+      </BaseDropdown.Trigger>
+      <BaseDropdown.Content>
         <IconButton
           className="w-full justify-between pr-0"
           text="Asc"
@@ -131,7 +127,7 @@ export function TableThDropdown({
             <XMarkIcon className="stroke-dark-500 dark:stroke-light-500 aspect-square h-full stroke-[7] py-2.5" />
           </IconButton>
         )}
-      </Dropdown.Content>
-    </Dropdown>
+      </BaseDropdown.Content>
+    </BaseDropdown>
   );
 }

@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 
-import { SPINNER_TEST_ID } from '@/features/common/ui/decorative/spinner/spinner';
+import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 import { Form } from '../form';
-import { FormButtonSubmit, FormButtonSubmitProps } from './button-submit';
+import { ButtonSubmit, ButtonSubmitProps } from './button-submit';
 
-function TestFormButtonSubmit({ children, ...props }: FormButtonSubmitProps) {
+function TestFormButtonSubmit({ children, ...props }: ButtonSubmitProps) {
   return (
     <Form>
-      <FormButtonSubmit {...props}>{children}</FormButtonSubmit>
+      <ButtonSubmit {...props}>{children}</ButtonSubmit>
     </Form>
   );
 }
@@ -17,9 +17,7 @@ describe('FormButtonSubmit', () => {
   it('should throw if not wrapped in Form', () => {
     const buttonText = 'test';
 
-    expect(() =>
-      render(<FormButtonSubmit>{buttonText}</FormButtonSubmit>),
-    ).toThrow();
+    expect(() => render(<ButtonSubmit>{buttonText}</ButtonSubmit>)).toThrow();
   });
 
   it('should render as a button element', () => {

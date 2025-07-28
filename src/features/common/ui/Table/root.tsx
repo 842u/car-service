@@ -2,12 +2,12 @@ import { ComponentProps, ReactNode } from 'react';
 
 import { useTable } from './table';
 
-type TableRootProps = ComponentProps<'table'> & {
+type RootProps = ComponentProps<'table'> & {
   className?: string;
   children?: ReactNode;
 };
 
-export function TableRoot({ className, children, ...props }: TableRootProps) {
+export function Root({ className, children, ...props }: RootProps) {
   useTable();
 
   return (

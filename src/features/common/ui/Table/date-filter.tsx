@@ -83,11 +83,11 @@ function getUpdatedFiltersState(
   }
 }
 
-type TableFilterDateProps = {
+type DateFilterProps = {
   columnId: string;
 };
 
-export function TableFilterDate({ columnId }: TableFilterDateProps) {
+export function DateFilter({ columnId }: DateFilterProps) {
   const { table } = useTable();
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;

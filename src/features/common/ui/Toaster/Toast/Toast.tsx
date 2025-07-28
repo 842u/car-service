@@ -3,11 +3,10 @@ import { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { XCircleIcon } from '@/features/common/ui/decorative/icons/x-circle';
 import { Toast as ToastObject } from '@/types';
+import { XCircleIcon } from '@/ui/decorative/icons/x-circle';
+import { IconButton } from '@/ui/icon-button/icon-button';
 import { getToastAssets } from '@/utils/toasts';
-
-import { IconButton } from '../../icon-button/icon-button';
 
 type ToastProps = ToastObject & {
   ref?: Ref<HTMLLIElement>;

@@ -9,15 +9,15 @@ import {
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { VisibilityButton } from '@/features/common/ui/visibility-button/visibility-button';
 import { InputVariants } from '@/types';
+import { VisibilityButton } from '@/ui/visibility-button/visibility-button';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useForm } from '../form';
-import { FormInputErrorText } from '../input/input-error-text';
-import { FormInputLabelText } from '../input/input-label-text';
+import { ErrorText } from '../input/error-text';
+import { LabelText } from '../input/label-text';
 
-export type FormInputPasswordProps<T extends FieldValues> = Omit<
+export type InputPasswordProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,
   'type'
 > & {
@@ -31,7 +31,7 @@ export type FormInputPasswordProps<T extends FieldValues> = Omit<
   showErrorMessage?: boolean;
 };
 
-export function FormInputPassword<T extends FieldValues>({
+export function InputPassword<T extends FieldValues>({
   register,
   label,
   name,
@@ -42,7 +42,7 @@ export function FormInputPassword<T extends FieldValues>({
   showErrorMessage = true,
   required = false,
   ...props
-}: FormInputPasswordProps<T>) {
+}: InputPasswordProps<T>) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   useForm();
@@ -53,7 +53,7 @@ export function FormInputPassword<T extends FieldValues>({
 
   return (
     <label>
-      <FormInputLabelText required={required} text={label} />
+      <LabelText required={required} text={label} />
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
@@ -75,7 +75,7 @@ export function FormInputPassword<T extends FieldValues>({
           />
         </div>
       </div>
-      {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
     </label>
   );
 }

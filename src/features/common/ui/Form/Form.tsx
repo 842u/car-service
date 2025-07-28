@@ -1,19 +1,19 @@
 import { ComponentProps, createContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useContextGuard } from '@/features/common/hooks/use-context-guard';
+import { useContextGuard } from '@/common/hooks/use-context-guard';
 import { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
-import { FormButtonSubmit } from './button-submit/button-submit';
-import { FormCheckboxGroup } from './checkbox-group/checkbox-group';
-import { FormControls } from './controls/controls';
-import { FormInput } from './input/input';
-import { FormInputImage } from './input-image/input-image';
-import { FormInputPassword } from './input-password/input-password';
-import { FormInputWrapper } from './input-wrapper/input-wrapper';
-import { FormSelect } from './select/select';
-import { FormTextarea } from './textarea/textarea';
+import { ButtonSubmit } from './button-submit/button-submit';
+import { CheckboxGroup } from './checkbox-group/checkbox-group';
+import { Controls } from './controls/controls';
+import { Input } from './input/input';
+import { InputImage } from './input-image/input-image';
+import { InputPassword } from './input-password/input-password';
+import { InputWrapper } from './input-wrapper/input-wrapper';
+import { Select } from './select/select';
+import { Textarea } from './textarea/textarea';
 
 export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
@@ -45,12 +45,12 @@ export function Form({
   );
 }
 
-Form.Input = FormInput;
-Form.InputPassword = FormInputPassword;
-Form.InputImage = FormInputImage;
-Form.InputWrapper = FormInputWrapper;
-Form.ButtonSubmit = FormButtonSubmit;
-Form.Controls = FormControls;
-Form.Select = FormSelect;
-Form.CheckboxGroup = FormCheckboxGroup;
-Form.Textarea = FormTextarea;
+Form.Input = Input;
+Form.InputPassword = InputPassword;
+Form.InputImage = InputImage;
+Form.InputWrapper = InputWrapper;
+Form.ButtonSubmit = ButtonSubmit;
+Form.Controls = Controls;
+Form.Select = Select;
+Form.CheckboxGroup = CheckboxGroup;
+Form.Textarea = Textarea;

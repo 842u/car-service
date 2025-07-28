@@ -1,18 +1,18 @@
-import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
+import { Button, ButtonProps } from '@/ui/button/button';
+import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-import { Button, ButtonProps } from '../../button/button';
 import { useForm } from '../form';
 
-export type FormButtonSubmitProps = ButtonProps & {
+export type ButtonSubmitProps = ButtonProps & {
   children: string;
   isSubmitting?: boolean;
 };
 
-export function FormButtonSubmit({
+export function ButtonSubmit({
   children,
   isSubmitting = false,
   ...props
-}: FormButtonSubmitProps) {
+}: ButtonSubmitProps) {
   useForm();
 
   return (

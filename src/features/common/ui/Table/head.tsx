@@ -1,7 +1,7 @@
 import { useTable } from './table';
-import { TableTh } from './th';
+import { Th } from './th';
 
-export function TableHead() {
+export function Head() {
   const { table } = useTable();
 
   return (
@@ -10,11 +10,7 @@ export function TableHead() {
         return (
           <tr key={headerGroup.id} className="border-alpha-grey-300 border-b">
             {headerGroup.headers.map((header) => (
-              <TableTh
-                key={header.id}
-                colSpan={header.colSpan}
-                header={header}
-              />
+              <Th key={header.id} colSpan={header.colSpan} header={header} />
             ))}
           </tr>
         );
