@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Car } from '@/types';
 
 import { CarImage } from '../../../../features/car/ui/CarImage/CarImage';
-import { Card } from '../../../../features/common/ui/Card/Card';
+import { Card } from '../../../common/ui/card/card';
 
 type CarCardProps = {
   car: Car;
