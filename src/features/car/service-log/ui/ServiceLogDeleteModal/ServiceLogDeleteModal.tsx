@@ -6,7 +6,7 @@ import { Button } from '../../../../common/ui/button/button';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../../common/ui/DialogModal/DialogModal';
+} from '../../../../common/ui/dialog-modal/dialog-modal';
 
 type ServiceLogDeleteModalProps = {
   canTakeAction: boolean;

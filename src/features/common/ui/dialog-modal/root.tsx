@@ -1,6 +1,6 @@
 import { ComponentProps, MouseEvent, ReactNode } from 'react';
 
-import { useDialogModal } from './DialogModal';
+import { useDialogModal } from './dialog-modal';
 
 type DialogModalRootProps = ComponentProps<'dialog'> & {
   children?: ReactNode;

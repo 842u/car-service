@@ -6,7 +6,7 @@ import { Car } from '@/types';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../common/ui/DialogModal/DialogModal';
+} from '../../../common/ui/dialog-modal/dialog-modal';
 import { CarEditForm } from '../CarEditForm/CarEditForm';
 
 type CarEditModalProps = {

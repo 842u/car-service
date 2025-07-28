@@ -9,7 +9,7 @@ import { ServiceLogDeleteModal } from '@/features/car/service-log/ui/ServiceLogD
 import { ServiceLogEditModal } from '@/features/car/service-log/ui/ServiceLogEditModal/ServiceLogEditModal';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 import { Button } from '@/features/common/ui/button/button';
-import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
 import { Dropdown } from '@/features/common/ui/Dropdown/Dropdown';
 import { ServiceLog } from '@/types';
 import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';

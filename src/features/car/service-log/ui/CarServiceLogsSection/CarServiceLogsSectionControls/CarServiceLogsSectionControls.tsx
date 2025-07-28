@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
 import { ServiceLogAddModal } from '@/features/car/service-log/ui/ServiceLogAddModal/ServiceLogAddModal';
-import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
 import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
 
 import { ServiceLogAddButton } from '../../ServiceLogAddButton/ServiceLogAddButton';

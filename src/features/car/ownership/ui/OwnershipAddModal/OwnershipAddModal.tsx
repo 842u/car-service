@@ -4,7 +4,7 @@ import { TextSeparator } from '@/features/common/ui/decorative/text-separator/te
 import {
   DialogModal,
   DialogModalRef,
-} from '@/features/common/ui/DialogModal/DialogModal';
+} from '@/features/common/ui/dialog-modal/dialog-modal';
 
 import { CarOwnershipAddForm } from '../CarOwnershipAddForm/CarOwnershipAddForm';
 

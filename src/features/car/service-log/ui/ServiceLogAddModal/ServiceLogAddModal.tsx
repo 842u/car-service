@@ -5,7 +5,7 @@ import { TextSeparator } from '@/features/common/ui/decorative/text-separator/te
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../../common/ui/DialogModal/DialogModal';
+} from '../../../../common/ui/dialog-modal/dialog-modal';
 import { CarServiceLogAddForm } from '../CarServiceLogAddForm/CarServiceLogAddForm';
 
 type ServiceLogAddModalProps = {

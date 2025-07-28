@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { CarEditButton } from '@/features/car/ui/CarEditButton/CarEditButton';
 import { CarEditModal } from '@/features/car/ui/CarEditModal/CarEditModal';
-import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
 import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
 import { Car } from '@/types';
 

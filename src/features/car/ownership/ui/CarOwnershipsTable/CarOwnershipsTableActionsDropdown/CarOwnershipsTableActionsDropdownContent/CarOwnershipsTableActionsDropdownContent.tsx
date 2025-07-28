@@ -9,7 +9,7 @@ import { useRef } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
 import { Button } from '@/features/common/ui/button/button';
-import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
 import { Dropdown } from '@/features/common/ui/Dropdown/Dropdown';
 import { CarOwnership } from '@/types';
 import {

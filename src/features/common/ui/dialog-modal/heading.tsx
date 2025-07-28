@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { XCircleIcon } from '@/features/common/ui/decorative/icons/x-circle';
 
 import { IconButton } from '../IconButton/IconButton';
-import { useDialogModal } from './DialogModal';
+import { useDialogModal } from './dialog-modal';
 
 type DialogModalHeadingProps = {
   headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
 import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
 
 import { OwnershipAddButton } from '../../OwnershipAddButton/OwnershipAddButton';

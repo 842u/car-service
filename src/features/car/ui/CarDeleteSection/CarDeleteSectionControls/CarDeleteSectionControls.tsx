@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { CarDeleteButton } from '@/features/car/ui/CarDeleteButton/CarDeleteButton';
 import { CarDeleteModal } from '@/features/car/ui/CarDeleteModal/CarDeleteModal';
-import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DialogModalRef } from '@/features/common/ui/dialog-modal/dialog-modal';
 import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
 
 export type CarDeleteSectionControlsProps = {
