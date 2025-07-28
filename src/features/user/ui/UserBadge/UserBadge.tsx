@@ -2,7 +2,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { Profile } from '@/types';
 
-import { AvatarImage } from '../images/AvatarImage/AvatarImage';
+import { AvatarImage } from '../AvatarImage/AvatarImage';
 
 export const USER_BADGE_TEST_ID = 'user badge';
 

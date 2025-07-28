@@ -3,12 +3,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { AvatarSection } from '@/components/ui/sections/AvatarSection/AvatarSection';
-import { IdSection } from '@/components/ui/sections/IdSection/IdSection';
-import { UsernameSection } from '@/components/ui/sections/UsernameSection/UsernameSection';
 import { PasswordChangeSection } from '@/features/auth/ui/PasswordChangeSection/PasswordChangeSection';
 import { useToasts } from '@/features/common/hooks/useToasts';
 import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
+import { AvatarSection } from '@/features/user/ui/AvatarSection/AvatarSection';
+import { IdSection } from '@/features/user/ui/IdSection/IdSection';
+import { UsernameSection } from '@/features/user/ui/UsernameSection/UsernameSection';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 

@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { UserBadge } from '@/components/ui/UserBadge/UserBadge';
 import { useToasts } from '@/features/common/hooks/useToasts';
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
+import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 

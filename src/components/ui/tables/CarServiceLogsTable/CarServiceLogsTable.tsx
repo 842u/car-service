@@ -9,7 +9,7 @@ import { createClient } from '@/utils/supabase/client';
 
 import { Table } from '../../../../features/common/ui/Table/Table';
 import { filterColumnByDate } from '../../../../features/common/ui/Table/TableFilterDate';
-import { UserBadge } from '../../UserBadge/UserBadge';
+import { UserBadge } from '../../../../features/user/ui/UserBadge/UserBadge';
 import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown/CarServiceLogsTableActionsDropdown';
 
 const columnsHelper = createColumnHelper<ServiceLog>();

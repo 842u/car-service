@@ -5,7 +5,7 @@ import {
 import { getMimeTypeExtensions } from '@/utils/general';
 
 import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
-import { AvatarForm } from '../../forms/AvatarForm/AvatarForm';
+import { AvatarForm } from '../AvatarForm/AvatarForm';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);

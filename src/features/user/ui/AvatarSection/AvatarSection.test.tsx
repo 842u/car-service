@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
 
-import { AVATAR_FORM_TEST_ID } from '../../forms/AvatarForm/AvatarForm';
+import { AVATAR_FORM_TEST_ID } from '../AvatarForm/AvatarForm';
 import { AvatarSection } from './AvatarSection';
 
 function TestAvatarSection() {
