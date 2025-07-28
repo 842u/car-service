@@ -1,7 +1,7 @@
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 
+import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
 import { CarImage } from '../../images/CarImage/CarImage';
-import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
 
 type CarIdentitySectionProps = {
   name?: string;

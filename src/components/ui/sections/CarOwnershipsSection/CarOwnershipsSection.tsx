@@ -1,6 +1,6 @@
 import { CarOwnership, Profile } from '@/types';
 
-import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
+import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
 import { CarOwnershipsTable } from '../../tables/CarOwnershipsTable/CarOwnershipsTable';
 import {
   CarOwnershipsSectionControls,

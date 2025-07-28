@@ -5,8 +5,8 @@ import { useRef } from 'react';
 import { CarAddButton } from '@/components/ui/buttons/CarAddButton/CarAddButton';
 import { CarsGallery } from '@/components/ui/CarsGallery/CarsGallery';
 import { CarAddModal } from '@/components/ui/modals/CarAddModal/CarAddModal';
-import { DashboardMain } from '@/components/ui/shared/DashboardMain/DashboardMain';
 import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
 
 export default function CarsPage() {
   const dialogRef = useRef<DialogModalRef>(null);

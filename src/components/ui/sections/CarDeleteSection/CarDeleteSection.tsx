@@ -1,4 +1,4 @@
-import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
+import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
 import {
   CarDeleteSectionControls,
   CarDeleteSectionControlsProps,

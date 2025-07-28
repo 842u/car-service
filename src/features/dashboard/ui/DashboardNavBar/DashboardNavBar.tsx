@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
+import { UserBadge } from '@/components/ui/UserBadge/UserBadge';
 import { useToasts } from '@/features/common/hooks/useToasts';
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
@@ -11,7 +12,6 @@ import { queryKeys } from '@/utils/tanstack/keys';
 import { BrandLabel } from '../../../../features/common/ui/BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../../../features/common/ui/HamburgerButton/HamburgerButton';
 import { NavBar } from '../../../../features/common/ui/NavBar/NavBar';
-import { UserBadge } from '../../UserBadge/UserBadge';
 import { DashboardNavMenu } from './DashboardNavMenu';
 
 export function DashboardNavBar() {

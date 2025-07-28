@@ -9,7 +9,7 @@ import { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { DashboardSection } from '../../shared/DashboardSection/DashboardSection';
+import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
 import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarServiceLogsTable';
 import {
   CarServiceLogsSectionControls,

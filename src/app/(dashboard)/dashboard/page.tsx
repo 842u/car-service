@@ -1,4 +1,4 @@
-import { DashboardMain } from '@/components/ui/shared/DashboardMain/DashboardMain';
+import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
 
 export default async function DashboardPage() {
   return (

@@ -1,11 +1,11 @@
 import { twJoin, twMerge } from 'tailwind-merge';
 
+import { SignOutLinkButton } from '@/components/ui/buttons/SignOutLinkButton/SignOutLinkButton';
 import { CarsIcon } from '@/features/common/ui/decorative/icons/CarsIcon';
 import { HomeIcon } from '@/features/common/ui/decorative/icons/HomeIcon';
 import { UserIcon } from '@/features/common/ui/decorative/icons/UserIcon';
 import { ThemeButton } from '@/features/common/ui/ThemeButton/ThemeButton';
 
-import { SignOutLinkButton } from '../../buttons/SignOutLinkButton/SignOutLinkButton';
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 
 type DashboardNavMenuProps = {
