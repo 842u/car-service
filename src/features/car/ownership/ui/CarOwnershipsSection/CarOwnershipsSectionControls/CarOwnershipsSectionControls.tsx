@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 
-import { DialogModalRef } from '../../../../../features/common/ui/DialogModal/DialogModal';
-import { DashboardSection } from '../../../../../features/dashboard/ui/DashboardSection/DashboardSection';
-import { OwnershipAddButton } from '../../../buttons/OwnershipAddButton/OwnershipAddButton';
-import { OwnershipAddModal } from '../../../modals/OwnershipAddModal/OwnershipAddModal';
+import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
+import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
+
+import { OwnershipAddButton } from '../../OwnershipAddButton/OwnershipAddButton';
+import { OwnershipAddModal } from '../../OwnershipAddModal/OwnershipAddModal';
 
 export const CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID =
   'car ownership section test id';

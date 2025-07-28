@@ -5,11 +5,11 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { KeyIcon } from '@/features/common/ui/decorative/icons/KeyIcon';
+import { Table } from '@/features/common/ui/Table/Table';
+import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { CarOwnership, Profile } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 
-import { Table } from '../../../../features/common/ui/Table/Table';
-import { UserBadge } from '../../../../features/user/ui/UserBadge/UserBadge';
 import { CarOwnershipsTableActionsDropdown } from './CarOwnershipsTableActionsDropdown/CarOwnershipsTableActionsDropdown';
 
 const columnsHelper = createColumnHelper<CarOwnership>();

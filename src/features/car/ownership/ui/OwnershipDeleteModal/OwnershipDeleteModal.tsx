@@ -1,13 +1,12 @@
 import { RefObject } from 'react';
 
+import { Button } from '@/features/common/ui/Button/Button';
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
-import { CarOwnership } from '@/types';
-
-import { Button } from '../../../../features/common/ui/Button/Button';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../../features/common/ui/DialogModal/DialogModal';
+} from '@/features/common/ui/DialogModal/DialogModal';
+import { CarOwnership } from '@/types';
 
 type OwnershipDeleteModalProps = {
   canTakeAction: boolean;

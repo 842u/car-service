@@ -1,12 +1,12 @@
 import { RefObject } from 'react';
 
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
-
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../../features/common/ui/DialogModal/DialogModal';
-import { CarOwnershipAddForm } from '../../forms/CarOwnershipAddForm/CarOwnershipAddForm';
+} from '@/features/common/ui/DialogModal/DialogModal';
+
+import { CarOwnershipAddForm } from '../CarOwnershipAddForm/CarOwnershipAddForm';
 
 type OwnershipAddModalProps = {
   carId: string;

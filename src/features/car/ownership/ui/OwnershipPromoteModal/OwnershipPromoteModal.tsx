@@ -1,12 +1,11 @@
 import { RefObject } from 'react';
 
+import { Button } from '@/features/common/ui/Button/Button';
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
-
-import { Button } from '../../../../features/common/ui/Button/Button';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../../features/common/ui/DialogModal/DialogModal';
+} from '@/features/common/ui/DialogModal/DialogModal';
 
 type OwnershipPromoteModalProps = {
   canTakeAction: boolean;

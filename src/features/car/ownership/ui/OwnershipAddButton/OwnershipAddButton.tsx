@@ -1,11 +1,10 @@
 import { twMerge } from 'tailwind-merge';
 
 import { UserPlusIcon } from '@/features/common/ui/decorative/icons/UserPlusIcon';
-
 import {
   IconButton,
   IconButtonProps,
-} from '../../../../features/common/ui/IconButton/IconButton';
+} from '@/features/common/ui/IconButton/IconButton';
 
 type OwnershipAddButtonProps = Partial<IconButtonProps>;
 

@@ -7,8 +7,6 @@ import { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
-import { OwnershipDeleteModal } from '@/components/ui/modals/OwnershipDeleteModal/OwnershipDeleteModal';
-import { OwnershipPromoteModal } from '@/components/ui/modals/OwnershipPromoteModal/OwnershipPromoteModal';
 import { useToasts } from '@/features/common/hooks/useToasts';
 import { Button } from '@/features/common/ui/Button/Button';
 import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
@@ -24,6 +22,9 @@ import {
   carsOwnershipsUpdateOnMutate,
 } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
+
+import { OwnershipDeleteModal } from '../../../OwnershipDeleteModal/OwnershipDeleteModal';
+import { OwnershipPromoteModal } from '../../../OwnershipPromoteModal/OwnershipPromoteModal';
 
 export type CarOwnershipsTableActionsDropdownContentProps = {
   ownership: CarOwnership;

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
 
-import { CAR_OWNERSHIP_ADD_FORM_TEST_ID } from '../../../forms/CarOwnershipAddForm/CarOwnershipAddForm';
+import { CAR_OWNERSHIP_ADD_FORM_TEST_ID } from '../../CarOwnershipAddForm/CarOwnershipAddForm';
 import { CarOwnershipsSectionControls } from './CarOwnershipsSectionControls';
 
 const MOCK_CAR_ID = 'ee4a8fa7-758e-4302-8726-01eeecee8707';
