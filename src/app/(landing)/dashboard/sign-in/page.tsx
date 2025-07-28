@@ -1,6 +1,6 @@
-import EmailAuthForm from '@/components/ui/forms/EmailAuthForm/EmailAuthForm';
-import { OAuthProvidersSection } from '@/components/ui/sections/OAuthProvidersSection/OAuthProvidersSection';
-import { SignUpLink } from '@/components/ui/SignUpLink/SignUpLink';
+import EmailAuthForm from '@/features/auth/ui/EmailAuthForm/EmailAuthForm';
+import { OAuthProvidersSection } from '@/features/auth/ui/OAuthProvidersSection/OAuthProvidersSection';
+import { SignUpLink } from '@/features/auth/ui/SignUpLink/SignUpLink';
 import { BrandFullIcon } from '@/features/common/ui/decorative/icons/BrandFullIcon';
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 

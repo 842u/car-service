@@ -1,6 +1,6 @@
 import { twJoin, twMerge } from 'tailwind-merge';
 
-import { SignOutLinkButton } from '@/components/ui/buttons/SignOutLinkButton/SignOutLinkButton';
+import { SignOutLinkButton } from '@/features/auth/ui/SignOutLinkButton/SignOutLinkButton';
 import { CarsIcon } from '@/features/common/ui/decorative/icons/CarsIcon';
 import { HomeIcon } from '@/features/common/ui/decorative/icons/HomeIcon';
 import { UserIcon } from '@/features/common/ui/decorative/icons/UserIcon';

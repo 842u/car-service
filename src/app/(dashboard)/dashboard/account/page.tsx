@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 
 import { AvatarSection } from '@/components/ui/sections/AvatarSection/AvatarSection';
 import { IdSection } from '@/components/ui/sections/IdSection/IdSection';
-import { PasswordChangeSection } from '@/components/ui/sections/PasswordChangeSection/PasswordChangeSection';
 import { UsernameSection } from '@/components/ui/sections/UsernameSection/UsernameSection';
+import { PasswordChangeSection } from '@/features/auth/ui/PasswordChangeSection/PasswordChangeSection';
 import { useToasts } from '@/features/common/hooks/useToasts';
 import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
