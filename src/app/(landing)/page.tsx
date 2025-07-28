@@ -1,4 +1,4 @@
-import { Footer } from '@/landing/ui/Footer/Footer';
+import { Footer } from '@/landing/ui/footer/footer';
 import { CTASection } from '@/landing/ui/sections/cta/cta';
 import { FeaturesSection } from '@/landing/ui/sections/features/features';
 import { HeroSection } from '@/landing/ui/sections/hero/hero';
