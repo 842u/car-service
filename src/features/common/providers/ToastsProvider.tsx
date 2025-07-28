@@ -5,7 +5,7 @@ import { ReactNode, useCallback, useMemo, useState } from 'react';
 import {
   ToastsContext,
   ToastsContextType,
-} from '@/features/common/context/ToastsContext';
+} from '@/features/common/contexts/toasts';
 import { Toast, ToastType } from '@/types';
 
 type ToastsProviderProps = {
