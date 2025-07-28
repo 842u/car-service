@@ -2,7 +2,7 @@ import { RefObject } from 'react';
 
 import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/TextSeparator';
 
-import { Button } from '../../../../common/ui/Button/Button';
+import { Button } from '../../../../common/ui/button/button';
 import {
   DialogModal,
   DialogModalRef,

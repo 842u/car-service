@@ -9,7 +9,7 @@ import { GoogleIcon } from '@/features/common/ui/decorative/icons/GoogleIcon';
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
-import { Button } from '../../../common/ui/Button/Button';
+import { Button } from '../../../common/ui/button/button';
 
 const providerMappings: {
   [K in Provider]?: { text: string; icon: JSX.Element };

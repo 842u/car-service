@@ -8,7 +8,7 @@ import { useRef } from 'react';
 import { ServiceLogDeleteModal } from '@/features/car/service-log/ui/ServiceLogDeleteModal/ServiceLogDeleteModal';
 import { ServiceLogEditModal } from '@/features/car/service-log/ui/ServiceLogEditModal/ServiceLogEditModal';
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { Button } from '@/features/common/ui/Button/Button';
+import { Button } from '@/features/common/ui/button/button';
 import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
 import { Dropdown } from '@/features/common/ui/Dropdown/Dropdown';
 import { ServiceLog } from '@/types';

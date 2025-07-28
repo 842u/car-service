@@ -1,4 +1,4 @@
-import { Button } from '@/features/common/ui/Button/Button';
+import { Button } from '@/features/common/ui/button/button';
 import { Form, FormProps } from '@/features/common/ui/Form/Form';
 import {
   CarServiceLogFormValues,

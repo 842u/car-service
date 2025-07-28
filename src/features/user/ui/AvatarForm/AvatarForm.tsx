@@ -2,8 +2,8 @@
 
 import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 
-import { Button } from '../../../../features/common/ui/Button/Button';
 import { Form } from '../../../../features/common/ui/Form/Form';
+import { Button } from '../../../common/ui/button/button';
 import { AvatarImage } from '../AvatarImage/AvatarImage';
 import { useAvatarForm } from './useAvatarForm';
 
