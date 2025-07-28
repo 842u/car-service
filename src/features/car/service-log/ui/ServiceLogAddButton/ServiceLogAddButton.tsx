@@ -2,7 +2,7 @@ import { BookIcon } from '@/features/common/ui/decorative/icons/book';
 import {
   IconButton,
   IconButtonProps,
-} from '@/features/common/ui/IconButton/IconButton';
+} from '@/features/common/ui/icon-button/icon-button';
 
 type ServiceLogAddButtonProps = Partial<IconButtonProps>;
 

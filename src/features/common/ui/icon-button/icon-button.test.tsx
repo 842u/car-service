@@ -4,7 +4,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 
 import { KeyIcon } from '@/features/common/ui/decorative/icons/key';
 
-import { IconButton } from './IconButton';
+import { IconButton } from './icon-button';
 
 const BUTTON_TITLE = 'test title';
 

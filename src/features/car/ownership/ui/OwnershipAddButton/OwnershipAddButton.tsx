@@ -4,7 +4,7 @@ import { UserPlusIcon } from '@/features/common/ui/decorative/icons/user-plus';
 import {
   IconButton,
   IconButtonProps,
-} from '@/features/common/ui/IconButton/IconButton';
+} from '@/features/common/ui/icon-button/icon-button';
 
 type OwnershipAddButtonProps = Partial<IconButtonProps>;
 

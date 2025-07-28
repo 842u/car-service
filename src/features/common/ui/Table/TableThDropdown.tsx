@@ -4,7 +4,7 @@ import { ChevronUpDownIcon } from '@/features/common/ui/decorative/icons/chevron
 import { XMarkIcon } from '@/features/common/ui/decorative/icons/x-mark';
 
 import { Dropdown } from '../dropdown/dropdown';
-import { IconButton } from '../IconButton/IconButton';
+import { IconButton } from '../icon-button/icon-button';
 import { useTable } from './Table';
 
 type TableThDropdownProps = {

@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge';
 import { MoonIcon } from '@/features/common/ui/decorative/icons/moon';
 import { SunIcon } from '@/features/common/ui/decorative/icons/sun';
 
-import { IconButton } from '../../../../features/common/ui/IconButton/IconButton';
+import { IconButton } from '../icon-button/icon-button';
 
 type ThemeButtonProps = ComponentProps<'button'> & {
   className?: string;

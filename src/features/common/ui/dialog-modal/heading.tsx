@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { XCircleIcon } from '@/features/common/ui/decorative/icons/x-circle';
 
-import { IconButton } from '../IconButton/IconButton';
+import { IconButton } from '../icon-button/icon-button';
 import { useDialogModal } from './dialog-modal';
 
 type DialogModalHeadingProps = {

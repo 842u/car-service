@@ -5,7 +5,7 @@ import { CarEditIcon } from '@/features/common/ui/decorative/icons/car-edit';
 import {
   IconButton,
   IconButtonProps,
-} from '../../../../features/common/ui/IconButton/IconButton';
+} from '../../../common/ui/icon-button/icon-button';
 
 type CarEditButtonProps = Partial<IconButtonProps>;
 
