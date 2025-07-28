@@ -10,8 +10,8 @@ import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { NavBar } from '../../../../features/common/ui/NavBar/NavBar';
 import { HamburgerButton } from '../../../common/ui/hamburger-button/hamburger-button';
+import { NavBar } from '../../../common/ui/nav-bar/nav-bar';
 import { DashboardNavMenu } from './DashboardNavMenu';
 
 export function DashboardNavBar() {
