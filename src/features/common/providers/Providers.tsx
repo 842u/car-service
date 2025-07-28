@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 
-import { ColorThemeProvider } from './ColorThemeProvider';
-import { TanStackQueryProvider } from './TanStackQueryProvider';
-import { ToastsProvider } from './ToastsProvider';
+import { ColorThemeProvider } from './color-theme';
+import { TanStackQueryProvider } from './tan-stack-query';
+import { ToastsProvider } from './toasts/toasts';
 
 type ProvidersProps = {
   children: ReactNode;

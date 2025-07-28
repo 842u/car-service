@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/tan-stack-query';
 import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
 
 import { USERNAME_FORM_TEST_ID } from '../UsernameForm/UsernameForm';

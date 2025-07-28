@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/tan-stack-query';
 
 import { CAR_OWNERSHIP_ADD_FORM_TEST_ID } from '../../CarOwnershipAddForm/CarOwnershipAddForm';
 import { CarOwnershipsSectionControls } from './CarOwnershipsSectionControls';

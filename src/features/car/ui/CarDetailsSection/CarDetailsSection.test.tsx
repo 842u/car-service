@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/tan-stack-query';
 import { Car } from '@/types';
 
 import { CAR_DETAILS_TABLE_TEST_ID } from '../CarDetailsTable/CarDetailsTable';

@@ -7,8 +7,8 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { ToastsProvider } from '@/features/common/providers/ToastsProvider';
 
+import { ToastsProvider } from '../../providers/toasts/toasts';
 import { Toaster } from './Toaster';
 
 const TEST_TOAST_MESSAGE = 'test toast';

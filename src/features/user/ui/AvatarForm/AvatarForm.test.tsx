@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent, { Options } from '@testing-library/user-event';
 
-import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/tan-stack-query';
 import { IMAGE_FILE_MAX_SIZE_BYTES } from '@/schemas/zod/common';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 

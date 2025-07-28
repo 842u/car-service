@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 import { ToastType } from '@/types';
 
-import { ToastsProvider } from './ToastsProvider';
+import { ToastsProvider } from './toasts';
 
 const TOAST_TEST_ID = 'toast';
 const TOAST_MESSAGE = 'test message';

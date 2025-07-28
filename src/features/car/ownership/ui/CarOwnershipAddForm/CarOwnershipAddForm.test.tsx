@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { TanStackQueryProvider } from '@/features/common/providers/TanStackQueryProvider';
+import { TanStackQueryProvider } from '@/features/common/providers/tan-stack-query';
 import { addCarOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 
 import { CarOwnershipAddForm } from './CarOwnershipAddForm';
