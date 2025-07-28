@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
-const Toaster = dynamic(() => import('./Toaster').then((mod) => mod.Toaster), {
+const Toaster = dynamic(() => import('./toaster').then((mod) => mod.Toaster), {
   ssr: false,
 });
 

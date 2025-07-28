@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 
 import { ToastsProvider } from '../../providers/toasts/toasts';
-import { Toaster } from './Toaster';
+import { Toaster } from './toaster';
 
 const TEST_TOAST_MESSAGE = 'test toast';
 const TOAST_LIFETIME = 500;
