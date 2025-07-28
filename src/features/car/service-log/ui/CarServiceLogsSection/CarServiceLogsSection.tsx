@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
+import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
 import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
 import { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';

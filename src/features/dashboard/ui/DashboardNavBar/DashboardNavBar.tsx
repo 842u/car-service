@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
 import { BrandLabel } from '@/features/common/ui/brand-label/brand-label';
-import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
+import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';

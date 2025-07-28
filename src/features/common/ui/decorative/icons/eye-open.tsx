@@ -1,4 +1,4 @@
-import { SvgA11y, SvgA11yProps } from '../SvgA11y';
+import { SvgA11y, SvgA11yProps } from '../svg-a11y';
 
 export function EyeOpenIcon({ ...props }: SvgA11yProps) {
   return (

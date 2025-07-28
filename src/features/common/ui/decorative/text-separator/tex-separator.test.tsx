@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { TextSeparator } from './TextSeparator';
+import { TextSeparator } from './text-separator';
 
 describe('TextSeparator', () => {
   it('should render provided text', () => {

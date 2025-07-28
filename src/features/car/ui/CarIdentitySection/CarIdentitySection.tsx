@@ -1,4 +1,4 @@
-import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
+import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
 
 import { CarImage } from '../../../../features/car/ui/CarImage/CarImage';
 import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
