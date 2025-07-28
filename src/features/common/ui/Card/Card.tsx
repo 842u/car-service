@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import {
   useMouseTiltAnimation,
   UseMouseTiltAnimationOptions,
-} from '@/features/common/hooks/useMouseTiltAnimation';
+} from '@/features/common/hooks/use-mouse-tilt-animation';
 
 const motionFeatures = () =>
   import('@/utils/motion/motion').then((module) => module.default);
