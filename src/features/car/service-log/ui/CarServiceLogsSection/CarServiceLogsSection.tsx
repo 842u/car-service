@@ -5,12 +5,12 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/features/common/hooks/useToasts';
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
+import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
 import { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
-import { CarServiceLogsTable } from '../../tables/CarServiceLogsTable/CarServiceLogsTable';
+import { CarServiceLogsTable } from '../CarServiceLogsTable/CarServiceLogsTable';
 import {
   CarServiceLogsSectionControls,
   CarServiceLogsSectionControlsProps,

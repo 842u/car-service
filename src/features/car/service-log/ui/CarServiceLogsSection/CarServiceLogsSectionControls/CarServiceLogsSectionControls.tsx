@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 
-import { ServiceLogAddButton } from '@/components/ui/buttons/ServiceLogAddButton/ServiceLogAddButton';
-import { ServiceLogAddModal } from '@/components/ui/modals/ServiceLogAddModal/ServiceLogAddModal';
+import { ServiceLogAddModal } from '@/features/car/service-log/ui/ServiceLogAddModal/ServiceLogAddModal';
 import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
 import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
+
+import { ServiceLogAddButton } from '../../ServiceLogAddButton/ServiceLogAddButton';
 
 export type CarServiceLogsSectionControlsProps = { carId: string };
 

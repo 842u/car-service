@@ -1,9 +1,8 @@
 import { BookIcon } from '@/features/common/ui/decorative/icons/BookIcon';
-
 import {
   IconButton,
   IconButtonProps,
-} from '../../../../features/common/ui/IconButton/IconButton';
+} from '@/features/common/ui/IconButton/IconButton';
 
 type ServiceLogAddButtonProps = Partial<IconButtonProps>;
 

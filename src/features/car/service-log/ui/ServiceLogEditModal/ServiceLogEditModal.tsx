@@ -6,8 +6,8 @@ import { ServiceLog } from '@/types';
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../../features/common/ui/DialogModal/DialogModal';
-import { CarServiceLogEditForm } from '../../forms/CarServiceLogEditForm/CarServiceLogEditForm';
+} from '../../../../common/ui/DialogModal/DialogModal';
+import { CarServiceLogEditForm } from '../CarServiceLogEditForm/CarServiceLogEditForm';
 
 type ServiceLogEditModalProps = {
   serviceLog: ServiceLog;

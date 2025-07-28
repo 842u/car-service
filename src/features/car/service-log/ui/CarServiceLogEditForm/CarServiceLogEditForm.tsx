@@ -1,6 +1,6 @@
 'use client';
 
-import { CarServiceLogForm } from '../../shared/CarServiceLogForm/CarServiceLogForm';
+import { CarServiceLogForm } from '../CarServiceLogForm/CarServiceLogForm';
 import {
   useCarServiceLogEditForm,
   UseCarServiceLogEditFormOptions,

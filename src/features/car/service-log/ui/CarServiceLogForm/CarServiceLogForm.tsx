@@ -1,11 +1,11 @@
+import { Button } from '@/features/common/ui/Button/Button';
+import { Form, FormProps } from '@/features/common/ui/Form/Form';
 import {
   CarServiceLogFormValues,
   MAX_SERVICE_NOTE_lENGTH,
 } from '@/schemas/zod/carServiceLogFormSchema';
 import { serviceCategoryMapping, ServiceLog } from '@/types';
 
-import { Button } from '../../../../features/common/ui/Button/Button';
-import { Form, FormProps } from '../../../../features/common/ui/Form/Form';
 import { useCarServiceLogForm } from './useCarServiceLogForm';
 
 export type CarServiceLogFormProps = Omit<FormProps, 'onSubmit'> & {

@@ -1,5 +1,6 @@
-import { FormProps } from '../../../../features/common/ui/Form/Form';
-import { CarServiceLogForm } from '../../shared/CarServiceLogForm/CarServiceLogForm';
+import { FormProps } from '@/features/common/ui/Form/Form';
+
+import { CarServiceLogForm } from '../CarServiceLogForm/CarServiceLogForm';
 import { useCarServiceLogAddForm } from './useCarServiceLogAddForm';
 
 export type CarServiceLogAddFormProps = Omit<FormProps, 'onSubmit'> & {

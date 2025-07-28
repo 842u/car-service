@@ -5,8 +5,8 @@ import {
 } from '@tanstack/react-query';
 import { useRef } from 'react';
 
-import { ServiceLogDeleteModal } from '@/components/ui/modals/ServiceLogDeleteModal/ServiceLogDeleteModal';
-import { ServiceLogEditModal } from '@/components/ui/modals/ServiceLogEditModal/ServiceLogEditModal';
+import { ServiceLogDeleteModal } from '@/features/car/service-log/ui/ServiceLogDeleteModal/ServiceLogDeleteModal';
+import { ServiceLogEditModal } from '@/features/car/service-log/ui/ServiceLogEditModal/ServiceLogEditModal';
 import { useToasts } from '@/features/common/hooks/useToasts';
 import { Button } from '@/features/common/ui/Button/Button';
 import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';

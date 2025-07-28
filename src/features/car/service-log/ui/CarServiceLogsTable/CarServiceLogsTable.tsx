@@ -4,12 +4,12 @@ import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { Table } from '@/features/common/ui/Table/Table';
+import { filterColumnByDate } from '@/features/common/ui/Table/TableFilterDate';
+import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 
-import { Table } from '../../../../features/common/ui/Table/Table';
-import { filterColumnByDate } from '../../../../features/common/ui/Table/TableFilterDate';
-import { UserBadge } from '../../../../features/user/ui/UserBadge/UserBadge';
 import { CarServiceLogsTableActionsDropdown } from './CarServiceLogsTableActionsDropdown/CarServiceLogsTableActionsDropdown';
 
 const columnsHelper = createColumnHelper<ServiceLog>();

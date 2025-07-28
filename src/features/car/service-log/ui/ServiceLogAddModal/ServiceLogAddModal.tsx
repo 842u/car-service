@@ -5,8 +5,8 @@ import { TextSeparator } from '@/features/common/ui/decorative/TextSeparator/Tex
 import {
   DialogModal,
   DialogModalRef,
-} from '../../../../features/common/ui/DialogModal/DialogModal';
-import { CarServiceLogAddForm } from '../../forms/CarServiceLogAddForm/CarServiceLogAddForm';
+} from '../../../../common/ui/DialogModal/DialogModal';
+import { CarServiceLogAddForm } from '../CarServiceLogAddForm/CarServiceLogAddForm';
 
 type ServiceLogAddModalProps = {
   carId: string;

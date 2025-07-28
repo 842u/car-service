@@ -1,7 +1,7 @@
 'use client';
 
-import { CarServiceLogsSection } from '../../../../components/ui/sections/CarServiceLogsSection/CarServiceLogsSection';
 import { CarOwnershipsSection } from '../../ownership/ui/CarOwnershipsSection/CarOwnershipsSection';
+import { CarServiceLogsSection } from '../../service-log/ui/CarServiceLogsSection/CarServiceLogsSection';
 import { CarDeleteSection } from '../CarDeleteSection/CarDeleteSection';
 import { CarDetailsSection } from '../CarDetailsSection/CarDetailsSection';
 import { CarIdentitySection } from '../CarIdentitySection/CarIdentitySection';
