@@ -1,5 +1,5 @@
 import { LinkButton } from '@/features/common/ui/link-button/link-button';
-import { Section } from '@/features/landing/ui/sections/section/section';
+import { Section } from '@/features/landing/ui/section/section';
 
 export function HeroSection() {
   return (
