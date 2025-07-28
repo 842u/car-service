@@ -9,7 +9,7 @@ import {
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { VisibilityButton } from '@/features/common/ui/VisibilityButton/VisibilityButton';
+import { VisibilityButton } from '@/features/common/ui/visibility-button/visibility-button';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 

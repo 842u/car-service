@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { VisibilityButton } from './VisibilityButton';
+import { VisibilityButton } from './visibility-button';
 
 describe('VisibilityButton', () => {
   it('should render as button', () => {
