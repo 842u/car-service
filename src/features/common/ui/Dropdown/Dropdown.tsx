@@ -1,7 +1,7 @@
 import { createContext, ReactNode, RefObject, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useContextGuard } from '@/features/common/hooks/useContextGuard';
+import { useContextGuard } from '@/features/common/hooks/use-context-guard';
 
 import { DropdownContent } from './DropdownContent/DropdownContent';
 import { DropdownTrigger } from './DropdownTrigger/DropdownTrigger';
