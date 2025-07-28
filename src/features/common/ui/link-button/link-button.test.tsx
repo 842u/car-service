@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { LinkButton } from './LinkButton';
+import { LinkButton } from './link-button';
 
 describe('LinkButton', () => {
   it('should render as a link element', () => {

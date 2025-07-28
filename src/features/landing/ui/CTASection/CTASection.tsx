@@ -1,4 +1,4 @@
-import { LinkButton } from '@/features/common/ui/LinkButton/LinkButton';
+import { LinkButton } from '@/features/common/ui/link-button/link-button';
 import { LandingSection } from '@/features/landing/ui/LandingSection/LandingSection';
 
 export function CTASection() {
