@@ -1,12 +1,12 @@
 import { BrandFullIcon } from '@/features/common/ui/decorative/icons/brand-full';
 import { BrandSimpleIcon } from '@/features/common/ui/decorative/icons/brand-simple';
-import { LandingSection } from '@/features/landing/ui/LandingSection/LandingSection';
+import { Section } from '@/features/landing/ui/section/section';
 
 import { FeatureCard } from '../FeatureCard/FeatureCard';
 
 export function FeaturesSection() {
   return (
-    <LandingSection
+    <Section
       aria-label="platform features"
       className="flex flex-col items-center justify-center gap-5 md:flex-row md:flex-wrap"
     >
@@ -51,6 +51,6 @@ export function FeaturesSection() {
           <BrandFullIcon className="stroke-alpha-grey-300 w-full stroke-[0.1]" />
         </FeatureCard.Background>
       </FeatureCard>
-    </LandingSection>
+    </Section>
   );
 }

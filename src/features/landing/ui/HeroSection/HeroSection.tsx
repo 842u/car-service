@@ -1,9 +1,9 @@
 import { LinkButton } from '@/features/common/ui/link-button/link-button';
-import { LandingSection } from '@/features/landing/ui/LandingSection/LandingSection';
+import { Section } from '@/features/landing/ui/section/section';
 
 export function HeroSection() {
   return (
-    <LandingSection className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
+    <Section className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
       <h1 className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl">
         <p className="from-dark-100 to-dark-500 dark:from-light-400 dark:to-light-800 bg-linear-to-b bg-clip-text leading-tight text-[transparent]">
           Car&apos;s Story Safely Managed.
@@ -26,6 +26,6 @@ export function HeroSection() {
           </LinkButton>
         </div>
       </div>
-    </LandingSection>
+    </Section>
   );
 }
