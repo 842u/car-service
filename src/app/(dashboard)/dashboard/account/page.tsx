@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { PasswordChangeSection } from '@/features/auth/ui/PasswordChangeSection/PasswordChangeSection';
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
 import { AvatarSection } from '@/features/user/ui/AvatarSection/AvatarSection';
 import { IdSection } from '@/features/user/ui/IdSection/IdSection';

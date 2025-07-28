@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import { ToastsProvider } from '@/features/common/providers/ToastsProvider';
 
 import { Toaster } from './Toaster';

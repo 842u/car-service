@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';

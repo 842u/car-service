@@ -6,7 +6,7 @@ import {
 import { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import { Car } from '@/types';
 import { deleteCar } from '@/utils/supabase/tables/cars';
 import {

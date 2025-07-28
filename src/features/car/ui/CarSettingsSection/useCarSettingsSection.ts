@@ -2,7 +2,7 @@ import { User } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import { createClient } from '@/utils/supabase/client';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';

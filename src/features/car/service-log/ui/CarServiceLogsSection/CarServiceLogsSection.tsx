@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
 import { Profile } from '@/types';

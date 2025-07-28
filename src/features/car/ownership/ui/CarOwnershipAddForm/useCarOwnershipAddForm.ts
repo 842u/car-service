@@ -7,7 +7,7 @@ import {
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import {
   carOwnershipAddFormSchema,
   CarOwnershipAddFormValues,

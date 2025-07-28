@@ -7,7 +7,7 @@ import { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
-import { useToasts } from '@/features/common/hooks/useToasts';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import { Button } from '@/features/common/ui/Button/Button';
 import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
 import { Dropdown } from '@/features/common/ui/Dropdown/Dropdown';
