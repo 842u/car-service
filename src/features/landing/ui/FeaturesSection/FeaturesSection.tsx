@@ -1,8 +1,8 @@
 import { BrandFullIcon } from '@/features/common/ui/decorative/icons/BrandFullIcon';
 import { BrandSimpleIcon } from '@/features/common/ui/decorative/icons/BrandSimpleIcon';
+import { LandingSection } from '@/features/landing/ui/LandingSection/LandingSection';
 
-import { FeatureCard } from '../../shared/FeatureCard/FeatureCard';
-import { LandingSection } from '../../shared/LandingSection/LandingSection';
+import { FeatureCard } from '../FeatureCard/FeatureCard';
 
 export function FeaturesSection() {
   return (

@@ -1,6 +1,5 @@
 import { LinkButton } from '@/features/common/ui/LinkButton/LinkButton';
-
-import { LandingSection } from '../../shared/LandingSection/LandingSection';
+import { LandingSection } from '@/features/landing/ui/LandingSection/LandingSection';
 
 export function HeroSection() {
   return (

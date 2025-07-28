@@ -1,6 +1,6 @@
 import { PasswordResetForm } from '@/components/ui/forms/PasswordResetForm/PasswordResetForm';
-import { LandingSection } from '@/components/ui/shared/LandingSection/LandingSection';
 import { SignInLink } from '@/components/ui/SignInLink/SignInLink';
+import { LandingSection } from '@/features/landing/ui/LandingSection/LandingSection';
 
 export default function ForgotPasswordPage() {
   return (
