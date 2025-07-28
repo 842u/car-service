@@ -1,21 +1,17 @@
 import { twMerge } from 'tailwind-merge';
 
-import { ThemeButton } from '@/features/common/ui/theme-button/theme-button';
+import { LinkButton } from '@/ui/link-button/link-button';
+import { ThemeButton } from '@/ui/theme-button/theme-button';
 
-import { LinkButton } from '../../../common/ui/link-button/link-button';
-import { LandingNavMenuItem } from './LandingNavMenuItem';
+import { NavItem } from './nav-item';
 
-type LandingNavMenuProps = {
+type NavProps = {
   isActive?: boolean;
   onClick?: () => void;
   className?: string;
 };
 
-export function LandingNavMenu({
-  isActive = true,
-  onClick,
-  className,
-}: LandingNavMenuProps) {
+export function Nav({ isActive = true, onClick, className }: NavProps) {
   return (
     <nav
       aria-label="landing navigation menu"
@@ -27,16 +23,16 @@ export function LandingNavMenu({
       onClick={onClick}
     >
       <ul className="relative flex w-4/5 flex-col items-center justify-center md:w-1/2 lg:w-full lg:flex-row lg:gap-4">
-        <LandingNavMenuItem>
+        <NavItem>
           <LinkButton className="my-2" href="/dashboard" variant="accent">
             Dashboard
           </LinkButton>
-        </LandingNavMenuItem>
-        <LandingNavMenuItem>
+        </NavItem>
+        <NavItem>
           <div className="aspect-square h-10 w-full">
             <ThemeButton className="h-full w-full" />
           </div>
-        </LandingNavMenuItem>
+        </NavItem>
       </ul>
     </nav>
   );

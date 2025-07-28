@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-import { BrandLabel } from '@/features/common/ui/brand-label/brand-label';
+import { Nav } from '@/landing/ui/nav-bar/nav/nav';
+import { BrandLabel } from '@/ui/brand-label/brand-label';
+import { NavBar as BaseNavBar } from '@/ui/nav-bar/nav-bar';
 
 import { HamburgerButton } from '../../../common/ui/hamburger-button/hamburger-button';
-import { NavBar } from '../../../common/ui/nav-bar/nav-bar';
-import { LandingNavMenu } from './LandingNavMenu';
 
-export function LandingNavBar() {
+export function NavBar() {
   const [isActive, setIsActive] = useState(false);
 
   const navMenuClickHandler = () => {
@@ -20,18 +20,18 @@ export function LandingNavBar() {
   };
 
   return (
-    <NavBar>
+    <BaseNavBar>
       <BrandLabel className="z-10 h-full" />
       <HamburgerButton
         className="z-20 lg:hidden"
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
       />
-      <LandingNavMenu
+      <Nav
         className="z-0 lg:z-20"
         isActive={isActive}
         onClick={navMenuClickHandler}
       />
-    </NavBar>
+    </BaseNavBar>
   );
 }
