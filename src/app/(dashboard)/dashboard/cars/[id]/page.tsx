@@ -1,7 +1,7 @@
 import { Route } from 'next';
 import { redirect } from 'next/navigation';
 
-import { CarSettingsSection } from '@/components/ui/sections/CarSettingsSection/CarSettingsSection';
+import { CarSettingsSection } from '@/features/car/ui/CarSettingsSection/CarSettingsSection';
 import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
 import { createClient } from '@/utils/supabase/server';
 

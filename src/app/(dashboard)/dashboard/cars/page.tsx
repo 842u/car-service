@@ -2,9 +2,9 @@
 
 import { useRef } from 'react';
 
-import { CarAddButton } from '@/components/ui/buttons/CarAddButton/CarAddButton';
-import { CarsGallery } from '@/components/ui/CarsGallery/CarsGallery';
-import { CarAddModal } from '@/components/ui/modals/CarAddModal/CarAddModal';
+import { CarAddButton } from '@/features/car/ui/CarAddButton/CarAddButton';
+import { CarAddModal } from '@/features/car/ui/CarAddModal/CarAddModal';
+import { CarsGallery } from '@/features/car/ui/CarsGallery/CarsGallery';
 import { DialogModalRef } from '@/features/common/ui/DialogModal/DialogModal';
 import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
 
