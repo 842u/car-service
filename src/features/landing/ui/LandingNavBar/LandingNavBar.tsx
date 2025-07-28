@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 
-import { BrandLabel } from '../../../../features/common/ui/BrandLabel/BrandLabel';
+import { BrandLabel } from '@/features/common/ui/brand-label/brand-label';
+
 import { HamburgerButton } from '../../../../features/common/ui/HamburgerButton/HamburgerButton';
 import { NavBar } from '../../../../features/common/ui/NavBar/NavBar';
 import { LandingNavMenu } from './LandingNavMenu';

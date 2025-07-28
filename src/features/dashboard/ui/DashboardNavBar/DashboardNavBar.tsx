@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
+import { BrandLabel } from '@/features/common/ui/brand-label/brand-label';
 import { Spinner } from '@/features/common/ui/decorative/Spinner/Spinner';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { BrandLabel } from '../../../../features/common/ui/BrandLabel/BrandLabel';
 import { HamburgerButton } from '../../../../features/common/ui/HamburgerButton/HamburgerButton';
 import { NavBar } from '../../../../features/common/ui/NavBar/NavBar';
 import { DashboardNavMenu } from './DashboardNavMenu';
