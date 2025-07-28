@@ -1,5 +1,5 @@
 import { Button } from '@/features/common/ui/button/button';
-import { Form } from '@/features/common/ui/Form/Form';
+import { Form } from '@/features/common/ui/form/form';
 
 import { useCarOwnershipAddForm } from './useCarOwnershipAddForm';
 

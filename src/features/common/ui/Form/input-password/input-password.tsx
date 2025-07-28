@@ -13,9 +13,9 @@ import { VisibilityButton } from '@/features/common/ui/VisibilityButton/Visibili
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { useForm } from '../Form';
-import { FormInputErrorText } from '../FormInput/FormInputErrorText';
-import { FormInputLabelText } from '../FormInput/FormInputLabelText';
+import { useForm } from '../form';
+import { FormInputErrorText } from '../input/input-error-text';
+import { FormInputLabelText } from '../input/input-label-text';
 
 export type FormInputPasswordProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,

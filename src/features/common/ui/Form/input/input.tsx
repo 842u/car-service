@@ -1,3 +1,4 @@
+import { ComponentProps, HTMLInputTypeAttribute } from 'react';
 import {
   FieldValues,
   Path,
@@ -9,63 +10,50 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { useForm } from '../Form';
-import { FormInputErrorText } from '../FormInput/FormInputErrorText';
-import { FormInputLabelText } from '../FormInput/FormInputLabelText';
+import { useForm } from '../form';
+import { FormInputErrorText } from './input-error-text';
+import { FormInputLabelText } from './input-label-text';
 
-export type FormSelectProps<T extends FieldValues> = {
+export type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
   label: string;
   name: Path<T>;
-  options: Record<string, string>;
+  type: Exclude<HTMLInputTypeAttribute, 'password'>;
   register?: UseFormRegister<T>;
-  className?: string;
   variant?: InputVariants;
-  registerOptions?: RegisterOptions<T>;
   required?: boolean;
+  registerOptions?: RegisterOptions<T>;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
-  hasEmptyOption?: boolean;
 };
 
-export function FormSelect<T extends FieldValues>({
+export function FormInput<T extends FieldValues>({
   register,
   label,
   name,
+  type,
   registerOptions,
-  options,
   errorMessage,
   className,
   variant = 'default',
-  required = false,
   showErrorMessage = true,
-  hasEmptyOption = true,
-}: FormSelectProps<T>) {
+  required = false,
+  ...props
+}: FormInputProps<T>) {
   useForm();
 
   return (
-    <label className="text-sm">
+    <label>
       <FormInputLabelText required={required} text={label} />
-      <select
+      <input
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
           'my-1',
           className,
         )}
+        type={type}
+        {...props}
         {...(register ? register(name, registerOptions) : {})}
-      >
-        {hasEmptyOption && (
-          <option className="bg-light-500 dark:bg-dark-500" value={undefined} />
-        )}
-        {Object.keys(options).map((key) => (
-          <option
-            key={key}
-            className="bg-light-500 dark:bg-dark-500"
-            value={options[key]}
-          >
-            {key}
-          </option>
-        ))}
-      </select>
+      />
       {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
     </label>
   );

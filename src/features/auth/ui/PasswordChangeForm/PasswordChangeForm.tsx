@@ -1,6 +1,6 @@
 'use client';
 
-import { Form } from '../../../../features/common/ui/Form/Form';
+import { Form } from '../../../common/ui/form/form';
 import { usePasswordChangeForm } from './usePasswordChangeForm';
 
 export const PASSWORD_CHANGE_FORM_TEST_ID = 'password change form test id';

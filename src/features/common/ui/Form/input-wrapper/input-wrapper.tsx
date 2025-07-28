@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useForm } from '../Form';
+import { useForm } from '../form';
 
 type FormInputWrapperProps = ComponentProps<'div'>;
 

@@ -8,12 +8,12 @@ import {
   AvatarFormValues,
 } from '@/schemas/zod/avatarFormSchema';
 
-import { Form } from '../Form';
+import { Form } from '../form';
 import {
   FORM_INPUT_IMAGE_TEST_ID,
   FormInputImage,
   FormInputImageProps,
-} from './FormInputImage';
+} from './input-image';
 
 const INPUT_LABEL_TEXT = 'testLabel';
 

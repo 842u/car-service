@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 
 import { SPINNER_TEST_ID } from '@/features/common/ui/decorative/spinner/spinner';
 
-import { Form } from '../Form';
-import { FormButtonSubmit, FormButtonSubmitProps } from './FormButtonSubmit';
+import { Form } from '../form';
+import { FormButtonSubmit, FormButtonSubmitProps } from './button-submit';
 
 function TestFormButtonSubmit({ children, ...props }: FormButtonSubmitProps) {
   return (

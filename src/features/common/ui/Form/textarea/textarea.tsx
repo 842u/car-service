@@ -1,4 +1,4 @@
-import { ComponentProps, HTMLInputTypeAttribute } from 'react';
+import { ComponentProps } from 'react';
 import {
   FieldValues,
   Path,
@@ -10,49 +10,47 @@ import { twMerge } from 'tailwind-merge';
 import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { useForm } from '../Form';
-import { FormInputErrorText } from './FormInputErrorText';
-import { FormInputLabelText } from './FormInputLabelText';
+import { useForm } from '../form';
+import { FormInputErrorText } from '../input/input-error-text';
+import { FormInputLabelText } from '../input/input-label-text';
 
-export type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
+type FormTextareaProps<T extends FieldValues> = ComponentProps<'textarea'> & {
   label: string;
   name: Path<T>;
-  type: Exclude<HTMLInputTypeAttribute, 'password'>;
-  register?: UseFormRegister<T>;
+  register: UseFormRegister<T>;
+  registerOptions?: RegisterOptions<T>;
   variant?: InputVariants;
   required?: boolean;
-  registerOptions?: RegisterOptions<T>;
-  errorMessage?: string | undefined;
   showErrorMessage?: boolean;
+  errorMessage?: string;
 };
 
-export function FormInput<T extends FieldValues>({
-  register,
+export function FormTextarea<T extends FieldValues>({
   label,
   name,
-  type,
-  registerOptions,
-  errorMessage,
   className,
+  errorMessage,
+  register,
+  registerOptions,
+  required = false,
   variant = 'default',
   showErrorMessage = true,
-  required = false,
   ...props
-}: FormInputProps<T>) {
+}: FormTextareaProps<T>) {
   useForm();
 
   return (
     <label>
       <FormInputLabelText required={required} text={label} />
-      <input
+      <textarea
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
-          'my-1',
+          'my-1 h-auto min-h-10 py-2',
           className,
         )}
-        type={type}
+        rows={4}
         {...props}
-        {...(register ? register(name, registerOptions) : {})}
+        {...register(name, registerOptions)}
       />
       {showErrorMessage && <FormInputErrorText errorMessage={errorMessage} />}
     </label>

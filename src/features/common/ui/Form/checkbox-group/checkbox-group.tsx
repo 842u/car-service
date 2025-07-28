@@ -5,9 +5,9 @@ import {
   UseFormRegister,
 } from 'react-hook-form';
 
-import { useForm } from '../Form';
-import { FormInputErrorText } from '../FormInput/FormInputErrorText';
-import { FormInputLabelText } from '../FormInput/FormInputLabelText';
+import { useForm } from '../form';
+import { FormInputErrorText } from '../input/input-error-text';
+import { FormInputLabelText } from '../input/input-label-text';
 
 type FormCheckboxGroupProps<T extends FieldValues> = {
   label: string;

@@ -4,7 +4,7 @@ import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { Car } from '@/types';
 
 import { Button } from '../../../common/ui/button/button';
-import { Form, FormProps } from '../../../common/ui/Form/Form';
+import { Form, FormProps } from '../../../common/ui/form/form';
 import { CarFormFields } from './CarFormFields';
 import { useCarForm } from './useCarForm';
 

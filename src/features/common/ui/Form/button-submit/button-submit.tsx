@@ -1,7 +1,7 @@
 import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
 
 import { Button, ButtonProps } from '../../button/button';
-import { useForm } from '../Form';
+import { useForm } from '../form';
 
 export type FormButtonSubmitProps = ButtonProps & {
   children: string;

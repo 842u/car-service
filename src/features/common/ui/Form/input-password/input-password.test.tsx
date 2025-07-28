@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { Form } from '../Form';
-import { FormInputPassword, FormInputPasswordProps } from './FormInputPassword';
+import { Form } from '../form';
+import { FormInputPassword, FormInputPasswordProps } from './input-password';
 
 // eslint-disable-next-line
 function TestFormInputPassword({ ...props }: FormInputPasswordProps<any>) {

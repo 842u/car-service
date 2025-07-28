@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/features/common/ui/button/button';
+import { Form } from '@/features/common/ui/form/form';
 
-import { Form } from '../../../../features/common/ui/Form/Form';
 import { useUsernameForm } from './useUsernameForm';
 
 export const USERNAME_FORM_TEST_ID = 'username form test id';

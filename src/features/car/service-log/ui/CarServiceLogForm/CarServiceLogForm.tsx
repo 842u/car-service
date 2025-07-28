@@ -1,5 +1,5 @@
 import { Button } from '@/features/common/ui/button/button';
-import { Form, FormProps } from '@/features/common/ui/Form/Form';
+import { Form, FormProps } from '@/features/common/ui/form/form';
 import {
   CarServiceLogFormValues,
   MAX_SERVICE_NOTE_lENGTH,
