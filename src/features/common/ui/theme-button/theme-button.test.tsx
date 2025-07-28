@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'next-themes';
 
-import { ThemeButton } from './ThemeButton';
+import { ThemeButton } from './theme-button';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

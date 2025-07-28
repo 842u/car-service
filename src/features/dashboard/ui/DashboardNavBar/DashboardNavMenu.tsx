@@ -4,7 +4,7 @@ import { SignOutLinkButton } from '@/features/auth/ui/SignOutLinkButton/SignOutL
 import { CarsIcon } from '@/features/common/ui/decorative/icons/cars';
 import { HomeIcon } from '@/features/common/ui/decorative/icons/home';
 import { UserIcon } from '@/features/common/ui/decorative/icons/user';
-import { ThemeButton } from '@/features/common/ui/ThemeButton/ThemeButton';
+import { ThemeButton } from '@/features/common/ui/theme-button/theme-button';
 
 import { DashboardNavMenuItem } from './DashboardNavMenuItem';
 

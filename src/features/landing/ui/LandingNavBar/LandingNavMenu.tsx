@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { ThemeButton } from '@/features/common/ui/ThemeButton/ThemeButton';
+import { ThemeButton } from '@/features/common/ui/theme-button/theme-button';
 
 import { LinkButton } from '../../../common/ui/link-button/link-button';
 import { LandingNavMenuItem } from './LandingNavMenuItem';
