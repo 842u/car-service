@@ -1,8 +1,8 @@
 import { Route } from 'next';
 import { redirect } from 'next/navigation';
 
+import { SettingsSection } from '@/car/ui/sections/settings/settings';
 import { Main } from '@/dashboard/ui/main/main';
-import { CarSettingsSection } from '@/features/car/ui/CarSettingsSection/CarSettingsSection';
 import { createClient } from '@/utils/supabase/server';
 
 type CarPageProps = {
@@ -31,7 +31,7 @@ export default async function CarPage({ params }: CarPageProps) {
 
   return (
     <Main>
-      <CarSettingsSection carId={id} />
+      <SettingsSection carId={id} />
     </Main>
   );
 }
