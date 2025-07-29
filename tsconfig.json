@@ -23,6 +23,7 @@
     "paths": {
       "@/ui/*": ["./src/features/common/ui/*"],
       "@/landing/*": ["./src/features/landing/*"],
+      "@/dashboard/*": ["./src/features/dashboard/*"],
       "@/common/*": ["./src/features/common/*"],
       "@/*": ["./src/*"]
     }
