@@ -26,6 +26,7 @@
       "@/dashboard/*": ["./src/features/dashboard/*"],
       "@/auth/*": ["./src/features/auth/*"],
       "@/user/*": ["./src/features/user/*"],
+      "@/car/*": ["./src/features/car/*"],
       "@/common/*": ["./src/features/common/*"],
       "@/*": ["./src/*"]
     }
