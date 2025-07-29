@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { IdClipboardInput } from './IdClipboardInput';
+import { IdClipboardInput } from './id-clipboard-input';
 
 const MOCK_ID = '797ac92c-e9b1-4ce4-b146-a62e8f2193a4';
 

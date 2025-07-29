@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
-import { TanStackQueryProvider } from '@/features/common/providers/tan-stack-query';
+import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
+import { AVATAR_FORM_TEST_ID } from '@/user/ui/forms/avatar/avatar';
 
-import { AVATAR_FORM_TEST_ID } from '../AvatarForm/AvatarForm';
-import { AvatarSection } from './AvatarSection';
+import { AvatarSection } from './avatar';
 
 function TestAvatarSection() {
   return (

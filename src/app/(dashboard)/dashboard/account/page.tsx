@@ -6,9 +6,9 @@ import { useEffect } from 'react';
 import { PasswordChangeSection } from '@/auth/ui/sections/password-change/password-change';
 import { useToasts } from '@/common/hooks/use-toasts';
 import { Main } from '@/dashboard/ui/main/main';
-import { AvatarSection } from '@/features/user/ui/AvatarSection/AvatarSection';
-import { IdSection } from '@/features/user/ui/IdSection/IdSection';
-import { UsernameSection } from '@/features/user/ui/UsernameSection/UsernameSection';
+import { AvatarSection } from '@/user/ui/sections/avatar/avatar';
+import { IdSection } from '@/user/ui/sections/id/id';
+import { UsernameSection } from '@/user/ui/sections/username/username';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 

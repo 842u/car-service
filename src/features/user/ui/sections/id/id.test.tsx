@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { IdSection } from './IdSection';
+import { IdSection } from './id';
 
 describe('IdSection', () => {
   it('should render a heading', () => {

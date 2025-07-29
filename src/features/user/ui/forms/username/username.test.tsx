@@ -1,11 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { TanStackQueryProvider } from '@/features/common/providers/tan-stack-query';
+import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
 import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 
-import { UsernameForm } from './UsernameForm';
+import { UsernameForm } from './username';
 
 jest.mock('@/utils/supabase/tables/profiles', () => ({
   updateCurrentSessionProfile: jest.fn(),

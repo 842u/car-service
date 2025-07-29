@@ -7,7 +7,7 @@ import {
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/features/common/hooks/use-toasts';
+import { useToasts } from '@/common/hooks/use-toasts';
 import {
   usernameFormSchema,
   UsernameFormValues,

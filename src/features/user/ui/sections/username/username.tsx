@@ -1,7 +1,6 @@
+import { Section } from '@/dashboard/ui/section/section';
 import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
-
-import { Section } from '../../../dashboard/ui/section/section';
-import { UsernameForm } from '../UsernameForm/UsernameForm';
+import { UsernameForm } from '@/user/ui/forms/username/username';
 
 type UsernameSectionProps = {
   username?: string | null;

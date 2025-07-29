@@ -2,11 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 
-import { defaultAvatarFormValues } from '@/features/user/ui/AvatarForm/useAvatarForm';
 import {
   avatarFormSchema,
   AvatarFormValues,
 } from '@/schemas/zod/avatarFormSchema';
+import { defaultAvatarFormValues } from '@/user/ui/forms/avatar/use-avatar-form';
 
 import { Form } from '../form';
 import {

@@ -1,11 +1,10 @@
+import { Section } from '@/dashboard/ui/section/section';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   IMAGE_FILE_MAX_SIZE_BYTES,
 } from '@/schemas/zod/common';
+import { AvatarForm } from '@/user/ui/forms/avatar/avatar';
 import { getMimeTypeExtensions } from '@/utils/general';
-
-import { Section } from '../../../dashboard/ui/section/section';
-import { AvatarForm } from '../AvatarForm/AvatarForm';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
