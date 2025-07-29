@@ -1,7 +1,6 @@
-import { PasswordChangeForm } from '@/features/auth/ui/PasswordChangeForm/PasswordChangeForm';
+import { PasswordChangeForm } from '@/auth/ui/forms/password-change/password-change';
+import { Section } from '@/dashboard/ui/section/section';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
-
-import { Section } from '../../../dashboard/ui/section/section';
 
 export function PasswordChangeSection() {
   return (

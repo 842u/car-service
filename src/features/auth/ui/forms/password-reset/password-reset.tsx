@@ -1,9 +1,9 @@
 'use client';
 
-import { TextSeparator } from '@/features/common/ui/decorative/text-separator/text-separator';
+import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
+import { Form } from '@/ui/form/form';
 
-import { Form } from '../../../common/ui/form/form';
-import { usePasswordResetForm } from './usePasswordResetForm';
+import { usePasswordResetForm } from './use-password-reset-form';
 
 export function PasswordResetForm() {
   const { handleFormSubmit, errors, register, isDisabled, isSubmitting } =

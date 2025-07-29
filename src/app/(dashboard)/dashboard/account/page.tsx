@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { PasswordChangeSection } from '@/auth/ui/sections/password-change/password-change';
 import { useToasts } from '@/common/hooks/use-toasts';
 import { Main } from '@/dashboard/ui/main/main';
-import { PasswordChangeSection } from '@/features/auth/ui/PasswordChangeSection/PasswordChangeSection';
 import { AvatarSection } from '@/features/user/ui/AvatarSection/AvatarSection';
 import { IdSection } from '@/features/user/ui/IdSection/IdSection';
 import { UsernameSection } from '@/features/user/ui/UsernameSection/UsernameSection';

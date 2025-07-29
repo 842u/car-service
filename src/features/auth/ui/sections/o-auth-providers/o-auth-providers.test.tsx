@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
-import { OAuthProvidersSection } from './OAuthProvidersSection';
+import { OAuthProvidersSection } from './o-auth-providers';
 
 jest.mock('@/utils/supabase/general.ts', () => ({
   signInWithOAuthHandler: jest.fn(),

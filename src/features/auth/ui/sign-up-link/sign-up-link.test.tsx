@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Route } from 'next';
 
-import { SignUpLink } from './SignUpLink';
+import { SignUpLink } from './sign-up-link';
 
 describe('SignUpLink', () => {
   it('should render link to sign up page', () => {

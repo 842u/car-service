@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { OAuthButton } from '@/features/auth/ui/OAuthButton/OAuthButton';
+import { OAuthButton } from '@/auth/ui/o-auth-button/o-auth-button';
 
 type OAuthProvidersSectionProps = ComponentProps<'section'>;
 

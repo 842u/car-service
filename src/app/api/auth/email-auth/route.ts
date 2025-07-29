@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { EmailAuthFormType } from '@/features/auth/ui/EmailAuthForm/EmailAuthForm';
+import { EmailAuthFormType } from '@/auth/ui/forms/email-auth/email-auth';
 import {
   EmailAuthFormValues,
   signUpEmailAuthFormSchema,

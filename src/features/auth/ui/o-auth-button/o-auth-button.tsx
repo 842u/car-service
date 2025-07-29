@@ -4,12 +4,11 @@ import { Provider } from '@supabase/supabase-js';
 import { JSX, useState } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { GitHubIcon } from '@/features/common/ui/decorative/icons/github';
-import { GoogleIcon } from '@/features/common/ui/decorative/icons/google';
-import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
+import { Button } from '@/ui/button/button';
+import { GitHubIcon } from '@/ui/decorative/icons/github';
+import { GoogleIcon } from '@/ui/decorative/icons/google';
+import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
-
-import { Button } from '../../../common/ui/button/button';
 
 const providerMappings: {
   [K in Provider]?: { text: string; icon: JSX.Element };

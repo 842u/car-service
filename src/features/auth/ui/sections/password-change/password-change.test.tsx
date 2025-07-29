@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 
-import { PASSWORD_CHANGE_FORM_TEST_ID } from '@/features/auth/ui/PasswordChangeForm/PasswordChangeForm';
+import { PASSWORD_CHANGE_FORM_TEST_ID } from '@/auth/ui/forms/password-change/password-change';
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
 
-import { PasswordChangeSection } from './PasswordChangeSection';
+import { PasswordChangeSection } from './password-change';
 
 describe('PasswordChangeSection', () => {
   it('should render a heading', () => {

@@ -1,7 +1,8 @@
 'use client';
 
-import { Form } from '../../../common/ui/form/form';
-import { usePasswordChangeForm } from './usePasswordChangeForm';
+import { Form } from '@/ui/form/form';
+
+import { usePasswordChangeForm } from './use-password-change-form';
 
 export const PASSWORD_CHANGE_FORM_TEST_ID = 'password change form test id';
 

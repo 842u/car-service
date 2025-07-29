@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Route } from 'next';
 
-import { SignOutLinkButton } from './SignOutLinkButton';
+import { SignOutLinkButton } from './sign-out-link-button';
 
 describe('SingOutLinkButton', () => {
   it('should render a sign out link', () => {

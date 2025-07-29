@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 
 import { ToastsProvider } from '@/features/common/providers/toasts/toasts';
 import { SPINNER_TEST_ID } from '@/features/common/ui/decorative/spinner/spinner';
+import { Toaster } from '@/ui/toaster/toaster';
 
-import { Toaster } from '../../../common/ui/toaster/toaster';
-import EmailAuthForm, { EmailAuthFormType } from './EmailAuthForm';
+import EmailAuthForm, { EmailAuthFormType } from './email-auth';
 
 const mockFetch = jest.fn();
 window.fetch = mockFetch;

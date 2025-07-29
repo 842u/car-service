@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { PasswordChangeForm } from './PasswordChangeForm';
+import { PasswordChangeForm } from './password-change';
 
 global.fetch = jest.fn(() =>
   Promise.resolve({

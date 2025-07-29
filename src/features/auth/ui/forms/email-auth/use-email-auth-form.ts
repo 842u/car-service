@@ -12,7 +12,7 @@ import {
 } from '@/schemas/zod/emailAuthFormSchema';
 import { RouteHandlerResponse } from '@/types';
 
-import { EmailAuthFormType } from './EmailAuthForm';
+import { EmailAuthFormType } from './email-auth';
 
 const defaultEmailAuthFormValues: EmailAuthFormValues = {
   email: '',

@@ -4,10 +4,10 @@ import { Route } from 'next';
 import Link from 'next/link';
 
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
+import { Form } from '@/ui/form/form';
 import { unslugify } from '@/utils/general';
 
-import { Form } from '../../../common/ui/form/form';
-import { useEmailAuthForm } from './useEmailAuthForm';
+import { useEmailAuthForm } from './use-email-auth-form';
 
 export type EmailAuthFormType = 'sign-up' | 'sign-in';
 

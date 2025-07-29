@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { correctEmails, wrongEmails } from '@/utils/validation';
 
-import { PasswordResetForm } from './PasswordResetForm';
+import { PasswordResetForm } from './password-reset';
 
 jest.setTimeout(12000);
 
