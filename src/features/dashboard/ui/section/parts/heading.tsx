@@ -1,16 +1,16 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type DashboardSectionHeadingProps = ComponentProps<'h1'> & {
+type HeadingProps = ComponentProps<'h1'> & {
   headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 };
 
-export function DashboardSectionHeading({
+export function Heading({
   children,
   className,
   headingLevel = 'h1',
   ...props
-}: DashboardSectionHeadingProps) {
+}: HeadingProps) {
   const HeadingTag = headingLevel;
 
   return (

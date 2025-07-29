@@ -3,21 +3,16 @@ import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
 import { JSX } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { LinkButton } from '../../../common/ui/link-button/link-button';
+import { LinkButton } from '@/ui/link-button/link-button';
 
-type DashboardNavMenuItemProps = {
+type ItemProps = {
   href: Route;
   text: string;
   prefetch?: boolean;
   children?: JSX.Element;
 };
 
-export function DashboardNavMenuItem({
-  href,
-  text,
-  prefetch = true,
-  children,
-}: DashboardNavMenuItemProps) {
+export function Item({ href, text, prefetch = true, children }: ItemProps) {
   const pathname = usePathname();
   const segment = useSelectedLayoutSegment();
 

@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type DashboardMainProps = {
+type MainProps = {
   children: ReactNode;
   className?: string;
 };
 
-export function DashboardMain({ children, className }: DashboardMainProps) {
+export function Main({ children, className }: MainProps) {
   return (
     <main
       className={twMerge(

@@ -1,4 +1,4 @@
-import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
+import { Section } from '../../../dashboard/ui/section/section';
 import {
   CarDeleteSectionControls,
   CarDeleteSectionControlsProps,
@@ -11,24 +11,22 @@ export function CarDeleteSection({
   isCurrentUserPrimaryOwner,
 }: CarDeleteSectionProps) {
   return (
-    <DashboardSection variant="errorDefault">
-      <DashboardSection.Heading headingLevel="h2">
-        Delete Car
-      </DashboardSection.Heading>
-      <DashboardSection.Text>
+    <Section variant="errorDefault">
+      <Section.Heading headingLevel="h2">Delete Car</Section.Heading>
+      <Section.Text>
         Permanently delete this car for you and other owners.
-      </DashboardSection.Text>
-      <DashboardSection.Text className="text-warning-500">
+      </Section.Text>
+      <Section.Text className="text-warning-500">
         This action is irreversible and can not be undone.
-      </DashboardSection.Text>
-      <DashboardSection.Subtext className="my-4">
+      </Section.Text>
+      <Section.Subtext className="my-4">
         If you do not want to see that car you can pass primary ownership to
         someone else and remove yourself from the owners list.
-      </DashboardSection.Subtext>
+      </Section.Subtext>
       <CarDeleteSectionControls
         carId={carId}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
-    </DashboardSection>
+    </Section>
   );
 }

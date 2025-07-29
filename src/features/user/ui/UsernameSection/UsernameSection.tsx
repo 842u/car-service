@@ -1,6 +1,6 @@
 import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
 
-import { DashboardSection } from '../../../dashboard/ui/DashboardSection/DashboardSection';
+import { Section } from '../../../dashboard/ui/section/section';
 import { UsernameForm } from '../UsernameForm/UsernameForm';
 
 type UsernameSectionProps = {
@@ -9,15 +9,13 @@ type UsernameSectionProps = {
 
 export function UsernameSection({ username }: UsernameSectionProps) {
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">
-        Username
-      </DashboardSection.Heading>
-      <DashboardSection.Text>
+    <Section>
+      <Section.Heading headingLevel="h2">Username</Section.Heading>
+      <Section.Text>
         Please enter your full name, or a display name you are comfortable with.
-      </DashboardSection.Text>
-      <DashboardSection.Subtext className="my-4">{`Letters, numbers and single whitespaces allowed. Length between ${MIN_USERNAME_LENGTH} and ${MAX_USERNAME_LENGTH} characters.`}</DashboardSection.Subtext>
+      </Section.Text>
+      <Section.Subtext className="my-4">{`Letters, numbers and single whitespaces allowed. Length between ${MIN_USERNAME_LENGTH} and ${MAX_USERNAME_LENGTH} characters.`}</Section.Subtext>
       <UsernameForm username={username} />
-    </DashboardSection>
+    </Section>
   );
 }

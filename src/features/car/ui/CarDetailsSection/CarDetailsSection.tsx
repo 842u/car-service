@@ -1,4 +1,4 @@
-import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
+import { Section } from '../../../dashboard/ui/section/section';
 import { CarDetailsTable } from '../CarDetailsTable/CarDetailsTable';
 import {
   CarDetailsSectionControls,
@@ -12,15 +12,13 @@ export function CarDetailsSection({
   carData,
 }: CarDetailsSectionProps) {
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">
-        Details
-      </DashboardSection.Heading>
+    <Section>
+      <Section.Heading headingLevel="h2">Details</Section.Heading>
       <CarDetailsTable carData={carData} />
       <CarDetailsSectionControls
         carData={carData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
-    </DashboardSection>
+    </Section>
   );
 }

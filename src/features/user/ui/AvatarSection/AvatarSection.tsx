@@ -4,7 +4,7 @@ import {
 } from '@/schemas/zod/common';
 import { getMimeTypeExtensions } from '@/utils/general';
 
-import { DashboardSection } from '../../../../features/dashboard/ui/DashboardSection/DashboardSection';
+import { Section } from '../../../dashboard/ui/section/section';
 import { AvatarForm } from '../AvatarForm/AvatarForm';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
@@ -16,17 +16,13 @@ type AvatarSectionProps = {
 
 export function AvatarSection({ avatarUrl }: AvatarSectionProps) {
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">
-        Avatar
-      </DashboardSection.Heading>
-      <DashboardSection.Text>
-        Click on the image to upload a custom one.
-      </DashboardSection.Text>
-      <DashboardSection.Subtext className="my-4">
+    <Section>
+      <Section.Heading headingLevel="h2">Avatar</Section.Heading>
+      <Section.Text>Click on the image to upload a custom one.</Section.Text>
+      <Section.Subtext className="my-4">
         {`Accepted file types: ${acceptedFileTypes}. Max file size: ${maxFileSize} MB.`}
-      </DashboardSection.Subtext>
+      </Section.Subtext>
       <AvatarForm avatarUrl={avatarUrl} />
-    </DashboardSection>
+    </Section>
   );
 }

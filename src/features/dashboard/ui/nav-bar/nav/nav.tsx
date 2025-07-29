@@ -1,24 +1,20 @@
 import { twJoin, twMerge } from 'tailwind-merge';
 
 import { SignOutLinkButton } from '@/features/auth/ui/SignOutLinkButton/SignOutLinkButton';
-import { CarsIcon } from '@/features/common/ui/decorative/icons/cars';
-import { HomeIcon } from '@/features/common/ui/decorative/icons/home';
-import { UserIcon } from '@/features/common/ui/decorative/icons/user';
-import { ThemeButton } from '@/features/common/ui/theme-button/theme-button';
+import { CarsIcon } from '@/ui/decorative/icons/cars';
+import { HomeIcon } from '@/ui/decorative/icons/home';
+import { UserIcon } from '@/ui/decorative/icons/user';
+import { ThemeButton } from '@/ui/theme-button/theme-button';
 
-import { DashboardNavMenuItem } from './DashboardNavMenuItem';
+import { Item } from './item';
 
-type DashboardNavMenuProps = {
+type NavProps = {
   isActive?: boolean;
   onClick?: () => void;
   className?: string;
 };
 
-export function DashboardNavMenu({
-  onClick,
-  className,
-  isActive = true,
-}: DashboardNavMenuProps) {
+export function Nav({ onClick, className, isActive = true }: NavProps) {
   return (
     <nav
       aria-label="dashboard navigation menu"
@@ -38,15 +34,15 @@ export function DashboardNavMenu({
         )}
       />
       <ul className="grow">
-        <DashboardNavMenuItem href="/dashboard" text="Dashboard">
+        <Item href="/dashboard" text="Dashboard">
           <HomeIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
-        </DashboardNavMenuItem>
-        <DashboardNavMenuItem href="/dashboard/cars" text="Cars">
+        </Item>
+        <Item href="/dashboard/cars" text="Cars">
           <CarsIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
-        </DashboardNavMenuItem>
-        <DashboardNavMenuItem href="/dashboard/account" text="Account">
+        </Item>
+        <Item href="/dashboard/account" text="Account">
           <UserIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
-        </DashboardNavMenuItem>
+        </Item>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
         <li className="mx-2 my-4 h-12">

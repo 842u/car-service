@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { useToasts } from '@/common/hooks/use-toasts';
+import { Main } from '@/dashboard/ui/main/main';
 import { PasswordChangeSection } from '@/features/auth/ui/PasswordChangeSection/PasswordChangeSection';
-import { useToasts } from '@/features/common/hooks/use-toasts';
-import { DashboardMain } from '@/features/dashboard/ui/DashboardMain/DashboardMain';
 import { AvatarSection } from '@/features/user/ui/AvatarSection/AvatarSection';
 import { IdSection } from '@/features/user/ui/IdSection/IdSection';
 import { UsernameSection } from '@/features/user/ui/UsernameSection/UsernameSection';
@@ -26,7 +26,7 @@ export default function AccountPage() {
   }, [isError, addToast, error]);
 
   return (
-    <DashboardMain>
+    <Main>
       <section
         aria-label="account settings"
         className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
@@ -36,6 +36,6 @@ export default function AccountPage() {
         <AvatarSection avatarUrl={data?.avatar_url} />
         <PasswordChangeSection />
       </section>
-    </DashboardMain>
+    </Main>
   );
 }

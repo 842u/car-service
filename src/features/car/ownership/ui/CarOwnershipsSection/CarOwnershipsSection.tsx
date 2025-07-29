@@ -1,4 +1,4 @@
-import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
+import { Section } from '@/features/dashboard/ui/section/section';
 import { CarOwnership, Profile } from '@/types';
 
 import { CarOwnershipsTable } from '../CarOwnershipsTable/CarOwnershipsTable';
@@ -19,10 +19,8 @@ export function CarOwnershipsSection({
   ownersProfiles,
 }: CarOwnershipsSectionProps) {
   return (
-    <DashboardSection className="overflow-x-auto">
-      <DashboardSection.Heading headingLevel="h2">
-        Ownerships
-      </DashboardSection.Heading>
+    <Section className="overflow-x-auto">
+      <Section.Heading headingLevel="h2">Ownerships</Section.Heading>
       <CarOwnershipsTable
         key={ownersProfiles ? 'loaded' : 'loading'}
         carOwnerships={carOwnerships}
@@ -33,6 +31,6 @@ export function CarOwnershipsSection({
         carId={carId}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
-    </DashboardSection>
+    </Section>
   );
 }

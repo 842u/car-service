@@ -3,18 +3,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useToasts } from '@/features/common/hooks/use-toasts';
-import { BrandLabel } from '@/features/common/ui/brand-label/brand-label';
-import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
+import { useToasts } from '@/common/hooks/use-toasts';
 import { UserBadge } from '@/features/user/ui/UserBadge/UserBadge';
+import { BrandLabel } from '@/ui/brand-label/brand-label';
+import { Spinner } from '@/ui/decorative/spinner/spinner';
+import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
+import { NavBar as BaseNavBar } from '@/ui/nav-bar/nav-bar';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { HamburgerButton } from '../../../common/ui/hamburger-button/hamburger-button';
-import { NavBar } from '../../../common/ui/nav-bar/nav-bar';
-import { DashboardNavMenu } from './DashboardNavMenu';
+import { Nav } from './nav/nav';
 
-export function DashboardNavBar() {
+export function NavBar() {
   const [isActive, setIsActive] = useState(false);
 
   const hamburgerButtonClickHandler = () => {
@@ -40,7 +40,7 @@ export function DashboardNavBar() {
   }, [addToast, error]);
 
   return (
-    <NavBar>
+    <BaseNavBar>
       <BrandLabel className="z-10 h-full" />
       {isPending && (
         <Spinner className="fill-accent-400 stroke-accent-400 z-10 h-full" />
@@ -51,7 +51,7 @@ export function DashboardNavBar() {
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
       />
-      <DashboardNavMenu isActive={isActive} onClick={navMenuClickHandler} />
-    </NavBar>
+      <Nav isActive={isActive} onClick={navMenuClickHandler} />
+    </BaseNavBar>
   );
 }

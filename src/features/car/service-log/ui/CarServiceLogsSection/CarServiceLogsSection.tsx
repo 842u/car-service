@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
 import { Spinner } from '@/features/common/ui/decorative/spinner/spinner';
-import { DashboardSection } from '@/features/dashboard/ui/DashboardSection/DashboardSection';
+import { Section } from '@/features/dashboard/ui/section/section';
 import { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
@@ -39,10 +39,8 @@ export function CarServiceLogsSection({
   }, [addToast, error]);
 
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">
-        Service Logs
-      </DashboardSection.Heading>
+    <Section>
+      <Section.Heading headingLevel="h2">Service Logs</Section.Heading>
       {isLoading ? (
         <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
       ) : (
@@ -54,6 +52,6 @@ export function CarServiceLogsSection({
         />
       )}
       <CarServiceLogsSectionControls carId={carId} />
-    </DashboardSection>
+    </Section>
   );
 }

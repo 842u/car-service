@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 
-import { DashboardNavBar } from '@/features/dashboard/ui/DashboardNavBar/DashboardNavBar';
+import { NavBar } from '@/dashboard/ui/nav-bar/nav-bar';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <DashboardNavBar />
+      <NavBar />
       {children}
     </>
   );
