@@ -25,6 +25,7 @@
       "@/landing/*": ["./src/features/landing/*"],
       "@/dashboard/*": ["./src/features/dashboard/*"],
       "@/auth/*": ["./src/features/auth/*"],
+      "@/user/*": ["./src/features/user/*"],
       "@/common/*": ["./src/features/common/*"],
       "@/*": ["./src/*"]
     }
