@@ -1,4 +1,4 @@
-import { FormProps } from '@/ui/form/form';
+import { FormProps } from '@/ui/form-tempname/form-tempname';
 
 import { ServiceLogForm } from '../../form/form';
 import { useCarServiceLogAddForm } from './use-service-log-add-form';

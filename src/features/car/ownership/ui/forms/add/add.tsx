@@ -1,5 +1,5 @@
-import { Button } from '@/ui/button/button';
-import { Form } from '@/ui/form/form';
+import { Button } from '@/ui/button-tempname/button-tempname';
+import { Form } from '@/ui/form-tempname/form-tempname';
 
 import { useCarOwnershipAddForm } from './use-ownership-add-form';
 

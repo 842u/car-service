@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/ui/button/button';
-import { Form } from '@/ui/form/form';
+import { Button } from '@/ui/button-tempname/button-tempname';
+import { Form } from '@/ui/form-tempname/form-tempname';
 
 import { useUsernameForm } from './use-username-form';
 

@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { CarOwnership, Profile } from '@/types';
 import { KeyIcon } from '@/ui/decorative/icons/key';
-import { Table } from '@/ui/table/table';
+import { Table } from '@/ui/table-tempname/table-tempname';
 import { UserBadge } from '@/user/ui/user-badge/user-badge';
 import { createClient } from '@/utils/supabase/client';
 

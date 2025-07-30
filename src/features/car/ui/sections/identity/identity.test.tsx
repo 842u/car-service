@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
+import { SPINNER_TEST_ID } from '@/ui/decorative/spinner-tempname/spinner-tempname';
 
 import { IdentitySection } from './identity';
 

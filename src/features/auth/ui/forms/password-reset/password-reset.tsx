@@ -1,7 +1,7 @@
 'use client';
 
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
-import { Form } from '@/ui/form/form';
+import { Form } from '@/ui/form-tempname/form-tempname';
 
 import { usePasswordResetForm } from './use-password-reset-form';
 

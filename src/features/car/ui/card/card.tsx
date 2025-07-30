@@ -4,7 +4,7 @@ import { Route } from 'next';
 import Link from 'next/link';
 
 import { Car } from '@/types';
-import { Card as BaseCard } from '@/ui/card/card';
+import { Card as BaseCard } from '@/ui/card-tempname/card-tempname';
 
 import { Image } from '../image/image';
 

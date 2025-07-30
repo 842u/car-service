@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ToastsProvider } from '@/features/common/providers/toasts/toasts';
-import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
-import { Toaster } from '@/ui/toaster/toaster';
+import { SPINNER_TEST_ID } from '@/ui/decorative/spinner-tempname/spinner-tempname';
+import { Toaster } from '@/ui/toaster-tempname/toaster-tempname';
 
 import EmailAuthForm, { EmailAuthFormType } from './email-auth';
 

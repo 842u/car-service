@@ -1,7 +1,7 @@
 import { RefObject } from 'react';
 
 import { CarOwnership } from '@/types';
-import { Button } from '@/ui/button/button';
+import { Button } from '@/ui/button-tempname/button-tempname';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import { DialogModal, DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 

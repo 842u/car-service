@@ -1,5 +1,5 @@
 import { EllipsisIcon } from '@/ui/decorative/icons/ellipsis';
-import { Dropdown } from '@/ui/dropdown/dropdown';
+import { Dropdown } from '@/ui/dropdown-tempname/dropdown-tempname';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
 import { Content, ContentProps } from './content/content';

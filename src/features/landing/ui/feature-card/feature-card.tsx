@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { Card, CardProps } from '@/ui/card/card';
+import { Card, CardProps } from '@/ui/card-tempname/card-tempname';
 
 import { Background } from './background';
 import { Description } from './description';

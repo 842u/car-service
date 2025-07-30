@@ -4,7 +4,7 @@ import { Route } from 'next';
 import Link from 'next/link';
 
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
-import { Form } from '@/ui/form/form';
+import { Form } from '@/ui/form-tempname/form-tempname';
 import { unslugify } from '@/utils/general';
 
 import { useEmailAuthForm } from './use-email-auth-form';

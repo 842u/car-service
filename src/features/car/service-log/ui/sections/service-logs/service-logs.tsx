@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useToasts } from '@/common/hooks/use-toasts';
 import { Section } from '@/dashboard/ui/section/section';
 import { Profile } from '@/types';
-import { Spinner } from '@/ui/decorative/spinner/spinner';
+import { Spinner } from '@/ui/decorative/spinner-tempname/spinner-tempname';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 

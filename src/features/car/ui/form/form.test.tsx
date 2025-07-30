@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { AriaRole } from 'react';
 
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { FORM_INPUT_IMAGE_TEST_ID } from '@/ui/form/input-image/input-image';
+import { FORM_INPUT_IMAGE_TEST_ID } from '@/ui/form-tempname/input-image/input-image';
 
 import { CarForm } from './form';
 
