@@ -16,6 +16,7 @@ jobs:
 
   jest-test:
     uses: ./.github/workflows/jest-test.yaml
+    secrets: inherit
 
   typescript-check:
     uses: ./.github/workflows/typescript-check.yaml
