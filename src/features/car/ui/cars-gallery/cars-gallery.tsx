@@ -1,4 +1,4 @@
-import { Spinner } from '@/ui/decorative/spinner-tempname/spinner-tempname';
+import { Spinner } from '@/ui/decorative/spinner/spinner';
 
 import { Card } from '../card/card';
 import { useCarsGallery } from './use-cars-gallery';

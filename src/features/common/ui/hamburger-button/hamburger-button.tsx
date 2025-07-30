@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { twJoin, twMerge } from 'tailwind-merge';
 
-import { Button } from '../button-tempname/button-tempname';
+import { Button } from '../button/button';
 
 type HamburgerButtonProps = ComponentProps<'button'> & {
   className?: string;

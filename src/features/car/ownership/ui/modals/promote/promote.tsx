@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
 
-import { Button } from '@/ui/button-tempname/button-tempname';
+import { Button } from '@/ui/button/button';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import { DialogModal, DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 

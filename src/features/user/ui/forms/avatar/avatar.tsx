@@ -1,8 +1,8 @@
 'use client';
 
 import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
-import { Button } from '@/ui/button-tempname/button-tempname';
-import { Form } from '@/ui/form-tempname/form-tempname';
+import { Button } from '@/ui/button/button';
+import { Form } from '@/ui/form/form';
 import { AvatarImage } from '@/user/ui/avatar-image/avatar-image';
 
 import { useAvatarForm } from './use-avatar-form';

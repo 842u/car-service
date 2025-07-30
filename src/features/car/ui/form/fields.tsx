@@ -27,7 +27,7 @@ import {
   fuelTypesMapping,
   transmissionTypesMapping,
 } from '@/types';
-import { Form } from '@/ui/form-tempname/form-tempname';
+import { Form } from '@/ui/form/form';
 
 import { Image } from '../image/image';
 

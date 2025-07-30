@@ -4,10 +4,10 @@ import { Provider } from '@supabase/supabase-js';
 import { JSX, useState } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { Button } from '@/ui/button-tempname/button-tempname';
+import { Button } from '@/ui/button/button';
 import { GitHubIcon } from '@/ui/decorative/icons/github';
 import { GoogleIcon } from '@/ui/decorative/icons/google';
-import { Spinner } from '@/ui/decorative/spinner-tempname/spinner-tempname';
+import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 const providerMappings: {

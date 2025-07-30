@@ -1,6 +1,6 @@
 'use client';
 
-import { Form } from '@/ui/form-tempname/form-tempname';
+import { Form } from '@/ui/form/form';
 
 import { usePasswordChangeForm } from './use-password-change-form';
 
