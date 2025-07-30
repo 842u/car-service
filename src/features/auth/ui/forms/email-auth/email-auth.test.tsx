@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ToastsProvider } from '@/features/common/providers/toasts/toasts';
-import { SPINNER_TEST_ID } from '@/features/common/ui/decorative/spinner/spinner';
+import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 import { Toaster } from '@/ui/toaster/toaster';
 
 import EmailAuthForm, { EmailAuthFormType } from './email-auth';

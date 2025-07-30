@@ -66,13 +66,7 @@ test.describe('password_reset_flow - @unauthenticated', () => {
 test.describe('password_reset_flow - @authenticated', () => {
   test('password change form should be disabled if wrong format password provided - @desktop @tablet @mobile', async ({
     authenticatedPage,
-    browserName,
   }) => {
-    test.skip(
-      browserName === 'webkit',
-      'something wrong with input password locator locator',
-    );
-
     const accountSettingsPath: Route = '/dashboard/account';
     const tooShortPassword = 'short';
     const page = authenticatedPage.page;
@@ -103,13 +97,7 @@ test.describe('password_reset_flow - @authenticated', () => {
 
   test('password change form should be disabled if passwords differ - @desktop @tablet @mobile', async ({
     authenticatedPage,
-    browserName,
   }) => {
-    test.skip(
-      browserName === 'webkit',
-      'something wrong with input password locator locator',
-    );
-
     const page = authenticatedPage.page;
     const accountSettingsPath: Route = '/dashboard/account';
     const correctPassword = 'correct';
@@ -142,13 +130,7 @@ test.describe('password_reset_flow - @authenticated', () => {
   test('error info should be displayed if new password are same as current password - @desktop @tablet @mobile', async ({
     authenticatedPage,
     testUserAccountCredentials,
-    browserName,
   }) => {
-    test.skip(
-      browserName === 'webkit',
-      'something wrong with input password locator locator',
-    );
-
     const page = authenticatedPage.page;
     const accountSettingsPath: Route = '/dashboard/account';
     const { password } = testUserAccountCredentials;
@@ -184,13 +166,7 @@ test.describe('password_reset_flow - @authenticated', () => {
 
   test('success info should be displayed if password successfully changed - @desktop @tablet @mobile', async ({
     authenticatedPage,
-    browserName,
   }) => {
-    test.skip(
-      browserName === 'webkit',
-      'something wrong with input password locator locator',
-    );
-
     const page = authenticatedPage.page;
     const accountSettingsPath: Route = '/dashboard/account';
     const newPassword = 'newPassword';
