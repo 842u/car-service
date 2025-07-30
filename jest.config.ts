@@ -32,7 +32,7 @@ const config: Config = {
   testEnvironment: 'jsdom',
 
   moduleNameMapper: {
-    '^@/ui/(.*)$': '<rootDir>/src/features/ui/$1',
+    '^@/ui/(.*)$': '<rootDir>/src/features/common/ui/$1',
     '^@/landing/(.*)$': '<rootDir>/src/features/landing/$1',
     '^@/dashboard/(.*)$': '<rootDir>/src/features/dashboard/$1',
     '^@/auth/(.*)$': '<rootDir>/src/features/auth/$1',
