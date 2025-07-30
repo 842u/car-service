@@ -13,9 +13,10 @@ export async function middleware(request: NextRequest) {
   const { cspString, nonce } = generateCspStringWithNonce(
     baseContentSecurityPolicy,
   );
-  const requestUrl = request.nextUrl.clone();
 
-  const responseHeaders = new Headers(request.headers);
+  const requestUrl = request.nextUrl.clone();
+  const responseHeaders = new Headers();
+
   responseHeaders.set('x-nonce', nonce);
   responseHeaders.set('content-security-policy', cspString);
 

@@ -116,21 +116,23 @@ export const baseContentSecurityPolicy: ContentSecurityPolicy = {
   [formActionDirective.name]: formActionDirective.value,
 };
 
-export function generateCspStringWithNonce(
-  contentSecurityPolicy: ContentSecurityPolicy,
-) {
+export function generateCspStringWithNonce(csp: ContentSecurityPolicy) {
   const nonceHash = Buffer.from(crypto.randomUUID()).toString('base64');
   const nonceString = `'nonce-${nonceHash}'`;
-  const contentSecurityPolicyWithNonce = {
-    ...contentSecurityPolicy,
+
+  const cspWithNonce = {
+    ...csp,
+    [scriptSrcDirective.name]: [...scriptSrcDirective.value],
+    [scriptSrcElemDirective.name]: [...scriptSrcElemDirective.value],
+    [styleSrcDirective.name]: [...styleSrcDirective.value],
   };
 
-  contentSecurityPolicyWithNonce[scriptSrcDirective.name].push(nonceString);
-  contentSecurityPolicyWithNonce[scriptSrcElemDirective.name].push(nonceString);
-  contentSecurityPolicyWithNonce[styleSrcDirective.name].push(nonceString);
+  cspWithNonce[scriptSrcDirective.name].push(nonceString);
+  cspWithNonce[scriptSrcElemDirective.name].push(nonceString);
+  cspWithNonce[styleSrcDirective.name].push(nonceString);
 
   return {
-    cspString: generateCspString(contentSecurityPolicy),
+    cspString: generateCspString(cspWithNonce),
     nonce: nonceHash,
   };
 }
