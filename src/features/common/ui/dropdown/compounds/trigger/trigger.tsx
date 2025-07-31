@@ -1,4 +1,4 @@
-import { MouseEventHandler, Ref } from 'react';
+import type { MouseEventHandler, Ref } from 'react';
 
 import { useDropdown } from '../../dropdown';
 

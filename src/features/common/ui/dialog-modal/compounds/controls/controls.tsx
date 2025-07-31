@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { useDialogModal } from '@/ui/dialog-modal/dialog-modal';
 

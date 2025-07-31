@@ -2,7 +2,8 @@ import { EllipsisIcon } from '@/icons/ellipsis';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
-import { DropdownContent, DropdownContentProps } from './content/content';
+import type { DropdownContentProps } from './content/content';
+import { DropdownContent } from './content/content';
 
 type TableActionsDropdownProps = Omit<
   DropdownContentProps,

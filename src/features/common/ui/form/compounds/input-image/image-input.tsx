@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { FieldValues, UseControllerProps } from 'react-hook-form';
+import type { ReactNode } from 'react';
+import type { FieldValues, UseControllerProps } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
 import {

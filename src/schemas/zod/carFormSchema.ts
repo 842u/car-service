@@ -1,12 +1,15 @@
-import { z, ZodType } from 'zod';
+import type { ZodType } from 'zod';
+import { z } from 'zod';
 
-import {
+import type {
   Car,
   DriveMapping,
-  driveTypesMapping,
   FuelMapping,
-  fuelTypesMapping,
   TransmissionMapping,
+} from '@/types';
+import {
+  driveTypesMapping,
+  fuelTypesMapping,
   transmissionTypesMapping,
 } from '@/types';
 import { parseDateToYyyyMmDd } from '@/utils/general';

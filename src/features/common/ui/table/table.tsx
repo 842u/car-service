@@ -1,13 +1,16 @@
-import {
+import type {
   ColumnDef,
+  Table as TanstackTable,
+  TableOptions,
+} from '@tanstack/react-table';
+import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
-  Table as TanstackTable,
-  TableOptions,
   useReactTable,
 } from '@tanstack/react-table';
-import { createContext, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { createContext } from 'react';
 
 import { useContextGuard } from '@/common/hooks/use-context-guard';
 

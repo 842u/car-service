@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 
 import { Form } from '../../form';
-import { FormSelect, FormSelectProps } from './select';
+import type { FormSelectProps } from './select';
+import { FormSelect } from './select';
 
 const MOCK_OPTIONS = {
   option1: 'value1',

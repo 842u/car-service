@@ -1,6 +1,6 @@
 'use client';
 
-import { Route } from 'next';
+import type { Route } from 'next';
 import Link from 'next/link';
 
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';

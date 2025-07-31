@@ -1,18 +1,15 @@
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { Route } from 'next';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { Route } from 'next';
 import { useEffect, useState } from 'react';
 
-import {
+import type {
   ServiceLogPostRouteHandlerRequest,
   ServiceLogRouteHandlerResponse,
 } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/hooks/use-toasts';
-import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import { RouteHandlerResponse } from '@/types';
+import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import type { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
@@ -20,7 +17,7 @@ import {
   serviceLogsByCarIdAddOnMutate,
 } from '@/utils/tanstack/service_logs';
 
-import { AddFormProps } from './add';
+import type { AddFormProps } from './add';
 
 type MutationVariables = {
   formData: CarServiceLogFormValues;

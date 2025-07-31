@@ -1,5 +1,5 @@
 import { createServerClient } from '@supabase/ssr';
-import { Route } from 'next';
+import type { Route } from 'next';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import {
@@ -7,7 +7,7 @@ import {
   generateCspStringWithNonce,
 } from './security/content-security-policy';
 import { getRouteAccessRedirection } from './security/route-access';
-import { Database } from './types/supabase';
+import type { Database } from './types/supabase';
 
 export async function middleware(request: NextRequest) {
   const { cspString, nonce } = generateCspStringWithNonce(

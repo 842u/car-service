@@ -1,18 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Route } from 'next';
+import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
+import type { EmailAuthFormValues } from '@/schemas/zod/emailAuthFormSchema';
 import {
-  EmailAuthFormValues,
   signInEmailAuthFormSchema,
   signUpEmailAuthFormSchema,
 } from '@/schemas/zod/emailAuthFormSchema';
-import { RouteHandlerResponse } from '@/types';
+import type { RouteHandlerResponse } from '@/types';
 
-import { EmailAuthFormType } from './email-auth';
+import type { EmailAuthFormType } from './email-auth';
 
 const defaultEmailAuthFormValues: EmailAuthFormValues = {
   email: '',

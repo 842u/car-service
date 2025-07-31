@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 
 import { Form } from '../../form';
-import { FormInput, FormInputProps } from './input';
+import type { FormInputProps } from './input';
+import { FormInput } from './input';
 
 // eslint-disable-next-line
 function TestFormInput({ ...props }: FormInputProps<any>) {

@@ -2,7 +2,7 @@ import { CheckCircleIcon } from '@/features/common/ui/decorative/icons/check-cir
 import { ExclamationCircleIcon } from '@/features/common/ui/decorative/icons/exclamation-circle';
 import { ExclamationTriangleIcon } from '@/features/common/ui/decorative/icons/exclamation-triangle';
 import { InformationCircleIcon } from '@/features/common/ui/decorative/icons/information-circle';
-import { ToastAsset, ToastType } from '@/types';
+import type { ToastAsset, ToastType } from '@/types';
 
 const errorIcon = (
   <ExclamationCircleIcon className="stroke-error-500 h-full w-full stroke-2" />

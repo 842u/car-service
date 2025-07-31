@@ -1,5 +1,5 @@
-import { Route } from 'next';
-import { ComponentProps } from 'react';
+import type { Route } from 'next';
+import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { SignOutIcon } from '@/icons/sign-out';

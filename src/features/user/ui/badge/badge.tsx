@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { Profile } from '@/types';
+import type { Profile } from '@/types';
 
 import { UserImage } from '../image/image';
 

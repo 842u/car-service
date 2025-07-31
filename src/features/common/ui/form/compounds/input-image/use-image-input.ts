@@ -1,8 +1,10 @@
-import { ChangeEvent, useEffect, useRef } from 'react';
-import { FieldValues, useController } from 'react-hook-form';
+import type { ChangeEvent } from 'react';
+import { useEffect, useRef } from 'react';
+import type { FieldValues } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { useForm } from '../../form';
-import { FormImageInputProps } from './image-input';
+import type { FormImageInputProps } from './image-input';
 
 type UseFormImageInputOptions<T extends FieldValues> = Pick<
   FormImageInputProps<T>,

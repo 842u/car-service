@@ -1,8 +1,9 @@
-import { ComponentProps, createContext } from 'react';
+import type { ComponentProps } from 'react';
+import { createContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useContextGuard } from '@/common/hooks/use-context-guard';
-import { FormVariants } from '@/types';
+import type { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
 import { FormCheckboxGroup } from './compounds/checkbox-group/checkbox-group';

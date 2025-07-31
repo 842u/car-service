@@ -1,5 +1,5 @@
+import type { MotionStyle } from 'motion/react';
 import {
-  MotionStyle,
   useMotionTemplate,
   useMotionValue,
   useSpring,

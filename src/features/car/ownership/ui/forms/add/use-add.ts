@@ -1,17 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/hooks/use-toasts';
-import {
-  carOwnershipAddFormSchema,
-  CarOwnershipAddFormValues,
-} from '@/schemas/zod/carOwnershipAddFormSchema';
+import type { CarOwnershipAddFormValues } from '@/schemas/zod/carOwnershipAddFormSchema';
+import { carOwnershipAddFormSchema } from '@/schemas/zod/carOwnershipAddFormSchema';
 import { addCarOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 import {
   carsOwnershipsAddOnError,
@@ -19,7 +14,7 @@ import {
 } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { AddFormProps } from './add';
+import type { AddFormProps } from './add';
 
 type MutationVariables = {
   formData: CarOwnershipAddFormValues;

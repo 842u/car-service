@@ -1,7 +1,8 @@
 import { DetailsTable } from '@/car/ui/tables/details/details';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
-import { SectionControls, SectionControlsProps } from './controls/controls';
+import type { SectionControlsProps } from './controls/controls';
+import { SectionControls } from './controls/controls';
 
 export type DetailsSectionProps = SectionControlsProps;
 

@@ -6,7 +6,7 @@ import { AddButton } from '@/car/ui/buttons/add/add';
 import { CarsGallery } from '@/car/ui/cars-gallery/cars-gallery';
 import { AddModal } from '@/car/ui/modals/add/add';
 import { DashboardMain } from '@/dashboard/ui/main/main';
-import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
 export default function CarsPage() {
   const dialogRef = useRef<DialogModalRef>(null);

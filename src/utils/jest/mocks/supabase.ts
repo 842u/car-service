@@ -1,4 +1,4 @@
-import { CarOwnership, Profile } from '@/types';
+import type { CarOwnership, Profile } from '@/types';
 
 export const MOCK_CAR_ID = '2c7e021f-fdf7-4a67-aef9-35fa96164864';
 

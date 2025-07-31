@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import type { SyntheticEvent } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/common/hooks/use-toasts';

@@ -1,7 +1,8 @@
 import { twMerge } from 'tailwind-merge';
 
 import { TrashIcon } from '@/icons/trash';
-import { IconButton, IconButtonProps } from '@/ui/icon-button/icon-button';
+import type { IconButtonProps } from '@/ui/icon-button/icon-button';
+import { IconButton } from '@/ui/icon-button/icon-button';
 
 type DeleteButtonProps = Partial<IconButtonProps>;
 

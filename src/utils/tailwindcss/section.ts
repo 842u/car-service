@@ -1,4 +1,4 @@
-import { SectionVariants } from '@/types';
+import type { SectionVariants } from '@/types';
 
 const baseClassName = 'border rounded-md p-4 text-sm w-full';
 

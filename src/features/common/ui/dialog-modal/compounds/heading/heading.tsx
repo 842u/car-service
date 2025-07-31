@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { XCircleIcon } from '@/icons/x-circle';
 import { IconButton } from '@/ui/icon-button/icon-button';

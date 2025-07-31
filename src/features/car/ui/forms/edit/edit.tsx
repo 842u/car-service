@@ -1,5 +1,6 @@
-import { useEditForm, UseEditFormOptions } from '@/car/ui/forms/edit/use-edit';
-import { Car } from '@/types';
+import type { UseEditFormOptions } from '@/car/ui/forms/edit/use-edit';
+import { useEditForm } from '@/car/ui/forms/edit/use-edit';
+import type { Car } from '@/types';
 
 import { CarForm } from '../../form/form';
 

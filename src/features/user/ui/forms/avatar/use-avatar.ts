@@ -1,17 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/hooks/use-toasts';
-import {
-  avatarFormSchema,
-  AvatarFormValues,
-} from '@/schemas/zod/avatarFormSchema';
+import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
+import { avatarFormSchema } from '@/schemas/zod/avatarFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';

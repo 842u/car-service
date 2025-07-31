@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Route } from 'next';
+import type { Route } from 'next';
 
 import { SignUpLink } from './sign-up-link';
 

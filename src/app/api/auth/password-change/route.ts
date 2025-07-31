@@ -1,10 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-import {
-  passwordChangeFormSchema,
-  PasswordChangeFormValues,
-} from '@/schemas/zod/passwordChangeFormSchema';
-import { RouteHandlerResponse } from '@/types';
+import type { PasswordChangeFormValues } from '@/schemas/zod/passwordChangeFormSchema';
+import { passwordChangeFormSchema } from '@/schemas/zod/passwordChangeFormSchema';
+import type { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 
 export const maxDuration = 10;

@@ -1,4 +1,4 @@
-import { Profile } from '@/types';
+import type { Profile } from '@/types';
 import { hashFile } from '@/utils/general';
 
 import { createClient } from '../client';

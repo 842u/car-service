@@ -1,7 +1,8 @@
 'use client';
 
-import { ComponentProps, useState } from 'react';
-import {
+import type { ComponentProps } from 'react';
+import { useState } from 'react';
+import type {
   FieldValues,
   Path,
   RegisterOptions,
@@ -9,7 +10,7 @@ import {
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { InputVariants } from '@/types';
+import type { InputVariants } from '@/types';
 import { VisibilityButton } from '@/ui/visibility-button/visibility-button';
 import { inputVariants } from '@/utils/tailwindcss/input';
 

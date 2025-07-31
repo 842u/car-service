@@ -1,9 +1,10 @@
 /* eslint  @typescript-eslint/naming-convention: 0 */
 
 import { type EmailOtpType } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-import { RouteHandlerResponse } from '@/types';
+import type { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 
 export const maxDuration = 10;

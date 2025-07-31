@@ -1,8 +1,9 @@
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { CarOwnership, Profile } from '@/types';
+import type { CarOwnership, Profile } from '@/types';
 
 import { OwnershipsTable } from '../../tables/ownerships/ownerships';
-import { SectionControls, SectionControlsProps } from './controls/controls';
+import type { SectionControlsProps } from './controls/controls';
+import { SectionControls } from './controls/controls';
 
 type OwnershipsSectionProps = SectionControlsProps & {
   ownersProfiles?: Profile[];

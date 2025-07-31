@@ -1,4 +1,4 @@
-import { ButtonVariants } from '@/types';
+import type { ButtonVariants } from '@/types';
 
 const baseClassName =
   'cursor-pointer rounded-md border disabled:cursor-not-allowed text-center block disabled:text-light-800 transition-colors h-10';

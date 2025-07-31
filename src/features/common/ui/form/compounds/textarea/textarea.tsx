@@ -1,5 +1,5 @@
-import { ComponentProps } from 'react';
-import {
+import type { ComponentProps } from 'react';
+import type {
   FieldValues,
   Path,
   RegisterOptions,
@@ -7,7 +7,7 @@ import {
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { InputVariants } from '@/types';
+import type { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useForm } from '../../form';

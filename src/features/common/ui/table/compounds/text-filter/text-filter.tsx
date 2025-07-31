@@ -1,4 +1,5 @@
-import { ChangeEvent, useRef } from 'react';
+import type { ChangeEvent } from 'react';
+import { useRef } from 'react';
 
 import { inputVariants } from '@/utils/tailwindcss/input';
 

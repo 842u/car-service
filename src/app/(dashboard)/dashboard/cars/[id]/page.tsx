@@ -1,4 +1,4 @@
-import { Route } from 'next';
+import type { Route } from 'next';
 import { redirect } from 'next/navigation';
 
 import { SettingsSection } from '@/car/ui/sections/settings/settings';

@@ -1,10 +1,10 @@
-import {
-  CarServiceLogFormValues,
-  MAX_SERVICE_NOTE_lENGTH,
-} from '@/schemas/zod/carServiceLogFormSchema';
-import { serviceCategoryMapping, ServiceLog } from '@/types';
+import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import { MAX_SERVICE_NOTE_lENGTH } from '@/schemas/zod/carServiceLogFormSchema';
+import type { ServiceLog } from '@/types';
+import { serviceCategoryMapping } from '@/types';
 import { Button } from '@/ui/button/button';
-import { Form, FormProps } from '@/ui/form/form';
+import type { FormProps } from '@/ui/form/form';
+import { Form } from '@/ui/form/form';
 
 import { useServiceLogForm } from './use-form';
 

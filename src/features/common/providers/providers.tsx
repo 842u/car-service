@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { ColorThemeProvider } from './color-theme';
 import { TanStackQueryProvider } from './tan-stack-query';

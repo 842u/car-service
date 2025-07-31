@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { DeleteButton } from '@/car/ui/buttons/delete/delete';
 import { DeleteModal } from '@/car/ui/modals/delete/delete';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
 export type SectionControlsProps = {
   carId: string;

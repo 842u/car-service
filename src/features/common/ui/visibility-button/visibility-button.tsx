@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 import { EyeCloseIcon } from '@/icons/eye-close';
 import { EyeOpenIcon } from '@/icons/eye-open';

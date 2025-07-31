@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent, { Options } from '@testing-library/user-event';
+import type { Options } from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 
 import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
 import { IMAGE_FILE_MAX_SIZE_BYTES } from '@/schemas/zod/common';

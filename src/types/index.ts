@@ -1,7 +1,7 @@
-import { InfiniteData } from '@tanstack/react-query';
-import { JSX } from 'react';
+import type { InfiniteData } from '@tanstack/react-query';
+import type { JSX } from 'react';
 
-import { Database } from './supabase';
+import type { Database } from './supabase';
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning';
 

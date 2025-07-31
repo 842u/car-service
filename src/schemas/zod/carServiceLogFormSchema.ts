@@ -1,10 +1,8 @@
-import { z, ZodType } from 'zod';
+import type { ZodType } from 'zod';
+import { z } from 'zod';
 
-import {
-  ServiceCategoryMapping,
-  serviceCategoryMapping,
-  ServiceLog,
-} from '@/types';
+import type { ServiceCategoryMapping, ServiceLog } from '@/types';
+import { serviceCategoryMapping } from '@/types';
 
 import {
   carMileageSchema,

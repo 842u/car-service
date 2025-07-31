@@ -1,13 +1,10 @@
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { Route } from 'next';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
 import { useToasts } from '@/common/hooks/use-toasts';
-import { Car } from '@/types';
+import type { Car } from '@/types';
 import { deleteCar } from '@/utils/supabase/tables/cars';
 import {
   carsInfiniteDeleteOnError,

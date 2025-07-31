@@ -1,4 +1,4 @@
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
@@ -9,7 +9,7 @@ import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
 import { getProfilesByUsersId } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { SettingsSectionProps } from './settings';
+import type { SettingsSectionProps } from './settings';
 
 export function useSettingsSection({ carId }: SettingsSectionProps) {
   const [user, setUser] = useState<User | null>(null);

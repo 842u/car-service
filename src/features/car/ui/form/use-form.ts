@@ -1,11 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useImperativeHandle, useState } from 'react';
-import { Resolver, useForm } from 'react-hook-form';
+import type { Resolver } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-import { carFormSchema, CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
+import { carFormSchema } from '@/schemas/zod/carFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 
-import { CarFormProps } from './form';
+import type { CarFormProps } from './form';
 
 const defaultCarFormValues: CarFormValues = {
   image: null,

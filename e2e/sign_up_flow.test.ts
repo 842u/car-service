@@ -1,4 +1,4 @@
-import { Route } from 'next';
+import type { Route } from 'next';
 
 import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
 import { wrongEmails } from '@/utils/validation';

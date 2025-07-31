@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { useDropdownContent, UseDropdownContentOptions } from './use-content';
+import type { UseDropdownContentOptions } from './use-content';
+import { useDropdownContent } from './use-content';
 
 type DropdownContentProps = {
   children: ReactNode;

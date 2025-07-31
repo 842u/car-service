@@ -1,4 +1,4 @@
-import { InputVariants } from '@/types';
+import type { InputVariants } from '@/types';
 
 const baseClassName = 'border rounded-md w-full h-10 px-3';
 

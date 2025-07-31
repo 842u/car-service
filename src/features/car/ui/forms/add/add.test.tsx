@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
 import { ToastsProvider } from '@/common/providers/toasts/toasts';
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 
 import { AddForm } from './add';

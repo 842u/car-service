@@ -1,4 +1,5 @@
-import { Context, use } from 'react';
+import type { Context } from 'react';
+import { use } from 'react';
 
 type UseContextGuardOptions<T> = {
   context: Context<T | null>;

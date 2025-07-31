@@ -1,6 +1,6 @@
-import { Route } from 'next';
+import type { Route } from 'next';
 import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
-import { JSX } from 'react';
+import type { JSX } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { LinkButton } from '@/ui/link-button/link-button';

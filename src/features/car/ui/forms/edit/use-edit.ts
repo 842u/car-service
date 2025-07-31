@@ -1,17 +1,15 @@
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { RefObject, useRef } from 'react';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { RefObject } from 'react';
+import { useRef } from 'react';
 
 import { useToasts } from '@/common/hooks/use-toasts';
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { CarFormRef } from '../../form/form';
+import type { CarFormRef } from '../../form/form';
 
 export type UseEditFormOptions = {
   carId: string;

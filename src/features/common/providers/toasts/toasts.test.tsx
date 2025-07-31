@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { ToastType } from '@/types';
+import type { ToastType } from '@/types';
 
 import { ToastsProvider } from './toasts';
 

@@ -1,17 +1,14 @@
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { Route } from 'next';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { Route } from 'next';
 
-import {
+import type {
   ServiceLogPatchRouteHandlerRequest,
   ServiceLogRouteHandlerResponse,
 } from '@/app/api/service-log/route';
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import { RouteHandlerResponse, ServiceLog } from '@/types';
+import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import type { RouteHandlerResponse, ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
   serviceLogsByCarIdEditOnError,

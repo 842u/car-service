@@ -1,10 +1,8 @@
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 
-import {
-  carServiceLogFormSchema,
-  CarServiceLogFormValues,
-} from '@/schemas/zod/carServiceLogFormSchema';
+import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
 import { dataResponse, errorResponse } from '@/utils/next/routeHandlers';
 import { createClient } from '@/utils/supabase/server';
 

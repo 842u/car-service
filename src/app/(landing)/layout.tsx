@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { LandingNavBar } from '@/features/landing/ui/nav-bar/nav-bar';
 

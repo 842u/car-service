@@ -2,18 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 
-import {
-  avatarFormSchema,
-  AvatarFormValues,
-} from '@/schemas/zod/avatarFormSchema';
+import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
+import { avatarFormSchema } from '@/schemas/zod/avatarFormSchema';
 import { Form } from '@/ui/form/form';
 import { defaultAvatarFormValues } from '@/user/ui/forms/avatar/use-avatar';
 
-import {
-  FORM_IMAGE_INPUT_TEST_ID,
-  FormImageInput,
-  FormImageInputProps,
-} from './image-input';
+import type { FormImageInputProps } from './image-input';
+import { FORM_IMAGE_INPUT_TEST_ID, FormImageInput } from './image-input';
 
 const INPUT_LABEL_TEXT = 'testLabel';
 

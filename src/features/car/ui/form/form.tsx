@@ -1,9 +1,10 @@
-import { Ref } from 'react';
+import type { Ref } from 'react';
 
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { Car } from '@/types';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { Car } from '@/types';
 import { Button } from '@/ui/button/button';
-import { Form, FormProps } from '@/ui/form/form';
+import type { FormProps } from '@/ui/form/form';
+import { Form } from '@/ui/form/form';
 
 import { FormFields } from './fields/fields';
 import { useCarForm } from './use-form';

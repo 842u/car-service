@@ -1,12 +1,11 @@
 'use client';
 
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-import {
-  ToastsContext,
-  ToastsContextType,
-} from '@/features/common/contexts/toasts';
-import { Toast, ToastType } from '@/types';
+import type { ToastsContextType } from '@/features/common/contexts/toasts';
+import { ToastsContext } from '@/features/common/contexts/toasts';
+import type { Toast, ToastType } from '@/types';
 
 type ToastsProviderProps = {
   children: ReactNode;

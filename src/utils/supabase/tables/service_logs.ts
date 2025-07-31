@@ -1,4 +1,4 @@
-import { ServiceLog } from '@/types';
+import type { ServiceLog } from '@/types';
 import { toSafeNumber } from '@/utils/general';
 
 import { createClient } from '../client';

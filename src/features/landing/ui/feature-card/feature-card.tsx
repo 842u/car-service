@@ -1,7 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { Card, CardProps } from '@/ui/card/card';
+import type { CardProps } from '@/ui/card/card';
+import { Card } from '@/ui/card/card';
 
 import { FeatureCardBackground } from './compounds/background/background';
 import { FeatureCardDescription } from './compounds/description/description';

@@ -1,8 +1,9 @@
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 
-import { ServiceLog } from '@/types';
+import type { ServiceLog } from '@/types';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
-import { DialogModal, DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import { DialogModal } from '@/ui/dialog-modal/dialog-modal';
 
 import { EditForm } from '../../forms/edit/edit';
 

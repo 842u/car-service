@@ -1,18 +1,15 @@
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { Route } from 'next';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
 import { DeleteModal } from '@/car/ownership/ui/modals/delete/delete';
 import { PromoteModal } from '@/car/ownership/ui/modals/promote/promote';
 import { useToasts } from '@/common/hooks/use-toasts';
-import { CarOwnership } from '@/types';
+import type { CarOwnership } from '@/types';
 import { Button } from '@/ui/button/button';
-import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import {
   deleteCarOwnershipsByUsersIds,

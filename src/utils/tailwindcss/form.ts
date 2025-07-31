@@ -1,4 +1,4 @@
-import { FormVariants } from '@/types';
+import type { FormVariants } from '@/types';
 
 const baseClassName = 'p-4 text-sm w-full flex flex-col gap-2';
 

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { RouteHandlerResponse } from '@/types';
+import type { RouteHandlerResponse } from '@/types';
 
 export function errorResponse(errorMessage: string, status: number) {
   return NextResponse.json<RouteHandlerResponse>(

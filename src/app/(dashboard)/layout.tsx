@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { DashboardNavBar } from '@/dashboard/ui/nav-bar/nav-bar';
 

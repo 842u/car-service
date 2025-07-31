@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { ToastType } from '@/types';
+import type { ToastType } from '@/types';
 
 import { ToasterToast } from './toast';
 

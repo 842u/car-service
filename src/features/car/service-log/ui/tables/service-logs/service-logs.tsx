@@ -1,10 +1,12 @@
 'use client';
 
-import { User } from '@supabase/supabase-js';
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import type { User } from '@supabase/supabase-js';
+import type { ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
+import type { Profile, ServiceLog } from '@/types';
+import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
 import { Table } from '@/ui/table/table';
 import { UserBadge } from '@/user/ui/badge/badge';

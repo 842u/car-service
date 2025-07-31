@@ -1,5 +1,5 @@
-import { Provider } from '@supabase/supabase-js';
-import { Route } from 'next';
+import type { Provider } from '@supabase/supabase-js';
+import type { Route } from 'next';
 
 import { createClient } from './client';
 

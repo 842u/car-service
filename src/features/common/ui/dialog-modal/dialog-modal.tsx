@@ -1,7 +1,6 @@
+import type { ReactNode, RefObject } from 'react';
 import {
   createContext,
-  ReactNode,
-  RefObject,
   useCallback,
   useEffect,
   useImperativeHandle,

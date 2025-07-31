@@ -1,6 +1,7 @@
 'use client';
 
-import { AnimatePresence, LazyMotion, MotionProps } from 'motion/react';
+import type { MotionProps } from 'motion/react';
+import { AnimatePresence, LazyMotion } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/common/hooks/use-toasts';

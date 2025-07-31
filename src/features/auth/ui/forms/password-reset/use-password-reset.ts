@@ -3,10 +3,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
-import {
-  passwordResetFormSchema,
-  PasswordResetFormValues,
-} from '@/schemas/zod/passwordResetFormSchema';
+import type { PasswordResetFormValues } from '@/schemas/zod/passwordResetFormSchema';
+import { passwordResetFormSchema } from '@/schemas/zod/passwordResetFormSchema';
 import { createClient } from '@/utils/supabase/client';
 
 const defaultPasswordResetFormValues = { email: '' };

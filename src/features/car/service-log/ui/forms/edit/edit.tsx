@@ -1,7 +1,8 @@
 'use client';
 
 import { ServiceLogForm } from '../../form/form';
-import { useEditForm, UseEditFormOptions } from './use-edit';
+import type { UseEditFormOptions } from './use-edit';
+import { useEditForm } from './use-edit';
 
 export type EditFormProps = UseEditFormOptions;
 

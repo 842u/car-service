@@ -1,7 +1,8 @@
 import { twMerge } from 'tailwind-merge';
 
 import { UserPlusIcon } from '@/icons/user-plus';
-import { IconButton, IconButtonProps } from '@/ui/icon-button/icon-button';
+import type { IconButtonProps } from '@/ui/icon-button/icon-button';
+import { IconButton } from '@/ui/icon-button/icon-button';
 
 type AddButtonProps = Partial<IconButtonProps>;
 

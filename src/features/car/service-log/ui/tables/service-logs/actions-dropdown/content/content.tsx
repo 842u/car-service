@@ -1,16 +1,13 @@
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
 
 import { DeleteModal } from '@/car/service-log/ui/modals/delete/delete';
 import { EditModal } from '@/car/service-log/ui/modals/edit/edit';
 import { useToasts } from '@/common/hooks/use-toasts';
-import { ServiceLog } from '@/types';
+import type { ServiceLog } from '@/types';
 import { Button } from '@/ui/button/button';
-import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';

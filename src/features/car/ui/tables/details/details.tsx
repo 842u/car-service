@@ -1,4 +1,4 @@
-import { DetailsSectionProps } from '../../sections/details/details';
+import type { DetailsSectionProps } from '../../sections/details/details';
 
 export const DETAILS_TABLE_TEST_ID = 'details-table';
 

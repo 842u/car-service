@@ -2,13 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  carServiceLogFormSchema,
-  CarServiceLogFormValues,
-} from '@/schemas/zod/carServiceLogFormSchema';
+import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
 import { parseDateToYyyyMmDd } from '@/utils/general';
 
-import { ServiceLogFormProps } from './form';
+import type { ServiceLogFormProps } from './form';
 
 export function useServiceLogForm({
   onSubmit,

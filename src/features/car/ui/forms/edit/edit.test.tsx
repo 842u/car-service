@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { EditForm } from '@/car/ui/forms/edit/edit';
 import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
 import { ToastsProvider } from '@/common/providers/toasts/toasts';
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { Car } from '@/types';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { Car } from '@/types';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 
 const MOCK_CAR_ID = 'id';

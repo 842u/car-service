@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { Route } from 'next';
+import type { Route } from 'next';
 
-import { Car } from '@/types';
+import type { Car } from '@/types';
 
 import { CarCard } from './card';
 

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AriaRole } from 'react';
+import type { AriaRole } from 'react';
 
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { FORM_IMAGE_INPUT_TEST_ID } from '@/ui/form/compounds/input-image/image-input';
 
 import { CarForm } from './form';

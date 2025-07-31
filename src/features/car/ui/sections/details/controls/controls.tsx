@@ -3,8 +3,8 @@ import { useRef } from 'react';
 import { EditButton } from '@/car/ui/buttons/edit/edit';
 import { EditModal } from '@/car/ui/modals/edit/edit';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { Car } from '@/types';
-import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { Car } from '@/types';
+import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
 export type SectionControlsProps = {
   isCurrentUserPrimaryOwner: boolean;

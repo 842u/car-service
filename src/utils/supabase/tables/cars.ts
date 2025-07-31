@@ -1,8 +1,8 @@
-import { Route } from 'next';
+import type { Route } from 'next';
 
-import { ApiCarRequestBody, ApiCarResponse } from '@/app/api/car/route';
-import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { RouteHandlerResponse } from '@/types';
+import type { ApiCarRequestBody, ApiCarResponse } from '@/app/api/car/route';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { RouteHandlerResponse } from '@/types';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/utils/general';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/utils/tanstack/cars';
 

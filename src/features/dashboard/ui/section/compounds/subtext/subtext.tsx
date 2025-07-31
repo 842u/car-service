@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { TextProps } from '../text/text';
+import type { TextProps } from '../text/text';
 
 export function SectionSubtext({ children, className, ...props }: TextProps) {
   return (

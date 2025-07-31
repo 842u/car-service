@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-import { EmailAuthFormType } from '@/auth/ui/forms/email-auth/email-auth';
-import {
-  EmailAuthFormValues,
-  signUpEmailAuthFormSchema,
-} from '@/schemas/zod/emailAuthFormSchema';
-import { RouteHandlerResponse } from '@/types';
+import type { EmailAuthFormType } from '@/auth/ui/forms/email-auth/email-auth';
+import type { EmailAuthFormValues } from '@/schemas/zod/emailAuthFormSchema';
+import { signUpEmailAuthFormSchema } from '@/schemas/zod/emailAuthFormSchema';
+import type { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 
 export const maxDuration = 10;

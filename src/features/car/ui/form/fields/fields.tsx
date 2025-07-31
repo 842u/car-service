@@ -1,8 +1,8 @@
-import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
+import type { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import {
   CAR_VIN_LENGTH,
-  CarFormValues,
   MAX_CAR_BRAND_LENGTH,
   MAX_CAR_ENGINE_CAPACITY_VALUE,
   MAX_CAR_LICENSE_PLATES_LENGTH,

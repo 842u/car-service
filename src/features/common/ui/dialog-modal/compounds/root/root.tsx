@@ -1,4 +1,4 @@
-import { ComponentProps, MouseEvent, ReactNode } from 'react';
+import type { ComponentProps, MouseEvent, ReactNode } from 'react';
 
 import { useDialogModal } from '../../dialog-modal';
 

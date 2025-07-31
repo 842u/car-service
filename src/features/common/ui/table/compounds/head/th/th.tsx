@@ -1,5 +1,5 @@
-import { Header } from '@tanstack/react-table';
-import { ComponentProps } from 'react';
+import type { Header } from '@tanstack/react-table';
+import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useTable } from '@/ui/table/table';

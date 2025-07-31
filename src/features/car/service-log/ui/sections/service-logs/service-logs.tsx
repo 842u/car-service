@@ -5,13 +5,14 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/common/hooks/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { Profile } from '@/types';
+import type { Profile } from '@/types';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { ServiceLogsTable } from '../../tables/service-logs/service-logs';
-import { SectionControls, SectionControlsProps } from './controls/controls';
+import type { SectionControlsProps } from './controls/controls';
+import { SectionControls } from './controls/controls';
 
 type ServiceLogsSectionProps = SectionControlsProps & {
   isCurrentUserPrimaryOwner: boolean;
