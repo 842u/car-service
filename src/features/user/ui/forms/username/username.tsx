@@ -5,7 +5,7 @@ import { Form } from '@/ui/form/form';
 
 import { useUsernameForm } from './use-username';
 
-export const USERNAME_FORM_TEST_ID = 'username form test id';
+export const USERNAME_FORM_TEST_ID = 'username-form';
 
 type UsernameFormProps = {
   username?: string | null;

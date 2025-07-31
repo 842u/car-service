@@ -4,7 +4,7 @@ import { Profile } from '@/types';
 
 import { UserImage } from '../image/image';
 
-export const USER_BADGE_TEST_ID = 'user badge';
+export const USER_BADGE_TEST_ID = 'user-badge';
 
 type UserBadgeProps = {
   userProfile: Profile;

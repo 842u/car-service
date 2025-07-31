@@ -1,6 +1,6 @@
 import { SvgA11y, SvgA11yProps } from '../svg-a11y/svg-a11y';
 
-export const BRAND_FULL_ICON_TEST_ID = 'brand full icon';
+export const BRAND_FULL_ICON_TEST_ID = 'brand-full-icon';
 
 export function BrandFullIcon({ ...props }: SvgA11yProps) {
   return (

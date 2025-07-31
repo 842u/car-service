@@ -1,6 +1,6 @@
 import { DetailsSectionProps } from '../../sections/details/details';
 
-export const CAR_DETAILS_TABLE_TEST_ID = 'car details table test id';
+export const DETAILS_TABLE_TEST_ID = 'details-table';
 
 type DetailsTableProps = Pick<DetailsSectionProps, 'carData'>;
 
@@ -8,7 +8,7 @@ export function DetailsTable({ carData }: DetailsTableProps) {
   return (
     <div
       className="my-4 overflow-hidden md:flex md:flex-wrap md:gap-2"
-      data-testid={CAR_DETAILS_TABLE_TEST_ID}
+      data-testid={DETAILS_TABLE_TEST_ID}
     >
       <section className="mb-5 md:m-0 md:w-1/3 md:grow">
         <h3 className="my-1 text-base">Basic</h3>

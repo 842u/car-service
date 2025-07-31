@@ -5,7 +5,7 @@ import { AddModal } from '@/car/ownership/ui/modals/add/add';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-export const SECTION_CONTROLS_TEST_ID = 'car ownership section test id';
+export const SECTION_CONTROLS_TEST_ID = 'section-controls';
 
 export type SectionControlsProps = {
   carId: string;

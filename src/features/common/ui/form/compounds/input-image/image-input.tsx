@@ -13,7 +13,7 @@ import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 import { useFormImageInput } from './use-image-input';
 
-export const FORM_IMAGE_INPUT_TEST_ID = 'form input image test id';
+export const FORM_IMAGE_INPUT_TEST_ID = 'form-image-input';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);

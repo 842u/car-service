@@ -3,7 +3,7 @@ import { Form } from '@/ui/form/form';
 
 import { useAddForm } from './use-add';
 
-export const ADD_FORM_TEST_ID = 'car ownership add form test id';
+export const ADD_FORM_TEST_ID = 'add-form';
 
 export type AddFormProps = {
   carId: string;

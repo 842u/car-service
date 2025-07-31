@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-export const SPINNER_TEST_ID = 'loading spinner';
+export const SPINNER_TEST_ID = 'spinner';
 
 type SpinnerProps = {
   className?: string;

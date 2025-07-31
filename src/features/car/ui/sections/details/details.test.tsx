@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { CAR_DETAILS_TABLE_TEST_ID } from '@/car/ui/tables/details/details';
+import { DETAILS_TABLE_TEST_ID } from '@/car/ui/tables/details/details';
 import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
 import { Car } from '@/types';
 
@@ -55,7 +55,7 @@ describe('DetailsSection', () => {
   it('should render car details table', () => {
     render(<TestDetailsSection />);
 
-    const carDetailsTable = screen.getByTestId(CAR_DETAILS_TABLE_TEST_ID);
+    const carDetailsTable = screen.getByTestId(DETAILS_TABLE_TEST_ID);
 
     expect(carDetailsTable).toBeInTheDocument();
   });

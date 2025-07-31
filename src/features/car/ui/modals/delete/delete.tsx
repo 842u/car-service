@@ -6,7 +6,7 @@ import { DialogModal, DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
 import { useDeleteModal, UseDeleteModalOptions } from './use-delete';
 
-export const DELETE_MODAL_TEST_ID = 'CarDeleteModal_test_id';
+export const DELETE_MODAL_TEST_ID = 'delete-modal';
 
 type DeleteModalProps = UseDeleteModalOptions & {
   ref?: RefObject<DialogModalRef | null>;

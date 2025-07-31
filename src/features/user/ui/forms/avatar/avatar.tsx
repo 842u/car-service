@@ -7,7 +7,7 @@ import { UserImage } from '@/user/ui/image/image';
 
 import { useAvatarForm } from './use-avatar';
 
-export const AVATAR_FORM_TEST_ID = 'avatar form test id';
+export const AVATAR_FORM_TEST_ID = 'avatar-form';
 
 type AvatarFormProps = {
   avatarUrl?: string | null;

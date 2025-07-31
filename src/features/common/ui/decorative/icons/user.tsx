@@ -1,6 +1,6 @@
 import { SvgA11y, SvgA11yProps } from '../svg-a11y/svg-a11y';
 
-export const USER_ICON_TEST_ID = 'user icon';
+export const USER_ICON_TEST_ID = 'user-icon';
 
 export function UserIcon({ ...props }: SvgA11yProps) {
   return (
