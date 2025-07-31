@@ -84,6 +84,7 @@ export default typescriptEslintConfig(
           ignoreRestSiblings: true,
         },
       ],
+      '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-unused-expressions': [
         'error',
         {

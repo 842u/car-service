@@ -8,6 +8,10 @@ jobs:
   jest-test:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    environment:
+      name: Test
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
 
     steps:
       - uses: actions/checkout@v4

@@ -1,5 +1,6 @@
-import { expect, Locator, Page, test as base } from '@playwright/test';
-import { Route } from 'next';
+import type { Locator, Page } from '@playwright/test';
+import { expect, test as base } from '@playwright/test';
+import type { Route } from 'next';
 
 import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
 

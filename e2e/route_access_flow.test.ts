@@ -1,11 +1,11 @@
-import { Route } from 'next';
+import type { Route } from 'next';
 
 import {
   authenticatedOnlyDynamicRoutes,
   authenticatedOnlyRoutes,
   publicRoutes,
   unauthenticatedOnlyRoutes,
-} from '@/middleware';
+} from '@/security/route-access';
 
 import { expect, test } from './fixtures';
 
