@@ -5,7 +5,7 @@ import { Car } from '@/types';
 import { Button } from '@/ui/button/button';
 import { Form, FormProps } from '@/ui/form/form';
 
-import { FormFields } from './fields';
+import { FormFields } from './fields/fields';
 import { useCarForm } from './use-form';
 
 export type CarFormRef = {

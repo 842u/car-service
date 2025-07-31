@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { LinkButton } from '@/ui/link-button/link-button';
 import { ThemeButton } from '@/ui/theme-button/theme-button';
 
-import { NavItem } from './item';
+import { NavItem } from './item/item';
 
 type NavBarNavProps = {
   isActive?: boolean;

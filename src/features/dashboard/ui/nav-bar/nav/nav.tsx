@@ -6,7 +6,7 @@ import { HomeIcon } from '@/icons/home';
 import { UserIcon } from '@/icons/user';
 import { ThemeButton } from '@/ui/theme-button/theme-button';
 
-import { NavItem } from './item';
+import { NavItem } from './item/item';
 
 type NavBarNavProps = {
   isActive?: boolean;

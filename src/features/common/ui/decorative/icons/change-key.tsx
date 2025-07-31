@@ -1,4 +1,4 @@
-import { SvgA11y, SvgA11yProps } from '../svg-a11y';
+import { SvgA11y, SvgA11yProps } from '../svg-a11y/svg-a11y';
 
 export function ChangeKeyIcon({ ...props }: SvgA11yProps) {
   return (
