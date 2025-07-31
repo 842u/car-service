@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { CarEditIcon } from '@/ui/decorative/icons/car-edit';
+import { CarEditIcon } from '@/icons/car-edit';
 import { IconButton, IconButtonProps } from '@/ui/icon-button/icon-button';
 
 type EditButtonProps = Partial<IconButtonProps>;

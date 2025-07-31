@@ -3,8 +3,8 @@ import { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
+import { XCircleIcon } from '@/icons/x-circle';
 import { Toast as ToastObject } from '@/types';
-import { XCircleIcon } from '@/ui/decorative/icons/x-circle';
 import { IconButton } from '@/ui/icon-button/icon-button';
 import { getToastAssets } from '@/utils/toasts';
 

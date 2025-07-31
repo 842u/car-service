@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { USER_ICON_TEST_ID } from '@/ui/decorative/icons/user';
+import { USER_ICON_TEST_ID } from '@/icons/user';
 
 import { AvatarImage } from './avatar-image';
 

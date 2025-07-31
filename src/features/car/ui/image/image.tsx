@@ -1,7 +1,7 @@
 import NextImage from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
-import { BrandFullIcon } from '@/ui/decorative/icons/brand-full';
+import { BrandFullIcon } from '@/icons/brand-full';
 
 type ImageProps = {
   src?: string | null;

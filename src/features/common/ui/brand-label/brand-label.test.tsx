@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
+import { BRAND_SIMPLE_ICON_TEST_ID } from '@/icons/brand-simple';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
-import { BRAND_SIMPLE_ICON_TEST_ID } from '@/ui/decorative/icons/brand-simple';
 
 describe('BrandLabel', () => {
   it('should render as <a> element', () => {

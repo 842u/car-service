@@ -4,8 +4,8 @@ import { User } from '@supabase/supabase-js';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { KeyIcon } from '@/icons/key';
 import { CarOwnership, Profile } from '@/types';
-import { KeyIcon } from '@/ui/decorative/icons/key';
 import { Table } from '@/ui/table/table';
 import { UserBadge } from '@/user/ui/user-badge/user-badge';
 import { createClient } from '@/utils/supabase/client';

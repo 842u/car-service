@@ -2,7 +2,7 @@
 
 import { render, screen } from '@testing-library/react';
 
-import { BRAND_FULL_ICON_TEST_ID } from '@/ui/decorative/icons/brand-full';
+import { BRAND_FULL_ICON_TEST_ID } from '@/icons/brand-full';
 
 import { Image } from './image';
 

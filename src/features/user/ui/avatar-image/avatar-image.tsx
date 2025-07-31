@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
-import { UserIcon } from '@/ui/decorative/icons/user';
+import { UserIcon } from '@/icons/user';
 
 type AvatarImageProps = {
   src?: string | null;

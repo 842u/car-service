@@ -1,4 +1,4 @@
-import { CarPlusIcon } from '@/ui/decorative/icons/car-plus';
+import { CarPlusIcon } from '@/icons/car-plus';
 import { IconButton, IconButtonProps } from '@/ui/icon-button/icon-button';
 
 type AddButtonProps = Partial<IconButtonProps>;

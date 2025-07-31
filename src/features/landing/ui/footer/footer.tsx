@@ -1,7 +1,7 @@
 import { Section } from '@/features/landing/ui/section/section';
+import { GitHubIcon } from '@/icons/github';
+import { MailIcon } from '@/icons/mail';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
-import { GitHubIcon } from '@/ui/decorative/icons/github';
-import { MailIcon } from '@/ui/decorative/icons/mail';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
 export function Footer() {

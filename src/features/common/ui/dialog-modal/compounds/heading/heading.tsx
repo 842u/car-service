@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { XCircleIcon } from '@/ui/decorative/icons/x-circle';
+import { XCircleIcon } from '@/icons/x-circle';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
 import { useDialogModal } from '../../dialog-modal';

@@ -4,9 +4,9 @@ import { Provider } from '@supabase/supabase-js';
 import { JSX, useState } from 'react';
 
 import { useToasts } from '@/features/common/hooks/use-toasts';
+import { GitHubIcon } from '@/icons/github';
+import { GoogleIcon } from '@/icons/google';
 import { Button } from '@/ui/button/button';
-import { GitHubIcon } from '@/ui/decorative/icons/github';
-import { GoogleIcon } from '@/ui/decorative/icons/google';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { signInWithOAuthHandler } from '@/utils/supabase/general';
 

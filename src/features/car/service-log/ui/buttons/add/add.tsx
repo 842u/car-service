@@ -1,4 +1,4 @@
-import { BookIcon } from '@/ui/decorative/icons/book';
+import { BookIcon } from '@/icons/book';
 import { IconButton, IconButtonProps } from '@/ui/icon-button/icon-button';
 
 type AddButtonProps = Partial<IconButtonProps>;

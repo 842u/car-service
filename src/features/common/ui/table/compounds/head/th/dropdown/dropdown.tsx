@@ -1,7 +1,7 @@
-import { ChevronDownIcon } from '@/ui/decorative/icons/chevron-down';
-import { ChevronUpIcon } from '@/ui/decorative/icons/chevron-up';
-import { ChevronUpDownIcon } from '@/ui/decorative/icons/chevron-up-down';
-import { XMarkIcon } from '@/ui/decorative/icons/x-mark';
+import { ChevronDownIcon } from '@/icons/chevron-down';
+import { ChevronUpIcon } from '@/icons/chevron-up';
+import { ChevronUpDownIcon } from '@/icons/chevron-up-down';
+import { XMarkIcon } from '@/icons/x-mark';
 import { Dropdown as BaseDropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 import { useTable } from '@/ui/table/table';

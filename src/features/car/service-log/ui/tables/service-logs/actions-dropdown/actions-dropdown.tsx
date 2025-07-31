@@ -1,5 +1,5 @@
+import { EllipsisIcon } from '@/icons/ellipsis';
 import { ServiceLog } from '@/types';
-import { EllipsisIcon } from '@/ui/decorative/icons/ellipsis';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
