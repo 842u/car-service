@@ -3,10 +3,10 @@ import { twMerge } from 'tailwind-merge';
 
 import { Card, CardProps } from '@/ui/card/card';
 
-import { Background } from './background';
-import { Description } from './description';
-import { Heading } from './heading';
-import { Icon } from './icon';
+import { Background } from './compounds/background/background';
+import { Description } from './compounds/description/description';
+import { Heading } from './compounds/heading/heading';
+import { Icon } from './compounds/icon/icon';
 
 export function FeatureCard({ className, children, ...props }: CardProps) {
   return (

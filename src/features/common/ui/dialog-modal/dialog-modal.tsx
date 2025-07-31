@@ -11,9 +11,9 @@ import {
 
 import { useContextGuard } from '@/common/hooks/use-context-guard';
 
-import { Controls } from './controls';
-import { Heading } from './heading';
-import { Root } from './root';
+import { Controls } from './compounds/controls/controls';
+import { Heading } from './compounds/heading/heading';
+import { Root } from './compounds/root/root';
 
 export type DialogModalRef = {
   showModal: () => void;

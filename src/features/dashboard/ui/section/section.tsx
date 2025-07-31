@@ -4,10 +4,10 @@ import { twMerge } from 'tailwind-merge';
 import { SectionVariants } from '@/types';
 import { sectionVariants } from '@/utils/tailwindcss/section';
 
-import { Controls } from './parts/controls';
-import { Heading } from './parts/heading';
-import { Subtext } from './parts/subtext';
-import { Text } from './parts/text';
+import { Controls } from './compounds/controls/controls';
+import { Heading } from './compounds/heading/heading';
+import { Subtext } from './compounds/subtext/subtext';
+import { Text } from './compounds/text/text';
 
 type SectionProps = ComponentProps<'section'> & {
   variant?: SectionVariants;

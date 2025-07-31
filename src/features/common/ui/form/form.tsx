@@ -5,15 +5,15 @@ import { useContextGuard } from '@/common/hooks/use-context-guard';
 import { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
-import { ButtonSubmit } from './button-submit/button-submit';
-import { CheckboxGroup } from './checkbox-group/checkbox-group';
-import { Controls } from './controls/controls';
-import { Input } from './input/input';
-import { InputImage } from './input-image/input-image';
-import { InputPassword } from './input-password/input-password';
-import { InputWrapper } from './input-wrapper/input-wrapper';
-import { Select } from './select/select';
-import { Textarea } from './textarea/textarea';
+import { ButtonSubmit } from './compounds/button-submit/button-submit';
+import { CheckboxGroup } from './compounds/checkbox-group/checkbox-group';
+import { Controls } from './compounds/controls/controls';
+import { Input } from './compounds/input/input';
+import { InputImage } from './compounds/input-image/input-image';
+import { InputPassword } from './compounds/input-password/input-password';
+import { InputWrapper } from './compounds/input-wrapper/input-wrapper';
+import { Select } from './compounds/select/select';
+import { Textarea } from './compounds/textarea/textarea';
 
 export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
