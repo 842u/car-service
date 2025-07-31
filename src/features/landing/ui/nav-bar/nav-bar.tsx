@@ -10,11 +10,11 @@ import { NavBar } from '@/ui/nav-bar/nav-bar';
 export function LandingNavBar() {
   const [isActive, setIsActive] = useState(false);
 
-  const navMenuClickHandler = () => {
+  const handleNavClick = () => {
     setIsActive(false);
   };
 
-  const hamburgerButtonClickHandler = () => {
+  const handleHamburgerButtonClick = () => {
     setIsActive((currentState) => !currentState);
   };
 
@@ -24,12 +24,12 @@ export function LandingNavBar() {
       <HamburgerButton
         className="z-20 lg:hidden"
         isActive={isActive}
-        onClick={hamburgerButtonClickHandler}
+        onClick={handleHamburgerButtonClick}
       />
       <NavBarNav
         className="z-0 lg:z-20"
         isActive={isActive}
-        onClick={navMenuClickHandler}
+        onClick={handleNavClick}
       />
     </NavBar>
   );

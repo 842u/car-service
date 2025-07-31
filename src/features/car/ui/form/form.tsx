@@ -9,7 +9,7 @@ import { FormFields } from './fields/fields';
 import { useCarForm } from './use-form';
 
 export type CarFormRef = {
-  inputImageUrl: string | null;
+  imageInputUrl: string | null;
 };
 
 export type CarFormProps = Omit<FormProps, 'ref' | 'onSubmit'> & {
@@ -22,7 +22,7 @@ export function CarForm({ ref, onSubmit, carData, ...props }: CarFormProps) {
   const {
     inputImageUrl,
     handleFormSubmit,
-    handleInputImageChange,
+    handleImageInputChange,
     handleFormReset,
     register,
     control,
@@ -47,7 +47,7 @@ export function CarForm({ ref, onSubmit, carData, ...props }: CarFormProps) {
         errors={errors}
         inputImageUrl={inputImageUrl || carData?.image_url || null}
         register={register}
-        onInputImageChange={handleInputImageChange}
+        onImageInputChange={handleImageInputChange}
       />
       <Form.Controls>
         <Button disabled={!isDirty} onClick={handleFormReset}>

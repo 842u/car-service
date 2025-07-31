@@ -16,23 +16,23 @@ export function SectionControls({
 }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
-  const handleCarDeleteModalCancel = () => dialogRef.current?.closeModal();
+  const handleDeleteModalCancel = () => dialogRef.current?.closeModal();
 
-  const handleCarDeleteModalConfirm = () => dialogRef.current?.closeModal();
+  const handleDeleteModalConfirm = () => dialogRef.current?.closeModal();
 
-  const handleCarDeleteButtonClick = () => dialogRef.current?.showModal();
+  const handleDeleteButtonClick = () => dialogRef.current?.showModal();
 
   return (
     <DashboardSection.Controls>
       <DeleteButton
         disabled={!isCurrentUserPrimaryOwner}
-        onClick={handleCarDeleteButtonClick}
+        onClick={handleDeleteButtonClick}
       />
       <DeleteModal
         ref={dialogRef}
         carId={carId}
-        onCancel={handleCarDeleteModalCancel}
-        onConfirm={handleCarDeleteModalConfirm}
+        onCancel={handleDeleteModalCancel}
+        onConfirm={handleDeleteModalConfirm}
       />
     </DashboardSection.Controls>
   );

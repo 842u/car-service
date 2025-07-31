@@ -47,7 +47,7 @@ export function FormPasswordInput<T extends FieldValues>({
 
   useForm();
 
-  const handlePasswordVisibility = () => {
+  const handleVisibilityButtonClick = () => {
     setPasswordVisible((currentState) => !currentState);
   };
 
@@ -71,7 +71,7 @@ export function FormPasswordInput<T extends FieldValues>({
           <VisibilityButton
             className="h-full w-full px-1 py-0"
             isVisible={passwordVisible}
-            onClick={handlePasswordVisibility}
+            onClick={handleVisibilityButtonClick}
           />
         </div>
       </div>

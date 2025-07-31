@@ -35,11 +35,11 @@ export function Toaster({
 
   const toastCloseInterval = useRef<NodeJS.Timeout>(undefined);
 
-  const toasterMouseOverHandler = () => {
+  const handleToasterMouseOver = () => {
     clearInterval(toastCloseInterval.current);
   };
 
-  const toasterMouseLeaveHandler = () => {
+  const handleToasterMouseLeave = () => {
     toastCloseInterval.current = setInterval(() => {
       const latestToastId = toasts.at(-1)?.id;
 
@@ -68,10 +68,10 @@ export function Toaster({
     >
       <ol
         className="relative"
-        onBlur={toasterMouseLeaveHandler}
-        onFocus={toasterMouseOverHandler}
-        onMouseLeave={toasterMouseLeaveHandler}
-        onMouseOver={toasterMouseOverHandler}
+        onBlur={handleToasterMouseLeave}
+        onFocus={handleToasterMouseOver}
+        onMouseLeave={handleToasterMouseLeave}
+        onMouseOver={handleToasterMouseOver}
       >
         <LazyMotion features={framerFeatures}>
           <AnimatePresence mode="popLayout">

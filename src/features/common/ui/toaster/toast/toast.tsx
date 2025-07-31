@@ -25,7 +25,7 @@ export function ToasterToast({
 
   const { style, icon } = getToastAssets(type)!;
 
-  const closeButtonClickHandler = () => {
+  const handleCloseButtonClick = () => {
     removeToast(id);
   };
 
@@ -47,7 +47,7 @@ export function ToasterToast({
         aria-label="close notification"
         className="aspect-square h-10 shrink-0 p-2"
         title="close toast"
-        onClick={closeButtonClickHandler}
+        onClick={handleCloseButtonClick}
       >
         <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
       </IconButton>

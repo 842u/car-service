@@ -41,7 +41,7 @@ export function useEditForm({ carId, onSubmit }: UseEditFormOptions) {
         queryClient,
         carId,
         formData,
-        carFormRef.current?.inputImageUrl || null,
+        carFormRef.current?.imageInputUrl || null,
       ),
     onSuccess: (_, { formData: { custom_name } }) =>
       addToast(`Car ${custom_name} edited.`, 'success'),

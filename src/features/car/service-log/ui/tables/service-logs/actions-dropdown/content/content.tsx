@@ -36,8 +36,8 @@ export function DropdownContent({
   carId,
   serviceLog,
 }: DropdownContentProps) {
-  const serviceLogEditModalRef = useRef<DialogModalRef>(null);
-  const serviceLogDeleteModalRef = useRef<DialogModalRef>(null);
+  const editModalRef = useRef<DialogModalRef>(null);
+  const deleteModalRef = useRef<DialogModalRef>(null);
 
   const { addToast } = useToasts();
 
@@ -58,20 +58,16 @@ export function DropdownContent({
 
   const serviceLogId = serviceLog.id;
 
-  const handleServiceLogEditButtonClick = () =>
-    serviceLogEditModalRef.current?.showModal();
+  const handleEditButtonClick = () => editModalRef.current?.showModal();
 
-  const handleServiceLogEditModalSubmit = () =>
-    serviceLogEditModalRef.current?.closeModal();
+  const handleEditModalSubmit = () => editModalRef.current?.closeModal();
 
-  const handleServiceLogDeleteButtonClick = () =>
-    serviceLogDeleteModalRef.current?.showModal();
+  const handleDeleteButtonClick = () => deleteModalRef.current?.showModal();
 
-  const handleServiceLogModalCancel = () =>
-    serviceLogDeleteModalRef.current?.closeModal();
+  const handleDeleteModalCancel = () => deleteModalRef.current?.closeModal();
 
-  const handleServiceLogModalConfirm = () => {
-    serviceLogDeleteModalRef.current?.closeModal();
+  const handleDeleteModalConfirm = () => {
+    deleteModalRef.current?.closeModal();
 
     mutate(
       { carId, queryClient, serviceLogId },
@@ -90,27 +86,27 @@ export function DropdownContent({
         className="w-full"
         disabled={!canTakeAction}
         variant="transparent"
-        onClick={handleServiceLogEditButtonClick}
+        onClick={handleEditButtonClick}
       >
         Edit
       </Button>
       <EditModal
-        ref={serviceLogEditModalRef}
+        ref={editModalRef}
         serviceLog={serviceLog}
-        onSubmit={handleServiceLogEditModalSubmit}
+        onSubmit={handleEditModalSubmit}
       />
       <Button
         disabled={!canTakeAction}
         variant="transparentError"
-        onClick={handleServiceLogDeleteButtonClick}
+        onClick={handleDeleteButtonClick}
       >
         Delete
       </Button>
       <DeleteModal
-        ref={serviceLogDeleteModalRef}
+        ref={deleteModalRef}
         canTakeAction={canTakeAction}
-        onCancel={handleServiceLogModalCancel}
-        onConfirm={handleServiceLogModalConfirm}
+        onCancel={handleDeleteModalCancel}
+        onConfirm={handleDeleteModalConfirm}
       />
     </Dropdown.Content>
   );

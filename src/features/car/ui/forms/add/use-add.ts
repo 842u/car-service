@@ -40,7 +40,7 @@ export function useAddForm({
       carsInfiniteAddOnMutate(
         formData,
         queryClient,
-        carFormRef.current?.inputImageUrl || null,
+        carFormRef.current?.imageInputUrl || null,
       ),
     onSuccess: (_, { formData: { custom_name } }) =>
       addToast(`Car ${custom_name} added.`, 'success'),

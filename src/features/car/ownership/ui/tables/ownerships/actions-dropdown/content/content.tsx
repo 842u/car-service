@@ -48,8 +48,8 @@ export function DropdownContent({
   ownerUsername,
   userId,
 }: DropdownContentProps) {
-  const ownershipDeleteModalRef = useRef<DialogModalRef>(null);
-  const ownershipPromoteModalRef = useRef<DialogModalRef>(null);
+  const deleteModalRef = useRef<DialogModalRef>(null);
+  const promoteModalRef = useRef<DialogModalRef>(null);
 
   const router = useRouter();
 
@@ -107,14 +107,12 @@ export function DropdownContent({
 
   const ownerId = ownership.owner_id;
 
-  const handleActionDeleteButtonClick = () =>
-    ownershipDeleteModalRef.current?.showModal();
+  const handleDeleteButtonClick = () => deleteModalRef.current?.showModal();
 
-  const handleOwnershipDeleteModalCancel = () =>
-    ownershipDeleteModalRef.current?.closeModal();
+  const handleDeleteModalCancel = () => deleteModalRef.current?.closeModal();
 
-  const handleOwnershipDeleteModalConfirm = () => {
-    ownershipDeleteModalRef.current?.closeModal();
+  const handleDeleteModalConfirm = () => {
+    deleteModalRef.current?.closeModal();
 
     if (userId === ownerId) {
       router.replace('/dashboard/cars' satisfies Route);
@@ -129,14 +127,12 @@ export function DropdownContent({
     });
   };
 
-  const handlePromoteActionButtonClick = () =>
-    ownershipPromoteModalRef.current?.showModal();
+  const handlePromoteButtonClick = () => promoteModalRef.current?.showModal();
 
-  const handleOwnershipPromoteModalCancel = () =>
-    ownershipPromoteModalRef.current?.closeModal();
+  const handlePromoteModalCancel = () => promoteModalRef.current?.closeModal();
 
-  const handleOwnershipPromoteModalConfirm = () => {
-    ownershipPromoteModalRef.current?.closeModal();
+  const handlePromoteModalConfirm = () => {
+    promoteModalRef.current?.closeModal();
 
     mutateUpdate({
       carId,
@@ -152,33 +148,33 @@ export function DropdownContent({
         className="w-full"
         disabled={!canPromote}
         variant="transparent"
-        onClick={handlePromoteActionButtonClick}
+        onClick={handlePromoteButtonClick}
       >
         Promote
       </Button>
       <PromoteModal
-        ref={ownershipPromoteModalRef}
+        ref={promoteModalRef}
         canTakeAction={canPromote}
         ownerUsername={ownerUsername}
-        onCancel={handleOwnershipPromoteModalCancel}
-        onConfirm={handleOwnershipPromoteModalConfirm}
+        onCancel={handlePromoteModalCancel}
+        onConfirm={handlePromoteModalConfirm}
       />
       <Button
         className="w-full"
         disabled={!canDelete}
         variant="transparentError"
-        onClick={handleActionDeleteButtonClick}
+        onClick={handleDeleteButtonClick}
       >
         Delete
       </Button>
       <DeleteModal
-        ref={ownershipDeleteModalRef}
+        ref={deleteModalRef}
         canTakeAction={canDelete}
         ownership={ownership}
         ownerUsername={ownerUsername}
         userId={userId}
-        onCancel={handleOwnershipDeleteModalCancel}
-        onConfirm={handleOwnershipDeleteModalConfirm}
+        onCancel={handleDeleteModalCancel}
+        onConfirm={handleDeleteModalConfirm}
       />
     </Dropdown.Content>
   );

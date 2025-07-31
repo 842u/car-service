@@ -17,20 +17,20 @@ export function SectionControls({
 }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
-  const handleCarEditButtonClick = () => dialogRef.current?.showModal();
+  const handleEditButtonClick = () => dialogRef.current?.showModal();
 
-  const handleCarEditModalSubmit = () => dialogRef.current?.closeModal();
+  const handleEditModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
     <DashboardSection.Controls>
       <EditButton
         disabled={!isCurrentUserPrimaryOwner}
-        onClick={handleCarEditButtonClick}
+        onClick={handleEditButtonClick}
       />
       <EditModal
         ref={dialogRef}
         carData={carData}
-        onSubmit={handleCarEditModalSubmit}
+        onSubmit={handleEditModalSubmit}
       />
     </DashboardSection.Controls>
   );

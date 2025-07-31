@@ -34,7 +34,7 @@ type FormFieldsProps = {
   control: Control<CarFormValues>;
   errors: FieldErrors<CarFormValues>;
   inputImageUrl: string | null;
-  onInputImageChange: (file: File | undefined | null) => void;
+  onImageInputChange: (file: File | undefined | null) => void;
 };
 
 export function FormFields({
@@ -42,7 +42,7 @@ export function FormFields({
   control,
   errors,
   inputImageUrl,
-  onInputImageChange,
+  onImageInputChange,
 }: FormFieldsProps) {
   return (
     <>
@@ -52,7 +52,7 @@ export function FormFields({
           errorMessage={errors.image?.message}
           label="Image"
           name="image"
-          onChange={onInputImageChange}
+          onChange={onImageInputChange}
         >
           <CarImage src={inputImageUrl} />
         </Form.InputImage>

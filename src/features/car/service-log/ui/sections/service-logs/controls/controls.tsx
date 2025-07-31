@@ -10,18 +10,14 @@ export type SectionControlsProps = { carId: string };
 export function SectionControls({ carId }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
-  const handleServiceLogAddModalSubmit = () => dialogRef.current?.closeModal();
+  const handleAddModalSubmit = () => dialogRef.current?.closeModal();
 
-  const handleServiceLogAddButtonClick = () => dialogRef.current?.showModal();
+  const handleAddButtonClick = () => dialogRef.current?.showModal();
 
   return (
     <DashboardSection.Controls>
-      <AddButton onClick={handleServiceLogAddButtonClick} />
-      <AddModal
-        ref={dialogRef}
-        carId={carId}
-        onSubmit={handleServiceLogAddModalSubmit}
-      />
+      <AddButton onClick={handleAddButtonClick} />
+      <AddModal ref={dialogRef} carId={carId} onSubmit={handleAddModalSubmit} />
     </DashboardSection.Controls>
   );
 }

@@ -24,11 +24,11 @@ export const defaultAvatarFormValues: AvatarFormValues = {
 type MutationVariables = {
   formData: AvatarFormValues;
   queryClient: QueryClient;
-  inputImageUrl: string | null;
+  imageInputUrl: string | null;
 };
 
 export function useAvatarForm() {
-  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
+  const [imageInputUrl, setImageInputUrl] = useState<string | null>(null);
 
   const { addToast } = useToasts();
 
@@ -40,12 +40,12 @@ export function useAvatarForm() {
         property: 'avatar_url',
         value: image,
       }),
-    onMutate: ({ queryClient, inputImageUrl }) =>
+    onMutate: ({ queryClient, imageInputUrl }) =>
       profilesUpdateOnMutate(
         queryClient,
         'session',
         'avatar_url',
-        inputImageUrl,
+        imageInputUrl,
       ),
     onSuccess: () => {
       addToast('Avatar uploaded successfully.', 'success');
@@ -73,7 +73,7 @@ export function useAvatarForm() {
 
   const handleFormSubmit = handleSubmit(async (formData: AvatarFormValues) => {
     await mutateAsync(
-      { formData, queryClient, inputImageUrl },
+      { formData, queryClient, imageInputUrl },
       {
         onSettled: (_, __, { queryClient }) => {
           queryClient.invalidateQueries({
@@ -84,9 +84,9 @@ export function useAvatarForm() {
     );
   });
 
-  const handleInputImageChange = (file: File | undefined | null) => {
-    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
-    setInputImageUrl((file && URL.createObjectURL(file)) || null);
+  const handleImageInputChange = (file: File | undefined | null) => {
+    imageInputUrl && enqueueRevokeObjectUrl(imageInputUrl);
+    setImageInputUrl((file && URL.createObjectURL(file)) || null);
   };
 
   const handleFormReset = () => reset();
@@ -97,11 +97,11 @@ export function useAvatarForm() {
 
   return {
     handleFormSubmit,
-    handleInputImageChange,
+    handleImageInputChange,
     handleFormReset,
     control,
     errors,
-    inputImageUrl,
+    inputImageUrl: imageInputUrl,
     isDirty,
     isSubmitting,
     isValid,

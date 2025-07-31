@@ -17,11 +17,11 @@ import { NavBarNav } from './nav/nav';
 export function DashboardNavBar() {
   const [isActive, setIsActive] = useState(false);
 
-  const hamburgerButtonClickHandler = () => {
+  const handleHamburgerButtonClick = () => {
     setIsActive((currentState) => !currentState);
   };
 
-  const navMenuClickHandler = () => {
+  const handleNavClick = () => {
     if (isActive) {
       setIsActive(false);
     }
@@ -49,9 +49,9 @@ export function DashboardNavBar() {
       <HamburgerButton
         className="z-10 md:hidden"
         isActive={isActive}
-        onClick={hamburgerButtonClickHandler}
+        onClick={handleHamburgerButtonClick}
       />
-      <NavBarNav isActive={isActive} onClick={navMenuClickHandler} />
+      <NavBarNav isActive={isActive} onClick={handleNavClick} />
     </NavBar>
   );
 }

@@ -18,21 +18,17 @@ export function SectionControls({
 }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
-  const handleOwnershipAddButtonClick = () => dialogRef.current?.showModal();
+  const handleAddButtonClick = () => dialogRef.current?.showModal();
 
-  const handleOwnershipAddModalSubmit = () => dialogRef.current?.closeModal();
+  const handleAddModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
     <DashboardSection.Controls data-testid={SECTION_CONTROLS_TEST_ID}>
       <AddButton
         disabled={!isCurrentUserPrimaryOwner}
-        onClick={handleOwnershipAddButtonClick}
+        onClick={handleAddButtonClick}
       />
-      <AddModal
-        ref={dialogRef}
-        carId={carId}
-        onSubmit={handleOwnershipAddModalSubmit}
-      />
+      <AddModal ref={dialogRef} carId={carId} onSubmit={handleAddModalSubmit} />
     </DashboardSection.Controls>
   );
 }

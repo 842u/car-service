@@ -26,7 +26,7 @@ const defaultCarFormValues: CarFormValues = {
 };
 
 export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
-  const [inputImageUrl, setInputImageUrl] = useState<string | null>(null);
+  const [imageInputUrl, setImageInputUrl] = useState<string | null>(null);
 
   const {
     register,
@@ -40,7 +40,7 @@ export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
     defaultValues: defaultCarFormValues,
   });
 
-  useImperativeHandle(ref, () => ({ inputImageUrl }), [inputImageUrl]);
+  useImperativeHandle(ref, () => ({ imageInputUrl }), [imageInputUrl]);
 
   useEffect(() => {
     carData &&
@@ -54,9 +54,9 @@ export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
-  const handleInputImageChange = (file: File | undefined | null) => {
-    inputImageUrl && enqueueRevokeObjectUrl(inputImageUrl);
-    setInputImageUrl((file && URL.createObjectURL(file)) || null);
+  const handleImageInputChange = (file: File | undefined | null) => {
+    imageInputUrl && enqueueRevokeObjectUrl(imageInputUrl);
+    setImageInputUrl((file && URL.createObjectURL(file)) || null);
   };
 
   const handleFormSubmit = handleSubmit(
@@ -66,9 +66,9 @@ export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
   const handleFormReset = () => reset();
 
   return {
-    inputImageUrl,
+    inputImageUrl: imageInputUrl,
     handleFormSubmit,
-    handleInputImageChange,
+    handleImageInputChange,
     handleFormReset,
     register,
     control,
