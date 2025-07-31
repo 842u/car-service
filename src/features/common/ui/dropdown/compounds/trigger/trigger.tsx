@@ -2,7 +2,7 @@ import { MouseEventHandler, Ref } from 'react';
 
 import { useDropdown } from '../../dropdown';
 
-type TriggerProps = {
+type DropdownTriggerProps = {
   children: ({
     ref,
     onClick,
@@ -12,7 +12,7 @@ type TriggerProps = {
   }) => React.ReactNode;
 };
 
-export function Trigger({ children }: TriggerProps) {
+export function DropdownTrigger({ children }: DropdownTriggerProps) {
   const { toggle, triggerRef } = useDropdown();
 
   return (

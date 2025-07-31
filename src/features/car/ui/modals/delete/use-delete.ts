@@ -15,7 +15,7 @@ import {
 } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-export type UseCarDeleteModalOptions = {
+export type UseDeleteModalOptions = {
   carId: string;
   onCancel?: () => void;
   onConfirm?: () => void;
@@ -27,11 +27,11 @@ type MutationVariables = {
   queryClient: QueryClient;
 };
 
-export function useCarDeleteModal({
+export function useDeleteModal({
   carId,
   onCancel,
   onConfirm,
-}: UseCarDeleteModalOptions) {
+}: UseDeleteModalOptions) {
   const router = useRouter();
 
   const { addToast } = useToasts();

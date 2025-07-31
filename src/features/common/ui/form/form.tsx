@@ -5,14 +5,14 @@ import { useContextGuard } from '@/common/hooks/use-context-guard';
 import { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 
-import { ButtonSubmit } from './compounds/button-submit/button-submit';
-import { CheckboxGroup } from './compounds/checkbox-group/checkbox-group';
-import { Controls } from './compounds/controls/controls';
-import { Input } from './compounds/input/input';
-import { InputImage } from './compounds/input-image/input-image';
-import { InputPassword } from './compounds/input-password/input-password';
-import { InputWrapper } from './compounds/input-wrapper/input-wrapper';
-import { Select } from './compounds/select/select';
+import { FormCheckboxGroup } from './compounds/checkbox-group/checkbox-group';
+import { FormControls } from './compounds/controls/controls';
+import { FormInput } from './compounds/input/input';
+import { FormImageInput } from './compounds/input-image/image-input';
+import { FormInputWrapper } from './compounds/input-wrapper/input-wrapper';
+import { FormPasswordInput } from './compounds/password-input/password-input';
+import { FormSelect } from './compounds/select/select';
+import { FormSubmitButton } from './compounds/submit-button/submit-button';
 import { Textarea } from './compounds/textarea/textarea';
 
 export type FormProps = ComponentProps<'form'> & {
@@ -45,12 +45,12 @@ export function Form({
   );
 }
 
-Form.Input = Input;
-Form.InputPassword = InputPassword;
-Form.InputImage = InputImage;
-Form.InputWrapper = InputWrapper;
-Form.ButtonSubmit = ButtonSubmit;
-Form.Controls = Controls;
-Form.Select = Select;
-Form.CheckboxGroup = CheckboxGroup;
+Form.Input = FormInput;
+Form.InputPassword = FormPasswordInput;
+Form.InputImage = FormImageInput;
+Form.InputWrapper = FormInputWrapper;
+Form.ButtonSubmit = FormSubmitButton;
+Form.Controls = FormControls;
+Form.Select = FormSelect;
+Form.CheckboxGroup = FormCheckboxGroup;
 Form.Textarea = Textarea;

@@ -1,9 +1,9 @@
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
 
-import { useCarOwnershipAddForm } from './use-ownership-add-form';
+import { useAddForm } from './use-add';
 
-export const CAR_OWNERSHIP_ADD_FORM_TEST_ID = 'car ownership add form test id';
+export const ADD_FORM_TEST_ID = 'car ownership add form test id';
 
 export type AddFormProps = {
   carId: string;
@@ -19,12 +19,12 @@ export function AddForm({ carId, onSubmit }: AddFormProps) {
     isDirty,
     isValid,
     isSubmitting,
-  } = useCarOwnershipAddForm({ carId, onSubmit });
+  } = useAddForm({ carId, onSubmit });
 
   return (
     <Form
       className="gap-4"
-      data-testid={CAR_OWNERSHIP_ADD_FORM_TEST_ID}
+      data-testid={ADD_FORM_TEST_ID}
       variant="raw"
       onSubmit={handleFormSubmit}
     >

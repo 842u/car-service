@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { Form } from '../../form';
-import { Select, SelectProps } from './select';
+import { FormSelect, FormSelectProps } from './select';
 
 const MOCK_OPTIONS = {
   option1: 'value1',
@@ -9,28 +9,32 @@ const MOCK_OPTIONS = {
 };
 
 // eslint-disable-next-line
-function TestSelect({ ...props }: SelectProps<any>) {
+function TestFormSelect({ ...props }: FormSelectProps<any>) {
   return (
     <Form>
-      <Select {...props} />
+      <FormSelect {...props} />
     </Form>
   );
 }
 
-describe('Select', () => {
+describe('FormSelect', () => {
   it('should throw if not wrapped in Form', () => {
     const labelText = 'testLabel';
     const name = 'testName';
 
     expect(() =>
-      render(<Select label={labelText} name={name} options={MOCK_OPTIONS} />),
+      render(
+        <FormSelect label={labelText} name={name} options={MOCK_OPTIONS} />,
+      ),
     ).toThrow();
   });
 
   it('should render as a select element', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<TestSelect label={labelText} name={name} options={MOCK_OPTIONS} />);
+    render(
+      <TestFormSelect label={labelText} name={name} options={MOCK_OPTIONS} />,
+    );
 
     const selectElement = screen.getByRole('combobox', { name: labelText });
 
@@ -41,7 +45,7 @@ describe('Select', () => {
     const labelText = 'testLabel';
     const name = 'testName';
     render(
-      <TestSelect
+      <TestFormSelect
         hasEmptyOption={true}
         label={labelText}
         name={name}
@@ -58,7 +62,7 @@ describe('Select', () => {
     const labelText = 'testLabel';
     const name = 'testName';
     render(
-      <TestSelect
+      <TestFormSelect
         hasEmptyOption={false}
         label={labelText}
         name={name}
@@ -74,7 +78,9 @@ describe('Select', () => {
   it('should have provided options', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<TestSelect label={labelText} name={name} options={MOCK_OPTIONS} />);
+    render(
+      <TestFormSelect label={labelText} name={name} options={MOCK_OPTIONS} />,
+    );
 
     for (const option in MOCK_OPTIONS) {
       const selectOption = screen.getByRole('option', {
@@ -91,7 +97,9 @@ describe('Select', () => {
   it('should render provided label text', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<TestSelect label={labelText} name={name} options={MOCK_OPTIONS} />);
+    render(
+      <TestFormSelect label={labelText} name={name} options={MOCK_OPTIONS} />,
+    );
 
     const label = screen.getByLabelText(labelText);
 
@@ -103,7 +111,7 @@ describe('Select', () => {
     const name = 'testName';
     const errorMessage = 'testError';
     render(
-      <TestSelect
+      <TestFormSelect
         errorMessage={errorMessage}
         label={labelText}
         name={name}

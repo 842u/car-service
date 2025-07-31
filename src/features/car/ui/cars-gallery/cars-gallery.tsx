@@ -1,6 +1,6 @@
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-import { Card } from '../card/card';
+import { CarCard } from '../card/card';
 import { useCarsGallery } from './use-cars-gallery';
 
 export function CarsGallery() {
@@ -33,7 +33,7 @@ export function CarsGallery() {
         <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-[1920px]">
           {data?.pages.map((page) => {
             return page.data.map(
-              (car) => car && <Card key={car.id} car={car} />,
+              (car) => car && <CarCard key={car.id} car={car} />,
             );
           })}
           <div

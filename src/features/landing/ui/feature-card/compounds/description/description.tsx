@@ -1,13 +1,13 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type DescriptionProps = ComponentProps<'p'>;
+type FeatureCardDescriptionProps = ComponentProps<'p'>;
 
-export function Description({
+export function FeatureCardDescription({
   className,
   children,
   ...props
-}: DescriptionProps) {
+}: FeatureCardDescriptionProps) {
   return (
     <p
       className={twMerge('text-light-800 text-sm @sm:w-3/4', className)}

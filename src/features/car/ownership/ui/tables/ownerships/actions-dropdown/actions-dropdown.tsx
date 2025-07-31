@@ -2,20 +2,23 @@ import { EllipsisIcon } from '@/icons/ellipsis';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
-import { Content, ContentProps } from './content/content';
+import { DropdownContent, DropdownContentProps } from './content/content';
 
-type ActionsDropdownProps = Omit<ContentProps, 'canDelete' | 'canPromote'> & {
+type TableActionsDropdownProps = Omit<
+  DropdownContentProps,
+  'canDelete' | 'canPromote'
+> & {
   isCurrentUserPrimaryOwner: boolean;
   collisionDetectionRoot?: HTMLElement | null;
 };
 
-export function ActionsDropdown({
+export function TableActionsDropdown({
   isCurrentUserPrimaryOwner,
   ownership,
   ownerUsername,
   collisionDetectionRoot,
   userId,
-}: ActionsDropdownProps) {
+}: TableActionsDropdownProps) {
   const canPromote = isCurrentUserPrimaryOwner && userId !== ownership.owner_id;
 
   const canDelete =
@@ -40,7 +43,7 @@ export function ActionsDropdown({
           </IconButton>
         )}
       </Dropdown.Trigger>
-      <Content
+      <DropdownContent
         canDelete={canDelete}
         canPromote={canPromote}
         ownership={ownership}

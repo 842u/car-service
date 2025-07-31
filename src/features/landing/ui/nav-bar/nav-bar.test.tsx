@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
-import { NavBar } from '@/features/landing/ui/nav-bar/nav-bar';
+import { LandingNavBar } from '@/features/landing/ui/nav-bar/nav-bar';
 
-describe('NavBar', () => {
+describe('LandingNavBar', () => {
   it('should render a brand logo with a link to a home page', () => {
-    render(<NavBar />);
+    render(<LandingNavBar />);
 
     const landingPageLink = screen.getByRole('link', { name: /home/i });
 
@@ -12,7 +12,7 @@ describe('NavBar', () => {
   });
 
   it('should render a hamburger button to toggle nav menu', () => {
-    render(<NavBar />);
+    render(<LandingNavBar />);
 
     const hamburgerButton = screen.getByRole('button', {
       name: /toggle navigation menu/i,
@@ -22,7 +22,7 @@ describe('NavBar', () => {
   });
 
   it('should render a navigation menu', () => {
-    render(<NavBar />);
+    render(<LandingNavBar />);
 
     const landingNavMenu = screen.getByRole('navigation', {
       name: /landing navigation menu/i,

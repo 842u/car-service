@@ -1,11 +1,11 @@
 import { PasswordResetForm } from '@/auth/ui/forms/password-reset/password-reset';
 import { SignInLink } from '@/auth/ui/sign-in-link/sign-in-link';
-import { Section } from '@/landing/ui/section/section';
+import { LandingSection } from '@/landing/ui/section/section';
 
 export default function ForgotPasswordPage() {
   return (
     <main>
-      <Section
+      <LandingSection
         aria-label="reset password"
         className="my-0 flex h-screen max-w-sm flex-col justify-center gap-7 md:my-0 lg:my-0"
       >
@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
         </div>
         <PasswordResetForm />
         <SignInLink className="mx-auto" />
-      </Section>
+      </LandingSection>
     </main>
   );
 }

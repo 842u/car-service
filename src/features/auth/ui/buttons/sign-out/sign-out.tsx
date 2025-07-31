@@ -5,12 +5,9 @@ import { twMerge } from 'tailwind-merge';
 import { SignOutIcon } from '@/icons/sign-out';
 import { buttonVariants } from '@/utils/tailwindcss/button';
 
-type SignOutLinkButtonProps = ComponentProps<'a'>;
+type SignOutButtonProps = ComponentProps<'a'>;
 
-export function SignOutLinkButton({
-  className,
-  ...props
-}: SignOutLinkButtonProps) {
+export function SignOutButton({ className, ...props }: SignOutButtonProps) {
   return (
     <a
       className={twMerge(

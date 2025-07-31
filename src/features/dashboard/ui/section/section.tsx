@@ -4,21 +4,21 @@ import { twMerge } from 'tailwind-merge';
 import { SectionVariants } from '@/types';
 import { sectionVariants } from '@/utils/tailwindcss/section';
 
-import { Controls } from './compounds/controls/controls';
-import { Heading } from './compounds/heading/heading';
-import { Subtext } from './compounds/subtext/subtext';
-import { Text } from './compounds/text/text';
+import { SectionControls } from './compounds/controls/controls';
+import { SectionHeading } from './compounds/heading/heading';
+import { SectionSubtext } from './compounds/subtext/subtext';
+import { SectionText } from './compounds/text/text';
 
-type SectionProps = ComponentProps<'section'> & {
+type DashboardSectionProps = ComponentProps<'section'> & {
   variant?: SectionVariants;
 };
 
-export function Section({
+export function DashboardSection({
   children,
   className,
   variant = 'default',
   ...props
-}: SectionProps) {
+}: DashboardSectionProps) {
   return (
     <section
       className={twMerge(sectionVariants[variant], className)}
@@ -29,7 +29,7 @@ export function Section({
   );
 }
 
-Section.Heading = Heading;
-Section.Text = Text;
-Section.Subtext = Subtext;
-Section.Controls = Controls;
+DashboardSection.Heading = SectionHeading;
+DashboardSection.Text = SectionText;
+DashboardSection.Subtext = SectionSubtext;
+DashboardSection.Controls = SectionControls;

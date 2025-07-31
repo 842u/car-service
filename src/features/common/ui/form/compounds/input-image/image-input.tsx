@@ -9,31 +9,32 @@ import {
 import { getMimeTypeExtensions } from '@/utils/general';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
-import { ErrorText } from '../input/error-text/error-text';
-import { LabelText } from '../input/label-text/label-text';
-import { useInputImage } from './use-input-image';
+import { InputErrorText } from '../input/error-text/error-text';
+import { InputLabelText } from '../input/label-text/label-text';
+import { useFormImageInput } from './use-image-input';
 
-export const FORM_INPUT_IMAGE_TEST_ID = 'form input image test id';
+export const FORM_IMAGE_INPUT_TEST_ID = 'form input image test id';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
 
-export type InputImageRef = {
+export type FormImageInputRef = {
   inputImageUrl: string | null;
 };
 
-export type InputImageProps<T extends FieldValues> = UseControllerProps<T> & {
-  onChange?: (file: File | undefined | null) => void;
-  withInfo?: boolean;
-  required?: boolean;
-  label?: string;
-  children?: ReactNode;
-  className?: string;
-  errorMessage?: string | undefined;
-  showErrorMessage?: boolean;
-};
+export type FormImageInputProps<T extends FieldValues> =
+  UseControllerProps<T> & {
+    onChange?: (file: File | undefined | null) => void;
+    withInfo?: boolean;
+    required?: boolean;
+    label?: string;
+    children?: ReactNode;
+    className?: string;
+    errorMessage?: string | undefined;
+    showErrorMessage?: boolean;
+  };
 
-export function InputImage<T extends FieldValues>({
+export function FormImageInput<T extends FieldValues>({
   onChange,
   label,
   name,
@@ -46,8 +47,8 @@ export function InputImage<T extends FieldValues>({
   withInfo = true,
   required = false,
   showErrorMessage = true,
-}: InputImageProps<T>) {
-  const { handleFileChange, inputElementRef } = useInputImage({
+}: FormImageInputProps<T>) {
+  const { handleFileChange, inputElementRef } = useFormImageInput({
     name,
     control,
     defaultValue,
@@ -57,7 +58,7 @@ export function InputImage<T extends FieldValues>({
 
   return (
     <label>
-      {label && <LabelText required={required} text={label} />}
+      {label && <InputLabelText required={required} text={label} />}
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants['default'],
@@ -74,14 +75,14 @@ export function InputImage<T extends FieldValues>({
           ref={inputElementRef}
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
           className="sr-only absolute"
-          data-testid={FORM_INPUT_IMAGE_TEST_ID}
+          data-testid={FORM_IMAGE_INPUT_TEST_ID}
           name={name}
           type="file"
           onChange={handleFileChange}
         />
         {children}
       </div>
-      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
       {withInfo && (
         <div className="mb-5 text-sm">
           <p>Click on the image to upload a custom one.</p>

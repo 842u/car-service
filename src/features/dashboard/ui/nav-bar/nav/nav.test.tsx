@@ -1,15 +1,15 @@
 import { render, screen } from '@testing-library/react';
 
-import { Nav } from './nav';
+import { NavBarNav } from './nav';
 
 jest.mock('next/navigation', () => ({
   useSelectedLayoutSegment: () => '/dashboard',
   usePathname: () => '/dashboard',
 }));
 
-describe('Nav', () => {
+describe('NavBarNav', () => {
   it('should render dashboard navigation menu', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const dashboardMenu = screen.getByRole('navigation', {
       name: /dashboard navigation menu/i,
@@ -19,7 +19,7 @@ describe('Nav', () => {
   });
 
   it('should render a link to dashboard root tab', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const dashboardHomeLink = screen.getByRole('link', { name: /dashboard/i });
 
@@ -27,7 +27,7 @@ describe('Nav', () => {
   });
 
   it('should render a link to dashboard cars tab', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const dashboardCarsLink = screen.getByRole('link', { name: /cars/i });
 
@@ -35,7 +35,7 @@ describe('Nav', () => {
   });
 
   it('should render a link to dashboard account settings tab', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const dashboardAccountLink = screen.getByRole('link', { name: /account/i });
 
@@ -43,7 +43,7 @@ describe('Nav', () => {
   });
 
   it('should render a link to sign out', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const signOutLink = screen.getByRole('link', { name: /sign out/i });
 
@@ -51,7 +51,7 @@ describe('Nav', () => {
   });
 
   it('should render a color theme switch button', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const themeSwitchButton = screen.getByRole('button', {
       name: /switch color theme/i,

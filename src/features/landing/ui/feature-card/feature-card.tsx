@@ -3,10 +3,10 @@ import { twMerge } from 'tailwind-merge';
 
 import { Card, CardProps } from '@/ui/card/card';
 
-import { Background } from './compounds/background/background';
-import { Description } from './compounds/description/description';
-import { Heading } from './compounds/heading/heading';
-import { Icon } from './compounds/icon/icon';
+import { FeatureCardBackground } from './compounds/background/background';
+import { FeatureCardDescription } from './compounds/description/description';
+import { FeatureCardHeading } from './compounds/heading/heading';
+import { FeatureCardIcon } from './compounds/icon/icon';
 
 export function FeatureCard({ className, children, ...props }: CardProps) {
   return (
@@ -21,7 +21,7 @@ export function FeatureCard({ className, children, ...props }: CardProps) {
   );
 }
 
-FeatureCard.Icon = Icon;
-FeatureCard.Heading = Heading;
-FeatureCard.Description = Description;
-FeatureCard.Background = Background;
+FeatureCard.Icon = FeatureCardIcon;
+FeatureCard.Heading = FeatureCardHeading;
+FeatureCard.Description = FeatureCardDescription;
+FeatureCard.Background = FeatureCardBackground;

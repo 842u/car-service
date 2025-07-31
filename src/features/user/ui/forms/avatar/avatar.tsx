@@ -3,9 +3,9 @@
 import { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
-import { AvatarImage } from '@/user/ui/avatar-image/avatar-image';
+import { UserImage } from '@/user/ui/image/image';
 
-import { useAvatarForm } from './use-avatar-form';
+import { useAvatarForm } from './use-avatar';
 
 export const AVATAR_FORM_TEST_ID = 'avatar form test id';
 
@@ -41,7 +41,7 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
           withInfo={false}
           onChange={handleInputImageChange}
         >
-          <AvatarImage src={inputImageUrl || avatarUrl} />
+          <UserImage src={inputImageUrl || avatarUrl} />
         </Form.InputImage>
       </Form.InputWrapper>
       <Form.Controls>

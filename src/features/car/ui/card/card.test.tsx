@@ -3,7 +3,7 @@ import { Route } from 'next';
 
 import { Car } from '@/types';
 
-import { Card } from './card';
+import { CarCard } from './card';
 
 const MOCK_CAR_ID = 'cedd91fa-23a4-4098-9936-353b419db9f7';
 const MOCK_CAR_DATA: Car = {
@@ -27,9 +27,9 @@ const MOCK_CAR_DATA: Car = {
   vin: null,
 };
 
-describe('Card', () => {
+describe('CarCard', () => {
   it('should render as a link element', async () => {
-    render(<Card car={MOCK_CAR_DATA} />);
+    render(<CarCard car={MOCK_CAR_DATA} />);
 
     const linkElement = await screen.findByRole('link', {
       name: new RegExp(`${MOCK_CAR_DATA.custom_name}`, 'i'),
@@ -41,7 +41,7 @@ describe('Card', () => {
   it('should have a proper href attribute', async () => {
     const carRouteStaticSegment = '/dashboard/cars' satisfies Route;
     const properHref = `${carRouteStaticSegment}/${MOCK_CAR_ID}`;
-    render(<Card car={MOCK_CAR_DATA} />);
+    render(<CarCard car={MOCK_CAR_DATA} />);
 
     const linkElement = await screen.findByRole('link', {
       name: new RegExp(`${MOCK_CAR_DATA.custom_name}`, 'i'),
@@ -51,7 +51,7 @@ describe('Card', () => {
   });
 
   it('should render a car image', async () => {
-    render(<Card car={MOCK_CAR_DATA} />);
+    render(<CarCard car={MOCK_CAR_DATA} />);
 
     const carImage = await screen.findByRole('img', { name: 'car image' });
 
@@ -59,7 +59,7 @@ describe('Card', () => {
   });
 
   it('should render car basic info', async () => {
-    render(<Card car={MOCK_CAR_DATA} />);
+    render(<CarCard car={MOCK_CAR_DATA} />);
 
     const carName = await screen.findByText(MOCK_CAR_DATA.custom_name);
     const carBrand = await screen.findByText(

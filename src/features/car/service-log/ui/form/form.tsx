@@ -6,7 +6,7 @@ import { serviceCategoryMapping, ServiceLog } from '@/types';
 import { Button } from '@/ui/button/button';
 import { Form, FormProps } from '@/ui/form/form';
 
-import { useCarServiceLogForm } from './use-service-log-form';
+import { useServiceLogForm } from './use-form';
 
 export type ServiceLogFormProps = Omit<FormProps, 'onSubmit'> & {
   onSubmit?: (formData: CarServiceLogFormValues) => void;
@@ -27,7 +27,7 @@ export function ServiceLogForm({
     isDirty,
     isValid,
     register,
-  } = useCarServiceLogForm({ onSubmit, serviceLog });
+  } = useServiceLogForm({ onSubmit, serviceLog });
 
   return (
     <Form variant="raw" onSubmit={handleFormSubmit} {...props}>

@@ -3,7 +3,7 @@ type LabelTextProps = {
   required: boolean;
 };
 
-export function LabelText({ text, required }: LabelTextProps) {
+export function InputLabelText({ text, required }: LabelTextProps) {
   return (
     <p>
       <span className="text-xs">{text}</span>

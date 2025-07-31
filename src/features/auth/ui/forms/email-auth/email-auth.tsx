@@ -7,7 +7,7 @@ import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
 import { Form } from '@/ui/form/form';
 import { unslugify } from '@/utils/general';
 
-import { useEmailAuthForm } from './use-email-auth-form';
+import { useEmailAuthForm } from './use-email-auth';
 
 export type EmailAuthFormType = 'sign-up' | 'sign-in';
 

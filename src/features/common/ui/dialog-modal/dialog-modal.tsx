@@ -12,8 +12,8 @@ import {
 import { useContextGuard } from '@/common/hooks/use-context-guard';
 
 import { Controls } from './compounds/controls/controls';
-import { Heading } from './compounds/heading/heading';
-import { Root } from './compounds/root/root';
+import { DialogModalHeading } from './compounds/heading/heading';
+import { DialogModalRoot } from './compounds/root/root';
 
 export type DialogModalRef = {
   showModal: () => void;
@@ -98,6 +98,6 @@ export function DialogModal({ ref, children }: DialogModalProps) {
   );
 }
 
-DialogModal.Root = Root;
-DialogModal.Heading = Heading;
+DialogModal.Root = DialogModalRoot;
+DialogModal.Heading = DialogModalHeading;
 DialogModal.Controls = Controls;

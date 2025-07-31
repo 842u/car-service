@@ -11,8 +11,8 @@ import { InputVariants } from '@/types';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useForm } from '../../form';
-import { ErrorText } from '../input/error-text/error-text';
-import { LabelText } from '../input/label-text/label-text';
+import { InputErrorText } from '../input/error-text/error-text';
+import { InputLabelText } from '../input/label-text/label-text';
 
 type TextareaProps<T extends FieldValues> = ComponentProps<'textarea'> & {
   label: string;
@@ -41,7 +41,7 @@ export function Textarea<T extends FieldValues>({
 
   return (
     <label>
-      <LabelText required={required} text={label} />
+      <InputLabelText required={required} text={label} />
       <textarea
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
@@ -52,7 +52,7 @@ export function Textarea<T extends FieldValues>({
         {...props}
         {...register(name, registerOptions)}
       />
-      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
     </label>
   );
 }

@@ -3,8 +3,8 @@ import { twMerge } from 'tailwind-merge';
 
 import { useContextGuard } from '@/common/hooks/use-context-guard';
 
-import { Content } from './compounds/content/content';
-import { Trigger } from './compounds/trigger/trigger';
+import { DropdownContent } from './compounds/content/content';
+import { DropdownTrigger } from './compounds/trigger/trigger';
 
 type DropdownContextValue = {
   isOpen: boolean;
@@ -49,5 +49,5 @@ export function Dropdown({
   );
 }
 
-Dropdown.Trigger = Trigger;
-Dropdown.Content = Content;
+Dropdown.Trigger = DropdownTrigger;
+Dropdown.Content = DropdownContent;

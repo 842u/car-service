@@ -1,9 +1,9 @@
-import { Main } from '@/dashboard/ui/main/main';
+import { DashboardMain } from '@/dashboard/ui/main/main';
 
 export default async function DashboardPage() {
   return (
-    <Main>
+    <DashboardMain>
       <h1>DASHBOARD</h1>
-    </Main>
+    </DashboardMain>
   );
 }

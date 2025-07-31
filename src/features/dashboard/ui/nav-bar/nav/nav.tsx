@@ -1,20 +1,24 @@
 import { twJoin, twMerge } from 'tailwind-merge';
 
-import { SignOutLinkButton } from '@/auth/ui/sign-out-link-button/sign-out-link-button';
+import { SignOutButton } from '@/auth/ui/buttons/sign-out/sign-out';
 import { CarsIcon } from '@/icons/cars';
 import { HomeIcon } from '@/icons/home';
 import { UserIcon } from '@/icons/user';
 import { ThemeButton } from '@/ui/theme-button/theme-button';
 
-import { Item } from './item';
+import { NavItem } from './item';
 
-type NavProps = {
+type NavBarNavProps = {
   isActive?: boolean;
   onClick?: () => void;
   className?: string;
 };
 
-export function Nav({ onClick, className, isActive = true }: NavProps) {
+export function NavBarNav({
+  onClick,
+  className,
+  isActive = true,
+}: NavBarNavProps) {
   return (
     <nav
       aria-label="dashboard navigation menu"
@@ -34,22 +38,22 @@ export function Nav({ onClick, className, isActive = true }: NavProps) {
         )}
       />
       <ul className="grow">
-        <Item href="/dashboard" text="Dashboard">
+        <NavItem href="/dashboard" text="Dashboard">
           <HomeIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
-        </Item>
-        <Item href="/dashboard/cars" text="Cars">
+        </NavItem>
+        <NavItem href="/dashboard/cars" text="Cars">
           <CarsIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
-        </Item>
-        <Item href="/dashboard/account" text="Account">
+        </NavItem>
+        <NavItem href="/dashboard/account" text="Account">
           <UserIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
-        </Item>
+        </NavItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
         <li className="mx-2 my-4 h-12">
           <ThemeButton className="h-full w-full" />
         </li>
         <li className="mx-2 my-4 h-12">
-          <SignOutLinkButton className="h-full py-2" />
+          <SignOutButton className="h-full py-2" />
         </li>
       </ul>
     </nav>

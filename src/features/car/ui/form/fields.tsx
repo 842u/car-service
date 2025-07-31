@@ -1,5 +1,3 @@
-/* eslint jsx-a11y/alt-text:0 */
-
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import {
@@ -29,9 +27,9 @@ import {
 } from '@/types';
 import { Form } from '@/ui/form/form';
 
-import { Image } from '../image/image';
+import { CarImage } from '../image/image';
 
-type FieldsProps = {
+type FormFieldsProps = {
   register: UseFormRegister<CarFormValues>;
   control: Control<CarFormValues>;
   errors: FieldErrors<CarFormValues>;
@@ -39,13 +37,13 @@ type FieldsProps = {
   onInputImageChange: (file: File | undefined | null) => void;
 };
 
-export function Fields({
+export function FormFields({
   register,
   control,
   errors,
   inputImageUrl,
   onInputImageChange,
-}: FieldsProps) {
+}: FormFieldsProps) {
   return (
     <>
       <Form.InputWrapper className="md:justify-center">
@@ -56,7 +54,7 @@ export function Fields({
           name="image"
           onChange={onInputImageChange}
         >
-          <Image src={inputImageUrl} />
+          <CarImage src={inputImageUrl} />
         </Form.InputImage>
       </Form.InputWrapper>
       <Form.InputWrapper>

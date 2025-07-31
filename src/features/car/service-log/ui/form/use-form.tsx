@@ -10,7 +10,7 @@ import { parseDateToYyyyMmDd } from '@/utils/general';
 
 import { ServiceLogFormProps } from './form';
 
-export function useCarServiceLogForm({
+export function useServiceLogForm({
   onSubmit,
   serviceLog,
 }: Omit<ServiceLogFormProps, 'carId'>) {

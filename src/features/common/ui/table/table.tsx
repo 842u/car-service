@@ -11,12 +11,12 @@ import { createContext, ReactNode } from 'react';
 
 import { useContextGuard } from '@/common/hooks/use-context-guard';
 
-import { Body } from './compounds/body/body';
-import { DateFilter } from './compounds/date-filter/date-filter';
-import { Head } from './compounds/head/head';
-import { Root } from './compounds/root/root';
-import { SortBreadcrumb } from './compounds/sort-breadcrumb/sort-breadcrumb';
-import { TextFilter } from './compounds/text-filter/text-filter';
+import { TableBody } from './compounds/body/body';
+import { TableDateFilter } from './compounds/date-filter/date-filter';
+import { TableHead } from './compounds/head/head';
+import { TableRoot } from './compounds/root/root';
+import { TableSortBreadcrumb } from './compounds/sort-breadcrumb/sort-breadcrumb';
+import { TableTextFilter } from './compounds/text-filter/text-filter';
 import { ValuesFilter } from './compounds/values-filter/values-filter';
 
 type TableContextValue<T> = { table: TanstackTable<T> };
@@ -51,10 +51,10 @@ export function Table<T>({ columns, data, options, children }: TableProps<T>) {
   return <TableContext value={{ table }}>{children}</TableContext>;
 }
 
-Table.Root = Root;
-Table.Head = Head;
-Table.Body = Body;
-Table.SortBreadcrumb = SortBreadcrumb;
-Table.DateFilter = DateFilter;
+Table.Root = TableRoot;
+Table.Head = TableHead;
+Table.Body = TableBody;
+Table.SortBreadcrumb = TableSortBreadcrumb;
+Table.DateFilter = TableDateFilter;
 Table.ValuesFilter = ValuesFilter;
-Table.TextFilter = TextFilter;
+Table.TextFilter = TableTextFilter;

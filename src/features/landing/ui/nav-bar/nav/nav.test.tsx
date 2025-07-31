@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
-import { Nav } from './nav';
+import { NavBarNav } from './nav';
 
-describe('Nav', () => {
+describe('NavBarNav', () => {
   it('should render landing page navigation menu', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const landingNavigation = screen.getByRole('navigation', {
       name: /landing navigation menu/i,
@@ -14,7 +14,7 @@ describe('Nav', () => {
   });
 
   it('should render a link to the dashboard page', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const dashboardLink = screen.getByRole('link', { name: /dashboard/i });
 
@@ -22,7 +22,7 @@ describe('Nav', () => {
   });
 
   it('should render a theme switch button', () => {
-    render(<Nav />);
+    render(<NavBarNav />);
 
     const themeSwitchButton = screen.getByRole('button', {
       name: /switch color theme/i,

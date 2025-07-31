@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react';
 
 import { USER_ICON_TEST_ID } from '@/icons/user';
 
-import { AvatarImage } from './avatar-image';
+import { UserImage } from './image';
 
 const MOCK_SRC = 'http://test.url';
 
-describe('AvatarImage', () => {
+describe('UserImage', () => {
   it('should render default icon if no src provided', () => {
-    render(<AvatarImage />);
+    render(<UserImage />);
 
     const defaultIcon = screen.getByTestId(USER_ICON_TEST_ID);
 
@@ -16,7 +16,7 @@ describe('AvatarImage', () => {
   });
 
   it('should render an image if src is provided', () => {
-    render(<AvatarImage src={MOCK_SRC} />);
+    render(<UserImage src={MOCK_SRC} />);
 
     const image = screen.getByRole('img', { name: 'avatar image' });
 

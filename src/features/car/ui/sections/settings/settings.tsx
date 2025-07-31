@@ -6,7 +6,7 @@ import { ServiceLogsSection } from '@/car/service-log/ui/sections/service-logs/s
 import { DeleteSection } from '../delete/delete';
 import { DetailsSection } from '../details/details';
 import { IdentitySection } from '../identity/identity';
-import { useCarSettingsSection } from './use-car-settings-section';
+import { useSettingsSection } from './use-settings';
 
 export type SettingsSectionProps = {
   carId: string;
@@ -19,7 +19,7 @@ export function SettingsSection({ carId }: SettingsSectionProps) {
     isCurrentUserPrimaryOwner,
     carOwnershipData,
     ownersProfilesData,
-  } = useCarSettingsSection({ carId });
+  } = useSettingsSection({ carId });
 
   return (
     <section className="flex w-full flex-col gap-5 p-5">

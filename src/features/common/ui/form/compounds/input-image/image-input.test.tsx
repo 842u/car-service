@@ -7,17 +7,19 @@ import {
   AvatarFormValues,
 } from '@/schemas/zod/avatarFormSchema';
 import { Form } from '@/ui/form/form';
-import { defaultAvatarFormValues } from '@/user/ui/forms/avatar/use-avatar-form';
+import { defaultAvatarFormValues } from '@/user/ui/forms/avatar/use-avatar';
 
 import {
-  FORM_INPUT_IMAGE_TEST_ID,
-  InputImage,
-  InputImageProps,
-} from './input-image';
+  FORM_IMAGE_INPUT_TEST_ID,
+  FormImageInput,
+  FormImageInputProps,
+} from './image-input';
 
 const INPUT_LABEL_TEXT = 'testLabel';
 
-function TestInputImage({ ...props }: InputImageProps<AvatarFormValues>) {
+function TestFormImageInput({
+  ...props
+}: FormImageInputProps<AvatarFormValues>) {
   const { control } = useForm<AvatarFormValues>({
     resolver: zodResolver(avatarFormSchema),
     mode: 'onChange',
@@ -26,7 +28,7 @@ function TestInputImage({ ...props }: InputImageProps<AvatarFormValues>) {
 
   return (
     <Form>
-      <InputImage<AvatarFormValues>
+      <FormImageInput<AvatarFormValues>
         control={control}
         label={INPUT_LABEL_TEXT}
         {...props}
@@ -35,18 +37,18 @@ function TestInputImage({ ...props }: InputImageProps<AvatarFormValues>) {
   );
 }
 
-describe('InputImage', () => {
+describe('FormImageInput', () => {
   it('should render as a input element of type="file"', () => {
-    render(<TestInputImage name="image" />);
+    render(<TestFormImageInput name="image" />);
 
-    const inputElement = screen.getByTestId(FORM_INPUT_IMAGE_TEST_ID);
+    const inputElement = screen.getByTestId(FORM_IMAGE_INPUT_TEST_ID);
 
     expect(inputElement).toBeInTheDocument();
     expect(inputElement).toHaveAttribute('type', 'file');
   });
 
   it('should render usage info if withInfo', () => {
-    render(<TestInputImage name="image" withInfo={true} />);
+    render(<TestFormImageInput name="image" withInfo={true} />);
 
     const usageInfo = screen.getByText(
       'Click on the image to upload a custom one.',
@@ -62,7 +64,7 @@ describe('InputImage', () => {
   it('should render error if showErrorMessage & errorMessage', () => {
     const errorMessage = 'testError';
     render(
-      <TestInputImage
+      <TestFormImageInput
         errorMessage={errorMessage}
         name="image"
         showErrorMessage={true}

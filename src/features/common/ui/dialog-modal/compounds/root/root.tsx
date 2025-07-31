@@ -2,11 +2,11 @@ import { ComponentProps, MouseEvent, ReactNode } from 'react';
 
 import { useDialogModal } from '../../dialog-modal';
 
-type RootProps = ComponentProps<'dialog'> & {
+type DialogModalRootProps = ComponentProps<'dialog'> & {
   children?: ReactNode;
 };
 
-export function Root({ children, ...props }: RootProps) {
+export function DialogModalRoot({ children, ...props }: DialogModalRootProps) {
   const { closeModal, dialogRef } = useDialogModal();
 
   return (

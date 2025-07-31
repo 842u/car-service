@@ -5,8 +5,8 @@ import { Car } from '@/types';
 import { Button } from '@/ui/button/button';
 import { Form, FormProps } from '@/ui/form/form';
 
-import { Fields } from './fields';
-import { useCarForm } from './use-car-form';
+import { FormFields } from './fields';
+import { useCarForm } from './use-form';
 
 export type CarFormRef = {
   inputImageUrl: string | null;
@@ -42,7 +42,7 @@ export function CarForm({ ref, onSubmit, carData, ...props }: CarFormProps) {
       onSubmit={handleFormSubmit}
       {...props}
     >
-      <Fields
+      <FormFields
         control={control}
         errors={errors}
         inputImageUrl={inputImageUrl || carData?.image_url || null}

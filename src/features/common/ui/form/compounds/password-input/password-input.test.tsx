@@ -2,31 +2,31 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Form } from '../../form';
-import { InputPassword, InputPasswordProps } from './input-password';
+import { FormPasswordInput, FormPasswordInputProps } from './password-input';
 
 // eslint-disable-next-line
-function TestInputPassword({ ...props }: InputPasswordProps<any>) {
+function TestFormPasswordInput({ ...props }: FormPasswordInputProps<any>) {
   return (
     <Form>
-      <InputPassword {...props} />
+      <FormPasswordInput {...props} />
     </Form>
   );
 }
 
-describe('InputPassword', () => {
+describe('FormPasswordInput', () => {
   it('should throw if not wrapped in Form', () => {
     const labelText = 'testLabel';
     const name = 'testName';
 
     expect(() =>
-      render(<InputPassword label={labelText} name={name} />),
+      render(<FormPasswordInput label={labelText} name={name} />),
     ).toThrow();
   });
 
   it('should render as a input of type="password"', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<TestInputPassword label={labelText} name={name} />);
+    render(<TestFormPasswordInput label={labelText} name={name} />);
 
     const inputElement = screen.getByLabelText(labelText);
 
@@ -37,7 +37,7 @@ describe('InputPassword', () => {
   it('should render a button for toggling password visibility', () => {
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<TestInputPassword label={labelText} name={name} />);
+    render(<TestFormPasswordInput label={labelText} name={name} />);
 
     const visibilityButton = screen.getByRole('button', {
       name: 'toggle visibility',
@@ -50,7 +50,7 @@ describe('InputPassword', () => {
     const user = userEvent.setup();
     const labelText = 'testLabel';
     const name = 'testName';
-    render(<TestInputPassword label={labelText} name={name} />);
+    render(<TestFormPasswordInput label={labelText} name={name} />);
 
     const inputElement = screen.getByLabelText(labelText);
     const visibilityButton = screen.getByRole('button', {
@@ -73,7 +73,7 @@ describe('InputPassword', () => {
     const labelText = 'testLabel';
     const name = 'testName';
     render(
-      <TestInputPassword
+      <TestFormPasswordInput
         errorMessage={errorMessage}
         label={labelText}
         name={name}

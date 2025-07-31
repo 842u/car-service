@@ -2,18 +2,20 @@ import { useRef } from 'react';
 
 import { AddButton } from '@/car/ownership/ui/buttons/add/add';
 import { AddModal } from '@/car/ownership/ui/modals/add/add';
-import { Section } from '@/dashboard/ui/section/section';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-export const CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID =
-  'car ownership section test id';
+export const SECTION_CONTROLS_TEST_ID = 'car ownership section test id';
 
-export type ControlsProps = {
+export type SectionControlsProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
 };
 
-export function Controls({ carId, isCurrentUserPrimaryOwner }: ControlsProps) {
+export function SectionControls({
+  carId,
+  isCurrentUserPrimaryOwner,
+}: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
   const handleOwnershipAddButtonClick = () => dialogRef.current?.showModal();
@@ -21,7 +23,7 @@ export function Controls({ carId, isCurrentUserPrimaryOwner }: ControlsProps) {
   const handleOwnershipAddModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
-    <Section.Controls data-testid={CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID}>
+    <DashboardSection.Controls data-testid={SECTION_CONTROLS_TEST_ID}>
       <AddButton
         disabled={!isCurrentUserPrimaryOwner}
         onClick={handleOwnershipAddButtonClick}
@@ -31,6 +33,6 @@ export function Controls({ carId, isCurrentUserPrimaryOwner }: ControlsProps) {
         carId={carId}
         onSubmit={handleOwnershipAddModalSubmit}
       />
-    </Section.Controls>
+    </DashboardSection.Controls>
   );
 }

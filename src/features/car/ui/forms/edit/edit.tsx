@@ -1,17 +1,14 @@
-import {
-  useCarEditForm,
-  UseCarEditFormOptions,
-} from '@/car/ui/forms/edit/use-car-edit-form';
+import { useEditForm, UseEditFormOptions } from '@/car/ui/forms/edit/use-edit';
 import { Car } from '@/types';
 
 import { CarForm } from '../../form/form';
 
 export type EditFormProps = {
   carData?: Car;
-} & Omit<UseCarEditFormOptions, 'carId'>;
+} & Omit<UseEditFormOptions, 'carId'>;
 
 export function EditForm({ carData, onSubmit }: EditFormProps) {
-  const { handleFormSubmit, carFormRef } = useCarEditForm({
+  const { handleFormSubmit, carFormRef } = useEditForm({
     carId: carData?.id || '',
     onSubmit,
   });

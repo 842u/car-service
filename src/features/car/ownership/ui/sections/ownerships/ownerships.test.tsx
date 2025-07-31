@@ -7,7 +7,7 @@ import {
   MOCK_OWNERSHIPS,
 } from '@/utils/jest/mocks/supabase';
 
-import { CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID } from './controls/controls';
+import { SECTION_CONTROLS_TEST_ID } from './controls/controls';
 import { OwnershipsSection } from './ownerships';
 
 function TestOwnershipsSection() {
@@ -45,9 +45,7 @@ describe('OwnershipsSection', () => {
   it('should render section controls', async () => {
     render(<TestOwnershipsSection />);
 
-    const sectionControls = screen.getByTestId(
-      CAR_OWNERSHIPS_SECTION_CONTROLS_TEST_ID,
-    );
+    const sectionControls = screen.getByTestId(SECTION_CONTROLS_TEST_ID);
 
     await waitFor(() => expect(sectionControls).toBeInTheDocument());
   });

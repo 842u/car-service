@@ -1,9 +1,13 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type SectionProps = ComponentProps<'section'>;
+type LandingSectionProps = ComponentProps<'section'>;
 
-export function Section({ className, children, ...props }: SectionProps) {
+export function LandingSection({
+  className,
+  children,
+  ...props
+}: LandingSectionProps) {
   return (
     <section
       className={twMerge(

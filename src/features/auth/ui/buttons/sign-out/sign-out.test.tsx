@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { Route } from 'next';
 
-import { SignOutLinkButton } from './sign-out-link-button';
+import { SignOutButton } from './sign-out';
 
-describe('SingOutLinkButton', () => {
+describe('SingOutButton', () => {
   it('should render a sign out link', () => {
-    render(<SignOutLinkButton />);
+    render(<SignOutButton />);
 
     const signOutLink = screen.getByRole('link', { name: /sign out/i });
 
@@ -14,7 +14,7 @@ describe('SingOutLinkButton', () => {
 
   it('should have proper api endpoint', () => {
     const signOutApiEndpoint = '/api/auth/sign-out' satisfies Route;
-    render(<SignOutLinkButton />);
+    render(<SignOutButton />);
 
     const signOutLink = screen.getByRole('link', { name: /sign out/i });
 

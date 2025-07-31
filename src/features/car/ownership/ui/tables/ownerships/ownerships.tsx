@@ -7,10 +7,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { KeyIcon } from '@/icons/key';
 import { CarOwnership, Profile } from '@/types';
 import { Table } from '@/ui/table/table';
-import { UserBadge } from '@/user/ui/user-badge/user-badge';
+import { UserBadge } from '@/user/ui/badge/badge';
 import { createClient } from '@/utils/supabase/client';
 
-import { ActionsDropdown } from './actions-dropdown/actions-dropdown';
+import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';
 
 const columnsHelper = createColumnHelper<CarOwnership>();
 
@@ -96,7 +96,7 @@ export function OwnershipsTable({
             );
 
             return (
-              <ActionsDropdown
+              <TableActionsDropdown
                 collisionDetectionRoot={tableRef.current}
                 isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
                 ownership={row.original}

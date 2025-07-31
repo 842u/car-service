@@ -4,14 +4,14 @@ import { twMerge } from 'tailwind-merge';
 
 import { useTable } from '@/ui/table/table';
 
-import { Dropdown } from './dropdown/dropdown';
+import { ThDropdown } from './dropdown/dropdown';
 
-type ThProps = ComponentProps<'th'> & {
+type HeadThProps = ComponentProps<'th'> & {
   // eslint-disable-next-line
   header: Header<any, unknown>;
 };
 
-export function Th({ header, ...props }: ThProps) {
+export function HeadTh({ header, ...props }: HeadThProps) {
   useTable();
 
   const column = header.column;
@@ -29,7 +29,7 @@ export function Th({ header, ...props }: ThProps) {
       {...props}
     >
       {isSortable ? (
-        <Dropdown columnId={columnId} label={headerLabel} />
+        <ThDropdown columnId={columnId} label={headerLabel} />
       ) : (
         headerLabel
       )}

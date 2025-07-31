@@ -1,4 +1,4 @@
-import { Section } from '@/dashboard/ui/section/section';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   IMAGE_FILE_MAX_SIZE_BYTES,
@@ -15,13 +15,17 @@ type AvatarSectionProps = {
 
 export function AvatarSection({ avatarUrl }: AvatarSectionProps) {
   return (
-    <Section>
-      <Section.Heading headingLevel="h2">Avatar</Section.Heading>
-      <Section.Text>Click on the image to upload a custom one.</Section.Text>
-      <Section.Subtext className="my-4">
+    <DashboardSection>
+      <DashboardSection.Heading headingLevel="h2">
+        Avatar
+      </DashboardSection.Heading>
+      <DashboardSection.Text>
+        Click on the image to upload a custom one.
+      </DashboardSection.Text>
+      <DashboardSection.Subtext className="my-4">
         {`Accepted file types: ${acceptedFileTypes}. Max file size: ${maxFileSize} MB.`}
-      </Section.Subtext>
+      </DashboardSection.Subtext>
       <AvatarForm avatarUrl={avatarUrl} />
-    </Section>
+    </DashboardSection>
   );
 }

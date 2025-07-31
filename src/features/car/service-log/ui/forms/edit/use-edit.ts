@@ -18,7 +18,7 @@ import {
   serviceLogsByCarIdEditOnMutate,
 } from '@/utils/tanstack/service_logs';
 
-export type UseCarServiceLogEditFormOptions = {
+export type UseEditFormOptions = {
   serviceLog: ServiceLog;
   onSubmit?: () => void;
 };
@@ -30,7 +30,7 @@ type MutationVariables = {
   queryClient: QueryClient;
 };
 
-async function submitCarServiceLogEditFormData(
+async function submitEditFormData(
   serviceLogId: string,
   formData: CarServiceLogFormValues,
 ) {
@@ -63,10 +63,7 @@ async function submitCarServiceLogEditFormData(
   }
 }
 
-export function useCarServiceLogEditForm({
-  serviceLog,
-  onSubmit,
-}: UseCarServiceLogEditFormOptions) {
+export function useEditForm({ serviceLog, onSubmit }: UseEditFormOptions) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
@@ -78,7 +75,7 @@ export function useCarServiceLogEditForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: ({ formData, serviceLogId }: MutationVariables) =>
-      submitCarServiceLogEditFormData(serviceLogId, formData),
+      submitEditFormData(serviceLogId, formData),
     onMutate: ({ formData, carId, serviceLogId, queryClient }) =>
       serviceLogsByCarIdEditOnMutate(
         formData,

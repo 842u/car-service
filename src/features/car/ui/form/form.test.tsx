@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { AriaRole } from 'react';
 
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { FORM_INPUT_IMAGE_TEST_ID } from '@/ui/form/compounds/input-image/input-image';
+import { FORM_IMAGE_INPUT_TEST_ID } from '@/ui/form/compounds/input-image/image-input';
 
 import { CarForm } from './form';
 
@@ -16,7 +16,7 @@ const CAR_FORM_VALUES_MAP: {
 } = {
   image: {
     label: 'Image',
-    testId: FORM_INPUT_IMAGE_TEST_ID,
+    testId: FORM_IMAGE_INPUT_TEST_ID,
   },
   additional_fuel_type: {
     label: 'Additional Fuel Type',

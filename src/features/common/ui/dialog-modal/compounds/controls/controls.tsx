@@ -2,11 +2,11 @@ import { ReactNode } from 'react';
 
 import { useDialogModal } from '@/ui/dialog-modal/dialog-modal';
 
-type ControlsProps = {
+type DialogModalControlsProps = {
   children?: ReactNode;
 };
 
-export function Controls({ children }: ControlsProps) {
+export function Controls({ children }: DialogModalControlsProps) {
   useDialogModal();
 
   return (

@@ -3,15 +3,19 @@ import { twMerge } from 'tailwind-merge';
 import { LinkButton } from '@/ui/link-button/link-button';
 import { ThemeButton } from '@/ui/theme-button/theme-button';
 
-import { NavItem } from './nav-item';
+import { NavItem } from './item';
 
-type NavProps = {
+type NavBarNavProps = {
   isActive?: boolean;
   onClick?: () => void;
   className?: string;
 };
 
-export function Nav({ isActive = true, onClick, className }: NavProps) {
+export function NavBarNav({
+  isActive = true,
+  onClick,
+  className,
+}: NavBarNavProps) {
   return (
     <nav
       aria-label="landing navigation menu"

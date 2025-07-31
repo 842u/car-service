@@ -11,7 +11,7 @@ import { queryKeys } from '@/utils/tanstack/keys';
 
 import { SettingsSectionProps } from './settings';
 
-export function useCarSettingsSection({ carId }: SettingsSectionProps) {
+export function useSettingsSection({ carId }: SettingsSectionProps) {
   const [user, setUser] = useState<User | null>(null);
 
   const { addToast } = useToasts();

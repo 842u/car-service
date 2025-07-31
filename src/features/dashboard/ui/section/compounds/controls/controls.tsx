@@ -1,9 +1,13 @@
 import { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type ControlsProps = ComponentProps<'div'>;
+type SectionControlsProps = ComponentProps<'div'>;
 
-export function Controls({ children, className, ...props }: ControlsProps) {
+export function SectionControls({
+  children,
+  className,
+  ...props
+}: SectionControlsProps) {
   return (
     <div
       className={twMerge('flex justify-end gap-5 px-4', className)}

@@ -7,14 +7,14 @@ import { useToasts } from '@/common/hooks/use-toasts';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
-import { NavBar as BaseNavBar } from '@/ui/nav-bar/nav-bar';
-import { UserBadge } from '@/user/ui/user-badge/user-badge';
+import { NavBar } from '@/ui/nav-bar/nav-bar';
+import { UserBadge } from '@/user/ui/badge/badge';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-import { Nav } from './nav/nav';
+import { NavBarNav } from './nav/nav';
 
-export function NavBar() {
+export function DashboardNavBar() {
   const [isActive, setIsActive] = useState(false);
 
   const hamburgerButtonClickHandler = () => {
@@ -40,7 +40,7 @@ export function NavBar() {
   }, [addToast, error]);
 
   return (
-    <BaseNavBar>
+    <NavBar>
       <BrandLabel className="z-10 h-full" />
       {isPending && (
         <Spinner className="fill-accent-400 stroke-accent-400 z-10 h-full" />
@@ -51,7 +51,7 @@ export function NavBar() {
         isActive={isActive}
         onClick={hamburgerButtonClickHandler}
       />
-      <Nav isActive={isActive} onClick={navMenuClickHandler} />
-    </BaseNavBar>
+      <NavBarNav isActive={isActive} onClick={navMenuClickHandler} />
+    </NavBar>
   );
 }

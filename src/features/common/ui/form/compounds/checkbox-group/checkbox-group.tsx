@@ -6,10 +6,10 @@ import {
 } from 'react-hook-form';
 
 import { useForm } from '../../form';
-import { ErrorText } from '../input/error-text/error-text';
-import { LabelText } from '../input/label-text/label-text';
+import { InputErrorText } from '../input/error-text/error-text';
+import { InputLabelText } from '../input/label-text/label-text';
 
-type CheckboxGroupProps<T extends FieldValues> = {
+type FormCheckboxGroupProps<T extends FieldValues> = {
   label: string;
   checkboxLabelValueMapping: Record<string, string>;
   register: UseFormRegister<T>;
@@ -20,7 +20,7 @@ type CheckboxGroupProps<T extends FieldValues> = {
   showErrorMessage?: boolean;
 };
 
-export function CheckboxGroup<T extends FieldValues>({
+export function FormCheckboxGroup<T extends FieldValues>({
   checkboxLabelValueMapping,
   label,
   register,
@@ -29,13 +29,13 @@ export function CheckboxGroup<T extends FieldValues>({
   errorMessage,
   required = false,
   showErrorMessage = true,
-}: CheckboxGroupProps<T>) {
+}: FormCheckboxGroupProps<T>) {
   useForm();
 
   return (
     <fieldset>
       <legend>
-        <LabelText required={required} text={label} />
+        <InputLabelText required={required} text={label} />
       </legend>
       {Object.keys(checkboxLabelValueMapping).map((checkboxLabel) => (
         <label
@@ -51,7 +51,7 @@ export function CheckboxGroup<T extends FieldValues>({
           {checkboxLabel}
         </label>
       ))}
-      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
     </fieldset>
   );
 }

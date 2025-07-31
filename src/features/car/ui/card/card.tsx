@@ -1,24 +1,22 @@
-/* eslint jsx-a11y/alt-text:0  */
-
 import { Route } from 'next';
 import Link from 'next/link';
 
 import { Car } from '@/types';
-import { Card as BaseCard } from '@/ui/card/card';
+import { Card } from '@/ui/card/card';
 
-import { Image } from '../image/image';
+import { CarImage } from '../image/image';
 
-type CardProps = {
+type CarCardProps = {
   car: Car;
 };
 
-export function Card({ car }: CardProps) {
+export function CarCard({ car }: CarCardProps) {
   const staticSegment = '/dashboard/cars' satisfies Route;
 
   return (
     <Link className="w-80" href={`${staticSegment}/${car.id}`} prefetch={true}>
-      <BaseCard className="flex h-full flex-col gap-4">
-        <Image className="overflow-hidden rounded-lg" src={car.image_url} />
+      <Card className="flex h-full flex-col gap-4">
+        <CarImage className="overflow-hidden rounded-lg" src={car.image_url} />
         <div className="overflow-hidden">
           <p className="mb-1 text-3xl font-bold">{car.custom_name}</p>
           <p className="text-lg">{car.license_plates}</p>
@@ -32,7 +30,7 @@ export function Card({ car }: CardProps) {
             </span>
           )}
         </p>
-      </BaseCard>
+      </Card>
     </Link>
   );
 }

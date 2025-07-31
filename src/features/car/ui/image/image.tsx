@@ -3,12 +3,12 @@ import { twMerge } from 'tailwind-merge';
 
 import { BrandFullIcon } from '@/icons/brand-full';
 
-type ImageProps = {
+type CarImageProps = {
   src?: string | null;
   className?: string;
 };
 
-export function Image({ src, className }: ImageProps) {
+export function CarImage({ src, className }: CarImageProps) {
   return (
     <div
       className={twMerge(

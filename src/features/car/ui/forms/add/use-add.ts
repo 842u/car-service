@@ -8,60 +8,53 @@ import { RefObject, useRef } from 'react';
 import { useToasts } from '@/common/hooks/use-toasts';
 import { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
-import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
+import {
+  carsInfiniteAddOnError,
+  carsInfiniteAddOnMutate,
+} from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { CarFormRef } from '../../form/form';
 
-export type UseCarEditFormOptions = {
-  carId: string;
-  onSubmit?: () => void;
-};
-
 type MutationVariables = {
   formData: CarFormValues;
-  carId: string;
   queryClient: QueryClient;
   carFormRef: RefObject<CarFormRef | null>;
 };
 
-export function useCarEditForm({ carId, onSubmit }: UseCarEditFormOptions) {
+export function useAddForm({
+  onSubmit,
+}: {
+  onSubmit: (() => void) | undefined;
+}) {
   const carFormRef = useRef<CarFormRef>(null);
 
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
-
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: ({ formData, carId }: MutationVariables) =>
-      handleCarFormSubmit(formData, carId, 'PATCH'),
-    onMutate: ({ formData, carId, queryClient, carFormRef }) =>
-      carsUpdateOnMutate(
-        queryClient,
-        carId,
+    mutationFn: ({ formData }: MutationVariables) =>
+      handleCarFormSubmit(formData, null, 'POST'),
+    onMutate: ({ formData, queryClient, carFormRef }) =>
+      carsInfiniteAddOnMutate(
         formData,
+        queryClient,
         carFormRef.current?.inputImageUrl || null,
       ),
     onSuccess: (_, { formData: { custom_name } }) =>
-      addToast(`Car ${custom_name} edited.`, 'success'),
-    onError: (error, { carId, queryClient }, context) => {
-      addToast(error.message, 'error');
-
-      queryClient.setQueryData(['cars', carId], context?.previousCarsQueryData);
-    },
+      addToast(`Car ${custom_name} added.`, 'success'),
+    onError: (error, { queryClient }, context) =>
+      carsInfiniteAddOnError(error, context, queryClient, addToast),
   });
 
   const handleFormSubmit = (formData: CarFormValues) => {
     onSubmit && onSubmit();
-
     mutate(
-      { formData, queryClient, carId, carFormRef },
+      { formData, queryClient, carFormRef },
       {
-        onSettled: (_, __, { carId, queryClient }) =>
-          queryClient.invalidateQueries({
-            queryKey: queryKeys.carsByCarId(carId),
-          }),
+        onSettled: (_, __, { queryClient }) =>
+          queryClient.invalidateQueries({ queryKey: queryKeys.infiniteCars }),
       },
     );
   };

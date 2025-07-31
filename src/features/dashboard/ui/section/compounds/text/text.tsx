@@ -2,6 +2,6 @@ import { ComponentProps } from 'react';
 
 export type TextProps = ComponentProps<'p'>;
 
-export function Text({ children, ...props }: TextProps) {
+export function SectionText({ children, ...props }: TextProps) {
   return <p {...props}>{children}</p>;
 }

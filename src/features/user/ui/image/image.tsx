@@ -3,12 +3,12 @@ import { twMerge } from 'tailwind-merge';
 
 import { UserIcon } from '@/icons/user';
 
-type AvatarImageProps = {
+type UserImageProps = {
   src?: string | null;
   className?: string;
 };
 
-export function AvatarImage({ src, className }: AvatarImageProps) {
+export function UserImage({ src, className }: UserImageProps) {
   return (
     <div
       className={twMerge(

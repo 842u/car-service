@@ -29,7 +29,7 @@ type MutationVariables = {
   queryClient: QueryClient;
 };
 
-async function submitCarServiceLogAddFormData(
+async function submitAddFormData(
   carId: string,
   formData: CarServiceLogFormValues,
 ) {
@@ -62,7 +62,7 @@ async function submitCarServiceLogAddFormData(
   }
 }
 
-export function useCarServiceLogAddForm({
+export function useAddForm({
   carId,
   onSubmit,
 }: Pick<AddFormProps, 'carId' | 'onSubmit'>) {
@@ -75,7 +75,7 @@ export function useCarServiceLogAddForm({
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: ({ formData, carId }: MutationVariables) =>
-      submitCarServiceLogAddFormData(carId, formData),
+      submitAddFormData(carId, formData),
     onMutate: ({ formData, carId, userId, queryClient }) =>
       serviceLogsByCarIdAddOnMutate(formData, carId, userId, queryClient),
     onSuccess: () => addToast('Service log added.', 'success'),

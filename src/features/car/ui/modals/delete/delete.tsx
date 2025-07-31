@@ -4,14 +4,11 @@ import { Button } from '@/ui/button/button';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import { DialogModal, DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-import {
-  useCarDeleteModal,
-  UseCarDeleteModalOptions,
-} from './use-car-delete-modal';
+import { useDeleteModal, UseDeleteModalOptions } from './use-delete';
 
-export const CAR_DELETE_MODAL_TEST_ID = 'CarDeleteModal_test_id';
+export const DELETE_MODAL_TEST_ID = 'CarDeleteModal_test_id';
 
-type DeleteModalProps = UseCarDeleteModalOptions & {
+type DeleteModalProps = UseDeleteModalOptions & {
   ref?: RefObject<DialogModalRef | null>;
 };
 
@@ -23,11 +20,11 @@ export function DeleteModal({
 }: DeleteModalProps) {
   const {
     handlers: { handleCancelButtonClick, handleDeleteButtonClick },
-  } = useCarDeleteModal({ carId, onCancel, onConfirm });
+  } = useDeleteModal({ carId, onCancel, onConfirm });
 
   return (
     <DialogModal ref={ref}>
-      <DialogModal.Root data-testid={CAR_DELETE_MODAL_TEST_ID}>
+      <DialogModal.Root data-testid={DELETE_MODAL_TEST_ID}>
         <DialogModal.Heading>Delete car</DialogModal.Heading>
         <TextSeparator className="my-4" />
         <p className="text-warning-500 dark:text-warning-300 my-4">

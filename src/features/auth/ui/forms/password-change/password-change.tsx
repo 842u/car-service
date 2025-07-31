@@ -2,7 +2,7 @@
 
 import { Form } from '@/ui/form/form';
 
-import { usePasswordChangeForm } from './use-password-change-form';
+import { usePasswordChangeForm } from './use-password-change';
 
 export const PASSWORD_CHANGE_FORM_TEST_ID = 'password change form test id';
 

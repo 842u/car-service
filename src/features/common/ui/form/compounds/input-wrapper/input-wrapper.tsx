@@ -3,9 +3,12 @@ import { twMerge } from 'tailwind-merge';
 
 import { useForm } from '../../form';
 
-type InputWrapperProps = ComponentProps<'div'>;
+type FormInputWrapperProps = ComponentProps<'div'>;
 
-export function InputWrapper({ children, className }: InputWrapperProps) {
+export function FormInputWrapper({
+  children,
+  className,
+}: FormInputWrapperProps) {
   useForm();
 
   return (

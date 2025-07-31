@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 import { PasswordChangeSection } from '@/auth/ui/sections/password-change/password-change';
 import { useToasts } from '@/common/hooks/use-toasts';
-import { Main } from '@/dashboard/ui/main/main';
+import { DashboardMain } from '@/dashboard/ui/main/main';
 import { AvatarSection } from '@/user/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/ui/sections/id/id';
 import { UsernameSection } from '@/user/ui/sections/username/username';
@@ -26,7 +26,7 @@ export default function AccountPage() {
   }, [isError, addToast, error]);
 
   return (
-    <Main>
+    <DashboardMain>
       <section
         aria-label="account settings"
         className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
@@ -36,6 +36,6 @@ export default function AccountPage() {
         <AvatarSection avatarUrl={data?.avatar_url} />
         <PasswordChangeSection />
       </section>
-    </Main>
+    </DashboardMain>
   );
 }

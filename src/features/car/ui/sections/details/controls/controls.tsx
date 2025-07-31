@@ -2,19 +2,19 @@ import { useRef } from 'react';
 
 import { EditButton } from '@/car/ui/buttons/edit/edit';
 import { EditModal } from '@/car/ui/modals/edit/edit';
-import { Section } from '@/dashboard/ui/section/section';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Car } from '@/types';
 import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-export type ControlsProps = {
+export type SectionControlsProps = {
   isCurrentUserPrimaryOwner: boolean;
   carData?: Car;
 };
 
-export function Controls({
+export function SectionControls({
   isCurrentUserPrimaryOwner,
   carData,
-}: ControlsProps) {
+}: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
   const handleCarEditButtonClick = () => dialogRef.current?.showModal();
@@ -22,7 +22,7 @@ export function Controls({
   const handleCarEditModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
-    <Section.Controls>
+    <DashboardSection.Controls>
       <EditButton
         disabled={!isCurrentUserPrimaryOwner}
         onClick={handleCarEditButtonClick}
@@ -32,6 +32,6 @@ export function Controls({
         carData={carData}
         onSubmit={handleCarEditModalSubmit}
       />
-    </Section.Controls>
+    </DashboardSection.Controls>
   );
 }

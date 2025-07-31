@@ -3,16 +3,16 @@ import { Spinner } from '@/ui/decorative/spinner/spinner';
 
 import { useForm } from '../../form';
 
-export type ButtonSubmitProps = ButtonProps & {
+export type FormSubmitButtonProps = ButtonProps & {
   children: string;
   isSubmitting?: boolean;
 };
 
-export function ButtonSubmit({
+export function FormSubmitButton({
   children,
   isSubmitting = false,
   ...props
-}: ButtonSubmitProps) {
+}: FormSubmitButtonProps) {
   useForm();
 
   return (

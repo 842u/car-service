@@ -27,11 +27,11 @@ type MutationVariables = {
   queryClient: QueryClient;
 };
 
-const defaultCarOwnershipAddFormValues: CarOwnershipAddFormValues = {
+const defaultAddFormValues: CarOwnershipAddFormValues = {
   userId: '',
 };
 
-export function useCarOwnershipAddForm({ carId, onSubmit }: AddFormProps) {
+export function useAddForm({ carId, onSubmit }: AddFormProps) {
   const { addToast } = useToasts();
 
   const {
@@ -42,7 +42,7 @@ export function useCarOwnershipAddForm({ carId, onSubmit }: AddFormProps) {
   } = useForm<CarOwnershipAddFormValues>({
     resolver: zodResolver(carOwnershipAddFormSchema),
     mode: 'onChange',
-    defaultValues: defaultCarOwnershipAddFormValues,
+    defaultValues: defaultAddFormValues,
   });
 
   const queryClient = useQueryClient();

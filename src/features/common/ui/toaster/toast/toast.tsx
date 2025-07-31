@@ -8,19 +8,19 @@ import { Toast as ToastObject } from '@/types';
 import { IconButton } from '@/ui/icon-button/icon-button';
 import { getToastAssets } from '@/utils/toasts';
 
-type ToastProps = ToastObject & {
+type ToasterToastProps = ToastObject & {
   ref?: Ref<HTMLLIElement>;
   className?: string;
 };
 
-export function Toast({
+export function ToasterToast({
   message,
   id,
   type,
   className,
   ref,
   ...props
-}: ToastProps) {
+}: ToasterToastProps) {
   const { removeToast } = useToasts();
 
   const { style, icon } = getToastAssets(type)!;

@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/common/hooks/use-toasts';
 
-import { Toast } from './toast/toast';
+import { ToasterToast } from './toast/toast';
 
 const TOAST_LIFETIME = 6000;
 
@@ -81,7 +81,7 @@ export function Toaster({
               }
 
               return (
-                <Toast
+                <ToasterToast
                   key={toast.id}
                   id={toast.id}
                   message={toast.message}

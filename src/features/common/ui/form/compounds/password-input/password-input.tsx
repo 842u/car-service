@@ -14,10 +14,10 @@ import { VisibilityButton } from '@/ui/visibility-button/visibility-button';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useForm } from '../../form';
-import { ErrorText } from '../input/error-text/error-text';
-import { LabelText } from '../input/label-text/label-text';
+import { InputErrorText } from '../input/error-text/error-text';
+import { InputLabelText } from '../input/label-text/label-text';
 
-export type InputPasswordProps<T extends FieldValues> = Omit<
+export type FormPasswordInputProps<T extends FieldValues> = Omit<
   ComponentProps<'input'>,
   'type'
 > & {
@@ -31,7 +31,7 @@ export type InputPasswordProps<T extends FieldValues> = Omit<
   showErrorMessage?: boolean;
 };
 
-export function InputPassword<T extends FieldValues>({
+export function FormPasswordInput<T extends FieldValues>({
   register,
   label,
   name,
@@ -42,7 +42,7 @@ export function InputPassword<T extends FieldValues>({
   showErrorMessage = true,
   required = false,
   ...props
-}: InputPasswordProps<T>) {
+}: FormPasswordInputProps<T>) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   useForm();
@@ -53,7 +53,7 @@ export function InputPassword<T extends FieldValues>({
 
   return (
     <label>
-      <LabelText required={required} text={label} />
+      <InputLabelText required={required} text={label} />
       <div
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
@@ -75,7 +75,7 @@ export function InputPassword<T extends FieldValues>({
           />
         </div>
       </div>
-      {showErrorMessage && <ErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
     </label>
   );
 }

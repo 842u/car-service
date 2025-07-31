@@ -3,7 +3,7 @@
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import { Form } from '@/ui/form/form';
 
-import { usePasswordResetForm } from './use-password-reset-form';
+import { usePasswordResetForm } from './use-password-reset';
 
 export function PasswordResetForm() {
   const { handleFormSubmit, errors, register, isDisabled, isSubmitting } =

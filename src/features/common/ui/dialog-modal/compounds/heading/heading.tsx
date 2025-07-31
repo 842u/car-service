@@ -5,12 +5,15 @@ import { IconButton } from '@/ui/icon-button/icon-button';
 
 import { useDialogModal } from '../../dialog-modal';
 
-type HeadingProps = {
+type DialogModalHeadingProps = {
   headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   children?: ReactNode;
 };
 
-export function Heading({ headingLevel = 'h2', children }: HeadingProps) {
+export function DialogModalHeading({
+  headingLevel = 'h2',
+  children,
+}: DialogModalHeadingProps) {
   const { closeModal } = useDialogModal();
 
   const HeadingTag = headingLevel;

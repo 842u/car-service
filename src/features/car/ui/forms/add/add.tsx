@@ -1,13 +1,13 @@
 import { CarForm } from '@/car/ui/form/form';
 
-import { useCarAddForm } from './use-car-add-form';
+import { useAddForm } from './use-add';
 
 type AddFormProps = {
   onSubmit?: () => void;
 };
 
 export function AddForm({ onSubmit }: AddFormProps) {
-  const { handleFormSubmit, carFormRef } = useCarAddForm({ onSubmit });
+  const { handleFormSubmit, carFormRef } = useAddForm({ onSubmit });
 
   return <CarForm ref={carFormRef} onSubmit={handleFormSubmit} />;
 }

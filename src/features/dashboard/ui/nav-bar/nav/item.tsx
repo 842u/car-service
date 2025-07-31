@@ -5,14 +5,19 @@ import { twMerge } from 'tailwind-merge';
 
 import { LinkButton } from '@/ui/link-button/link-button';
 
-type ItemProps = {
+type NavItemProps = {
   href: Route;
   text: string;
   prefetch?: boolean;
   children?: JSX.Element;
 };
 
-export function Item({ href, text, prefetch = true, children }: ItemProps) {
+export function NavItem({
+  href,
+  text,
+  prefetch = true,
+  children,
+}: NavItemProps) {
   const pathname = usePathname();
   const segment = useSelectedLayoutSegment();
 

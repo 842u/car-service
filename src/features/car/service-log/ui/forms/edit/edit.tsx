@@ -1,15 +1,12 @@
 'use client';
 
 import { ServiceLogForm } from '../../form/form';
-import {
-  useCarServiceLogEditForm,
-  UseCarServiceLogEditFormOptions,
-} from './use-service-log-edit-form';
+import { useEditForm, UseEditFormOptions } from './use-edit';
 
-export type EditFormProps = UseCarServiceLogEditFormOptions;
+export type EditFormProps = UseEditFormOptions;
 
 export function EditForm({ serviceLog, onSubmit }: EditFormProps) {
-  const { handleFormSubmit } = useCarServiceLogEditForm({
+  const { handleFormSubmit } = useEditForm({
     serviceLog,
     onSubmit,
   });

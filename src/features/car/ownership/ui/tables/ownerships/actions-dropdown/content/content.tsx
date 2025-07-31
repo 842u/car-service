@@ -25,7 +25,7 @@ import {
 } from '@/utils/tanstack/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
 
-export type ContentProps = {
+export type DropdownContentProps = {
   ownership: CarOwnership;
   canPromote: boolean;
   canDelete: boolean;
@@ -41,13 +41,13 @@ type MutationVariables = {
   userId?: string;
 };
 
-export function Content({
+export function DropdownContent({
   ownership,
   canDelete,
   canPromote,
   ownerUsername,
   userId,
-}: ContentProps) {
+}: DropdownContentProps) {
   const ownershipDeleteModalRef = useRef<DialogModalRef>(null);
   const ownershipPromoteModalRef = useRef<DialogModalRef>(null);
 

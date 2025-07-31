@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
-type BottomItemProps = {
+type NavBottomItemProps = {
   children?: ReactNode;
 };
 
-export function BottomItem({ children }: BottomItemProps) {
+export function NavBottomItem({ children }: NavBottomItemProps) {
   return <li className="m-2 py-2">{children}</li>;
 }

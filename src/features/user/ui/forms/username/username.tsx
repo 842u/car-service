@@ -3,7 +3,7 @@
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
 
-import { useUsernameForm } from './use-username-form';
+import { useUsernameForm } from './use-username';
 
 export const USERNAME_FORM_TEST_ID = 'username form test id';
 

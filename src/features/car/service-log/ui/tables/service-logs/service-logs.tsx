@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Profile, serviceCategoryMapping, ServiceLog } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
 import { Table } from '@/ui/table/table';
-import { UserBadge } from '@/user/ui/user-badge/user-badge';
+import { UserBadge } from '@/user/ui/badge/badge';
 import { createClient } from '@/utils/supabase/client';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';

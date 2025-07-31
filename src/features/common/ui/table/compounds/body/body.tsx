@@ -2,7 +2,7 @@ import { flexRender } from '@tanstack/react-table';
 
 import { useTable } from '../../table';
 
-export function Body() {
+export function TableBody() {
   const { table } = useTable();
 
   const rows = table.getRowModel().rows;

@@ -4,12 +4,15 @@ import { inputVariants } from '@/utils/tailwindcss/input';
 
 import { useTable } from '../../table';
 
-type TextFilterProps = {
+type TableTextFilterProps = {
   columnId: string;
   debounceDelay?: number;
 };
 
-export function TextFilter({ columnId, debounceDelay = 200 }: TextFilterProps) {
+export function TableTextFilter({
+  columnId,
+  debounceDelay = 200,
+}: TableTextFilterProps) {
   const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
 
   const { table } = useTable();

@@ -2,15 +2,18 @@ import { useRef } from 'react';
 
 import { DeleteButton } from '@/car/ui/buttons/delete/delete';
 import { DeleteModal } from '@/car/ui/modals/delete/delete';
-import { Section } from '@/dashboard/ui/section/section';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-export type ControlsProps = {
+export type SectionControlsProps = {
   carId: string;
   isCurrentUserPrimaryOwner: boolean;
 };
 
-export function Controls({ carId, isCurrentUserPrimaryOwner }: ControlsProps) {
+export function SectionControls({
+  carId,
+  isCurrentUserPrimaryOwner,
+}: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
   const handleCarDeleteModalCancel = () => dialogRef.current?.closeModal();
@@ -20,7 +23,7 @@ export function Controls({ carId, isCurrentUserPrimaryOwner }: ControlsProps) {
   const handleCarDeleteButtonClick = () => dialogRef.current?.showModal();
 
   return (
-    <Section.Controls>
+    <DashboardSection.Controls>
       <DeleteButton
         disabled={!isCurrentUserPrimaryOwner}
         onClick={handleCarDeleteButtonClick}
@@ -31,6 +34,6 @@ export function Controls({ carId, isCurrentUserPrimaryOwner }: ControlsProps) {
         onCancel={handleCarDeleteModalCancel}
         onConfirm={handleCarDeleteModalConfirm}
       />
-    </Section.Controls>
+    </DashboardSection.Controls>
   );
 }

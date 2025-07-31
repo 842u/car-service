@@ -1,20 +1,20 @@
 import { render, screen } from '@testing-library/react';
 
-import { CAR_OWNERSHIP_ADD_FORM_TEST_ID } from '@/car/ownership/ui/forms/add/add';
+import { ADD_FORM_TEST_ID } from '@/car/ownership/ui/forms/add/add';
 import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
 
-import { Controls } from './controls';
+import { SectionControls } from './controls';
 
 const MOCK_CAR_ID = 'ee4a8fa7-758e-4302-8726-01eeecee8707';
 
-function TestControls({
+function TestSectionControls({
   isCurrentUserPrimaryOwner = true,
 }: {
   isCurrentUserPrimaryOwner?: boolean;
 }) {
   return (
     <TanStackQueryProvider>
-      <Controls
+      <SectionControls
         carId={MOCK_CAR_ID}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
@@ -22,9 +22,9 @@ function TestControls({
   );
 }
 
-describe('Controls', () => {
+describe('SectionControls', () => {
   it('should render a button for adding ownership', () => {
-    render(<TestControls />);
+    render(<TestSectionControls />);
 
     const addOwnershipButton = screen.getByRole('button', {
       name: 'Add owner',
@@ -34,7 +34,7 @@ describe('Controls', () => {
   });
 
   it('add ownership button should be disabled if !isCurrentUserPrimaryOwner', () => {
-    render(<TestControls isCurrentUserPrimaryOwner={false} />);
+    render(<TestSectionControls isCurrentUserPrimaryOwner={false} />);
 
     const addOwnershipButton = screen.getByRole('button', {
       name: 'Add owner',
@@ -44,11 +44,9 @@ describe('Controls', () => {
   });
 
   it('should render a car ownership add form', () => {
-    render(<TestControls />);
+    render(<TestSectionControls />);
 
-    const carOwnershipAddForm = screen.getByTestId(
-      CAR_OWNERSHIP_ADD_FORM_TEST_ID,
-    );
+    const carOwnershipAddForm = screen.getByTestId(ADD_FORM_TEST_ID);
 
     expect(carOwnershipAddForm).toBeInTheDocument();
   });

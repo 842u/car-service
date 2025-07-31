@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
 
-import { CAR_DELETE_MODAL_TEST_ID } from '../../modals/delete/delete';
+import { DELETE_MODAL_TEST_ID } from '../../modals/delete/delete';
 import { DeleteSection } from './delete';
 
 const MOCK_CAR_ID = 'e5e42160-6e96-4641-8484-b851aec4167f';
@@ -80,7 +80,7 @@ describe('DeleteSection', () => {
   it('should render a car delete modal', () => {
     render(<TestDeleteSection />);
 
-    const modal = screen.getByTestId(CAR_DELETE_MODAL_TEST_ID);
+    const modal = screen.getByTestId(DELETE_MODAL_TEST_ID);
 
     expect(modal).toBeInTheDocument();
   });

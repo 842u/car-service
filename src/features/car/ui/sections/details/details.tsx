@@ -1,22 +1,24 @@
 import { DetailsTable } from '@/car/ui/tables/details/details';
-import { Section } from '@/dashboard/ui/section/section';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 
-import { Controls, ControlsProps } from './controls/controls';
+import { SectionControls, SectionControlsProps } from './controls/controls';
 
-export type DetailsSectionProps = ControlsProps;
+export type DetailsSectionProps = SectionControlsProps;
 
 export function DetailsSection({
   isCurrentUserPrimaryOwner,
   carData,
 }: DetailsSectionProps) {
   return (
-    <Section>
-      <Section.Heading headingLevel="h2">Details</Section.Heading>
+    <DashboardSection>
+      <DashboardSection.Heading headingLevel="h2">
+        Details
+      </DashboardSection.Heading>
       <DetailsTable carData={carData} />
-      <Controls
+      <SectionControls
         carData={carData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
-    </Section>
+    </DashboardSection>
   );
 }
