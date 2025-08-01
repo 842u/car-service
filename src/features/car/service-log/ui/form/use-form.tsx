@@ -17,16 +17,12 @@ export function useServiceLogForm({
     reset,
     register,
     formState: { errors, isValid, isDirty, isSubmitSuccessful },
-  } = useForm<CarServiceLogFormValues>({
+  } = useForm({
     resolver: zodResolver(carServiceLogFormSchema),
     mode: 'onChange',
     defaultValues: serviceLog
       ? {
-          category: serviceLog.category,
-          mileage: serviceLog.mileage,
-          notes: serviceLog.notes,
-          service_cost: serviceLog.service_cost,
-          service_date: serviceLog.service_date,
+          ...serviceLog,
         }
       : {
           // Intentionally do not set required category to enforce user do it.
@@ -34,6 +30,7 @@ export function useServiceLogForm({
           mileage: null,
           notes: null,
           service_cost: null,
+          category: [],
         },
   });
 

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { userIdValidationSchema } from './common';
+import { IdSchema } from './common';
 
 export const carPrimaryOwnershipGrantFormSchema = z.object({
-  userId: userIdValidationSchema,
+  userId: IdSchema,
 });
 
 export type CarPrimaryOwnershipGrantFormValues = z.infer<
