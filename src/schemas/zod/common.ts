@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 import { EMAIL_REGEXP } from '@/utils/validation';
 
+z.config({
+  jitless: true,
+});
+
 export const IMAGE_FILE_MAX_SIZE_BYTES = 1024 * 1024 * 3;
 export const IMAGE_FILE_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
 

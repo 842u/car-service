@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 import { passwordSchema } from './common';
 
+z.config({
+  jitless: true,
+});
+
 export const passwordChangeFormSchema = z
   .object({
     password: passwordSchema,

@@ -7,6 +7,10 @@ import { parseDateToYyyyMmDd } from '@/utils/general';
 
 import { carMileageSchema } from './carFormSchema';
 
+z.config({
+  jitless: true,
+});
+
 type CarServiceLogFormSchemaShape = Omit<
   { [K in keyof ServiceLog]: ZodType },
   'created_at' | 'created_by' | 'car_id' | 'id'

@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 import { emailSchema, passwordSchema } from './common';
 
+z.config({
+  jitless: true,
+});
+
 export const signUpEmailAuthFormSchema = z.object({
   email: emailSchema,
   password: passwordSchema,

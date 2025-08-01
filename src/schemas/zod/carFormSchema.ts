@@ -23,6 +23,10 @@ type CarFormSchemaShape = Omit<
   image: ZodType;
 };
 
+z.config({
+  jitless: true,
+});
+
 const CAR_NAME_REQUIRED_MESSAGE = 'Name is required.';
 const CAR_NAME_TYPE_MESSAGE = 'Name must be a string.';
 export const MIN_CAR_NAME_LENGTH = 1;
