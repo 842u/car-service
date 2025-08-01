@@ -23,20 +23,26 @@ type CarFormSchemaShape = Omit<
   image: ZodType;
 };
 
+const CAR_NAME_REQUIRED_MESSAGE = 'Name is required.';
+const CAR_NAME_TYPE_MESSAGE = 'Name must be a string.';
 export const MIN_CAR_NAME_LENGTH = 1;
-const MIN_CAR_NAME_LENGTH_MESSAGE = 'Name is required.';
+const MIN_CAR_NAME_LENGTH_MESSAGE = CAR_NAME_REQUIRED_MESSAGE;
 export const MAX_CAR_NAME_LENGTH = 30;
 const MAX_CAR_NAME_LENGTH_MESSAGE = `Maximum name length is ${MAX_CAR_NAME_LENGTH}.`;
 
 const carNameSchema = z
   .string({
-    required_error: 'Name is required.',
-    invalid_type_error: 'Name must be a string.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_NAME_REQUIRED_MESSAGE
+        : CAR_NAME_TYPE_MESSAGE,
   })
   .trim()
-  .min(MIN_CAR_NAME_LENGTH, MIN_CAR_NAME_LENGTH_MESSAGE)
-  .max(MAX_CAR_NAME_LENGTH, MAX_CAR_NAME_LENGTH_MESSAGE);
+  .min(MIN_CAR_NAME_LENGTH, { error: MIN_CAR_NAME_LENGTH_MESSAGE })
+  .max(MAX_CAR_NAME_LENGTH, { error: MAX_CAR_NAME_LENGTH_MESSAGE });
 
+const CAR_BRAND_REQUIRED_MESSAGE = 'Brand is required.';
+const CAR_BRAND_TYPE_MESSAGE = 'Brand must be a string.';
 export const MIN_CAR_BRAND_LENGTH = 2;
 const MIN_CAR_BRAND_LENGTH_MESSAGE = `Minimum brand length is ${MIN_CAR_BRAND_LENGTH}.`;
 export const MAX_CAR_BRAND_LENGTH = 25;
@@ -44,97 +50,136 @@ const MAX_CAR_BRAND_LENGTH_MESSAGE = `Maximum brand length is ${MAX_CAR_BRAND_LE
 
 const carBrandSchema = z
   .string({
-    required_error: 'Brand is required.',
-    invalid_type_error: 'Brand must be a string.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_BRAND_REQUIRED_MESSAGE
+        : CAR_BRAND_TYPE_MESSAGE,
   })
   .trim()
-  .min(MIN_CAR_BRAND_LENGTH, MIN_CAR_BRAND_LENGTH_MESSAGE)
-  .max(MAX_CAR_BRAND_LENGTH, MAX_CAR_BRAND_LENGTH_MESSAGE);
+  .min(MIN_CAR_BRAND_LENGTH, { error: MIN_CAR_BRAND_LENGTH_MESSAGE })
+  .max(MAX_CAR_BRAND_LENGTH, { error: MAX_CAR_BRAND_LENGTH_MESSAGE });
 
+const CAR_MODEL_REQUIRED_MESSAGE = 'Model is required.';
+const CAR_MODEL_TYPE_MESSAGE = 'Model must be a string.';
 export const MIN_CAR_MODEL_LENGTH = 1;
-const MIN_CAR_MODEL_LENGTH_MESSAGE = `Minimum model length is ${MIN_CAR_MODEL_LENGTH}.`;
+const MIN_CAR_MODEL_LENGTH_MESSAGE = CAR_MODEL_REQUIRED_MESSAGE;
 export const MAX_CAR_MODEL_LENGTH = 25;
 const MAX_CAR_MODEL_LENGTH_MESSAGE = `Maximum model length is ${MAX_CAR_MODEL_LENGTH}.`;
 
 const carModelSchema = z
   .string({
-    required_error: 'Model is required.',
-    invalid_type_error: 'Model must be a string.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_MODEL_REQUIRED_MESSAGE
+        : CAR_MODEL_TYPE_MESSAGE,
   })
   .trim()
-  .min(MIN_CAR_MODEL_LENGTH, MIN_CAR_MODEL_LENGTH_MESSAGE)
-  .max(MAX_CAR_MODEL_LENGTH, MAX_CAR_MODEL_LENGTH_MESSAGE);
+  .min(MIN_CAR_MODEL_LENGTH, { error: MIN_CAR_MODEL_LENGTH_MESSAGE })
+  .max(MAX_CAR_MODEL_LENGTH, { error: MAX_CAR_MODEL_LENGTH_MESSAGE });
 
+const CAR_LICENSE_PLATES_REQUIRED_MESSAGE = 'License plates are required.';
+const CAR_LICENSE_PLATES_TYPE_MESSAGE = 'License plates must be a string.';
 export const MIN_CAR_LICENSE_PLATES_LENGTH = 1;
-const MIN_CAR_LICENSE_PLATES_LENGTH_MESSAGE = `Minimum license plates length is ${MIN_CAR_LICENSE_PLATES_LENGTH}.`;
+const MIN_CAR_LICENSE_PLATES_LENGTH_MESSAGE =
+  CAR_LICENSE_PLATES_REQUIRED_MESSAGE;
 export const MAX_CAR_LICENSE_PLATES_LENGTH = 15;
 const MAX_CAR_LICENSE_PLATES_LENGTH_MESSAGE = `Maximum license plates length is ${MAX_CAR_LICENSE_PLATES_LENGTH}.`;
 
 const carLicensePlatesSchema = z
   .string({
-    required_error: 'License plates is required.',
-    invalid_type_error: 'License plates must be a string.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_LICENSE_PLATES_REQUIRED_MESSAGE
+        : CAR_LICENSE_PLATES_TYPE_MESSAGE,
   })
   .trim()
-  .min(MIN_CAR_LICENSE_PLATES_LENGTH, MIN_CAR_LICENSE_PLATES_LENGTH_MESSAGE)
-  .max(MAX_CAR_LICENSE_PLATES_LENGTH, MAX_CAR_LICENSE_PLATES_LENGTH_MESSAGE);
+  .min(MIN_CAR_LICENSE_PLATES_LENGTH, {
+    error: MIN_CAR_LICENSE_PLATES_LENGTH_MESSAGE,
+  })
+  .max(MAX_CAR_LICENSE_PLATES_LENGTH, {
+    error: MAX_CAR_LICENSE_PLATES_LENGTH_MESSAGE,
+  });
 
+const CAR_VIN_REQUIRED_MESSAGE = 'VIN is required.';
+const CAR_VIN_TYPE_MESSAGE = 'VIN must be a string.';
 export const CAR_VIN_LENGTH = 17;
 const CAR_VIN_LENGTH_MESSAGE = `VIN must be ${CAR_VIN_LENGTH} characters long.`;
 
 const carVinSchema = z
   .string({
-    required_error: 'VIN is required.',
-    invalid_type_error: 'VIN must be a string.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_VIN_REQUIRED_MESSAGE
+        : CAR_VIN_TYPE_MESSAGE,
   })
   .trim()
-  .length(CAR_VIN_LENGTH, CAR_VIN_LENGTH_MESSAGE);
+  .length(CAR_VIN_LENGTH, { error: CAR_VIN_LENGTH_MESSAGE });
 
-export const MIN_CAR_ENGINE_CAPACITY_VALUE = 0;
+const CAR_ENGINE_CAPACITY_REQUIRED_MESSAGE = 'Engine capacity is required.';
+const CAR_ENGINE_CAPACITY_TYPE_MESSAGE = 'Engine capacity must be a number.';
+export const MIN_CAR_ENGINE_CAPACITY_VALUE = 1;
+const MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE =
+  'Engine capacity must be a positive number.';
 export const MAX_CAR_ENGINE_CAPACITY_VALUE = Number.MAX_SAFE_INTEGER;
-const MAX_CAR_ENGINE_CAPACITY_VALUE_MESSAGE = `Maximum engine capacity value is ${MAX_CAR_ENGINE_CAPACITY_VALUE}.`;
+const CAR_ENGINE_CAPACITY_VALUE_RANGE_MESSAGE = `Engine capacity value must be between ${Number.MIN_SAFE_INTEGER} and ${MAX_CAR_ENGINE_CAPACITY_VALUE}.`;
 
 const carEngineCapacitySchema = z
   .number({
-    required_error: 'Engine capacity is required.',
-    invalid_type_error: 'Engine capacity must be a number.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_ENGINE_CAPACITY_REQUIRED_MESSAGE
+        : CAR_ENGINE_CAPACITY_TYPE_MESSAGE,
   })
-  .int()
-  .nonnegative('Engine capacity must be positive number.')
-  .safe(MAX_CAR_ENGINE_CAPACITY_VALUE_MESSAGE)
-  .finite('Engine capacity must be finite number.');
+  .min(MIN_CAR_ENGINE_CAPACITY_VALUE, {
+    error: MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE,
+  })
+  .nonnegative({ error: MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE })
+  .int({ error: CAR_ENGINE_CAPACITY_VALUE_RANGE_MESSAGE });
 
-export const MIN_CAR_MILEAGE_VALUE = 0;
+const CAR_MILEAGE_REQUIRED_MESSAGE = 'Mileage is required.';
+const CAR_MILEAGE_TYPE_MESSAGE = 'Mileage must be a number.';
+export const MIN_CAR_MILEAGE_VALUE = 1;
+const MIN_CAR_MILEAGE_VALUE_MESSAGE = 'Mileage must be positive number.';
 export const MAX_CAR_MILEAGE_VALUE = Number.MAX_SAFE_INTEGER;
-const MAX_CAR_MILEAGE_VALUE_MESSAGE = `Maximum mileage value is ${MAX_CAR_MILEAGE_VALUE}.`;
+const CAR_MILEAGE_VALUE_RANGE_MESSAGE = `Mileage value must be between ${Number.MIN_SAFE_INTEGER} and ${MAX_CAR_MILEAGE_VALUE}.`;
 
 export const carMileageSchema = z
   .number({
-    required_error: 'Mileage is required.',
-    invalid_type_error: 'Mileage must be a number.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_MILEAGE_REQUIRED_MESSAGE
+        : CAR_MILEAGE_TYPE_MESSAGE,
   })
-  .int()
-  .nonnegative('Mileage must be positive number.')
-  .safe(MAX_CAR_MILEAGE_VALUE_MESSAGE)
-  .finite('Mileage must be finite number.');
+  .min(MIN_CAR_MILEAGE_VALUE, { error: MIN_CAR_MILEAGE_VALUE_MESSAGE })
+  .nonnegative({ error: MIN_CAR_MILEAGE_VALUE_MESSAGE })
+  .int({ error: CAR_MILEAGE_VALUE_RANGE_MESSAGE });
 
+const CAR_PRODUCTION_YEAR_REQUIRED_MESSAGE = 'Production year is required.';
+const CAR_PRODUCTION_YEAR_TYPE_MESSAGE = 'Production year must be a number.';
+const CAR_PRODUCTION_YEAR_NONNEGATIVE_MESSAGE =
+  'Production year must be a positive number.';
 export const MIN_CAR_PRODUCTION_YEAR_VALUE = 1885;
 export const MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE =
   'Hey! First car was made in 1885.';
 export const MAX_CAR_PRODUCTION_YEAR_VALUE = new Date().getFullYear() + 5;
 const MAX_CAR_PRODUCTION_YEAR_VALUE_MESSAGE = `Maximum production year is ${MAX_CAR_PRODUCTION_YEAR_VALUE}.`;
+const CAR_PRODUCTION_YEAR_VALUE_RANGE_MESSAGE = `Production year value must be between ${Number.MIN_SAFE_INTEGER} and ${Number.MAX_SAFE_INTEGER}.`;
 
 const carProductionYearSchema = z
   .number({
-    required_error: 'Production year is required.',
-    invalid_type_error: 'Production year must be a number.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_PRODUCTION_YEAR_REQUIRED_MESSAGE
+        : CAR_PRODUCTION_YEAR_TYPE_MESSAGE,
   })
-  .int()
-  .nonnegative('Production year must be positive number.')
-  .safe()
-  .finite('Production year must be finite number.')
-  .min(MIN_CAR_PRODUCTION_YEAR_VALUE, MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE)
-  .max(MAX_CAR_PRODUCTION_YEAR_VALUE, MAX_CAR_PRODUCTION_YEAR_VALUE_MESSAGE);
+  .min(MIN_CAR_PRODUCTION_YEAR_VALUE, {
+    error: MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE,
+  })
+  .max(MAX_CAR_PRODUCTION_YEAR_VALUE, {
+    error: MAX_CAR_PRODUCTION_YEAR_VALUE_MESSAGE,
+  })
+  .nonnegative({ error: CAR_PRODUCTION_YEAR_NONNEGATIVE_MESSAGE })
+  .int({ error: CAR_PRODUCTION_YEAR_VALUE_RANGE_MESSAGE });
 
 const carFuelEnumSchema = z.enum(
   Object.values(fuelTypesMapping) as [keyof FuelMapping],
@@ -168,32 +213,44 @@ const carDriveTypeSchema = z
   .transform((val) => (val === '' ? null : val))
   .pipe(carDriveEnumSchema.nullable());
 
+const CAR_INSURANCE_EXPIRATION_DATE_REQUIRED_MESSAGE =
+  'Insurance expiration date is required.';
+const CAR_INSURANCE_EXPIRATION_DATE_TYPE_MESSAGE =
+  'Insurance expiration date must be a date.';
 export const MIN_CAR_INSURANCE_EXPIRATION_DATE = '1885-01-01';
 const MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE =
   'Hey! First car was made in 1885.';
 
 const carInsuranceExpirationSchema = z.coerce
   .date({
-    required_error: 'Insurance expiration date is required.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_INSURANCE_EXPIRATION_DATE_REQUIRED_MESSAGE
+        : CAR_INSURANCE_EXPIRATION_DATE_TYPE_MESSAGE,
   })
-  .min(
-    new Date(MIN_CAR_INSURANCE_EXPIRATION_DATE),
-    MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE,
-  )
+  .min(new Date(MIN_CAR_INSURANCE_EXPIRATION_DATE), {
+    error: MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE,
+  })
   .transform((date) => parseDateToYyyyMmDd(date));
 
+const CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_REQUIRED_MESSAGE =
+  'Technical inspection expiration date is required.';
+const CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_TYPE_MESSAGE =
+  'Technical inspection expiration date must be a date.';
 export const MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE = '1885-01-01';
 const MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_MESSAGE =
   'Hey! First car was made in 1885.';
 
 const carTechnicalInspectionExpirationSchema = z.coerce
   .date({
-    required_error: 'Technical inspection expiration date is required.',
+    error: (issue) =>
+      issue.input === undefined
+        ? CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_REQUIRED_MESSAGE
+        : CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_TYPE_MESSAGE,
   })
-  .min(
-    new Date(MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE),
-    MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_MESSAGE,
-  )
+  .min(new Date(MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE), {
+    error: MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_MESSAGE,
+  })
   .transform((date) => (date ? parseDateToYyyyMmDd(date) : null));
 
 export const carFormSchema = z.object({

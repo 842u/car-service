@@ -19,29 +19,40 @@ const serviceCategorySchema = z
   .enum(
     Object.values(serviceCategoryMapping) as [keyof ServiceCategoryMapping],
     {
-      message: 'Please choose a correct value.',
+      error: 'Please choose a correct value.',
     },
   )
   .array()
-  .nonempty({ message: 'Please choose at least one value.' });
+  .nonempty({ error: 'Please choose at least one value.' });
 
+const SERVICE_NOTE_REQUIRED_MESSAGE = 'Note is required.';
+const SERVICE_NOTE_TYPE_MESSAGE = 'Note must be a string.';
 export const MAX_SERVICE_NOTE_lENGTH = 1000;
-const MAX_SERVICE_NOTE_LENGTH_MESSAGE = `Maximum notes length is ${MAX_SERVICE_NOTE_lENGTH}.`;
+const MAX_SERVICE_NOTE_LENGTH_MESSAGE = `Maximum note length is ${MAX_SERVICE_NOTE_lENGTH}.`;
 
-const serviceNotesSchema = z
+const serviceNoteSchema = z
   .string({
-    required_error: 'Service notes are required.',
-    invalid_type_error: 'Service notes must be a string.',
+    error: (issue) =>
+      issue.input === undefined
+        ? SERVICE_NOTE_REQUIRED_MESSAGE
+        : SERVICE_NOTE_TYPE_MESSAGE,
   })
   .trim()
-  .max(MAX_SERVICE_NOTE_lENGTH, MAX_SERVICE_NOTE_LENGTH_MESSAGE);
+  .max(MAX_SERVICE_NOTE_lENGTH, { error: MAX_SERVICE_NOTE_LENGTH_MESSAGE });
+
+const SERVICE_COST_REQUIRED_MESSAGE = 'Cost is required.';
+const SERVICE_COST_TYPE_MESSAGE = 'Cost must be a number.';
+const SERVICE_COST_NONNEGATIVE_MESSAGE =
+  'Service cost must be a positive number.';
 
 const serviceCostSchema = z
   .number({
-    required_error: 'Service cost is required.',
-    invalid_type_error: 'Service cost must be a number.',
+    error: (issue) =>
+      issue.input === undefined
+        ? SERVICE_COST_REQUIRED_MESSAGE
+        : SERVICE_COST_TYPE_MESSAGE,
   })
-  .nonnegative('Service cost must be a positive number.');
+  .nonnegative({ error: SERVICE_COST_NONNEGATIVE_MESSAGE });
 
 const serviceDateSchema = z.string().superRefine((value, context) => {
   const date = new Date(value);
@@ -70,7 +81,7 @@ export const carServiceLogFormSchema = z.object({
   service_date: serviceDateSchema,
   category: serviceCategorySchema,
   mileage: carMileageSchema.nullable().or(z.nan()),
-  notes: serviceNotesSchema.nullable().or(z.literal('')),
+  notes: serviceNoteSchema.nullable().or(z.literal('')),
   service_cost: serviceCostSchema.nullable().or(z.nan()),
 } satisfies CarServiceLogFormSchemaShape);
 

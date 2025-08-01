@@ -11,8 +11,10 @@ export const signInEmailAuthFormSchema = z.object({
   email: emailSchema,
   password: z
     .string({
-      required_error: 'Password is required.',
-      invalid_type_error: 'Password must be a string.',
+      error: (issue) =>
+        issue.input === undefined
+          ? 'Password is required.'
+          : 'Password must be a string.',
     })
     .trim()
     .min(1, 'Password is required.'),
