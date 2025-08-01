@@ -27,7 +27,7 @@
     "@next/bundle-analyzer": "15.4.5",
     "@supabase/ssr": "0.6.1",
     "@supabase/supabase-js": "2.53.0",
-    "@tanstack/react-query": "5.81.5",
+    "@tanstack/react-query": "5.84.1",
     "@tanstack/react-table": "8.21.3",
     "motion": "12.23.0",
     "next": "15.3.5",
