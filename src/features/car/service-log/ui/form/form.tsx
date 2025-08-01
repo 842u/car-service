@@ -39,7 +39,7 @@ export function ServiceLogForm({
             label="Date"
             name="service_date"
             register={register}
-            registerOptions={{ valueAsDate: false }}
+            registerOptions={{ valueAsDate: true }}
             type="date"
           />
         </Form.InputWrapper>

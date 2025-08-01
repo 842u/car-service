@@ -215,8 +215,7 @@ const carDriveTypeSchema = z
 
 const CAR_INSURANCE_EXPIRATION_DATE_REQUIRED_MESSAGE =
   'Insurance expiration date is required.';
-const CAR_INSURANCE_EXPIRATION_DATE_TYPE_MESSAGE =
-  'Insurance expiration date must be a date.';
+const CAR_INSURANCE_EXPIRATION_DATE_TYPE_MESSAGE = 'Invalid date.';
 export const MIN_CAR_INSURANCE_EXPIRATION_DATE = '1885-01-01';
 const MIN_CAR_INSURANCE_EXPIRATION_DATE_MESSAGE =
   'Hey! First car was made in 1885.';
@@ -235,8 +234,7 @@ const carInsuranceExpirationSchema = z.coerce
 
 const CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_REQUIRED_MESSAGE =
   'Technical inspection expiration date is required.';
-const CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_TYPE_MESSAGE =
-  'Technical inspection expiration date must be a date.';
+const CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_TYPE_MESSAGE = 'Invalid date.';
 export const MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE = '1885-01-01';
 const MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_MESSAGE =
   'Hey! First car was made in 1885.';

@@ -3,12 +3,9 @@ import { z } from 'zod';
 
 import type { ServiceCategoryMapping, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
+import { parseDateToYyyyMmDd } from '@/utils/general';
 
-import {
-  carMileageSchema,
-  MIN_CAR_PRODUCTION_YEAR_VALUE,
-  MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE,
-} from './carFormSchema';
+import { carMileageSchema } from './carFormSchema';
 
 type CarServiceLogFormSchemaShape = Omit<
   { [K in keyof ServiceLog]: ZodType },
@@ -54,28 +51,22 @@ const serviceCostSchema = z
   })
   .nonnegative({ error: SERVICE_COST_NONNEGATIVE_MESSAGE });
 
-const serviceDateSchema = z.string().superRefine((value, context) => {
-  const date = new Date(value);
+const SERVICE_DATE_REQUIRED_MESSAGE = 'Date is required.';
+const SERVICE_DATE_TYPE_MESSAGE = 'Invalid date.';
+const MIN_SERVICE_DATE = '1885-01-01';
+const MIN_SERVICE_DATE_MESSAGE = 'Hey! First car was made in 1885.';
 
-  if (Number.isNaN(date.valueOf())) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Invalid date format.',
-      fatal: true,
-    });
-
-    return z.NEVER;
-  }
-
-  const year = date.getUTCFullYear();
-
-  if (year < MIN_CAR_PRODUCTION_YEAR_VALUE) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE,
-    });
-  }
-});
+const serviceDateSchema = z.coerce
+  .date({
+    error: (issue) =>
+      issue.input === undefined
+        ? SERVICE_DATE_REQUIRED_MESSAGE
+        : SERVICE_DATE_TYPE_MESSAGE,
+  })
+  .min(new Date(MIN_SERVICE_DATE), {
+    error: MIN_SERVICE_DATE_MESSAGE,
+  })
+  .transform((date) => parseDateToYyyyMmDd(date));
 
 export const carServiceLogFormSchema = z.object({
   service_date: serviceDateSchema,
