@@ -45,6 +45,7 @@ const scriptSrcElemDirective: Directive = {
     "'sha256-rbbnijHn7DZ6ps39myQ3cVQF1H+U/PJfHh5ei/Q2kb8='",
     "'sha256-Vz0fwWS/RBGfX0CgDk4ZXv/OwIIEUP030prvqFa/e9s='",
     "'sha256-P+ENKuy1ajGdnkDBoylo2F59ICER0m6CNM4eemaFB+4='",
+    "'sha256-n46vPwSWuMC0W703pBofImv82Z26xo4LXymv0E9caPk='",
   ],
 };
 
@@ -56,11 +57,14 @@ const styleSrcDirective: Directive = {
     "'sha256-rZot9UVcdtXL99KiVSLfpDfxS3VtOsOY1PXjNX1ntxg='",
     "'sha256-sHwQzC2ZsVrt1faUYCjF/eo8aIoBlQbGjVstzanL9CU='",
     // Next - START
-    "'sha256-m8dEh7VmKFRCO8jEWPbmkeO1mq4SIx8omtyx50rrS/M='",
+    "'sha256-QknUhlq+bA4bg8QkOdghRZHreE5JGI3Z6r8emWTbClA='",
+    "'sha256-QCFKgBRT4/1dE2iOOdPA0dvDEE8ha6ghvogOX1ONFHE='",
+    "'sha256-Rhy8yaQLCXMiE7oSWWhNMMJtIsNap07+1/qnwtairBk='",
     "'sha256-Ylx4sWaDgn6RRamxe7jevX4yDhNtiSG3CQWrPAdPh6A='",
-    "'sha256-fNQvmabDUct/Q8bVROR2oAMzjWD2CYHGuJj7V7Sxgfc='",
-    "'sha256-k1m9MgjuV56OVgoQq43A5vLIpdJFJrlq/3ANCGJD4es='",
-    "'sha256-TkUgajJ946/xb1R0Vfeuzb73k2VAKoEIF3sRGeX4aBU='",
+    "'sha256-m8dEh7VmKFRCO8jEWPbmkeO1mq4SIx8omtyx50rrS/M='",
+    "'sha256-vcAPIwtkyGYAib9fqB9x2914jj8vt7smJqLhKeLMPYE='",
+    "'sha256-csbTq2KBAUJKn3FYGRkmk76PbhLi6RmywozDmGN+6HE='",
+    "'sha256-I9GKdPiOauosrTFpRTOGBFg/1fmBPbBmnqDD5jhUeKc='",
     // Next - END
     `${process.env.NODE_ENV === 'development' ? `'nonce-reactQueryDevtools'` : ''}`,
   ],
