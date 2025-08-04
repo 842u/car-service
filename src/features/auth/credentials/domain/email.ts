@@ -16,7 +16,7 @@ export class Email {
   static create(value: string) {
     const result = validateEmail(value);
 
-    if (!result.isSuccess) {
+    if (!result.success) {
       return Result.fail(result.error);
     }
 
