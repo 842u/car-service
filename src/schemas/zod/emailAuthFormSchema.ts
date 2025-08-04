@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
 import { emailSchema } from '@/auth/credentials/application/validation/email.schema';
-import { passwordSchema } from '@/auth/credentials/application/validation/password.schema';
+import {
+  PASSWORD_REQUIRED_MESSAGE,
+  PASSWORD_TYPE_MESSAGE,
+  passwordSchema,
+} from '@/auth/credentials/application/validation/password.schema';
 
 z.config({
   jitless: true,
@@ -18,11 +22,11 @@ export const signInEmailAuthFormSchema = z.object({
     .string({
       error: (issue) =>
         issue.input === undefined
-          ? 'Password is required.'
-          : 'Password must be a string.',
+          ? PASSWORD_REQUIRED_MESSAGE
+          : PASSWORD_TYPE_MESSAGE,
     })
     .trim()
-    .min(1, 'Password is required.'),
+    .min(1, PASSWORD_REQUIRED_MESSAGE),
 });
 
 export type EmailAuthFormValues = z.infer<
