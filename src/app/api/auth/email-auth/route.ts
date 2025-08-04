@@ -1,9 +1,10 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
+import type { SignInFormValues } from '@/auth/credentials/application/validation/sign-in-form.schema';
+import type { SignUpFormValues } from '@/auth/credentials/application/validation/sign-up-form.schema';
+import { signUpFormSchema } from '@/auth/credentials/application/validation/sign-up-form.schema';
 import type { EmailAuthFormType } from '@/auth/ui/forms/email-auth/email-auth';
-import type { EmailAuthFormValues } from '@/schemas/zod/emailAuthFormSchema';
-import { signUpEmailAuthFormSchema } from '@/schemas/zod/emailAuthFormSchema';
 import type { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 
@@ -15,13 +16,15 @@ export async function POST(request: NextRequest) {
   const requestUrl = request.nextUrl.clone();
   const { searchParams } = requestUrl;
   const type = searchParams.get('type') as EmailAuthFormType;
-  const requestData = (await request.json()) as EmailAuthFormValues;
+  const requestData = (await request.json()) as
+    | SignInFormValues
+    | SignUpFormValues;
 
   const { auth } = await createClient();
 
   if (type === 'sign-up') {
     try {
-      signUpEmailAuthFormSchema.parse(requestData);
+      signUpFormSchema.parse(requestData);
     } catch (_error) {
       return NextResponse.json<RouteHandlerResponse>(
         {

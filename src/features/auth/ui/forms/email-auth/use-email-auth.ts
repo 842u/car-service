@@ -4,17 +4,20 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/features/common/hooks/use-toasts';
-import type { EmailAuthFormValues } from '@/schemas/zod/emailAuthFormSchema';
 import {
-  signInEmailAuthFormSchema,
-  signUpEmailAuthFormSchema,
-} from '@/schemas/zod/emailAuthFormSchema';
+  signInFormSchema,
+  type SignInFormValues,
+} from '@/auth/credentials/application/validation/sign-in-form.schema';
+import {
+  signUpFormSchema,
+  type SignUpFormValues,
+} from '@/auth/credentials/application/validation/sign-up-form.schema';
+import { useToasts } from '@/features/common/hooks/use-toasts';
 import type { RouteHandlerResponse } from '@/types';
 
 import type { EmailAuthFormType } from './email-auth';
 
-const defaultEmailAuthFormValues: EmailAuthFormValues = {
+const defaultEmailAuthFormValues: SignInFormValues | SignUpFormValues = {
   email: '',
   password: '',
 };
@@ -29,11 +32,9 @@ export function useEmailAuthForm({ type }: { type: EmailAuthFormType }) {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<EmailAuthFormValues>({
+  } = useForm<SignInFormValues | SignUpFormValues>({
     resolver: zodResolver(
-      type === 'sign-up'
-        ? signUpEmailAuthFormSchema
-        : signInEmailAuthFormSchema,
+      type === 'sign-up' ? signUpFormSchema : signInFormSchema,
     ),
     mode: 'onTouched',
     defaultValues: defaultEmailAuthFormValues,
