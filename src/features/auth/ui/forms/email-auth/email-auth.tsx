@@ -3,7 +3,10 @@
 import type { Route } from 'next';
 import Link from 'next/link';
 
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/schemas/zod/common';
+import {
+  MAX_PASSWORD_LENGTH,
+  MIN_PASSWORD_LENGTH,
+} from '@/auth/credentials/application/validation/password.schema';
 import { Form } from '@/ui/form/form';
 import { unslugify } from '@/utils/general';
 
