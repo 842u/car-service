@@ -33,6 +33,3 @@ export const wrongEmails = [
   'username@domain.c#om',
   'username@domain..com',
 ];
-
-export const EMAIL_REGEXP =
-  /^(?!.*\.\.)(?!\.)(?!.*@.*\.{2,})(?!.*@-)(?!.*-@)[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$/i;

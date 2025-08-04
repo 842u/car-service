@@ -1,0 +1,14 @@
+export type ValidationIssue = {
+  path: Array<string | number | symbol>;
+  message: string;
+};
+
+export class ValidationError extends Error {
+  readonly issues: ValidationIssue[];
+
+  constructor(message: string, issues: ValidationIssue[] = []) {
+    super(message);
+    this.name = 'ValidationError';
+    this.issues = issues;
+  }
+}

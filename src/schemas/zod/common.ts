@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import { EMAIL_REGEXP } from '@/utils/validation';
-
 z.config({
   jitless: true,
 });
@@ -52,24 +50,6 @@ export const IdSchema = z.uuid({
   error: (issue) =>
     issue.input === undefined ? ID_REQUIRED_MESSAGE : ID_TYPE_MESSAGE,
 });
-
-const EMAIL_REQUIRED_MESSAGE = 'Email is required.';
-const EMAIL_TYPE_MESSAGE = 'Email must be a string.';
-export const EMAIL_REGEXP_MESSAGE = 'Enter a valid e-mail address.';
-export const MIN_EMAIL_LENGTH = 6;
-export const MIN_EMAIL_LENGTH_MESSAGE = `Minimum email length is ${MIN_EMAIL_LENGTH}.`;
-export const MAX_EMAIL_LENGTH = 254;
-export const MAX_EMAIL_LENGTH_MESSAGE = `Maximum email length is ${MAX_EMAIL_LENGTH}.`;
-
-export const emailSchema = z
-  .string({
-    error: (issue) =>
-      issue.input === undefined ? EMAIL_REQUIRED_MESSAGE : EMAIL_TYPE_MESSAGE,
-  })
-  .trim()
-  .min(MIN_EMAIL_LENGTH, { error: MIN_EMAIL_LENGTH_MESSAGE })
-  .max(MAX_EMAIL_LENGTH, { error: MAX_EMAIL_LENGTH_MESSAGE })
-  .regex(EMAIL_REGEXP, { error: EMAIL_REGEXP_MESSAGE });
 
 const PASSWORD_REQUIRED_MESSAGE = 'Password is required.';
 const PASSWORD_TYPE_MESSAGE = 'Password must be a string.';
