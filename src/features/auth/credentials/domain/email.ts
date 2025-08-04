@@ -7,10 +7,10 @@ import { Result } from '@/common/application/result';
 import { validateEmail } from '../application/validation/email.schema';
 
 export class Email {
-  private readonly value: string;
+  private readonly _value: string;
 
   private constructor(value: string) {
-    this.value = value;
+    this._value = value;
   }
 
   static create(value: string) {
@@ -23,7 +23,7 @@ export class Email {
     return Result.ok(new Email(value));
   }
 
-  getEmail() {
-    return this.value;
+  get value() {
+    return this._value;
   }
 }
