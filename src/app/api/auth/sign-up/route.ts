@@ -74,16 +74,20 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      throw new Error(error.message);
+      return errorApiResponse({ message: error.message }, 500);
     }
 
     /*
      * If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user. For users who forget that have and account send email with password reset flow.
      */
     if (data.user?.identities?.length === 0) {
-      await auth.resetPasswordForEmail(email.value, {
+      const { error } = await auth.resetPasswordForEmail(email.value, {
         redirectTo: requestUrl.origin,
       });
+
+      if (error) {
+        return errorApiResponse({ message: error.message }, 500);
+      }
     }
 
     return successApiResponse({ id: data.user?.id }, 200);
