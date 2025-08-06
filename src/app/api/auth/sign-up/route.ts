@@ -25,9 +25,11 @@ export async function POST(request: NextRequest) {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const { data, error } = signUpFormSchema.safeParse(body);
+  const parseResult = signUpFormSchema.safeParse(body);
 
-  if (error) {
+  if (!parseResult.success) {
+    const { error } = parseResult;
+
     const issues = error.issues.map((issue) => toValidationIssue(issue));
 
     return errorApiResponse(
@@ -36,7 +38,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const emailResult = Email.create(data.email);
+  const { email: requestEmail, password: requestPassword } = parseResult.data;
+
+  const emailResult = Email.create(requestEmail);
 
   if (!emailResult.success) {
     return errorApiResponse(
@@ -45,7 +49,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const passwordResult = Password.create(data.password);
+  const passwordResult = Password.create(requestPassword);
 
   if (!passwordResult.success) {
     return errorApiResponse(
