@@ -58,9 +58,11 @@ export async function POST(request: NextRequest) {
   }
 
   const email = emailResult.value;
-  const password = emailResult.value;
-  const { auth } = await createClient();
+  const password = passwordResult.value;
+
   const requestUrl = request.nextUrl.clone();
+
+  const { auth } = await createClient();
 
   try {
     const { data, error } = await auth.signUp({
