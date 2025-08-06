@@ -1,9 +1,8 @@
 import { type NextRequest } from 'next/server';
 
-import { signUpFormSchema } from '@/auth/credentials/application/validation/sign-up-form.schema';
+import { validateSignUpFormData } from '@/auth/credentials/application/validation/sign-up-form.schema';
 import { Email } from '@/auth/credentials/domain/email';
 import { Password } from '@/auth/credentials/domain/password';
-import { toValidationIssue } from '@/common/application/validation/zod';
 import { errorApiResponse, successApiResponse } from '@/common/utils/api';
 import { createClient } from '@/utils/supabase/server';
 
@@ -25,40 +24,36 @@ export async function POST(request: NextRequest) {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const parseResult = signUpFormSchema.safeParse(body);
+  const result = validateSignUpFormData(body);
 
-  if (!parseResult.success) {
-    const { error } = parseResult;
+  if (!result.success) {
+    const {
+      error: { message, issues },
+    } = result;
 
-    const issues = error.issues.map((issue) => toValidationIssue(issue));
-
-    return errorApiResponse(
-      { message: 'Data validation failed.', issues },
-      400,
-    );
+    return errorApiResponse({ message, issues }, 400);
   }
 
-  const { email: requestEmail, password: requestPassword } = parseResult.data;
+  const { email: requestEmail, password: requestPassword } = result.value;
 
   const emailResult = Email.create(requestEmail);
 
   if (!emailResult.success) {
-    return errorApiResponse(
-      { message: emailResult.error.message, issues: emailResult.error.issues },
-      400,
-    );
+    const {
+      error: { message, issues },
+    } = emailResult;
+
+    return errorApiResponse({ message, issues }, 400);
   }
 
   const passwordResult = Password.create(requestPassword);
 
   if (!passwordResult.success) {
-    return errorApiResponse(
-      {
-        message: passwordResult.error.message,
-        issues: passwordResult.error.issues,
-      },
-      400,
-    );
+    const {
+      error: { message, issues },
+    } = passwordResult;
+
+    return errorApiResponse({ message, issues }, 400);
   }
 
   const email = emailResult.value;

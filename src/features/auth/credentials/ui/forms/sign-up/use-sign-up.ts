@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form';
 
 import { signUpApiResponseSchema } from '@/auth/credentials/application/validation/api/sign-up.schema';
 import {
+  type SignUpFormData,
   signUpFormSchema,
-  type SignUpFormValues,
 } from '@/auth/credentials/application/validation/sign-up-form.schema';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 
-const defaultSignUpFormValues: SignUpFormValues = {
+const defaultSignUpFormValues: SignUpFormData = {
   email: '',
   password: '',
 };
@@ -23,7 +23,7 @@ export function useSignUpForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignUpFormValues>({
+  } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
     mode: 'onTouched',
     defaultValues: defaultSignUpFormValues,
