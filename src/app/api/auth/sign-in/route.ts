@@ -24,9 +24,11 @@ export async function POST(request: NextRequest) {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const { data, error } = signInFormSchema.safeParse(body);
+  const parseResult = signInFormSchema.safeParse(body);
 
-  if (error) {
+  if (!parseResult.success) {
+    const { error } = parseResult;
+
     const issues = error.issues.map((issue) => toValidationIssue(issue));
 
     return errorApiResponse(
@@ -35,7 +37,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { email, password } = data;
+  const { email, password } = parseResult.data;
 
   const { auth } = await createClient();
 
