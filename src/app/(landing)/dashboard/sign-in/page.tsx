@@ -1,4 +1,4 @@
-import EmailAuthForm from '@/auth/ui/forms/email-auth/email-auth';
+import { SignInForm } from '@/auth/credentials/ui/forms/sign-in/sign-in';
 import { OAuthProvidersSection } from '@/auth/ui/sections/o-auth-providers/o-auth-providers';
 import { SignUpLink } from '@/auth/ui/sign-up-link/sign-up-link';
 import { BrandFullIcon } from '@/icons/brand-full';
@@ -20,7 +20,7 @@ export default function SignInPage() {
           </h1>
           <OAuthProvidersSection />
           <TextSeparator text="or" />
-          <EmailAuthForm type="sign-in" />
+          <SignInForm />
           <SignUpLink className="mx-auto" />
         </section>
       </div>
