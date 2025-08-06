@@ -6,9 +6,10 @@ import type {
   ServiceLogPatchRouteHandlerRequest,
   ServiceLogRouteHandlerResponse,
 } from '@/app/api/service-log/route';
+import type { RouteHandlerResponse } from '@/common/types';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import type { RouteHandlerResponse, ServiceLog } from '@/types';
+import type { ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
   serviceLogsByCarIdEditOnError,

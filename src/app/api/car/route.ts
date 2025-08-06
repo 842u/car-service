@@ -2,9 +2,9 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
+import type { RouteHandlerResponse } from '@/common/types';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/schemas/zod/carFormSchema';
-import type { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 
 type CarFormValuesToValidate = Omit<CarFormValues, 'image'>;

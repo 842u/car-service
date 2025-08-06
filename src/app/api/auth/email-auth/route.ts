@@ -5,7 +5,7 @@ import type { SignInFormValues } from '@/auth/credentials/application/validation
 import type { SignUpFormValues } from '@/auth/credentials/application/validation/sign-up-form.schema';
 import { signUpFormSchema } from '@/auth/credentials/application/validation/sign-up-form.schema';
 import type { EmailAuthFormType } from '@/auth/ui/forms/email-auth/email-auth';
-import type { RouteHandlerResponse } from '@/types';
+import type { RouteHandlerResponse } from '@/common/types';
 import { createClient } from '@/utils/supabase/server';
 
 export const maxDuration = 10;

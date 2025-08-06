@@ -1,13 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Route } from 'next';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  signInFormSchema,
-  type SignInFormValues,
-} from '@/auth/credentials/application/validation/sign-in-form.schema';
 import {
   signUpFormSchema,
   type SignUpFormValues,
@@ -15,16 +10,12 @@ import {
 import type { RouteHandlerResponse } from '@/common/types';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 
-import type { EmailAuthFormType } from './email-auth';
-
-const defaultEmailAuthFormValues: SignInFormValues | SignUpFormValues = {
+const defaultEmailAuthFormValues: SignUpFormValues = {
   email: '',
   password: '',
 };
 
-export function useEmailAuthForm({ type }: { type: EmailAuthFormType }) {
-  const router = useRouter();
-
+export function useEmailAuthForm() {
   const { addToast } = useToasts();
 
   const {
@@ -32,18 +23,15 @@ export function useEmailAuthForm({ type }: { type: EmailAuthFormType }) {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignInFormValues | SignUpFormValues>({
-    resolver: zodResolver(
-      type === 'sign-up' ? signUpFormSchema : signInFormSchema,
-    ),
+  } = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpFormSchema),
     mode: 'onTouched',
     defaultValues: defaultEmailAuthFormValues,
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const url = new URL(window.location.origin);
-    url.pathname = '/api/auth/email-auth' satisfies Route;
-    url.searchParams.set('type', type);
+    url.pathname = '/api/auth/sign-up' satisfies Route;
 
     const formData = JSON.stringify(data);
     const apiResponse = await fetch(url, {
@@ -59,16 +47,7 @@ export function useEmailAuthForm({ type }: { type: EmailAuthFormType }) {
 
     error && addToast(error.message, 'error');
 
-    if (responseData && type === 'sign-in') {
-      addToast('Successfully signed in.', 'success');
-    }
-
-    if (apiResponse.ok && type === 'sign-in') {
-      router.replace('/dashboard');
-      router.refresh();
-    }
-
-    if (responseData && type === 'sign-up') {
+    if (responseData) {
       addToast(
         'Welcome! To get started, please check your email and click the confirmation link.',
         'success',

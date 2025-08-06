@@ -4,7 +4,7 @@ import { type EmailOtpType } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import type { RouteHandlerResponse } from '@/types';
+import type { RouteHandlerResponse } from '@/common/types';
 import { createClient } from '@/utils/supabase/server';
 
 export const maxDuration = 10;

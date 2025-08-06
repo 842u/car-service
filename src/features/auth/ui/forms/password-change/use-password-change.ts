@@ -3,10 +3,10 @@ import type { Route } from 'next';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import type { RouteHandlerResponse } from '@/common/types';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 import type { PasswordChangeFormValues } from '@/schemas/zod/passwordChangeFormSchema';
 import { passwordChangeFormSchema } from '@/schemas/zod/passwordChangeFormSchema';
-import type { RouteHandlerResponse } from '@/types';
 
 const defaultPasswordChangeFormValues: PasswordChangeFormValues = {
   password: '',

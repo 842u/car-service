@@ -8,8 +8,8 @@ import type {
   ServiceLogRouteHandlerResponse,
 } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/hooks/use-toasts';
+import type { RouteHandlerResponse } from '@/common/types';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import type { RouteHandlerResponse } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
