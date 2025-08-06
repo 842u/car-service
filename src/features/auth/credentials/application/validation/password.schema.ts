@@ -27,16 +27,19 @@ export const passwordSchema = z
   .max(MAX_PASSWORD_LENGTH, { error: MAX_PASSWORD_LENGTH_MESSAGE });
 
 export function validatePassword(value: string) {
-  const { data, error } = passwordSchema.safeParse(value);
+  const result = passwordSchema.safeParse(value);
 
-  if (error) {
+  if (!result.success) {
+    const { error } = result;
+
+    const issues = error.issues.map((issue) => toValidationIssue(issue));
+
     return Result.fail(
-      new ValidationError(
-        'Password validation failed.',
-        error.issues.map((issue) => toValidationIssue(issue)),
-      ),
+      new ValidationError('Password validation failed.', issues),
     );
   }
+
+  const { data } = result;
 
   return Result.ok(data);
 }
