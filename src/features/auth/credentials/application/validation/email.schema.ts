@@ -29,16 +29,17 @@ export const emailSchema = z
   .regex(EMAIL_REGEXP, { error: EMAIL_REGEXP_MESSAGE });
 
 export function validateEmail(value: string) {
-  const { data, error } = emailSchema.safeParse(value);
+  const result = emailSchema.safeParse(value);
 
-  if (error) {
-    return Result.fail(
-      new ValidationError(
-        'Email validation failed.',
-        error.issues.map((issue) => toValidationIssue(issue)),
-      ),
-    );
+  if (!result.success) {
+    const { error } = result;
+
+    const issues = error.issues.map((issue) => toValidationIssue(issue));
+
+    return Result.fail(new ValidationError('Email validation failed.', issues));
   }
+
+  const { data } = result;
 
   return Result.ok(data);
 }
