@@ -3,19 +3,19 @@ import type { Route } from 'next';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { signUpApiResponseSchema } from '@/auth/credentials/application/validation/api/sign-up.schema';
 import {
   signUpFormSchema,
   type SignUpFormValues,
 } from '@/auth/credentials/application/validation/sign-up-form.schema';
-import type { RouteHandlerResponse } from '@/common/types';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 
-const defaultEmailAuthFormValues: SignUpFormValues = {
+const defaultSignUpFormValues: SignUpFormValues = {
   email: '',
   password: '',
 };
 
-export function useEmailAuthForm() {
+export function useSignUpForm() {
   const { addToast } = useToasts();
 
   const {
@@ -26,14 +26,16 @@ export function useEmailAuthForm() {
   } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpFormSchema),
     mode: 'onTouched',
-    defaultValues: defaultEmailAuthFormValues,
+    defaultValues: defaultSignUpFormValues,
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const url = new URL(window.location.origin);
+
     url.pathname = '/api/auth/sign-up' satisfies Route;
 
     const formData = JSON.stringify(data);
+
     const apiResponse = await fetch(url, {
       method: 'POST',
       headers: {
@@ -42,17 +44,28 @@ export function useEmailAuthForm() {
       body: formData,
     });
 
-    const { data: responseData, error } =
-      (await apiResponse.json()) as RouteHandlerResponse;
+    let body: unknown;
 
-    error && addToast(error.message, 'error');
+    try {
+      body = await apiResponse.json();
+    } catch (_) {
+      addToast('Malformed JSON response.', 'error');
 
-    if (responseData) {
-      addToast(
-        'Welcome! To get started, please check your email and click the confirmation link.',
-        'success',
-      );
+      return;
     }
+
+    const result = signUpApiResponseSchema.safeParse(body);
+
+    if (!result.success) {
+      addToast(result.error.message, 'error');
+
+      return;
+    }
+
+    addToast(
+      'Welcome! To get started, please check your email and click the confirmation link.',
+      'success',
+    );
   });
 
   useEffect(() => {

@@ -6,11 +6,11 @@ import {
 } from '@/auth/credentials/application/validation/password.schema';
 import { Form } from '@/ui/form/form';
 
-import { useEmailAuthForm } from './use-sign-up';
+import { useSignUpForm } from './use-sign-up';
 
 export function SignUpForm() {
   const { handleFormSubmit, errors, register, isSubmitting, isDisabled } =
-    useEmailAuthForm();
+    useSignUpForm();
 
   return (
     <Form aria-label="sign up form" variant="raw" onSubmit={handleFormSubmit}>
