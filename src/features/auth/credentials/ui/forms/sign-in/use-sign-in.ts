@@ -6,12 +6,12 @@ import { useForm } from 'react-hook-form';
 
 import { signInApiResponseSchema } from '@/auth/credentials/application/validation/api/sign-in.schema';
 import {
+  type SignInFormData,
   signInFormSchema,
-  type SignInFormValues,
 } from '@/auth/credentials/application/validation/sign-in-form.schema';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 
-const defaultSignInFormValues: SignInFormValues = {
+const defaultSignInFormValues: SignInFormData = {
   email: '',
   password: '',
 };
@@ -26,7 +26,7 @@ export function useSignInForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignInFormValues>({
+  } = useForm<SignInFormData>({
     resolver: zodResolver(signInFormSchema),
     mode: 'onTouched',
     defaultValues: defaultSignInFormValues,
