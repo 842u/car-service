@@ -36,28 +36,44 @@ export function useSignUpForm() {
 
     const formData = JSON.stringify(data);
 
-    const apiResponse = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: formData,
-    });
-
-    let body: unknown;
+    let response: Response;
 
     try {
-      body = await apiResponse.json();
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: formData,
+      });
     } catch (_) {
-      addToast('Malformed JSON response.', 'error');
+      addToast('Unable to connect to the server.', 'error');
 
       return;
     }
 
-    const result = signUpApiResponseSchema.safeParse(body);
+    let body: unknown;
 
-    if (!result.success) {
-      addToast(result.error.message, 'error');
+    try {
+      body = await response.json();
+    } catch (_) {
+      addToast('Invalid API response JSON.', 'error');
+
+      return;
+    }
+
+    const parseResult = signUpApiResponseSchema.safeParse(body);
+
+    if (!parseResult.success) {
+      addToast('Invalid API response format.', 'error');
+
+      return;
+    }
+
+    const { error: responseError } = parseResult.data;
+
+    if (responseError) {
+      addToast(responseError.message, 'error');
 
       return;
     }
