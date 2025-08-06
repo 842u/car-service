@@ -1,5 +1,6 @@
 import { type NextRequest } from 'next/server';
 
+import type { ResponseData } from '@/auth/credentials/application/validation/api/sign-in.schema';
 import { signInFormSchema } from '@/auth/credentials/application/validation/sign-in-form.schema';
 import { toValidationIssue } from '@/common/application/validation/zod';
 import { errorApiResponse, successApiResponse } from '@/common/utils/api';
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
       return errorApiResponse({ message: signInError.message }, 401);
     }
 
-    return successApiResponse({ id: signInData.user.id }, 200);
+    return successApiResponse<ResponseData>({ id: signInData.user.id }, 200);
   } catch (error) {
     if (error instanceof Error) {
       return errorApiResponse({ message: error.message }, 500);
