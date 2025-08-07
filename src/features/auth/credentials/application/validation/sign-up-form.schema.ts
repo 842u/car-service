@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { ValidationError } from '@/common/application/errors/validation';
 import { Result } from '@/common/application/result';
-import { toValidationIssue } from '@/common/application/validation/zod';
+import { toValidationIssue } from '@/common/utils/zod';
 
 import { emailSchema } from './email.schema';
 import { passwordSchema } from './password.schema';

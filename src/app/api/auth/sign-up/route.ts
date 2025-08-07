@@ -1,5 +1,6 @@
 import { type NextRequest } from 'next/server';
 
+import type { SignUpApiResponseData } from '@/auth/credentials/application/validation/api/sign-up.schema';
 import { validateSignUpFormData } from '@/auth/credentials/application/validation/sign-up-form.schema';
 import { Email } from '@/auth/credentials/domain/email';
 import { Password } from '@/auth/credentials/domain/password';
@@ -24,17 +25,18 @@ export async function POST(request: NextRequest) {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const result = validateSignUpFormData(body);
+  const validationResult = validateSignUpFormData(body);
 
-  if (!result.success) {
+  if (!validationResult.success) {
     const {
       error: { message, issues },
-    } = result;
+    } = validationResult;
 
     return errorApiResponse({ message, issues }, 400);
   }
 
-  const { email: requestEmail, password: requestPassword } = result.value;
+  const { email: requestEmail, password: requestPassword } =
+    validationResult.data;
 
   const emailResult = Email.create(requestEmail);
 
@@ -56,8 +58,8 @@ export async function POST(request: NextRequest) {
     return errorApiResponse({ message, issues }, 400);
   }
 
-  const email = emailResult.value;
-  const password = passwordResult.value;
+  const email = emailResult.data;
+  const password = passwordResult.data;
 
   const requestUrl = request.nextUrl.clone();
 
@@ -89,7 +91,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return successApiResponse({ id: data.user?.id }, 200);
+    return successApiResponse<SignUpApiResponseData>(
+      { id: data.user?.id },
+      200,
+    );
   } catch (error) {
     if (error instanceof Error) {
       return errorApiResponse({ message: error.message }, 500);

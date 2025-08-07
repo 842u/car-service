@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server';
 
-import type { ResponseData } from '@/auth/credentials/application/validation/api/sign-in.schema';
+import type { SignInApiResponseData } from '@/auth/credentials/application/validation/api/sign-in.schema';
 import { validateSignInFormData } from '@/auth/credentials/application/validation/sign-in-form.schema';
 import { errorApiResponse, successApiResponse } from '@/common/utils/api';
 import { createClient } from '@/utils/supabase/server';
@@ -23,17 +23,17 @@ export async function POST(request: NextRequest) {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const result = validateSignInFormData(body);
+  const validationResult = validateSignInFormData(body);
 
-  if (!result.success) {
+  if (!validationResult.success) {
     const {
       error: { message, issues },
-    } = result;
+    } = validationResult;
 
     return errorApiResponse({ message, issues }, 400);
   }
 
-  const { email, password } = result.value;
+  const { email, password } = validationResult.data;
 
   const { auth } = await createClient();
 
@@ -48,7 +48,10 @@ export async function POST(request: NextRequest) {
       return errorApiResponse({ message: signInError.message }, 401);
     }
 
-    return successApiResponse<ResponseData>({ id: signInData.user.id }, 200);
+    return successApiResponse<SignInApiResponseData>(
+      { id: signInData.user.id },
+      200,
+    );
   } catch (error) {
     if (error instanceof Error) {
       return errorApiResponse({ message: error.message }, 500);

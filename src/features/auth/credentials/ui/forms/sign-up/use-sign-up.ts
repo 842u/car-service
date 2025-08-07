@@ -3,7 +3,7 @@ import type { Route } from 'next';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { signUpApiResponseSchema } from '@/auth/credentials/application/validation/api/sign-up.schema';
+import { validateSignUpApiResponse } from '@/auth/credentials/application/validation/api/sign-up.schema';
 import {
   type SignUpFormData,
   signUpFormSchema,
@@ -62,18 +62,22 @@ export function useSignUpForm() {
       return;
     }
 
-    const parseResult = signUpApiResponseSchema.safeParse(body);
+    const validationResult = validateSignUpApiResponse(body);
 
-    if (!parseResult.success) {
-      addToast('Invalid API response format.', 'error');
+    if (!validationResult.success) {
+      const { error } = validationResult;
+
+      addToast(error.message, 'error');
 
       return;
     }
 
-    const { error: responseError } = parseResult.data;
+    const responseResult = validationResult.data;
 
-    if (responseError) {
-      addToast(responseError.message, 'error');
+    if (!responseResult.success) {
+      const { error } = responseResult;
+
+      addToast(error.message, 'error');
 
       return;
     }
