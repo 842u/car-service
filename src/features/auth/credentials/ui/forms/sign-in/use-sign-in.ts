@@ -9,7 +9,7 @@ import {
   type SignInFormData,
   signInFormSchema,
 } from '@/auth/credentials/interface/validation/sign-in-form.schema';
-import { useToasts } from '@/features/common/hooks/use-toasts';
+import { useToasts } from '@/common/hooks/use-toasts';
 
 const defaultSignInFormValues: SignInFormData = {
   email: '',

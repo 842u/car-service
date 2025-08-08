@@ -8,7 +8,7 @@ import {
   type SignUpFormData,
   signUpFormSchema,
 } from '@/auth/credentials/interface/validation/sign-up-form.schema';
-import { useToasts } from '@/features/common/hooks/use-toasts';
+import { useToasts } from '@/common/hooks/use-toasts';
 
 const defaultSignUpFormValues: SignUpFormData = {
   email: '',

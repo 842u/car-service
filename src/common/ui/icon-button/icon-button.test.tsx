@@ -2,7 +2,7 @@
 
 import { cleanup, render, screen } from '@testing-library/react';
 
-import { KeyIcon } from '@/features/common/ui/decorative/icons/key';
+import { KeyIcon } from '@/icons/key';
 
 import { IconButton } from './icon-button';
 

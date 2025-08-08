@@ -1,7 +1,7 @@
 import { SignUpForm } from '@/auth/credentials/ui/forms/sign-up/sign-up';
 import { OAuthProvidersSection } from '@/auth/ui/sections/o-auth-providers/o-auth-providers';
 import { SignInLink } from '@/auth/ui/sign-in-link/sign-in-link';
-import { BrandFullIcon } from '@/features/common/ui/decorative/icons/brand-full';
+import { BrandFullIcon } from '@/icons/brand-full';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 
 export default function SignUpPage() {
