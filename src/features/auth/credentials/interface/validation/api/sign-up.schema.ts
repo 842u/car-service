@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 import { ValidationError } from '@/common/application/errors/validation';
-import { Result } from '@/common/application/result';
-import { createApiResponseSchema } from '@/common/application/validation/api-response.schema';
+import { Result } from '@/common/interface/result';
+import { createApiResponseSchema } from '@/common/interface/validation/api/response.schema';
 import { toValidationIssue } from '@/common/utils/zod';
 
 z.config({

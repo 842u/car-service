@@ -2,7 +2,7 @@
  * Private constructor used with static factory method to avoid creating instances with malformed data.
  */
 
-import { Result } from '@/common/application/result';
+import { Result } from '@/common/interface/result';
 
 import { validateEmail } from '../interface/validation/email.schema';
 

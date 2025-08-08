@@ -4,7 +4,7 @@ import type {
   ApiResponseError,
   ErrorApiResponse,
   SuccessApiResponse,
-} from '../application/validation/api-response.schema';
+} from '../interface/validation/api/response.schema';
 
 export function errorApiResponse<E extends ApiResponseError>(
   error: E,
