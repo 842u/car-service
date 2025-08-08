@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { validateSignInApiResponse } from '@/auth/credentials/application/validation/api/sign-in.schema';
+import { validateSignInApiResponse } from '@/auth/credentials/interface/validation/api/sign-in.schema';
 import {
   type SignInFormData,
   signInFormSchema,
-} from '@/auth/credentials/application/validation/sign-in-form.schema';
+} from '@/auth/credentials/interface/validation/sign-in-form.schema';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 
 const defaultSignInFormValues: SignInFormData = {

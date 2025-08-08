@@ -1,9 +1,9 @@
 import { type NextRequest } from 'next/server';
 
-import type { SignUpApiResponseData } from '@/auth/credentials/application/validation/api/sign-up.schema';
-import { validateSignUpFormData } from '@/auth/credentials/application/validation/sign-up-form.schema';
 import { Email } from '@/auth/credentials/domain/email';
 import { Password } from '@/auth/credentials/domain/password';
+import type { SignUpApiResponseData } from '@/auth/credentials/interface/validation/api/sign-up.schema';
+import { validateSignUpFormData } from '@/auth/credentials/interface/validation/sign-up-form.schema';
 import { errorApiResponse, successApiResponse } from '@/common/utils/api';
 import { createClient } from '@/utils/supabase/server';
 

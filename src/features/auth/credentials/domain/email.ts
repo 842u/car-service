@@ -4,7 +4,7 @@
 
 import { Result } from '@/common/application/result';
 
-import { validateEmail } from '../application/validation/email.schema';
+import { validateEmail } from '../interface/validation/email.schema';
 
 export class Email {
   private readonly _value: string;

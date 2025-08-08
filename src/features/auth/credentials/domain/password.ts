@@ -1,6 +1,6 @@
 import { Result } from '@/common/application/result';
 
-import { validatePassword } from '../application/validation/password.schema';
+import { validatePassword } from '../interface/validation/password.schema';
 
 export class Password {
   private readonly _value: string;

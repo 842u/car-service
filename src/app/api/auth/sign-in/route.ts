@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
-import type { SignInApiResponseData } from '@/auth/credentials/application/validation/api/sign-in.schema';
-import { validateSignInFormData } from '@/auth/credentials/application/validation/sign-in-form.schema';
+import type { SignInApiResponseData } from '@/auth/credentials/interface/validation/api/sign-in.schema';
+import { validateSignInFormData } from '@/auth/credentials/interface/validation/sign-in-form.schema';
 import { errorApiResponse, successApiResponse } from '@/common/utils/api';
 import { createClient } from '@/utils/supabase/server';
 

@@ -3,11 +3,11 @@ import type { Route } from 'next';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { validateSignUpApiResponse } from '@/auth/credentials/application/validation/api/sign-up.schema';
+import { validateSignUpApiResponse } from '@/auth/credentials/interface/validation/api/sign-up.schema';
 import {
   type SignUpFormData,
   signUpFormSchema,
-} from '@/auth/credentials/application/validation/sign-up-form.schema';
+} from '@/auth/credentials/interface/validation/sign-up-form.schema';
 import { useToasts } from '@/features/common/hooks/use-toasts';
 
 const defaultSignUpFormValues: SignUpFormData = {

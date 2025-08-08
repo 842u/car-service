@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { passwordSchema } from '@/auth/credentials/application/validation/password.schema';
+import { passwordSchema } from '@/auth/credentials/interface/validation/password.schema';
 
 z.config({
   jitless: true,
