@@ -8,7 +8,7 @@ type FailureResult<E> = {
   error: E;
 };
 
-type Result<T, E> = SuccessResult<T> | FailureResult<E>;
+export type Result<T, E> = SuccessResult<T> | FailureResult<E>;
 
 export const Result = {
   ok<U, E = never>(data: U): Result<U, E> {
