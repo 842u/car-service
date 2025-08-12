@@ -1,21 +1,30 @@
-type SuccessResult<T> = {
+type BaseSuccessResult<T> = {
   success: true;
   data: T;
 };
 
-type FailureResult<E> = {
+type BaseFailureResult<E> = {
   success: false;
   error: E;
 };
 
-export type Result<T, E> = SuccessResult<T> | FailureResult<E>;
+type SuccessResult<T, U = object> = BaseSuccessResult<T> & U;
+
+type FailureResult<E, U = object> = BaseFailureResult<E> & U;
+
+export type Result<T, E, U = object> =
+  | SuccessResult<T, U>
+  | FailureResult<E, U>;
 
 export const Result = {
-  ok<U, E = never>(data: U): Result<U, E> {
-    return { success: true, data };
+  ok<T, E = never, U = object>(data: T, extra?: U): Result<T, E, U> {
+    return { success: true, data, ...extra };
   },
 
-  fail<U = never, E = string>(error: E): Result<U, E> {
-    return { success: false, error };
+  fail<T = never, E = unknown, U = object>(
+    error: E,
+    extra?: U,
+  ): Result<T, E, U> {
+    return { success: false, error, ...extra };
   },
 };

@@ -1,34 +1,17 @@
+import type { Result } from '../result';
+
+type ResultMeta = {
+  status: number;
+  statusText: string;
+  headers: Record<string, string>;
+};
+
+export type ResponseResult<T, E> = Result<T, E, ResultMeta>;
+
 export interface RequestController {
   cancel(): void;
   isCancelled(): boolean;
   readonly reason?: string;
-}
-
-export interface HttpClient {
-  get<T>(
-    url: string,
-    config?: RequestConfig<RequestController>,
-  ): Promise<HttpResponse<T>>;
-
-  post<T>(
-    url: string,
-    data?: unknown,
-    config?: RequestConfig<RequestController>,
-  ): Promise<HttpResponse<T>>;
-
-  put<T>(
-    url: string,
-    data?: unknown,
-    config?: RequestConfig<RequestController>,
-  ): Promise<HttpResponse<T>>;
-
-  delete<T>(
-    url: string,
-    data?: unknown,
-    config?: RequestConfig<RequestController>,
-  ): Promise<HttpResponse<T>>;
-
-  getController(): RequestController;
 }
 
 export interface RequestConfig<T extends RequestController> {
@@ -38,11 +21,31 @@ export interface RequestConfig<T extends RequestController> {
   requestController?: T;
 }
 
-export interface HttpResponse<T> {
-  data: T;
-  status: number;
-  statusText: string;
-  headers: Record<string, string>;
+export interface HttpClient {
+  get(
+    url: string,
+    config?: RequestConfig<RequestController>,
+  ): Promise<ResponseResult<unknown, unknown>>;
+
+  post(
+    url: string,
+    data?: unknown,
+    config?: RequestConfig<RequestController>,
+  ): Promise<ResponseResult<unknown, unknown>>;
+
+  put(
+    url: string,
+    data?: unknown,
+    config?: RequestConfig<RequestController>,
+  ): Promise<ResponseResult<unknown, unknown>>;
+
+  put(
+    url: string,
+    data?: unknown,
+    config?: RequestConfig<RequestController>,
+  ): Promise<ResponseResult<unknown, unknown>>;
+
+  getController(): RequestController;
 }
 
 export class HttpError extends Error {

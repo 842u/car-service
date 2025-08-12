@@ -1,9 +1,9 @@
 import { Result } from '../result';
 import type {
   HttpClient,
-  HttpResponse,
   RequestConfig,
   RequestController,
+  ResponseResult,
 } from './client.interface';
 import {
   HttpError,
@@ -39,7 +39,11 @@ class FetchRequestController implements RequestController {
 
 type FetchRequestConfig = RequestConfig<FetchRequestController>;
 
-export class FetchHttpClient implements HttpClient {
+type FetchResponseError = HttpError;
+
+type FetchResponseResult = ResponseResult<unknown, FetchResponseError>;
+
+export class FetchClient implements HttpClient {
   private baseUrl: string;
   private defaultHeaders: Record<string, string>;
   private defaultTimeout?: number;
@@ -54,54 +58,50 @@ export class FetchHttpClient implements HttpClient {
     return new FetchRequestController();
   }
 
-  async get<T>(url: string, config?: FetchRequestConfig) {
-    return this.request<T>('GET', url, undefined, config);
+  async get(url: string, config?: FetchRequestConfig) {
+    return this.request('GET', url, undefined, config);
   }
 
-  async post<T>(url: string, data?: unknown, config?: FetchRequestConfig) {
-    return this.request<T>('POST', url, data, config);
+  async post(url: string, data?: string, config?: FetchRequestConfig) {
+    return this.request('POST', url, data, config);
   }
 
-  async put<T>(url: string, data?: unknown, config?: FetchRequestConfig) {
-    return this.request<T>('PUT', url, data, config);
+  async put(url: string, data?: string, config?: FetchRequestConfig) {
+    return this.request('PUT', url, data, config);
   }
 
-  async delete<T>(url: string, config?: FetchRequestConfig) {
-    return this.request<T>('DELETE', url, undefined, config);
+  async delete(url: string, config?: FetchRequestConfig) {
+    return this.request('DELETE', url, undefined, config);
   }
 
-  private async request<T>(
+  private async request(
     method: string,
     url: string,
-    data?: unknown,
+    data?: string,
     config?: FetchRequestConfig,
-  ): Promise<HttpResponse<T>> {
+  ): Promise<FetchResponseResult> {
     const timeout = config?.timeout || this.defaultTimeout;
-
     let controller = config?.requestController;
-
     let timeoutId: NodeJS.Timeout | undefined;
 
     if (timeout) {
-      const timeoutController = new FetchRequestController();
+      if (!controller) {
+        controller = new FetchRequestController();
+      }
 
       timeoutId = setTimeout(() => {
-        timeoutController.cancel('Request timeout.');
+        controller!.cancel('Request timeout.');
       }, timeout);
-
-      controller = timeoutController;
     }
 
     const fullUrl = this.buildUrl(url, config?.baseUrl);
-
     const headers = this.buildHeaders(config?.headers);
-    const body = JSON.stringify(data);
 
     try {
       const response = await fetch(fullUrl, {
         method,
         headers,
-        body,
+        body: data,
         signal: controller?.signal,
       });
 
@@ -109,12 +109,10 @@ export class FetchHttpClient implements HttpClient {
         clearTimeout(timeoutId);
       }
 
-      const responseParseResult = await this.safeParseResponse<T>(response);
+      const responseParseResult = await this.safeParseResponse(response);
 
       if (!responseParseResult.success) {
-        const error = responseParseResult.error;
-
-        throw new ResponseParseError(error);
+        throw new ResponseParseError(responseParseResult.error);
       }
 
       const responseData = responseParseResult.data;
@@ -127,27 +125,26 @@ export class FetchHttpClient implements HttpClient {
         );
       }
 
-      return {
-        data: responseData,
+      return Result.ok(responseData, {
+        headers: this.parseHeaders(response.headers),
         status: response.status,
         statusText: response.statusText,
-        headers: this.parseHeaders(response.headers),
-      };
+      });
     } catch (error) {
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
 
       if (error instanceof HttpError) {
-        throw error;
+        return Result.fail(error);
       }
 
       if (error instanceof DOMException && error.name === 'AbortError') {
         const reason = controller?.reason || 'Request cancelled.';
-        throw new RequestCancelledError(reason);
+        return Result.fail(new RequestCancelledError(reason));
       }
 
-      throw new HttpError('Network error', 0, error);
+      return Result.fail(new HttpError('Unexpected error.', 0, error));
     }
   }
 
