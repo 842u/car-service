@@ -9,6 +9,7 @@ import {
   signUpFormSchema,
 } from '@/auth/credentials/interface/validation/sign-up-form.schema';
 import { useToasts } from '@/common/hooks/use-toasts';
+import { FetchClient } from '@/common/interface/http/fetch-client';
 
 const defaultSignUpFormValues: SignUpFormData = {
   email: '',
@@ -30,45 +31,31 @@ export function useSignUpForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const url = new URL(window.location.origin);
-
-    url.pathname = '/api/auth/sign-up' satisfies Route;
-
     const formData = JSON.stringify(data);
 
-    let response: Response;
+    const fetchClient = new FetchClient({
+      baseUrl: window.location.origin,
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    try {
-      response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: formData,
-      });
-    } catch (_) {
-      addToast('Unable to connect to the server.', 'error');
+    const fetchResult = await fetchClient.post(
+      '/api/auth/sign-up' satisfies Route,
+      formData,
+    );
 
+    if (!fetchResult.success) {
+      const { error } = fetchResult;
+      addToast(error.message, 'error');
       return;
     }
 
-    let body: unknown;
+    const { data: responseData } = fetchResult;
 
-    try {
-      body = await response.json();
-    } catch (_) {
-      addToast('Invalid API response JSON.', 'error');
-
-      return;
-    }
-
-    const validationResult = validateSignUpApiResponse(body);
+    const validationResult = validateSignUpApiResponse(responseData);
 
     if (!validationResult.success) {
       const { error } = validationResult;
-
       addToast(error.message, 'error');
-
       return;
     }
 
@@ -76,9 +63,7 @@ export function useSignUpForm() {
 
     if (!responseResult.success) {
       const { error } = responseResult;
-
       addToast(error.message, 'error');
-
       return;
     }
 
