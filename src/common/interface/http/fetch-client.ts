@@ -5,11 +5,7 @@ import type {
   RequestController,
   ResponseResult,
 } from './client.interface';
-import {
-  HttpError,
-  RequestCancelledError,
-  ResponseParseError,
-} from './client.interface';
+import { HttpError, RequestCancelledError } from './client.interface';
 
 class FetchRequestController implements RequestController {
   private abortController: AbortController;
@@ -112,18 +108,12 @@ export class FetchClient implements HttpClient {
       const responseParseResult = await this.safeParseResponse(response);
 
       if (!responseParseResult.success) {
-        throw new ResponseParseError(responseParseResult.error);
+        const { error } = responseParseResult;
+
+        return Result.fail(new HttpError(error, 0));
       }
 
       const responseData = responseParseResult.data;
-
-      if (!response.ok) {
-        throw new HttpError(
-          `HTTP Error: ${response.status} ${response.statusText}`,
-          response.status,
-          responseData,
-        );
-      }
 
       return Result.ok(responseData, {
         headers: this.parseHeaders(response.headers),
@@ -133,10 +123,6 @@ export class FetchClient implements HttpClient {
     } catch (error) {
       if (timeoutId) {
         clearTimeout(timeoutId);
-      }
-
-      if (error instanceof HttpError) {
-        return Result.fail(error);
       }
 
       if (error instanceof DOMException && error.name === 'AbortError') {
@@ -179,7 +165,7 @@ export class FetchClient implements HttpClient {
         const data = await response.json();
         return Result.ok(data);
       } catch {
-        return Result.fail('Failed to parse JSON.');
+        return Result.fail('Failed to parse response JSON.');
       }
     }
 
@@ -187,7 +173,7 @@ export class FetchClient implements HttpClient {
       const data = (await response.text()) as T;
       return Result.ok(data);
     } catch {
-      return Result.fail('Failed to parse text');
+      return Result.fail('Failed to parse response text.');
     }
   }
 
