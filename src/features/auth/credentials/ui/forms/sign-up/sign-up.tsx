@@ -3,7 +3,7 @@
 import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,
-} from '@/auth/credentials/interface/validation/password.schema';
+} from '@/auth/credentials/domain/password.schema';
 import { Form } from '@/ui/form/form';
 
 import { useSignUpForm } from './use-sign-up';

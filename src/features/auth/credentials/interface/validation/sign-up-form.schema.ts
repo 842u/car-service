@@ -4,8 +4,8 @@ import { ValidationError } from '@/common/application/errors/validation';
 import { Result } from '@/common/interface/result/result';
 import { toValidationIssue } from '@/common/utils/zod';
 
-import { emailSchema } from './email.schema';
-import { passwordSchema } from './password.schema';
+import { emailSchema } from '../../domain/email.schema';
+import { passwordSchema } from '../../domain/password.schema';
 
 z.config({
   jitless: true,
