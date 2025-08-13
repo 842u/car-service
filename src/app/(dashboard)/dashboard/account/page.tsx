@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { PasswordChangeSection } from '@/auth/ui/sections/password-change/password-change';
+import { PasswordChangeSection } from '@/auth/presentation/ui/sections/password-change/password-change';
 import { useToasts } from '@/common/hooks/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { AvatarSection } from '@/user/ui/sections/avatar/avatar';

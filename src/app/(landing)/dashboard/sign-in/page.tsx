@@ -1,6 +1,6 @@
-import { SignInForm } from '@/auth/credentials/ui/forms/sign-in/sign-in';
-import { OAuthProvidersSection } from '@/auth/ui/sections/o-auth-providers/o-auth-providers';
-import { SignUpLink } from '@/auth/ui/sign-up-link/sign-up-link';
+import { SignInForm } from '@/auth/credentials/presentation/ui/forms/sign-in/sign-in';
+import { OAuthProvidersSection } from '@/auth/presentation/ui/sections/o-auth-providers/o-auth-providers';
+import { SignUpLink } from '@/auth/presentation/ui/sign-up-link/sign-up-link';
 import { BrandFullIcon } from '@/icons/brand-full';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 
