@@ -1,11 +1,14 @@
-import { Result } from '../result/result';
 import type {
   HttpClient,
   RequestConfig,
   RequestController,
   ResponseResult,
-} from './client.interface';
-import { HttpError, RequestCancelledError } from './client.interface';
+} from '@/common/application/ports/http-client.port';
+import {
+  HttpError,
+  RequestCancelledError,
+} from '@/common/application/ports/http-client.port';
+import { Result } from '@/common/interface/result/result';
 
 class FetchRequestController implements RequestController {
   private abortController: AbortController;

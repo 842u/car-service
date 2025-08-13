@@ -10,7 +10,7 @@ import {
   signInFormSchema,
 } from '@/auth/credentials/interface/validation/sign-in-form.schema';
 import { useToasts } from '@/common/hooks/use-toasts';
-import { FetchClient } from '@/common/interface/http/fetch-client';
+import { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
 
 const defaultSignInFormValues: SignInFormData = {
   email: '',

@@ -1,4 +1,4 @@
-import type { Result } from '../result/result';
+import type { Result } from '@/common/interface/result/result';
 
 type ResultMeta = {
   status: number;

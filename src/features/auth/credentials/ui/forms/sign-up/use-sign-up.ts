@@ -9,7 +9,7 @@ import {
   signUpFormSchema,
 } from '@/auth/credentials/interface/validation/sign-up-form.schema';
 import { useToasts } from '@/common/hooks/use-toasts';
-import { FetchClient } from '@/common/interface/http/fetch-client';
+import { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
 
 const defaultSignUpFormValues: SignUpFormData = {
   email: '',
