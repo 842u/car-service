@@ -10,6 +10,7 @@ import {
   signInFormSchema,
 } from '@/auth/credentials/interface/validation/sign-in-form.schema';
 import { useToasts } from '@/common/hooks/use-toasts';
+import { FetchClient } from '@/common/interface/http/fetch-client';
 
 const defaultSignInFormValues: SignInFormData = {
   email: '',
@@ -33,45 +34,31 @@ export function useSignInForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const url = new URL(window.location.origin);
-
-    url.pathname = '/api/auth/sign-in' satisfies Route;
-
     const formData = JSON.stringify(data);
 
-    let response: Response;
+    const fetchClient = new FetchClient({
+      baseUrl: window.location.origin,
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    try {
-      response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: formData,
-      });
-    } catch (_) {
-      addToast('Unable to connect to the server.', 'error');
+    const fetchResult = await fetchClient.post(
+      '/api/auth/sign-in' satisfies Route,
+      formData,
+    );
 
+    if (!fetchResult.success) {
+      const { error } = fetchResult;
+      addToast(error.message, 'error');
       return;
     }
 
-    let body: unknown;
+    const { data: fetchData } = fetchResult;
 
-    try {
-      body = await response.json();
-    } catch (_) {
-      addToast('Invalid API response JSON.', 'error');
-
-      return;
-    }
-
-    const validationResult = validateSignInApiResponse(body);
+    const validationResult = validateSignInApiResponse(fetchData);
 
     if (!validationResult.success) {
       const { error } = validationResult;
-
       addToast(error.message, 'error');
-
       return;
     }
 
@@ -79,14 +66,11 @@ export function useSignInForm() {
 
     if (!responseResult.success) {
       const { error } = responseResult;
-
       addToast(error.message, 'error');
-
       return;
     }
 
     addToast('Signed in.', 'success');
-
     router.replace('/dashboard');
     router.refresh();
   });
