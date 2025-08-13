@@ -2,14 +2,26 @@ import { type NextRequest } from 'next/server';
 
 import { Email } from '@/auth/credentials/domain/email';
 import { Password } from '@/auth/credentials/domain/password';
-import type { SignUpApiResponseData } from '@/auth/credentials/interface/validation/api/sign-up.schema';
+import type {
+  SignUpApiResponseData,
+  SignUpApiResponseError,
+} from '@/auth/credentials/interface/validation/api/sign-up.schema';
 import { validateSignUpFormData } from '@/auth/credentials/interface/validation/sign-up-form.schema';
-import { errorApiResponse, successApiResponse } from '@/common/utils/api';
+import {
+  type ApiResponse,
+  errorApiResponse,
+  successApiResponse,
+} from '@/common/interface/api/response.interface';
 import { createClient } from '@/utils/supabase/server';
+
+type SignUpApiResponse = ApiResponse<
+  SignUpApiResponseData,
+  SignUpApiResponseError
+>;
 
 export const maxDuration = 10;
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): SignUpApiResponse {
   if (request.headers.get('content-type') !== 'application/json') {
     return errorApiResponse(
       { message: "Invalid content type. Expected 'application/json'." },
@@ -91,10 +103,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return successApiResponse<SignUpApiResponseData>(
-      { id: data.user?.id },
-      200,
-    );
+    return successApiResponse({ id: data.user?.id || '' }, 200);
   } catch (error) {
     if (error instanceof Error) {
       return errorApiResponse({ message: error.message }, 500);

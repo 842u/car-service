@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { ValidationError } from '@/common/application/errors/validation';
-import { Result } from '@/common/interface/result';
+import { Result } from '@/common/interface/result/result';
 import { toValidationIssue } from '@/common/utils/zod';
 
 import { emailSchema } from './email.schema';

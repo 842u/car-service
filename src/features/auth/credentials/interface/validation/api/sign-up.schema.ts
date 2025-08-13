@@ -1,23 +1,26 @@
 import { z } from 'zod';
 
 import { ValidationError } from '@/common/application/errors/validation';
-import { Result } from '@/common/interface/result';
-import { createApiResponseSchema } from '@/common/interface/validation/api/response.schema';
+import { createApiResponseSchema } from '@/common/interface/api/response.schema';
+import { Result } from '@/common/interface/result/result';
 import { toValidationIssue } from '@/common/utils/zod';
 
 z.config({
   jitless: true,
 });
 
-const signUpApiResponseDataSchema = z.object({ id: z.string().optional() });
+const signUpApiResponseErrorSchema = z.object({
+  message: z.string(),
+});
+
+const signUpApiResponseDataSchema = z.object({
+  id: z.string(),
+});
 
 const signUpApiResponseSchema = createApiResponseSchema(
   signUpApiResponseDataSchema,
+  signUpApiResponseErrorSchema,
 );
-
-export type SignUpApiResponseData = z.infer<typeof signUpApiResponseDataSchema>;
-
-export type SignUpApiResponse = z.infer<typeof signUpApiResponseSchema>;
 
 export function validateSignUpApiResponse(data: unknown) {
   const result = signUpApiResponseSchema.safeParse(data);
@@ -36,3 +39,9 @@ export function validateSignUpApiResponse(data: unknown) {
 
   return Result.ok(resultData);
 }
+
+export type SignUpApiResponseData = z.infer<typeof signUpApiResponseDataSchema>;
+
+export type SignUpApiResponseError = z.infer<
+  typeof signUpApiResponseErrorSchema
+>;

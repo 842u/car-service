@@ -1,4 +1,4 @@
-import { Result } from '@/common/interface/result';
+import { Result } from '@/common/interface/result/result';
 
 import { validatePassword } from '../interface/validation/password.schema';
 

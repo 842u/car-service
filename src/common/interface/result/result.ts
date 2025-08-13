@@ -8,9 +8,9 @@ type BaseFailureResult<E> = {
   error: E;
 };
 
-type SuccessResult<T, U = object> = BaseSuccessResult<T> & U;
+export type SuccessResult<T, U = object> = BaseSuccessResult<T> & U;
 
-type FailureResult<E, U = object> = BaseFailureResult<E> & U;
+export type FailureResult<E, U = object> = BaseFailureResult<E> & U;
 
 export type Result<T, E, U = object> =
   | SuccessResult<T, U>

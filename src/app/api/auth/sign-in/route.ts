@@ -1,13 +1,25 @@
 import { type NextRequest } from 'next/server';
 
-import type { SignInApiResponseData } from '@/auth/credentials/interface/validation/api/sign-in.schema';
+import type {
+  SignInApiResponseData,
+  SignInApiResponseError,
+} from '@/auth/credentials/interface/validation/api/sign-in.schema';
 import { validateSignInFormData } from '@/auth/credentials/interface/validation/sign-in-form.schema';
-import { errorApiResponse, successApiResponse } from '@/common/utils/api';
+import type { ApiResponse } from '@/common/interface/api/response.interface';
+import {
+  errorApiResponse,
+  successApiResponse,
+} from '@/common/interface/api/response.interface';
 import { createClient } from '@/utils/supabase/server';
+
+type SignInApiResponse = ApiResponse<
+  SignInApiResponseData,
+  SignInApiResponseError
+>;
 
 export const maxDuration = 10;
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): SignInApiResponse {
   if (request.headers.get('content-type') !== 'application/json') {
     return errorApiResponse(
       { message: "Invalid content type. Expected 'application/json'." },
@@ -48,10 +60,7 @@ export async function POST(request: NextRequest) {
       return errorApiResponse({ message: signInError.message }, 401);
     }
 
-    return successApiResponse<SignInApiResponseData>(
-      { id: signInData.user.id },
-      200,
-    );
+    return successApiResponse({ id: signInData.user.id }, 200);
   } catch (error) {
     if (error instanceof Error) {
       return errorApiResponse({ message: error.message }, 500);

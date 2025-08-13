@@ -1,25 +1,27 @@
 import { z } from 'zod';
 
 import { ValidationError } from '@/common/application/errors/validation';
-import { Result } from '@/common/interface/result';
-import { createApiResponseSchema } from '@/common/interface/validation/api/response.schema';
+import { createApiResponseSchema } from '@/common/interface/api/response.schema';
+import { Result } from '@/common/interface/result/result';
 import { toValidationIssue } from '@/common/utils/zod';
 
 z.config({
   jitless: true,
 });
 
-const signInApiResponseDataSchema = z
-  .object({ id: z.string() })
-  .catchall(z.unknown());
+const signInApiResponseDataSchema = z.object({ id: z.string() });
+const signInApiResponseErrorSchema = z.object({ message: z.string() });
 
 const signInApiResponseSchema = createApiResponseSchema(
   signInApiResponseDataSchema,
+  signInApiResponseErrorSchema,
 );
 
 export type SignInApiResponseData = z.infer<typeof signInApiResponseDataSchema>;
 
-export type SignInApiResponse = z.infer<typeof signInApiResponseSchema>;
+export type SignInApiResponseError = z.infer<
+  typeof signInApiResponseErrorSchema
+>;
 
 export function validateSignInApiResponse(data: unknown) {
   const result = signInApiResponseSchema.safeParse(data);
