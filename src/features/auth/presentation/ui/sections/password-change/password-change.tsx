@@ -1,7 +1,7 @@
 import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,
-} from '@/auth/credentials/domain/password.schema';
+} from '@/auth/credentials/domain/value-objects/password/password.schema';
 import { PasswordChangeForm } from '@/auth/presentation/ui/forms/password-change/password-change';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 

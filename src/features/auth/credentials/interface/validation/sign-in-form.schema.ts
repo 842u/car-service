@@ -4,11 +4,11 @@ import { ValidationError } from '@/common/application/errors/validation';
 import { Result } from '@/common/interface/result/result';
 import { toValidationIssue } from '@/common/utils/zod';
 
-import { emailSchema } from '../../domain/email.schema';
+import { emailSchema } from '../../domain/value-objects/email/email.schema';
 import {
   PASSWORD_REQUIRED_MESSAGE,
   PASSWORD_TYPE_MESSAGE,
-} from '../../domain/password.schema';
+} from '../../domain/value-objects/password/password.schema';
 
 z.config({
   jitless: true,

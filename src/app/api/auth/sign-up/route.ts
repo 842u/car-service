@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
-import { Email } from '@/auth/credentials/domain/email';
-import { Password } from '@/auth/credentials/domain/password';
+import { Email } from '@/auth/credentials/domain/value-objects/email/email';
+import { Password } from '@/auth/credentials/domain/value-objects/password/password';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
