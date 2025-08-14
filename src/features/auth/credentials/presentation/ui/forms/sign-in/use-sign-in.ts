@@ -1,14 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { validateSignInApiResponse } from '@/auth/credentials/interface/validation/api/sign-in.schema';
 import {
   type SignInFormData,
   signInFormSchema,
 } from '@/auth/credentials/interface/validation/sign-in-form.schema';
+import { NextAuthApiService } from '@/auth/infrastructure/services/next-auth-api.service';
 import { useToasts } from '@/common/hooks/use-toasts';
 import { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
 
@@ -34,39 +33,17 @@ export function useSignInForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const formData = JSON.stringify(data);
-
     const fetchClient = new FetchClient({
       baseUrl: window.location.origin,
       headers: { 'Content-Type': 'application/json' },
     });
 
-    const fetchResult = await fetchClient.post(
-      '/api/auth/sign-in' satisfies Route,
-      formData,
-    );
+    const nextAuthApiService = new NextAuthApiService(fetchClient);
 
-    if (!fetchResult.success) {
-      const { error } = fetchResult;
-      addToast(error.message, 'error');
-      return;
-    }
+    const serviceResult = await nextAuthApiService.signIn(data);
 
-    const { data: fetchData } = fetchResult;
-
-    const validationResult = validateSignInApiResponse(fetchData);
-
-    if (!validationResult.success) {
-      const { error } = validationResult;
-      addToast(error.message, 'error');
-      return;
-    }
-
-    const responseResult = validationResult.data;
-
-    if (!responseResult.success) {
-      const { error } = responseResult;
-      addToast(error.message, 'error');
+    if (!serviceResult.success) {
+      addToast(serviceResult.error.message, 'error');
       return;
     }
 
