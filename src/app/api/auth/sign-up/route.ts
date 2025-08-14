@@ -1,12 +1,12 @@
 import { type NextRequest } from 'next/server';
 
+import { validateCredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
 import { Email } from '@/auth/credentials/domain/value-objects/email/email';
 import { Password } from '@/auth/credentials/domain/value-objects/password/password';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/auth/credentials/interface/validation/api/sign-up.schema';
-import { validateSignUpFormData } from '@/auth/credentials/interface/validation/sign-up-form.schema';
 import {
   type ApiResponse,
   errorApiResponse,
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest): SignUpApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = validateSignUpFormData(body);
+  const validationResult = validateCredentialsDto(body);
 
   if (!validationResult.success) {
     const {

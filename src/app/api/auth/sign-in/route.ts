@@ -1,10 +1,10 @@
 import { type NextRequest } from 'next/server';
 
+import { validateCredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
 import type {
   SignInApiResponseData,
   SignInApiResponseError,
 } from '@/auth/credentials/interface/validation/api/sign-in.schema';
-import { validateSignInFormData } from '@/auth/credentials/interface/validation/sign-in-form.schema';
 import type { ApiResponse } from '@/common/interface/api/response.interface';
 import {
   errorApiResponse,
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest): SignInApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = validateSignInFormData(body);
+  const validationResult = validateCredentialsDto(body);
 
   if (!validationResult.success) {
     const {
