@@ -1,9 +1,7 @@
 import type { Route } from 'next';
 
-import type {
-  AuthApiService,
-  Credentials,
-} from '@/auth/application/ports/auth-api-service.port';
+import type { CredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
+import type { AuthApiService } from '@/auth/application/ports/auth-api-service.port';
 import { validateSignInApiResponse } from '@/auth/credentials/interface/validation/api/sign-in.schema';
 import type { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
 import { Result } from '@/common/interface/result/result';
@@ -16,7 +14,7 @@ export class NextAuthApiService implements AuthApiService {
     this._httpClient = httpClient;
   }
 
-  async signUp(credentials: Credentials) {
+  async signUp(credentials: CredentialsDto) {
     const data = JSON.stringify(credentials);
 
     const fetchResult = await this._httpClient.post(
@@ -43,7 +41,7 @@ export class NextAuthApiService implements AuthApiService {
     return Result.ok({ id: apiResponseResult.data.id });
   }
 
-  async signIn(credentials: Credentials) {
+  async signIn(credentials: CredentialsDto) {
     const data = JSON.stringify(credentials);
 
     const fetchResult = await this._httpClient.post(
