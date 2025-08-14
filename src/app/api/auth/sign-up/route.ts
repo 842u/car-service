@@ -1,8 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import { validateCredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
-import { Email } from '@/auth/credentials/domain/value-objects/email/email';
-import { Password } from '@/auth/credentials/domain/value-objects/password/password';
+import { Credentials } from '@/auth/credentials/domain/value-objects/credentials';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
@@ -47,31 +46,19 @@ export async function POST(request: NextRequest): SignUpApiResponse {
     return errorApiResponse({ message, issues }, 400);
   }
 
-  const { email: requestEmail, password: requestPassword } =
-    validationResult.data;
+  const { email: emailDto, password: passwordDto } = validationResult.data;
 
-  const emailResult = Email.create(requestEmail);
+  const credentialsResult = Credentials.create(emailDto, passwordDto);
 
-  if (!emailResult.success) {
+  if (!credentialsResult.success) {
     const {
       error: { message, issues },
-    } = emailResult;
+    } = credentialsResult;
 
     return errorApiResponse({ message, issues }, 400);
   }
 
-  const passwordResult = Password.create(requestPassword);
-
-  if (!passwordResult.success) {
-    const {
-      error: { message, issues },
-    } = passwordResult;
-
-    return errorApiResponse({ message, issues }, 400);
-  }
-
-  const email = emailResult.data;
-  const password = passwordResult.data;
+  const { email, password } = credentialsResult.data;
 
   const requestUrl = request.nextUrl.clone();
 
