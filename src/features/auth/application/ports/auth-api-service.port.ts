@@ -13,4 +13,5 @@ export type Credentials = {
 
 export interface AuthApiService {
   signUp(credentials: Credentials): Promise<AuthApiServiceResult>;
+  signIn(credentials: Credentials): Promise<AuthApiServiceResult>;
 }
