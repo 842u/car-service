@@ -12,7 +12,7 @@ import {
 } from '@/common/interface/api/response.interface';
 import { createClient } from '@/utils/supabase/server';
 
-type SignInApiResponse = ApiResponse<
+export type SignInApiResponse = ApiResponse<
   SignInApiResponseData,
   SignInApiResponseError
 >;

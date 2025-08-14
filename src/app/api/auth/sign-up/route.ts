@@ -14,7 +14,7 @@ import {
 } from '@/common/interface/api/response.interface';
 import { createClient } from '@/utils/supabase/server';
 
-type SignUpApiResponse = ApiResponse<
+export type SignUpApiResponse = ApiResponse<
   SignUpApiResponseData,
   SignUpApiResponseError
 >;
