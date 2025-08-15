@@ -1,4 +1,4 @@
-import { Spinner } from '@/ui/decorative/spinner/spinner';
+import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 
 import { CarCard } from '../card/card';
 import { useCarsGallery } from './use-cars-gallery';

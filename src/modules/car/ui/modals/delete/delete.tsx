@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 
+import { TextSeparator } from '@/common/presentation/decorative/text-separator/text-separator';
 import { Button } from '@/ui/button/button';
-import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { DialogModal } from '@/ui/dialog-modal/dialog-modal';
 

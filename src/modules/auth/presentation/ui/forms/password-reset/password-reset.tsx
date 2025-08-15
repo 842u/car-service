@@ -1,6 +1,6 @@
 'use client';
 
-import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
+import { TextSeparator } from '@/common/presentation/decorative/text-separator/text-separator';
 import { Form } from '@/ui/form/form';
 
 import { usePasswordResetForm } from './use-password-reset';

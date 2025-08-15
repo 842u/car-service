@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
+import { SPINNER_TEST_ID } from '@/common/presentation/decorative/spinner/spinner';
 import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
-import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 import { DashboardNavBar } from './nav-bar';
 

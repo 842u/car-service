@@ -1,6 +1,6 @@
+import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import type { ButtonProps } from '@/ui/button/button';
 import { Button } from '@/ui/button/button';
-import { Spinner } from '@/ui/decorative/spinner/spinner';
 
 import { useForm } from '../../form';
 

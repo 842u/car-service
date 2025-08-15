@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/common/hooks/use-toasts';
+import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
-import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar } from '@/ui/nav-bar/nav-bar';
 import { UserBadge } from '@/user/ui/badge/badge';
