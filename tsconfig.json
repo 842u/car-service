@@ -23,11 +23,11 @@
     "paths": {
       "@/icons/*": ["./src/common/ui/decorative/icons/*"],
       "@/ui/*": ["./src/common/ui/*"],
-      "@/landing/*": ["./src/features/landing/*"],
-      "@/dashboard/*": ["./src/features/dashboard/*"],
-      "@/auth/*": ["./src/features/auth/*"],
-      "@/user/*": ["./src/features/user/*"],
-      "@/car/*": ["./src/features/car/*"],
+      "@/landing/*": ["./src/modules/landing/*"],
+      "@/dashboard/*": ["./src/modules/dashboard/*"],
+      "@/auth/*": ["./src/modules/auth/*"],
+      "@/user/*": ["./src/modules/user/*"],
+      "@/car/*": ["./src/modules/car/*"],
       "@/common/*": ["./src/common/*"],
       "@/*": ["./src/*"]
     }

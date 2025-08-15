@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { LandingNavBar } from '@/features/landing/ui/nav-bar/nav-bar';
+import { LandingNavBar } from '@/landing/ui/nav-bar/nav-bar';
 
 describe('LandingNavBar', () => {
   it('should render a brand logo with a link to a home page', () => {
