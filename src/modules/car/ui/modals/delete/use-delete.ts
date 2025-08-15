@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { Car } from '@/types';
 import { deleteCar } from '@/utils/supabase/tables/cars';
 import {

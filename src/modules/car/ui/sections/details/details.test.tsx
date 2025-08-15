@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { DETAILS_TABLE_TEST_ID } from '@/car/ui/tables/details/details';
-import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
+import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
 import type { Car } from '@/types';
 
 import { DetailsSection } from './details';

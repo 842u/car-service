@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
-import { TanStackQueryProvider } from '@/common/providers/tan-stack-query';
+import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
 import {
   MOCK_CAR_ID,
   MOCK_OWNERS_PROFILES,

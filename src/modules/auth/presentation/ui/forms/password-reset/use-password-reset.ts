@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { PasswordResetFormValues } from '@/schemas/zod/passwordResetFormSchema';
 import { passwordResetFormSchema } from '@/schemas/zod/passwordResetFormSchema';
 import { createClient } from '@/utils/supabase/client';

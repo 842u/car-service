@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 import { avatarFormSchema } from '@/schemas/zod/avatarFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';

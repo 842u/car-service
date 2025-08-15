@@ -7,7 +7,7 @@ import type {
   ServiceLogPostRouteHandlerRequest,
   ServiceLogRouteHandlerResponse,
 } from '@/app/api/service-log/route';
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { RouteHandlerResponse } from '@/common/types';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { createClient } from '@/utils/supabase/client';

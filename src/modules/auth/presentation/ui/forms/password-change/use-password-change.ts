@@ -3,7 +3,7 @@ import type { Route } from 'next';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { RouteHandlerResponse } from '@/common/types';
 import type { PasswordChangeFormValues } from '@/schemas/zod/passwordChangeFormSchema';
 import { passwordChangeFormSchema } from '@/schemas/zod/passwordChangeFormSchema';

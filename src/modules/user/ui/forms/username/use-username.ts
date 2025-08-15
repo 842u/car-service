@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { UsernameFormValues } from '@/schemas/zod/usernameFormSchema';
 import { usernameFormSchema } from '@/schemas/zod/usernameFormSchema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';

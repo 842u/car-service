@@ -12,7 +12,7 @@ import {
 import type { ReactNode } from 'react';
 import { createContext } from 'react';
 
-import { useContextGuard } from '@/common/hooks/use-context-guard';
+import { useContextGuard } from '@/common/presentation/hooks/use-context-guard';
 
 import { TableBody } from './compounds/body/body';
 import { TableDateFilter } from './compounds/date-filter/date-filter';

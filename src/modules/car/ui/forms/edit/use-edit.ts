@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { RefObject } from 'react';
 import { useRef } from 'react';
 
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
 import { carsUpdateOnMutate } from '@/utils/tanstack/cars';

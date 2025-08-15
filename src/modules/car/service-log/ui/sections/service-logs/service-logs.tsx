@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { useToasts } from '@/common/hooks/use-toasts';
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { Profile } from '@/types';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';

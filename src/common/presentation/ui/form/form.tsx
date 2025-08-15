@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react';
 import { createContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useContextGuard } from '@/common/hooks/use-context-guard';
+import { useContextGuard } from '@/common/presentation/hooks/use-context-guard';
 import type { FormVariants } from '@/types';
 import { formVariants } from '@/utils/tailwindcss/form';
 

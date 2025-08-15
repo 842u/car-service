@@ -7,8 +7,8 @@ import {
   signUpFormSchema,
 } from '@/auth/credentials/interface/validation/sign-up-form.schema';
 import { NextAuthApiService } from '@/auth/infrastructure/services/next-auth-api.service';
-import { useToasts } from '@/common/hooks/use-toasts';
 import { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 
 const defaultSignUpFormValues: SignUpFormData = {
   email: '',

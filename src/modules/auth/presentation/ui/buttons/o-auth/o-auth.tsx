@@ -4,8 +4,8 @@ import type { Provider } from '@supabase/supabase-js';
 import type { JSX } from 'react';
 import { useState } from 'react';
 
-import { useToasts } from '@/common/hooks/use-toasts';
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { GitHubIcon } from '@/icons/github';
 import { GoogleIcon } from '@/icons/google';
 import { Button } from '@/ui/button/button';

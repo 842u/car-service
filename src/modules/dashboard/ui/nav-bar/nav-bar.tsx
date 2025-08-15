@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useToasts } from '@/common/hooks/use-toasts';
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
+import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar } from '@/ui/nav-bar/nav-bar';
