@@ -1,12 +1,23 @@
 import { Email } from '@/auth/credentials/domain/value-objects/email/email';
 import { Password } from '@/auth/credentials/domain/value-objects/password/password';
+import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
 
-export class Credentials {
-  private constructor(
-    private readonly _email: Email,
-    private readonly _password: Password,
-  ) {}
+type CredentialsValue = {
+  email: Email;
+  password: Password;
+};
+
+export class Credentials extends ValueObject {
+  private readonly _value: CredentialsValue;
+
+  private constructor(email: Email, password: Password) {
+    super();
+    this._value = {
+      email,
+      password,
+    };
+  }
 
   static create(email: string, password: string) {
     const emailResult = Email.create(email);
@@ -24,11 +35,15 @@ export class Credentials {
     return Result.ok(new Credentials(emailResult.data, passwordResult.data));
   }
 
+  get value(): CredentialsValue {
+    return this._value;
+  }
+
   get email(): Email {
-    return this._email;
+    return this._value.email;
   }
 
   get password(): Password {
-    return this._password;
+    return this._value.password;
   }
 }
