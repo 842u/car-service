@@ -5,10 +5,12 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { RouteHandlerResponse } from '@/common/types';
-import type { PasswordChangeFormValues } from '@/schemas/zod/passwordChangeFormSchema';
-import { passwordChangeFormSchema } from '@/schemas/zod/passwordChangeFormSchema';
+import {
+  type PasswordChangeFormData,
+  passwordChangeFormSchema,
+} from '@/user/interface/validation/forms/password-change.schema';
 
-const defaultPasswordChangeFormValues: PasswordChangeFormValues = {
+const defaultPasswordChangeFormValues: PasswordChangeFormData = {
   password: '',
   passwordConfirm: '',
 };
@@ -21,14 +23,14 @@ export function usePasswordChangeForm() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<PasswordChangeFormValues>({
+  } = useForm<PasswordChangeFormData>({
     resolver: zodResolver(passwordChangeFormSchema),
     mode: 'onTouched',
     defaultValues: defaultPasswordChangeFormValues,
   });
 
   const handleFormSubmit = handleSubmit(
-    async (data: PasswordChangeFormValues) => {
+    async (data: PasswordChangeFormData) => {
       const password = JSON.stringify(data);
 
       const response = await fetch(

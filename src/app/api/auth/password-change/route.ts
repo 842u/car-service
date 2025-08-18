@@ -2,8 +2,10 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import type { RouteHandlerResponse } from '@/common/types';
-import type { PasswordChangeFormValues } from '@/schemas/zod/passwordChangeFormSchema';
-import { passwordChangeFormSchema } from '@/schemas/zod/passwordChangeFormSchema';
+import {
+  type PasswordChangeFormData,
+  passwordChangeFormSchema,
+} from '@/user/interface/validation/forms/password-change.schema';
 import { createClient } from '@/utils/supabase/server';
 
 export const maxDuration = 10;
@@ -11,7 +13,7 @@ export const maxDuration = 10;
 type apiAuthPasswordChangePatchResponse = { id: string };
 
 export async function PATCH(request: NextRequest) {
-  const requestData = (await request.json()) as PasswordChangeFormValues;
+  const requestData = (await request.json()) as PasswordChangeFormData;
 
   try {
     passwordChangeFormSchema.parse(requestData);
