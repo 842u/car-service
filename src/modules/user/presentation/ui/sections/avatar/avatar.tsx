@@ -1,13 +1,13 @@
-import { DashboardSection } from '@/dashboard/ui/section/section';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
-  IMAGE_FILE_MAX_SIZE_BYTES,
-} from '@/schemas/zod/common';
+  MAX_IMAGE_FILE_SIZE_BYTES,
+} from '@/common/interface/validation/image-file.schema';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import { AvatarForm } from '@/user/presentation/ui/forms/avatar/avatar';
 import { getMimeTypeExtensions } from '@/utils/general';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
-const maxFileSize = IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024);
+const maxFileSize = MAX_IMAGE_FILE_SIZE_BYTES / (1024 * 1024);
 
 type AvatarSectionProps = {
   avatarUrl?: string | null;

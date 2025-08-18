@@ -4,22 +4,6 @@ z.config({
   jitless: true,
 });
 
-export const IMAGE_FILE_MAX_SIZE_BYTES = 1024 * 1024 * 3;
-export const IMAGE_FILE_ACCEPTED_MIME_TYPES = ['image/png', 'image/jpeg'];
-
-export const imageFileSchema = z
-  .instanceof(File, { message: 'Input value is not a file.' })
-  .refine(
-    (file) => IMAGE_FILE_ACCEPTED_MIME_TYPES.includes(file.type),
-    `File must be of type: ${IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}`,
-  )
-  .refine(
-    (file) => file.size <= IMAGE_FILE_MAX_SIZE_BYTES,
-    `File size must be less than ${
-      IMAGE_FILE_MAX_SIZE_BYTES / (1024 * 1024)
-    }MB`,
-  );
-
 const USERNAME_REQUIRED_MESSAGE = 'Username is required.';
 const USERNAME_TYPE_MESSAGE = 'Username must be a string.';
 export const USERNAME_REGEXP =

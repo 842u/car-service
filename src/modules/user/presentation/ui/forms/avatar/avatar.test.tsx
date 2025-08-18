@@ -2,15 +2,15 @@ import { render, screen, waitFor } from '@testing-library/react';
 import type { Options } from '@testing-library/user-event';
 import userEvent from '@testing-library/user-event';
 
+import { MAX_IMAGE_FILE_SIZE_BYTES } from '@/common/interface/validation/image-file.schema';
 import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
-import { IMAGE_FILE_MAX_SIZE_BYTES } from '@/schemas/zod/common';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 
 import { AvatarForm } from './avatar';
 
 const VALID_FILE = new File(['avatar'], 'avatar.png', { type: 'image/png' });
 const TOO_BIG_FILE = new File(
-  [new ArrayBuffer(IMAGE_FILE_MAX_SIZE_BYTES + 100)],
+  [new ArrayBuffer(MAX_IMAGE_FILE_SIZE_BYTES + 100)],
   'tooBig.png',
   {
     type: 'image/png',

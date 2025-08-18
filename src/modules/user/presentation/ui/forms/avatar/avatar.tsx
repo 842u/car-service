@@ -1,6 +1,6 @@
 'use client';
 
-import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
+import type { ImageFormData } from '@/common/interface/validation/forms/image.schema';
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
 import { UserImage } from '@/user/presentation/ui/image/image';
@@ -33,7 +33,7 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
       onSubmit={handleFormSubmit}
     >
       <Form.InputWrapper>
-        <Form.InputImage<AvatarFormValues>
+        <Form.InputImage<ImageFormData>
           control={control}
           errorMessage={errors.image?.message}
           label="Avatar"

@@ -2,8 +2,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { render, screen } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 
-import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
-import { avatarFormSchema } from '@/schemas/zod/avatarFormSchema';
+import {
+  type ImageFormData,
+  imageFormSchema,
+} from '@/common/interface/validation/forms/image.schema';
 import { Form } from '@/ui/form/form';
 import { defaultAvatarFormValues } from '@/user/presentation/ui/forms/avatar/use-avatar';
 
@@ -12,18 +14,16 @@ import { FORM_IMAGE_INPUT_TEST_ID, FormImageInput } from './image-input';
 
 const INPUT_LABEL_TEXT = 'testLabel';
 
-function TestFormImageInput({
-  ...props
-}: FormImageInputProps<AvatarFormValues>) {
-  const { control } = useForm<AvatarFormValues>({
-    resolver: zodResolver(avatarFormSchema),
+function TestFormImageInput({ ...props }: FormImageInputProps<ImageFormData>) {
+  const { control } = useForm<ImageFormData>({
+    resolver: zodResolver(imageFormSchema),
     mode: 'onChange',
     defaultValues: defaultAvatarFormValues,
   });
 
   return (
     <Form>
-      <FormImageInput<AvatarFormValues>
+      <FormImageInput<ImageFormData>
         control={control}
         label={INPUT_LABEL_TEXT}
         {...props}

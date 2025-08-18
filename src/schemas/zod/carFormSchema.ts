@@ -1,6 +1,7 @@
 import type { ZodType } from 'zod';
 import { z } from 'zod';
 
+import { imageFileSchema } from '@/common/interface/validation/image-file.schema';
 import type {
   Car,
   DriveMapping,
@@ -13,8 +14,6 @@ import {
   transmissionTypesMapping,
 } from '@/types';
 import { parseDateToYyyyMmDd } from '@/utils/general';
-
-import { imageFileSchema } from './common';
 
 type CarFormSchemaShape = Omit<
   { [K in keyof Car]: ZodType },

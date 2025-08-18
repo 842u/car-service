@@ -4,20 +4,22 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import {
+  type ImageFormData,
+  imageFormSchema,
+} from '@/common/interface/validation/forms/image.schema';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
-import { avatarFormSchema } from '@/schemas/zod/avatarFormSchema';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
-export const defaultAvatarFormValues: AvatarFormValues = {
+export const defaultAvatarFormValues: ImageFormData = {
   image: null,
 };
 
 type MutationVariables = {
-  formData: AvatarFormValues;
+  formData: ImageFormData;
   queryClient: QueryClient;
   imageInputUrl: string | null;
 };
@@ -60,13 +62,13 @@ export function useAvatarForm() {
     reset,
     handleSubmit,
     formState: { errors, isValid, isDirty, isSubmitting, isSubmitSuccessful },
-  } = useForm<AvatarFormValues>({
-    resolver: zodResolver(avatarFormSchema),
+  } = useForm<ImageFormData>({
+    resolver: zodResolver(imageFormSchema),
     mode: 'onChange',
     defaultValues: defaultAvatarFormValues,
   });
 
-  const handleFormSubmit = handleSubmit(async (formData: AvatarFormValues) => {
+  const handleFormSubmit = handleSubmit(async (formData: ImageFormData) => {
     await mutateAsync(
       { formData, queryClient, imageInputUrl },
       {
