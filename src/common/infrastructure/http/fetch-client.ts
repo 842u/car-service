@@ -3,11 +3,11 @@ import type {
   RequestConfig,
   RequestController,
   ResponseResult,
-} from '@/common/application/ports/http-client.port';
+} from '@/common/application/http/http-client.interface';
 import {
   HttpError,
   RequestCancelledError,
-} from '@/common/application/ports/http-client.port';
+} from '@/common/application/http/http-client.interface';
 import { Result } from '@/common/interface/result/result';
 
 class FetchRequestController implements RequestController {
