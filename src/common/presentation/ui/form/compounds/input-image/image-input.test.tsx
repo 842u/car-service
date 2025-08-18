@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 import { avatarFormSchema } from '@/schemas/zod/avatarFormSchema';
 import { Form } from '@/ui/form/form';
-import { defaultAvatarFormValues } from '@/user/ui/forms/avatar/use-avatar';
+import { defaultAvatarFormValues } from '@/user/presentation/ui/forms/avatar/use-avatar';
 
 import type { FormImageInputProps } from './image-input';
 import { FORM_IMAGE_INPUT_TEST_ID, FormImageInput } from './image-input';

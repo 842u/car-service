@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
 import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
-import { USERNAME_FORM_TEST_ID } from '@/user/ui/forms/username/username';
+import { USERNAME_FORM_TEST_ID } from '@/user/presentation/ui/forms/username/username';
 
 import { UsernameSection } from './username';
 

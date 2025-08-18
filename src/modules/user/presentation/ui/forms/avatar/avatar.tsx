@@ -3,7 +3,7 @@
 import type { AvatarFormValues } from '@/schemas/zod/avatarFormSchema';
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
-import { UserImage } from '@/user/ui/image/image';
+import { UserImage } from '@/user/presentation/ui/image/image';
 
 import { useAvatarForm } from './use-avatar';
 

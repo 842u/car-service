@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { KeyIcon } from '@/icons/key';
 import type { CarOwnership, Profile } from '@/types';
 import { Table } from '@/ui/table/table';
-import { UserBadge } from '@/user/ui/badge/badge';
+import { UserBadge } from '@/user/presentation/ui/badge/badge';
 import { createClient } from '@/utils/supabase/client';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';

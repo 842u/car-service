@@ -9,7 +9,7 @@ import type { Profile, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
 import { Table } from '@/ui/table/table';
-import { UserBadge } from '@/user/ui/badge/badge';
+import { UserBadge } from '@/user/presentation/ui/badge/badge';
 import { createClient } from '@/utils/supabase/client';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';

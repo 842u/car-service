@@ -1,5 +1,5 @@
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { IdClipboardInput } from '@/user/ui/id-clipboard-input/id-clipboard-input';
+import { IdClipboardInput } from '@/user/presentation/ui/id-clipboard-input/id-clipboard-input';
 
 type IdSectionProps = {
   id?: string;

@@ -8,7 +8,7 @@ import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar } from '@/ui/nav-bar/nav-bar';
-import { UserBadge } from '@/user/ui/badge/badge';
+import { UserBadge } from '@/user/presentation/ui/badge/badge';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 

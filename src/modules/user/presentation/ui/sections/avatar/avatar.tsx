@@ -3,7 +3,7 @@ import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   IMAGE_FILE_MAX_SIZE_BYTES,
 } from '@/schemas/zod/common';
-import { AvatarForm } from '@/user/ui/forms/avatar/avatar';
+import { AvatarForm } from '@/user/presentation/ui/forms/avatar/avatar';
 import { getMimeTypeExtensions } from '@/utils/general';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
