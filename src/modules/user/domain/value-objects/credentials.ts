@@ -1,7 +1,7 @@
-import { Email } from '@/auth/credentials/domain/value-objects/email/email';
-import { Password } from '@/auth/credentials/domain/value-objects/password/password';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
+import { Email } from '@/user/domain/value-objects/email/email';
+import { Password } from '@/user/domain/value-objects/password/password';
 
 type CredentialsValue = {
   email: Email;

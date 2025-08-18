@@ -1,10 +1,10 @@
 'use client';
 
+import { Form } from '@/ui/form/form';
 import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,
-} from '@/auth/credentials/domain/value-objects/password/password.schema';
-import { Form } from '@/ui/form/form';
+} from '@/user/domain/value-objects/password/password.schema';
 
 import { useSignUpForm } from './use-sign-up';
 

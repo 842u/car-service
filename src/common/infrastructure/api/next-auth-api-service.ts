@@ -1,11 +1,11 @@
 import type { Route } from 'next';
 
-import type { CredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
-import { signInApiResponseValidator } from '@/auth/credentials/interface/validation/api/sign-in.schema';
-import { signUpApiResponseValidator } from '@/auth/credentials/interface/validation/api/sign-up.schema';
 import type { AuthApiService } from '@/common/application/api/auth-api-service.interface';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { Result } from '@/common/interface/result/result';
+import type { CredentialsDto } from '@/user/application/dtos/credentials/credentials.dto';
+import { signInApiResponseValidator } from '@/user/interface/validation/api/sign-in.schema';
+import { signUpApiResponseValidator } from '@/user/interface/validation/api/sign-up.schema';
 
 export class NextAuthApiService implements AuthApiService {
   private _httpClient: FetchClient;

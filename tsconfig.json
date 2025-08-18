@@ -25,7 +25,6 @@
       "@/ui/*": ["./src/common/presentation/ui/*"],
       "@/landing/*": ["./src/modules/landing/*"],
       "@/dashboard/*": ["./src/modules/dashboard/*"],
-      "@/auth/*": ["./src/modules/auth/*"],
       "@/user/*": ["./src/modules/user/*"],
       "@/car/*": ["./src/modules/car/*"],
       "@/common/*": ["./src/common/*"],

@@ -3,11 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { PasswordChangeSection } from '@/auth/presentation/ui/sections/password-change/password-change';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
+import { PasswordChangeSection } from '@/user/presentation/ui/sections/password-change/password-change';
 import { UsernameSection } from '@/user/presentation/ui/sections/username/username';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';

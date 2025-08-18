@@ -1,16 +1,16 @@
 import { type NextRequest } from 'next/server';
 
-import { credentialsDtoValidator } from '@/auth/application/dtos/credentials/credentials.dto';
-import { Credentials } from '@/auth/credentials/domain/value-objects/credentials';
-import type {
-  SignUpApiResponseData,
-  SignUpApiResponseError,
-} from '@/auth/credentials/interface/validation/api/sign-up.schema';
 import {
   type ApiResponse,
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
+import { credentialsDtoValidator } from '@/user/application/dtos/credentials/credentials.dto';
+import { Credentials } from '@/user/domain/value-objects/credentials';
+import type {
+  SignUpApiResponseData,
+  SignUpApiResponseError,
+} from '@/user/interface/validation/api/sign-up.schema';
 import { createClient } from '@/utils/supabase/server';
 
 export type SignUpApiResponse = ApiResponse<

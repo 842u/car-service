@@ -1,8 +1,8 @@
-import { SignInForm } from '@/auth/credentials/presentation/ui/forms/sign-in/sign-in';
-import { OAuthProvidersSection } from '@/auth/presentation/ui/sections/o-auth-providers/o-auth-providers';
-import { SignUpLink } from '@/auth/presentation/ui/sign-up-link/sign-up-link';
 import { TextSeparator } from '@/common/presentation/decorative/text-separator/text-separator';
 import { BrandFullIcon } from '@/icons/brand-full';
+import { SignInForm } from '@/user/presentation/ui/forms/sign-in/sign-in';
+import { OAuthProvidersSection } from '@/user/presentation/ui/sections/o-auth-providers/o-auth-providers';
+import { SignUpLink } from '@/user/presentation/ui/sign-up-link/sign-up-link';
 
 export default function SignInPage() {
   return (

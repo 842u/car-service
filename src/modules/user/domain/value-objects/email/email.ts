@@ -1,8 +1,12 @@
-import { passwordValidator } from '@/auth/credentials/domain/value-objects/password/password.schema';
+/**
+ * Private constructor used with static factory method to avoid creating instances with malformed data.
+ */
+
 import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
+import { emailValidator } from '@/user/domain/value-objects/email/email.schema';
 
-export class Password extends ValueObject {
+export class Email extends ValueObject {
   private readonly _value: string;
 
   private constructor(value: string) {
@@ -11,13 +15,13 @@ export class Password extends ValueObject {
   }
 
   static create(value: string) {
-    const result = passwordValidator.validate(value);
+    const result = emailValidator.validate(value);
 
     if (!result.success) {
       return Result.fail(result.error);
     }
 
-    return Result.ok(new Password(value));
+    return Result.ok(new Email(value));
   }
 
   get value() {

@@ -1,5 +1,5 @@
-import type { CredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
 import type { Result } from '@/common/interface/result/result';
+import type { CredentialsDto } from '@/user/application/dtos/credentials/credentials.dto';
 
 type Data = { id: string };
 

@@ -1,4 +1,4 @@
-import { EMAIL_REGEXP } from '@/auth/credentials/domain/value-objects/email/email.schema';
+import { EMAIL_REGEXP } from '@/user/domain/value-objects/email/email.schema';
 
 import { correctEmails, wrongEmails } from './validation';
 

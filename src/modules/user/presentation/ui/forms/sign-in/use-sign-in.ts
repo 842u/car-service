@@ -3,11 +3,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import type { SignInFormData } from '@/auth/credentials/interface/validation/sign-in-form.schema';
-import { signInFormSchema } from '@/auth/credentials/interface/validation/sign-in-form.schema';
 import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import type { SignInFormData } from '@/user/interface/validation/sign-in-form.schema';
+import { signInFormSchema } from '@/user/interface/validation/sign-in-form.schema';
 
 const defaultSignInFormValues: SignInFormData = {
   email: '',

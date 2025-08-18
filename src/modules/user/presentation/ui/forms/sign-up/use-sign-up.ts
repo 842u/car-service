@@ -2,13 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  type SignUpFormData,
-  signUpFormSchema,
-} from '@/auth/credentials/interface/validation/sign-up-form.schema';
 import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import type { SignUpFormData } from '@/user/interface/validation/sign-up-form.schema';
+import { signUpFormSchema } from '@/user/interface/validation/sign-up-form.schema';
 
 const defaultSignUpFormValues: SignUpFormData = {
   email: '',
