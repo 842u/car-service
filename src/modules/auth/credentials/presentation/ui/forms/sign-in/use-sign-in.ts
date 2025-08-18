@@ -7,7 +7,7 @@ import {
   type SignInFormData,
   signInFormSchema,
 } from '@/auth/credentials/interface/validation/sign-in-form.schema';
-import { NextAuthApiService } from '@/auth/infrastructure/services/next-auth-api.service';
+import { NextAuthApiService } from '@/auth/infrastructure/api/next-auth-api-service';
 import { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 

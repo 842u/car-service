@@ -1,7 +1,7 @@
 import type { Route } from 'next';
 
+import type { AuthApiService } from '@/auth/application/api/auth-api-service.interface';
 import type { CredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
-import type { AuthApiService } from '@/auth/application/ports/auth-api-service.port';
 import { signInApiResponseValidator } from '@/auth/credentials/interface/validation/api/sign-in.schema';
 import { signUpApiResponseValidator } from '@/auth/credentials/interface/validation/api/sign-up.schema';
 import type { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
