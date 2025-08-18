@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { SignInFormData } from '@/user/interface/validation/sign-in-form.schema';
-import { signInFormSchema } from '@/user/interface/validation/sign-in-form.schema';
+import type { SignInFormData } from '@/user/interface/validation/forms/sign-in.schema';
+import { signInFormSchema } from '@/user/interface/validation/forms/sign-in.schema';
 
 const defaultSignInFormValues: SignInFormData = {
   email: '',
