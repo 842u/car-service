@@ -1,3 +1,9 @@
+import type { Result } from '@/common/interface/result/result';
+
+export interface Validator<T> {
+  validate(value: unknown): Result<T, ValidationError>;
+}
+
 export type ValidationIssue = {
   path: Array<string | number | symbol>;
   message: string;

@@ -2,10 +2,9 @@
  * Private constructor used with static factory method to avoid creating instances with malformed data.
  */
 
+import { emailValidator } from '@/auth/credentials/domain/value-objects/email/email.schema';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
-
-import { validateEmail } from './email.schema';
 
 export class Email extends ValueObject {
   private readonly _value: string;
@@ -16,7 +15,7 @@ export class Email extends ValueObject {
   }
 
   static create(value: string) {
-    const result = validateEmail(value);
+    const result = emailValidator.validate(value);
 
     if (!result.success) {
       return Result.fail(result.error);

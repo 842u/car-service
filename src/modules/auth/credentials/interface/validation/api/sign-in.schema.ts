@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
-import { ValidationError } from '@/common/application/errors/validation';
+import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 import { createApiResponseSchema } from '@/common/interface/api/response.schema';
-import { Result } from '@/common/interface/result/result';
-import { toValidationIssue } from '@/common/utils/zod';
 
 z.config({
   jitless: true,
@@ -23,20 +21,7 @@ export type SignInApiResponseError = z.infer<
   typeof signInApiResponseErrorSchema
 >;
 
-export function validateSignInApiResponse(data: unknown) {
-  const result = signInApiResponseSchema.safeParse(data);
-
-  if (!result.success) {
-    const { error } = result;
-
-    const issues = error.issues.map((issue) => toValidationIssue(issue));
-
-    return Result.fail(
-      new ValidationError('Invalid API response format.', issues),
-    );
-  }
-
-  const { data: resultData } = result;
-
-  return Result.ok(resultData);
-}
+export const signInApiResponseValidator = new ZodValidator(
+  signInApiResponseSchema,
+  'Invalid API response format.',
+);

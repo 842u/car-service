@@ -1,7 +1,6 @@
+import { passwordValidator } from '@/auth/credentials/domain/value-objects/password/password.schema';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
-
-import { validatePassword } from './password.schema';
 
 export class Password extends ValueObject {
   private readonly _value: string;
@@ -12,7 +11,7 @@ export class Password extends ValueObject {
   }
 
   static create(value: string) {
-    const result = validatePassword(value);
+    const result = passwordValidator.validate(value);
 
     if (!result.success) {
       return Result.fail(result.error);

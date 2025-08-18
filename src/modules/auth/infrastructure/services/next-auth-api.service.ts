@@ -2,8 +2,8 @@ import type { Route } from 'next';
 
 import type { CredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
 import type { AuthApiService } from '@/auth/application/ports/auth-api-service.port';
-import { validateSignInApiResponse } from '@/auth/credentials/interface/validation/api/sign-in.schema';
-import { validateSignUpApiResponse } from '@/auth/credentials/interface/validation/api/sign-up.schema';
+import { signInApiResponseValidator } from '@/auth/credentials/interface/validation/api/sign-in.schema';
+import { signUpApiResponseValidator } from '@/auth/credentials/interface/validation/api/sign-up.schema';
 import type { FetchClient } from '@/common/infrastructure/adapters/fetch-client.adapter';
 import { Result } from '@/common/interface/result/result';
 
@@ -26,7 +26,9 @@ export class NextAuthApiService implements AuthApiService {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validationResult = validateSignUpApiResponse(fetchResult.data);
+    const validationResult = signUpApiResponseValidator.validate(
+      fetchResult.data,
+    );
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
@@ -53,7 +55,9 @@ export class NextAuthApiService implements AuthApiService {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validationResult = validateSignInApiResponse(fetchResult.data);
+    const validationResult = signInApiResponseValidator.validate(
+      fetchResult.data,
+    );
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });

@@ -1,4 +1,4 @@
-import { validateId } from '@/common/domain/value-objects/id.schema';
+import { idValidator } from '@/common/domain/value-objects/id.schema';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
 
@@ -11,7 +11,7 @@ export class Id extends ValueObject {
   }
 
   static create(value: string) {
-    const result = validateId(value);
+    const result = idValidator.validate(value);
 
     if (!result.success) {
       return Result.fail(result.error);

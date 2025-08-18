@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-import { ValidationError } from '@/common/application/errors/validation';
-import { Result } from '@/common/interface/result/result';
-import { toValidationIssue } from '@/common/utils/zod';
+import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 
 z.config({
   jitless: true,
@@ -15,18 +13,7 @@ const credentialsDtoSchema = z.object({
 
 export type CredentialsDto = z.infer<typeof credentialsDtoSchema>;
 
-export function validateCredentialsDto(data: unknown) {
-  const result = credentialsDtoSchema.safeParse(data);
-
-  if (!result.success) {
-    const { error } = result;
-
-    const issues = error.issues.map((issue) => toValidationIssue(issue));
-
-    return Result.fail(new ValidationError('Data validation failed.', issues));
-  }
-
-  const { data: resultData } = result;
-
-  return Result.ok(resultData);
-}
+export const credentialsDtoValidator = new ZodValidator(
+  credentialsDtoSchema,
+  'Credentials DTO validation failed.',
+);

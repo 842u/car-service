@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-import { ValidationError } from '@/common/application/errors/validation';
-import { Result } from '@/common/interface/result/result';
-import { toValidationIssue } from '@/common/utils/zod';
+import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 
 z.config({
   jitless: true,
@@ -28,18 +26,7 @@ export const emailSchema = z
   .max(MAX_EMAIL_LENGTH, { error: MAX_EMAIL_LENGTH_MESSAGE })
   .regex(EMAIL_REGEXP, { error: EMAIL_REGEXP_MESSAGE });
 
-export function validateEmail(value: string) {
-  const result = emailSchema.safeParse(value);
-
-  if (!result.success) {
-    const { error } = result;
-
-    const issues = error.issues.map((issue) => toValidationIssue(issue));
-
-    return Result.fail(new ValidationError('Email validation failed.', issues));
-  }
-
-  const { data } = result;
-
-  return Result.ok(data);
-}
+export const emailValidator = new ZodValidator(
+  emailSchema,
+  'Email validation failed.',
+);

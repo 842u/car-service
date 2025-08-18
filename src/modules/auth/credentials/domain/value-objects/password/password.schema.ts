@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-import { ValidationError } from '@/common/application/errors/validation';
-import { Result } from '@/common/interface/result/result';
-import { toValidationIssue } from '@/common/utils/zod';
+import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 
 z.config({
   jitless: true,
@@ -26,20 +24,7 @@ export const passwordSchema = z
   .min(MIN_PASSWORD_LENGTH, { error: MIN_PASSWORD_LENGTH_MESSAGE })
   .max(MAX_PASSWORD_LENGTH, { error: MAX_PASSWORD_LENGTH_MESSAGE });
 
-export function validatePassword(value: string) {
-  const result = passwordSchema.safeParse(value);
-
-  if (!result.success) {
-    const { error } = result;
-
-    const issues = error.issues.map((issue) => toValidationIssue(issue));
-
-    return Result.fail(
-      new ValidationError('Password validation failed.', issues),
-    );
-  }
-
-  const { data } = result;
-
-  return Result.ok(data);
-}
+export const passwordValidator = new ZodValidator(
+  passwordSchema,
+  'Password validation failed.',
+);

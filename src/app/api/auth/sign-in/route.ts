@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server';
 
-import { validateCredentialsDto } from '@/auth/application/dtos/credentials/credentials.dto';
+import { credentialsDtoValidator } from '@/auth/application/dtos/credentials/credentials.dto';
 import type {
   SignInApiResponseData,
   SignInApiResponseError,
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest): SignInApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = validateCredentialsDto(body);
+  const validationResult = credentialsDtoValidator.validate(body);
 
   if (!validationResult.success) {
     const {
