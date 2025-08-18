@@ -8,14 +8,17 @@ export type ApiResponseError<U extends object = object> = {
   message: string;
 } & U;
 
-export type ApiResponseFailureResult<E extends ApiResponseError> =
-  FailureResult<E, ApiResponseMeta>;
+type ApiResponseFailureResult<E extends ApiResponseError> = FailureResult<
+  E,
+  ApiResponseMeta
+>;
 
-export type ApiResponseSuccessResult<T> = SuccessResult<T, ApiResponseMeta>;
+type ApiResponseSuccessResult<T> = SuccessResult<T, ApiResponseMeta>;
 
-export type ApiResponseResult<T, E extends ApiResponseError> =
-  | ApiResponseSuccessResult<T>
-  | ApiResponseFailureResult<E>;
+export type ApiResponse<T, E extends ApiResponseError> = Promise<
+  | ReturnType<typeof successApiResponse<T> | typeof redirectApiResponse>
+  | ReturnType<typeof errorApiResponse<E>>
+>;
 
 export function errorApiResponse<E extends ApiResponseError>(
   error: E,
@@ -42,7 +45,6 @@ export function successApiResponse<T>(data: T, status: number) {
   return NextResponse.json(responseResult, { status });
 }
 
-export type ApiResponse<T, E extends ApiResponseError> = Promise<
-  | ReturnType<typeof successApiResponse<T>>
-  | ReturnType<typeof errorApiResponse<E>>
->;
+export function redirectApiResponse(url: string, status: number) {
+  return NextResponse.redirect(url, { status });
+}
