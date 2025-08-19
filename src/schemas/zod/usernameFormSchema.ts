@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { usernameSchema } from './common';
+import { usernameSchema } from '@/user/domain/value-objects/username/username.schema';
 
 z.config({
   jitless: true,

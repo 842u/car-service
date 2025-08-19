@@ -2,7 +2,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
-import { MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH } from '@/schemas/zod/common';
+import {
+  MAX_USERNAME_LENGTH,
+  MIN_USERNAME_LENGTH,
+} from '@/user/domain/value-objects/username/username.schema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 
 import { UsernameForm } from './username';
