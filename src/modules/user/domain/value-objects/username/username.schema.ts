@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
+
 z.config({
   jitless: true,
 });
@@ -26,3 +28,8 @@ export const usernameSchema = z
   .min(MIN_USERNAME_LENGTH, { error: MIN_USERNAME_LENGTH_MESSAGE })
   .max(MAX_USERNAME_LENGTH, { error: MAX_USERNAME_LENGTH_MESSAGE })
   .regex(USERNAME_REGEXP, { error: USERNAME_REGEXP_MESSAGE });
+
+export const usernameValidator = new ZodValidator(
+  usernameSchema,
+  'Username validation failed.',
+);
