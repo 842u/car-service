@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-import { IdSchema } from './common';
+import { idSchema } from '@/common/domain/value-objects/id.schema';
 
 z.config({
   jitless: true,
 });
 
 export const carPrimaryOwnershipGrantFormSchema = z.object({
-  userId: IdSchema,
+  userId: idSchema,
 });
 
 export type CarPrimaryOwnershipGrantFormValues = z.infer<

@@ -9,7 +9,7 @@ z.config({
 const ID_REQUIRED_MESSAGE = 'ID is required.';
 const ID_TYPE_MESSAGE = 'ID must be a UUID.';
 
-const idSchema = z.uuid({
+export const idSchema = z.uuid({
   error: (issue) =>
     issue.input === undefined ? ID_REQUIRED_MESSAGE : ID_TYPE_MESSAGE,
 });
