@@ -10,4 +10,4 @@ export const usernameFormSchema = z.object({
   username: usernameSchema,
 });
 
-export type UsernameFormValues = z.infer<typeof usernameFormSchema>;
+export type UsernameFormData = z.infer<typeof usernameFormSchema>;

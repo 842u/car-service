@@ -5,18 +5,20 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { UsernameFormValues } from '@/schemas/zod/usernameFormSchema';
-import { usernameFormSchema } from '@/schemas/zod/usernameFormSchema';
+import {
+  type UsernameFormData,
+  usernameFormSchema,
+} from '@/user/interface/validation/forms/username.schema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 type MutationVariables = {
-  formData: UsernameFormValues;
+  formData: UsernameFormData;
   queryClient: QueryClient;
 };
 
-const defaultUsernameFormValues: UsernameFormValues = {
+const defaultUsernameFormValues: UsernameFormData = {
   username: '',
 };
 
@@ -50,36 +52,34 @@ export function useUsernameForm({
     handleSubmit,
     reset,
     formState: { isValid, isDirty, errors, isSubmitSuccessful },
-  } = useForm<UsernameFormValues>({
+  } = useForm<UsernameFormData>({
     resolver: zodResolver(usernameFormSchema),
     mode: 'onChange',
     defaultValues: defaultUsernameFormValues,
   });
 
-  const handleFormSubmit = handleSubmit(
-    async (formData: UsernameFormValues) => {
-      mutate(
-        { formData, queryClient },
-        {
-          onSuccess: () => {
-            addToast('Username updated successfully.', 'success');
-          },
-          onError: (error, { queryClient }, context) => {
-            addToast(error.message, 'error');
-
-            queryClient.setQueryData(
-              queryKeys.profilesCurrentSession,
-              context?.previousQueryData,
-            );
-          },
-          onSettled: (_, __, { queryClient }) =>
-            queryClient.invalidateQueries({
-              queryKey: queryKeys.profilesCurrentSession,
-            }),
+  const handleFormSubmit = handleSubmit(async (formData: UsernameFormData) => {
+    mutate(
+      { formData, queryClient },
+      {
+        onSuccess: () => {
+          addToast('Username updated successfully.', 'success');
         },
-      );
-    },
-  );
+        onError: (error, { queryClient }, context) => {
+          addToast(error.message, 'error');
+
+          queryClient.setQueryData(
+            queryKeys.profilesCurrentSession,
+            context?.previousQueryData,
+          );
+        },
+        onSettled: (_, __, { queryClient }) =>
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.profilesCurrentSession,
+          }),
+      },
+    );
+  });
 
   const handleFormReset = () => username && reset({ username });
 
