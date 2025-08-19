@@ -3,11 +3,13 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { PasswordResetFormValues } from '@/schemas/zod/passwordResetFormSchema';
-import { passwordResetFormSchema } from '@/schemas/zod/passwordResetFormSchema';
+import {
+  type PasswordResetFormData,
+  passwordResetFormSchema,
+} from '@/user/interface/validation/forms/password-reset.schema';
 import { createClient } from '@/utils/supabase/client';
 
-const defaultPasswordResetFormValues = { email: '' };
+const defaultPasswordResetFormValues: PasswordResetFormData = { email: '' };
 
 export function usePasswordResetForm() {
   const { addToast } = useToasts();
@@ -17,14 +19,14 @@ export function usePasswordResetForm() {
     reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<PasswordResetFormValues>({
+  } = useForm<PasswordResetFormData>({
     resolver: zodResolver(passwordResetFormSchema),
     mode: 'onTouched',
     defaultValues: defaultPasswordResetFormValues,
   });
 
   const handleFormSubmit = handleSubmit(
-    async (formData: PasswordResetFormValues) => {
+    async (formData: PasswordResetFormData) => {
       const supabase = createClient();
 
       const { data, error } = await supabase.auth.resetPasswordForEmail(

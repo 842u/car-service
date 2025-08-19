@@ -10,4 +10,4 @@ export const passwordResetFormSchema = z.object({
   email: emailSchema,
 });
 
-export type PasswordResetFormValues = z.infer<typeof passwordResetFormSchema>;
+export type PasswordResetFormData = z.infer<typeof passwordResetFormSchema>;
