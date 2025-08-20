@@ -8,15 +8,9 @@ type CredentialsValue = {
   password: Password;
 };
 
-export class Credentials extends ValueObject {
-  private readonly _value: CredentialsValue;
-
-  private constructor(email: Email, password: Password) {
-    super();
-    this._value = {
-      email,
-      password,
-    };
+export class Credentials extends ValueObject<CredentialsValue> {
+  private constructor(value: CredentialsValue) {
+    super(value);
   }
 
   static create(email: string, password: string) {
@@ -32,11 +26,12 @@ export class Credentials extends ValueObject {
       return Result.fail(passwordResult.error);
     }
 
-    return Result.ok(new Credentials(emailResult.data, passwordResult.data));
-  }
-
-  get value(): CredentialsValue {
-    return this._value;
+    return Result.ok(
+      new Credentials({
+        email: emailResult.data,
+        password: passwordResult.data,
+      }),
+    );
   }
 
   get email(): Email {

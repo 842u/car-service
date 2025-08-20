@@ -2,12 +2,9 @@ import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
 import { usernameValidator } from '@/user/domain/value-objects/username/username.schema';
 
-export class Username extends ValueObject {
-  private readonly _value: string;
-
+export class Username extends ValueObject<string> {
   private constructor(value: string) {
-    super();
-    this._value = value;
+    super(value);
   }
 
   static create(value: string) {
@@ -18,9 +15,5 @@ export class Username extends ValueObject {
     }
 
     return Result.ok(new Username(value));
-  }
-
-  get value() {
-    return this._value;
   }
 }

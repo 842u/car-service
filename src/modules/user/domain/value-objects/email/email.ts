@@ -6,12 +6,9 @@ import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
 import { emailValidator } from '@/user/domain/value-objects/email/email.schema';
 
-export class Email extends ValueObject {
-  private readonly _value: string;
-
+export class Email extends ValueObject<string> {
   private constructor(value: string) {
-    super();
-    this._value = value;
+    super(value);
   }
 
   static create(value: string) {
@@ -22,9 +19,5 @@ export class Email extends ValueObject {
     }
 
     return Result.ok(new Email(value));
-  }
-
-  get value() {
-    return this._value;
   }
 }

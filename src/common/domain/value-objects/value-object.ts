@@ -1,9 +1,17 @@
 import type { Result } from '@/common/interface/result/result';
 
-export abstract class ValueObject {
+export abstract class ValueObject<T> {
+  protected readonly _value: T;
+
+  protected constructor(value: T) {
+    this._value = value;
+  }
+
   static create(..._: unknown[]): Result<unknown, unknown> {
     throw new Error('Create method of a Value Object not implemented.');
   }
 
-  abstract get value(): unknown;
+  public get value(): T {
+    return this._value;
+  }
 }
