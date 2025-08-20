@@ -4,7 +4,7 @@ import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack
 import {
   MAX_USERNAME_LENGTH,
   MIN_USERNAME_LENGTH,
-} from '@/user/domain/value-objects/username/username.schema';
+} from '@/user/domain/user/value-objects/username/username.schema';
 import { USERNAME_FORM_TEST_ID } from '@/user/presentation/ui/forms/username/username';
 
 import { UsernameSection } from './username';

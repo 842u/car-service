@@ -5,7 +5,7 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
-import { Password } from '@/user/domain/value-objects/password/password';
+import { Password } from '@/user/domain/user/value-objects/password/password';
 import {
   type PasswordChangeApiResponseData,
   type PasswordChangeApiResponseError,

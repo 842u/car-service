@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-import { emailSchema } from '@/user/domain/value-objects/email/email.schema';
+import { emailSchema } from '@/user/domain/user/value-objects/email/email.schema';
 import {
   PASSWORD_REQUIRED_MESSAGE,
   PASSWORD_TYPE_MESSAGE,
-} from '@/user/domain/value-objects/password/password.schema';
+} from '@/user/domain/user/value-objects/password/password.schema';
 
 z.config({
   jitless: true,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { emailSchema } from '@/user/domain/value-objects/email/email.schema';
+import { emailSchema } from '@/user/domain/user/value-objects/email/email.schema';
 
 z.config({
   jitless: true,

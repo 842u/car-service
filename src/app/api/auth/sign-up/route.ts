@@ -6,7 +6,7 @@ import {
   successApiResponse,
 } from '@/common/interface/api/response.interface';
 import { credentialsDtoValidator } from '@/user/application/dtos/credentials/credentials.dto';
-import { Credentials } from '@/user/domain/value-objects/credentials';
+import { Credentials } from '@/user/domain/user/value-objects/credentials';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,

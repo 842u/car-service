@@ -2,7 +2,7 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import {
   MAX_USERNAME_LENGTH,
   MIN_USERNAME_LENGTH,
-} from '@/user/domain/value-objects/username/username.schema';
+} from '@/user/domain/user/value-objects/username/username.schema';
 import { UsernameForm } from '@/user/presentation/ui/forms/username/username';
 
 type UsernameSectionProps = {

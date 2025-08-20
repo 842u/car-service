@@ -5,7 +5,7 @@ import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack
 import {
   MAX_USERNAME_LENGTH,
   MIN_USERNAME_LENGTH,
-} from '@/user/domain/value-objects/username/username.schema';
+} from '@/user/domain/user/value-objects/username/username.schema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 
 import { UsernameForm } from './username';

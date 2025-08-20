@@ -1,19 +1,19 @@
 import { ValueObject } from '@/common/domain/value-objects/value-object';
 import { Result } from '@/common/interface/result/result';
-import { usernameValidator } from '@/user/domain/value-objects/username/username.schema';
+import { passwordValidator } from '@/user/domain/user/value-objects/password/password.schema';
 
-export class Username extends ValueObject<string> {
+export class Password extends ValueObject<string> {
   private constructor(value: string) {
     super(value);
   }
 
   static create(value: string) {
-    const result = usernameValidator.validate(value);
+    const result = passwordValidator.validate(value);
 
     if (!result.success) {
       return Result.fail(result.error);
     }
 
-    return Result.ok(new Username(value));
+    return Result.ok(new Password(value));
   }
 }
