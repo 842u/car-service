@@ -18,7 +18,7 @@ export abstract class Entity<T extends BaseEntityValue> {
     return this._value;
   }
 
-  public get id(): string {
-    return this.value.id.value;
+  public get id(): Id {
+    return this.value.id;
   }
 }
