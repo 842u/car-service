@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { Route } from 'next';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
+import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { RouteHandlerResponse } from '@/common/types';
 import {
   type PasswordChangeContract,
   passwordChangeContractSchema,
@@ -30,22 +30,21 @@ export function usePasswordChangeForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const password = JSON.stringify(data);
-
-    const response = await fetch('/api/auth/password-change' satisfies Route, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: password,
+    const fetchClient = new FetchClient({
+      baseUrl: window.location.origin,
+      headers: { 'Content-Type': 'application/json' },
     });
 
-    const { data: responseData, error } =
-      (await response.json()) as RouteHandlerResponse;
+    const nextAuthApiService = new NextAuthApiService(fetchClient);
 
-    error && addToast(error.message, 'error');
+    const serviceResult = await nextAuthApiService.passwordChange(data);
 
-    responseData && addToast('Your password has been changed.', 'success');
+    if (!serviceResult.success) {
+      addToast(serviceResult.error.message, 'error');
+      return;
+    }
+
+    addToast('Password changed.', 'success');
   });
 
   useEffect(() => {
