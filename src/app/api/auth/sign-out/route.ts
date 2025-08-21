@@ -7,7 +7,7 @@ import {
 import type {
   SignOutApiResponseData,
   SignOutApiResponseError,
-} from '@/user/interface/validation/api/sign-out.schema';
+} from '@/user/interface/api/sign-out.schema';
 import { createClient } from '@/utils/supabase/server';
 
 export type SignOutApiResponse = ApiResponse<

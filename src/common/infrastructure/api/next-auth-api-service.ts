@@ -3,10 +3,10 @@ import type { Route } from 'next';
 import type { AuthApiService } from '@/common/application/api/auth-api-service.interface';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { Result } from '@/common/interface/result/result';
+import { signInApiResponseValidator } from '@/user/interface/api/sign-in.schema';
+import { signUpApiResponseValidator } from '@/user/interface/api/sign-up.schema';
 import type { SignInUserContract } from '@/user/interface/contracts/sign-in-user.schema';
 import type { SignUpUserContract } from '@/user/interface/contracts/sign-up-user.schema';
-import { signInApiResponseValidator } from '@/user/interface/validation/api/sign-in.schema';
-import { signUpApiResponseValidator } from '@/user/interface/validation/api/sign-up.schema';
 
 export class NextAuthApiService implements AuthApiService {
   private _httpClient: FetchClient;

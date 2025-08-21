@@ -6,11 +6,11 @@ import {
   successApiResponse,
 } from '@/common/interface/api/response.interface';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
-import { signUpUserContractValidator } from '@/user/interface/contracts/sign-up-user.schema';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
-} from '@/user/interface/validation/api/sign-up.schema';
+} from '@/user/interface/api/sign-up.schema';
+import { signUpUserContractValidator } from '@/user/interface/contracts/sign-up-user.schema';
 import { createClient } from '@/utils/supabase/server';
 
 export type SignUpApiResponse = ApiResponse<

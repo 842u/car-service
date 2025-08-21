@@ -6,11 +6,11 @@ import {
   successApiResponse,
 } from '@/common/interface/api/response.interface';
 import { Password } from '@/user/domain/user/value-objects/password/password';
-import { changeUserPasswordContractValidator } from '@/user/interface/contracts/change-user-password.schema';
 import {
   type PasswordChangeApiResponseData,
   type PasswordChangeApiResponseError,
-} from '@/user/interface/validation/api/password-change.schema';
+} from '@/user/interface/api/password-change.schema';
+import { changeUserPasswordContractValidator } from '@/user/interface/contracts/change-user-password.schema';
 import { createClient } from '@/utils/supabase/server';
 
 type PasswordChangeApiResponse = ApiResponse<
