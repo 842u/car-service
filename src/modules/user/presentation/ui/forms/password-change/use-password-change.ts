@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { RouteHandlerResponse } from '@/common/types';
 import {
-  type PasswordChangeFormData,
-  passwordChangeFormSchema,
-} from '@/user/interface/validation/forms/password-change.schema';
+  type ChangeUserPasswordContract,
+  changeUserPasswordContractSchema,
+} from '@/user/interface/contracts/change-user-password.schema';
 
-const defaultPasswordChangeFormValues: PasswordChangeFormData = {
+const defaultPasswordChangeFormValues: ChangeUserPasswordContract = {
   password: '',
   passwordConfirm: '',
 };
@@ -23,35 +23,30 @@ export function usePasswordChangeForm() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<PasswordChangeFormData>({
-    resolver: zodResolver(passwordChangeFormSchema),
+  } = useForm<ChangeUserPasswordContract>({
+    resolver: zodResolver(changeUserPasswordContractSchema),
     mode: 'onTouched',
     defaultValues: defaultPasswordChangeFormValues,
   });
 
-  const handleFormSubmit = handleSubmit(
-    async (data: PasswordChangeFormData) => {
-      const password = JSON.stringify(data);
+  const handleFormSubmit = handleSubmit(async (data) => {
+    const password = JSON.stringify(data);
 
-      const response = await fetch(
-        '/api/auth/password-change' satisfies Route,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: password,
-        },
-      );
+    const response = await fetch('/api/auth/password-change' satisfies Route, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: password,
+    });
 
-      const { data: responseData, error } =
-        (await response.json()) as RouteHandlerResponse;
+    const { data: responseData, error } =
+      (await response.json()) as RouteHandlerResponse;
 
-      error && addToast(error.message, 'error');
+    error && addToast(error.message, 'error');
 
-      responseData && addToast('Your password has been changed.', 'success');
-    },
-  );
+    responseData && addToast('Your password has been changed.', 'success');
+  });
 
   useEffect(() => {
     isSubmitSuccessful && reset();

@@ -6,11 +6,11 @@ import {
   successApiResponse,
 } from '@/common/interface/api/response.interface';
 import { Password } from '@/user/domain/user/value-objects/password/password';
+import { changeUserPasswordContractValidator } from '@/user/interface/contracts/change-user-password.schema';
 import {
   type PasswordChangeApiResponseData,
   type PasswordChangeApiResponseError,
 } from '@/user/interface/validation/api/password-change.schema';
-import { passwordChangeFormDataValidator } from '@/user/interface/validation/forms/password-change.schema';
 import { createClient } from '@/utils/supabase/server';
 
 type PasswordChangeApiResponse = ApiResponse<
@@ -36,7 +36,7 @@ export async function PATCH(request: NextRequest): PasswordChangeApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = passwordChangeFormDataValidator.validate(body);
+  const validationResult = changeUserPasswordContractValidator.validate(body);
 
   if (!validationResult.success) {
     const {
