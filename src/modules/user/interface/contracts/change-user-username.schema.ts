@@ -7,13 +7,15 @@ z.config({
   jitless: true,
 });
 
-export const userUsernameContractSchema = z.object({
+export const changeUserUsernameContractSchema = z.object({
   username: usernameSchema,
 });
 
-export type UserUsernameContract = z.infer<typeof userUsernameContractSchema>;
+export type ChangeUserUsernameContract = z.infer<
+  typeof changeUserUsernameContractSchema
+>;
 
-export const userUsernameContractValidator = new ZodValidator(
-  userUsernameContractSchema,
+export const changeUserUsernameContractValidator = new ZodValidator(
+  changeUserUsernameContractSchema,
   'Change user username contract validation failed.',
 );

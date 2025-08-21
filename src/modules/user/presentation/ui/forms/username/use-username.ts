@@ -6,19 +6,19 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import {
-  type UserUsernameContract,
-  userUsernameContractSchema,
-} from '@/user/interface/contracts/user-username.schema';
+  type ChangeUserUsernameContract,
+  changeUserUsernameContractSchema,
+} from '@/user/interface/contracts/change-user-username.schema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 type MutationVariables = {
-  formData: UserUsernameContract;
+  formData: ChangeUserUsernameContract;
   queryClient: QueryClient;
 };
 
-const defaultUsernameFormValues: UserUsernameContract = {
+const defaultUsernameFormValues: ChangeUserUsernameContract = {
   username: '',
 };
 
@@ -52,14 +52,14 @@ export function useUsernameForm({
     handleSubmit,
     reset,
     formState: { isValid, isDirty, errors, isSubmitSuccessful },
-  } = useForm<UserUsernameContract>({
-    resolver: zodResolver(userUsernameContractSchema),
+  } = useForm<ChangeUserUsernameContract>({
+    resolver: zodResolver(changeUserUsernameContractSchema),
     mode: 'onChange',
     defaultValues: defaultUsernameFormValues,
   });
 
   const handleFormSubmit = handleSubmit(
-    async (formData: UserUsernameContract) => {
+    async (formData: ChangeUserUsernameContract) => {
       mutate(
         { formData, queryClient },
         {
