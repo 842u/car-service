@@ -39,7 +39,13 @@ export interface HttpClient {
     config?: RequestConfig<RequestController>,
   ): Promise<ResponseResult<unknown, unknown>>;
 
-  put(
+  delete(
+    url: string,
+    data?: unknown,
+    config?: RequestConfig<RequestController>,
+  ): Promise<ResponseResult<unknown, unknown>>;
+
+  patch(
     url: string,
     data?: unknown,
     config?: RequestConfig<RequestController>,

@@ -73,6 +73,10 @@ export class FetchClient implements HttpClient {
     return this.request('DELETE', url, undefined, config);
   }
 
+  async patch(url: string, data?: string, config?: FetchRequestConfig) {
+    return this.request('PATCH', url, data, config);
+  }
+
   private async request(
     method: string,
     url: string,
