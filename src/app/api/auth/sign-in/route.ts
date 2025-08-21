@@ -9,7 +9,7 @@ import type {
   SignInApiResponseData,
   SignInApiResponseError,
 } from '@/user/interface/api/sign-in.schema';
-import { signInUserContractValidator } from '@/user/interface/contracts/sign-in-user.schema';
+import { signInContractValidator } from '@/user/interface/contracts/sign-in.schema';
 import { createClient } from '@/utils/supabase/server';
 
 export type SignInApiResponse = ApiResponse<
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest): SignInApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = signInUserContractValidator.validate(body);
+  const validationResult = signInContractValidator.validate(body);
 
   if (!validationResult.success) {
     const {

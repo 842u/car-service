@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import {
-  type ResetUserPasswordContract,
-  resetUserPasswordContractSchema,
-} from '@/user/interface/contracts/reset-user-password.schema';
+  type PasswordResetContract,
+  passwordResetContractSchema,
+} from '@/user/interface/contracts/password-reset.schema';
 import { createClient } from '@/utils/supabase/client';
 
-const defaultPasswordResetFormValues: ResetUserPasswordContract = {
+const defaultPasswordResetFormValues: PasswordResetContract = {
   email: '',
 };
 
@@ -21,8 +21,8 @@ export function usePasswordResetForm() {
     reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<ResetUserPasswordContract>({
-    resolver: zodResolver(resetUserPasswordContractSchema),
+  } = useForm<PasswordResetContract>({
+    resolver: zodResolver(passwordResetContractSchema),
     mode: 'onTouched',
     defaultValues: defaultPasswordResetFormValues,
   });

@@ -11,7 +11,7 @@ z.config({
   jitless: true,
 });
 
-export const signInUserContractSchema = z.object({
+export const signInContractSchema = z.object({
   email: emailSchema,
   password: z
     .string({
@@ -24,9 +24,9 @@ export const signInUserContractSchema = z.object({
     .min(1, PASSWORD_REQUIRED_MESSAGE),
 });
 
-export type SignInUserContract = z.infer<typeof signInUserContractSchema>;
+export type SignInContract = z.infer<typeof signInContractSchema>;
 
-export const signInUserContractValidator = new ZodValidator(
-  signInUserContractSchema,
-  'Sign in user contract validation failed.',
+export const signInContractValidator = new ZodValidator(
+  signInContractSchema,
+  'Sign in contract validation failed.',
 );

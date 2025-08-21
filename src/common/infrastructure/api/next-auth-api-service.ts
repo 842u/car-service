@@ -5,8 +5,8 @@ import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { Result } from '@/common/interface/result/result';
 import { signInApiResponseValidator } from '@/user/interface/api/sign-in.schema';
 import { signUpApiResponseValidator } from '@/user/interface/api/sign-up.schema';
-import type { SignInUserContract } from '@/user/interface/contracts/sign-in-user.schema';
-import type { SignUpUserContract } from '@/user/interface/contracts/sign-up-user.schema';
+import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
+import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
 export class NextAuthApiService implements AuthApiService {
   private _httpClient: FetchClient;
@@ -15,7 +15,7 @@ export class NextAuthApiService implements AuthApiService {
     this._httpClient = httpClient;
   }
 
-  async signUp(contract: SignUpUserContract) {
+  async signUp(contract: SignUpContract) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(
@@ -44,7 +44,7 @@ export class NextAuthApiService implements AuthApiService {
     return Result.ok({ id: apiResponseResult.data.id });
   }
 
-  async signIn(contract: SignInUserContract) {
+  async signIn(contract: SignInContract) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(

@@ -8,14 +8,14 @@ z.config({
   jitless: true,
 });
 
-export const signUpUserContractSchema = z.object({
+export const signUpContractSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
 });
 
-export type SignUpUserContract = z.infer<typeof signUpUserContractSchema>;
+export type SignUpContract = z.infer<typeof signUpContractSchema>;
 
-export const signUpUserContractValidator = new ZodValidator(
-  signUpUserContractSchema,
-  'Sign up user contract validation failed.',
+export const signUpContractValidator = new ZodValidator(
+  signUpContractSchema,
+  'Sign up contract validation failed.',
 );

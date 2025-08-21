@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { RouteHandlerResponse } from '@/common/types';
 import {
-  type ChangeUserPasswordContract,
-  changeUserPasswordContractSchema,
-} from '@/user/interface/contracts/change-user-password.schema';
+  type PasswordChangeContract,
+  passwordChangeContractSchema,
+} from '@/user/interface/contracts/password-change.schema';
 
-const defaultPasswordChangeFormValues: ChangeUserPasswordContract = {
+const defaultPasswordChangeFormValues: PasswordChangeContract = {
   password: '',
   passwordConfirm: '',
 };
@@ -23,8 +23,8 @@ export function usePasswordChangeForm() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<ChangeUserPasswordContract>({
-    resolver: zodResolver(changeUserPasswordContractSchema),
+  } = useForm<PasswordChangeContract>({
+    resolver: zodResolver(passwordChangeContractSchema),
     mode: 'onTouched',
     defaultValues: defaultPasswordChangeFormValues,
   });

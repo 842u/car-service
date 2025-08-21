@@ -10,7 +10,7 @@ import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
-import { signUpUserContractValidator } from '@/user/interface/contracts/sign-up-user.schema';
+import { signUpContractValidator } from '@/user/interface/contracts/sign-up.schema';
 import { createClient } from '@/utils/supabase/server';
 
 export type SignUpApiResponse = ApiResponse<
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest): SignUpApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = signUpUserContractValidator.validate(body);
+  const validationResult = signUpContractValidator.validate(body);
 
   if (!validationResult.success) {
     const {

@@ -7,7 +7,7 @@ z.config({
   jitless: true,
 });
 
-export const changeUserPasswordContractSchema = z
+export const passwordChangeContractSchema = z
   .object({
     password: passwordSchema,
     passwordConfirm: passwordSchema,
@@ -17,11 +17,11 @@ export const changeUserPasswordContractSchema = z
     path: ['passwordConfirm'],
   });
 
-export type ChangeUserPasswordContract = z.infer<
-  typeof changeUserPasswordContractSchema
+export type PasswordChangeContract = z.infer<
+  typeof passwordChangeContractSchema
 >;
 
-export const changeUserPasswordContractValidator = new ZodValidator(
-  changeUserPasswordContractSchema,
-  'Change user password contract validation failed.',
+export const passwordChangeContractValidator = new ZodValidator(
+  passwordChangeContractSchema,
+  'Password change contract validation failed.',
 );

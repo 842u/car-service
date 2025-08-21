@@ -6,11 +6,11 @@ import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-se
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import {
-  type SignUpUserContract,
-  signUpUserContractSchema,
-} from '@/user/interface/contracts/sign-up-user.schema';
+  type SignUpContract,
+  signUpContractSchema,
+} from '@/user/interface/contracts/sign-up.schema';
 
-const defaultSignUpFormValues: SignUpUserContract = {
+const defaultSignUpFormValues: SignUpContract = {
   email: '',
   password: '',
 };
@@ -23,8 +23,8 @@ export function useSignUpForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignUpUserContract>({
-    resolver: zodResolver(signUpUserContractSchema),
+  } = useForm<SignUpContract>({
+    resolver: zodResolver(signUpContractSchema),
     mode: 'onTouched',
     defaultValues: defaultSignUpFormValues,
   });

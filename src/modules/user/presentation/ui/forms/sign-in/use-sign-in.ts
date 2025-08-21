@@ -7,11 +7,11 @@ import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-se
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import {
-  type SignInUserContract,
-  signInUserContractSchema,
-} from '@/user/interface/contracts/sign-in-user.schema';
+  type SignInContract,
+  signInContractSchema,
+} from '@/user/interface/contracts/sign-in.schema';
 
-const defaultSignInFormValues: SignInUserContract = {
+const defaultSignInFormValues: SignInContract = {
   email: '',
   password: '',
 };
@@ -26,8 +26,8 @@ export function useSignInForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignInUserContract>({
-    resolver: zodResolver(signInUserContractSchema),
+  } = useForm<SignInContract>({
+    resolver: zodResolver(signInContractSchema),
     mode: 'onTouched',
     defaultValues: defaultSignInFormValues,
   });
