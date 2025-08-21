@@ -3,7 +3,7 @@ import type { Route } from 'next';
 import type { AuthApiService } from '@/common/application/api/auth-api-service.interface';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { Result } from '@/common/interface/result/result';
-import type { CredentialsDto } from '@/user/application/dtos/credentials/credentials.dto';
+import type { SignInUserContract } from '@/user/interface/contracts/sign-in-user.schema';
 import type { SignUpUserContract } from '@/user/interface/contracts/sign-up-user.schema';
 import { signInApiResponseValidator } from '@/user/interface/validation/api/sign-in.schema';
 import { signUpApiResponseValidator } from '@/user/interface/validation/api/sign-up.schema';
@@ -44,8 +44,8 @@ export class NextAuthApiService implements AuthApiService {
     return Result.ok({ id: apiResponseResult.data.id });
   }
 
-  async signIn(credentials: CredentialsDto) {
-    const data = JSON.stringify(credentials);
+  async signIn(contract: SignInUserContract) {
+    const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(
       '/api/auth/sign-in' satisfies Route,

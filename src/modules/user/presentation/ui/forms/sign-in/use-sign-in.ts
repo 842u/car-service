@@ -6,10 +6,12 @@ import { useForm } from 'react-hook-form';
 import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { SignInFormData } from '@/user/interface/validation/forms/sign-in.schema';
-import { signInFormSchema } from '@/user/interface/validation/forms/sign-in.schema';
+import {
+  type SignInUserContract,
+  signInUserContractSchema,
+} from '@/user/interface/contracts/sign-in-user.schema';
 
-const defaultSignInFormValues: SignInFormData = {
+const defaultSignInFormValues: SignInUserContract = {
   email: '',
   password: '',
 };
@@ -24,8 +26,8 @@ export function useSignInForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignInFormData>({
-    resolver: zodResolver(signInFormSchema),
+  } = useForm<SignInUserContract>({
+    resolver: zodResolver(signInUserContractSchema),
     mode: 'onTouched',
     defaultValues: defaultSignInFormValues,
   });
