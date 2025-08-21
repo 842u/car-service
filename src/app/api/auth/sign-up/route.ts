@@ -5,8 +5,8 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
-import { credentialsDtoValidator } from '@/user/application/dtos/credentials/credentials.dto';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
+import { signUpUserContractValidator } from '@/user/interface/contracts/sign-up-user.schema';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest): SignUpApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = credentialsDtoValidator.validate(body);
+  const validationResult = signUpUserContractValidator.validate(body);
 
   if (!validationResult.success) {
     const {

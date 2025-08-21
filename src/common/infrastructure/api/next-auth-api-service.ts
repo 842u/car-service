@@ -4,6 +4,7 @@ import type { AuthApiService } from '@/common/application/api/auth-api-service.i
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { Result } from '@/common/interface/result/result';
 import type { CredentialsDto } from '@/user/application/dtos/credentials/credentials.dto';
+import type { SignUpUserContract } from '@/user/interface/contracts/sign-up-user.schema';
 import { signInApiResponseValidator } from '@/user/interface/validation/api/sign-in.schema';
 import { signUpApiResponseValidator } from '@/user/interface/validation/api/sign-up.schema';
 
@@ -14,8 +15,8 @@ export class NextAuthApiService implements AuthApiService {
     this._httpClient = httpClient;
   }
 
-  async signUp(credentials: CredentialsDto) {
-    const data = JSON.stringify(credentials);
+  async signUp(contract: SignUpUserContract) {
+    const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(
       '/api/auth/sign-up' satisfies Route,

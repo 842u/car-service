@@ -5,10 +5,12 @@ import { useForm } from 'react-hook-form';
 import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { SignUpFormData } from '@/user/interface/validation/forms/sign-up.schema';
-import { signUpFormSchema } from '@/user/interface/validation/forms/sign-up.schema';
+import {
+  type SignUpUserContract,
+  signUpUserContractSchema,
+} from '@/user/interface/contracts/sign-up-user.schema';
 
-const defaultSignUpFormValues: SignUpFormData = {
+const defaultSignUpFormValues: SignUpUserContract = {
   email: '',
   password: '',
 };
@@ -21,8 +23,8 @@ export function useSignUpForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpFormSchema),
+  } = useForm<SignUpUserContract>({
+    resolver: zodResolver(signUpUserContractSchema),
     mode: 'onTouched',
     defaultValues: defaultSignUpFormValues,
   });
