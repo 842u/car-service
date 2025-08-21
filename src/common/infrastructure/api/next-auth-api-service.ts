@@ -77,7 +77,7 @@ export class NextAuthApiService implements AuthApiService {
   async passwordChange(contract: PasswordChangeContract) {
     const data = JSON.stringify(contract);
 
-    const fetchResult = await this._httpClient.post(
+    const fetchResult = await this._httpClient.patch(
       '/api/auth/password-change' satisfies Route,
       data,
     );
