@@ -90,7 +90,11 @@ export class SupabaseDatabaseClient implements DatabaseClient {
     ) => Promise<PostgrestResponse<T> | PostgrestSingleResponse<T>>,
   ) {
     try {
-      const { data, error } = await transactionCallback(this._client.from);
+      const response = await transactionCallback(
+        this._client.from.bind(this._client),
+      );
+
+      const { data, error } = response;
 
       if (error) {
         return Result.fail({
@@ -124,7 +128,9 @@ export class SupabaseDatabaseClient implements DatabaseClient {
     ) => Promise<PostgrestResponse<T> | PostgrestSingleResponse<T>>,
   ) {
     try {
-      const { data, error } = await rpcCallback(this._client.rpc);
+      const { data, error } = await rpcCallback(
+        this._client.rpc.bind(this._client),
+      );
 
       if (error) {
         return Result.fail({
