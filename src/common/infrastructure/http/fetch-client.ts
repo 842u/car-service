@@ -36,11 +36,11 @@ class FetchRequestController implements RequestController {
   }
 }
 
-type FetchRequestConfig = RequestConfig<FetchRequestController>;
-
 type FetchResponseError = HttpError;
 
 type FetchResponseResult = ResponseResult<unknown, FetchResponseError>;
+
+export type FetchRequestConfig = RequestConfig<FetchRequestController>;
 
 export class FetchClient implements HttpClient {
   private baseUrl: string;
