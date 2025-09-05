@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-explicit-any:0 */
 
-import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
+import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
 import { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 
@@ -64,8 +64,8 @@ export const DependencyTokens = {
     Symbol('DATABASE_BROWSER_CLIENT'),
   ),
   HTTP_CLIENT: new DependencyToken<FetchClient>(Symbol('HTTP_CLIENT')),
-  AUTH_API_SERVICE: new DependencyToken<NextAuthApiService>(
-    Symbol('AUTH_API_SERVICE'),
+  AUTH_API_CLIENT: new DependencyToken<NextAuthApiClient>(
+    Symbol('AUTH_API_CLIENT'),
   ),
 } as const;
 
@@ -75,13 +75,13 @@ dependencyContainer.registerCached(
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.AUTH_API_SERVICE,
+  DependencyTokens.AUTH_API_CLIENT,
   async () => {
     const fetchClient = await dependencyContainer.resolve<FetchClient>(
       DependencyTokens.HTTP_CLIENT,
     );
 
-    return new NextAuthApiService(fetchClient);
+    return new NextAuthApiClient(fetchClient);
   },
 );
 

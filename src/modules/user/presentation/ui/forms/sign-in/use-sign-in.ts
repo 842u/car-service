@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { NextAuthApiService } from '@/common/infrastructure/api/next-auth-api-service';
+import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import {
@@ -38,7 +38,7 @@ export function useSignInForm() {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    const nextAuthApiService = new NextAuthApiService(fetchClient);
+    const nextAuthApiService = new NextAuthApiClient(fetchClient);
 
     const serviceResult = await nextAuthApiService.signIn(data);
 
