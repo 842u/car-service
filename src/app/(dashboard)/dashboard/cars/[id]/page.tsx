@@ -12,15 +12,19 @@ type CarPageProps = {
 export default async function CarPage({ params }: CarPageProps) {
   const { id } = await params;
 
+  const authClient = await dependencyContainer.resolve(
+    DependencyTokens.AUTH_SERVER_CLIENT,
+  );
+
+  const sessionResult = await authClient.getSession();
+
+  if (!sessionResult.success) redirect('/dashboard/sign-in' satisfies Route);
+
+  const { user } = sessionResult.data;
+
   const dbClient = await dependencyContainer.resolve(
     DependencyTokens.DATABASE_SERVER_CLIENT,
   );
-
-  const userResult = await dbClient.auth.getUser();
-
-  if (!userResult.success) redirect('/dashboard/sign-in' satisfies Route);
-
-  const { user } = userResult.data;
 
   const ownershipResult = await dbClient.transaction(async (from) =>
     from('cars_ownerships')
