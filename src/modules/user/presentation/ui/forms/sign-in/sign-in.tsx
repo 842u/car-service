@@ -29,13 +29,13 @@ export function SignInForm() {
           placeholder="Enter your password ..."
           register={register}
         />
+        <Link
+          className="text-light-900 dark:text-dark-200 absolute top-0 right-0 text-sm"
+          href={'/dashboard/forgot-password' satisfies Route}
+        >
+          Forgot Password?
+        </Link>
       </div>
-      <Link
-        className="text-light-900 dark:text-dark-200 absolute top-0 right-0 text-sm"
-        href={'/dashboard/forgot-password' satisfies Route}
-      >
-        Forgot Password?
-      </Link>
       <Form.ButtonSubmit disabled={isDisabled} isSubmitting={isSubmitting}>
         Sign In
       </Form.ButtonSubmit>
