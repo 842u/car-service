@@ -5,7 +5,7 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
-import { dependencyContainer, DependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type {
   SignInApiResponseData,
   SignInApiResponseError,
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest): SignInApiResponse {
   const { email, password } = validationResult.data;
 
   const authClient = await dependencyContainer.resolve(
-    DependencyTokens.AUTH_SERVER_CLIENT,
+    dependencyTokens.AUTH_SERVER_CLIENT,
   );
 
   const signInResult = await authClient.signIn({ email, password });

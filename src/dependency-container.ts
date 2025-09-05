@@ -62,7 +62,7 @@ class DependencyContainer {
 
 export const dependencyContainer = new DependencyContainer();
 
-export const DependencyTokens = {
+export const dependencyTokens = {
   SUPABASE_SERVER_CLIENT: new DependencyToken<SupabaseClient<Database>>(
     Symbol('SUPABASE_SERVER_CLIENT'),
   ),
@@ -88,15 +88,15 @@ export const DependencyTokens = {
 } as const;
 
 dependencyContainer.registerCached(
-  DependencyTokens.HTTP_CLIENT,
+  dependencyTokens.HTTP_CLIENT,
   () => new FetchClient(),
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.AUTH_API_CLIENT,
+  dependencyTokens.AUTH_API_CLIENT,
   async () => {
     const fetchClient = await dependencyContainer.resolve<FetchClient>(
-      DependencyTokens.HTTP_CLIENT,
+      dependencyTokens.HTTP_CLIENT,
     );
 
     return new NextAuthApiClient(fetchClient);
@@ -104,7 +104,7 @@ dependencyContainer.registerCached(
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.SUPABASE_SERVER_CLIENT,
+  dependencyTokens.SUPABASE_SERVER_CLIENT,
   async () => {
     const cookieStore = await cookies();
     const client = createServerClient<Database>(supabaseUrl, supabaseKey, {
@@ -130,7 +130,7 @@ dependencyContainer.registerCached(
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.SUPABASE_BROWSER_CLIENT,
+  dependencyTokens.SUPABASE_BROWSER_CLIENT,
   () => {
     const client = createBrowserClient<Database>(supabaseUrl, supabaseKey);
     return client;
@@ -138,10 +138,10 @@ dependencyContainer.registerCached(
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.AUTH_SERVER_CLIENT,
+  dependencyTokens.AUTH_SERVER_CLIENT,
   async () => {
     const supabaseServerClient = await dependencyContainer.resolve(
-      DependencyTokens.SUPABASE_SERVER_CLIENT,
+      dependencyTokens.SUPABASE_SERVER_CLIENT,
     );
 
     return new SupabaseAuthClient(supabaseServerClient);
@@ -149,10 +149,10 @@ dependencyContainer.registerCached(
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.AUTH_BROWSER_CLIENT,
+  dependencyTokens.AUTH_BROWSER_CLIENT,
   async () => {
     const supabaseBrowserClient = await dependencyContainer.resolve(
-      DependencyTokens.SUPABASE_BROWSER_CLIENT,
+      dependencyTokens.SUPABASE_BROWSER_CLIENT,
     );
 
     return new SupabaseAuthClient(supabaseBrowserClient);
@@ -160,10 +160,10 @@ dependencyContainer.registerCached(
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.DATABASE_SERVER_CLIENT,
+  dependencyTokens.DATABASE_SERVER_CLIENT,
   async () => {
     const supabaseServerClient = await dependencyContainer.resolve(
-      DependencyTokens.SUPABASE_SERVER_CLIENT,
+      dependencyTokens.SUPABASE_SERVER_CLIENT,
     );
 
     return new SupabaseDatabaseClient(supabaseServerClient);
@@ -171,10 +171,10 @@ dependencyContainer.registerCached(
 );
 
 dependencyContainer.registerCached(
-  DependencyTokens.DATABASE_BROWSER_CLIENT,
+  dependencyTokens.DATABASE_BROWSER_CLIENT,
   async () => {
     const supabaseBrowserClient = await dependencyContainer.resolve(
-      DependencyTokens.SUPABASE_BROWSER_CLIENT,
+      dependencyTokens.SUPABASE_BROWSER_CLIENT,
     );
 
     return new SupabaseDatabaseClient(supabaseBrowserClient);

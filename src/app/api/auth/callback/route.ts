@@ -5,7 +5,7 @@ import {
   errorApiResponse,
   redirectApiResponse,
 } from '@/common/interface/api/response.interface';
-import { dependencyContainer, DependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 
 export const maxDuration = 10;
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? ON_SUCCESS_PATH;
 
   const authClient = await dependencyContainer.resolve(
-    DependencyTokens.AUTH_SERVER_CLIENT,
+    dependencyTokens.AUTH_SERVER_CLIENT,
   );
 
   const token_hash = searchParams.get('token_hash');

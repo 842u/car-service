@@ -5,7 +5,7 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
-import { dependencyContainer, DependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import { Password } from '@/user/domain/user/value-objects/password/password';
 import {
   type PasswordChangeApiResponseData,
@@ -61,7 +61,7 @@ export async function PATCH(request: NextRequest): PasswordChangeApiResponse {
   const password = passwordResult.data.value;
 
   const authClient = await dependencyContainer.resolve(
-    DependencyTokens.AUTH_SERVER_CLIENT,
+    dependencyTokens.AUTH_SERVER_CLIENT,
   );
 
   const updateResult = await authClient.updateUser({
