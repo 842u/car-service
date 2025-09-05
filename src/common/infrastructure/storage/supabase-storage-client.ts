@@ -18,10 +18,10 @@ type FileBody =
   | string;
 
 export class SupabaseStorageClient implements StorageClient {
-  private readonly _client: SupabaseClient<Database>;
+  private readonly _storageClient: SupabaseClient<Database>['storage'];
 
   constructor(client: SupabaseClient) {
-    this._client = client;
+    this._storageClient = client.storage;
   }
 
   async upload(
@@ -31,7 +31,7 @@ export class SupabaseStorageClient implements StorageClient {
     fileOptions: FileOptions,
   ) {
     try {
-      const { data, error } = await this._client.storage
+      const { data, error } = await this._storageClient
         .from(bucketId)
         .upload(path, fileBody, fileOptions);
 
