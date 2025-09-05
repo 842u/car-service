@@ -1,3 +1,4 @@
+import type { NextURL } from 'next/dist/server/web/next-url';
 import { NextResponse } from 'next/server';
 
 import type { FailureResult, SuccessResult } from '../result/result';
@@ -45,6 +46,9 @@ export function successApiResponse<T>(data: T, status: number) {
   return NextResponse.json(responseResult, { status });
 }
 
-export function redirectApiResponse(url: string, status: number) {
+export function redirectApiResponse(
+  url: string | NextURL | URL,
+  status: number,
+) {
   return NextResponse.redirect(url, { status });
 }

@@ -1,11 +1,11 @@
-/* eslint  @typescript-eslint/naming-convention: 0 */
-
 import { type EmailOtpType } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
 
-import type { RouteHandlerResponse } from '@/common/types';
-import { createClient } from '@/utils/supabase/server';
+import {
+  errorApiResponse,
+  redirectApiResponse,
+} from '@/common/interface/api/response.interface';
+import { dependencyContainer, DependencyTokens } from '@/dependency-container';
 
 export const maxDuration = 10;
 
@@ -16,42 +16,40 @@ export async function GET(request: NextRequest) {
   const { searchParams } = requestUrl;
   const next = searchParams.get('next') ?? ON_SUCCESS_PATH;
 
-  const { auth } = await createClient();
+  const authClient = await dependencyContainer.resolve(
+    DependencyTokens.AUTH_SERVER_CLIENT,
+  );
 
   const token_hash = searchParams.get('token_hash');
   const type = searchParams.get('type') as EmailOtpType | null;
 
   if (token_hash && type) {
-    const { error } = await auth.verifyOtp({ type, token_hash });
+    const otpResult = await authClient.verifyOtp({ type, token_hash });
 
     searchParams.delete('token_hash');
     searchParams.delete('type');
     searchParams.delete('next');
 
-    if (error) {
-      return NextResponse.json<RouteHandlerResponse>(
-        { error: { message: error.message }, data: null },
-        { status: error.status },
-      );
+    if (!otpResult.success) {
+      const { message } = otpResult.error;
+      return errorApiResponse({ message }, 400);
     }
   }
 
   const code = searchParams.get('code');
 
   if (code) {
-    const { error } = await auth.exchangeCodeForSession(code);
+    const exchangeResult = await authClient.exchangeCodeForSession(code);
 
     searchParams.delete('code');
 
-    if (error) {
-      return NextResponse.json<RouteHandlerResponse>(
-        { error: { message: error.message }, data: null },
-        { status: error.status },
-      );
+    if (!exchangeResult.success) {
+      const { message } = exchangeResult.error;
+      return errorApiResponse({ message }, 400);
     }
   }
 
   requestUrl.pathname = next;
 
-  return NextResponse.redirect(requestUrl);
+  return redirectApiResponse(requestUrl, 307);
 }
