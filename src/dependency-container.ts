@@ -18,7 +18,7 @@ class DependencyToken<_T> {
 }
 
 class DependencyContainer {
-  private singletons = new Map<DependencyToken<any>, any>();
+  private instances = new Map<DependencyToken<any>, any>();
   private factories = new Map<
     DependencyToken<any>,
     (container: DependencyContainer) => any
@@ -36,18 +36,18 @@ class DependencyContainer {
     factory: (container: DependencyContainer) => T | Promise<T>,
   ): void {
     this.factories.set(token, async (container) => {
-      if (!this.singletons.has(token)) {
+      if (!this.instances.has(token)) {
         const instance = await factory(container);
-        this.singletons.set(token, instance);
+        this.instances.set(token, instance);
       }
 
-      return this.singletons.get(token);
+      return this.instances.get(token);
     });
   }
 
   async resolve<T>(token: DependencyToken<T>): Promise<T> {
-    if (this.singletons.has(token)) {
-      return this.singletons.get(token);
+    if (this.instances.has(token)) {
+      return this.instances.get(token);
     }
 
     const factory = this.factories.get(token);
