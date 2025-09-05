@@ -26,7 +26,7 @@ export default async function CarPage({ params }: CarPageProps) {
     DependencyTokens.DATABASE_SERVER_CLIENT,
   );
 
-  const ownershipResult = await dbClient.transaction(async (from) =>
+  const ownershipResult = await dbClient.query(async (from) =>
     from('cars_ownerships')
       .select()
       .eq('car_id', id)

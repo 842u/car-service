@@ -162,31 +162,21 @@ dependencyContainer.registerCached(
 dependencyContainer.registerCached(
   DependencyTokens.DATABASE_SERVER_CLIENT,
   async () => {
-    const result = await SupabaseDatabaseClient.create({
-      type: 'server',
-      supabaseKey,
-      supabaseUrl,
-    });
+    const supabaseServerClient = await dependencyContainer.resolve(
+      DependencyTokens.SUPABASE_SERVER_CLIENT,
+    );
 
-    if (!result.success)
-      throw new Error('Failed to create database server client.');
-
-    return result.data;
+    return new SupabaseDatabaseClient(supabaseServerClient);
   },
 );
 
 dependencyContainer.registerCached(
   DependencyTokens.DATABASE_BROWSER_CLIENT,
   async () => {
-    const result = await SupabaseDatabaseClient.create({
-      type: 'browser',
-      supabaseKey,
-      supabaseUrl,
-    });
+    const supabaseBrowserClient = await dependencyContainer.resolve(
+      DependencyTokens.SUPABASE_BROWSER_CLIENT,
+    );
 
-    if (!result.success)
-      throw new Error('Failed to create database browser client.');
-
-    return result.data;
+    return new SupabaseDatabaseClient(supabaseBrowserClient);
   },
 );
