@@ -5,12 +5,12 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
+import { dependencyContainer, DependencyTokens } from '@/dependency-container';
 import type {
   SignInApiResponseData,
   SignInApiResponseError,
 } from '@/user/interface/api/sign-in.schema';
 import { signInContractValidator } from '@/user/interface/contracts/sign-in.schema';
-import { createClient } from '@/utils/supabase/server';
 
 export type SignInApiResponse = ApiResponse<
   SignInApiResponseData,
@@ -38,34 +38,27 @@ export async function POST(request: NextRequest): SignInApiResponse {
   const validationResult = signInContractValidator.validate(body);
 
   if (!validationResult.success) {
-    const {
-      error: { message, issues },
-    } = validationResult;
+    const { message, issues } = validationResult.error;
 
     return errorApiResponse({ message, issues }, 400);
   }
 
   const { email, password } = validationResult.data;
 
-  const { auth } = await createClient();
+  const authClient = await dependencyContainer.resolve(
+    DependencyTokens.AUTH_SERVER_CLIENT,
+  );
 
-  try {
-    const { data: signInData, error: signInError } =
-      await auth.signInWithPassword({
-        email,
-        password,
-      });
+  const signInResult = await authClient.signIn({ email, password });
 
-    if (signInError) {
-      return errorApiResponse({ message: signInError.message }, 401);
-    }
-
-    return successApiResponse({ id: signInData.user.id }, 200);
-  } catch (error) {
-    if (error instanceof Error) {
-      return errorApiResponse({ message: error.message }, 500);
-    }
-
-    return errorApiResponse({ message: 'Unexpected error.' }, 500);
+  if (!signInResult.success) {
+    const { message } = signInResult.error;
+    return errorApiResponse({ message }, 401);
   }
+
+  const {
+    user: { id },
+  } = signInResult.data;
+
+  return successApiResponse({ id }, 200);
 }
