@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import { type NextRequest } from 'next/server';
 
 import {
@@ -5,13 +6,13 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
 import { signUpContractValidator } from '@/user/interface/contracts/sign-up.schema';
-import { createClient } from '@/utils/supabase/server';
 
 export type SignUpApiResponse = ApiResponse<
   SignUpApiResponseData,
@@ -58,44 +59,45 @@ export async function POST(request: NextRequest): SignUpApiResponse {
     return errorApiResponse({ message, issues }, 400);
   }
 
-  const { email, password } = credentialsResult.data;
+  const {
+    email: { value: email },
+    password: { value: password },
+  } = credentialsResult.data;
 
-  const requestUrl = request.nextUrl.clone();
+  const authClient = await dependencyContainer.resolve(
+    dependencyTokens.AUTH_SERVER_CLIENT,
+  );
 
-  const { auth } = await createClient();
+  const successRedirectPath = '/dashboard' satisfies Route;
 
-  try {
-    const { data, error } = await auth.signUp({
-      email: email.value,
-      password: password.value,
-      options: {
-        emailRedirectTo: requestUrl.origin,
-      },
-    });
+  const signUpResult = await authClient.signUp(
+    { email, password },
+    { emailRedirectTo: successRedirectPath },
+  );
 
-    if (error) {
-      return errorApiResponse({ message: error.message }, 500);
-    }
+  if (!signUpResult.success) {
+    const { message } = signUpResult.error;
+    return errorApiResponse({ message }, 400);
+  }
 
+  const { user } = signUpResult.data;
+
+  if (!user?.identities?.length) {
     /*
      * If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user. For users who forget that have and account send email with password reset flow.
      */
-    if (data.user?.identities?.length === 0) {
-      const { error } = await auth.resetPasswordForEmail(email.value, {
-        redirectTo: requestUrl.origin,
-      });
+    const resetPasswordResult = await authClient.resetPassword({
+      email,
+      options: {
+        redirectTo: successRedirectPath,
+      },
+    });
 
-      if (error) {
-        return errorApiResponse({ message: error.message }, 500);
-      }
+    if (!resetPasswordResult.success) {
+      const { message } = resetPasswordResult.error;
+      return errorApiResponse({ message }, 400);
     }
-
-    return successApiResponse({ id: data.user?.id || '' }, 200);
-  } catch (error) {
-    if (error instanceof Error) {
-      return errorApiResponse({ message: error.message }, 500);
-    }
-
-    return errorApiResponse({ message: 'Unexpected error.' }, 500);
   }
+
+  return successApiResponse({ id: user?.id || '' }, 200);
 }

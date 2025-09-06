@@ -68,9 +68,17 @@ export class SupabaseAuthClient implements AuthClient {
     }
   }
 
-  async signUp(contract: SignUpContract) {
+  async signUp(
+    contract: SignUpContract,
+    options?: {
+      emailRedirectTo?: string;
+    },
+  ) {
     try {
-      const { data, error } = await this._authClient.signUp(contract);
+      const { data, error } = await this._authClient.signUp({
+        ...contract,
+        options,
+      });
 
       if (error) return Result.fail({ message: error.message });
 
