@@ -103,7 +103,7 @@ dependencyContainer.registerCached(
   },
 );
 
-dependencyContainer.registerCached(
+dependencyContainer.registerFactory(
   dependencyTokens.SUPABASE_SERVER_CLIENT,
   async () => {
     const cookieStore = await cookies();
@@ -129,7 +129,7 @@ dependencyContainer.registerCached(
   },
 );
 
-dependencyContainer.registerCached(
+dependencyContainer.registerFactory(
   dependencyTokens.SUPABASE_BROWSER_CLIENT,
   () => {
     const client = createBrowserClient<Database>(supabaseUrl, supabaseKey);
@@ -137,7 +137,7 @@ dependencyContainer.registerCached(
   },
 );
 
-dependencyContainer.registerCached(
+dependencyContainer.registerFactory(
   dependencyTokens.AUTH_SERVER_CLIENT,
   async () => {
     const supabaseServerClient = await dependencyContainer.resolve(
@@ -148,7 +148,7 @@ dependencyContainer.registerCached(
   },
 );
 
-dependencyContainer.registerCached(
+dependencyContainer.registerFactory(
   dependencyTokens.AUTH_BROWSER_CLIENT,
   async () => {
     const supabaseBrowserClient = await dependencyContainer.resolve(
@@ -159,7 +159,7 @@ dependencyContainer.registerCached(
   },
 );
 
-dependencyContainer.registerCached(
+dependencyContainer.registerFactory(
   dependencyTokens.DATABASE_SERVER_CLIENT,
   async () => {
     const supabaseServerClient = await dependencyContainer.resolve(
@@ -170,7 +170,7 @@ dependencyContainer.registerCached(
   },
 );
 
-dependencyContainer.registerCached(
+dependencyContainer.registerFactory(
   dependencyTokens.DATABASE_BROWSER_CLIENT,
   async () => {
     const supabaseBrowserClient = await dependencyContainer.resolve(
