@@ -1,15 +1,16 @@
 'use client';
 
 import type { Provider } from '@supabase/supabase-js';
+import type { Route } from 'next';
 import type { JSX } from 'react';
 import { useState } from 'react';
 
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import { GitHubIcon } from '@/icons/github';
 import { GoogleIcon } from '@/icons/google';
 import { Button } from '@/ui/button/button';
-import { signInWithOAuthHandler } from '@/utils/supabase/general';
 
 const providerMappings: {
   [K in Provider]?: { text: string; icon: JSX.Element };
@@ -46,18 +47,31 @@ export function OAuthButton({ provider }: OAuthButtonProps) {
   const handleButtonClick = async () => {
     setIsLoading(true);
 
-    const { data, error } = await signInWithOAuthHandler(provider);
+    const authClient = await dependencyContainer.resolve(
+      dependencyTokens.AUTH_BROWSER_CLIENT,
+    );
 
-    if (error) {
-      addToast(error.message, 'error');
+    const redirectUrl = new URL(window.location.origin);
+    redirectUrl.pathname = '/api/auth/callback' satisfies Route;
+
+    const signInResult = await authClient.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: redirectUrl.toString(),
+      },
+    });
+
+    if (!signInResult.success) {
+      const { message } = signInResult.error;
+      addToast(message, 'error');
       setIsLoading(false);
+      return;
     }
 
-    data &&
-      addToast(
-        `Successfully connected with ${providerMappings[provider]?.text}.`,
-        'success',
-      );
+    addToast(
+      `Successfully connected with ${providerMappings[provider]?.text}.`,
+      'success',
+    );
   };
 
   return (
