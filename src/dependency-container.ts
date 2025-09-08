@@ -2,7 +2,6 @@
 
 import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
 
 import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
 import { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
@@ -106,6 +105,10 @@ dependencyContainer.registerCached(
 dependencyContainer.registerFactory(
   dependencyTokens.SUPABASE_SERVER_CLIENT,
   async () => {
+    /**
+     * *  Dynamic import to avoid loading next/headers in browser when using classic module import
+     */
+    const { cookies } = await import('next/headers');
     const cookieStore = await cookies();
     const client = createServerClient<Database>(supabaseUrl, supabaseKey, {
       cookies: {
