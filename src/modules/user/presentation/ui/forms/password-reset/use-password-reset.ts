@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import {
   type PasswordResetContract,
   passwordResetContractSchema,
 } from '@/user/interface/contracts/password-reset.schema';
-import { createClient } from '@/utils/supabase/client';
 
 const defaultPasswordResetFormValues: PasswordResetContract = {
   email: '',
@@ -28,20 +28,29 @@ export function usePasswordResetForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (formData) => {
-    const supabase = createClient();
-
-    const { data, error } = await supabase.auth.resetPasswordForEmail(
-      formData.email,
-      { redirectTo: window.location.origin },
+    const authClient = await dependencyContainer.resolve(
+      dependencyTokens.AUTH_BROWSER_CLIENT,
     );
 
-    error && addToast(error.message, 'error');
+    const { email } = formData;
 
-    data &&
-      addToast(
-        'Your password reset request has been received. Please check your email for further instructions.',
-        'success',
-      );
+    const resetPasswordResult = await authClient.resetPassword({
+      email,
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+
+    if (!resetPasswordResult.success) {
+      const { message } = resetPasswordResult.error;
+      addToast(message, 'error');
+      return;
+    }
+
+    addToast(
+      'Your password reset request has been received. Please check your email for further instructions.',
+      'success',
+    );
   });
 
   useEffect(() => {
