@@ -1,10 +1,14 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 
-import { dataResponse, errorResponse } from '@/common/utils/next/routeHandlers';
+import {
+  errorApiResponse,
+  successApiResponse,
+} from '@/common/interface/api/response.interface';
+import { errorResponse } from '@/common/utils/next/routeHandlers';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
-import { createClient } from '@/utils/supabase/server';
 
 export type ServiceLogPostRouteHandlerRequest = {
   formData: CarServiceLogFormValues;
@@ -65,31 +69,42 @@ export async function POST(request: NextRequest) {
     return errorResponse('Validation error: Unknown error occurred.', 400);
   }
 
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-
-  if (userError) {
-    return errorResponse('Failed to retrieve authenticated user.', 502);
-  }
-
-  const { data: serviceLogData, error: serviceLogError } = await supabase
-    .from('service_logs')
-    .insert({
-      ...formData,
-      created_by: userData.user.id,
-      car_id,
-    })
-    .select('id')
-    .single();
-
-  if (serviceLogError) {
-    return errorResponse('Failed to insert service log entry.', 502);
-  }
-
-  return dataResponse<ServiceLogRouteHandlerResponse>(
-    { id: serviceLogData.id },
-    201,
+  const authClient = await dependencyContainer.resolve(
+    dependencyTokens.AUTH_SERVER_CLIENT,
   );
+
+  const sessionResult = await authClient.getSession();
+
+  if (!sessionResult.success) {
+    const { message } = sessionResult.error;
+    return errorApiResponse({ message }, 401);
+  }
+
+  const { user } = sessionResult.data;
+
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_SERVER_CLIENT,
+  );
+
+  const queryResult = await dbClient.query(async (from) =>
+    from('service_logs')
+      .insert({
+        ...formData,
+        created_by: user.id,
+        car_id,
+      })
+      .select('id')
+      .single(),
+  );
+
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    return errorApiResponse({ message }, 502);
+  }
+
+  const { id } = queryResult.data;
+
+  return successApiResponse({ id }, 201);
 }
 
 export async function PATCH(request: NextRequest) {
@@ -135,21 +150,24 @@ export async function PATCH(request: NextRequest) {
     return errorResponse('Validation error: Unknown error occurred.', 400);
   }
 
-  const supabase = await createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_SERVER_CLIENT,
+  );
 
-  const { data: serviceLogData, error: serviceLogError } = await supabase
-    .from('service_logs')
-    .update({ ...formData })
-    .eq('id', service_log_id)
-    .select('id')
-    .single();
+  const queryResult = await dbClient.query(async (from) =>
+    from('service_logs')
+      .update({ ...formData })
+      .eq('id', service_log_id)
+      .select('id')
+      .single(),
+  );
 
-  if (serviceLogError) {
-    return errorResponse('Failed to update service log entry.', 502);
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    return errorApiResponse({ message }, 502);
   }
 
-  return dataResponse<ServiceLogRouteHandlerResponse>(
-    { id: serviceLogData.id },
-    200,
-  );
+  const { id } = queryResult.data;
+
+  return successApiResponse({ id }, 200);
 }
