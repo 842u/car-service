@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { createClient } from '@/utils/supabase/client';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
 import { getProfilesByUsersId } from '@/utils/supabase/tables/profiles';
@@ -53,11 +53,18 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
 
   useEffect(() => {
     const getUser = async () => {
-      const supabase = createClient();
+      const authClient = await dependencyContainer.resolve(
+        dependencyTokens.AUTH_BROWSER_CLIENT,
+      );
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const sessionResult = await authClient.getSession();
+
+      if (!sessionResult.success) {
+        setUser(null);
+        return;
+      }
+
+      const { user } = sessionResult.data;
 
       setUser(user);
     };
