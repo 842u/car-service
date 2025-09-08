@@ -5,12 +5,12 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { Profile, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
 import { Table } from '@/ui/table/table';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
-import { createClient } from '@/utils/supabase/client';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';
 
@@ -125,11 +125,18 @@ export function ServiceLogsTable({
 
   useEffect(() => {
     const getUser = async () => {
-      const supabase = createClient();
+      const authClient = await dependencyContainer.resolve(
+        dependencyTokens.AUTH_BROWSER_CLIENT,
+      );
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const sessionResult = await authClient.getSession();
+
+      if (!sessionResult.success) {
+        setUser(null);
+        return;
+      }
+
+      const { user } = sessionResult.data;
 
       setUser(user);
     };
