@@ -9,8 +9,8 @@ import type {
 } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { RouteHandlerResponse } from '@/common/types';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import { createClient } from '@/utils/supabase/client';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
   serviceLogsByCarIdAddOnError,
@@ -84,13 +84,22 @@ export function useAddForm({
 
   useEffect(() => {
     const getUserId = async () => {
-      const supabase = createClient();
+      const authClient = await dependencyContainer.resolve(
+        dependencyTokens.AUTH_BROWSER_CLIENT,
+      );
+
+      const sessionResult = await authClient.getSession();
+
+      if (!sessionResult.success) {
+        setUserId(undefined);
+        return;
+      }
 
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        user: { id },
+      } = sessionResult.data;
 
-      setUserId(session?.user.id);
+      setUserId(id);
     };
 
     getUserId();
