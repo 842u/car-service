@@ -1,34 +1,45 @@
-import { createClient } from '../client';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 
 export async function getCarOwnerships(carId: string) {
-  const supabase = createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const { data, error } = await supabase
-    .from('cars_ownerships')
-    .select()
-    .eq('car_id', carId)
-    .order('created_at', { ascending: false });
+  const queryResult = await dbClient.query(async (from) =>
+    from('cars_ownerships')
+      .select()
+      .eq('car_id', carId)
+      .order('created_at', { ascending: false }),
+  );
 
-  if (error) throw new Error(error.message);
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
+
+  const { data } = queryResult;
 
   return data;
 }
 
-export async function addCarOwnershipByUserId(
-  carId: string,
-  userId: string | null,
-) {
-  if (!userId) throw new Error('You must provide a new owner ID.');
+export async function addCarOwnershipByUserId(carId: string, userId: string) {
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const supabase = createClient();
+  const queryResult = await dbClient.query(async (from) =>
+    from('cars_ownerships')
+      .insert({ car_id: carId, owner_id: userId, is_primary_owner: false })
+      .select()
+      .single(),
+  );
 
-  const { data, error } = await supabase
-    .from('cars_ownerships')
-    .insert({ car_id: carId, owner_id: userId, is_primary_owner: false })
-    .select()
-    .single();
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  if (error) throw new Error(error.message || "Can't add new car owner.");
+  const { data } = queryResult;
 
   return data;
 }
@@ -37,40 +48,50 @@ export async function deleteCarOwnershipsByUsersIds(
   carId: string,
   usersIds: string[],
 ) {
-  const supabase = createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const { data, error } = await supabase
-    .from('cars_ownerships')
-    .delete()
-    .eq('car_id', carId)
-    .in('owner_id', usersIds)
-    .select();
+  const queryResult = await dbClient.query(async (from) =>
+    from('cars_ownerships')
+      .delete()
+      .eq('car_id', carId)
+      .in('owner_id', usersIds)
+      .select()
+      .single(),
+  );
 
-  if (error) throw new Error(error.message || "Can't delete car owner.");
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  if (!data.length)
-    throw new Error(
-      'Something went wrong when deleting car ownership. Try Again.',
-    );
+  const { data } = queryResult;
 
   return data;
 }
 
 export async function updateCarPrimaryOwnershipByUserId(
   carId: string,
-  newPrimaryOwnerId: string | null,
+  newPrimaryOwnerId: string,
 ) {
-  if (!newPrimaryOwnerId)
-    throw new Error('You must provide a new primary owner ID.');
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const supabase = createClient();
+  const queryResult = await dbClient.rpc(async (rpc) =>
+    rpc('switch_primary_car_owner', {
+      new_primary_owner_id: newPrimaryOwnerId,
+      target_car_id: carId,
+    }),
+  );
 
-  const { data, error } = await supabase.rpc('switch_primary_car_owner', {
-    new_primary_owner_id: newPrimaryOwnerId,
-    target_car_id: carId,
-  });
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  if (error) throw new Error(error.message);
+  const { data } = queryResult;
 
   return data;
 }
