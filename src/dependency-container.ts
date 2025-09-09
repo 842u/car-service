@@ -9,31 +9,36 @@ import { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabas
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { Database } from '@/types/supabase';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const defaultSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const defaultSupabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-class DependencyToken<_T> {
+interface SupabaseConfig {
+  supabaseUrl?: string;
+  supabaseKey?: string;
+}
+
+class DependencyToken<_T, _P = void> {
   constructor(public readonly name: symbol) {}
 }
 
 class DependencyContainer {
   private instances = new Map<DependencyToken<any>, any>();
   private factories = new Map<
-    DependencyToken<any>,
-    (container: DependencyContainer) => any
+    DependencyToken<any, any>,
+    (container: DependencyContainer, params?: any) => any
   >();
 
-  registerFactory<T>(
-    token: DependencyToken<T>,
-    factory: (container: DependencyContainer) => T | Promise<T>,
-  ): void {
+  registerFactory<T, P = void>(
+    token: DependencyToken<T, P>,
+    factory: (container: DependencyContainer, params?: P) => T | Promise<T>,
+  ) {
     this.factories.set(token, factory);
   }
 
   registerCached<T>(
     token: DependencyToken<T>,
     factory: (container: DependencyContainer) => T | Promise<T>,
-  ): void {
+  ) {
     this.factories.set(token, async (container) => {
       if (!this.instances.has(token)) {
         const instance = await factory(container);
@@ -44,7 +49,10 @@ class DependencyContainer {
     });
   }
 
-  async resolve<T>(token: DependencyToken<T>): Promise<T> {
+  async resolve<T, P = void>(
+    token: DependencyToken<T, P>,
+    params?: P,
+  ): Promise<T> {
     if (this.instances.has(token)) {
       return this.instances.get(token);
     }
@@ -55,29 +63,33 @@ class DependencyContainer {
       throw new Error(`Dependency not found: ${String(token.name)}.`);
     }
 
-    return await factory(this);
+    return await factory(this, params);
   }
 }
 
 export const dependencyContainer = new DependencyContainer();
 
 export const dependencyTokens = {
-  SUPABASE_SERVER_CLIENT: new DependencyToken<SupabaseClient<Database>>(
-    Symbol('SUPABASE_SERVER_CLIENT'),
-  ),
-  SUPABASE_BROWSER_CLIENT: new DependencyToken<SupabaseClient<Database>>(
-    Symbol('SUPABASE_BROWSER_CLIENT'),
-  ),
-  DATABASE_SERVER_CLIENT: new DependencyToken<SupabaseDatabaseClient>(
-    Symbol('DATABASE_SERVER_CLIENT'),
-  ),
-  DATABASE_BROWSER_CLIENT: new DependencyToken<SupabaseDatabaseClient>(
-    Symbol('DATABASE_BROWSER_CLIENT'),
-  ),
-  AUTH_SERVER_CLIENT: new DependencyToken<SupabaseAuthClient>(
+  SUPABASE_SERVER_CLIENT: new DependencyToken<
+    SupabaseClient<Database>,
+    SupabaseConfig
+  >(Symbol('SUPABASE_SERVER_CLIENT')),
+  SUPABASE_BROWSER_CLIENT: new DependencyToken<
+    SupabaseClient<Database>,
+    SupabaseConfig
+  >(Symbol('SUPABASE_BROWSER_CLIENT')),
+  DATABASE_SERVER_CLIENT: new DependencyToken<
+    SupabaseDatabaseClient,
+    SupabaseConfig
+  >(Symbol('DATABASE_SERVER_CLIENT')),
+  DATABASE_BROWSER_CLIENT: new DependencyToken<
+    SupabaseDatabaseClient,
+    SupabaseConfig
+  >(Symbol('DATABASE_BROWSER_CLIENT')),
+  AUTH_SERVER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
     Symbol('AUTH_SERVER_CLIENT'),
   ),
-  AUTH_BROWSER_CLIENT: new DependencyToken<SupabaseAuthClient>(
+  AUTH_BROWSER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
     Symbol('AUTH_BROWSER_CLIENT'),
   ),
   HTTP_CLIENT: new DependencyToken<FetchClient>(Symbol('HTTP_CLIENT')),
@@ -104,7 +116,10 @@ dependencyContainer.registerCached(
 
 dependencyContainer.registerFactory(
   dependencyTokens.SUPABASE_SERVER_CLIENT,
-  async () => {
+  async (_, config?: SupabaseConfig) => {
+    const supabaseUrl = config?.supabaseUrl ?? defaultSupabaseUrl;
+    const supabaseKey = config?.supabaseKey ?? defaultSupabaseKey;
+
     /**
      * *  Dynamic import to avoid loading next/headers in browser when using classic module import
      */
@@ -134,7 +149,10 @@ dependencyContainer.registerFactory(
 
 dependencyContainer.registerFactory(
   dependencyTokens.SUPABASE_BROWSER_CLIENT,
-  () => {
+  (_, config?: SupabaseConfig) => {
+    const supabaseUrl = config?.supabaseUrl ?? defaultSupabaseUrl;
+    const supabaseKey = config?.supabaseKey ?? defaultSupabaseKey;
+
     const client = createBrowserClient<Database>(supabaseUrl, supabaseKey);
     return client;
   },
@@ -142,9 +160,10 @@ dependencyContainer.registerFactory(
 
 dependencyContainer.registerFactory(
   dependencyTokens.AUTH_SERVER_CLIENT,
-  async () => {
-    const supabaseServerClient = await dependencyContainer.resolve(
+  async (container, config?: SupabaseConfig) => {
+    const supabaseServerClient = await container.resolve(
       dependencyTokens.SUPABASE_SERVER_CLIENT,
+      config,
     );
 
     return new SupabaseAuthClient(supabaseServerClient);
@@ -153,9 +172,10 @@ dependencyContainer.registerFactory(
 
 dependencyContainer.registerFactory(
   dependencyTokens.AUTH_BROWSER_CLIENT,
-  async () => {
-    const supabaseBrowserClient = await dependencyContainer.resolve(
+  async (container, config?: SupabaseConfig) => {
+    const supabaseBrowserClient = await container.resolve(
       dependencyTokens.SUPABASE_BROWSER_CLIENT,
+      config,
     );
 
     return new SupabaseAuthClient(supabaseBrowserClient);
@@ -164,9 +184,10 @@ dependencyContainer.registerFactory(
 
 dependencyContainer.registerFactory(
   dependencyTokens.DATABASE_SERVER_CLIENT,
-  async () => {
-    const supabaseServerClient = await dependencyContainer.resolve(
+  async (container, config?: SupabaseConfig) => {
+    const supabaseServerClient = await container.resolve(
       dependencyTokens.SUPABASE_SERVER_CLIENT,
+      config,
     );
 
     return new SupabaseDatabaseClient(supabaseServerClient);
@@ -175,9 +196,10 @@ dependencyContainer.registerFactory(
 
 dependencyContainer.registerFactory(
   dependencyTokens.DATABASE_BROWSER_CLIENT,
-  async () => {
-    const supabaseBrowserClient = await dependencyContainer.resolve(
+  async (container, config?: SupabaseConfig) => {
+    const supabaseBrowserClient = await container.resolve(
       dependencyTokens.SUPABASE_BROWSER_CLIENT,
+      config,
     );
 
     return new SupabaseDatabaseClient(supabaseBrowserClient);
