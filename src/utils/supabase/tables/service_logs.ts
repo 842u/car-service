@@ -1,42 +1,54 @@
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { ServiceLog } from '@/types';
 import { toSafeNumber } from '@/utils/general';
 
-import { createClient } from '../client';
-
 export async function getServiceLogsByCarId(carId: string) {
-  const supabase = createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const { data, error } = await supabase
-    .from('service_logs')
-    .select('*')
-    .eq('car_id', carId)
-    .order('service_date', { ascending: false })
-    .order('created_at', { ascending: false });
+  const queryResult = await dbClient.query(async (from) =>
+    from('service_logs')
+      .select('*')
+      .eq('car_id', carId)
+      .order('service_date', { ascending: false })
+      .order('created_at', { ascending: false }),
+  );
 
-  if (error) throw new Error(error.message);
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  return data;
+  return queryResult.data;
 }
 
 export async function deleteServiceLogById(id: string) {
-  const supabase = createClient();
+  const authClient = await dependencyContainer.resolve(
+    dependencyTokens.AUTH_BROWSER_CLIENT,
+  );
 
-  const { error } = await supabase.auth.getUser();
+  const sessionResult = await authClient.getSession();
 
-  if (error) throw new Error(error.message);
+  if (!sessionResult.success) {
+    const { message } = sessionResult.error;
+    throw new Error(message);
+  }
 
-  const { data, error: serviceLogError } = await supabase
-    .from('service_logs')
-    .delete()
-    .eq('id', id)
-    .select('id')
-    .single();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  if (serviceLogError) throw new Error(serviceLogError.message);
+  const queryResult = await dbClient.query(async (from) =>
+    from('service_logs').delete().eq('id', id).select('id').single(),
+  );
 
-  if (!data) throw new Error('No service log was deleted.');
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  return data;
+  return queryResult.data;
 }
 
 type AvailableServiceLogsSortCriteria = keyof Pick<
