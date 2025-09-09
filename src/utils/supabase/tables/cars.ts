@@ -2,34 +2,47 @@ import type { Route } from 'next';
 
 import type { ApiCarRequestBody, ApiCarResponse } from '@/app/api/car/route';
 import type { RouteHandlerResponse } from '@/common/types';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/utils/general';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/utils/tanstack/cars';
 
-import { createClient } from '../client';
-
 export async function getCar(carId: string) {
-  const supabase = createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const { data, error } = await supabase
-    .from('cars')
-    .select()
-    .eq('id', carId)
-    .limit(1);
+  const queryResult = await dbClient.query(async (from) =>
+    from('cars').select().eq('id', carId).single(),
+  );
 
-  if (error) throw new Error(error.message);
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  if (!data[0]) throw new Error("Can't get car.");
+  const car = queryResult.data;
 
-  return data[0];
+  return car;
 }
 
 export async function deleteCar(carId: string) {
-  const supabase = createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const response = await supabase.from('cars').delete().eq('id', carId);
+  const queryResult = await dbClient.query(async (from) =>
+    from('cars').delete().eq('id', carId).single(),
+  );
 
-  return response;
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
+
+  const car = queryResult.data;
+
+  return car;
 }
 
 export async function getCarsByPage({ pageParam }: { pageParam: number }) {
@@ -37,15 +50,24 @@ export async function getCarsByPage({ pageParam }: { pageParam: number }) {
   const rangeIndexTo =
     (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
 
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from('cars')
-    .select()
-    .order('created_at', { ascending: false })
-    .limit(CARS_INFINITE_QUERY_PAGE_DATA_LIMIT)
-    .range(rangeIndexFrom, rangeIndexTo);
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  if (error) throw new Error(error.message);
+  const queryResult = await dbClient.query(async (from) =>
+    from('cars')
+      .select()
+      .order('created_at', { ascending: false })
+      .limit(CARS_INFINITE_QUERY_PAGE_DATA_LIMIT)
+      .range(rangeIndexFrom, rangeIndexTo),
+  );
+
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
+
+  const { data } = queryResult;
 
   const hasMoreCars = !(data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT);
 
@@ -89,19 +111,26 @@ export async function handleCarFormSubmit(
   if (image && responseData?.id) {
     const hashedFile = await hashFile(image);
 
-    const supabase = createClient();
+    const storageClient = await dependencyContainer.resolve(
+      dependencyTokens.STORAGE_BROWSER_CLIENT,
+    );
 
-    const { error: imageUploadError } = await supabase.storage
-      .from('cars_images')
-      .upload(`${responseData.id}/${hashedFile}`, image);
+    const uploadPath = `${responseData.id}/${hashedFile}`;
 
-    if (imageUploadError)
+    const uploadResult = await storageClient.upload(
+      'cars_images',
+      uploadPath,
+      image,
+    );
+
+    if (!uploadResult.success) {
       throw new Error(
         'Car added successfully, but image upload failed. You can edit and upload the image in your car details.',
         {
           cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE,
         },
       );
+    }
   }
 
   return responseData;
