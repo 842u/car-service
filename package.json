@@ -11,6 +11,8 @@
     "build:local": "npm run env:local npm run build",
     "start": "next start",
     "start:local": "npm run env:local npm run start",
+    "supabase:start": "npm run env:local supabase start",
+    "supabase:stop": "npm run env:local supabase stop",
     "lint": "eslint . --max-warnings 0",
     "lint-staged": "lint-staged",
     "test:jest": "jest",
