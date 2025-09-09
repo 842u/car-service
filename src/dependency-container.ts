@@ -7,6 +7,7 @@ import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-cli
 import { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
+import { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
 import type { Database } from '@/types/supabase';
 
 const defaultSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -92,6 +93,14 @@ export const dependencyTokens = {
   AUTH_BROWSER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
     Symbol('AUTH_BROWSER_CLIENT'),
   ),
+  STORAGE_BROWSER_CLIENT: new DependencyToken<
+    SupabaseStorageClient,
+    SupabaseConfig
+  >(Symbol('STORAGE_BROWSER_CLIENT')),
+  STORAGE_SERVER_CLIENT: new DependencyToken<
+    SupabaseStorageClient,
+    SupabaseConfig
+  >(Symbol('STORAGE_SERVER_CLIENT')),
   HTTP_CLIENT: new DependencyToken<FetchClient>(Symbol('HTTP_CLIENT')),
   AUTH_API_CLIENT: new DependencyToken<NextAuthApiClient>(
     Symbol('AUTH_API_CLIENT'),
@@ -203,5 +212,29 @@ dependencyContainer.registerFactory(
     );
 
     return new SupabaseDatabaseClient(supabaseBrowserClient);
+  },
+);
+
+dependencyContainer.registerFactory(
+  dependencyTokens.STORAGE_SERVER_CLIENT,
+  async (container, config?: SupabaseConfig) => {
+    const supabaseServerClient = await container.resolve(
+      dependencyTokens.SUPABASE_SERVER_CLIENT,
+      config,
+    );
+
+    return new SupabaseStorageClient(supabaseServerClient);
+  },
+);
+
+dependencyContainer.registerFactory(
+  dependencyTokens.STORAGE_BROWSER_CLIENT,
+  async (container, config?: SupabaseConfig) => {
+    const supabaseBrowserClient = await container.resolve(
+      dependencyTokens.SUPABASE_BROWSER_CLIENT,
+      config,
+    );
+
+    return new SupabaseStorageClient(supabaseBrowserClient);
   },
 );

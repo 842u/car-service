@@ -28,7 +28,7 @@ export class SupabaseStorageClient implements StorageClient {
     bucketId: string,
     path: string,
     fileBody: FileBody,
-    fileOptions: FileOptions,
+    fileOptions?: FileOptions,
   ) {
     try {
       const { data, error } = await this._storageClient
