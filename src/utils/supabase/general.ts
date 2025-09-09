@@ -1,60 +1,47 @@
-import type { Provider } from '@supabase/supabase-js';
-import type { Route } from 'next';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 
-import { createClient } from './client';
-
-const supabaseAppUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
 const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
 export async function createTestUser(testUserIndex: number) {
-  const supabase = createClient(supabaseAppUrl, supabaseServiceRoleKey);
   const email = testUserIndex + testUserEmail;
   const password = testUserPassword;
 
-  try {
-    const { error } = await supabase.auth.admin.createUser({
-      email: testUserIndex + testUserEmail,
-      password: testUserPassword,
-      email_confirm: true,
-    });
+  const authClient = await dependencyContainer.resolve(
+    dependencyTokens.AUTH_BROWSER_CLIENT,
+    { supabaseKey, supabaseUrl },
+  );
 
-    if (error) throw new Error(error.message);
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(error?.message || 'Error on creating test user.');
+  const createUserResult = await authClient.admin.createUser({
+    email: testUserIndex + testUserEmail,
+    password: testUserPassword,
+    email_confirm: true,
+  });
+
+  if (!createUserResult.success) {
+    const { message } = createUserResult.error;
+    throw new Error(`Error on creating test user: ${message}.`);
   }
 
   return { email, password };
 }
 
 export async function deleteTestUser(testUserIndex: number) {
-  const supabase = createClient(supabaseAppUrl, supabaseServiceRoleKey);
-  try {
-    const { status, error } = await supabase.rpc('delete_test_user', {
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    { supabaseKey, supabaseUrl },
+  );
+
+  const rpcResult = await dbClient.rpc(async (rpc) =>
+    rpc('delete_test_user', {
       test_user_index: testUserIndex,
-    });
-    if ((status < 200 && status >= 300) || error)
-      throw new Error(error?.message);
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(error?.message || 'Error on deleting test user.');
+    }),
+  );
+
+  if (!rpcResult.success) {
+    const { message, code } = rpcResult.error;
+    throw new Error(`Error on deleting test user: ${message}, code: ${code}.`);
   }
-}
-
-export async function signInWithOAuthHandler(provider: Provider) {
-  const { auth } = createClient();
-  const requestUrl = new URL(window.location.origin);
-
-  requestUrl.pathname = '/api/auth/callback' satisfies Route;
-
-  const response = await auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo: requestUrl.href,
-    },
-  });
-
-  return response;
 }
