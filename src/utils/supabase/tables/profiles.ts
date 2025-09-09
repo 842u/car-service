@@ -1,29 +1,37 @@
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { Profile } from '@/types';
 import { hashFile } from '@/utils/general';
 
-import { createClient } from '../client';
-
 export async function getCurrentSessionProfile() {
-  const supabase = createClient();
+  const authClient = await dependencyContainer.resolve(
+    dependencyTokens.AUTH_BROWSER_CLIENT,
+  );
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+  const sessionResult = await authClient.getSession();
 
-  if (!user || error)
-    throw new Error(error?.message || "Can't get user profile.");
+  if (!sessionResult.success) {
+    const { message } = sessionResult.error;
+    throw new Error(message);
+  }
 
-  const { data: profileData, error: profileError } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+  const { user } = sessionResult.data;
 
-  if (profileError)
-    throw new Error(profileError.message || "Can't get user profile.");
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  return profileData;
+  const queryResult = await dbClient.query(async (from) =>
+    from('profiles').select('*').eq('id', user.id).single(),
+  );
+
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
+
+  const { data } = queryResult;
+
+  return data;
 }
 
 type PatchProfileParameters =
@@ -37,68 +45,93 @@ export async function updateCurrentSessionProfile({
   property,
   value,
 }: PatchProfileParameters) {
-  const supabase = createClient();
+  const authClient = await dependencyContainer.resolve(
+    dependencyTokens.AUTH_BROWSER_CLIENT,
+  );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const sessionResult = await authClient.getSession();
 
-  if (!user)
-    throw new Error("Error on updating profile. Can't get user session.");
+  if (!sessionResult.success) {
+    const { message } = sessionResult.error;
+    throw new Error(message);
+  }
+
+  const { user } = sessionResult.data;
 
   if (property === 'avatar_url') {
-    if (!value)
-      throw new Error(
-        'Error on uploading avatar. No file was found. Try again.',
-      );
+    if (!value) throw new Error('No file was provided. Try again.');
+
+    const storageClient = await dependencyContainer.resolve(
+      dependencyTokens.STORAGE_BROWSER_CLIENT,
+    );
 
     const hashedFile = await hashFile(value);
 
-    const { data, error } = await supabase.storage
-      .from('avatars')
-      .upload(`${user.id}/${hashedFile}`, value);
+    const uploadPath = `${user.id}/${hashedFile}`;
 
-    if (error)
-      throw new Error(error.message || 'Error on uploading avatar. Try again.');
+    const uploadResult = await storageClient.upload(
+      'avatars',
+      uploadPath,
+      value,
+    );
 
-    return data;
+    if (!uploadResult.success) {
+      const { message } = uploadResult.error;
+      throw new Error(message);
+    }
+
+    return uploadResult.data;
   } else {
-    const { data, error } = await supabase
-      .from('profiles')
-      .update({ [property]: value })
-      .eq('id', user.id)
-      .select();
+    const dbClient = await dependencyContainer.resolve(
+      dependencyTokens.DATABASE_BROWSER_CLIENT,
+    );
 
-    if (error)
-      throw new Error(error.message || 'Error on updating profile. Try again.');
+    const queryResult = await dbClient.query(async (from) =>
+      from('profiles')
+        .update({ [property]: value })
+        .eq('id', user.id)
+        .select(),
+    );
 
-    return data;
+    if (!queryResult.success) {
+      const { message } = queryResult.error;
+      throw new Error(message);
+    }
+
+    return queryResult.data;
   }
 }
 
 export async function getProfileByUserId(userId: string) {
-  const supabase = createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .single();
+  const queryResult = await dbClient.query(async (from) =>
+    from('profiles').select('*').eq('id', userId).single(),
+  );
 
-  if (error) throw new Error(error.message || "Can't get user profile.");
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  return data;
+  return queryResult.data;
 }
 
 export async function getProfilesByUsersId(usersId: string[]) {
-  const supabase = createClient();
+  const dbClient = await dependencyContainer.resolve(
+    dependencyTokens.DATABASE_BROWSER_CLIENT,
+  );
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .in('id', usersId);
+  const queryResult = await dbClient.query(async (from) =>
+    from('profiles').select('*').in('id', usersId),
+  );
 
-  if (error) throw new Error(error.message || "Can't get users profiles.");
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
 
-  return data;
+  return queryResult.data;
 }
