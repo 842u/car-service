@@ -2,12 +2,9 @@ import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 
-import type {
-  ServiceLogPatchRouteHandlerRequest,
-  ServiceLogRouteHandlerResponse,
-} from '@/app/api/service-log/route';
+import type { ServiceLogPatchRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import type { RouteHandlerResponse } from '@/common/types';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import type { ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
@@ -40,24 +37,19 @@ async function submitEditFormData(
   const url = new URL(window.location.origin);
   url.pathname = '/api/service-log' satisfies Route;
 
-  try {
-    const apiResponse = await fetch(url, {
-      method: 'PATCH',
-      headers: { 'content-type': 'application/json' },
-      body: jsonRequestData,
-    });
+  const httpClient = await dependencyContainer.resolve(
+    dependencyTokens.HTTP_CLIENT,
+  );
 
-    const { error } =
-      (await apiResponse.json()) as RouteHandlerResponse<ServiceLogRouteHandlerResponse>;
+  const headers = { 'Content-Type': 'application/json' };
 
-    if (!apiResponse.ok || error) {
-      throw new Error(
-        error?.message || `Request failed with status ${apiResponse.status}.`,
-      );
-    }
-  } catch (error) {
-    if (error instanceof Error) throw new Error(error.message);
-    throw new Error('Unknown error occurred.');
+  const patchResult = await httpClient.patch(url.toString(), jsonRequestData, {
+    headers,
+  });
+
+  if (!patchResult.success) {
+    const { message } = patchResult.error;
+    throw new Error(message);
   }
 }
 
