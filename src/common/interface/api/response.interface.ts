@@ -14,7 +14,7 @@ type ApiResponseFailureResult<E extends ApiResponseError> = FailureResult<
   ApiResponseMeta
 >;
 
-type ApiResponseSuccessResult<T> = SuccessResult<T, ApiResponseMeta>;
+export type ApiResponseSuccessResult<T> = SuccessResult<T, ApiResponseMeta>;
 
 export type ApiResponse<T, E extends ApiResponseError> = Promise<
   | ReturnType<typeof successApiResponse<T> | typeof redirectApiResponse>
