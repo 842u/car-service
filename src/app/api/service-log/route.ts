@@ -5,7 +5,6 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
-import { errorResponse } from '@/common/utils/next/routeHandlers';
 import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
@@ -28,8 +27,8 @@ export const maxDuration = 10;
 
 export async function POST(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json') {
-    return errorResponse(
-      "Invalid content type. Expected 'application/json'.",
+    return errorApiResponse(
+      { message: "Invalid content type. Expected 'application/json'." },
       415,
     );
   }
@@ -41,32 +40,46 @@ export async function POST(request: NextRequest) {
     ({ formData, car_id } =
       (await request.json()) as Partial<ServiceLogPostRouteHandlerRequest>);
   } catch (_) {
-    return errorResponse('Invalid JSON.', 400);
+    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
   if (!formData) {
-    return errorResponse('Missing form data in request body.', 400);
+    return errorApiResponse(
+      { message: 'Missing form data in request body.' },
+      400,
+    );
   }
 
   if (!car_id) {
-    return errorResponse("Missing 'car_id' in request body.", 400);
+    return errorApiResponse(
+      { message: "Missing 'car_id' in request body." },
+      400,
+    );
   }
 
   try {
     carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorResponse(
-        `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+      return errorApiResponse(
+        {
+          message: `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+        },
         400,
       );
     }
 
     if (error instanceof Error) {
-      return errorResponse(`Validation error: ${error.message}.`, 400);
+      return errorApiResponse(
+        { message: `Validation error: ${error.message}.` },
+        400,
+      );
     }
 
-    return errorResponse('Validation error: Unknown error occurred.', 400);
+    return errorApiResponse(
+      { message: 'Validation error: Unknown error occurred.' },
+      400,
+    );
   }
 
   const authClient = await dependencyContainer.resolve(
@@ -109,8 +122,8 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json') {
-    return errorResponse(
-      "Invalid content type. Expected 'application/json'.",
+    return errorApiResponse(
+      { message: "Invalid content type. Expected 'application/json'." },
       415,
     );
   }
@@ -122,32 +135,46 @@ export async function PATCH(request: NextRequest) {
     ({ formData, service_log_id } =
       (await request.json()) as Partial<ServiceLogPatchRouteHandlerRequest>);
   } catch (_) {
-    return errorResponse('Invalid JSON.', 400);
+    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
   if (!formData) {
-    return errorResponse('Missing form data in request body.', 400);
+    return errorApiResponse(
+      { message: 'Missing form data in request body.' },
+      400,
+    );
   }
 
   if (!service_log_id) {
-    return errorResponse("Missing 'service_log_id' in request body.", 400);
+    return errorApiResponse(
+      { message: "Missing 'service_log_id' in request body." },
+      400,
+    );
   }
 
   try {
     carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorResponse(
-        `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+      return errorApiResponse(
+        {
+          message: `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+        },
         400,
       );
     }
 
     if (error instanceof Error) {
-      return errorResponse(`Validation error: ${error.message}.`, 400);
+      return errorApiResponse(
+        { message: `Validation error: ${error.message}.` },
+        400,
+      );
     }
 
-    return errorResponse('Validation error: Unknown error occurred.', 400);
+    return errorApiResponse(
+      { message: 'Validation error: Unknown error occurred.' },
+      400,
+    );
   }
 
   const dbClient = await dependencyContainer.resolve(
