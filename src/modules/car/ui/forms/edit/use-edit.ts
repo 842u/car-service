@@ -1,11 +1,15 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { Route } from 'next';
 import type { RefObject } from 'react';
 import { useRef } from 'react';
 
+import type { ApiCarResponse } from '@/app/api/car/route';
+import type { ApiResponseSuccessResult } from '@/common/interface/api/response.interface';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { handleCarFormSubmit } from '@/utils/supabase/tables/cars';
+import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/utils/general';
 import { carsUpdateOnMutate } from '@/utils/tanstack/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 
@@ -23,6 +27,66 @@ type MutationVariables = {
   carFormRef: RefObject<CarFormRef | null>;
 };
 
+async function submitEditForm(carId: string, formData: CarFormValues) {
+  const { image, ...data } = formData;
+
+  const jsonDataToValidate = JSON.stringify({
+    carFormData: data,
+    carId,
+  });
+
+  const url = new URL(window.location.origin);
+  url.pathname = '/api/car' satisfies Route;
+
+  const httpClient = await dependencyContainer.resolve(
+    dependencyTokens.HTTP_CLIENT,
+  );
+
+  const headers = { 'Content-Type': 'application/json' };
+
+  const patchResult = await httpClient.patch(
+    url.toString(),
+    jsonDataToValidate,
+    {
+      headers,
+    },
+  );
+
+  if (!patchResult.success) {
+    const { message } = patchResult.error;
+    throw new Error(message);
+  }
+
+  if (!image) return;
+
+  const {
+    data: { id },
+  } = patchResult.data as ApiResponseSuccessResult<ApiCarResponse>;
+
+  const hashedFile = await hashFile(image);
+
+  const storageClient = await dependencyContainer.resolve(
+    dependencyTokens.STORAGE_BROWSER_CLIENT,
+  );
+
+  const uploadPath = `${id}/${hashedFile}`;
+
+  const uploadResult = await storageClient.upload(
+    'cars_images',
+    uploadPath,
+    image,
+  );
+
+  if (!uploadResult.success) {
+    throw new Error(
+      'Car edited successfully, but image upload failed. Try again.',
+      {
+        cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE,
+      },
+    );
+  }
+}
+
 export function useEditForm({ carId, onSubmit }: UseEditFormOptions) {
   const carFormRef = useRef<CarFormRef>(null);
 
@@ -33,7 +97,7 @@ export function useEditForm({ carId, onSubmit }: UseEditFormOptions) {
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: ({ formData, carId }: MutationVariables) =>
-      handleCarFormSubmit(formData, carId, 'PATCH'),
+      submitEditForm(carId, formData),
     onMutate: ({ formData, carId, queryClient, carFormRef }) =>
       carsUpdateOnMutate(
         queryClient,
