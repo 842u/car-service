@@ -70,7 +70,7 @@ async function submitAddForm(formData: CarFormValues) {
 
   if (!uploadResult.success) {
     throw new Error(
-      'Car added successfully, but image upload failed. You can try again by editing car details.',
+      'Car added successfully, but image upload failed. Try again by editing car details.',
       {
         cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE,
       },
