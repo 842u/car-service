@@ -1,10 +1,6 @@
 import type { Result } from '@/common/application/result/result';
 
-export interface Validator<T> {
-  validate(value: unknown): Result<T, ValidationError>;
-}
-
-export type ValidationIssue = {
+type ValidationIssue = {
   path: Array<string | number | symbol>;
   message: string;
 };
@@ -17,4 +13,8 @@ export class ValidationError extends Error {
     this.name = 'ValidationError';
     this.issues = issues;
   }
+}
+
+export interface Validator<T> {
+  validate(value: unknown): Result<T, ValidationError>;
 }

@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 import { passwordSchema } from '@/user/domain/user/value-objects/password/password.schema';
 
 z.config({
@@ -20,8 +19,3 @@ export const passwordChangeContractSchema = z
 export type PasswordChangeContract = z.infer<
   typeof passwordChangeContractSchema
 >;
-
-export const passwordChangeContractValidator = new ZodValidator(
-  passwordChangeContractSchema,
-  'Password change contract validation failed.',
-);
