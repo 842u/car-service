@@ -1,6 +1,6 @@
+import { Result } from '@/common/application/result/result';
 import { Id } from '@/common/domain/value-objects/id';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
-import { Result } from '@/common/interface/result/result';
 
 export class UserId extends ValueObject<string> {
   private constructor(value: string) {

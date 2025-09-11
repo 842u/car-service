@@ -1,4 +1,4 @@
-import type { Result } from '@/common/interface/result/result';
+import type { Result } from '@/common/application/result/result';
 
 export abstract class ValueObject<T> {
   protected readonly _value: T;

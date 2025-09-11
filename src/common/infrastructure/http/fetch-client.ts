@@ -8,7 +8,7 @@ import {
   HttpError,
   RequestCancelledError,
 } from '@/common/application/http/http-client.interface';
-import { Result } from '@/common/interface/result/result';
+import { Result } from '@/common/application/result/result';
 
 class FetchRequestController implements RequestController {
   private abortController: AbortController;

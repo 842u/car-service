@@ -1,5 +1,5 @@
+import { Result } from '@/common/application/result/result';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
-import { Result } from '@/common/interface/result/result';
 import { avatarUrlValidator } from '@/user/domain/user/value-objects/avatar-url/avatar-url.schema';
 
 export class AvatarUrl extends ValueObject<string> {

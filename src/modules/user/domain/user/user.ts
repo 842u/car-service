@@ -1,5 +1,5 @@
+import { Result } from '@/common/application/result/result';
 import { Entity } from '@/common/domain/entities/entity';
-import { Result } from '@/common/interface/result/result';
 import type { ProfileCreateParams } from '@/user/domain/user/entities/profile';
 import { Profile } from '@/user/domain/user/entities/profile';
 import { Email } from '@/user/domain/user/value-objects/email/email';

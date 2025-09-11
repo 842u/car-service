@@ -1,4 +1,4 @@
-import type { Result } from '@/common/interface/result/result';
+import type { Result } from '@/common/application/result/result';
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 

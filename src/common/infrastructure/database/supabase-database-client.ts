@@ -8,7 +8,7 @@ import type {
   DatabaseClient,
   DatabaseClientResult,
 } from '@/common/application/database/database-client.interface';
-import { Result } from '@/common/interface/result/result';
+import { Result } from '@/common/application/result/result';
 import type { Database } from '@/types/supabase';
 
 export class SupabaseDatabaseClient implements DatabaseClient {

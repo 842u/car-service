@@ -1,6 +1,6 @@
+import { Result } from '@/common/application/result/result';
 import { idValidator } from '@/common/domain/value-objects/id.schema';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
-import { Result } from '@/common/interface/result/result';
 
 export class Id extends ValueObject<string> {
   private constructor(value: string) {

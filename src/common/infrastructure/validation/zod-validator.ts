@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
+import { Result } from '@/common/application/result/result';
 import {
   ValidationError,
   type Validator,
 } from '@/common/application/validation/validator.interface';
-import { Result } from '@/common/interface/result/result';
 
 z.config({
   jitless: true,

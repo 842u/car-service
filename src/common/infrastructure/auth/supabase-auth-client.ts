@@ -8,7 +8,7 @@ import type {
   AuthAdminClient,
   AuthClient,
 } from '@/common/application/auth/auth-client.interface';
-import { Result } from '@/common/interface/result/result';
+import { Result } from '@/common/application/result/result';
 import type { Database } from '@/types/supabase';
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';

@@ -1,8 +1,8 @@
 import type { Route } from 'next';
 
 import type { AuthApiClient } from '@/common/application/api/auth-api-client.interface';
+import { Result } from '@/common/application/result/result';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
-import { Result } from '@/common/interface/result/result';
 import { signInApiResponseValidator } from '@/user/interface/api/sign-in.schema';
 import { signUpApiResponseValidator } from '@/user/interface/api/sign-up.schema';
 import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
