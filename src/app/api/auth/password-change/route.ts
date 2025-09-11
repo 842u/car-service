@@ -11,7 +11,7 @@ import {
   type PasswordChangeApiResponseData,
   type PasswordChangeApiResponseError,
 } from '@/user/interface/api/password-change.schema';
-import { passwordChangeContractValidator } from '@/user/interface/contracts/password-change.schema';
+import { passwordChangeContractSchema } from '@/user/interface/contracts/password-change.schema';
 
 type PasswordChangeApiResponse = ApiResponse<
   PasswordChangeApiResponseData,
@@ -36,7 +36,12 @@ export async function PATCH(request: NextRequest): PasswordChangeApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = passwordChangeContractValidator.validate(body);
+  const validator = await dependencyContainer.resolveValidator({
+    schema: passwordChangeContractSchema,
+    errorMessage: 'Invalid API response format.',
+  });
+
+  const validationResult = validator.validate(body);
 
   if (!validationResult.success) {
     const {
