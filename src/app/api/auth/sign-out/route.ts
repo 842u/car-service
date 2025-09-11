@@ -11,7 +11,7 @@ import type {
   SignOutApiResponseError,
 } from '@/user/interface/api/sign-out.schema';
 
-export type SignOutApiResponse = ApiResponse<
+type SignOutApiResponse = ApiResponse<
   SignOutApiResponseData,
   SignOutApiResponseError
 >;

@@ -3,8 +3,10 @@ import type { Route } from 'next';
 import type { AuthApiClient } from '@/common/application/api/auth-api-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
-import { signInApiResponseValidator } from '@/user/interface/api/sign-in.schema';
-import { signUpApiResponseValidator } from '@/user/interface/api/sign-up.schema';
+import { dependencyContainer } from '@/dependency-container';
+import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
+import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
+import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
 import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
@@ -28,9 +30,12 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validationResult = signUpApiResponseValidator.validate(
-      fetchResult.data,
-    );
+    const validator = await dependencyContainer.resolveValidator({
+      schema: signUpApiResponseSchema,
+      errorMessage: 'Invalid API response format.',
+    });
+
+    const validationResult = validator.validate(fetchResult.data);
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
@@ -42,7 +47,11 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: apiResponseResult.error.message });
     }
 
-    return Result.ok({ id: apiResponseResult.data.id });
+    const {
+      data: { id },
+    } = apiResponseResult;
+
+    return Result.ok({ id });
   }
 
   async signIn(contract: SignInContract) {
@@ -57,9 +66,12 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validationResult = signInApiResponseValidator.validate(
-      fetchResult.data,
-    );
+    const validator = await dependencyContainer.resolveValidator({
+      schema: signInApiResponseSchema,
+      errorMessage: 'Invalid API response format.',
+    });
+
+    const validationResult = validator.validate(fetchResult.data);
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
@@ -71,7 +83,11 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: apiResponseResult.error.message });
     }
 
-    return Result.ok({ id: apiResponseResult.data.id });
+    const {
+      data: { id },
+    } = apiResponseResult;
+
+    return Result.ok({ id });
   }
 
   async passwordChange(contract: PasswordChangeContract) {
@@ -86,9 +102,12 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validationResult = signUpApiResponseValidator.validate(
-      fetchResult.data,
-    );
+    const validator = await dependencyContainer.resolveValidator({
+      schema: passwordChangeApiResponseSchema,
+      errorMessage: 'Invalid API response format.',
+    });
+
+    const validationResult = validator.validate(fetchResult.data);
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
@@ -100,6 +119,10 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: apiResponseResult.error.message });
     }
 
-    return Result.ok({ id: apiResponseResult.data.id });
+    const {
+      data: { id },
+    } = apiResponseResult;
+
+    return Result.ok({ id });
   }
 }

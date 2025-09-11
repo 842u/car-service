@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 import { emailSchema } from '@/user/domain/user/value-objects/email/email.schema';
 import {
   PASSWORD_REQUIRED_MESSAGE,
@@ -25,8 +24,3 @@ export const signInContractSchema = z.object({
 });
 
 export type SignInContract = z.infer<typeof signInContractSchema>;
-
-export const signInContractValidator = new ZodValidator(
-  signInContractSchema,
-  'Sign in contract validation failed.',
-);

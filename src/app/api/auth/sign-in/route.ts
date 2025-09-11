@@ -10,7 +10,7 @@ import type {
   SignInApiResponseData,
   SignInApiResponseError,
 } from '@/user/interface/api/sign-in.schema';
-import { signInContractValidator } from '@/user/interface/contracts/sign-in.schema';
+import { signInContractSchema } from '@/user/interface/contracts/sign-in.schema';
 
 export type SignInApiResponse = ApiResponse<
   SignInApiResponseData,
@@ -35,7 +35,12 @@ export async function POST(request: NextRequest): SignInApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = signInContractValidator.validate(body);
+  const validator = await dependencyContainer.resolveValidator({
+    schema: signInContractSchema,
+    errorMessage: 'Sign in contract validation failed.',
+  });
+
+  const validationResult = validator.validate(body);
 
   if (!validationResult.success) {
     const { message, issues } = validationResult.error;

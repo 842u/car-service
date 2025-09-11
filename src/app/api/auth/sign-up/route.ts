@@ -12,7 +12,7 @@ import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
-import { signUpContractValidator } from '@/user/interface/contracts/sign-up.schema';
+import { signUpContractSchema } from '@/user/interface/contracts/sign-up.schema';
 
 export type SignUpApiResponse = ApiResponse<
   SignUpApiResponseData,
@@ -37,7 +37,12 @@ export async function POST(request: NextRequest): SignUpApiResponse {
     return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
-  const validationResult = signUpContractValidator.validate(body);
+  const validator = await dependencyContainer.resolveValidator({
+    schema: signUpContractSchema,
+    errorMessage: 'Sign up contract validation failed.',
+  });
+
+  const validationResult = validator.validate(body);
 
   if (!validationResult.success) {
     const {
