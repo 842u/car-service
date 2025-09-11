@@ -2,12 +2,14 @@
 
 import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { z } from 'zod';
 
 import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
 import { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
+import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 import type { Database } from '@/types/supabase';
 
 const defaultSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -16,6 +18,11 @@ const defaultSupabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 interface SupabaseConfig {
   supabaseUrl?: string;
   supabaseKey?: string;
+}
+
+interface ZodValidatorConfig<T extends z.ZodSchema<any>> {
+  schema: T;
+  errorMessage?: string;
 }
 
 class DependencyToken<_T, _P = void> {
@@ -66,6 +73,18 @@ class DependencyContainer {
 
     return await factory(this, params);
   }
+
+  async resolveValidator<TSchema extends z.ZodSchema<any>>(
+    config: ZodValidatorConfig<TSchema>,
+  ): Promise<ZodValidator<z.infer<TSchema>>> {
+    const factory = this.factories.get(dependencyTokens.VALIDATOR);
+
+    if (!factory) {
+      throw new Error('Validator factory not registered');
+    }
+
+    return await factory(this, config);
+  }
 }
 
 export const dependencyContainer = new DependencyContainer();
@@ -105,7 +124,20 @@ export const dependencyTokens = {
   AUTH_API_CLIENT: new DependencyToken<NextAuthApiClient>(
     Symbol('AUTH_API_CLIENT'),
   ),
+  VALIDATOR: new DependencyToken<ZodValidator<any>, ZodValidatorConfig<any>>(
+    Symbol('VALIDATOR'),
+  ),
 } as const;
+
+dependencyContainer.registerFactory(
+  dependencyTokens.VALIDATOR,
+  (_, config?: ZodValidatorConfig<any>) => {
+    if (!config) {
+      throw new Error('Validator configuration is required');
+    }
+    return new ZodValidator(config.schema, config.errorMessage);
+  },
+);
 
 dependencyContainer.registerCached(
   dependencyTokens.HTTP_CLIENT,
