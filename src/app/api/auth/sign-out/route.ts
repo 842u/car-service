@@ -1,24 +1,14 @@
 import { type NextRequest } from 'next/server';
 
-import {
-  type ApiResponse,
-  errorApiResponse,
-  redirectApiResponse,
-} from '@/common/interface/api/response.interface';
 import { dependencyContainer, dependencyTokens } from '@/dependency-container';
-import type {
-  SignOutApiResponseData,
-  SignOutApiResponseError,
-} from '@/user/interface/api/sign-out.schema';
-
-type SignOutApiResponse = ApiResponse<
-  SignOutApiResponseData,
-  SignOutApiResponseError
->;
 
 export const maxDuration = 10;
 
-export async function GET(request: NextRequest): SignOutApiResponse {
+export async function GET(request: NextRequest) {
+  const apiHandler = await dependencyContainer.resolve(
+    dependencyTokens.API_HANDLER,
+  );
+
   const redirectURL = request.nextUrl.clone();
 
   const authClient = await dependencyContainer.resolve(
@@ -31,8 +21,8 @@ export async function GET(request: NextRequest): SignOutApiResponse {
     const {
       error: { message },
     } = signOutResult;
-    return errorApiResponse({ message }, 500);
+    return apiHandler.errorResponse({ message }, 500);
   }
 
-  return redirectApiResponse(redirectURL.origin, 303);
+  return apiHandler.redirectResponse(redirectURL.origin, 303);
 }
