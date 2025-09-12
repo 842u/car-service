@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { issueSchema } from '@/common/application/validation/validator.interface';
 import { createApiResponseSchema } from '@/common/interface/api/response.schema';
 
 z.config({
@@ -7,7 +8,11 @@ z.config({
 });
 
 const signInApiResponseDataSchema = z.object({ id: z.string() });
-const signInApiResponseErrorSchema = z.object({ message: z.string() });
+
+const signInApiResponseErrorSchema = z.object({
+  message: z.string(),
+  issues: z.array(issueSchema).optional(),
+});
 
 export const signInApiResponseSchema = createApiResponseSchema(
   signInApiResponseDataSchema,

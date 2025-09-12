@@ -17,6 +17,10 @@ import {
   type PasswordChangeApiResponseError,
 } from '@/user/interface/api/password-change.schema';
 import type {
+  SignInApiResponseData,
+  SignInApiResponseError,
+} from '@/user/interface/api/sign-in.schema';
+import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
@@ -24,6 +28,10 @@ import {
   type PasswordChangeContract,
   passwordChangeContractSchema,
 } from '@/user/interface/contracts/password-change.schema';
+import {
+  type SignInContract,
+  signInContractSchema,
+} from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 import { signUpContractSchema } from '@/user/interface/contracts/sign-up.schema';
 
@@ -149,6 +157,13 @@ export const dependencyTokens = {
       SignUpContract
     >
   >(Symbol('SIGN_UP_API_HANDLER')),
+  SIGN_IN_API_HANDLER: new DependencyToken<
+    NextApiHandler<
+      SignInApiResponseData,
+      SignInApiResponseError,
+      SignInContract
+    >
+  >(Symbol('SIGN_IN_API_HANDLER')),
   PASSWORD_CHANGE_API_HANDLER: new DependencyToken<
     NextApiHandler<
       PasswordChangeApiResponseData,
@@ -178,6 +193,18 @@ dependencyContainer.registerCached(
     const validator = await container.resolveValidator({
       schema: signUpContractSchema,
       errorMessage: 'Sign up contract validation failed.',
+    });
+
+    return new NextApiHandler(validator);
+  },
+);
+
+dependencyContainer.registerCached(
+  dependencyTokens.SIGN_IN_API_HANDLER,
+  async (container) => {
+    const validator = await container.resolveValidator({
+      schema: signInContractSchema,
+      errorMessage: 'Sign in contract validation failed.',
     });
 
     return new NextApiHandler(validator);

@@ -1,54 +1,23 @@
 import { type NextRequest } from 'next/server';
 
-import type { ApiResponse } from '@/common/interface/api/response.interface';
-import {
-  errorApiResponse,
-  successApiResponse,
-} from '@/common/interface/api/response.interface';
 import { dependencyContainer, dependencyTokens } from '@/dependency-container';
-import type {
-  SignInApiResponseData,
-  SignInApiResponseError,
-} from '@/user/interface/api/sign-in.schema';
-import { signInContractSchema } from '@/user/interface/contracts/sign-in.schema';
-
-export type SignInApiResponse = ApiResponse<
-  SignInApiResponseData,
-  SignInApiResponseError
->;
 
 export const maxDuration = 10;
 
-export async function POST(request: NextRequest): SignInApiResponse {
-  if (request.headers.get('content-type') !== 'application/json') {
-    return errorApiResponse(
-      { message: "Invalid content type. Expected 'application/json'." },
-      415,
-    );
+export async function POST(request: NextRequest) {
+  const apiHandler = await dependencyContainer.resolve(
+    dependencyTokens.SIGN_IN_API_HANDLER,
+  );
+
+  const preprocessResult = await apiHandler.preprocessRequest(request);
+
+  if (!preprocessResult.success) {
+    const { message, issues } = preprocessResult.error;
+    const { status } = preprocessResult;
+    return apiHandler.errorResponse({ message, issues }, status);
   }
 
-  let body: unknown;
-
-  try {
-    body = await request.json();
-  } catch (_) {
-    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
-  }
-
-  const validator = await dependencyContainer.resolveValidator({
-    schema: signInContractSchema,
-    errorMessage: 'Sign in contract validation failed.',
-  });
-
-  const validationResult = validator.validate(body);
-
-  if (!validationResult.success) {
-    const { message, issues } = validationResult.error;
-
-    return errorApiResponse({ message, issues }, 400);
-  }
-
-  const { email, password } = validationResult.data;
+  const { email, password } = preprocessResult.data;
 
   const authClient = await dependencyContainer.resolve(
     dependencyTokens.AUTH_SERVER_CLIENT,
@@ -58,12 +27,12 @@ export async function POST(request: NextRequest): SignInApiResponse {
 
   if (!signInResult.success) {
     const { message } = signInResult.error;
-    return errorApiResponse({ message }, 401);
+    return apiHandler.errorResponse({ message }, 401);
   }
 
   const {
     user: { id },
   } = signInResult.data;
 
-  return successApiResponse({ id }, 200);
+  return apiHandler.successResponse({ id }, 200);
 }
