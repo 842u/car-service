@@ -1,58 +1,26 @@
 import type { Route } from 'next';
 import { type NextRequest } from 'next/server';
 
-import {
-  type ApiResponse,
-  errorApiResponse,
-  successApiResponse,
-} from '@/common/interface/api/response.interface';
 import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
-import type {
-  SignUpApiResponseData,
-  SignUpApiResponseError,
-} from '@/user/interface/api/sign-up.schema';
-import { signUpContractSchema } from '@/user/interface/contracts/sign-up.schema';
-
-export type SignUpApiResponse = ApiResponse<
-  SignUpApiResponseData,
-  SignUpApiResponseError
->;
 
 export const maxDuration = 10;
 
-export async function POST(request: NextRequest): SignUpApiResponse {
-  if (request.headers.get('content-type') !== 'application/json') {
-    return errorApiResponse(
-      { message: "Invalid content type. Expected 'application/json'." },
-      415,
-    );
+export async function POST(request: NextRequest) {
+  const apiHandler = await dependencyContainer.resolve(
+    dependencyTokens.SIGN_UP_API_HANDLER,
+  );
+
+  const preprocessRequestResult = await apiHandler.preprocessRequest(request);
+
+  if (!preprocessRequestResult.success) {
+    const { message, issues } = preprocessRequestResult.error;
+    const { status } = preprocessRequestResult;
+    return apiHandler.errorResponse({ message, issues }, status);
   }
 
-  let body: unknown;
-
-  try {
-    body = await request.json();
-  } catch (_) {
-    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
-  }
-
-  const validator = await dependencyContainer.resolveValidator({
-    schema: signUpContractSchema,
-    errorMessage: 'Sign up contract validation failed.',
-  });
-
-  const validationResult = validator.validate(body);
-
-  if (!validationResult.success) {
-    const {
-      error: { message, issues },
-    } = validationResult;
-
-    return errorApiResponse({ message, issues }, 400);
-  }
-
-  const { email: emailDto, password: passwordDto } = validationResult.data;
+  const { email: emailDto, password: passwordDto } =
+    preprocessRequestResult.data;
 
   const credentialsResult = Credentials.create(emailDto, passwordDto);
 
@@ -61,7 +29,7 @@ export async function POST(request: NextRequest): SignUpApiResponse {
       error: { message, issues },
     } = credentialsResult;
 
-    return errorApiResponse({ message, issues }, 400);
+    return apiHandler.errorResponse({ message, issues }, 400);
   }
 
   const {
@@ -82,7 +50,7 @@ export async function POST(request: NextRequest): SignUpApiResponse {
 
   if (!signUpResult.success) {
     const { message } = signUpResult.error;
-    return errorApiResponse({ message }, 400);
+    return apiHandler.errorResponse({ message }, 400);
   }
 
   const { user } = signUpResult.data;
@@ -100,9 +68,11 @@ export async function POST(request: NextRequest): SignUpApiResponse {
 
     if (!resetPasswordResult.success) {
       const { message } = resetPasswordResult.error;
-      return errorApiResponse({ message }, 400);
+      return apiHandler.errorResponse({ message }, 400);
     }
   }
 
-  return successApiResponse({ id: user?.id || '' }, 200);
+  const id = user?.id || crypto.randomUUID();
+
+  return apiHandler.successResponse({ id }, 200);
 }
