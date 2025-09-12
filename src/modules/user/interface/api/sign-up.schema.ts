@@ -6,8 +6,14 @@ z.config({
   jitless: true,
 });
 
+const issueSchema = z.object({
+  path: z.array(z.union([z.string(), z.symbol(), z.number()])),
+  message: z.string(),
+});
+
 const signUpApiResponseErrorSchema = z.object({
   message: z.string(),
+  issues: z.array(issueSchema).optional(),
 });
 
 const signUpApiResponseDataSchema = z.object({

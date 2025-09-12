@@ -1,6 +1,6 @@
 import type { Result } from '@/common/application/result/result';
 
-type ValidationIssue = {
+export type ValidationIssue = {
   path: Array<string | number | symbol>;
   message: string;
 };

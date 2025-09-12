@@ -5,12 +5,19 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { z } from 'zod';
 
 import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
+import { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
 import { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
 import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 import type { Database } from '@/types/supabase';
+import type {
+  SignUpApiResponseData,
+  SignUpApiResponseError,
+} from '@/user/interface/api/sign-up.schema';
+import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
+import { signUpContractSchema } from '@/user/interface/contracts/sign-up.schema';
 
 const defaultSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const defaultSupabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -43,9 +50,9 @@ class DependencyContainer {
     this.factories.set(token, factory);
   }
 
-  registerCached<T>(
-    token: DependencyToken<T>,
-    factory: (container: DependencyContainer) => T | Promise<T>,
+  registerCached<T, P = void>(
+    token: DependencyToken<T, P>,
+    factory: (container: DependencyContainer, params?: P) => T | Promise<T>,
   ) {
     this.factories.set(token, async (container) => {
       if (!this.instances.has(token)) {
@@ -127,7 +134,26 @@ export const dependencyTokens = {
   VALIDATOR: new DependencyToken<ZodValidator<any>, ZodValidatorConfig<any>>(
     Symbol('VALIDATOR'),
   ),
+  SIGN_UP_API_HANDLER: new DependencyToken<
+    NextApiHandler<
+      SignUpApiResponseData,
+      SignUpApiResponseError,
+      SignUpContract
+    >
+  >(Symbol('SIGN_UP_API_HANDLER')),
 } as const;
+
+dependencyContainer.registerCached(
+  dependencyTokens.SIGN_UP_API_HANDLER,
+  async (container) => {
+    const validator = await container.resolveValidator({
+      schema: signUpContractSchema,
+      errorMessage: 'Sign up contract validation failed.',
+    });
+
+    return new NextApiHandler(validator);
+  },
+);
 
 dependencyContainer.registerFactory(
   dependencyTokens.VALIDATOR,
