@@ -1,14 +1,10 @@
 import { z } from 'zod';
 
+import { issueSchema } from '@/common/application/validation/validator.interface';
 import { createApiResponseSchema } from '@/common/interface/api/response.schema';
 
 z.config({
   jitless: true,
-});
-
-const issueSchema = z.object({
-  path: z.array(z.union([z.string(), z.symbol(), z.number()])),
-  message: z.string(),
 });
 
 const signUpApiResponseErrorSchema = z.object({

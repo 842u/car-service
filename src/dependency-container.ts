@@ -12,10 +12,18 @@ import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
 import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
 import type { Database } from '@/types/supabase';
+import {
+  type PasswordChangeApiResponseData,
+  type PasswordChangeApiResponseError,
+} from '@/user/interface/api/password-change.schema';
 import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
+import {
+  type PasswordChangeContract,
+  passwordChangeContractSchema,
+} from '@/user/interface/contracts/password-change.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 import { signUpContractSchema } from '@/user/interface/contracts/sign-up.schema';
 
@@ -141,6 +149,13 @@ export const dependencyTokens = {
       SignUpContract
     >
   >(Symbol('SIGN_UP_API_HANDLER')),
+  PASSWORD_CHANGE_API_HANDLER: new DependencyToken<
+    NextApiHandler<
+      PasswordChangeApiResponseData,
+      PasswordChangeApiResponseError,
+      PasswordChangeContract
+    >
+  >(Symbol('PASSWORD_CHANGE_API_HANDLER')),
   API_HANDLER: new DependencyToken<NextApiHandler<any, any, any>>(
     Symbol('API_HANDLER'),
   ),
@@ -163,6 +178,18 @@ dependencyContainer.registerCached(
     const validator = await container.resolveValidator({
       schema: signUpContractSchema,
       errorMessage: 'Sign up contract validation failed.',
+    });
+
+    return new NextApiHandler(validator);
+  },
+);
+
+dependencyContainer.registerCached(
+  dependencyTokens.PASSWORD_CHANGE_API_HANDLER,
+  async (container) => {
+    const validator = await container.resolveValidator({
+      schema: passwordChangeContractSchema,
+      errorMessage: 'Password change contract validation failed.',
     });
 
     return new NextApiHandler(validator);

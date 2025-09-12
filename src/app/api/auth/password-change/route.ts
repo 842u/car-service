@@ -1,57 +1,28 @@
 import type { NextRequest } from 'next/server';
 
 import {
-  type ApiResponse,
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
 import { dependencyContainer, dependencyTokens } from '@/dependency-container';
 import { Password } from '@/user/domain/user/value-objects/password/password';
-import {
-  type PasswordChangeApiResponseData,
-  type PasswordChangeApiResponseError,
-} from '@/user/interface/api/password-change.schema';
-import { passwordChangeContractSchema } from '@/user/interface/contracts/password-change.schema';
-
-type PasswordChangeApiResponse = ApiResponse<
-  PasswordChangeApiResponseData,
-  PasswordChangeApiResponseError
->;
 
 export const maxDuration = 10;
 
-export async function PATCH(request: NextRequest): PasswordChangeApiResponse {
-  if (request.headers.get('content-type') !== 'application/json') {
-    return errorApiResponse(
-      { message: "Invalid content type. Expected 'application/json'." },
-      415,
-    );
+export async function PATCH(request: NextRequest) {
+  const apiHandler = await dependencyContainer.resolve(
+    dependencyTokens.PASSWORD_CHANGE_API_HANDLER,
+  );
+
+  const preprocessResult = await apiHandler.preprocessRequest(request);
+
+  if (!preprocessResult.success) {
+    const { message, issues } = preprocessResult.error;
+    const { status } = preprocessResult;
+    return apiHandler.errorResponse({ message, issues }, status);
   }
 
-  let body: unknown;
-
-  try {
-    body = await request.json();
-  } catch (_) {
-    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
-  }
-
-  const validator = await dependencyContainer.resolveValidator({
-    schema: passwordChangeContractSchema,
-    errorMessage: 'Invalid API response format.',
-  });
-
-  const validationResult = validator.validate(body);
-
-  if (!validationResult.success) {
-    const {
-      error: { message, issues },
-    } = validationResult;
-
-    return errorApiResponse({ message, issues }, 422);
-  }
-
-  const { password: passwordDto } = validationResult.data;
+  const { password: passwordDto } = preprocessResult.data;
 
   const passwordResult = Password.create(passwordDto);
 

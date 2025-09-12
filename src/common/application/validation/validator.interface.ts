@@ -1,4 +1,15 @@
+import { z } from 'zod';
+
 import type { Result } from '@/common/application/result/result';
+
+z.config({
+  jitless: true,
+});
+
+export const issueSchema = z.object({
+  path: z.array(z.union([z.string(), z.symbol(), z.number()])),
+  message: z.string(),
+});
 
 export type ValidationIssue = {
   path: Array<string | number | symbol>;
