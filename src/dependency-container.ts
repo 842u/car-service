@@ -2,7 +2,7 @@
 
 import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { z } from 'zod';
+import { z } from 'zod';
 
 import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
 import { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
@@ -141,7 +141,21 @@ export const dependencyTokens = {
       SignUpContract
     >
   >(Symbol('SIGN_UP_API_HANDLER')),
+  API_HANDLER: new DependencyToken<NextApiHandler<any, any, any>>(
+    Symbol('API_HANDLER'),
+  ),
 } as const;
+
+dependencyContainer.registerCached(
+  dependencyTokens.API_HANDLER,
+  async (container) => {
+    const validator = await container.resolveValidator({
+      schema: z.unknown(),
+    });
+
+    return new NextApiHandler(validator);
+  },
+);
 
 dependencyContainer.registerCached(
   dependencyTokens.SIGN_UP_API_HANDLER,
