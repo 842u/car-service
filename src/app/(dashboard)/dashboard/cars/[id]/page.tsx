@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { SettingsSection } from '@/car/ui/sections/settings/settings';
 import { DashboardMain } from '@/dashboard/ui/main/main';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 
 type CarPageProps = {
   params: Promise<{ id: string }>;

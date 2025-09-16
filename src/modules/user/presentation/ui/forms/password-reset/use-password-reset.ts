@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import {
   type PasswordResetContract,
   passwordResetContractSchema,

@@ -1,4 +1,4 @@
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/utils/tanstack/cars';
 
 export async function getCar(carId: string) {

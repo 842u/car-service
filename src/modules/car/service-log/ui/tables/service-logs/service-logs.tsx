@@ -5,7 +5,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import type { Profile, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';

@@ -1,4 +1,4 @@
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;

@@ -8,7 +8,7 @@ import type { ApiCarResponse } from '@/app/api/car/route';
 import type { CarFormRef } from '@/car/ui/form/form';
 import type { ApiResponseSuccessResult } from '@/common/interface/api/response.interface';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/utils/general';
 import {

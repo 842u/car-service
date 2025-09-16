@@ -1,4 +1,4 @@
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import type { Profile } from '@/types';
 import { hashFile } from '@/utils/general';
 

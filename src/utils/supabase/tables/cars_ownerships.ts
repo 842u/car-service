@@ -1,4 +1,4 @@
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 
 export async function getCarOwnerships(carId: string) {
   const dbClient = await dependencyContainer.resolve(

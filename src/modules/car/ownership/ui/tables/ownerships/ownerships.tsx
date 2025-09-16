@@ -5,7 +5,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { KeyIcon } from '@/icons/key';
 import type { CarOwnership, Profile } from '@/types';
 import { Table } from '@/ui/table/table';

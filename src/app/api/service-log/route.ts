@@ -5,7 +5,7 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
 

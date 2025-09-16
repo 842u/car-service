@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { GitHubIcon } from '@/icons/github';
 import { GoogleIcon } from '@/icons/google';
 import { Button } from '@/ui/button/button';

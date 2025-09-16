@@ -4,7 +4,7 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response.interface';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { Password } from '@/user/domain/user/value-objects/password/password';
 
 export const maxDuration = 10;

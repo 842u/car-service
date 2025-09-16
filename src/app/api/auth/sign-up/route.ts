@@ -1,7 +1,7 @@
 import type { Route } from 'next';
 import { type NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
 
 export const maxDuration = 10;

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
 import { getProfilesByUsersId } from '@/utils/supabase/tables/profiles';

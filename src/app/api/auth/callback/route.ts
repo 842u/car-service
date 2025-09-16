@@ -2,7 +2,7 @@ import { type EmailOtpType } from '@supabase/supabase-js';
 import type { Route } from 'next';
 import type { NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 
 export const maxDuration = 10;
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/dependency-container';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
