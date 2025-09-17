@@ -6,45 +6,36 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import {
-  type UsernameChangeContract,
-  usernameChangeContractSchema,
-} from '@/user/interface/contracts/username-change.schema';
+  type NameChangeContract,
+  nameChangeContractSchema,
+} from '@/user/interface/contracts/name-change.schema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 type MutationVariables = {
-  formData: UsernameChangeContract;
+  formData: NameChangeContract;
   queryClient: QueryClient;
 };
 
-const defaultUsernameFormValues: UsernameChangeContract = {
-  username: '',
+const defaultNameFormValues: NameChangeContract = {
+  name: '',
 };
 
-export function useUsernameForm({
-  username,
-}: {
-  username: string | null | undefined;
-}) {
+export function useNameForm({ name }: { name: string | null | undefined }) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: ({ formData: { username } }: MutationVariables) =>
+    mutationFn: ({ formData: { name } }: MutationVariables) =>
       updateCurrentSessionProfile({
         property: 'username',
-        value: username.trim(),
+        value: name.trim(),
       }),
-    onMutate: ({ queryClient, formData: { username } }) =>
-      profilesUpdateOnMutate(
-        queryClient,
-        'session',
-        'username',
-        username.trim(),
-      ),
+    onMutate: ({ queryClient, formData: { name } }) =>
+      profilesUpdateOnMutate(queryClient, 'session', 'username', name.trim()),
   });
 
   const {
@@ -52,19 +43,19 @@ export function useUsernameForm({
     handleSubmit,
     reset,
     formState: { isValid, isDirty, errors, isSubmitSuccessful },
-  } = useForm<UsernameChangeContract>({
-    resolver: zodResolver(usernameChangeContractSchema),
+  } = useForm<NameChangeContract>({
+    resolver: zodResolver(nameChangeContractSchema),
     mode: 'onChange',
-    defaultValues: defaultUsernameFormValues,
+    defaultValues: defaultNameFormValues,
   });
 
   const handleFormSubmit = handleSubmit(
-    async (formData: UsernameChangeContract) => {
+    async (formData: NameChangeContract) => {
       mutate(
         { formData, queryClient },
         {
           onSuccess: () => {
-            addToast('Username updated successfully.', 'success');
+            addToast('Name updated successfully.', 'success');
           },
           onError: (error, { queryClient }, context) => {
             addToast(error.message, 'error');
@@ -83,11 +74,11 @@ export function useUsernameForm({
     },
   );
 
-  const handleFormReset = () => username && reset({ username });
+  const handleFormReset = () => name && reset({ name });
 
   useEffect(() => {
-    username && reset({ username });
-  }, [username, reset]);
+    name && reset({ name });
+  }, [name, reset]);
 
   useEffect(() => {
     isSubmitSuccessful && reset();

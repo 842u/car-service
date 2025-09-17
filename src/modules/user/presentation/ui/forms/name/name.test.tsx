@@ -3,12 +3,12 @@ import userEvent from '@testing-library/user-event';
 
 import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
 import {
-  MAX_USERNAME_LENGTH,
-  MIN_USERNAME_LENGTH,
-} from '@/user/domain/user/value-objects/username/username.schema';
+  MAX_NAME_LENGTH,
+  MIN_NAME_LENGTH,
+} from '@/user/domain/user/value-objects/name/name.schema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 
-import { UsernameForm } from './username';
+import { NameForm } from './name';
 
 jest.mock('@/utils/supabase/tables/profiles', () => ({
   updateCurrentSessionProfile: jest.fn(),
@@ -18,27 +18,27 @@ jest.mock('@/utils/tanstack/profiles', () => ({
   profilesUpdateOnMutate: jest.fn(),
 }));
 
-const MOCK_USERNAME = 'test username';
+const MOCK_NAME = 'test name';
 
-function TestUsernameForm() {
+function TestNameForm() {
   return (
     <TanStackQueryProvider>
-      <UsernameForm username={MOCK_USERNAME} />
+      <NameForm name={MOCK_NAME} />
     </TanStackQueryProvider>
   );
 }
 
-describe('UsernameForm', () => {
-  it('should render a username input', async () => {
-    render(<TestUsernameForm />);
+describe('NameForm', () => {
+  it('should render a name input', async () => {
+    render(<TestNameForm />);
 
-    const usernameInput = screen.getByRole('textbox', { name: 'Username' });
+    const nameInput = screen.getByRole('textbox', { name: 'Name' });
 
-    await waitFor(() => expect(usernameInput).toBeInTheDocument());
+    await waitFor(() => expect(nameInput).toBeInTheDocument());
   });
 
   it('should render a form controls', async () => {
-    render(<TestUsernameForm />);
+    render(<TestNameForm />);
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const saveButton = screen.getByRole('button', { name: 'Save' });
@@ -48,7 +48,7 @@ describe('UsernameForm', () => {
   });
 
   it('initially form controls should be disabled', async () => {
-    render(<TestUsernameForm />);
+    render(<TestNameForm />);
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const saveButton = screen.getByRole('button', { name: 'Save' });
@@ -57,100 +57,100 @@ describe('UsernameForm', () => {
     await waitFor(() => expect(saveButton).toBeDisabled());
   });
 
-  it('reset button should be enabled on username input change', async () => {
+  it('reset button should be enabled on name input change', async () => {
     const inputText = 'test';
     const user = userEvent.setup();
-    render(<TestUsernameForm />);
+    render(<TestNameForm />);
 
-    const usernameInput = screen.getByRole('textbox', { name: 'Username' });
+    const nameInput = screen.getByRole('textbox', { name: 'Name' });
     const resetButton = screen.getByRole('button', { name: 'Reset' });
 
-    await user.type(usernameInput, inputText);
+    await user.type(nameInput, inputText);
 
     await waitFor(() => expect(resetButton).toBeEnabled());
   });
 
   it('should reset form on reset button click', async () => {
-    const newUsername = 'new username';
+    const newName = 'new name';
     const user = userEvent.setup();
-    render(<TestUsernameForm />);
+    render(<TestNameForm />);
 
-    const usernameInput = screen.getByRole('textbox', {
-      name: 'Username',
+    const nameInput = screen.getByRole('textbox', {
+      name: 'Name',
     }) as HTMLInputElement;
     const resetButton = screen.getByRole('button', { name: 'Reset' });
 
-    await user.clear(usernameInput);
-    await user.type(usernameInput, newUsername);
+    await user.clear(nameInput);
+    await user.type(nameInput, newName);
 
-    await waitFor(() => expect(usernameInput.value).toBe(newUsername));
+    await waitFor(() => expect(nameInput.value).toBe(newName));
 
     await user.click(resetButton);
 
-    await waitFor(() => expect(usernameInput.value).toBe(MOCK_USERNAME));
+    await waitFor(() => expect(nameInput.value).toBe(MOCK_NAME));
   });
 
-  it('submit button should be disabled if wrong username input provided', async () => {
-    const baseUsername = 'a';
-    const tooShortUsername = baseUsername.repeat(MIN_USERNAME_LENGTH - 1);
-    const tooLongUsername = baseUsername.repeat(MAX_USERNAME_LENGTH + 1);
+  it('submit button should be disabled if wrong name input provided', async () => {
+    const baseName = 'a';
+    const tooShortName = baseName.repeat(MIN_NAME_LENGTH - 1);
+    const tooLongName = baseName.repeat(MAX_NAME_LENGTH + 1);
     const user = userEvent.setup();
-    render(<TestUsernameForm />);
+    render(<TestNameForm />);
 
-    const usernameInput = screen.getByRole('textbox', {
-      name: 'Username',
+    const nameInput = screen.getByRole('textbox', {
+      name: 'Name',
     }) as HTMLInputElement;
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const saveButton = screen.getByRole('button', { name: 'Save' });
 
-    await user.clear(usernameInput);
-    await user.type(usernameInput, tooShortUsername);
+    await user.clear(nameInput);
+    await user.type(nameInput, tooShortName);
 
     await waitFor(() => expect(saveButton).toBeDisabled());
 
     await user.click(resetButton);
-    await user.clear(usernameInput);
-    await user.type(usernameInput, tooLongUsername);
+    await user.clear(nameInput);
+    await user.type(nameInput, tooLongName);
 
     await waitFor(() => expect(saveButton).toBeDisabled());
   });
 
-  it('submit button should be enabled if correct username input provided', async () => {
-    const baseUsername = 'a';
-    const correctUsername = baseUsername.repeat(MIN_USERNAME_LENGTH + 1);
+  it('submit button should be enabled if correct name input provided', async () => {
+    const baseName = 'a';
+    const correctName = baseName.repeat(MIN_NAME_LENGTH + 1);
     const user = userEvent.setup();
-    render(<TestUsernameForm />);
+    render(<TestNameForm />);
 
-    const usernameInput = screen.getByRole('textbox', {
-      name: 'Username',
+    const nameInput = screen.getByRole('textbox', {
+      name: 'Name',
     }) as HTMLInputElement;
     const saveButton = screen.getByRole('button', { name: 'Save' });
 
-    await user.clear(usernameInput);
-    await user.type(usernameInput, correctUsername);
+    await user.clear(nameInput);
+    await user.type(nameInput, correctName);
 
     await waitFor(() => expect(saveButton).toBeEnabled());
   });
 
   it('should call proper submit handler on submit', async () => {
-    const baseUsername = 'a';
-    const correctUsername = baseUsername.repeat(MIN_USERNAME_LENGTH + 1);
+    const baseName = 'a';
+    const correctName = baseName.repeat(MIN_NAME_LENGTH + 1);
     const user = userEvent.setup();
-    render(<TestUsernameForm />);
+    render(<TestNameForm />);
 
-    const usernameInput = screen.getByRole('textbox', {
-      name: 'Username',
+    const nameInput = screen.getByRole('textbox', {
+      name: 'Name',
     }) as HTMLInputElement;
     const saveButton = screen.getByRole('button', { name: 'Save' });
 
-    await user.clear(usernameInput);
-    await user.type(usernameInput, correctUsername);
+    await user.clear(nameInput);
+    await user.type(nameInput, correctName);
     await user.click(saveButton);
 
     await waitFor(() =>
       expect(updateCurrentSessionProfile).toHaveBeenCalledWith({
         property: 'username',
-        value: correctUsername,
+        value: correctName,
       }),
     );
   });

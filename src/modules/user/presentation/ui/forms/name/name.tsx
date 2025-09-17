@@ -3,15 +3,15 @@
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
 
-import { useUsernameForm } from './use-username';
+import { useNameForm } from './use-name';
 
-export const USERNAME_FORM_TEST_ID = 'username-form';
+export const NAME_FORM_TEST_ID = 'name-form';
 
-type UsernameFormProps = {
-  username?: string | null;
+type NameFormProps = {
+  name?: string | null;
 };
 
-export function UsernameForm({ username }: UsernameFormProps) {
+export function NameForm({ name }: NameFormProps) {
   const {
     handleFormSubmit,
     handleFormReset,
@@ -19,20 +19,20 @@ export function UsernameForm({ username }: UsernameFormProps) {
     register,
     isDirty,
     isValid,
-  } = useUsernameForm({ username });
+  } = useNameForm({ name });
 
   return (
     <Form
-      data-testid={USERNAME_FORM_TEST_ID}
+      data-testid={NAME_FORM_TEST_ID}
       variant="raw"
       onSubmit={handleFormSubmit}
     >
       <Form.InputWrapper>
         <Form.Input
-          errorMessage={errors.username?.message}
-          label="Username"
-          name="username"
-          placeholder="Enter your username"
+          errorMessage={errors.name?.message}
+          label="Name"
+          name="name"
+          placeholder="Enter your name"
           register={register}
           type="text"
         />

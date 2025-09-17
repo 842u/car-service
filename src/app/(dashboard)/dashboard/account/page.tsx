@@ -7,8 +7,8 @@ import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
+import { NameSection } from '@/user/presentation/ui/sections/name/name';
 import { PasswordChangeSection } from '@/user/presentation/ui/sections/password-change/password-change';
-import { UsernameSection } from '@/user/presentation/ui/sections/username/username';
 import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
@@ -32,7 +32,7 @@ export default function AccountPage() {
         className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
       >
         <IdSection id={data?.id} />
-        <UsernameSection username={data?.username} />
+        <NameSection name={data?.username} />
         <AvatarSection avatarUrl={data?.avatar_url} />
         <PasswordChangeSection />
       </section>
