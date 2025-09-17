@@ -13,6 +13,7 @@
     "start:local": "npm run env:local npm run start",
     "supabase:start": "npm run env:local supabase start",
     "supabase:stop": "npm run env:local supabase stop",
+    "supabase:migration": "npx supabase migration new new_migration",
     "lint": "eslint . --max-warnings 0",
     "lint-staged": "lint-staged",
     "test:jest": "jest",
