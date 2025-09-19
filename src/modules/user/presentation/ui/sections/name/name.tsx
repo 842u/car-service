@@ -18,7 +18,7 @@ export function NameSection({ name }: NameSectionProps) {
       <DashboardSection.Text>
         Please enter your full name, or a display name you are comfortable with.
       </DashboardSection.Text>
-      <DashboardSection.Subtext className="my-4">{`Letters, numbers and single whitespaces allowed. Length between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`}</DashboardSection.Subtext>
+      <DashboardSection.Subtext className="my-4">{`Length between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`}</DashboardSection.Subtext>
       <NameForm name={name} />
     </DashboardSection>
   );
