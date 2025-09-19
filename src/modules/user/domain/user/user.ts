@@ -56,6 +56,14 @@ export class User extends Entity<UserValue> {
   }
 
   get email(): Email {
-    return this.value.email;
+    return this._value.email;
+  }
+
+  get name(): Name {
+    return this._value.name;
+  }
+
+  get avatarUrl(): AvatarUrl | null {
+    return this._value.avatarUrl;
   }
 }
