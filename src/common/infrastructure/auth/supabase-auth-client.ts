@@ -224,4 +224,22 @@ class SupabaseAuthAdminClient implements AuthAdminClient {
       });
     }
   }
+
+  async deleteUser(contract: { id: string }) {
+    try {
+      const { id } = contract;
+      const { data, error } = await this._authAdminClient.deleteUser(id);
+
+      if (error) return Result.fail({ message: error.message });
+
+      return Result.ok(data);
+    } catch (error) {
+      return Result.fail({
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Unknown auth admin client error.',
+      });
+    }
+  }
 }

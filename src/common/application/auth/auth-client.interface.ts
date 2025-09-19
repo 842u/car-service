@@ -44,4 +44,5 @@ export interface AuthAdminClient {
     password: string;
     email_confirm: boolean;
   }): Promise<AuthClientResult>;
+  deleteUser(contract: { id: string }): Promise<AuthClientResult>;
 }
