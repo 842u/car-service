@@ -96,7 +96,9 @@ export const tokens = {
   API_HANDLER: new DependencyToken<NextApiHandler<any, any, any>>(
     Symbol('API_HANDLER'),
   ),
-  USER_REPOSITORY: new DependencyToken<UserRepository>(Symbol('API_HANDLER')),
+  USER_REPOSITORY: new DependencyToken<UserRepository>(
+    Symbol('USER_REPOSITORY'),
+  ),
   SIGN_UP_USER_USE_CASE: new DependencyToken<SignUpUserUseCase, SupabaseConfig>(
     Symbol('SIGN_UP_USER_USE_CASE'),
   ),
