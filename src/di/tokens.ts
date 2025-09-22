@@ -12,6 +12,7 @@ import type { ZodValidator } from '@/common/infrastructure/validation/zod-valida
 import type { ValidatorConfig } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
+import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
 import type {
   PasswordChangeApiResponseData,
@@ -96,4 +97,7 @@ export const tokens = {
     Symbol('API_HANDLER'),
   ),
   USER_REPOSITORY: new DependencyToken<UserRepository>(Symbol('API_HANDLER')),
+  SIGN_UP_USER_USE_CASE: new DependencyToken<SignUpUserUseCase, SupabaseConfig>(
+    Symbol('SIGN_UP_USER_USE_CASE'),
+  ),
 } as const;
