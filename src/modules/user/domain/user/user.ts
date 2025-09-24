@@ -16,7 +16,7 @@ type UserCreateParams = {
   id: string;
   email: string;
   name: string;
-  avatarUrl?: string;
+  avatarUrl?: string | null;
 };
 
 export class User extends Entity<UserValue> {
