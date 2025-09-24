@@ -4,6 +4,7 @@ import { registerApiHandlerModule } from '@/di/modules/api-handler';
 import { registerAuthModule } from '@/di/modules/auth';
 import { registerDatabaseModule } from '@/di/modules/database';
 import { registerHttpModule } from '@/di/modules/http';
+import { registerMappersModule } from '@/di/modules/mappers';
 import { registerRepositoriesModule } from '@/di/modules/repositories';
 import { registerStorageModule } from '@/di/modules/storage';
 import { registerSupabaseModule } from '@/di/modules/supabase';
@@ -21,4 +22,5 @@ export function registerModules(container: DependencyContainer) {
   registerValidatorModule(container);
   registerRepositoriesModule(container);
   registerUseCasesModule(container);
+  registerMappersModule(container);
 }

@@ -5,9 +5,10 @@ import { UserRepository } from '@/user/infrastructure/repositories/user-reposito
 export function registerRepositoriesModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.USER_REPOSITORY,
-    async (dependencyContainer) => {
+    async (dependencyContainer, config) => {
       const dbClient = await dependencyContainer.resolve(
         tokens.DATABASE_SERVER_CLIENT,
+        config,
       );
 
       return new UserRepository(dbClient);
