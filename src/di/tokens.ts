@@ -36,6 +36,20 @@ export class DependencyToken<_T, _P = void> {
 }
 
 export const tokens = {
+  HTTP_CLIENT: new DependencyToken<FetchClient>(Symbol('HTTP_CLIENT')),
+
+  AUTH_API_CLIENT: new DependencyToken<NextAuthApiClient>(
+    Symbol('AUTH_API_CLIENT'),
+  ),
+
+  VALIDATOR: new DependencyToken<ZodValidator<any>, ValidatorConfig<any>>(
+    Symbol('VALIDATOR'),
+  ),
+
+  SUPABASE_ADMIN_CLIENT: new DependencyToken<
+    SupabaseClient<Database>,
+    SupabaseConfig
+  >(Symbol('SUPABASE_ADMIN_CLIENT')),
   SUPABASE_SERVER_CLIENT: new DependencyToken<
     SupabaseClient<Database>,
     SupabaseConfig
@@ -44,6 +58,11 @@ export const tokens = {
     SupabaseClient<Database>,
     SupabaseConfig
   >(Symbol('SUPABASE_BROWSER_CLIENT')),
+
+  DATABASE_ADMIN_CLIENT: new DependencyToken<
+    SupabaseDatabaseClient,
+    SupabaseConfig
+  >(Symbol('DATABASE_ADMIN_CLIENT')),
   DATABASE_SERVER_CLIENT: new DependencyToken<
     SupabaseDatabaseClient,
     SupabaseConfig
@@ -52,26 +71,32 @@ export const tokens = {
     SupabaseDatabaseClient,
     SupabaseConfig
   >(Symbol('DATABASE_BROWSER_CLIENT')),
+
+  AUTH_ADMIN_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
+    Symbol('AUTH_ADMIN_CLIENT'),
+  ),
   AUTH_SERVER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
     Symbol('AUTH_SERVER_CLIENT'),
   ),
   AUTH_BROWSER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
     Symbol('AUTH_BROWSER_CLIENT'),
   ),
-  STORAGE_BROWSER_CLIENT: new DependencyToken<
+
+  STORAGE_ADMIN_CLIENT: new DependencyToken<
     SupabaseStorageClient,
     SupabaseConfig
-  >(Symbol('STORAGE_BROWSER_CLIENT')),
+  >(Symbol('STORAGE_ADMIN_CLIENT')),
   STORAGE_SERVER_CLIENT: new DependencyToken<
     SupabaseStorageClient,
     SupabaseConfig
   >(Symbol('STORAGE_SERVER_CLIENT')),
-  HTTP_CLIENT: new DependencyToken<FetchClient>(Symbol('HTTP_CLIENT')),
-  AUTH_API_CLIENT: new DependencyToken<NextAuthApiClient>(
-    Symbol('AUTH_API_CLIENT'),
-  ),
-  VALIDATOR: new DependencyToken<ZodValidator<any>, ValidatorConfig<any>>(
-    Symbol('VALIDATOR'),
+  STORAGE_BROWSER_CLIENT: new DependencyToken<
+    SupabaseStorageClient,
+    SupabaseConfig
+  >(Symbol('STORAGE_BROWSER_CLIENT')),
+
+  API_HANDLER: new DependencyToken<NextApiHandler<any, any, any>>(
+    Symbol('API_HANDLER'),
   ),
   SIGN_UP_API_HANDLER: new DependencyToken<
     NextApiHandler<
@@ -94,14 +119,14 @@ export const tokens = {
       PasswordChangeContract
     >
   >(Symbol('PASSWORD_CHANGE_API_HANDLER')),
-  API_HANDLER: new DependencyToken<NextApiHandler<any, any, any>>(
-    Symbol('API_HANDLER'),
-  ),
+
   USER_REPOSITORY: new DependencyToken<UserRepository, SupabaseConfig>(
     Symbol('USER_REPOSITORY'),
   ),
+
   SIGN_UP_USER_USE_CASE: new DependencyToken<SignUpUserUseCase, SupabaseConfig>(
     Symbol('SIGN_UP_USER_USE_CASE'),
   ),
+
   USER_MAPPER: new DependencyToken<UserMapper>(Symbol('USER_MAPPER')),
 } as const;

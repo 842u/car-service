@@ -5,6 +5,18 @@ import { tokens } from '@/di/tokens';
 
 export function registerStorageModule(container: DependencyContainer) {
   container.registerFactory(
+    tokens.STORAGE_ADMIN_CLIENT,
+    async (dependencyContainer, config?: SupabaseConfig) => {
+      const supabaseAdminClient = await dependencyContainer.resolve(
+        tokens.SUPABASE_ADMIN_CLIENT,
+        config,
+      );
+
+      return new SupabaseStorageClient(supabaseAdminClient);
+    },
+  );
+
+  container.registerFactory(
     tokens.STORAGE_SERVER_CLIENT,
     async (dependencyContainer, config?: SupabaseConfig) => {
       const supabaseServerClient = await dependencyContainer.resolve(

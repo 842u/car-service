@@ -5,6 +5,18 @@ import { tokens } from '@/di/tokens';
 
 export function registerAuthModule(container: DependencyContainer) {
   container.registerFactory(
+    tokens.AUTH_ADMIN_CLIENT,
+    async (dependencyContainer, config?: SupabaseConfig) => {
+      const supabaseAdminClient = await dependencyContainer.resolve(
+        tokens.SUPABASE_ADMIN_CLIENT,
+        config,
+      );
+
+      return new SupabaseAuthClient(supabaseAdminClient);
+    },
+  );
+
+  container.registerFactory(
     tokens.AUTH_SERVER_CLIENT,
     async (dependencyContainer, config?: SupabaseConfig) => {
       const supabaseServerClient = await dependencyContainer.resolve(

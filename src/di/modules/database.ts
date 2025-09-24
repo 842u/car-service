@@ -4,6 +4,18 @@ import { tokens } from '@/di/tokens';
 
 export function registerDatabaseModule(container: DependencyContainer) {
   container.registerFactory(
+    tokens.DATABASE_ADMIN_CLIENT,
+    async (dependencyContainer, config) => {
+      const supabaseAdminClient = await dependencyContainer.resolve(
+        tokens.SUPABASE_ADMIN_CLIENT,
+        config,
+      );
+
+      return new SupabaseDatabaseClient(supabaseAdminClient);
+    },
+  );
+
+  container.registerFactory(
     tokens.DATABASE_SERVER_CLIENT,
     async (dependencyContainer, config) => {
       const supabaseServerClient = await dependencyContainer.resolve(

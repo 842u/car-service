@@ -7,7 +7,7 @@ export function registerRepositoriesModule(container: DependencyContainer) {
     tokens.USER_REPOSITORY,
     async (dependencyContainer, config) => {
       const dbClient = await dependencyContainer.resolve(
-        tokens.DATABASE_SERVER_CLIENT,
+        tokens.DATABASE_ADMIN_CLIENT,
         config,
       );
 
