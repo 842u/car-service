@@ -121,11 +121,10 @@ export class SignUpUserUseCase
       await this._authAdminClient.admin.deleteUser({
         id: user.id,
       });
-      const { message, code } = storeUserResult.error;
-      const parsedCode = code && parseInt(code);
+      const { message } = storeUserResult.error;
       return Result.fail({
         message,
-        code: parsedCode || 500,
+        code: 500,
       });
     }
 
