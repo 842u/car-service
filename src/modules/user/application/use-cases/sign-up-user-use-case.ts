@@ -2,7 +2,7 @@ import type { Route } from 'next';
 
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
+import type { SupabaseAuthAdminClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import { User } from '@/user/domain/user/user';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
@@ -13,16 +13,13 @@ type SignUpUseCaseError = { code: number };
 export class SignUpUserUseCase
   implements UseCase<SignUpContract, SignUpUseCaseError>
 {
-  private readonly _authClient: SupabaseAuthClient;
-  private readonly _authAdminClient: SupabaseAuthClient;
+  private readonly _authAdminClient: SupabaseAuthAdminClient;
   private readonly _userRepository: UserRepository;
 
   constructor(
-    authClient: SupabaseAuthClient,
-    authAdminClient: SupabaseAuthClient,
+    authAdminClient: SupabaseAuthAdminClient,
     userRepository: UserRepository,
   ) {
-    this._authClient = authClient;
     this._authAdminClient = authAdminClient;
     this._userRepository = userRepository;
   }
@@ -41,7 +38,7 @@ export class SignUpUserUseCase
       password: { value: password },
     } = credentialsResult.data;
     const signUpRedirectPath = '/dashboard' satisfies Route;
-    const signUpResult = await this._authClient.signUp(
+    const signUpResult = await this._authAdminClient.signUp(
       { email, password },
       { emailRedirectTo: signUpRedirectPath },
     );
@@ -65,7 +62,7 @@ export class SignUpUserUseCase
        * If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user.
        * For users who forget that have and account send email with password reset flow.
        */
-      const resetPasswordResult = await this._authClient.resetPassword({
+      const resetPasswordResult = await this._authAdminClient.resetPassword({
         email,
         options: {
           redirectTo: signUpRedirectPath,
@@ -108,7 +105,7 @@ export class SignUpUserUseCase
     });
 
     if (!userResult.success) {
-      await this._authAdminClient.admin.deleteUser({
+      await this._authAdminClient.deleteUser({
         id: user.id,
       });
       const { message } = userResult.error;
@@ -118,7 +115,7 @@ export class SignUpUserUseCase
     const storeUserResult = await this._userRepository.store(userResult.data);
 
     if (!storeUserResult.success) {
-      await this._authAdminClient.admin.deleteUser({
+      await this._authAdminClient.deleteUser({
         id: user.id,
       });
       const { message } = storeUserResult.error;

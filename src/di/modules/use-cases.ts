@@ -7,9 +7,6 @@ export function registerUseCasesModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.SIGN_UP_USER_USE_CASE,
     async (dependencyContainer, config) => {
-      const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_SERVER_CLIENT,
-      );
       const authAdminClient = await dependencyContainer.resolve(
         dependencyTokens.AUTH_ADMIN_CLIENT,
         config,
@@ -19,7 +16,7 @@ export function registerUseCasesModule(container: DependencyContainer) {
         config,
       );
 
-      return new SignUpUserUseCase(authClient, authAdminClient, userRepository);
+      return new SignUpUserUseCase(authAdminClient, userRepository);
     },
   );
 }

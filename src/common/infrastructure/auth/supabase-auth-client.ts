@@ -14,12 +14,10 @@ import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
 export class SupabaseAuthClient implements AuthClient {
-  private readonly _authClient: SupabaseClient<Database>['auth'];
-  private readonly _authAdminClient: AuthAdminClient;
+  protected readonly _authClient: SupabaseClient<Database>['auth'];
 
   constructor(client: SupabaseClient) {
     this._authClient = client.auth;
-    this._authAdminClient = new SupabaseAuthAdminClient(client);
   }
 
   async getSession() {
@@ -191,17 +189,14 @@ export class SupabaseAuthClient implements AuthClient {
       });
     }
   }
-
-  get admin() {
-    return this._authAdminClient;
-  }
 }
 
-class SupabaseAuthAdminClient implements AuthAdminClient {
-  private readonly _authAdminClient: SupabaseClient<Database>['auth']['admin'];
-
+export class SupabaseAuthAdminClient
+  extends SupabaseAuthClient
+  implements AuthAdminClient
+{
   constructor(client: SupabaseClient) {
-    this._authAdminClient = client.auth.admin;
+    super(client);
   }
 
   async createUser(contract: {
@@ -210,7 +205,7 @@ class SupabaseAuthAdminClient implements AuthAdminClient {
     email_confirm: boolean;
   }) {
     try {
-      const { data, error } = await this._authAdminClient.createUser(contract);
+      const { data, error } = await this._authClient.admin.createUser(contract);
 
       if (error) return Result.fail({ message: error.message });
 
@@ -228,7 +223,7 @@ class SupabaseAuthAdminClient implements AuthAdminClient {
   async deleteUser(contract: { id: string }) {
     try {
       const { id } = contract;
-      const { data, error } = await this._authAdminClient.deleteUser(id);
+      const { data, error } = await this._authClient.admin.deleteUser(id);
 
       if (error) return Result.fail({ message: error.message });
 

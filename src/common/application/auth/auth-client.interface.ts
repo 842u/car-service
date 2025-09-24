@@ -35,10 +35,9 @@ export interface AuthClient {
     provider: string;
     options: { redirectTo: string };
   }): Promise<AuthClientResult>;
-  admin: AuthAdminClient;
 }
 
-export interface AuthAdminClient {
+export interface AuthAdminClient extends AuthClient {
   createUser(contract: {
     email: string;
     password: string;

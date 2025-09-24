@@ -4,7 +4,10 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 
 import type { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
 import type { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
-import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
+import type {
+  SupabaseAuthAdminClient,
+  SupabaseAuthClient,
+} from '@/common/infrastructure/auth/supabase-auth-client';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
@@ -72,9 +75,10 @@ export const tokens = {
     SupabaseConfig
   >(Symbol('DATABASE_BROWSER_CLIENT')),
 
-  AUTH_ADMIN_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
-    Symbol('AUTH_ADMIN_CLIENT'),
-  ),
+  AUTH_ADMIN_CLIENT: new DependencyToken<
+    SupabaseAuthAdminClient,
+    SupabaseConfig
+  >(Symbol('AUTH_ADMIN_CLIENT')),
   AUTH_SERVER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
     Symbol('AUTH_SERVER_CLIENT'),
   ),

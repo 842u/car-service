@@ -9,12 +9,12 @@ export async function createTestUser(testUserIndex: number) {
   const email = testUserIndex + testUserEmail;
   const password = testUserPassword;
 
-  const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_BROWSER_CLIENT,
+  const authAdminClient = await dependencyContainer.resolve(
+    dependencyTokens.AUTH_ADMIN_CLIENT,
     { supabaseKey, supabaseUrl },
   );
 
-  const createUserResult = await authClient.admin.createUser({
+  const createUserResult = await authAdminClient.createUser({
     email: testUserIndex + testUserEmail,
     password: testUserPassword,
     email_confirm: true,

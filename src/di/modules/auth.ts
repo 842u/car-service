@@ -1,4 +1,7 @@
-import { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
+import {
+  SupabaseAuthAdminClient,
+  SupabaseAuthClient,
+} from '@/common/infrastructure/auth/supabase-auth-client';
 import type { DependencyContainer } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import { tokens } from '@/di/tokens';
@@ -12,7 +15,7 @@ export function registerAuthModule(container: DependencyContainer) {
         config,
       );
 
-      return new SupabaseAuthClient(supabaseAdminClient);
+      return new SupabaseAuthAdminClient(supabaseAdminClient);
     },
   );
 
