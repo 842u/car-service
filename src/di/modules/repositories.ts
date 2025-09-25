@@ -10,8 +10,9 @@ export function registerRepositoriesModule(container: DependencyContainer) {
         tokens.DATABASE_ADMIN_CLIENT,
         config,
       );
+      const userMapper = await dependencyContainer.resolve(tokens.USER_MAPPER);
 
-      return new UserRepository(dbClient);
+      return new UserRepository(dbClient, userMapper);
     },
   );
 }
