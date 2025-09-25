@@ -35,5 +35,11 @@ export async function POST(request: NextRequest) {
 
   const user = useCaseResult.data;
 
-  return apiHandler.successResponse({ id: user.id.value }, 200);
+  const userMapper = await dependencyContainer.resolve(
+    dependencyTokens.USER_MAPPER,
+  );
+
+  const userDto = userMapper.domainToDto(user);
+
+  return apiHandler.successResponse(userDto, 200);
 }
