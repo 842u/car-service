@@ -24,13 +24,19 @@ export class SupabaseAuthClient implements AuthClient {
     try {
       const { data, error } = await this._authClient.getUser();
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -40,13 +46,19 @@ export class SupabaseAuthClient implements AuthClient {
       const { data, error } =
         await this._authClient.signInWithPassword(contract);
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -55,13 +67,19 @@ export class SupabaseAuthClient implements AuthClient {
     try {
       const { error } = await this._authClient.signOut();
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok({});
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -78,13 +96,19 @@ export class SupabaseAuthClient implements AuthClient {
         options,
       });
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -104,13 +128,19 @@ export class SupabaseAuthClient implements AuthClient {
         options,
       );
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -130,13 +160,19 @@ export class SupabaseAuthClient implements AuthClient {
         options,
       );
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -145,13 +181,19 @@ export class SupabaseAuthClient implements AuthClient {
     try {
       const { data, error } = await this._authClient.verifyOtp(contract);
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -161,13 +203,19 @@ export class SupabaseAuthClient implements AuthClient {
       const { data, error } =
         await this._authClient.exchangeCodeForSession(code);
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -179,13 +227,47 @@ export class SupabaseAuthClient implements AuthClient {
     try {
       const { data, error } = await this._authClient.signInWithOAuth(contract);
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
+      });
+    }
+  }
+
+  async sendConfirmationEmail(contract: { email: string; redirectTo: string }) {
+    try {
+      const { email, redirectTo } = contract;
+      const { data, error } = await this._authClient.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: redirectTo,
+        },
+      });
+
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
+
+      return Result.ok(data);
+    } catch (error) {
+      return Result.fail({
+        message:
+          error instanceof Error ? error.message : 'Unknown auth client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -207,7 +289,11 @@ export class SupabaseAuthAdminClient
     try {
       const { data, error } = await this._authClient.admin.createUser(contract);
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
@@ -216,6 +302,8 @@ export class SupabaseAuthAdminClient
           error instanceof Error
             ? error.message
             : 'Unknown auth admin client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }
@@ -225,7 +313,11 @@ export class SupabaseAuthAdminClient
       const { id } = contract;
       const { data, error } = await this._authClient.admin.deleteUser(id);
 
-      if (error) return Result.fail({ message: error.message });
+      if (error) {
+        const { message, code, status } = error;
+        const parsedCode = String(code);
+        return Result.fail({ message, code: parsedCode, status });
+      }
 
       return Result.ok(data);
     } catch (error) {
@@ -234,6 +326,8 @@ export class SupabaseAuthAdminClient
           error instanceof Error
             ? error.message
             : 'Unknown auth admin client error.',
+        code: 'unknown_error',
+        status: 500,
       });
     }
   }

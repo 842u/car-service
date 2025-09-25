@@ -4,7 +4,8 @@ import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
 type AuthError = {
   message: string;
-  code?: string;
+  code: string;
+  status: number | undefined;
 };
 
 export type AuthClientResult<T = unknown> = Result<T, AuthError>;
@@ -34,6 +35,10 @@ export interface AuthClient {
   signInWithOAuth(contract: {
     provider: string;
     options: { redirectTo: string };
+  }): Promise<AuthClientResult>;
+  sendConfirmationEmail(contract: {
+    email: string;
+    redirectTo: string;
   }): Promise<AuthClientResult>;
 }
 
