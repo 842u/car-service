@@ -26,87 +26,81 @@ export class SignUpUserUseCase
 
   async execute(contract: SignUpContract) {
     const { email: emailDto, password: passwordDto } = contract;
-    const credentialsResult = Credentials.create(emailDto, passwordDto);
 
+    const credentialsResult = Credentials.create(emailDto, passwordDto);
     if (!credentialsResult.success) {
       const { message } = credentialsResult.error;
       return Result.fail({ message, code: 422 });
     }
-
     const {
       email: { value: email },
       password: { value: password },
     } = credentialsResult.data;
-    const signUpRedirectPath = '/dashboard' satisfies Route;
-    const signUpResult = await this._authAdminClient.signUp(
-      { email, password },
-      { emailRedirectTo: signUpRedirectPath },
-    );
 
-    if (!signUpResult.success) {
-      const { message } = signUpResult.error;
-      return Result.fail({ message, code: 500 });
+    const createAuthIdentityResult = await this._authAdminClient.createUser({
+      email,
+      password,
+      email_confirm: false,
+    });
+
+    if (!createAuthIdentityResult.success) {
+      const { message, code, status } = createAuthIdentityResult.error;
+
+      if (code !== 'email_exists')
+        return Result.fail({ message, code: status || 500 });
+
+      /**
+       * If auth identity/user already exists, send password reset email and return obfuscated user to not expose such information to threat actors.
+       */
+      const resetPasswordResult = await this._authAdminClient.resetPassword({
+        email,
+        options: {
+          redirectTo: '/dashboard' satisfies Route,
+        },
+      });
+
+      if (!resetPasswordResult.success) {
+        const { message, status } = resetPasswordResult.error;
+        return Result.fail({ message, code: status || 500 });
+      }
+
+      const obfuscatedUserResult = User.create({
+        id: crypto.randomUUID(),
+        email: email,
+        name: email,
+      });
+
+      if (!obfuscatedUserResult.success) {
+        const { message } = obfuscatedUserResult.error;
+        return Result.fail({ message, code: 500 });
+      }
+
+      return Result.ok(obfuscatedUserResult.data);
     }
 
-    const { user } = signUpResult.data;
+    const { user: authIdentity } = createAuthIdentityResult.data;
 
-    if (!user) {
+    if (!authIdentity) {
       return Result.fail({
         message: 'Cannot get authentication identity.',
         code: 500,
       });
     }
 
-    if (!user.identities?.length) {
-      /*
-       * If email confirmation and phone confirmation are enabled, signUp() will return an obfuscated user for confirmed existing user.
-       * For users who forget that have and account send email with password reset flow.
-       */
-      const resetPasswordResult = await this._authAdminClient.resetPassword({
-        email,
-        options: {
-          redirectTo: signUpRedirectPath,
-        },
-      });
-
-      if (!resetPasswordResult.success) {
-        const { message } = resetPasswordResult.error;
-        return Result.fail({ message, code: 500 });
-      }
-
-      const userResult = User.create({
-        id: user.id,
-        email: user.email!,
-        name:
-          user.user_metadata?.full_name ||
-          user.user_metadata?.first_name ||
-          user.email ||
-          user.id,
-        avatarUrl: user.user_metadata?.avatar_url,
-      });
-
-      if (!userResult.success) {
-        const { message } = userResult.error;
-        return Result.fail({ message, code: 422 });
-      }
-
-      return Result.ok(userResult.data);
-    }
-
     const userResult = User.create({
-      id: user.id,
-      email: user.email!,
+      id: authIdentity.id,
+      email: authIdentity.email!,
       name:
-        user.user_metadata?.full_name ||
-        user.user_metadata?.first_name ||
-        user.email ||
-        user.id,
-      avatarUrl: user.user_metadata?.avatar_url,
+        authIdentity.user_metadata?.full_name ||
+        authIdentity.user_metadata?.first_name ||
+        authIdentity.email ||
+        authIdentity.id,
+      avatarUrl: authIdentity.user_metadata?.avatar_url,
     });
 
     if (!userResult.success) {
       await this._authAdminClient.deleteUser({
-        id: user.id,
+        id: authIdentity.id,
       });
       const { message } = userResult.error;
       return Result.fail({ message, code: 422 });
@@ -116,12 +110,29 @@ export class SignUpUserUseCase
 
     if (!storeUserResult.success) {
       await this._authAdminClient.deleteUser({
-        id: user.id,
+        id: authIdentity.id,
       });
       const { message } = storeUserResult.error;
       return Result.fail({
         message,
         code: 500,
+      });
+    }
+
+    const sendConfirmationEmailResult =
+      await this._authAdminClient.sendConfirmationEmail({
+        email: userResult.data.email.value,
+        redirectTo: '/dashboard' satisfies Route,
+      });
+
+    if (!sendConfirmationEmailResult.success) {
+      await this._authAdminClient.deleteUser({
+        id: authIdentity.id,
+      });
+      const { message, status } = sendConfirmationEmailResult.error;
+      return Result.fail({
+        message,
+        code: status || 500,
       });
     }
 
