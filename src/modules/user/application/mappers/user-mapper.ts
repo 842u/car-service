@@ -1,3 +1,5 @@
+import type { User as AuthIdentity } from '@supabase/auth-js';
+
 import type { Mapper } from '@/common/application/mapper/mapper.interface';
 import { Result } from '@/common/application/result/result';
 import type { UserDto } from '@/user/application/dtos/user-dto';
@@ -69,5 +71,26 @@ export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
       name: model.user_name,
       avatarUrl: model.avatar_url,
     };
+  }
+
+  authIdentityToDomain(model: AuthIdentity) {
+    const userResult = User.create({
+      id: model.id,
+      name:
+        model.user_metadata?.user_name ||
+        model.user_metadata?.full_name ||
+        model.user_metadata?.first_name ||
+        model.user_metadata?.second_name ||
+        model.email ||
+        model.id,
+      email: model.email!,
+      avatarUrl: model.user_metadata?.avatar_url,
+    });
+
+    if (!userResult.success) {
+      return Result.fail(userResult.error);
+    }
+
+    return Result.ok(userResult.data);
   }
 }
