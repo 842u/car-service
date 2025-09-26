@@ -10,6 +10,8 @@ const AVATAR_URL_REQUIRED_MESSAGE = 'Avatar URL is required.';
 const AVATAR_URL_TYPE_MESSAGE = 'Avatar URL must be a URL.';
 
 export const avatarUrlSchema = z.url({
+  protocol: /^https?$/,
+  hostname: z.regexes.domain,
   error: (issue) =>
     issue.input === undefined
       ? AVATAR_URL_REQUIRED_MESSAGE
