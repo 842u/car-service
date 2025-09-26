@@ -39,7 +39,7 @@ export class User extends Entity<UserValue> {
     }
     let avatarUrlResult;
     if (avatarUrl) {
-      avatarUrlResult = AvatarUrl.create(name);
+      avatarUrlResult = AvatarUrl.create(avatarUrl);
       if (!avatarUrlResult.success) {
         return Result.fail(avatarUrlResult.error);
       }
