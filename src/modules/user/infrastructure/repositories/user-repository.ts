@@ -62,6 +62,26 @@ export class UserRepository implements IUserRepository {
     return Result.ok(userResult.data);
   }
 
+  async getById(id: string) {
+    const queryResult = await this._dbClient.query(async (from) =>
+      from('users').select('*').eq('id', id).single(),
+    );
+
+    if (!queryResult.success) {
+      return Result.fail(queryResult.error);
+    }
+
+    const userPersistence = queryResult.data;
+
+    const userResult = this._userMapper.persistenceToDomain(userPersistence);
+
+    if (!userResult.success) {
+      return Result.fail(userResult.error);
+    }
+
+    return Result.ok(userResult.data);
+  }
+
   async changeName(user: User) {
     const queryResult = await this._dbClient.query(async (from) =>
       from('users').update({ user_name: user.name.value }),
