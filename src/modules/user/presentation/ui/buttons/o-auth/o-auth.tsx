@@ -35,10 +35,8 @@ type OAuthButtonProps = {
 
 export function OAuthButton({ provider }: OAuthButtonProps) {
   /**
-   * As for @supabase/ssr v0.6.1 & @supabase/supabase-js v2.49.4,
-   * auth.signInWithOAuth() immediately returns a successful response when there is no
-   * connection error. Due to this, the loading state is removed only on error and kept until
-   * redirection takes place and the component unmounts.
+   * As for @supabase/ssr v0.6.1 & @supabase/supabase-js v2.49.4, auth.signInWithOAuth() immediately returns a successful response when there is no connection error.
+   *  Due to this, the loading state is removed only on error and kept until redirection takes place and the component unmounts.
    */
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,7 +50,7 @@ export function OAuthButton({ provider }: OAuthButtonProps) {
     );
 
     const redirectUrl = new URL(window.location.origin);
-    redirectUrl.pathname = '/api/auth/callback' satisfies Route;
+    redirectUrl.pathname = '/api/auth/o-auth' satisfies Route;
 
     const signInResult = await authClient.signInWithOAuth({
       provider,
