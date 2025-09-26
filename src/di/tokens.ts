@@ -16,6 +16,7 @@ import type { ValidatorConfig } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
+import type { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
 import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
 import type {
@@ -49,6 +50,9 @@ export const tokens = {
     Symbol('VALIDATOR'),
   ),
 
+  /**
+   * SUPABASE
+   */
   SUPABASE_ADMIN_CLIENT: new DependencyToken<
     SupabaseClient<Database>,
     SupabaseConfig
@@ -62,6 +66,9 @@ export const tokens = {
     SupabaseConfig
   >(Symbol('SUPABASE_BROWSER_CLIENT')),
 
+  /**
+   * DATABASE
+   */
   DATABASE_ADMIN_CLIENT: new DependencyToken<
     SupabaseDatabaseClient,
     SupabaseConfig
@@ -75,6 +82,9 @@ export const tokens = {
     SupabaseConfig
   >(Symbol('DATABASE_BROWSER_CLIENT')),
 
+  /**
+   * AUTH
+   */
   AUTH_ADMIN_CLIENT: new DependencyToken<
     SupabaseAuthAdminClient,
     SupabaseConfig
@@ -86,6 +96,9 @@ export const tokens = {
     Symbol('AUTH_BROWSER_CLIENT'),
   ),
 
+  /**
+   * STORAGE
+   */
   STORAGE_ADMIN_CLIENT: new DependencyToken<
     SupabaseStorageClient,
     SupabaseConfig
@@ -99,6 +112,9 @@ export const tokens = {
     SupabaseConfig
   >(Symbol('STORAGE_BROWSER_CLIENT')),
 
+  /**
+   * API HANDLER
+   */
   API_HANDLER: new DependencyToken<NextApiHandler<any, any, any>>(
     Symbol('API_HANDLER'),
   ),
@@ -124,13 +140,26 @@ export const tokens = {
     >
   >(Symbol('PASSWORD_CHANGE_API_HANDLER')),
 
+  /**
+   * REPOSITORY
+   */
   USER_REPOSITORY: new DependencyToken<UserRepository, SupabaseConfig>(
     Symbol('USER_REPOSITORY'),
   ),
 
+  /**
+   * USE CASE
+   */
   SIGN_UP_USER_USE_CASE: new DependencyToken<SignUpUserUseCase, SupabaseConfig>(
     Symbol('SIGN_UP_USER_USE_CASE'),
   ),
+  SIGN_IN_WITH_O_AUTH_USER_USE_CASE: new DependencyToken<
+    SignInUserWithOAuthUseCase,
+    SupabaseConfig
+  >(Symbol('SIGN_IN_WITH_O_AUTH_USER_USE_CASE')),
 
+  /**
+   * MAPPER
+   */
   USER_MAPPER: new DependencyToken<UserMapper>(Symbol('USER_MAPPER')),
 } as const;
