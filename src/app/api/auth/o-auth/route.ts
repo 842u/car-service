@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     );
 
   const signInUserWithOAuthUseCase = await dependencyContainer.resolve(
-    dependencyTokens.SIGN_IN_WITH_O_AUTH_USER_USE_CASE,
+    dependencyTokens.SIGN_IN_USER_WITH_O_AUTH_USE_CASE,
     { supabaseKey },
   );
 

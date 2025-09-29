@@ -2,6 +2,7 @@ import { dependencyTokens } from '@/di';
 import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
 import { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
+import { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
 import { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
 
 export function registerUseCasesModule(container: DependencyContainer) {
@@ -22,7 +23,7 @@ export function registerUseCasesModule(container: DependencyContainer) {
   );
 
   container.registerFactory(
-    tokens.SIGN_IN_WITH_O_AUTH_USER_USE_CASE,
+    tokens.SIGN_IN_USER_WITH_O_AUTH_USE_CASE,
     async (dependencyContainer, config) => {
       const authClient = await dependencyContainer.resolve(
         dependencyTokens.AUTH_SERVER_CLIENT,
@@ -40,6 +41,20 @@ export function registerUseCasesModule(container: DependencyContainer) {
         userRepository,
         userMapper,
       );
+    },
+  );
+
+  container.registerFactory(
+    tokens.SIGN_IN_USER_WITH_OTP_USE_CASE,
+    async (dependencyContainer) => {
+      const authClient = await dependencyContainer.resolve(
+        dependencyTokens.AUTH_SERVER_CLIENT,
+      );
+      const userMapper = await dependencyContainer.resolve(
+        dependencyTokens.USER_MAPPER,
+      );
+
+      return new SignInUserWithOtpUseCase(authClient, userMapper);
     },
   );
 }
