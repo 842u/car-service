@@ -16,6 +16,7 @@ import type { ValidatorConfig } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
+import type { IUserStore } from '@/user/application/stores/user-store.interface';
 import type { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
 import type { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
 import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
@@ -156,6 +157,11 @@ export const tokens = {
   USER_REPOSITORY: new DependencyToken<UserRepository, SupabaseConfig>(
     Symbol('USER_REPOSITORY'),
   ),
+
+  /**
+   * STORES
+   */
+  USER_STORE: new DependencyToken<IUserStore>(Symbol('USER_STORE')),
 
   /**
    * USE CASES

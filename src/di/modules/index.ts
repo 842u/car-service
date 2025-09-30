@@ -7,6 +7,7 @@ import { registerHttpModule } from '@/di/modules/http';
 import { registerMappersModule } from '@/di/modules/mappers';
 import { registerRepositoriesModule } from '@/di/modules/repositories';
 import { registerStorageModule } from '@/di/modules/storage';
+import { registerStoresModule } from '@/di/modules/stores';
 import { registerSupabaseModule } from '@/di/modules/supabase';
 import { registerUseCasesModule } from '@/di/modules/use-cases';
 import { registerValidatorModule } from '@/di/modules/validator';
@@ -23,4 +24,5 @@ export function registerModules(container: DependencyContainer) {
   registerRepositoriesModule(container);
   registerUseCasesModule(container);
   registerMappersModule(container);
+  registerStoresModule(container);
 }
