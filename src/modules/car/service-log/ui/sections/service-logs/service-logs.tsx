@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import type { Profile } from '@/types';
+import type { UserDto } from '@/user/application/dtos/user-dto';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 
@@ -16,13 +16,13 @@ import { SectionControls } from './controls/controls';
 
 type ServiceLogsSectionProps = SectionControlsProps & {
   isCurrentUserPrimaryOwner: boolean;
-  ownersProfiles?: Profile[];
+  owners?: UserDto[];
 };
 
 export function ServiceLogsSection({
   carId,
   isCurrentUserPrimaryOwner,
-  ownersProfiles,
+  owners,
 }: ServiceLogsSectionProps) {
   const { addToast } = useToasts();
 
@@ -45,9 +45,9 @@ export function ServiceLogsSection({
         <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
       ) : (
         <ServiceLogsTable
-          key={ownersProfiles ? 'loaded' : 'loading'}
+          key={owners ? 'loaded' : 'loading'}
           isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-          ownersProfiles={ownersProfiles}
+          owners={owners}
           serviceLogs={data}
         />
       )}

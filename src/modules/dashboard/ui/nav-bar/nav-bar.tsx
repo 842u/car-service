@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react';
 
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar } from '@/ui/nav-bar/nav-bar';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
-import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import { NavBarNav } from './nav/nav';
@@ -32,7 +32,20 @@ export function DashboardNavBar() {
   const { data, error, isPending, isSuccess } = useQuery({
     throwOnError: false,
     queryKey: queryKeys.profilesCurrentSession,
-    queryFn: getCurrentSessionProfile,
+    queryFn: async () => {
+      const userStore = await dependencyContainer.resolve(
+        dependencyTokens.USER_STORE,
+      );
+
+      const userResult = await userStore.getSessionUser();
+
+      if (!userResult.success) {
+        const { message } = userResult.error;
+        throw new Error(message);
+      }
+
+      return userResult.data;
+    },
   });
 
   useEffect(() => {
@@ -45,7 +58,7 @@ export function DashboardNavBar() {
       {isPending && (
         <Spinner className="fill-accent-400 stroke-accent-400 z-10 h-full" />
       )}
-      {isSuccess && <UserBadge className="z-10" userProfile={data} />}
+      {isSuccess && <UserBadge className="z-10" user={data} />}
       <HamburgerButton
         className="z-10 md:hidden"
         isActive={isActive}

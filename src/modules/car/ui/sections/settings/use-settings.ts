@@ -6,7 +6,6 @@ import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
-import { getProfilesByUsersId } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 import type { SettingsSectionProps } from './settings';
@@ -37,7 +36,20 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
       throwOnError: false,
       // eslint-disable-next-line
       queryKey: queryKeys.profilesOwners,
-      queryFn: () => getProfilesByUsersId(ownersId || []),
+      queryFn: async () => {
+        const userStore = await dependencyContainer.resolve(
+          dependencyTokens.USER_STORE,
+        );
+
+        const usersResult = await userStore.getUsersByIds(ownersId || []);
+
+        if (!usersResult.success) {
+          const { message } = usersResult.error;
+          throw new Error(message);
+        }
+
+        return usersResult.data;
+      },
       enabled: allowDependentQueries,
     },
   );

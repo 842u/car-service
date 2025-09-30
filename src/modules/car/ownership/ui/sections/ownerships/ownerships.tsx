@@ -1,12 +1,13 @@
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import type { CarOwnership, Profile } from '@/types';
+import type { CarOwnership } from '@/types';
+import type { UserDto } from '@/user/application/dtos/user-dto';
 
 import { OwnershipsTable } from '../../tables/ownerships/ownerships';
 import type { SectionControlsProps } from './controls/controls';
 import { SectionControls } from './controls/controls';
 
 type OwnershipsSectionProps = SectionControlsProps & {
-  ownersProfiles?: Profile[];
+  owners?: UserDto[];
   carOwnerships?: CarOwnership[];
 };
 
@@ -14,7 +15,7 @@ export function OwnershipsSection({
   carId,
   carOwnerships,
   isCurrentUserPrimaryOwner,
-  ownersProfiles,
+  owners,
 }: OwnershipsSectionProps) {
   return (
     <DashboardSection className="overflow-x-auto">
@@ -22,10 +23,10 @@ export function OwnershipsSection({
         Ownerships
       </DashboardSection.Heading>
       <OwnershipsTable
-        key={ownersProfiles ? 'loaded' : 'loading'}
+        key={owners ? 'loaded' : 'loading'}
         carOwnerships={carOwnerships}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfiles={ownersProfiles}
+        owners={owners}
       />
       <SectionControls
         carId={carId}

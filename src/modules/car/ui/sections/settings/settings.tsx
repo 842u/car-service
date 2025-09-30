@@ -35,13 +35,13 @@ export function SettingsSection({ carId }: SettingsSectionProps) {
       <ServiceLogsSection
         carId={carId}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfiles={ownersProfilesData}
+        owners={ownersProfilesData}
       />
       <OwnershipsSection
         carId={carId}
         carOwnerships={carOwnershipData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        ownersProfiles={ownersProfilesData}
+        owners={ownersProfilesData}
       />
       <DeleteSection
         carId={carId}

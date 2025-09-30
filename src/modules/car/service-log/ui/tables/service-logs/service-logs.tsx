@@ -6,10 +6,11 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
-import type { Profile, ServiceLog } from '@/types';
+import type { ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
 import { Table } from '@/ui/table/table';
+import type { UserDto } from '@/user/application/dtos/user-dto';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';
@@ -19,13 +20,13 @@ const columnsHelper = createColumnHelper<ServiceLog>();
 type ServiceLogsTableProps = {
   isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
-  ownersProfiles?: Profile[];
+  owners?: UserDto[];
 };
 
 export function ServiceLogsTable({
   isCurrentUserPrimaryOwner,
   serviceLogs,
-  ownersProfiles,
+  owners,
 }: ServiceLogsTableProps) {
   const [user, setUser] = useState<User | null>(null);
 
@@ -75,11 +76,9 @@ export function ServiceLogsTable({
         }),
         columnsHelper.accessor(
           (row) => {
-            const profile = ownersProfiles?.find(
-              (profile) => profile.id === row.created_by,
-            );
+            const owner = owners?.find((owner) => owner.id === row.created_by);
 
-            return profile?.username;
+            return owner?.name;
           },
           {
             meta: {
@@ -91,15 +90,15 @@ export function ServiceLogsTable({
             enableColumnFilter: true,
             filterFn: 'includesString',
             cell: ({ row }) => {
-              const profile = ownersProfiles?.find(
-                (profile) => profile.id === row.original.created_by,
+              const owner = owners?.find(
+                (owner) => owner.id === row.original.created_by,
               );
 
               return (
-                profile && (
+                owner && (
                   <UserBadge
                     className="h-10 flex-row-reverse justify-end"
-                    userProfile={profile}
+                    user={owner}
                   />
                 )
               );
@@ -120,7 +119,7 @@ export function ServiceLogsTable({
           ),
         }),
       ] as ColumnDef<ServiceLog>[],
-    [isCurrentUserPrimaryOwner, ownersProfiles, user?.id, tableRef],
+    [isCurrentUserPrimaryOwner, owners, user?.id, tableRef],
   );
 
   useEffect(() => {

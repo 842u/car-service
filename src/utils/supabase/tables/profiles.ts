@@ -2,38 +2,6 @@ import { dependencyContainer, dependencyTokens } from '@/di';
 import type { Profile } from '@/types';
 import { hashFile } from '@/utils/general';
 
-export async function getCurrentSessionProfile() {
-  const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_BROWSER_CLIENT,
-  );
-
-  const sessionResult = await authClient.getSession();
-
-  if (!sessionResult.success) {
-    const { message } = sessionResult.error;
-    throw new Error(message);
-  }
-
-  const { user } = sessionResult.data;
-
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
-    from('profiles').select('*').eq('id', user.id).single(),
-  );
-
-  if (!queryResult.success) {
-    const { message } = queryResult.error;
-    throw new Error(message);
-  }
-
-  const { data } = queryResult;
-
-  return data;
-}
-
 type PatchProfileParameters =
   | {
       property: Extract<keyof Profile, 'avatar_url'>;
@@ -100,38 +68,4 @@ export async function updateCurrentSessionProfile({
 
     return queryResult.data;
   }
-}
-
-export async function getProfileByUserId(userId: string) {
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
-    from('profiles').select('*').eq('id', userId).single(),
-  );
-
-  if (!queryResult.success) {
-    const { message } = queryResult.error;
-    throw new Error(message);
-  }
-
-  return queryResult.data;
-}
-
-export async function getProfilesByUsersId(usersId: string[]) {
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
-    from('profiles').select('*').in('id', usersId),
-  );
-
-  if (!queryResult.success) {
-    const { message } = queryResult.error;
-    throw new Error(message);
-  }
-
-  return queryResult.data;
 }

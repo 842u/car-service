@@ -7,8 +7,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
 import { KeyIcon } from '@/icons/key';
-import type { CarOwnership, Profile } from '@/types';
+import type { CarOwnership } from '@/types';
 import { Table } from '@/ui/table/table';
+import type { UserDto } from '@/user/application/dtos/user-dto';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';
@@ -18,13 +19,13 @@ const columnsHelper = createColumnHelper<CarOwnership>();
 type OwnershipsTableProps = {
   isCurrentUserPrimaryOwner: boolean;
   carOwnerships?: CarOwnership[];
-  ownersProfiles?: Profile[];
+  owners?: UserDto[];
 };
 
 export function OwnershipsTable({
   isCurrentUserPrimaryOwner,
   carOwnerships,
-  ownersProfiles,
+  owners,
 }: OwnershipsTableProps) {
   const [user, setUser] = useState<User | null>(null);
 
@@ -51,11 +52,9 @@ export function OwnershipsTable({
         }),
         columnsHelper.accessor(
           (row) => {
-            const profile = ownersProfiles?.find(
-              (profile) => profile.id === row.owner_id,
-            );
+            const owner = owners?.find((owner) => owner.id === row.owner_id);
 
-            return profile?.username;
+            return owner?.name;
           },
           {
             meta: {
@@ -64,15 +63,15 @@ export function OwnershipsTable({
             },
             id: 'user',
             cell: ({ row }) => {
-              const profile = ownersProfiles?.find(
-                (profile) => profile.id === row.original.owner_id,
+              const owner = owners?.find(
+                (owner) => owner.id === row.original.owner_id,
               );
 
               return (
-                profile && (
+                owner && (
                   <UserBadge
                     className="h-10 flex-row-reverse justify-end"
-                    userProfile={profile}
+                    user={owner}
                   />
                 )
               );
@@ -92,8 +91,8 @@ export function OwnershipsTable({
         columnsHelper.display({
           id: 'actions',
           cell: ({ row }) => {
-            const profile = ownersProfiles?.find(
-              (profile) => profile.id === row.original.owner_id,
+            const owner = owners?.find(
+              (owner) => owner.id === row.original.owner_id,
             );
 
             return (
@@ -101,14 +100,14 @@ export function OwnershipsTable({
                 collisionDetectionRoot={tableRef.current}
                 isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
                 ownership={row.original}
-                ownerUsername={profile?.username}
+                ownerUsername={owner?.name}
                 userId={user?.id}
               />
             );
           },
         }),
       ] as ColumnDef<CarOwnership>[],
-    [ownersProfiles, isCurrentUserPrimaryOwner, user?.id],
+    [owners, isCurrentUserPrimaryOwner, user?.id],
   );
 
   useEffect(() => {

@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
 import { NameSection } from '@/user/presentation/ui/sections/name/name';
 import { PasswordChangeSection } from '@/user/presentation/ui/sections/password-change/password-change';
-import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 import { queryKeys } from '@/utils/tanstack/keys';
 
 export default function AccountPage() {
@@ -18,7 +18,20 @@ export default function AccountPage() {
   const { data, error, isError } = useQuery({
     throwOnError: false,
     queryKey: queryKeys.profilesCurrentSession,
-    queryFn: getCurrentSessionProfile,
+    queryFn: async () => {
+      const userStore = await dependencyContainer.resolve(
+        dependencyTokens.USER_STORE,
+      );
+
+      const userResult = await userStore.getSessionUser();
+
+      if (!userResult.success) {
+        const { message } = userResult.error;
+        throw new Error(message);
+      }
+
+      return userResult.data;
+    },
   });
 
   useEffect(() => {
@@ -32,8 +45,8 @@ export default function AccountPage() {
         className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
       >
         <IdSection id={data?.id} />
-        <NameSection name={data?.username} />
-        <AvatarSection avatarUrl={data?.avatar_url} />
+        <NameSection name={data?.name} />
+        <AvatarSection avatarUrl={data?.avatarUrl} />
         <PasswordChangeSection />
       </section>
     </DashboardMain>
