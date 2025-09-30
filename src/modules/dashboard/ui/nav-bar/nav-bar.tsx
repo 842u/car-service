@@ -5,11 +5,10 @@ import { useEffect, useState } from 'react';
 
 import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar } from '@/ui/nav-bar/nav-bar';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 import { NavBarNav } from './nav/nav';
@@ -29,24 +28,9 @@ export function DashboardNavBar() {
 
   const { addToast } = useToasts();
 
-  const { data, error, isPending, isSuccess } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.userSession,
-    queryFn: async () => {
-      const userStore = await dependencyContainer.resolve(
-        dependencyTokens.USER_STORE,
-      );
-
-      const userResult = await userStore.getSessionUser();
-
-      if (!userResult.success) {
-        const { message } = userResult.error;
-        throw new Error(message);
-      }
-
-      return userResult.data;
-    },
-  });
+  const { data, error, isPending, isSuccess } = useQuery(
+    getSessionUserQueryOptions,
+  );
 
   useEffect(() => {
     error && addToast(error.message, 'error');

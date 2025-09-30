@@ -5,8 +5,7 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
-import { dependencyContainer, dependencyTokens } from '@/di';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
 import { NameSection } from '@/user/presentation/ui/sections/name/name';
@@ -15,24 +14,7 @@ import { PasswordChangeSection } from '@/user/presentation/ui/sections/password-
 export default function AccountPage() {
   const { addToast } = useToasts();
 
-  const { data, error, isError } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.userSession,
-    queryFn: async () => {
-      const userStore = await dependencyContainer.resolve(
-        dependencyTokens.USER_STORE,
-      );
-
-      const userResult = await userStore.getSessionUser();
-
-      if (!userResult.success) {
-        const { message } = userResult.error;
-        throw new Error(message);
-      }
-
-      return userResult.data;
-    },
-  });
+  const { data, error, isError } = useQuery(getSessionUserQueryOptions);
 
   useEffect(() => {
     isError && addToast(error.message, 'error');
