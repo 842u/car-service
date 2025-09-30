@@ -5,12 +5,12 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import {
   type NameChangeContract,
   nameChangeContractSchema,
 } from '@/user/interface/contracts/name-change.schema';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
-import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 type MutationVariables = {
@@ -61,13 +61,13 @@ export function useNameForm({ name }: { name: string | null | undefined }) {
             addToast(error.message, 'error');
 
             queryClient.setQueryData(
-              queryKeys.profilesCurrentSession,
+              queryKeys.userSession,
               context?.previousQueryData,
             );
           },
           onSettled: (_, __, { queryClient }) =>
             queryClient.invalidateQueries({
-              queryKey: queryKeys.profilesCurrentSession,
+              queryKey: queryKeys.userSession,
             }),
         },
       );

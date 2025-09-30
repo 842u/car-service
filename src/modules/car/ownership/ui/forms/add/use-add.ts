@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import type { CarOwnershipAddFormValues } from '@/schemas/zod/carOwnershipAddFormSchema';
 import { carOwnershipAddFormSchema } from '@/schemas/zod/carOwnershipAddFormSchema';
+import { queryKeys as useQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { addCarOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
 import {
   carsOwnershipsAddOnError,
@@ -70,7 +71,7 @@ export function useAddForm({ carId, onSubmit }: AddFormProps) {
           });
 
           queryClient.invalidateQueries({
-            queryKey: queryKeys.profilesOwners,
+            queryKey: useQueryKeys.usersByContext({ carId }),
           });
         },
       },

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
+import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
 import { queryKeys } from '@/utils/tanstack/keys';
@@ -34,8 +35,8 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
   const { data: ownersProfilesData, error: ownersProfilesDataError } = useQuery(
     {
       throwOnError: false,
-      // eslint-disable-next-line
-      queryKey: queryKeys.profilesOwners,
+      //eslint-disable-next-line
+      queryKey: userQueryKeys.usersByContext({ carId }),
       queryFn: async () => {
         const userStore = await dependencyContainer.resolve(
           dependencyTokens.USER_STORE,

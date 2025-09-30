@@ -11,12 +11,6 @@ export const queryKeys = {
   cars: [baseQueryKeys.cars] as const,
   carsByCarId: (id: string) => [baseQueryKeys.cars, id] as const,
 
-  profiles: [baseQueryKeys.profiles] as const,
-  profilesCurrentSession: [baseQueryKeys.profiles, 'session'] as const,
-  profilesOwners: [baseQueryKeys.profiles, 'owners'] as const,
-  profilesByUserId: (userId: string) =>
-    [baseQueryKeys.profiles, userId] as const,
-
   carsOwnerships: [baseQueryKeys.carsOwnerships] as const,
   carsOwnershipsByCarId: (carId: string) =>
     [baseQueryKeys.profiles, carId] as const,

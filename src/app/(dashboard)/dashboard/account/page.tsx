@@ -6,18 +6,18 @@ import { useEffect } from 'react';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { dependencyContainer, dependencyTokens } from '@/di';
+import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
 import { NameSection } from '@/user/presentation/ui/sections/name/name';
 import { PasswordChangeSection } from '@/user/presentation/ui/sections/password-change/password-change';
-import { queryKeys } from '@/utils/tanstack/keys';
 
 export default function AccountPage() {
   const { addToast } = useToasts();
 
   const { data, error, isError } = useQuery({
     throwOnError: false,
-    queryKey: queryKeys.profilesCurrentSession,
+    queryKey: queryKeys.userSession,
     queryFn: async () => {
       const userStore = await dependencyContainer.resolve(
         dependencyTokens.USER_STORE,

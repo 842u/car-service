@@ -11,6 +11,7 @@ import type { CarOwnership } from '@/types';
 import { Button } from '@/ui/button/button';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { Dropdown } from '@/ui/dropdown/dropdown';
+import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import {
   deleteCarOwnershipsByUsersIds,
   updateCarPrimaryOwnershipByUserId,
@@ -77,6 +78,10 @@ export function DropdownContent({
           queryKey: queryKeys.infiniteCars,
         });
       }
+
+      queryClient.invalidateQueries({
+        queryKey: userQueryKeys.usersByContext({ carId }),
+      });
     },
   });
 

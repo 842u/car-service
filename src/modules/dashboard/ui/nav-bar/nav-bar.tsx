@@ -9,8 +9,8 @@ import { dependencyContainer, dependencyTokens } from '@/di';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar } from '@/ui/nav-bar/nav-bar';
+import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
-import { queryKeys } from '@/utils/tanstack/keys';
 
 import { NavBarNav } from './nav/nav';
 
@@ -31,7 +31,7 @@ export function DashboardNavBar() {
 
   const { data, error, isPending, isSuccess } = useQuery({
     throwOnError: false,
-    queryKey: queryKeys.profilesCurrentSession,
+    queryKey: queryKeys.userSession,
     queryFn: async () => {
       const userStore = await dependencyContainer.resolve(
         dependencyTokens.USER_STORE,

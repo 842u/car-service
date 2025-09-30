@@ -9,9 +9,9 @@ import {
   imageFormSchema,
 } from '@/common/interface/validation/forms/image.schema';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
 import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
-import { queryKeys } from '@/utils/tanstack/keys';
 import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 export const defaultAvatarFormValues: ImageFormData = {
@@ -51,7 +51,7 @@ export function useAvatarForm() {
       addToast(error.message, 'error');
 
       queryClient.setQueryData(
-        queryKeys.profilesCurrentSession,
+        queryKeys.userSession,
         context?.previousQueryData,
       );
     },
@@ -74,7 +74,7 @@ export function useAvatarForm() {
       {
         onSettled: (_, __, { queryClient }) => {
           queryClient.invalidateQueries({
-            queryKey: queryKeys.profilesCurrentSession,
+            queryKey: queryKeys.userSession,
           });
         },
       },

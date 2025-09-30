@@ -1,8 +1,7 @@
 import type { QueryClient } from '@tanstack/react-query';
 
 import type { Profile } from '@/types';
-
-import { queryKeys } from './keys';
+import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 export async function profilesUpdateOnMutate(
   queryClient: QueryClient,
@@ -11,14 +10,14 @@ export async function profilesUpdateOnMutate(
   value: string | null,
 ) {
   await queryClient.cancelQueries({
-    queryKey: queryKeys.profilesByUserId(userId),
+    queryKey: queryKeys.userById(userId),
   });
   const previousQueryData = queryClient.getQueryData(
-    queryKeys.profilesByUserId(userId),
+    queryKeys.userById(userId),
   );
 
   queryClient.setQueryData(
-    queryKeys.profilesByUserId(userId),
+    queryKeys.userById(userId),
     (currentQueryData: Profile) => {
       const updatedQueryData = { ...currentQueryData, [property]: value };
 
