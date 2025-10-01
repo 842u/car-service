@@ -9,26 +9,26 @@ export function registerUseCasesModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.SIGN_UP_USER_USE_CASE,
     async (dependencyContainer, config) => {
-      const authAdminClient = await dependencyContainer.resolve(
+      const authClientAdmin = await dependencyContainer.resolve(
         dependencyTokens.AUTH_CLIENT_ADMIN,
         config,
       );
-      const userRepository = await dependencyContainer.resolve(
+      const userRepositoryAdmin = await dependencyContainer.resolve(
         dependencyTokens.USER_REPOSITORY_ADMIN,
         config,
       );
 
-      return new SignUpUserUseCase(authAdminClient, userRepository);
+      return new SignUpUserUseCase(authClientAdmin, userRepositoryAdmin);
     },
   );
 
   container.registerFactory(
     tokens.SIGN_IN_USER_WITH_O_AUTH_USE_CASE,
     async (dependencyContainer) => {
-      const authClient = await dependencyContainer.resolve(
+      const authClientServer = await dependencyContainer.resolve(
         dependencyTokens.AUTH_CLIENT_SERVER,
       );
-      const userRepository = await dependencyContainer.resolve(
+      const userRepositoryServer = await dependencyContainer.resolve(
         dependencyTokens.USER_REPOSITORY_SERVER,
       );
       const userMapper = await dependencyContainer.resolve(
@@ -36,8 +36,8 @@ export function registerUseCasesModule(container: DependencyContainer) {
       );
 
       return new SignInUserWithOAuthUseCase(
-        authClient,
-        userRepository,
+        authClientServer,
+        userRepositoryServer,
         userMapper,
       );
     },
@@ -46,14 +46,14 @@ export function registerUseCasesModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.SIGN_IN_USER_WITH_OTP_USE_CASE,
     async (dependencyContainer) => {
-      const authClient = await dependencyContainer.resolve(
+      const authClientServer = await dependencyContainer.resolve(
         dependencyTokens.AUTH_CLIENT_SERVER,
       );
       const userMapper = await dependencyContainer.resolve(
         dependencyTokens.USER_MAPPER,
       );
 
-      return new SignInUserWithOtpUseCase(authClient, userMapper);
+      return new SignInUserWithOtpUseCase(authClientServer, userMapper);
     },
   );
 }
