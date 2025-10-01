@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
   }
 
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_SERVER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_SERVER,
   );
 
   /*
@@ -121,7 +121,7 @@ export async function PATCH(request: NextRequest) {
   }
 
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_SERVER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_SERVER,
   );
 
   const queryResult = await dbClient.query(async (from) =>

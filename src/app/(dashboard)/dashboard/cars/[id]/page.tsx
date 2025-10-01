@@ -23,7 +23,7 @@ export default async function CarPage({ params }: CarPageProps) {
   const { user } = sessionResult.data;
 
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_SERVER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_SERVER,
   );
 
   const ownershipResult = await dbClient.query(async (from) =>

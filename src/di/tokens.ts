@@ -83,18 +83,16 @@ export const tokens = {
   /**
    * DATABASE
    */
-  DATABASE_ADMIN_CLIENT: new DependencyToken<
+  DATABASE_CLIENT_ADMIN: new DependencyToken<
     SupabaseDatabaseClient,
     SupabaseConfig
-  >(Symbol('DATABASE_ADMIN_CLIENT')),
-  DATABASE_SERVER_CLIENT: new DependencyToken<
-    SupabaseDatabaseClient,
-    SupabaseConfig
-  >(Symbol('DATABASE_SERVER_CLIENT')),
-  DATABASE_BROWSER_CLIENT: new DependencyToken<
-    SupabaseDatabaseClient,
-    SupabaseConfig
-  >(Symbol('DATABASE_BROWSER_CLIENT')),
+  >(Symbol('DATABASE_CLIENT_ADMIN')),
+  DATABASE_CLIENT_SERVER: new DependencyToken<SupabaseDatabaseClient>(
+    Symbol('DATABASE_CLIENT_SERVER'),
+  ),
+  DATABASE_CLIENT_BROWSER: new DependencyToken<SupabaseDatabaseClient>(
+    Symbol('DATABASE_CLIENT_BROWSER'),
+  ),
 
   /**
    * AUTH

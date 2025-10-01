@@ -2,7 +2,7 @@ import { dependencyContainer, dependencyTokens } from '@/di';
 
 export async function getCarOwnerships(carId: string) {
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_BROWSER,
   );
 
   const queryResult = await dbClient.query(async (from) =>
@@ -24,7 +24,7 @@ export async function getCarOwnerships(carId: string) {
 
 export async function addCarOwnershipByUserId(carId: string, userId: string) {
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_BROWSER,
   );
 
   const queryResult = await dbClient.query(async (from) =>
@@ -49,7 +49,7 @@ export async function deleteCarOwnershipsByUsersIds(
   usersIds: string[],
 ) {
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_BROWSER,
   );
 
   const queryResult = await dbClient.query(async (from) =>
@@ -76,7 +76,7 @@ export async function updateCarPrimaryOwnershipByUserId(
   newPrimaryOwnerId: string,
 ) {
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_BROWSER,
   );
 
   const queryResult = await dbClient.rpc(async (rpc) =>

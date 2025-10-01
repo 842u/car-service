@@ -4,36 +4,36 @@ import { tokens } from '@/di/tokens';
 
 export function registerDatabaseModule(container: DependencyContainer) {
   container.registerFactory(
-    tokens.DATABASE_ADMIN_CLIENT,
+    tokens.DATABASE_CLIENT_ADMIN,
     async (dependencyContainer, config) => {
-      const supabaseAdminClient = await dependencyContainer.resolve(
+      const supabaseClientAdmin = await dependencyContainer.resolve(
         tokens.SUPABASE_ADMIN_CLIENT,
         config,
       );
 
-      return new SupabaseDatabaseClient(supabaseAdminClient);
+      return new SupabaseDatabaseClient(supabaseClientAdmin);
     },
   );
 
   container.registerFactory(
-    tokens.DATABASE_SERVER_CLIENT,
+    tokens.DATABASE_CLIENT_SERVER,
     async (dependencyContainer) => {
-      const supabaseServerClient = await dependencyContainer.resolve(
+      const supabaseClientServer = await dependencyContainer.resolve(
         tokens.SUPABASE_CLIENT_SERVER,
       );
 
-      return new SupabaseDatabaseClient(supabaseServerClient);
+      return new SupabaseDatabaseClient(supabaseClientServer);
     },
   );
 
   container.registerFactory(
-    tokens.DATABASE_BROWSER_CLIENT,
+    tokens.DATABASE_CLIENT_BROWSER,
     async (dependencyContainer) => {
-      const supabaseBrowserClient = await dependencyContainer.resolve(
+      const supabaseClientBrowser = await dependencyContainer.resolve(
         tokens.SUPABASE_CLIENT_BROWSER,
       );
 
-      return new SupabaseDatabaseClient(supabaseBrowserClient);
+      return new SupabaseDatabaseClient(supabaseClientBrowser);
     },
   );
 }

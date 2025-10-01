@@ -30,7 +30,7 @@ export async function createTestUser(testUserIndex: number) {
 
 export async function deleteTestUser(testUserIndex: number) {
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_ADMIN,
     { supabaseKey, supabaseUrl },
   );
 

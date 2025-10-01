@@ -51,7 +51,7 @@ export async function updateCurrentSessionProfile({
     return uploadResult.data;
   } else {
     const dbClient = await dependencyContainer.resolve(
-      dependencyTokens.DATABASE_BROWSER_CLIENT,
+      dependencyTokens.DATABASE_CLIENT_BROWSER,
     );
 
     const queryResult = await dbClient.query(async (from) =>

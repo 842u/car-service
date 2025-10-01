@@ -8,7 +8,7 @@ export function registerStoresModule(container: DependencyContainer) {
       tokens.AUTH_BROWSER_CLIENT,
     );
     const dbClient = await dependencyContainer.resolve(
-      tokens.DATABASE_BROWSER_CLIENT,
+      tokens.DATABASE_CLIENT_BROWSER,
     );
     const userMapper = await dependencyContainer.resolve(tokens.USER_MAPPER);
 

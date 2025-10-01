@@ -3,7 +3,7 @@ import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/utils/tanstack/cars';
 
 export async function getCar(carId: string) {
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_BROWSER,
   );
 
   const queryResult = await dbClient.query(async (from) =>
@@ -22,7 +22,7 @@ export async function getCar(carId: string) {
 
 export async function deleteCar(carId: string) {
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_BROWSER,
   );
 
   const queryResult = await dbClient.query(async (from) =>
@@ -45,7 +45,7 @@ export async function getCarsByPage({ pageParam }: { pageParam: number }) {
     (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
 
   const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_BROWSER_CLIENT,
+    dependencyTokens.DATABASE_CLIENT_BROWSER,
   );
 
   const queryResult = await dbClient.query(async (from) =>
