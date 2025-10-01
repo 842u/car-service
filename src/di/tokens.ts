@@ -166,8 +166,11 @@ export const tokens = {
   /**
    * REPOSITORIES
    */
-  USER_REPOSITORY: new DependencyToken<UserRepository, SupabaseConfig>(
-    Symbol('USER_REPOSITORY'),
+  USER_REPOSITORY_ADMIN: new DependencyToken<UserRepository, SupabaseConfig>(
+    Symbol('USER_REPOSITORY_ADMIN'),
+  ),
+  USER_REPOSITORY_SERVER: new DependencyToken<UserRepository>(
+    Symbol('USER_REPOSITORY_SERVER'),
   ),
 
   /**

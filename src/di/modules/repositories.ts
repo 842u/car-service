@@ -4,11 +4,23 @@ import { UserRepository } from '@/user/infrastructure/repositories/user-reposito
 
 export function registerRepositoriesModule(container: DependencyContainer) {
   container.registerFactory(
-    tokens.USER_REPOSITORY,
+    tokens.USER_REPOSITORY_ADMIN,
     async (dependencyContainer, config) => {
       const dbClient = await dependencyContainer.resolve(
         tokens.DATABASE_ADMIN_CLIENT,
         config,
+      );
+      const userMapper = await dependencyContainer.resolve(tokens.USER_MAPPER);
+
+      return new UserRepository(dbClient, userMapper);
+    },
+  );
+
+  container.registerFactory(
+    tokens.USER_REPOSITORY_SERVER,
+    async (dependencyContainer) => {
+      const dbClient = await dependencyContainer.resolve(
+        tokens.DATABASE_SERVER_CLIENT,
       );
       const userMapper = await dependencyContainer.resolve(tokens.USER_MAPPER);
 

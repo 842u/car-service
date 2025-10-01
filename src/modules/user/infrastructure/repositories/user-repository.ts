@@ -84,7 +84,11 @@ export class UserRepository implements IUserRepository {
 
   async changeName(user: User) {
     const queryResult = await this._dbClient.query(async (from) =>
-      from('users').update({ user_name: user.name.value }),
+      from('users')
+        .update({ user_name: user.name.value })
+        .eq('id', user.id.value)
+        .select()
+        .single(),
     );
 
     if (!queryResult.success) {

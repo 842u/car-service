@@ -31,7 +31,7 @@ export async function PATCH(request: NextRequest) {
   const { user: authIdentity } = sessionResult.data;
 
   const userRepository = await dependencyContainer.resolve(
-    dependencyTokens.USER_REPOSITORY,
+    dependencyTokens.USER_REPOSITORY_SERVER,
   );
 
   const userResult = await userRepository.getById(authIdentity.id);
