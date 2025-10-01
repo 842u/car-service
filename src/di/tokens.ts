@@ -22,6 +22,10 @@ import type { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign
 import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
 import type {
+  UserNameChangeApiResponseData,
+  UserNameChangeApiResponseError,
+} from '@/user/interface/api/name-change.schema';
+import type {
   PasswordChangeApiResponseData,
   PasswordChangeApiResponseError,
 } from '@/user/interface/api/password-change.schema';
@@ -33,6 +37,7 @@ import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
+import type { UserNameChangeContract } from '@/user/interface/contracts/name-change.schema';
 import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
@@ -150,6 +155,13 @@ export const tokens = {
       PasswordChangeContract
     >
   >(Symbol('PASSWORD_CHANGE_API_HANDLER')),
+  USER_NAME_CHANGE_API_HANDLER: new DependencyToken<
+    NextApiHandler<
+      UserNameChangeApiResponseData,
+      UserNameChangeApiResponseError,
+      UserNameChangeContract
+    >
+  >(Symbol('USER_NAME_CHANGE_API_HANDLER')),
 
   /**
    * REPOSITORIES

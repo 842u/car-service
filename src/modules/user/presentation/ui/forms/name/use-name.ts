@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
-  type NameChangeContract,
-  nameChangeContractSchema,
+  type UserNameChangeContract,
+  userNameChangeContractSchema,
 } from '@/user/interface/contracts/name-change.schema';
 import { useUpdateUserName } from '@/user/presentation/ui/forms/name/use-update-user-name';
 
-const defaultNameFormValues: NameChangeContract = {
+const defaultNameFormValues: UserNameChangeContract = {
   name: '',
 };
 
@@ -20,8 +20,8 @@ export function useNameForm({ name }: { name: string | null | undefined }) {
     handleSubmit,
     reset,
     formState: { isValid, isDirty, errors, isSubmitSuccessful },
-  } = useForm<NameChangeContract>({
-    resolver: zodResolver(nameChangeContractSchema),
+  } = useForm<UserNameChangeContract>({
+    resolver: zodResolver(userNameChangeContractSchema),
     mode: 'onChange',
     defaultValues: defaultNameFormValues,
   });

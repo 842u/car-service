@@ -6,8 +6,10 @@ z.config({
   jitless: true,
 });
 
-export const nameChangeContractSchema = z.object({
+export const userNameChangeContractSchema = z.object({
   name: nameSchema,
 });
 
-export type NameChangeContract = z.infer<typeof nameChangeContractSchema>;
+export type UserNameChangeContract = z.infer<
+  typeof userNameChangeContractSchema
+>;

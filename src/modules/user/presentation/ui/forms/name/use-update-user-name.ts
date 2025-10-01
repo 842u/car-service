@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { updateUserNameMutationOptions } from '@/user/infrastructure/tanstack/mutation/options';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
-import type { NameChangeContract } from '@/user/interface/contracts/name-change.schema';
+import type { UserNameChangeContract } from '@/user/interface/contracts/name-change.schema';
 
 export function useUpdateUserName() {
   const { addToast } = useToasts();
@@ -12,7 +12,7 @@ export function useUpdateUserName() {
 
   const { mutate } = useMutation(updateUserNameMutationOptions(queryClient));
 
-  const mutateWithOptions = (variables: NameChangeContract) => {
+  const mutateWithOptions = (variables: UserNameChangeContract) => {
     mutate(variables, {
       onSuccess: () => {
         addToast('Name updated successfully.', 'success');
