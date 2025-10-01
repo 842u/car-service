@@ -1,42 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { QueryClient } from '@tanstack/react-query';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import {
   type NameChangeContract,
   nameChangeContractSchema,
 } from '@/user/interface/contracts/name-change.schema';
-import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
-import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
-
-type MutationVariables = {
-  formData: NameChangeContract;
-  queryClient: QueryClient;
-};
+import { useUpdateUserName } from '@/user/presentation/ui/forms/name/use-update-user-name';
 
 const defaultNameFormValues: NameChangeContract = {
   name: '',
 };
 
 export function useNameForm({ name }: { name: string | null | undefined }) {
-  const { addToast } = useToasts();
-
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    throwOnError: false,
-    mutationFn: ({ formData: { name } }: MutationVariables) =>
-      updateCurrentSessionProfile({
-        property: 'username',
-        value: name.trim(),
-      }),
-    onMutate: ({ queryClient, formData: { name } }) =>
-      profilesUpdateOnMutate(queryClient, 'session', 'username', name.trim()),
-  });
+  const { mutate } = useUpdateUserName();
 
   const {
     register,
@@ -49,30 +26,9 @@ export function useNameForm({ name }: { name: string | null | undefined }) {
     defaultValues: defaultNameFormValues,
   });
 
-  const handleFormSubmit = handleSubmit(
-    async (formData: NameChangeContract) => {
-      mutate(
-        { formData, queryClient },
-        {
-          onSuccess: () => {
-            addToast('Name updated successfully.', 'success');
-          },
-          onError: (error, { queryClient }, context) => {
-            addToast(error.message, 'error');
-
-            queryClient.setQueryData(
-              queryKeys.userSession,
-              context?.previousQueryData,
-            );
-          },
-          onSettled: (_, __, { queryClient }) =>
-            queryClient.invalidateQueries({
-              queryKey: queryKeys.userSession,
-            }),
-        },
-      );
-    },
-  );
+  const handleFormSubmit = handleSubmit(async (formData) => {
+    mutate(formData);
+  });
 
   const handleFormReset = () => name && reset({ name });
 
