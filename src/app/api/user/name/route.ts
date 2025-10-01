@@ -17,51 +17,24 @@ export async function PATCH(request: NextRequest) {
     return apiHandler.errorResponse({ message, issues }, status);
   }
 
-  const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_CLIENT_SERVER,
+  const userNameChangeUseCase = await dependencyContainer.resolve(
+    dependencyTokens.USER_NAME_CHANGE_USE_CASE,
   );
 
-  const sessionResult = await authClient.getSession();
+  const contract = preprocessRequestResult.data;
 
-  if (!sessionResult.success) {
-    const { message, status } = sessionResult.error;
-    return apiHandler.errorResponse({ message }, status || 401);
-  }
+  const useCaseResult = await userNameChangeUseCase.execute(contract);
 
-  const { user: authIdentity } = sessionResult.data;
-
-  const userRepository = await dependencyContainer.resolve(
-    dependencyTokens.USER_REPOSITORY_SERVER,
-  );
-
-  const userResult = await userRepository.getById(authIdentity.id);
-
-  if (!userResult.success) {
-    const { message } = userResult.error;
-    return apiHandler.errorResponse({ message }, 400);
-  }
-
-  const user = userResult.data;
-
-  const { name } = preprocessRequestResult.data;
-
-  const changeNameResult = user.changeName(name);
-
-  if (!changeNameResult.success) {
-    const { message, issues } = changeNameResult.error;
-    return apiHandler.errorResponse({ message, issues }, 500);
-  }
-
-  const persistenceUserChangeResult = await userRepository.changeName(user);
-
-  if (!persistenceUserChangeResult.success) {
-    const { message } = persistenceUserChangeResult.error;
-    return apiHandler.errorResponse({ message }, 500);
+  if (!useCaseResult.success) {
+    const { message, code } = useCaseResult.error;
+    return apiHandler.errorResponse({ message }, code);
   }
 
   const userMapper = await dependencyContainer.resolve(
     dependencyTokens.USER_MAPPER,
   );
+
+  const user = useCaseResult.data;
 
   const userDto = userMapper.domainToDto(user);
 
