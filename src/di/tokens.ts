@@ -73,14 +73,12 @@ export const tokens = {
     SupabaseClient<Database>,
     SupabaseConfig
   >(Symbol('SUPABASE_ADMIN_CLIENT')),
-  SUPABASE_SERVER_CLIENT: new DependencyToken<
-    SupabaseClient<Database>,
-    SupabaseConfig
-  >(Symbol('SUPABASE_SERVER_CLIENT')),
-  SUPABASE_BROWSER_CLIENT: new DependencyToken<
-    SupabaseClient<Database>,
-    SupabaseConfig
-  >(Symbol('SUPABASE_BROWSER_CLIENT')),
+  SUPABASE_CLIENT_SERVER: new DependencyToken<SupabaseClient<Database>>(
+    Symbol('SUPABASE_CLIENT_SERVER'),
+  ),
+  SUPABASE_CLIENT_BROWSER: new DependencyToken<SupabaseClient<Database>>(
+    Symbol('SUPABASE_CLIENT_BROWSER'),
+  ),
 
   /**
    * DATABASE

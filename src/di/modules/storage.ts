@@ -18,10 +18,9 @@ export function registerStorageModule(container: DependencyContainer) {
 
   container.registerFactory(
     tokens.STORAGE_SERVER_CLIENT,
-    async (dependencyContainer, config?: SupabaseConfig) => {
+    async (dependencyContainer) => {
       const supabaseServerClient = await dependencyContainer.resolve(
-        tokens.SUPABASE_SERVER_CLIENT,
-        config,
+        tokens.SUPABASE_CLIENT_SERVER,
       );
 
       return new SupabaseStorageClient(supabaseServerClient);
@@ -30,10 +29,9 @@ export function registerStorageModule(container: DependencyContainer) {
 
   container.registerFactory(
     tokens.STORAGE_BROWSER_CLIENT,
-    async (dependencyContainer, config?: SupabaseConfig) => {
+    async (dependencyContainer) => {
       const supabaseBrowserClient = await dependencyContainer.resolve(
-        tokens.SUPABASE_BROWSER_CLIENT,
-        config,
+        tokens.SUPABASE_CLIENT_BROWSER,
       );
 
       return new SupabaseStorageClient(supabaseBrowserClient);

@@ -39,28 +39,24 @@ export function registerSupabaseModule(container: DependencyContainer) {
     },
   );
 
-  container.registerFactory(
-    tokens.SUPABASE_BROWSER_CLIENT,
-    (_, config?: SupabaseConfig) => {
-      const supabaseUrl = config?.supabaseUrl ?? defaultSupabaseUrl;
-      const supabaseKey = config?.supabaseKey ?? defaultSupabaseKey;
-      const client = createBrowserClient<Database>(supabaseUrl, supabaseKey);
-      return client;
-    },
-  );
+  container.registerFactory(tokens.SUPABASE_CLIENT_BROWSER, () => {
+    const client = createBrowserClient<Database>(
+      defaultSupabaseUrl,
+      defaultSupabaseKey,
+    );
+    return client;
+  });
 
-  container.registerFactory(
-    tokens.SUPABASE_SERVER_CLIENT,
-    async (_, config?: SupabaseConfig) => {
-      const supabaseUrl = config?.supabaseUrl ?? defaultSupabaseUrl;
-      const supabaseKey = config?.supabaseKey ?? defaultSupabaseKey;
-
-      /**
-       * Dynamic import to avoid loading next/headers in browser when using classic module import.
-       */
-      const { cookies } = await import('next/headers');
-      const cookieStore = await cookies();
-      const client = createServerClient<Database>(supabaseUrl, supabaseKey, {
+  container.registerFactory(tokens.SUPABASE_CLIENT_SERVER, async () => {
+    /**
+     * Dynamic import to avoid loading next/headers in browser when using classic module import.
+     */
+    const { cookies } = await import('next/headers');
+    const cookieStore = await cookies();
+    const client = createServerClient<Database>(
+      defaultSupabaseUrl,
+      defaultSupabaseKey,
+      {
         cookies: {
           getAll() {
             return cookieStore.getAll();
@@ -78,8 +74,8 @@ export function registerSupabaseModule(container: DependencyContainer) {
             }
           },
         },
-      });
-      return client;
-    },
-  );
+      },
+    );
+    return client;
+  });
 }
