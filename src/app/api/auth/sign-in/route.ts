@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   const { email, password } = preprocessResult.data;
 
   const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_SERVER_CLIENT,
+    dependencyTokens.AUTH_CLIENT_SERVER,
   );
 
   const signInResult = await authClient.signIn({ email, password });

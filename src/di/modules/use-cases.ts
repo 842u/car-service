@@ -10,7 +10,7 @@ export function registerUseCasesModule(container: DependencyContainer) {
     tokens.SIGN_UP_USER_USE_CASE,
     async (dependencyContainer, config) => {
       const authAdminClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_ADMIN_CLIENT,
+        dependencyTokens.AUTH_CLIENT_ADMIN,
         config,
       );
       const userRepository = await dependencyContainer.resolve(
@@ -26,7 +26,7 @@ export function registerUseCasesModule(container: DependencyContainer) {
     tokens.SIGN_IN_USER_WITH_O_AUTH_USE_CASE,
     async (dependencyContainer) => {
       const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_SERVER_CLIENT,
+        dependencyTokens.AUTH_CLIENT_SERVER,
       );
       const userRepository = await dependencyContainer.resolve(
         dependencyTokens.USER_REPOSITORY_SERVER,
@@ -47,7 +47,7 @@ export function registerUseCasesModule(container: DependencyContainer) {
     tokens.SIGN_IN_USER_WITH_OTP_USE_CASE,
     async (dependencyContainer) => {
       const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_SERVER_CLIENT,
+        dependencyTokens.AUTH_CLIENT_SERVER,
       );
       const userMapper = await dependencyContainer.resolve(
         dependencyTokens.USER_MAPPER,

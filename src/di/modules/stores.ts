@@ -5,7 +5,7 @@ import { UserStore } from '@/user/infrastructure/stores/user-store';
 export function registerStoresModule(container: DependencyContainer) {
   container.registerFactory(tokens.USER_STORE, async (dependencyContainer) => {
     const authClient = await dependencyContainer.resolve(
-      tokens.AUTH_BROWSER_CLIENT,
+      tokens.AUTH_CLIENT_BROWSER,
     );
     const dbClient = await dependencyContainer.resolve(
       tokens.DATABASE_CLIENT_BROWSER,

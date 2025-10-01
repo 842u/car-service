@@ -25,7 +25,7 @@ export async function getServiceLogsByCarId(carId: string) {
 
 export async function deleteServiceLogById(id: string) {
   const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_BROWSER_CLIENT,
+    dependencyTokens.AUTH_CLIENT_BROWSER,
   );
 
   const sessionResult = await authClient.getSession();

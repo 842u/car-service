@@ -13,7 +13,7 @@ export default async function CarPage({ params }: CarPageProps) {
   const { id } = await params;
 
   const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_SERVER_CLIENT,
+    dependencyTokens.AUTH_CLIENT_SERVER,
   );
 
   const sessionResult = await authClient.getSession();

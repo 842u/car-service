@@ -10,7 +10,7 @@ export async function createTestUser(testUserIndex: number) {
   const password = testUserPassword;
 
   const authAdminClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_ADMIN_CLIENT,
+    dependencyTokens.AUTH_CLIENT_ADMIN,
     { supabaseKey, supabaseUrl },
   );
 

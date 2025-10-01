@@ -8,36 +8,36 @@ import { tokens } from '@/di/tokens';
 
 export function registerAuthModule(container: DependencyContainer) {
   container.registerFactory(
-    tokens.AUTH_ADMIN_CLIENT,
+    tokens.AUTH_CLIENT_ADMIN,
     async (dependencyContainer, config?: SupabaseConfig) => {
-      const supabaseAdminClient = await dependencyContainer.resolve(
+      const supabaseClientAdmin = await dependencyContainer.resolve(
         tokens.SUPABASE_ADMIN_CLIENT,
         config,
       );
 
-      return new SupabaseAuthAdminClient(supabaseAdminClient);
+      return new SupabaseAuthAdminClient(supabaseClientAdmin);
     },
   );
 
   container.registerFactory(
-    tokens.AUTH_SERVER_CLIENT,
+    tokens.AUTH_CLIENT_SERVER,
     async (dependencyContainer) => {
-      const supabaseServerClient = await dependencyContainer.resolve(
+      const supabaseClientServer = await dependencyContainer.resolve(
         tokens.SUPABASE_CLIENT_SERVER,
       );
 
-      return new SupabaseAuthClient(supabaseServerClient);
+      return new SupabaseAuthClient(supabaseClientServer);
     },
   );
 
   container.registerFactory(
-    tokens.AUTH_BROWSER_CLIENT,
+    tokens.AUTH_CLIENT_BROWSER,
     async (dependencyContainer) => {
-      const supabaseBrowserClient = await dependencyContainer.resolve(
+      const supabaseClientBrowser = await dependencyContainer.resolve(
         tokens.SUPABASE_CLIENT_BROWSER,
       );
 
-      return new SupabaseAuthClient(supabaseBrowserClient);
+      return new SupabaseAuthClient(supabaseClientBrowser);
     },
   );
 }

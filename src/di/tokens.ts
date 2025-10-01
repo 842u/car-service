@@ -97,15 +97,15 @@ export const tokens = {
   /**
    * AUTH
    */
-  AUTH_ADMIN_CLIENT: new DependencyToken<
+  AUTH_CLIENT_ADMIN: new DependencyToken<
     SupabaseAuthAdminClient,
     SupabaseConfig
-  >(Symbol('AUTH_ADMIN_CLIENT')),
-  AUTH_SERVER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
-    Symbol('AUTH_SERVER_CLIENT'),
+  >(Symbol('AUTH_CLIENT_ADMIN')),
+  AUTH_CLIENT_SERVER: new DependencyToken<SupabaseAuthClient>(
+    Symbol('AUTH_CLIENT_SERVER'),
   ),
-  AUTH_BROWSER_CLIENT: new DependencyToken<SupabaseAuthClient, SupabaseConfig>(
-    Symbol('AUTH_BROWSER_CLIENT'),
+  AUTH_CLIENT_BROWSER: new DependencyToken<SupabaseAuthClient>(
+    Symbol('AUTH_CLIENT_BROWSER'),
   ),
 
   /**

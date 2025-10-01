@@ -67,7 +67,7 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
   useEffect(() => {
     const getUser = async () => {
       const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_BROWSER_CLIENT,
+        dependencyTokens.AUTH_CLIENT_BROWSER,
       );
 
       const sessionResult = await authClient.getSession();

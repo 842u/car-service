@@ -37,7 +37,7 @@ export async function PATCH(request: NextRequest) {
   const password = passwordResult.data.value;
 
   const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_SERVER_CLIENT,
+    dependencyTokens.AUTH_CLIENT_SERVER,
   );
 
   const updateResult = await authClient.updateUser({

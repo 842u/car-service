@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const redirectURL = request.nextUrl.clone();
 
   const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_SERVER_CLIENT,
+    dependencyTokens.AUTH_CLIENT_SERVER,
   );
 
   const signOutResult = await authClient.signOut();

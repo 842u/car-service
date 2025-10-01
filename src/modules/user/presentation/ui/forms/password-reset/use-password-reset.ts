@@ -29,7 +29,7 @@ export function usePasswordResetForm() {
 
   const handleFormSubmit = handleSubmit(async (formData) => {
     const authClient = await dependencyContainer.resolve(
-      dependencyTokens.AUTH_BROWSER_CLIENT,
+      dependencyTokens.AUTH_CLIENT_BROWSER,
     );
 
     const { email } = formData;
