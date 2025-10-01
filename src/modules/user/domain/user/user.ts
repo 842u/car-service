@@ -66,4 +66,15 @@ export class User extends Entity<UserValue> {
   get avatarUrl(): AvatarUrl | null {
     return this._value.avatarUrl;
   }
+
+  changeName(name: string) {
+    const nameResult = Name.create(name);
+    if (!nameResult.success) {
+      return Result.fail(nameResult.error);
+    }
+
+    this._value.name = nameResult.data;
+
+    return Result.ok(undefined);
+  }
 }
