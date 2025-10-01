@@ -30,7 +30,7 @@ export async function updateCurrentSessionProfile({
     if (!value) throw new Error('No file was provided. Try again.');
 
     const storageClient = await dependencyContainer.resolve(
-      dependencyTokens.STORAGE_BROWSER_CLIENT,
+      dependencyTokens.STORAGE_CLIENT_BROWSER,
     );
 
     const hashedFile = await hashFile(value);

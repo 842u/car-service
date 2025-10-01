@@ -111,18 +111,16 @@ export const tokens = {
   /**
    * STORAGE
    */
-  STORAGE_ADMIN_CLIENT: new DependencyToken<
+  STORAGE_CLIENT_ADMIN: new DependencyToken<
     SupabaseStorageClient,
     SupabaseConfig
-  >(Symbol('STORAGE_ADMIN_CLIENT')),
-  STORAGE_SERVER_CLIENT: new DependencyToken<
-    SupabaseStorageClient,
-    SupabaseConfig
-  >(Symbol('STORAGE_SERVER_CLIENT')),
-  STORAGE_BROWSER_CLIENT: new DependencyToken<
-    SupabaseStorageClient,
-    SupabaseConfig
-  >(Symbol('STORAGE_BROWSER_CLIENT')),
+  >(Symbol('STORAGE_CLIENT_ADMIN')),
+  STORAGE_CLIENT_SERVER: new DependencyToken<SupabaseStorageClient>(
+    Symbol('STORAGE_CLIENT_SERVER'),
+  ),
+  STORAGE_CLIENT_BROWSER: new DependencyToken<SupabaseStorageClient>(
+    Symbol('STORAGE_CLIENT_BROWSER'),
+  ),
 
   /**
    * API HANDLERS

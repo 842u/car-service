@@ -57,7 +57,7 @@ async function submitAddForm(formData: CarFormValues) {
   const hashedFile = await hashFile(image);
 
   const storageClient = await dependencyContainer.resolve(
-    dependencyTokens.STORAGE_BROWSER_CLIENT,
+    dependencyTokens.STORAGE_CLIENT_BROWSER,
   );
 
   const uploadPath = `${id}/${hashedFile}`;
