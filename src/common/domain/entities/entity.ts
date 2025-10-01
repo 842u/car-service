@@ -7,7 +7,7 @@ export abstract class Entity<T extends BaseEntityValue> {
   protected readonly _value: T;
 
   protected constructor(value: T) {
-    this._value = Object.freeze(value);
+    this._value = Object.seal(value);
   }
 
   static create(..._: unknown[]): Result<unknown, unknown> {
