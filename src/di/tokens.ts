@@ -2,7 +2,6 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-import type { IAuthApiClient } from '@/common/application/api/auth-api-client.interface';
 import type { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
 import type {
   SupabaseAuthAdminClient,
@@ -15,6 +14,7 @@ import type { ZodValidator } from '@/common/infrastructure/validation/zod-valida
 import type { ValidatorConfig } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
+import type { IAuthApiClient } from '@/user/application/api/auth-api-client.interface';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
 import type { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';

@@ -1,9 +1,9 @@
 import type { Route } from 'next';
 
-import type { IAuthApiClient } from '@/common/application/api/auth-api-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { dependencyContainer } from '@/di';
+import type { IAuthApiClient } from '@/user/application/api/auth-api-client.interface';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';

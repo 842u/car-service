@@ -2,9 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { NextAuthApiClient } from '@/user/infrastructure/api/next-auth-api-client';
 import {
   type PasswordChangeContract,
   passwordChangeContractSchema,
