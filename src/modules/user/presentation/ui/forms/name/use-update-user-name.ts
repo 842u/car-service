@@ -20,13 +20,13 @@ export function useUpdateUserName() {
       onError: (error, _, context) => {
         addToast(error.message, 'error');
         queryClient.setQueryData(
-          queryKeys.userSession,
+          queryKeys.sessionUser,
           context?.previousQueryData,
         );
       },
       onSettled: () =>
         queryClient.invalidateQueries({
-          queryKey: queryKeys.userSession,
+          queryKey: queryKeys.sessionUser,
         }),
     });
   };

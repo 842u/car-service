@@ -2,8 +2,9 @@ import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
+import type { UserDto } from '@/user/application/dtos/user-dto';
+import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import type { UserNameChangeContract } from '@/user/interface/contracts/name-change.schema';
-import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 export const updateUserNameMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
@@ -22,11 +23,25 @@ export const updateUserNameMutationOptions = (queryClient: QueryClient) =>
 
       return nameChangeResult.data;
     },
-    onMutate: (variables) =>
-      profilesUpdateOnMutate(
-        queryClient,
-        'session',
-        'username',
-        variables.name.trim(),
-      ),
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.sessionUser,
+      });
+
+      const previousQueryData = queryClient.getQueryData(queryKeys.sessionUser);
+
+      queryClient.setQueryData(
+        queryKeys.sessionUser,
+        (currentQueryData: UserDto) => {
+          const updatedQueryData = {
+            ...currentQueryData,
+            name: variables.name,
+          };
+
+          return updatedQueryData;
+        },
+      );
+
+      return { previousQueryData };
+    },
   });

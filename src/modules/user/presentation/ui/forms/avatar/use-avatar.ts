@@ -51,7 +51,7 @@ export function useAvatarForm() {
       addToast(error.message, 'error');
 
       queryClient.setQueryData(
-        queryKeys.userSession,
+        queryKeys.sessionUser,
         context?.previousQueryData,
       );
     },
@@ -74,7 +74,7 @@ export function useAvatarForm() {
       {
         onSettled: (_, __, { queryClient }) => {
           queryClient.invalidateQueries({
-            queryKey: queryKeys.userSession,
+            queryKey: queryKeys.sessionUser,
           });
         },
       },

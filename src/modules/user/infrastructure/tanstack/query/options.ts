@@ -5,7 +5,7 @@ import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 export const getSessionUserQueryOptions = queryOptions({
   throwOnError: false,
-  queryKey: queryKeys.userSession,
+  queryKey: queryKeys.sessionUser,
   queryFn: async () => {
     const userStore = await dependencyContainer.resolve(
       dependencyTokens.USER_STORE,
