@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
+import { ZodValidator } from '@/common/infrastructure/validator/zod-validator';
 
 z.config({
   jitless: true,
@@ -22,7 +22,4 @@ export const nameSchema = z
   .min(MIN_NAME_LENGTH, { error: MIN_NAME_LENGTH_MESSAGE })
   .max(MAX_NAME_LENGTH, { error: MAX_NAME_LENGTH_MESSAGE });
 
-export const nameValidator = new ZodValidator(
-  nameSchema,
-  'Name validation failed.',
-);
+export const nameValidator = new ZodValidator();

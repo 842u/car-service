@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
+import { passwordChangeContractSchema } from '@/user/interface/contracts/password-change.schema';
 
 export const maxDuration = 10;
 
@@ -9,7 +10,10 @@ export async function PATCH(request: NextRequest) {
     dependencyTokens.PASSWORD_CHANGE_API_HANDLER,
   );
 
-  const preprocessResult = await apiHandler.preprocessRequest(request);
+  const preprocessResult = await apiHandler.preprocessRequest(
+    request,
+    passwordChangeContractSchema,
+  );
 
   if (!preprocessResult.success) {
     const { message, issues } = preprocessResult.error;

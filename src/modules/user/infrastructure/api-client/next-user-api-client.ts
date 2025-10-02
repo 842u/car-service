@@ -1,8 +1,8 @@
 import type { Route } from 'next';
 
 import { Result } from '@/common/application/result/result';
+import type { IValidator } from '@/common/application/validator/validator.interface';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
-import { dependencyContainer } from '@/di';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserDto } from '@/user/application/dtos/user-dto';
 import { userNameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';
@@ -15,10 +15,12 @@ import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
 export class NextUserApiClient implements IUserApiClient {
-  private _httpClient: FetchClient;
+  private readonly _httpClient: FetchClient;
+  private readonly _validator: IValidator;
 
-  constructor(httpClient: FetchClient) {
+  constructor(httpClient: FetchClient, validator: IValidator) {
     this._httpClient = httpClient;
+    this._validator = validator;
   }
 
   async signUp(contract: SignUpContract) {
@@ -33,12 +35,10 @@ export class NextUserApiClient implements IUserApiClient {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validator = await dependencyContainer.resolveValidator({
-      schema: signUpApiResponseSchema,
-      errorMessage: 'Invalid API response format.',
-    });
-
-    const validationResult = validator.validate(fetchResult.data);
+    const validationResult = this._validator.validate(
+      fetchResult.data,
+      signUpApiResponseSchema,
+    );
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
@@ -67,12 +67,10 @@ export class NextUserApiClient implements IUserApiClient {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validator = await dependencyContainer.resolveValidator({
-      schema: signInApiResponseSchema,
-      errorMessage: 'Invalid API response format.',
-    });
-
-    const validationResult = validator.validate(fetchResult.data);
+    const validationResult = this._validator.validate(
+      fetchResult.data,
+      signInApiResponseSchema,
+    );
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
@@ -101,12 +99,10 @@ export class NextUserApiClient implements IUserApiClient {
       return Result.fail({ message: fetchResult.error.message });
     }
 
-    const validator = await dependencyContainer.resolveValidator({
-      schema: passwordChangeApiResponseSchema,
-      errorMessage: 'Invalid API response format.',
-    });
-
-    const validationResult = validator.validate(fetchResult.data);
+    const validationResult = this._validator.validate(
+      fetchResult.data,
+      passwordChangeApiResponseSchema,
+    );
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
@@ -137,12 +133,10 @@ export class NextUserApiClient implements IUserApiClient {
       return Result.fail({ message: requestResult.error.message });
     }
 
-    const validator = await dependencyContainer.resolveValidator({
-      schema: userNameChangeApiResponseSchema,
-      errorMessage: 'Invalid API response format.',
-    });
-
-    const validationResult = validator.validate(requestResult.data);
+    const validationResult = this._validator.validate(
+      requestResult.data,
+      userNameChangeApiResponseSchema,
+    );
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });

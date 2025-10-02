@@ -2,6 +2,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+import type { IValidator } from '@/common/application/validator/validator.interface';
 import type { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
 import type {
   SupabaseAuthAdminClient,
@@ -10,8 +11,6 @@ import type {
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
-import type { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
-import type { ValidatorConfig } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
@@ -52,9 +51,7 @@ export const tokens = {
   /**
    * VALIDATOR
    */
-  VALIDATOR: new DependencyToken<ZodValidator<any>, ValidatorConfig<any>>(
-    Symbol('VALIDATOR'),
-  ),
+  VALIDATOR: new DependencyToken<IValidator>(Symbol('VALIDATOR')),
 
   /**
    * HTTP CLIENT

@@ -12,28 +12,32 @@ import {
   Result,
   type SuccessResult,
 } from '@/common/application/result/result';
-import type { ValidationIssue } from '@/common/application/validation/validator.interface';
-import type { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
+import type {
+  IValidator,
+  ValidationIssue,
+} from '@/common/application/validator/validator.interface';
 
 export type ErrorResponseResult<E extends ApiHandlerResponseError> =
   FailureResult<E, ApiHandlerResponseMeta>;
 
 export type SuccessResponseResult<T> = SuccessResult<T, ApiHandlerResponseMeta>;
 
-export class NextApiHandler<T, E extends ApiHandlerResponseError, TBody>
-  implements ApiHandler<T, E>
+export class NextApiHandler<T, E extends ApiHandlerResponseError, S>
+  implements ApiHandler<T, E, S>
 {
-  private readonly _validator: ZodValidator<TBody>;
+  private readonly _validator: IValidator;
 
-  constructor(validator: ZodValidator<TBody>) {
+  constructor(validator: IValidator) {
     this._validator = validator;
   }
 
   async preprocessRequest(
     request: NextRequest,
+    schema: { _output: S },
+    errorMessage = 'Contract validation failed.',
   ): Promise<
     Result<
-      TBody,
+      S,
       { message: string; issues?: ValidationIssue[] },
       { status: number }
     >
@@ -54,7 +58,11 @@ export class NextApiHandler<T, E extends ApiHandlerResponseError, TBody>
       return Result.fail({ message: 'Invalid JSON format.' }, { status: 400 });
     }
 
-    const validationResult = this._validator.validate(body);
+    const validationResult = this._validator.validate(
+      body,
+      schema,
+      errorMessage,
+    );
 
     if (!validationResult.success) {
       const {

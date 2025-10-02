@@ -4,7 +4,10 @@
 
 import { Result } from '@/common/application/result/result';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
-import { emailValidator } from '@/user/domain/user/value-objects/email/email.schema';
+import {
+  emailSchema,
+  emailValidator,
+} from '@/user/domain/user/value-objects/email/email.schema';
 
 export class Email extends ValueObject<string> {
   private constructor(value: string) {
@@ -12,7 +15,11 @@ export class Email extends ValueObject<string> {
   }
 
   static create(value: string) {
-    const result = emailValidator.validate(value);
+    const result = emailValidator.validate(
+      value,
+      emailSchema,
+      'Email validation failed.',
+    );
 
     if (!result.success) {
       return Result.fail(result.error);

@@ -1,6 +1,9 @@
 import { Result } from '@/common/application/result/result';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
-import { passwordValidator } from '@/user/domain/user/value-objects/password/password.schema';
+import {
+  passwordSchema,
+  passwordValidator,
+} from '@/user/domain/user/value-objects/password/password.schema';
 
 export class Password extends ValueObject<string> {
   private constructor(value: string) {
@@ -8,7 +11,11 @@ export class Password extends ValueObject<string> {
   }
 
   static create(value: string) {
-    const result = passwordValidator.validate(value);
+    const result = passwordValidator.validate(
+      value,
+      passwordSchema,
+      'Password validation failed.',
+    );
 
     if (!result.success) {
       return Result.fail(result.error);

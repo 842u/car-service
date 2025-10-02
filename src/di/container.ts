@@ -2,8 +2,7 @@
 
 import type { z } from 'zod';
 
-import type { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
-import { type DependencyToken, tokens } from '@/di/tokens';
+import { type DependencyToken } from '@/di/tokens';
 
 export interface ValidatorConfig<T extends z.ZodSchema<any>> {
   schema: T;
@@ -53,17 +52,5 @@ export class DependencyContainer {
     }
 
     return await factory(this, params);
-  }
-
-  async resolveValidator<TSchema extends z.ZodSchema<any>>(
-    config: ValidatorConfig<TSchema>,
-  ): Promise<ZodValidator<z.infer<TSchema>>> {
-    const factory = this.factories.get(tokens.VALIDATOR);
-
-    if (!factory) {
-      throw new Error('Validator factory not registered');
-    }
-
-    return await factory(this, config);
   }
 }

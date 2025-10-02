@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
+import { ZodValidator } from '@/common/infrastructure/validator/zod-validator';
 
 z.config({
   jitless: true,
@@ -24,7 +24,4 @@ export const passwordSchema = z
   .min(MIN_PASSWORD_LENGTH, { error: MIN_PASSWORD_LENGTH_MESSAGE })
   .max(MAX_PASSWORD_LENGTH, { error: MAX_PASSWORD_LENGTH_MESSAGE });
 
-export const passwordValidator = new ZodValidator(
-  passwordSchema,
-  'Password validation failed.',
-);
+export const passwordValidator = new ZodValidator();

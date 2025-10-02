@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
+import { ZodValidator } from '@/common/infrastructure/validator/zod-validator';
 
 z.config({
   jitless: true,
@@ -18,7 +18,4 @@ export const avatarUrlSchema = z.url({
       : AVATAR_URL_TYPE_MESSAGE,
 });
 
-export const avatarUrlValidator = new ZodValidator(
-  avatarUrlSchema,
-  'Avatar URL validation failed.',
-);
+export const avatarUrlValidator = new ZodValidator();

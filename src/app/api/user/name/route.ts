@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
+import { userNameChangeContractSchema } from '@/user/interface/contracts/name-change.schema';
 
 export const maxDuration = 10;
 
@@ -9,7 +10,10 @@ export async function PATCH(request: NextRequest) {
     dependencyTokens.USER_NAME_CHANGE_API_HANDLER,
   );
 
-  const preprocessRequestResult = await apiHandler.preprocessRequest(request);
+  const preprocessRequestResult = await apiHandler.preprocessRequest(
+    request,
+    userNameChangeContractSchema,
+  );
 
   if (!preprocessRequestResult.success) {
     const { message, issues } = preprocessRequestResult.error;

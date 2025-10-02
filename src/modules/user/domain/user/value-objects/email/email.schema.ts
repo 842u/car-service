@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
+import { ZodValidator } from '@/common/infrastructure/validator/zod-validator';
 
 z.config({
   jitless: true,
@@ -26,7 +26,4 @@ export const emailSchema = z
   .max(MAX_EMAIL_LENGTH, { error: MAX_EMAIL_LENGTH_MESSAGE })
   .regex(EMAIL_REGEXP, { error: EMAIL_REGEXP_MESSAGE });
 
-export const emailValidator = new ZodValidator(
-  emailSchema,
-  'Email validation failed.',
-);
+export const emailValidator = new ZodValidator();

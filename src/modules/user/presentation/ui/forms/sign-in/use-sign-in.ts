@@ -3,9 +3,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { NextUserApiClient } from '@/user/infrastructure/api-client/next-user-api-client';
+import { dependencyContainer, dependencyTokens } from '@/di';
 import {
   type SignInContract,
   signInContractSchema,
@@ -33,17 +32,14 @@ export function useSignInForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const fetchClient = new FetchClient({
-      baseUrl: window.location.origin,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const userApiClient = await dependencyContainer.resolve(
+      dependencyTokens.USER_API_CLIENT,
+    );
 
-    const nextAuthApiService = new NextUserApiClient(fetchClient);
+    const signInResult = await userApiClient.signIn(data);
 
-    const serviceResult = await nextAuthApiService.signIn(data);
-
-    if (!serviceResult.success) {
-      addToast(serviceResult.error.message, 'error');
+    if (!signInResult.success) {
+      addToast(signInResult.error.message, 'error');
       return;
     }
 

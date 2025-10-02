@@ -1,6 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
+import { signInContractSchema } from '@/user/interface/contracts/sign-in.schema';
 
 export const maxDuration = 10;
 
@@ -9,7 +10,10 @@ export async function POST(request: NextRequest) {
     dependencyTokens.SIGN_IN_API_HANDLER,
   );
 
-  const preprocessResult = await apiHandler.preprocessRequest(request);
+  const preprocessResult = await apiHandler.preprocessRequest(
+    request,
+    signInContractSchema,
+  );
 
   if (!preprocessResult.success) {
     const { message, issues } = preprocessResult.error;

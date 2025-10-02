@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validation/zod-validator';
+import { ZodValidator } from '@/common/infrastructure/validator/zod-validator';
 
 z.config({
   jitless: true,
@@ -14,4 +14,4 @@ export const idSchema = z.uuid({
     issue.input === undefined ? ID_REQUIRED_MESSAGE : ID_TYPE_MESSAGE,
 });
 
-export const idValidator = new ZodValidator(idSchema, 'ID validation failed.');
+export const idValidator = new ZodValidator();

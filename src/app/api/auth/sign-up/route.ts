@@ -1,6 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
+import { signUpContractSchema } from '@/user/interface/contracts/sign-up.schema';
 
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
@@ -11,7 +12,10 @@ export async function POST(request: NextRequest) {
     dependencyTokens.SIGN_UP_API_HANDLER,
   );
 
-  const preprocessRequestResult = await apiHandler.preprocessRequest(request);
+  const preprocessRequestResult = await apiHandler.preprocessRequest(
+    request,
+    signUpContractSchema,
+  );
 
   if (!preprocessRequestResult.success) {
     const { message, issues } = preprocessRequestResult.error;

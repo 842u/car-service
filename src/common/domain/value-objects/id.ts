@@ -1,5 +1,5 @@
 import { Result } from '@/common/application/result/result';
-import { idValidator } from '@/common/domain/value-objects/id.schema';
+import { idSchema, idValidator } from '@/common/domain/value-objects/id.schema';
 import { ValueObject } from '@/common/domain/value-objects/value-object';
 
 export class Id extends ValueObject<string> {
@@ -8,7 +8,11 @@ export class Id extends ValueObject<string> {
   }
 
   static create(value: string) {
-    const result = idValidator.validate(value);
+    const result = idValidator.validate(
+      value,
+      idSchema,
+      'ID validation failed.',
+    );
 
     if (!result.success) {
       return Result.fail(result.error);
