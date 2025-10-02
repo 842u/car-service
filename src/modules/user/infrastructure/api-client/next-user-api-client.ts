@@ -3,7 +3,7 @@ import type { Route } from 'next';
 import { Result } from '@/common/application/result/result';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { dependencyContainer } from '@/di';
-import type { IAuthApiClient } from '@/user/application/api/auth-api-client.interface';
+import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
@@ -11,7 +11,7 @@ import type { PasswordChangeContract } from '@/user/interface/contracts/password
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
-export class NextAuthApiClient implements IAuthApiClient {
+export class NextUserApiClient implements IUserApiClient {
   private _httpClient: FetchClient;
 
   constructor(httpClient: FetchClient) {

@@ -4,16 +4,16 @@ import type { PasswordChangeContract } from '@/user/interface/contracts/password
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
-type AuthApiClientError = { message: string };
+type UserApiClientError = { message: string };
 
-export interface IAuthApiClient {
+export interface IUserApiClient {
   signUp(
     contract: SignUpContract,
-  ): Promise<Result<UserDto, AuthApiClientError>>;
+  ): Promise<Result<UserDto, UserApiClientError>>;
   signIn(
     contract: SignInContract,
-  ): Promise<Result<UserDto, AuthApiClientError>>;
+  ): Promise<Result<UserDto, UserApiClientError>>;
   passwordChange(
     contract: PasswordChangeContract,
-  ): Promise<Result<UserDto, AuthApiClientError>>;
+  ): Promise<Result<UserDto, UserApiClientError>>;
 }

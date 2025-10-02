@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { NextAuthApiClient } from '@/user/infrastructure/api/next-auth-api-client';
+import { NextUserApiClient } from '@/user/infrastructure/api-client/next-user-api-client';
 import {
   type SignUpContract,
   signUpContractSchema,
@@ -35,7 +35,7 @@ export function useSignUpForm() {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    const nextAuthApiService = new NextAuthApiClient(fetchClient);
+    const nextAuthApiService = new NextUserApiClient(fetchClient);
 
     const serviceResult = await nextAuthApiService.signUp(data);
 
