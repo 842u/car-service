@@ -18,6 +18,7 @@ import type { Database } from '@/types/supabase';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
 import type { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';
+import type { UserPasswordChangeUseCase } from '@/user/application/use-cases/password-change';
 import type { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
 import type { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
 import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
@@ -188,6 +189,9 @@ export const tokens = {
   ),
   USER_NAME_CHANGE_USE_CASE: new DependencyToken<UserNameChangeUseCase>(
     Symbol('USER_NAME_CHANGE_USE_CASE'),
+  ),
+  USER_PASSWORD_CHANGE_USE_CASE: new DependencyToken<UserPasswordChangeUseCase>(
+    Symbol('USER_PASSWORD_CHANGE_USE_CASE'),
   ),
 
   /**
