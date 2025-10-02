@@ -1,5 +1,6 @@
 import type { Result } from '@/common/application/result/result';
 import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { UserNameChangeContract } from '@/user/interface/contracts/name-change.schema';
 import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
@@ -15,5 +16,8 @@ export interface IUserApiClient {
   ): Promise<Result<UserDto, UserApiClientError>>;
   passwordChange(
     contract: PasswordChangeContract,
+  ): Promise<Result<UserDto, UserApiClientError>>;
+  nameChange(
+    contract: UserNameChangeContract,
   ): Promise<Result<UserDto, UserApiClientError>>;
 }

@@ -4,9 +4,12 @@ import { Result } from '@/common/application/result/result';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { dependencyContainer } from '@/di';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
+import type { UserDto } from '@/user/application/dtos/user-dto';
+import { userNameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
+import type { UserNameChangeContract } from '@/user/interface/contracts/name-change.schema';
 import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
@@ -104,6 +107,42 @@ export class NextUserApiClient implements IUserApiClient {
     });
 
     const validationResult = validator.validate(fetchResult.data);
+
+    if (!validationResult.success) {
+      return Result.fail({ message: validationResult.error.message });
+    }
+
+    const apiResponseResult = validationResult.data;
+
+    if (!apiResponseResult.success) {
+      return Result.fail({ message: apiResponseResult.error.message });
+    }
+
+    const userDto = apiResponseResult.data;
+
+    return Result.ok(userDto);
+  }
+
+  async nameChange(
+    contract: UserNameChangeContract,
+  ): Promise<Result<UserDto, { message: string }>> {
+    const data = JSON.stringify(contract);
+
+    const requestResult = await this._httpClient.patch(
+      '/api/user/name' satisfies Route,
+      data,
+    );
+
+    if (!requestResult.success) {
+      return Result.fail({ message: requestResult.error.message });
+    }
+
+    const validator = await dependencyContainer.resolveValidator({
+      schema: userNameChangeApiResponseSchema,
+      errorMessage: 'Invalid API response format.',
+    });
+
+    const validationResult = validator.validate(requestResult.data);
 
     if (!validationResult.success) {
       return Result.fail({ message: validationResult.error.message });
