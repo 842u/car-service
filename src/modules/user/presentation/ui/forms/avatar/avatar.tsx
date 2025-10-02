@@ -1,6 +1,6 @@
 'use client';
 
-import type { ImageFormData } from '@/common/interface/validation/forms/image.schema';
+import type { ImageFormData } from '@/common/interface/ui/image-form.schema';
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
 import { UserImage } from '@/user/presentation/ui/image/image';

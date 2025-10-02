@@ -6,8 +6,8 @@ z.config({
   jitless: true,
 });
 
-export const passwordResetContractSchema = z.object({
+export const passwordResetFormSchema = z.object({
   email: emailSchema,
 });
 
-export type PasswordResetContract = z.infer<typeof passwordResetContractSchema>;
+export type PasswordResetFormData = z.infer<typeof passwordResetFormSchema>;

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import {
   type ImageFormData,
   imageFormSchema,
-} from '@/common/interface/validation/forms/image.schema';
+} from '@/common/interface/ui/image-form.schema';
 import { Form } from '@/ui/form/form';
 import { defaultAvatarFormValues } from '@/user/presentation/ui/forms/avatar/use-avatar';
 

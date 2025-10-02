@@ -5,11 +5,11 @@ import { useForm } from 'react-hook-form';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import {
-  type PasswordResetContract,
-  passwordResetContractSchema,
-} from '@/user/interface/contracts/password-reset.schema';
+  type PasswordResetFormData,
+  passwordResetFormSchema,
+} from '@/user/interface/ui/password-reset-form.schema';
 
-const defaultPasswordResetFormValues: PasswordResetContract = {
+const defaultPasswordResetFormValues: PasswordResetFormData = {
   email: '',
 };
 
@@ -21,8 +21,8 @@ export function usePasswordResetForm() {
     reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<PasswordResetContract>({
-    resolver: zodResolver(passwordResetContractSchema),
+  } = useForm<PasswordResetFormData>({
+    resolver: zodResolver(passwordResetFormSchema),
     mode: 'onTouched',
     defaultValues: defaultPasswordResetFormValues,
   });

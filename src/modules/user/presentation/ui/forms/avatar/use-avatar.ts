@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   type ImageFormData,
   imageFormSchema,
-} from '@/common/interface/validation/forms/image.schema';
+} from '@/common/interface/ui/image-form.schema';
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
