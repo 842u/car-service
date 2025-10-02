@@ -1,6 +1,6 @@
 import type { Result } from '@/common/application/result/result';
-import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
-import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
+import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
+import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 
 type AuthError = {
   message: string;
@@ -12,9 +12,9 @@ export type AuthClientResult<T = unknown> = Result<T, AuthError>;
 
 export interface AuthClient {
   getSession(): Promise<AuthClientResult>;
-  signIn(contract: SignInContract): Promise<AuthClientResult>;
+  signIn(contract: SignInApiContract): Promise<AuthClientResult>;
   signOut(): Promise<AuthClientResult>;
-  signUp(contract: SignUpContract): Promise<AuthClientResult>;
+  signUp(contract: SignUpApiContract): Promise<AuthClientResult>;
   resetPassword(contract: {
     email: string;
     options?: {

@@ -5,14 +5,14 @@ import type { IValidator } from '@/common/application/validator/validator.interf
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
 import { userNameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';
+import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
+import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
+import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
-import type { UserNameChangeContract } from '@/user/interface/contracts/name-change.schema';
-import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
-import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
-import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
 export class NextUserApiClient implements IUserApiClient {
   private readonly _httpClient: FetchClient;
@@ -23,7 +23,7 @@ export class NextUserApiClient implements IUserApiClient {
     this._validator = validator;
   }
 
-  async signUp(contract: SignUpContract) {
+  async signUp(contract: SignUpApiContract) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(
@@ -55,7 +55,7 @@ export class NextUserApiClient implements IUserApiClient {
     return Result.ok(userDto);
   }
 
-  async signIn(contract: SignInContract) {
+  async signIn(contract: SignInApiContract) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(
@@ -87,7 +87,7 @@ export class NextUserApiClient implements IUserApiClient {
     return Result.ok(userDto);
   }
 
-  async passwordChange(contract: PasswordChangeContract) {
+  async passwordChange(contract: PasswordChangeApiContract) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.patch(
@@ -120,7 +120,7 @@ export class NextUserApiClient implements IUserApiClient {
   }
 
   async nameChange(
-    contract: UserNameChangeContract,
+    contract: UserNameChangeApiContract,
   ): Promise<Result<UserDto, { message: string }>> {
     const data = JSON.stringify(contract);
 

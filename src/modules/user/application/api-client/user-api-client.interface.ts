@@ -1,23 +1,23 @@
 import type { Result } from '@/common/application/result/result';
 import type { UserDto } from '@/user/application/dtos/user-dto';
-import type { UserNameChangeContract } from '@/user/interface/contracts/name-change.schema';
-import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
-import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
-import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
+import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
+import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
+import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
+import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 
 type UserApiClientError = { message: string };
 
 export interface IUserApiClient {
   signUp(
-    contract: SignUpContract,
+    contract: SignUpApiContract,
   ): Promise<Result<UserDto, UserApiClientError>>;
   signIn(
-    contract: SignInContract,
+    contract: SignInApiContract,
   ): Promise<Result<UserDto, UserApiClientError>>;
   passwordChange(
-    contract: PasswordChangeContract,
+    contract: PasswordChangeApiContract,
   ): Promise<Result<UserDto, UserApiClientError>>;
   nameChange(
-    contract: UserNameChangeContract,
+    contract: UserNameChangeApiContract,
   ): Promise<Result<UserDto, UserApiClientError>>;
 }

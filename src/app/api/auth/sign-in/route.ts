@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
-import { signInContractSchema } from '@/user/interface/contracts/sign-in.schema';
+import { signInApiContractSchema } from '@/user/interface/api/sign-in.schema';
 
 export const maxDuration = 10;
 
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   const preprocessResult = await apiHandler.preprocessRequest(
     request,
-    signInContractSchema,
+    signInApiContractSchema,
   );
 
   if (!preprocessResult.success) {

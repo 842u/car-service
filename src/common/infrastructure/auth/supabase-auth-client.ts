@@ -10,8 +10,8 @@ import type {
 } from '@/common/application/auth/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { Database } from '@/types/supabase';
-import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
-import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
+import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
+import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 
 export class SupabaseAuthClient implements AuthClient {
   protected readonly _authClient: SupabaseClient<Database>['auth'];
@@ -41,7 +41,7 @@ export class SupabaseAuthClient implements AuthClient {
     }
   }
 
-  async signIn(contract: SignInContract) {
+  async signIn(contract: SignInApiContract) {
     try {
       const { data, error } =
         await this._authClient.signInWithPassword(contract);
@@ -85,7 +85,7 @@ export class SupabaseAuthClient implements AuthClient {
   }
 
   async signUp(
-    contract: SignUpContract,
+    contract: SignUpApiContract,
     options?: {
       emailRedirectTo?: string;
     },

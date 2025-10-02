@@ -3,12 +3,12 @@ import type { UseCase } from '@/common/application/use-case/use-case.interface';
 import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import { Password } from '@/user/domain/user/value-objects/password/password';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
-import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
+import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
 
 type UserPasswordChangeUseCaseError = { code: number };
 
 export class UserPasswordChangeUseCase
-  implements UseCase<PasswordChangeContract, UserPasswordChangeUseCaseError>
+  implements UseCase<PasswordChangeApiContract, UserPasswordChangeUseCaseError>
 {
   private readonly _authClient: SupabaseAuthClient;
   private readonly _userRepository: UserRepository;
@@ -18,7 +18,7 @@ export class UserPasswordChangeUseCase
     this._userRepository = userRepository;
   }
 
-  async execute(contract: PasswordChangeContract) {
+  async execute(contract: PasswordChangeApiContract) {
     const { password: passwordDto, passwordConfirm } = contract;
 
     if (passwordDto !== passwordConfirm) {

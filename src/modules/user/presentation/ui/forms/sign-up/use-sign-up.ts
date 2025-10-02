@@ -4,12 +4,10 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
-import {
-  type SignUpContract,
-  signUpContractSchema,
-} from '@/user/interface/contracts/sign-up.schema';
+import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
+import { signUpApiContractSchema } from '@/user/interface/api/sign-up.schema';
 
-const defaultSignUpFormValues: SignUpContract = {
+const defaultSignUpFormValues: SignUpApiContract = {
   email: '',
   password: '',
 };
@@ -22,8 +20,8 @@ export function useSignUpForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignUpContract>({
-    resolver: zodResolver(signUpContractSchema),
+  } = useForm<SignUpApiContract>({
+    resolver: zodResolver(signUpApiContractSchema),
     mode: 'onTouched',
     defaultValues: defaultSignUpFormValues,
   });

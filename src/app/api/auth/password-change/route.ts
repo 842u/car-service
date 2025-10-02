@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
-import { passwordChangeContractSchema } from '@/user/interface/contracts/password-change.schema';
+import { passwordChangeApiContractSchema } from '@/user/interface/api/password-change.schema';
 
 export const maxDuration = 10;
 
@@ -12,7 +12,7 @@ export async function PATCH(request: NextRequest) {
 
   const preprocessResult = await apiHandler.preprocessRequest(
     request,
-    passwordChangeContractSchema,
+    passwordChangeApiContractSchema,
   );
 
   if (!preprocessResult.success) {

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { issueSchema } from '@/common/application/validator/validator.interface';
 import { createApiResponseSchema } from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dtos/user-dto';
+import { passwordSchema } from '@/user/domain/user/value-objects/password/password.schema';
 
 z.config({
   jitless: true,
@@ -26,4 +27,18 @@ export type PasswordChangeApiResponseData = z.infer<
 
 export type PasswordChangeApiResponseError = z.infer<
   typeof passwordChangeApiResponseErrorSchema
+>;
+
+export const passwordChangeApiContractSchema = z
+  .object({
+    password: passwordSchema,
+    passwordConfirm: passwordSchema,
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'Passwords must match.',
+    path: ['passwordConfirm'],
+  });
+
+export type PasswordChangeApiContract = z.infer<
+  typeof passwordChangeApiContractSchema
 >;

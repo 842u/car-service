@@ -6,12 +6,12 @@ import type { SupabaseAuthAdminClient } from '@/common/infrastructure/auth/supab
 import { User } from '@/user/domain/user/user';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
-import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
+import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 
 type SignUpUseCaseError = { code: number };
 
 export class SignUpUserUseCase
-  implements UseCase<SignUpContract, SignUpUseCaseError>
+  implements UseCase<SignUpApiContract, SignUpUseCaseError>
 {
   private readonly _authAdminClient: SupabaseAuthAdminClient;
   private readonly _userRepository: UserRepository;
@@ -24,7 +24,7 @@ export class SignUpUserUseCase
     this._userRepository = userRepository;
   }
 
-  async execute(contract: SignUpContract) {
+  async execute(contract: SignUpApiContract) {
     const { email: emailDto, password: passwordDto } = contract;
 
     const credentialsResult = Credentials.create(emailDto, passwordDto);

@@ -5,12 +5,10 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hooks/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
-import {
-  type SignInContract,
-  signInContractSchema,
-} from '@/user/interface/contracts/sign-in.schema';
+import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
+import { signInApiContractSchema } from '@/user/interface/api/sign-in.schema';
 
-const defaultSignInFormValues: SignInContract = {
+const defaultSignInFormValues: SignInApiContract = {
   email: '',
   password: '',
 };
@@ -25,8 +23,8 @@ export function useSignInForm() {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isValid, isSubmitting, errors },
-  } = useForm<SignInContract>({
-    resolver: zodResolver(signInContractSchema),
+  } = useForm<SignInApiContract>({
+    resolver: zodResolver(signInApiContractSchema),
     mode: 'onTouched',
     defaultValues: defaultSignInFormValues,
   });
