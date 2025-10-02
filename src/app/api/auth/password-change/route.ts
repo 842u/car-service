@@ -1,9 +1,5 @@
 import type { NextRequest } from 'next/server';
 
-import {
-  errorApiResponse,
-  successApiResponse,
-} from '@/common/interface/api/response.interface';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import { Password } from '@/user/domain/user/value-objects/password/password';
 
@@ -31,7 +27,7 @@ export async function PATCH(request: NextRequest) {
       error: { message, issues },
     } = passwordResult;
 
-    return errorApiResponse({ message, issues }, 422);
+    return apiHandler.errorResponse({ message, issues }, 422);
   }
 
   const password = passwordResult.data.value;
@@ -46,12 +42,25 @@ export async function PATCH(request: NextRequest) {
 
   if (!updateResult.success) {
     const { message } = updateResult.error;
-    return errorApiResponse({ message }, 401);
+    return apiHandler.errorResponse({ message }, 401);
   }
 
-  const {
-    user: { id },
-  } = updateResult.data;
+  const userMapper = await dependencyContainer.resolve(
+    dependencyTokens.USER_MAPPER,
+  );
 
-  return successApiResponse({ id }, 200);
+  const { user: authIdentity } = updateResult.data;
+
+  const userResult = userMapper.authIdentityToDomain(authIdentity);
+
+  if (!userResult.success) {
+    const { message, issues } = userResult.error;
+    return apiHandler.errorResponse({ message, issues }, 500);
+  }
+
+  const user = userResult.data;
+
+  const userDto = userMapper.domainToDto(user);
+
+  return apiHandler.successResponse(userDto, 200);
 }

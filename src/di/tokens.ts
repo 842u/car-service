@@ -2,7 +2,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-import type { NextAuthApiClient } from '@/common/infrastructure/api/next-auth-api-client';
+import type { IAuthApiClient } from '@/common/application/api/auth-api-client.interface';
 import type { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
 import type {
   SupabaseAuthAdminClient,
@@ -63,7 +63,7 @@ export const tokens = {
   /**
    * API CLIENTS
    */
-  AUTH_API_CLIENT: new DependencyToken<NextAuthApiClient>(
+  AUTH_API_CLIENT: new DependencyToken<IAuthApiClient>(
     Symbol('AUTH_API_CLIENT'),
   ),
 

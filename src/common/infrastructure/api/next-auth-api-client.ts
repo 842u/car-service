@@ -1,6 +1,6 @@
 import type { Route } from 'next';
 
-import type { AuthApiClient } from '@/common/application/api/auth-api-client.interface';
+import type { IAuthApiClient } from '@/common/application/api/auth-api-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import { dependencyContainer } from '@/di';
@@ -11,7 +11,7 @@ import type { PasswordChangeContract } from '@/user/interface/contracts/password
 import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
 import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
-export class NextAuthApiClient implements AuthApiClient {
+export class NextAuthApiClient implements IAuthApiClient {
   private _httpClient: FetchClient;
 
   constructor(httpClient: FetchClient) {
@@ -47,11 +47,9 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: apiResponseResult.error.message });
     }
 
-    const {
-      data: { id },
-    } = apiResponseResult;
+    const userDto = apiResponseResult.data;
 
-    return Result.ok({ id });
+    return Result.ok(userDto);
   }
 
   async signIn(contract: SignInContract) {
@@ -83,11 +81,9 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: apiResponseResult.error.message });
     }
 
-    const {
-      data: { id },
-    } = apiResponseResult;
+    const userDto = apiResponseResult.data;
 
-    return Result.ok({ id });
+    return Result.ok(userDto);
   }
 
   async passwordChange(contract: PasswordChangeContract) {
@@ -119,10 +115,8 @@ export class NextAuthApiClient implements AuthApiClient {
       return Result.fail({ message: apiResponseResult.error.message });
     }
 
-    const {
-      data: { id },
-    } = apiResponseResult;
+    const userDto = apiResponseResult.data;
 
-    return Result.ok({ id });
+    return Result.ok(userDto);
   }
 }

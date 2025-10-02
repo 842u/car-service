@@ -30,9 +30,23 @@ export async function POST(request: NextRequest) {
     return apiHandler.errorResponse({ message }, 401);
   }
 
-  const {
-    user: { id },
-  } = signInResult.data;
+  const { user: authIdentity } = signInResult.data;
 
-  return apiHandler.successResponse({ id }, 200);
+  const userRepository = await dependencyContainer.resolve(
+    dependencyTokens.USER_REPOSITORY_SERVER,
+  );
+
+  const userResult = await userRepository.getById(authIdentity.id);
+
+  if (!userResult.success) {
+    return apiHandler.errorResponse(userResult.error, 500);
+  }
+
+  const userMapper = await dependencyContainer.resolve(
+    dependencyTokens.USER_MAPPER,
+  );
+
+  const userDto = userMapper.domainToDto(userResult.data);
+
+  return apiHandler.successResponse(userDto, 200);
 }

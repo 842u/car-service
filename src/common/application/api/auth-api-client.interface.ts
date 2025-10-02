@@ -1,13 +1,19 @@
 import type { Result } from '@/common/application/result/result';
+import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { PasswordChangeContract } from '@/user/interface/contracts/password-change.schema';
+import type { SignInContract } from '@/user/interface/contracts/sign-in.schema';
+import type { SignUpContract } from '@/user/interface/contracts/sign-up.schema';
 
-type Data = { id: string };
+type AuthApiClientError = { message: string };
 
-type Error = { message: string };
-
-type AuthApiClientResult = Result<Data, Error>;
-
-export interface AuthApiClient {
-  signUp(contract: unknown): Promise<AuthApiClientResult>;
-  signIn(contract: unknown): Promise<AuthApiClientResult>;
-  passwordChange(contract: unknown): Promise<AuthApiClientResult>;
+export interface IAuthApiClient {
+  signUp(
+    contract: SignUpContract,
+  ): Promise<Result<UserDto, AuthApiClientError>>;
+  signIn(
+    contract: SignInContract,
+  ): Promise<Result<UserDto, AuthApiClientError>>;
+  passwordChange(
+    contract: PasswordChangeContract,
+  ): Promise<Result<UserDto, AuthApiClientError>>;
 }
