@@ -4,14 +4,14 @@ import { useForm } from 'react-hook-form';
 
 import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
 import { userNameChangeApiContractSchema } from '@/user/interface/api/name-change.schema';
-import { useUpdateUserName } from '@/user/presentation/ui/forms/name/use-update-user-name';
+import { useUserNameChange } from '@/user/presentation/ui/forms/name/use-user-name-change';
 
 const defaultNameFormValues: UserNameChangeApiContract = {
   name: '',
 };
 
 export function useNameForm({ name }: { name: string | null | undefined }) {
-  const { mutate } = useUpdateUserName();
+  const { mutate } = useUserNameChange();
 
   const {
     register,

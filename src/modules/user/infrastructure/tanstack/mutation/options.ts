@@ -6,7 +6,7 @@ import type { UserDto } from '@/user/application/dtos/user-dto';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
 
-export const updateUserNameMutationOptions = (queryClient: QueryClient) =>
+export const userNameChangeMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
     throwOnError: false,
     mutationFn: async (variables: UserNameChangeApiContract) => {
