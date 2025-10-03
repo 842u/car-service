@@ -21,9 +21,9 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
     handleFormReset,
     control,
     errors,
-    isDirty,
     isSubmitting,
-    isValid,
+    canReset,
+    canSubmit,
   } = useAvatarForm();
 
   return (
@@ -45,13 +45,10 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
         </Form.InputImage>
       </Form.InputWrapper>
       <Form.Controls>
-        <Button disabled={!isDirty || isSubmitting} onClick={handleFormReset}>
+        <Button disabled={!canReset} onClick={handleFormReset}>
           Reset
         </Button>
-        <Form.ButtonSubmit
-          disabled={!isValid || !isDirty || isSubmitting}
-          isSubmitting={isSubmitting}
-        >
+        <Form.ButtonSubmit disabled={!canSubmit} isSubmitting={isSubmitting}>
           Save
         </Form.ButtonSubmit>
       </Form.Controls>

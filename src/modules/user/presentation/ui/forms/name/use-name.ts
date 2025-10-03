@@ -4,20 +4,20 @@ import { useForm } from 'react-hook-form';
 
 import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
 import { userNameChangeApiContractSchema } from '@/user/interface/api/name-change.schema';
-import { useUserNameChange } from '@/user/presentation/ui/forms/name/use-user-name-change';
+import { useUserNameChange } from '@/user/presentation/ui/forms/name/use-name-change';
 
 const defaultNameFormValues: UserNameChangeApiContract = {
   name: '',
 };
 
 export function useNameForm({ name }: { name: string | null | undefined }) {
-  const { mutate } = useUserNameChange();
+  const { mutateAsync } = useUserNameChange();
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isValid, isDirty, errors, isSubmitSuccessful },
+    formState: { isValid, isDirty, errors, isSubmitting, isSubmitSuccessful },
   } = useForm<UserNameChangeApiContract>({
     resolver: zodResolver(userNameChangeApiContractSchema),
     mode: 'onChange',
@@ -25,14 +25,18 @@ export function useNameForm({ name }: { name: string | null | undefined }) {
   });
 
   const handleFormSubmit = handleSubmit(async (formData) => {
-    mutate(formData);
+    await mutateAsync(formData);
   });
 
   const handleFormReset = () => name && reset({ name });
 
+  const canReset = isDirty && !isSubmitting;
+
+  const canSubmit = isValid && isDirty && !isSubmitting;
+
   useEffect(() => {
-    name && reset({ name });
-  }, [name, reset]);
+    !isSubmitting && name && reset({ name });
+  }, [name, reset, isSubmitting]);
 
   useEffect(() => {
     isSubmitSuccessful && reset();
@@ -42,8 +46,9 @@ export function useNameForm({ name }: { name: string | null | undefined }) {
     handleFormSubmit,
     handleFormReset,
     register,
-    isValid,
-    isDirty,
+    isSubmitting,
     errors,
+    canReset,
+    canSubmit,
   };
 }

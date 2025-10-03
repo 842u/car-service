@@ -2,6 +2,7 @@
 
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
+import { MAX_NAME_LENGTH } from '@/user/domain/user/value-objects/name/name.schema';
 
 import { useNameForm } from './use-name';
 
@@ -17,8 +18,9 @@ export function NameForm({ name }: NameFormProps) {
     handleFormReset,
     errors,
     register,
-    isDirty,
-    isValid,
+    isSubmitting,
+    canReset,
+    canSubmit,
   } = useNameForm({ name });
 
   return (
@@ -31,6 +33,7 @@ export function NameForm({ name }: NameFormProps) {
         <Form.Input
           errorMessage={errors.name?.message}
           label="Name"
+          maxLength={MAX_NAME_LENGTH}
           name="name"
           placeholder="Enter your name"
           register={register}
@@ -38,10 +41,10 @@ export function NameForm({ name }: NameFormProps) {
         />
       </Form.InputWrapper>
       <Form.Controls className="flex flex-col gap-4 md:flex-row md:justify-end">
-        <Button disabled={!isDirty} onClick={handleFormReset}>
+        <Button disabled={!canReset} onClick={handleFormReset}>
           Reset
         </Button>
-        <Form.ButtonSubmit disabled={!isValid || !isDirty}>
+        <Form.ButtonSubmit disabled={!canSubmit} isSubmitting={isSubmitting}>
           Save
         </Form.ButtonSubmit>
       </Form.Controls>

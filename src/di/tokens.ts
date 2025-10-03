@@ -16,12 +16,18 @@ import type { Database } from '@/types/supabase';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
+import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';
 import type { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';
 import type { UserPasswordChangeUseCase } from '@/user/application/use-cases/password-change';
 import type { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
 import type { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
 import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
+import type {
+  UserAvatarUrlChangeApiContract,
+  UserAvatarUrlChangeApiResponseData,
+  UserAvatarUrlChangeApiResponseError,
+} from '@/user/interface/api/avatar-change.schema';
 import type {
   UserNameChangeApiContract,
   UserNameChangeApiResponseData,
@@ -155,6 +161,13 @@ export const tokens = {
       UserNameChangeApiContract
     >
   >(Symbol('USER_NAME_CHANGE_API_HANDLER')),
+  USER_AVATAR_URL_CHANGE_API_HANDLER: new DependencyToken<
+    NextApiHandler<
+      UserAvatarUrlChangeApiResponseData,
+      UserAvatarUrlChangeApiResponseError,
+      UserAvatarUrlChangeApiContract
+    >
+  >(Symbol('USER_AVATAR_URL_CHANGE_API_HANDLER')),
 
   /**
    * REPOSITORIES
@@ -190,6 +203,10 @@ export const tokens = {
   USER_PASSWORD_CHANGE_USE_CASE: new DependencyToken<UserPasswordChangeUseCase>(
     Symbol('USER_PASSWORD_CHANGE_USE_CASE'),
   ),
+  USER_AVATAR_URL_CHANGE_USE_CASE:
+    new DependencyToken<UserAvatarUrlChangeUseCase>(
+      Symbol('USER_AVATAR_URL_CHANGE_USE_CASE'),
+    ),
 
   /**
    * MAPPERS

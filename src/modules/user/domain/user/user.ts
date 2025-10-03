@@ -69,11 +69,30 @@ export class User extends Entity<UserValue> {
 
   changeName(name: string) {
     const nameResult = Name.create(name);
+
     if (!nameResult.success) {
       return Result.fail(nameResult.error);
     }
 
     this._value.name = nameResult.data;
+
+    return Result.ok(undefined);
+  }
+
+  changeAvatarUrl(avatarUrl: string | undefined | null) {
+    if (!avatarUrl) {
+      this._value.avatarUrl = null;
+
+      return Result.ok(undefined);
+    }
+
+    const avatarUrlResult = AvatarUrl.create(avatarUrl);
+
+    if (!avatarUrlResult.success) {
+      return Result.fail(avatarUrlResult.error);
+    }
+
+    this._value.avatarUrl = avatarUrlResult.data;
 
     return Result.ok(undefined);
   }

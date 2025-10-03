@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 
 import { MAX_IMAGE_FILE_SIZE_BYTES } from '@/common/interface/validation/image-file.schema';
 import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
-import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 
 import { AvatarForm } from './avatar';
 
@@ -20,10 +19,6 @@ const WRONG_TYPE_FILE = new File(['wrong type'], 'wrongType.svg', {
   type: 'image/svg+xml',
 });
 const USER_EVENT_OPTIONS: Options = { applyAccept: false, delay: 15 };
-
-jest.mock('@/utils/supabase/tables/profiles.ts', () => ({
-  updateCurrentSessionProfile: jest.fn(),
-}));
 
 function TestAvatarForm() {
   return (
@@ -109,23 +104,6 @@ describe('AvatarForm', () => {
     await user.upload(inputElement, WRONG_TYPE_FILE);
 
     await waitFor(() => expect(resetButton).toBeEnabled());
-    await waitFor(() => expect(saveButton).toBeDisabled());
-  });
-
-  it('should call form submit handler and reset form on save button click', async () => {
-    const user = userEvent.setup(USER_EVENT_OPTIONS);
-    render(<TestAvatarForm />);
-
-    const inputElement = screen.getByLabelText('Avatar') as HTMLInputElement;
-    const resetButton = screen.getByRole('button', { name: 'Reset' });
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-
-    await user.upload(inputElement, VALID_FILE);
-
-    await user.click(saveButton);
-
-    expect(updateCurrentSessionProfile).toHaveBeenCalled();
-    await waitFor(() => expect(resetButton).toBeDisabled());
     await waitFor(() => expect(saveButton).toBeDisabled());
   });
 

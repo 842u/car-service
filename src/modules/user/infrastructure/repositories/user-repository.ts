@@ -100,7 +100,11 @@ export class UserRepository implements IUserRepository {
 
   async changeAvatarUrl(user: User) {
     const queryResult = await this._dbClient.query(async (from) =>
-      from('users').update({ avatar_url: user.avatarUrl?.value }),
+      from('users')
+        .update({ avatar_url: user.avatarUrl?.value })
+        .eq('id', user.id.value)
+        .select()
+        .single(),
     );
 
     if (!queryResult.success) {

@@ -44,4 +44,13 @@ export function registerApiHandlerModule(container: DependencyContainer) {
       return new NextApiHandler(validator);
     },
   );
+
+  container.registerCached(
+    tokens.USER_AVATAR_URL_CHANGE_API_HANDLER,
+    async (dependencyContainer) => {
+      const validator = await dependencyContainer.resolve(tokens.VALIDATOR);
+
+      return new NextApiHandler(validator);
+    },
+  );
 }

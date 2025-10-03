@@ -5,6 +5,7 @@ import type { IValidator } from '@/common/application/validator/validator.interf
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { UserAvatarUrlChangeApiContract } from '@/user/interface/api/avatar-change.schema';
 import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
 import { userNameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';
 import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
@@ -136,6 +137,41 @@ export class NextUserApiClient implements IUserApiClient {
     const validationResult = this._validator.validate(
       requestResult.data,
       userNameChangeApiResponseSchema,
+    );
+
+    if (!validationResult.success) {
+      return Result.fail({ message: validationResult.error.message });
+    }
+
+    const apiResponseResult = validationResult.data;
+
+    if (!apiResponseResult.success) {
+      return Result.fail({ message: apiResponseResult.error.message });
+    }
+
+    const userDto = apiResponseResult.data;
+
+    return Result.ok(userDto);
+  }
+
+  async avatarChange(
+    contract: UserAvatarUrlChangeApiContract,
+  ): Promise<Result<UserDto, { message: string }>> {
+    const data = JSON.stringify(contract);
+
+    const requestResult = await this._httpClient.patch(
+      '/api/user/avatar' satisfies Route,
+      data,
+    );
+
+    if (!requestResult.success) {
+      return Result.fail({ message: requestResult.error.message });
+    }
+
+    const validationResult = this._validator.validate(
+      requestResult.data,
+      userNameChangeApiResponseSchema,
+      'API response validation failed.',
     );
 
     if (!validationResult.success) {

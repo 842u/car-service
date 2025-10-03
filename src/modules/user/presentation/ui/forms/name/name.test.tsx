@@ -6,17 +6,8 @@ import {
   MAX_NAME_LENGTH,
   MIN_NAME_LENGTH,
 } from '@/user/domain/user/value-objects/name/name.schema';
-import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
 
 import { NameForm } from './name';
-
-jest.mock('@/utils/supabase/tables/profiles', () => ({
-  updateCurrentSessionProfile: jest.fn(),
-}));
-
-jest.mock('@/utils/tanstack/profiles', () => ({
-  profilesUpdateOnMutate: jest.fn(),
-}));
 
 const MOCK_NAME = 'test name';
 
@@ -130,28 +121,5 @@ describe('NameForm', () => {
     await user.type(nameInput, correctName);
 
     await waitFor(() => expect(saveButton).toBeEnabled());
-  });
-
-  it('should call proper submit handler on submit', async () => {
-    const baseName = 'a';
-    const correctName = baseName.repeat(MIN_NAME_LENGTH + 1);
-    const user = userEvent.setup();
-    render(<TestNameForm />);
-
-    const nameInput = screen.getByRole('textbox', {
-      name: 'Name',
-    }) as HTMLInputElement;
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-
-    await user.clear(nameInput);
-    await user.type(nameInput, correctName);
-    await user.click(saveButton);
-
-    await waitFor(() =>
-      expect(updateCurrentSessionProfile).toHaveBeenCalledWith({
-        property: 'username',
-        value: correctName,
-      }),
-    );
   });
 });

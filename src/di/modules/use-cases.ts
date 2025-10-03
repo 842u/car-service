@@ -1,6 +1,7 @@
 import { dependencyTokens } from '@/di';
 import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
+import { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';
 import { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';
 import { UserPasswordChangeUseCase } from '@/user/application/use-cases/password-change';
 import { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
@@ -84,6 +85,20 @@ export function registerUseCasesModule(container: DependencyContainer) {
       );
 
       return new UserPasswordChangeUseCase(authClientServer, userRepository);
+    },
+  );
+
+  container.registerFactory(
+    tokens.USER_AVATAR_URL_CHANGE_USE_CASE,
+    async (dependencyContainer) => {
+      const authClientServer = await dependencyContainer.resolve(
+        dependencyTokens.AUTH_CLIENT_SERVER,
+      );
+      const userRepository = await dependencyContainer.resolve(
+        dependencyTokens.USER_REPOSITORY_SERVER,
+      );
+
+      return new UserAvatarUrlChangeUseCase(authClientServer, userRepository);
     },
   );
 }

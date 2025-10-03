@@ -1,6 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { QueryClient } from '@tanstack/react-query';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -8,54 +6,17 @@ import {
   type ImageFormData,
   imageFormSchema,
 } from '@/common/interface/ui/image-form.schema';
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { useUserAvatarChange } from '@/user/presentation/ui/forms/avatar/use-avatar-change';
 import { enqueueRevokeObjectUrl } from '@/utils/general';
-import { updateCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
-import { profilesUpdateOnMutate } from '@/utils/tanstack/profiles';
 
 export const defaultAvatarFormValues: ImageFormData = {
   image: null,
 };
 
-type MutationVariables = {
-  formData: ImageFormData;
-  queryClient: QueryClient;
-  imageInputUrl: string | null;
-};
-
 export function useAvatarForm() {
   const [imageInputUrl, setImageInputUrl] = useState<string | null>(null);
 
-  const { addToast } = useToasts();
-
-  const queryClient = useQueryClient();
-  const { mutateAsync } = useMutation({
-    throwOnError: false,
-    mutationFn: ({ formData: { image } }: MutationVariables) =>
-      updateCurrentSessionProfile({
-        property: 'avatar_url',
-        value: image,
-      }),
-    onMutate: ({ queryClient, imageInputUrl }) =>
-      profilesUpdateOnMutate(
-        queryClient,
-        'session',
-        'avatar_url',
-        imageInputUrl,
-      ),
-    onSuccess: () => {
-      addToast('Avatar uploaded successfully.', 'success');
-    },
-    onError: (error, { queryClient }, context) => {
-      addToast(error.message, 'error');
-
-      queryClient.setQueryData(
-        queryKeys.sessionUser,
-        context?.previousQueryData,
-      );
-    },
-  });
+  const { mutateAsync } = useUserAvatarChange();
 
   const {
     control,
@@ -69,16 +30,7 @@ export function useAvatarForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (formData: ImageFormData) => {
-    await mutateAsync(
-      { formData, queryClient, imageInputUrl },
-      {
-        onSettled: (_, __, { queryClient }) => {
-          queryClient.invalidateQueries({
-            queryKey: queryKeys.sessionUser,
-          });
-        },
-      },
-    );
+    await mutateAsync({ image: formData.image, imageInputUrl });
   });
 
   const handleImageInputChange = (file: File | undefined | null) => {
@@ -87,6 +39,10 @@ export function useAvatarForm() {
   };
 
   const handleFormReset = () => reset();
+
+  const canReset = isDirty && !isSubmitting;
+
+  const canSubmit = isValid && isDirty && !isSubmitting;
 
   useEffect(() => {
     isSubmitSuccessful && reset();
@@ -99,8 +55,8 @@ export function useAvatarForm() {
     control,
     errors,
     inputImageUrl: imageInputUrl,
-    isDirty,
     isSubmitting,
-    isValid,
+    canReset,
+    canSubmit,
   };
 }
