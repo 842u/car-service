@@ -3,7 +3,7 @@ import { ValueObject } from '@/common/domain/value-object/value-object';
 import {
   avatarUrlSchema,
   avatarUrlValidator,
-} from '@/user/domain/user/value-objects/avatar-url/avatar-url.schema';
+} from '@/user/domain/user/value-object/avatar-url/avatar-url.schema';
 
 export class AvatarUrl extends ValueObject<string> {
   private constructor(value: string) {

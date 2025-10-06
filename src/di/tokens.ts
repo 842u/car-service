@@ -18,12 +18,12 @@ import type { SupabaseConfig } from '@/di/module/supabase-client';
 import type { Database } from '@/types/supabase';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
-import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';
-import type { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';
-import type { UserPasswordChangeUseCase } from '@/user/application/use-cases/password-change';
-import type { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
-import type { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
-import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
+import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
+import type { UserNameChangeUseCase } from '@/user/application/use-case/name-change';
+import type { UserPasswordChangeUseCase } from '@/user/application/use-case/password-change';
+import type { SignInUserWithOAuthUseCase } from '@/user/application/use-case/sign-in-with-o-auth';
+import type { SignInUserWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';
+import type { SignUpUserUseCase } from '@/user/application/use-case/sign-up-user-use-case';
 import type {
   UserAvatarUrlChangeApiContract,
   UserAvatarUrlChangeApiResponseData,

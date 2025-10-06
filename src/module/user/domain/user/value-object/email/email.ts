@@ -7,7 +7,7 @@ import { ValueObject } from '@/common/domain/value-object/value-object';
 import {
   emailSchema,
   emailValidator,
-} from '@/user/domain/user/value-objects/email/email.schema';
+} from '@/user/domain/user/value-object/email/email.schema';
 
 export class Email extends ValueObject<string> {
   private constructor(value: string) {

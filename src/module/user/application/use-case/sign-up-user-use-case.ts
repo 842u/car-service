@@ -6,7 +6,7 @@ import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import { User } from '@/user/domain/user/user';
-import { Credentials } from '@/user/domain/user/value-objects/credentials';
+import { Credentials } from '@/user/domain/user/value-object/credentials';
 import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 
 type SignUpUseCaseError = { code: number };

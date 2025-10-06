@@ -1,12 +1,12 @@
 import { dependencyTokens } from '@/di';
 import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
-import { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';
-import { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';
-import { UserPasswordChangeUseCase } from '@/user/application/use-cases/password-change';
-import { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
-import { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
-import { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
+import { UserAvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
+import { UserNameChangeUseCase } from '@/user/application/use-case/name-change';
+import { UserPasswordChangeUseCase } from '@/user/application/use-case/password-change';
+import { SignInUserWithOAuthUseCase } from '@/user/application/use-case/sign-in-with-o-auth';
+import { SignInUserWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';
+import { SignUpUserUseCase } from '@/user/application/use-case/sign-up-user-use-case';
 
 export function registerUseCaseModule(container: DependencyContainer) {
   container.registerFactory(

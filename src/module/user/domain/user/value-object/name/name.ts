@@ -3,7 +3,7 @@ import { ValueObject } from '@/common/domain/value-object/value-object';
 import {
   nameSchema,
   nameValidator,
-} from '@/user/domain/user/value-objects/name/name.schema';
+} from '@/user/domain/user/value-object/name/name.schema';
 
 export class Name extends ValueObject<string> {
   private constructor(value: string) {

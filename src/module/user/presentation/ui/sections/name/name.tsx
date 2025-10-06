@@ -2,7 +2,7 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import {
   MAX_NAME_LENGTH,
   MIN_NAME_LENGTH,
-} from '@/user/domain/user/value-objects/name/name.schema';
+} from '@/user/domain/user/value-object/name/name.schema';
 import { NameForm } from '@/user/presentation/ui/forms/name/name';
 
 type NameSectionProps = {

@@ -2,7 +2,7 @@
 
 import { Button } from '@/ui/button/button';
 import { Form } from '@/ui/form/form';
-import { MAX_NAME_LENGTH } from '@/user/domain/user/value-objects/name/name.schema';
+import { MAX_NAME_LENGTH } from '@/user/domain/user/value-object/name/name.schema';
 
 import { useNameForm } from './use-name';
 

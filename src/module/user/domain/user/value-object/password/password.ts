@@ -3,7 +3,7 @@ import { ValueObject } from '@/common/domain/value-object/value-object';
 import {
   passwordSchema,
   passwordValidator,
-} from '@/user/domain/user/value-objects/password/password.schema';
+} from '@/user/domain/user/value-object/password/password.schema';
 
 export class Password extends ValueObject<string> {
   private constructor(value: string) {

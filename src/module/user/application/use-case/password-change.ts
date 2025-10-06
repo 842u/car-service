@@ -4,7 +4,7 @@ import type { AuthClient } from '@/common/application/auth-client/auth-client.in
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
-import { Password } from '@/user/domain/user/value-objects/password/password';
+import { Password } from '@/user/domain/user/value-object/password/password';
 import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
 
 type UserPasswordChangeUseCaseError = { code: number };

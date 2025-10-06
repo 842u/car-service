@@ -5,7 +5,7 @@ import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-
 import {
   MAX_NAME_LENGTH,
   MIN_NAME_LENGTH,
-} from '@/user/domain/user/value-objects/name/name.schema';
+} from '@/user/domain/user/value-object/name/name.schema';
 
 import { NameForm } from './name';
 

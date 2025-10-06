@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { validatorIssueSchema } from '@/common/application/validator/validator.interface';
 import { createApiResponseSchema } from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dto/user-dto';
-import { nameSchema } from '@/user/domain/user/value-objects/name/name.schema';
+import { nameSchema } from '@/user/domain/user/value-object/name/name.schema';
 
 z.config({
   jitless: true,

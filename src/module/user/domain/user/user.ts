@@ -1,9 +1,9 @@
 import { Result } from '@/common/application/result/result';
 import { Entity } from '@/common/domain/entity/entity';
-import { AvatarUrl } from '@/user/domain/user/value-objects/avatar-url/avatar-url';
-import { Email } from '@/user/domain/user/value-objects/email/email';
-import { Name } from '@/user/domain/user/value-objects/name/name';
-import { UserId } from '@/user/domain/user/value-objects/user-id/user-id';
+import { AvatarUrl } from '@/user/domain/user/value-object/avatar-url/avatar-url';
+import { Email } from '@/user/domain/user/value-object/email/email';
+import { Name } from '@/user/domain/user/value-object/name/name';
+import { UserId } from '@/user/domain/user/value-object/user-id/user-id';
 
 type UserValue = {
   id: UserId;

@@ -2,7 +2,7 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,
-} from '@/user/domain/user/value-objects/password/password.schema';
+} from '@/user/domain/user/value-object/password/password.schema';
 import { PasswordChangeForm } from '@/user/presentation/ui/forms/password-change/password-change';
 
 export function PasswordChangeSection() {

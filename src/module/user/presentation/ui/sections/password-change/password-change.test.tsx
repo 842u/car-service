@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,
-} from '@/user/domain/user/value-objects/password/password.schema';
+} from '@/user/domain/user/value-object/password/password.schema';
 import { PASSWORD_CHANGE_FORM_TEST_ID } from '@/user/presentation/ui/forms/password-change/password-change';
 
 import { PasswordChangeSection } from './password-change';
