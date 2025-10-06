@@ -8,7 +8,7 @@ import {
   useRef,
 } from 'react';
 
-import { useContextGuard } from '@/common/presentation/hooks/use-context-guard';
+import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
 
 import { Controls } from './compounds/controls/controls';
 import { DialogModalHeading } from './compounds/heading/heading';

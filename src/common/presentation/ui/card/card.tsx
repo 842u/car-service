@@ -4,8 +4,8 @@ import type { HTMLMotionProps } from 'motion/react';
 import { LazyMotion, motion } from 'motion/react';
 import { twMerge } from 'tailwind-merge';
 
-import type { UseMouseTiltAnimationOptions } from '@/common/presentation/hooks/use-mouse-tilt-animation';
-import { useMouseTiltAnimation } from '@/common/presentation/hooks/use-mouse-tilt-animation';
+import type { UseMouseTiltAnimationOptions } from '@/common/presentation/hook/use-mouse-tilt-animation';
+import { useMouseTiltAnimation } from '@/common/presentation/hook/use-mouse-tilt-animation';
 
 const motionFeatures = () =>
   import('@/utils/motion/motion').then((module) => module.default);

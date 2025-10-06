@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';

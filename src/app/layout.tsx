@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 
-import { Providers } from '@/common/presentation/providers/providers';
+import { Providers } from '@/common/presentation/provider/providers';
 import LazyToaster from '@/ui/toaster/lazy-toaster';
 import { inter } from '@/utils/fonts';
 

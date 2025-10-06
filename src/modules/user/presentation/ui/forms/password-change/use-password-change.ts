@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
 import { passwordChangeApiContractSchema } from '@/user/interface/api/password-change.schema';

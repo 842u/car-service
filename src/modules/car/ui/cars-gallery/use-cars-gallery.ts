@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { getCarsByPage } from '@/utils/supabase/tables/cars';
 import { queryKeys } from '@/utils/tanstack/keys';
 

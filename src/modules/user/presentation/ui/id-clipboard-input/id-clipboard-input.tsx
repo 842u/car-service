@@ -1,7 +1,7 @@
 import type { SyntheticEvent } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { inputVariants } from '@/utils/tailwindcss/input';
 
 type IdClipboardInputProps = {

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { userAvatarChangeMutationOptions } from '@/user/infrastructure/tanstack/mutation-options/avatar-change';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 

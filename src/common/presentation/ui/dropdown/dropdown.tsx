@@ -2,7 +2,7 @@ import type { ReactNode, RefObject } from 'react';
 import { createContext, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useContextGuard } from '@/common/presentation/hooks/use-context-guard';
+import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
 
 import { DropdownContent } from './compounds/content/content';
 import { DropdownTrigger } from './compounds/trigger/trigger';

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { ADD_FORM_TEST_ID } from '@/car/ownership/ui/forms/add/add';
-import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
+import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
 
 import { SectionControls } from './controls';
 

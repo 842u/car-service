@@ -2,7 +2,7 @@ import * as m from 'motion/react-m';
 import type { Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { XCircleIcon } from '@/icons/x-circle';
 import type { Toast as ToastObject } from '@/types';
 import { IconButton } from '@/ui/icon-button/icon-button';

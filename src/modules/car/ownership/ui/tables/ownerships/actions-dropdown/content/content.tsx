@@ -6,7 +6,7 @@ import { useRef } from 'react';
 
 import { DeleteModal } from '@/car/ownership/ui/modals/delete/delete';
 import { PromoteModal } from '@/car/ownership/ui/modals/promote/promote';
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { CarOwnership } from '@/types';
 import { Button } from '@/ui/button/button';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';

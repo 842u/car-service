@@ -2,7 +2,7 @@ import type { User as AuthIdentity } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { getCar } from '@/utils/supabase/tables/cars';

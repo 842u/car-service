@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 
 import type { ServiceLogPatchRouteHandlerRequest } from '@/app/api/service-log/route';
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import type { ServiceLog } from '@/types';

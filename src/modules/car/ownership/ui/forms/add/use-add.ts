@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { CarOwnershipAddFormValues } from '@/schemas/zod/carOwnershipAddFormSchema';
 import { carOwnershipAddFormSchema } from '@/schemas/zod/carOwnershipAddFormSchema';
 import { queryKeys as useQueryKeys } from '@/user/infrastructure/tanstack/query/keys';

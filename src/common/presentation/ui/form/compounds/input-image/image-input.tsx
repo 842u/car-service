@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   MAX_IMAGE_FILE_SIZE_BYTES,
-} from '@/common/interface/schemas/image-file.schema';
+} from '@/common/interface/schema/image-file.schema';
 import { getMimeTypeExtensions } from '@/utils/general';
 import { inputVariants } from '@/utils/tailwindcss/input';
 

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import { DeleteModal } from '@/car/service-log/ui/modals/delete/delete';
 import { EditModal } from '@/car/service-log/ui/modals/edit/edit';
-import { useToasts } from '@/common/presentation/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { ServiceLog } from '@/types';
 import { Button } from '@/ui/button/button';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';

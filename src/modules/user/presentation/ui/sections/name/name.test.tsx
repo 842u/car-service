@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
+import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
 import {
   MAX_NAME_LENGTH,
   MIN_NAME_LENGTH,

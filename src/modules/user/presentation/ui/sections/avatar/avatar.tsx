@@ -1,7 +1,7 @@
 import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   MAX_IMAGE_FILE_SIZE_BYTES,
-} from '@/common/interface/schemas/image-file.schema';
+} from '@/common/interface/schema/image-file.schema';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { AvatarForm } from '@/user/presentation/ui/forms/avatar/avatar';
 import { getMimeTypeExtensions } from '@/utils/general';

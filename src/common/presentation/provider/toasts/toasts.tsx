@@ -3,8 +3,8 @@
 import type { ReactNode } from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
-import type { ToastsContextType } from '@/common/presentation/contexts/toasts';
-import { ToastsContext } from '@/common/presentation/contexts/toasts';
+import type { ToastsContextType } from '@/common/presentation/context/toasts';
+import { ToastsContext } from '@/common/presentation/context/toasts';
 import type { Toast, ToastType } from '@/types';
 
 type ToastsProviderProps = {

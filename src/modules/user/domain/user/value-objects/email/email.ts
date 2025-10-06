@@ -3,7 +3,7 @@
  */
 
 import { Result } from '@/common/application/result/result';
-import { ValueObject } from '@/common/domain/value-objects/value-object';
+import { ValueObject } from '@/common/domain/value-object/value-object';
 import {
   emailSchema,
   emailValidator,

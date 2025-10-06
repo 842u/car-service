@@ -1,5 +1,5 @@
 import type { Result } from '@/common/application/result/result';
-import type { Id } from '@/common/domain/value-objects/id';
+import type { Id } from '@/common/domain/value-object/id';
 
 type BaseEntityValue = { id: Id };
 
