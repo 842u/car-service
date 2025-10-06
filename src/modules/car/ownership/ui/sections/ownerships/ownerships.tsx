@@ -1,6 +1,6 @@
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { CarOwnership } from '@/types';
-import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { UserDto } from '@/user/application/dto/user-dto';
 
 import { OwnershipsTable } from '../../tables/ownerships/ownerships';
 import type { SectionControlsProps } from './controls/controls';

@@ -4,7 +4,7 @@ import type { HttpClient } from '@/common/application/http-client/http-client.in
 import { Result } from '@/common/application/result/result';
 import type { Validator } from '@/common/application/validator/validator.interface';
 import type { UserApiClient } from '@/user/application/api-client/user-api-client.interface';
-import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { UserDto } from '@/user/application/dto/user-dto';
 import type { UserAvatarUrlChangeApiContract } from '@/user/interface/api/avatar-change.schema';
 import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
 import { userNameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';

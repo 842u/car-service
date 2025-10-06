@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { validatorIssueSchema } from '@/common/application/validator/validator.interface';
 import { createApiResponseSchema } from '@/common/interface/api/response.schema';
-import { userDtoSchema } from '@/user/application/dtos/user-dto';
+import { userDtoSchema } from '@/user/application/dto/user-dto';
 import { emailSchema } from '@/user/domain/user/value-objects/email/email.schema';
 import {
   PASSWORD_REQUIRED_MESSAGE,

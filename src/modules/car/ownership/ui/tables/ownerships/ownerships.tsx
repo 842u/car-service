@@ -9,7 +9,7 @@ import { dependencyContainer, dependencyTokens } from '@/di';
 import { KeyIcon } from '@/icons/key';
 import type { CarOwnership } from '@/types';
 import { Table } from '@/ui/table/table';
-import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { UserDto } from '@/user/application/dto/user-dto';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';

@@ -1,5 +1,5 @@
 import type { Result } from '@/common/application/result/result';
-import type { UserDto } from '@/user/application/dtos/user-dto';
+import type { UserDto } from '@/user/application/dto/user-dto';
 
 type UserStoreError = {
   message: string;
