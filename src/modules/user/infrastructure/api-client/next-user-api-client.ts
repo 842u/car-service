@@ -3,7 +3,6 @@ import type { Route } from 'next';
 import type { HttpClient } from '@/common/application/http-client/http-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { Validator } from '@/common/application/validator/validator.interface';
-import type { UserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserDto } from '@/user/application/dto/user-dto';
 import type { UserAvatarUrlChangeApiContract } from '@/user/interface/api/avatar-change.schema';
 import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
@@ -14,6 +13,7 @@ import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
 import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
+import type { UserApiClient } from '@/user/presentation/api-client/user-api-client.interface';
 
 export class NextUserApiClient implements UserApiClient {
   private readonly _httpClient: HttpClient;

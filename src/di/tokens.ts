@@ -16,7 +16,6 @@ import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-cl
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
-import type { UserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';
@@ -50,6 +49,7 @@ import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
+import type { UserApiClient } from '@/user/presentation/api-client/user-api-client.interface';
 import type { UserDataSource } from '@/user/presentation/data-source/user-data-source.interface';
 
 export class DependencyToken<_T, _P = void> {
