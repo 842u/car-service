@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { issueSchema } from '@/common/application/validator/validator.interface';
+import { validatorIssueSchema } from '@/common/application/validator/validator.interface';
 import { createApiResponseSchema } from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dtos/user-dto';
 import { emailSchema } from '@/user/domain/user/value-objects/email/email.schema';
@@ -12,7 +12,7 @@ z.config({
 
 const signUpApiResponseErrorSchema = z.object({
   message: z.string(),
-  issues: z.array(issueSchema).optional(),
+  issues: z.array(validatorIssueSchema).optional(),
 });
 
 const signUpApiResponseDataSchema = userDtoSchema;

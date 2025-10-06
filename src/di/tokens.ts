@@ -11,7 +11,7 @@ import type {
   AuthClient,
 } from '@/common/application/auth-client/auth-client.interface';
 import type { HttpClient } from '@/common/application/http-client/http-client.interface';
-import type { IValidator } from '@/common/application/validator/validator.interface';
+import type { Validator } from '@/common/application/validator/validator.interface';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { SupabaseConfig } from '@/di/modules/supabase';
@@ -60,7 +60,7 @@ export const tokens = {
   /**
    * VALIDATOR
    */
-  VALIDATOR: new DependencyToken<IValidator>(Symbol('VALIDATOR')),
+  VALIDATOR: new DependencyToken<Validator>(Symbol('VALIDATOR')),
 
   /**
    * HTTP CLIENT

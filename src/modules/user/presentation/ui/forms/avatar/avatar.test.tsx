@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import type { Options } from '@testing-library/user-event';
 import userEvent from '@testing-library/user-event';
 
-import { MAX_IMAGE_FILE_SIZE_BYTES } from '@/common/interface/validation/image-file.schema';
+import { MAX_IMAGE_FILE_SIZE_BYTES } from '@/common/interface/schemas/image-file.schema';
 import { TanStackQueryProvider } from '@/common/presentation/providers/tan-stack-query';
 
 import { AvatarForm } from './avatar';

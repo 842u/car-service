@@ -2,15 +2,15 @@ import { z } from 'zod';
 
 import { Result } from '@/common/application/result/result';
 import {
-  type IValidator,
-  ValidationError,
+  type Validator,
+  ValidatorError,
 } from '@/common/application/validator/validator.interface';
 
 z.config({
   jitless: true,
 });
 
-export class ZodValidator implements IValidator {
+export class ZodValidator implements Validator {
   validate<T>(
     value: unknown,
     schema: z.ZodSchema<T>,
@@ -26,7 +26,7 @@ export class ZodValidator implements IValidator {
         message: issue.message,
       }));
 
-      return Result.fail(new ValidationError(errorMessage, issues));
+      return Result.fail(new ValidatorError(errorMessage, issues));
     }
 
     return Result.ok(result.data);

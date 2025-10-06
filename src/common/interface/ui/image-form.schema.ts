@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { imageFileSchema } from '@/common/interface/validation/image-file.schema';
+import { imageFileSchema } from '@/common/interface/schemas/image-file.schema';
 
 z.config({
   jitless: true,

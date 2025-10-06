@@ -12,8 +12,8 @@ import {
   type SuccessResult,
 } from '@/common/application/result/result';
 import type {
-  IValidator,
-  ValidationIssue,
+  Validator,
+  ValidatorIssue,
 } from '@/common/application/validator/validator.interface';
 
 type ErrorResponseResult<E extends ApiHandlerResponseError> = FailureResult<
@@ -26,9 +26,9 @@ type SuccessResponseResult<T> = SuccessResult<T, { status: number }>;
 export class NextApiHandler<T, E extends ApiHandlerResponseError, S>
   implements ApiHandler<T, E, S>
 {
-  private readonly _validator: IValidator;
+  private readonly _validator: Validator;
 
-  constructor(validator: IValidator) {
+  constructor(validator: Validator) {
     this._validator = validator;
   }
 
@@ -39,7 +39,7 @@ export class NextApiHandler<T, E extends ApiHandlerResponseError, S>
   ): Promise<
     Result<
       S,
-      { message: string; issues?: ValidationIssue[] },
+      { message: string; issues?: ValidatorIssue[] },
       { status: number }
     >
   > {
