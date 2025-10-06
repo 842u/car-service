@@ -39,7 +39,7 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
       queryKey: userQueryKeys.usersByContext({ carId }),
       queryFn: async () => {
         const userStore = await dependencyContainer.resolve(
-          dependencyTokens.USER_STORE,
+          dependencyTokens.USER_DATA_SOURCE,
         );
 
         const usersResult = await userStore.getUsersByIds(ownersId || []);

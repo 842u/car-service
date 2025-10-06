@@ -8,7 +8,7 @@ export const getSessionUserQueryOptions = queryOptions({
   queryKey: queryKeys.sessionUser,
   queryFn: async () => {
     const userStore = await dependencyContainer.resolve(
-      dependencyTokens.USER_STORE,
+      dependencyTokens.USER_DATA_SOURCE,
     );
 
     const userResult = await userStore.getSessionUser();

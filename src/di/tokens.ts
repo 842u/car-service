@@ -50,7 +50,7 @@ import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
-import type { UserStore } from '@/user/presentation/store/user-store.interface';
+import type { UserDataSource } from '@/user/presentation/data-source/user-data-source.interface';
 
 export class DependencyToken<_T, _P = void> {
   constructor(public readonly name: symbol) {}
@@ -58,12 +58,12 @@ export class DependencyToken<_T, _P = void> {
 
 export const tokens = {
   /**
-   * VALIDATOR
+   * VALIDATORS
    */
   VALIDATOR: new DependencyToken<Validator>(Symbol('VALIDATOR')),
 
   /**
-   * HTTP CLIENT
+   * HTTP CLIENTS
    */
   HTTP_CLIENT: new DependencyToken<HttpClient>(Symbol('HTTP_CLIENT')),
 
@@ -75,7 +75,7 @@ export const tokens = {
   ),
 
   /**
-   * SUPABASE
+   * SUPABASE CLIENTS
    */
   SUPABASE_ADMIN_CLIENT: new DependencyToken<
     SupabaseClient<Database>,
@@ -89,7 +89,7 @@ export const tokens = {
   ),
 
   /**
-   * DATABASE
+   * DATABASE CLIENTS
    */
   DATABASE_CLIENT_ADMIN: new DependencyToken<
     SupabaseDatabaseClient,
@@ -117,7 +117,7 @@ export const tokens = {
   ),
 
   /**
-   * STORAGE
+   * STORAGE CLIENTS
    */
   STORAGE_CLIENT_ADMIN: new DependencyToken<
     SupabaseStorageClient,
@@ -175,9 +175,11 @@ export const tokens = {
   ),
 
   /**
-   * STORES
+   * DATA SOURCES
    */
-  USER_STORE: new DependencyToken<UserStore>(Symbol('USER_STORE')),
+  USER_DATA_SOURCE: new DependencyToken<UserDataSource>(
+    Symbol('USER_DATA_SOURCE'),
+  ),
 
   /**
    * USE CASES
