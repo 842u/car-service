@@ -5,7 +5,7 @@ type UserStoreError = {
   message: string;
 };
 
-export interface IUserStore {
+export interface UserStore {
   getById(id: string): Promise<Result<UserDto, UserStoreError>>;
   getUsersByIds(ids: string[]): Promise<Result<UserDto[], UserStoreError>>;
   getSessionUser(): Promise<Result<UserDto, UserStoreError>>;

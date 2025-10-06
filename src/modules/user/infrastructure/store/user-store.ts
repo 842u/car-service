@@ -4,9 +4,9 @@ import type { AuthClient } from '@/common/application/auth-client/auth-client.in
 import { Result } from '@/common/application/result/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
-import type { IUserStore } from '@/user/application/stores/user-store.interface';
+import type { UserStore } from '@/user/application/store/user-store.interface';
 
-export class UserStore implements IUserStore {
+export class UserStoreImplementation implements UserStore {
   private readonly _authClient: AuthClient<AuthIdentity>;
   private readonly _dbClient: SupabaseDatabaseClient;
   private readonly _userMapper: UserMapper;

@@ -1,6 +1,6 @@
 import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
-import { UserStore } from '@/user/infrastructure/stores/user-store';
+import { UserStoreImplementation } from '@/user/infrastructure/store/user-store';
 
 export function registerStoresModule(container: DependencyContainer) {
   container.registerFactory(tokens.USER_STORE, async (dependencyContainer) => {
@@ -12,6 +12,6 @@ export function registerStoresModule(container: DependencyContainer) {
     );
     const userMapper = await dependencyContainer.resolve(tokens.USER_MAPPER);
 
-    return new UserStore(authClient, dbClient, userMapper);
+    return new UserStoreImplementation(authClient, dbClient, userMapper);
   });
 }
