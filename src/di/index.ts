@@ -1,5 +1,5 @@
 import { DependencyContainer } from '@/di/container';
-import { registerModules as registerAllModules } from '@/di/modules';
+import { registerModules as registerAllModules } from '@/di/module';
 
 export const dependencyContainer = new DependencyContainer();
 

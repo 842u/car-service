@@ -1,6 +1,6 @@
 import { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { DependencyContainer } from '@/di/container';
-import type { SupabaseConfig } from '@/di/modules/supabase-client';
+import type { SupabaseConfig } from '@/di/module/supabase-client';
 import { tokens } from '@/di/tokens';
 
 export function registerStorageClientModule(container: DependencyContainer) {

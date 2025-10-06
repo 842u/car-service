@@ -3,7 +3,7 @@ import {
   SupabaseAuthClient,
 } from '@/common/infrastructure/auth-client/supabase-auth-client';
 import type { DependencyContainer } from '@/di/container';
-import type { SupabaseConfig } from '@/di/modules/supabase-client';
+import type { SupabaseConfig } from '@/di/module/supabase-client';
 import { tokens } from '@/di/tokens';
 
 export function registerAuthClientModule(container: DependencyContainer) {

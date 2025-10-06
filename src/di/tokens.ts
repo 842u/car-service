@@ -14,7 +14,7 @@ import type { HttpClient } from '@/common/application/http-client/http-client.in
 import type { Validator } from '@/common/application/validator/validator.interface';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
-import type { SupabaseConfig } from '@/di/modules/supabase-client';
+import type { SupabaseConfig } from '@/di/module/supabase-client';
 import type { Database } from '@/types/supabase';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
