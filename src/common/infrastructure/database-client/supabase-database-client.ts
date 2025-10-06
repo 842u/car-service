@@ -7,7 +7,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type {
   DatabaseClient,
   DatabaseClientResult,
-} from '@/common/application/database/database-client.interface';
+} from '@/common/application/database-client/database-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { Database } from '@/types/supabase';
 

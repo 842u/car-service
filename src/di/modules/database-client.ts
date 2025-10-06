@@ -1,8 +1,8 @@
-import { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
+import { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
 
-export function registerDatabaseModule(container: DependencyContainer) {
+export function registerDatabaseClientModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.DATABASE_CLIENT_ADMIN,
     async (dependencyContainer, config) => {
