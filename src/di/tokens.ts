@@ -10,9 +10,9 @@ import type {
   AuthAdminClient,
   AuthClient,
 } from '@/common/application/auth-client/auth-client.interface';
+import type { HttpClient } from '@/common/application/http-client/http-client.interface';
 import type { IValidator } from '@/common/application/validator/validator.interface';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
-import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
@@ -65,7 +65,7 @@ export const tokens = {
   /**
    * HTTP CLIENT
    */
-  HTTP_CLIENT: new DependencyToken<FetchClient>(Symbol('HTTP_CLIENT')),
+  HTTP_CLIENT: new DependencyToken<HttpClient>(Symbol('HTTP_CLIENT')),
 
   /**
    * API CLIENTS

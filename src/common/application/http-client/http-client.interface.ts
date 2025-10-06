@@ -6,7 +6,7 @@ type ResultMeta = {
   headers: Record<string, string>;
 };
 
-export type ResponseResult<T, E> = Result<T, E, ResultMeta>;
+export type HttpClientResponse<T = unknown> = Result<T, HttpError, ResultMeta>;
 
 export interface RequestController {
   cancel(): void;
@@ -25,31 +25,31 @@ export interface HttpClient {
   get(
     url: string,
     config?: RequestConfig<RequestController>,
-  ): Promise<ResponseResult<unknown, unknown>>;
+  ): Promise<HttpClientResponse>;
 
   post(
     url: string,
     data?: unknown,
     config?: RequestConfig<RequestController>,
-  ): Promise<ResponseResult<unknown, unknown>>;
+  ): Promise<HttpClientResponse>;
 
   put(
     url: string,
     data?: unknown,
     config?: RequestConfig<RequestController>,
-  ): Promise<ResponseResult<unknown, unknown>>;
+  ): Promise<HttpClientResponse>;
 
   delete(
     url: string,
     data?: unknown,
     config?: RequestConfig<RequestController>,
-  ): Promise<ResponseResult<unknown, unknown>>;
+  ): Promise<HttpClientResponse>;
 
   patch(
     url: string,
     data?: unknown,
     config?: RequestConfig<RequestController>,
-  ): Promise<ResponseResult<unknown, unknown>>;
+  ): Promise<HttpClientResponse>;
 
   getController(): RequestController;
 }

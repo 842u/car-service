@@ -1,8 +1,8 @@
 import type { Route } from 'next';
 
+import type { HttpClient } from '@/common/application/http-client/http-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { IValidator } from '@/common/application/validator/validator.interface';
-import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserDto } from '@/user/application/dtos/user-dto';
 import type { UserAvatarUrlChangeApiContract } from '@/user/interface/api/avatar-change.schema';
@@ -16,10 +16,10 @@ import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
 
 export class NextUserApiClient implements IUserApiClient {
-  private readonly _httpClient: FetchClient;
+  private readonly _httpClient: HttpClient;
   private readonly _validator: IValidator;
 
-  constructor(httpClient: FetchClient, validator: IValidator) {
+  constructor(httpClient: HttpClient, validator: IValidator) {
     this._httpClient = httpClient;
     this._validator = validator;
   }

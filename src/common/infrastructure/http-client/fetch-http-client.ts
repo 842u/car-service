@@ -1,13 +1,13 @@
 import type {
   HttpClient,
+  HttpClientResponse,
   RequestConfig,
   RequestController,
-  ResponseResult,
-} from '@/common/application/http/http-client.interface';
+} from '@/common/application/http-client/http-client.interface';
 import {
   HttpError,
   RequestCancelledError,
-} from '@/common/application/http/http-client.interface';
+} from '@/common/application/http-client/http-client.interface';
 import { Result } from '@/common/application/result/result';
 
 class FetchRequestController implements RequestController {
@@ -36,13 +36,9 @@ class FetchRequestController implements RequestController {
   }
 }
 
-type FetchResponseError = HttpError;
+type FetchRequestConfig = RequestConfig<FetchRequestController>;
 
-type FetchResponseResult = ResponseResult<unknown, FetchResponseError>;
-
-export type FetchRequestConfig = RequestConfig<FetchRequestController>;
-
-export class FetchClient implements HttpClient {
+export class FetchHttpClient implements HttpClient {
   private baseUrl: string;
   private defaultHeaders: Record<string, string>;
   private defaultTimeout?: number;
@@ -82,7 +78,7 @@ export class FetchClient implements HttpClient {
     url: string,
     data?: string,
     config?: FetchRequestConfig,
-  ): Promise<FetchResponseResult> {
+  ): Promise<HttpClientResponse> {
     const timeout = config?.timeout || this.defaultTimeout;
     let controller = config?.requestController;
     let timeoutId: NodeJS.Timeout | undefined;

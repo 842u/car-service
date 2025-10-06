@@ -3,7 +3,7 @@ import { registerApiClientModule } from '@/di/modules/api-client';
 import { registerApiHandlerModule } from '@/di/modules/api-handler';
 import { registerAuthClientModule } from '@/di/modules/auth-client';
 import { registerDatabaseClientModule } from '@/di/modules/database-client';
-import { registerHttpModule } from '@/di/modules/http';
+import { registerHttpClientModule } from '@/di/modules/http-client';
 import { registerMappersModule } from '@/di/modules/mappers';
 import { registerRepositoriesModule } from '@/di/modules/repositories';
 import { registerStorageModule } from '@/di/modules/storage';
@@ -17,7 +17,7 @@ export function registerModules(container: DependencyContainer) {
   registerApiHandlerModule(container);
   registerAuthClientModule(container);
   registerDatabaseClientModule(container);
-  registerHttpModule(container);
+  registerHttpClientModule(container);
   registerStorageModule(container);
   registerSupabaseModule(container);
   registerValidatorModule(container);
