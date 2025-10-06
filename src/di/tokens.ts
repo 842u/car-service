@@ -16,7 +16,7 @@ import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-cl
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
-import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
+import type { UserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
@@ -70,7 +70,7 @@ export const tokens = {
   /**
    * API CLIENTS
    */
-  USER_API_CLIENT: new DependencyToken<IUserApiClient>(
+  USER_API_CLIENT: new DependencyToken<UserApiClient>(
     Symbol('USER_API_CLIENT'),
   ),
 

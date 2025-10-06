@@ -8,7 +8,7 @@ import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 
 type UserApiClientError = { message: string };
 
-export interface IUserApiClient {
+export interface UserApiClient {
   signUp(
     contract: SignUpApiContract,
   ): Promise<Result<UserDto, UserApiClientError>>;
