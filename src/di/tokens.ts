@@ -19,7 +19,6 @@ import type { Database } from '@/types/supabase';
 import type { UserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
-import type { UserStore } from '@/user/application/store/user-store.interface';
 import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';
 import type { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';
 import type { UserPasswordChangeUseCase } from '@/user/application/use-cases/password-change';
@@ -51,6 +50,7 @@ import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
+import type { UserStore } from '@/user/presentation/store/user-store.interface';
 
 export class DependencyToken<_T, _P = void> {
   constructor(public readonly name: symbol) {}
