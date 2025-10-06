@@ -3,7 +3,7 @@ import type { User as AuthIdentity } from '@supabase/auth-js';
 import type { Mapper } from '@/common/application/mapper/mapper.interface';
 import { Result } from '@/common/application/result/result';
 import type { UserDto } from '@/user/application/dto/user-dto';
-import type { UserPersistence } from '@/user/application/persistence-models/user-persistence';
+import type { UserPersistence } from '@/user/application/persistence-model/user-persistence';
 import { User } from '@/user/domain/user/user';
 
 export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
