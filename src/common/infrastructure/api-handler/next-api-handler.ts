@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server';
 import type {
   ApiHandler,
   ApiHandlerResponseError,
-  ApiHandlerResponseMeta,
 } from '@/common/application/api-handler/api-handler.interface';
 import {
   type FailureResult,
@@ -17,10 +16,12 @@ import type {
   ValidationIssue,
 } from '@/common/application/validator/validator.interface';
 
-export type ErrorResponseResult<E extends ApiHandlerResponseError> =
-  FailureResult<E, ApiHandlerResponseMeta>;
+type ErrorResponseResult<E extends ApiHandlerResponseError> = FailureResult<
+  E,
+  { status: number }
+>;
 
-export type SuccessResponseResult<T> = SuccessResult<T, ApiHandlerResponseMeta>;
+type SuccessResponseResult<T> = SuccessResult<T, { status: number }>;
 
 export class NextApiHandler<T, E extends ApiHandlerResponseError, S>
   implements ApiHandler<T, E, S>

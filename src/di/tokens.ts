@@ -2,8 +2,8 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+import type { ApiHandler } from '@/common/application/api-handler/api-handler.interface';
 import type { IValidator } from '@/common/application/validator/validator.interface';
-import type { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
 import type {
   SupabaseAuthAdminClient,
   SupabaseAuthClient,
@@ -130,39 +130,31 @@ export const tokens = {
   /**
    * API HANDLERS
    */
-  API_HANDLER: new DependencyToken<NextApiHandler<any, any, any>>(
+  API_HANDLER: new DependencyToken<ApiHandler<any, any, any>>(
     Symbol('API_HANDLER'),
   ),
   SIGN_UP_API_HANDLER: new DependencyToken<
-    NextApiHandler<
-      SignUpApiResponseData,
-      SignUpApiResponseError,
-      SignUpApiContract
-    >
+    ApiHandler<SignUpApiResponseData, SignUpApiResponseError, SignUpApiContract>
   >(Symbol('SIGN_UP_API_HANDLER')),
   SIGN_IN_API_HANDLER: new DependencyToken<
-    NextApiHandler<
-      SignInApiResponseData,
-      SignInApiResponseError,
-      SignInApiContract
-    >
+    ApiHandler<SignInApiResponseData, SignInApiResponseError, SignInApiContract>
   >(Symbol('SIGN_IN_API_HANDLER')),
   PASSWORD_CHANGE_API_HANDLER: new DependencyToken<
-    NextApiHandler<
+    ApiHandler<
       PasswordChangeApiResponseData,
       PasswordChangeApiResponseError,
       PasswordChangeApiContract
     >
   >(Symbol('PASSWORD_CHANGE_API_HANDLER')),
   USER_NAME_CHANGE_API_HANDLER: new DependencyToken<
-    NextApiHandler<
+    ApiHandler<
       UserNameChangeApiResponseData,
       UserNameChangeApiResponseError,
       UserNameChangeApiContract
     >
   >(Symbol('USER_NAME_CHANGE_API_HANDLER')),
   USER_AVATAR_URL_CHANGE_API_HANDLER: new DependencyToken<
-    NextApiHandler<
+    ApiHandler<
       UserAvatarUrlChangeApiResponseData,
       UserAvatarUrlChangeApiResponseError,
       UserAvatarUrlChangeApiContract
