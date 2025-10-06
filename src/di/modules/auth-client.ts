@@ -3,7 +3,7 @@ import {
   SupabaseAuthClient,
 } from '@/common/infrastructure/auth-client/supabase-auth-client';
 import type { DependencyContainer } from '@/di/container';
-import type { SupabaseConfig } from '@/di/modules/supabase';
+import type { SupabaseConfig } from '@/di/modules/supabase-client';
 import { tokens } from '@/di/tokens';
 
 export function registerAuthClientModule(container: DependencyContainer) {
@@ -11,7 +11,7 @@ export function registerAuthClientModule(container: DependencyContainer) {
     tokens.AUTH_CLIENT_ADMIN,
     async (dependencyContainer, config?: SupabaseConfig) => {
       const supabaseClientAdmin = await dependencyContainer.resolve(
-        tokens.SUPABASE_ADMIN_CLIENT,
+        tokens.SUPABASE_CLIENT_ADMIN,
         config,
       );
 

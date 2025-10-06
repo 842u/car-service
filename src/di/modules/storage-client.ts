@@ -1,14 +1,14 @@
 import { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { DependencyContainer } from '@/di/container';
-import type { SupabaseConfig } from '@/di/modules/supabase';
+import type { SupabaseConfig } from '@/di/modules/supabase-client';
 import { tokens } from '@/di/tokens';
 
-export function registerStorageModule(container: DependencyContainer) {
+export function registerStorageClientModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.STORAGE_CLIENT_ADMIN,
     async (dependencyContainer, config?: SupabaseConfig) => {
       const supabaseClientAdmin = await dependencyContainer.resolve(
-        tokens.SUPABASE_ADMIN_CLIENT,
+        tokens.SUPABASE_CLIENT_ADMIN,
         config,
       );
 

@@ -7,7 +7,7 @@ export function registerDatabaseClientModule(container: DependencyContainer) {
     tokens.DATABASE_CLIENT_ADMIN,
     async (dependencyContainer, config) => {
       const supabaseClientAdmin = await dependencyContainer.resolve(
-        tokens.SUPABASE_ADMIN_CLIENT,
+        tokens.SUPABASE_CLIENT_ADMIN,
         config,
       );
 

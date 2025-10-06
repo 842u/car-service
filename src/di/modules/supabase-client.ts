@@ -13,9 +13,9 @@ export interface SupabaseConfig {
   supabaseKey?: string;
 }
 
-export function registerSupabaseModule(container: DependencyContainer) {
+export function registerSupabaseClientModule(container: DependencyContainer) {
   container.registerFactory(
-    tokens.SUPABASE_ADMIN_CLIENT,
+    tokens.SUPABASE_CLIENT_ADMIN,
     (_, config?: SupabaseConfig) => {
       /**
        * By default, the auth-helpers/ssr do not permit the use of the service_role secret.

@@ -8,7 +8,7 @@ import { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in
 import { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
 import { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
 
-export function registerUseCasesModule(container: DependencyContainer) {
+export function registerUseCaseModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.SIGN_UP_USER_USE_CASE,
     async (dependencyContainer, config) => {

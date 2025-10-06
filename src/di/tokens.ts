@@ -14,7 +14,7 @@ import type { HttpClient } from '@/common/application/http-client/http-client.in
 import type { Validator } from '@/common/application/validator/validator.interface';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
-import type { SupabaseConfig } from '@/di/modules/supabase';
+import type { SupabaseConfig } from '@/di/modules/supabase-client';
 import type { Database } from '@/types/supabase';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
@@ -77,10 +77,10 @@ export const tokens = {
   /**
    * SUPABASE CLIENTS
    */
-  SUPABASE_ADMIN_CLIENT: new DependencyToken<
+  SUPABASE_CLIENT_ADMIN: new DependencyToken<
     SupabaseClient<Database>,
     SupabaseConfig
-  >(Symbol('SUPABASE_ADMIN_CLIENT')),
+  >(Symbol('SUPABASE_CLIENT_ADMIN')),
   SUPABASE_CLIENT_SERVER: new DependencyToken<SupabaseClient<Database>>(
     Symbol('SUPABASE_CLIENT_SERVER'),
   ),

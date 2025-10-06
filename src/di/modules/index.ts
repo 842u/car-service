@@ -5,11 +5,11 @@ import { registerAuthClientModule } from '@/di/modules/auth-client';
 import { registerDataSourceModule } from '@/di/modules/data-source';
 import { registerDatabaseClientModule } from '@/di/modules/database-client';
 import { registerHttpClientModule } from '@/di/modules/http-client';
-import { registerMappersModule } from '@/di/modules/mappers';
-import { registerRepositoriesModule } from '@/di/modules/repositories';
-import { registerStorageModule } from '@/di/modules/storage';
-import { registerSupabaseModule } from '@/di/modules/supabase';
-import { registerUseCasesModule } from '@/di/modules/use-cases';
+import { registerMapperModule } from '@/di/modules/mapper';
+import { registerRepositoryModule } from '@/di/modules/repository';
+import { registerStorageClientModule } from '@/di/modules/storage-client';
+import { registerSupabaseClientModule } from '@/di/modules/supabase-client';
+import { registerUseCaseModule } from '@/di/modules/use-case';
 import { registerValidatorModule } from '@/di/modules/validator';
 
 export function registerModules(container: DependencyContainer) {
@@ -18,11 +18,11 @@ export function registerModules(container: DependencyContainer) {
   registerAuthClientModule(container);
   registerDatabaseClientModule(container);
   registerHttpClientModule(container);
-  registerStorageModule(container);
-  registerSupabaseModule(container);
+  registerStorageClientModule(container);
+  registerSupabaseClientModule(container);
   registerValidatorModule(container);
-  registerRepositoriesModule(container);
-  registerUseCasesModule(container);
-  registerMappersModule(container);
+  registerRepositoryModule(container);
+  registerUseCaseModule(container);
+  registerMapperModule(container);
   registerDataSourceModule(container);
 }

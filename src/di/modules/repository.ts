@@ -2,7 +2,7 @@ import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
 import { UserRepositoryImplementation } from '@/user/infrastructure/repository/user-repository';
 
-export function registerRepositoriesModule(container: DependencyContainer) {
+export function registerRepositoryModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.USER_REPOSITORY_ADMIN,
     async (dependencyContainer, config) => {
