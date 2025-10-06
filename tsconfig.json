@@ -21,7 +21,7 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@/icons/*": ["./src/common/presentation/decorative/icons/*"],
+      "@/icons/*": ["src/common/presentation/ui/decorative/icons/*"],
       "@/ui/*": ["./src/common/presentation/ui/*"],
       "@/landing/*": ["./src/modules/landing/*"],
       "@/dashboard/*": ["./src/modules/dashboard/*"],

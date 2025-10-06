@@ -5,12 +5,12 @@ import type { Route } from 'next';
 import type { JSX } from 'react';
 import { useState } from 'react';
 
-import { Spinner } from '@/common/presentation/decorative/spinner/spinner';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import { GitHubIcon } from '@/icons/github';
 import { GoogleIcon } from '@/icons/google';
 import { Button } from '@/ui/button/button';
+import { Spinner } from '@/ui/decorative/spinner/spinner';
 
 const providerMappings: {
   [K in Provider]?: { text: string; icon: JSX.Element };

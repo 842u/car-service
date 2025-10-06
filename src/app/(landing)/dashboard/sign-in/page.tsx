@@ -1,5 +1,5 @@
-import { TextSeparator } from '@/common/presentation/decorative/text-separator/text-separator';
 import { BrandFullIcon } from '@/icons/brand-full';
+import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import { SignInForm } from '@/user/presentation/ui/forms/sign-in/sign-in';
 import { OAuthProvidersSection } from '@/user/presentation/ui/sections/o-auth-providers/o-auth-providers';
 import { SignUpLink } from '@/user/presentation/ui/sign-up-link/sign-up-link';
