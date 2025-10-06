@@ -1,4 +1,4 @@
-import { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
+import { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { DependencyContainer } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import { tokens } from '@/di/tokens';
