@@ -17,7 +17,7 @@ import type { SupabaseStorageClient } from '@/common/infrastructure/storage-clie
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
 import type { UserApiClient } from '@/user/application/api-client/user-api-client.interface';
-import type { UserMapper } from '@/user/application/mappers/user-mapper';
+import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
 import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';

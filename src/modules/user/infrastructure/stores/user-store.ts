@@ -3,7 +3,7 @@ import type { User as AuthIdentity } from '@supabase/supabase-js';
 import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
-import type { UserMapper } from '@/user/application/mappers/user-mapper';
+import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
 
 export class UserStore implements IUserStore {
