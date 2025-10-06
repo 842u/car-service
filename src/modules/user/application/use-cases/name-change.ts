@@ -3,7 +3,7 @@ import type { User as AuthIdentity } from '@supabase/supabase-js';
 import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
+import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
 
 type UserNameChangeUseCaseError = { code: number };

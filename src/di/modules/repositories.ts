@@ -1,18 +1,18 @@
 import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
-import { UserRepository } from '@/user/infrastructure/repositories/user-repository';
+import { UserRepositoryImplementation } from '@/user/infrastructure/repository/user-repository';
 
 export function registerRepositoriesModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.USER_REPOSITORY_ADMIN,
     async (dependencyContainer, config) => {
-      const dbClient = await dependencyContainer.resolve(
+      const dbClientAdmin = await dependencyContainer.resolve(
         tokens.DATABASE_CLIENT_ADMIN,
         config,
       );
       const userMapper = await dependencyContainer.resolve(tokens.USER_MAPPER);
 
-      return new UserRepository(dbClient, userMapper);
+      return new UserRepositoryImplementation(dbClientAdmin, userMapper);
     },
   );
 
@@ -24,7 +24,7 @@ export function registerRepositoriesModule(container: DependencyContainer) {
       );
       const userMapper = await dependencyContainer.resolve(tokens.USER_MAPPER);
 
-      return new UserRepository(dbClient, userMapper);
+      return new UserRepositoryImplementation(dbClient, userMapper);
     },
   );
 }

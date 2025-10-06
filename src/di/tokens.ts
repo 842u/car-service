@@ -18,6 +18,7 @@ import type { SupabaseConfig } from '@/di/modules/supabase';
 import type { Database } from '@/types/supabase';
 import type { IUserApiClient } from '@/user/application/api-client/user-api-client.interface';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
+import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
 import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-cases/avatar-url-change';
 import type { UserNameChangeUseCase } from '@/user/application/use-cases/name-change';
@@ -25,7 +26,6 @@ import type { UserPasswordChangeUseCase } from '@/user/application/use-cases/pas
 import type { SignInUserWithOAuthUseCase } from '@/user/application/use-cases/sign-in-with-o-auth';
 import type { SignInUserWithOtpUseCase } from '@/user/application/use-cases/sign-in-with-otp';
 import type { SignUpUserUseCase } from '@/user/application/use-cases/sign-up-user-use-case';
-import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
 import type {
   UserAvatarUrlChangeApiContract,
   UserAvatarUrlChangeApiResponseData,

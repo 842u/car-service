@@ -1,10 +1,10 @@
 import { Result } from '@/common/application/result/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
-import type { IUserRepository } from '@/user/application/repositories/user-repository.interface';
+import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import type { User } from '@/user/domain/user/user';
 
-export class UserRepository implements IUserRepository {
+export class UserRepositoryImplementation implements UserRepository {
   private readonly _dbClient: SupabaseDatabaseClient;
   private readonly _userMapper: UserMapper;
 

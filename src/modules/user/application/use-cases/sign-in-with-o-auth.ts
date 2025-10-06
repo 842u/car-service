@@ -4,7 +4,7 @@ import type { AuthClient } from '@/common/application/auth-client/auth-client.in
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
-import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
+import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 
 type SignInWithOAuthContract = {
   code: string;
