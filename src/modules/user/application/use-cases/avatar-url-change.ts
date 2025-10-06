@@ -1,6 +1,8 @@
+import type { User as AuthIdentity } from '@supabase/supabase-js';
+
+import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
 import type { UserAvatarUrlChangeApiContract } from '@/user/interface/api/avatar-change.schema';
 
@@ -10,10 +12,13 @@ export class UserAvatarUrlChangeUseCase
   implements
     UseCase<UserAvatarUrlChangeApiContract, UserAvatarUrlChangeUseCaseError>
 {
-  private readonly _authClient: SupabaseAuthClient;
+  private readonly _authClient: AuthClient<AuthIdentity>;
   private readonly _userRepository: UserRepository;
 
-  constructor(authClient: SupabaseAuthClient, userRepository: UserRepository) {
+  constructor(
+    authClient: AuthClient<AuthIdentity>,
+    userRepository: UserRepository,
+  ) {
     this._authClient = authClient;
     this._userRepository = userRepository;
   }
@@ -26,7 +31,7 @@ export class UserAvatarUrlChangeUseCase
       return Result.fail({ message, code: status || 401 });
     }
 
-    const { user: authIdentity } = sessionResult.data;
+    const authIdentity = sessionResult.data;
 
     const getUserResult = await this._userRepository.getById(authIdentity.id);
 

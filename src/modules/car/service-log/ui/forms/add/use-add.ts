@@ -86,11 +86,9 @@ export function useAddForm({
         return;
       }
 
-      const {
-        user: { id },
-      } = sessionResult.data;
+      const authIdentity = sessionResult.data;
 
-      setUserId(id);
+      setUserId(authIdentity.id);
     };
 
     getUserId();

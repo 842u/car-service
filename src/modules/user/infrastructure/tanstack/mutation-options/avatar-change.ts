@@ -30,7 +30,7 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
         throw new Error(message);
       }
 
-      const { user: authIdentity } = sessionResult.data;
+      const authIdentity = sessionResult.data;
 
       const storageClient = await dependencyContainer.resolve(
         dependencyTokens.STORAGE_CLIENT_BROWSER,

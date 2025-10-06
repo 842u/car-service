@@ -1,12 +1,12 @@
 import {
   SupabaseAuthAdminClient,
   SupabaseAuthClient,
-} from '@/common/infrastructure/auth/supabase-auth-client';
+} from '@/common/infrastructure/auth-client/supabase-auth-client';
 import type { DependencyContainer } from '@/di/container';
 import type { SupabaseConfig } from '@/di/modules/supabase';
 import { tokens } from '@/di/tokens';
 
-export function registerAuthModule(container: DependencyContainer) {
+export function registerAuthClientModule(container: DependencyContainer) {
   container.registerFactory(
     tokens.AUTH_CLIENT_ADMIN,
     async (dependencyContainer, config?: SupabaseConfig) => {

@@ -1,12 +1,12 @@
-import type { EmailOtpType } from '@supabase/supabase-js';
+import type { EmailOtpType, User as AuthIdentity } from '@supabase/supabase-js';
 
+import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
 import {
   type FailureResult,
   Result,
   type SuccessResult,
 } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
 
 type SignInUserWithOtpContract = {
@@ -21,10 +21,10 @@ type SignInUserWithOtpUseCaseError = {
 export class SignInUserWithOtpUseCase
   implements UseCase<SignInUserWithOtpContract, SignInUserWithOtpUseCaseError>
 {
-  private readonly _authClient: SupabaseAuthClient;
+  private readonly _authClient: AuthClient<AuthIdentity>;
   private readonly _userMapper: UserMapper;
 
-  constructor(authClient: SupabaseAuthClient, userMapper: UserMapper) {
+  constructor(authClient: AuthClient<AuthIdentity>, userMapper: UserMapper) {
     this._authClient = authClient;
     this._userMapper = userMapper;
   }
@@ -47,7 +47,7 @@ export class SignInUserWithOtpUseCase
       return Result.fail({ message, code: status || 500 });
     }
 
-    const { user: authIdentity } = otpResult.data;
+    const authIdentity = otpResult.data;
 
     if (!authIdentity) {
       return Result.fail({

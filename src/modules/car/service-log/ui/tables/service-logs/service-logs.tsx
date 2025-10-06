@@ -1,6 +1,6 @@
 'use client';
 
-import type { User } from '@supabase/supabase-js';
+import type { User as AuthIdentity } from '@supabase/supabase-js';
 import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -28,7 +28,7 @@ export function ServiceLogsTable({
   serviceLogs,
   owners,
 }: ServiceLogsTableProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthIdentity | null>(null);
 
   const tableRef = useRef<HTMLTableElement>(null);
 
@@ -135,9 +135,9 @@ export function ServiceLogsTable({
         return;
       }
 
-      const { user } = sessionResult.data;
+      const authIdentity = sessionResult.data;
 
-      setUser(user);
+      setUser(authIdentity);
     };
 
     getUser();

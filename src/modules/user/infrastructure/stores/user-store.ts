@@ -1,16 +1,18 @@
+import type { User as AuthIdentity } from '@supabase/supabase-js';
+
+import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
-import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
 import type { IUserStore } from '@/user/application/stores/user-store.interface';
 
 export class UserStore implements IUserStore {
-  private readonly _authClient: SupabaseAuthClient;
+  private readonly _authClient: AuthClient<AuthIdentity>;
   private readonly _dbClient: SupabaseDatabaseClient;
   private readonly _userMapper: UserMapper;
 
   constructor(
-    authClient: SupabaseAuthClient,
+    authClient: AuthClient<AuthIdentity>,
     dbClient: SupabaseDatabaseClient,
     userMapper: UserMapper,
   ) {
@@ -63,7 +65,7 @@ export class UserStore implements IUserStore {
       return Result.fail({ message });
     }
 
-    const { user: authIdentity } = sessionResult.data;
+    const authIdentity = sessionResult.data;
 
     const userDtoResult = await this.getById(authIdentity.id);
 

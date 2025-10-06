@@ -1,4 +1,4 @@
-import type { User } from '@supabase/supabase-js';
+import type { User as AuthIdentity } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
@@ -12,7 +12,7 @@ import { queryKeys } from '@/utils/tanstack/keys';
 import type { SettingsSectionProps } from './settings';
 
 export function useSettingsSection({ carId }: SettingsSectionProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthIdentity | null>(null);
 
   const { addToast } = useToasts();
 
@@ -77,9 +77,9 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
         return;
       }
 
-      const { user } = sessionResult.data;
+      const authIdentity = sessionResult.data;
 
-      setUser(user);
+      setUser(authIdentity);
     };
 
     getUser();

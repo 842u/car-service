@@ -1,8 +1,9 @@
+import type { User as AuthIdentity } from '@supabase/supabase-js';
 import type { Route } from 'next';
 
+import type { AuthAdminClient } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { SupabaseAuthAdminClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import { User } from '@/user/domain/user/user';
 import { Credentials } from '@/user/domain/user/value-objects/credentials';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
@@ -13,11 +14,11 @@ type SignUpUseCaseError = { code: number };
 export class SignUpUserUseCase
   implements UseCase<SignUpApiContract, SignUpUseCaseError>
 {
-  private readonly _authAdminClient: SupabaseAuthAdminClient;
+  private readonly _authAdminClient: AuthAdminClient<AuthIdentity>;
   private readonly _userRepository: UserRepository;
 
   constructor(
-    authAdminClient: SupabaseAuthAdminClient,
+    authAdminClient: AuthAdminClient<AuthIdentity>,
     userRepository: UserRepository,
   ) {
     this._authAdminClient = authAdminClient;
@@ -78,7 +79,7 @@ export class SignUpUserUseCase
       return Result.ok(obfuscatedUserResult.data);
     }
 
-    const { user: authIdentity } = createAuthIdentityResult.data;
+    const authIdentity = createAuthIdentityResult.data;
 
     if (!authIdentity) {
       return Result.fail({

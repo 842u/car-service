@@ -20,7 +20,7 @@ export default async function CarPage({ params }: CarPageProps) {
 
   if (!sessionResult.success) redirect('/dashboard/sign-in' satisfies Route);
 
-  const { user } = sessionResult.data;
+  const authIdentity = sessionResult.data;
 
   const dbClient = await dependencyContainer.resolve(
     dependencyTokens.DATABASE_CLIENT_SERVER,
@@ -30,7 +30,7 @@ export default async function CarPage({ params }: CarPageProps) {
     from('cars_ownerships')
       .select()
       .eq('car_id', id)
-      .eq('owner_id', user.id)
+      .eq('owner_id', authIdentity.id)
       .single(),
   );
 

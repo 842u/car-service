@@ -1,6 +1,8 @@
+import type { User as AuthIdentity } from '@supabase/supabase-js';
+
+import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import type { UserMapper } from '@/user/application/mappers/user-mapper';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
 
@@ -15,12 +17,12 @@ type SignInWithOAuthUseCaseError = {
 export class SignInUserWithOAuthUseCase
   implements UseCase<SignInWithOAuthContract, SignInWithOAuthUseCaseError>
 {
-  private readonly _authClient: SupabaseAuthClient;
+  private readonly _authClient: AuthClient<AuthIdentity>;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
 
   constructor(
-    authClient: SupabaseAuthClient,
+    authClient: AuthClient<AuthIdentity>,
     userRepository: UserRepository,
     userMapper: UserMapper,
   ) {
@@ -41,7 +43,7 @@ export class SignInUserWithOAuthUseCase
       return Result.fail({ message, code: status || 500 });
     }
 
-    const { user: authIdentity } = exchangeResult.data;
+    const authIdentity = exchangeResult.data;
 
     const getUserResult = await this._userRepository.getById(authIdentity.id);
 

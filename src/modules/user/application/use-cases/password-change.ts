@@ -1,6 +1,8 @@
+import type { User as AuthIdentity } from '@supabase/supabase-js';
+
+import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { SupabaseAuthClient } from '@/common/infrastructure/auth/supabase-auth-client';
 import { Password } from '@/user/domain/user/value-objects/password/password';
 import type { UserRepository } from '@/user/infrastructure/repositories/user-repository';
 import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
@@ -10,10 +12,13 @@ type UserPasswordChangeUseCaseError = { code: number };
 export class UserPasswordChangeUseCase
   implements UseCase<PasswordChangeApiContract, UserPasswordChangeUseCaseError>
 {
-  private readonly _authClient: SupabaseAuthClient;
+  private readonly _authClient: AuthClient<AuthIdentity>;
   private readonly _userRepository: UserRepository;
 
-  constructor(authClient: SupabaseAuthClient, userRepository: UserRepository) {
+  constructor(
+    authClient: AuthClient<AuthIdentity>,
+    userRepository: UserRepository,
+  ) {
     this._authClient = authClient;
     this._userRepository = userRepository;
   }
@@ -44,7 +49,7 @@ export class UserPasswordChangeUseCase
       return Result.fail({ message, code: 401 });
     }
 
-    const { user: authIdentity } = updateResult.data;
+    const authIdentity = updateResult.data;
 
     const getUserResult = await this._userRepository.getById(authIdentity.id);
 

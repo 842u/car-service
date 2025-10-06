@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     return apiHandler.errorResponse({ message }, 401);
   }
 
-  const { user: authIdentity } = signInResult.data;
+  const authIdentity = signInResult.data;
 
   const userRepository = await dependencyContainer.resolve(
     dependencyTokens.USER_REPOSITORY_SERVER,

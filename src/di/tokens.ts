@@ -1,13 +1,16 @@
 /* eslint @typescript-eslint/no-explicit-any:0 */
 
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type {
+  SupabaseClient,
+  User as AuthIdentity,
+} from '@supabase/supabase-js';
 
 import type { ApiHandler } from '@/common/application/api-handler/api-handler.interface';
-import type { IValidator } from '@/common/application/validator/validator.interface';
 import type {
-  SupabaseAuthAdminClient,
-  SupabaseAuthClient,
-} from '@/common/infrastructure/auth/supabase-auth-client';
+  AuthAdminClient,
+  AuthClient,
+} from '@/common/application/auth-client/auth-client.interface';
+import type { IValidator } from '@/common/application/validator/validator.interface';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database/supabase-database-client';
 import type { FetchClient } from '@/common/infrastructure/http/fetch-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage/supabase-storage-client';
@@ -100,16 +103,16 @@ export const tokens = {
   ),
 
   /**
-   * AUTH
+   * AUTH CLIENTS
    */
   AUTH_CLIENT_ADMIN: new DependencyToken<
-    SupabaseAuthAdminClient,
+    AuthAdminClient<AuthIdentity>,
     SupabaseConfig
   >(Symbol('AUTH_CLIENT_ADMIN')),
-  AUTH_CLIENT_SERVER: new DependencyToken<SupabaseAuthClient>(
+  AUTH_CLIENT_SERVER: new DependencyToken<AuthClient<AuthIdentity>>(
     Symbol('AUTH_CLIENT_SERVER'),
   ),
-  AUTH_CLIENT_BROWSER: new DependencyToken<SupabaseAuthClient>(
+  AUTH_CLIENT_BROWSER: new DependencyToken<AuthClient<AuthIdentity>>(
     Symbol('AUTH_CLIENT_BROWSER'),
   ),
 

@@ -2,18 +2,17 @@ import type {
   EmailOtpType,
   Provider,
   SupabaseClient,
+  User,
 } from '@supabase/supabase-js';
 
 import type {
   AuthAdminClient,
   AuthClient,
-} from '@/common/application/auth/auth-client.interface';
+} from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
 import type { Database } from '@/types/supabase';
-import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
-import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
 
-export class SupabaseAuthClient implements AuthClient {
+export class SupabaseAuthClient implements AuthClient<User> {
   protected readonly _authClient: SupabaseClient<Database>['auth'];
 
   constructor(client: SupabaseClient) {
@@ -30,7 +29,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user);
     } catch (error) {
       return Result.fail({
         message:
@@ -41,7 +40,7 @@ export class SupabaseAuthClient implements AuthClient {
     }
   }
 
-  async signIn(contract: SignInApiContract) {
+  async signIn(contract: { email: string; password: string }) {
     try {
       const { data, error } =
         await this._authClient.signInWithPassword(contract);
@@ -52,7 +51,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user);
     } catch (error) {
       return Result.fail({
         message:
@@ -73,7 +72,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok({});
+      return Result.ok(null);
     } catch (error) {
       return Result.fail({
         message:
@@ -85,7 +84,7 @@ export class SupabaseAuthClient implements AuthClient {
   }
 
   async signUp(
-    contract: SignUpApiContract,
+    contract: { email: string; password: string },
     options?: {
       emailRedirectTo?: string;
     },
@@ -102,7 +101,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user!);
     } catch (error) {
       return Result.fail({
         message:
@@ -123,7 +122,7 @@ export class SupabaseAuthClient implements AuthClient {
     };
   }) {
     try {
-      const { data, error } = await this._authClient.resetPasswordForEmail(
+      const { error } = await this._authClient.resetPasswordForEmail(
         email,
         options,
       );
@@ -134,7 +133,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(null);
     } catch (error) {
       return Result.fail({
         message:
@@ -166,7 +165,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user);
     } catch (error) {
       return Result.fail({
         message:
@@ -187,7 +186,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user!);
     } catch (error) {
       return Result.fail({
         message:
@@ -209,7 +208,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user);
     } catch (error) {
       return Result.fail({
         message:
@@ -225,7 +224,7 @@ export class SupabaseAuthClient implements AuthClient {
     options: { redirectTo: string };
   }) {
     try {
-      const { data, error } = await this._authClient.signInWithOAuth(contract);
+      const { error } = await this._authClient.signInWithOAuth(contract);
 
       if (error) {
         const { message, code, status } = error;
@@ -233,7 +232,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(null);
     } catch (error) {
       return Result.fail({
         message:
@@ -247,7 +246,7 @@ export class SupabaseAuthClient implements AuthClient {
   async sendConfirmationEmail(contract: { email: string; redirectTo: string }) {
     try {
       const { email, redirectTo } = contract;
-      const { data, error } = await this._authClient.resend({
+      const { error } = await this._authClient.resend({
         type: 'signup',
         email,
         options: {
@@ -261,7 +260,7 @@ export class SupabaseAuthClient implements AuthClient {
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(null);
     } catch (error) {
       return Result.fail({
         message:
@@ -275,7 +274,7 @@ export class SupabaseAuthClient implements AuthClient {
 
 export class SupabaseAuthAdminClient
   extends SupabaseAuthClient
-  implements AuthAdminClient
+  implements AuthAdminClient<User>
 {
   constructor(client: SupabaseClient) {
     super(client);
@@ -295,7 +294,7 @@ export class SupabaseAuthAdminClient
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user);
     } catch (error) {
       return Result.fail({
         message:
@@ -319,7 +318,7 @@ export class SupabaseAuthAdminClient
         return Result.fail({ message, code: parsedCode, status });
       }
 
-      return Result.ok(data);
+      return Result.ok(data.user);
     } catch (error) {
       return Result.fail({
         message:

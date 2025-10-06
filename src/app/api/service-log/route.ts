@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
     return errorApiResponse({ message }, 401);
   }
 
-  const { user } = sessionResult.data;
+  const authIdentity = sessionResult.data;
 
   const dbClient = await dependencyContainer.resolve(
     dependencyTokens.DATABASE_CLIENT_SERVER,
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
     from('service_logs')
       .insert({
         ...formData,
-        created_by: user.id,
+        created_by: authIdentity.id,
         car_id,
       })
       .select('id')
