@@ -28,9 +28,9 @@ export type SignUpApiResponseError = z.infer<
   typeof signUpApiResponseErrorSchema
 >;
 
-export const signUpApiContractSchema = z.object({
+export const signUpApiRequestSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
 });
 
-export type SignUpApiContract = z.infer<typeof signUpApiContractSchema>;
+export type SignUpApiRequest = z.infer<typeof signUpApiRequestSchema>;

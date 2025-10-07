@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
-import { userAvatarUrlChangeApiContractSchema } from '@/user/interface/api/avatar-change.schema';
+import { userAvatarUrlChangeApiRequestSchema } from '@/user/interface/api/avatar-change.schema';
 
 export const maxDuration = 10;
 
@@ -12,7 +12,7 @@ export async function PATCH(request: NextRequest) {
 
   const preprocessResult = await apiHandler.preprocessRequest(
     request,
-    userAvatarUrlChangeApiContractSchema,
+    userAvatarUrlChangeApiRequestSchema,
   );
 
   if (!preprocessResult.success) {

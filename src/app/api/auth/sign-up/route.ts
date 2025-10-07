@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import { dependencyContainer, dependencyTokens } from '@/di';
-import { signUpApiContractSchema } from '@/user/interface/api/sign-up.schema';
+import { signUpApiRequestSchema } from '@/user/interface/api/sign-up.schema';
 
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
   const preprocessRequestResult = await apiHandler.preprocessRequest(
     request,
-    signUpApiContractSchema,
+    signUpApiRequestSchema,
   );
 
   if (!preprocessRequestResult.success) {

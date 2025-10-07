@@ -4,14 +4,14 @@ import type { HttpClient } from '@/common/application/http-client/http-client.in
 import { Result } from '@/common/application/result/result';
 import type { Validator } from '@/common/application/validator/validator.interface';
 import type { UserDto } from '@/user/application/dto/user-dto';
-import type { UserAvatarUrlChangeApiContract } from '@/user/interface/api/avatar-change.schema';
-import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
+import type { UserAvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
+import type { UserNameChangeApiRequest } from '@/user/interface/api/name-change.schema';
 import { userNameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';
-import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
+import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
-import type { SignInApiContract } from '@/user/interface/api/sign-in.schema';
+import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
-import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
+import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
 import type { UserApiClient } from '@/user/presentation/api-client/user-api-client.interface';
 
@@ -24,7 +24,7 @@ export class NextUserApiClient implements UserApiClient {
     this._validator = validator;
   }
 
-  async signUp(contract: SignUpApiContract) {
+  async signUp(contract: SignUpApiRequest) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(
@@ -56,7 +56,7 @@ export class NextUserApiClient implements UserApiClient {
     return Result.ok(userDto);
   }
 
-  async signIn(contract: SignInApiContract) {
+  async signIn(contract: SignInApiRequest) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.post(
@@ -88,7 +88,7 @@ export class NextUserApiClient implements UserApiClient {
     return Result.ok(userDto);
   }
 
-  async passwordChange(contract: PasswordChangeApiContract) {
+  async passwordChange(contract: PasswordChangeApiRequest) {
     const data = JSON.stringify(contract);
 
     const fetchResult = await this._httpClient.patch(
@@ -121,7 +121,7 @@ export class NextUserApiClient implements UserApiClient {
   }
 
   async nameChange(
-    contract: UserNameChangeApiContract,
+    contract: UserNameChangeApiRequest,
   ): Promise<Result<UserDto, { message: string }>> {
     const data = JSON.stringify(contract);
 
@@ -155,7 +155,7 @@ export class NextUserApiClient implements UserApiClient {
   }
 
   async avatarChange(
-    contract: UserAvatarUrlChangeApiContract,
+    contract: UserAvatarUrlChangeApiRequest,
   ): Promise<Result<UserDto, { message: string }>> {
     const data = JSON.stringify(contract);
 

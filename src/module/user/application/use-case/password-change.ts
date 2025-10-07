@@ -5,12 +5,12 @@ import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case.interface';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import { Password } from '@/user/domain/user/value-object/password/password';
-import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
+import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 
 type UserPasswordChangeUseCaseError = { code: number };
 
 export class UserPasswordChangeUseCase
-  implements UseCase<PasswordChangeApiContract, UserPasswordChangeUseCaseError>
+  implements UseCase<PasswordChangeApiRequest, UserPasswordChangeUseCaseError>
 {
   private readonly _authClient: AuthClient<AuthIdentity>;
   private readonly _userRepository: UserRepository;
@@ -23,7 +23,7 @@ export class UserPasswordChangeUseCase
     this._userRepository = userRepository;
   }
 
-  async execute(contract: PasswordChangeApiContract) {
+  async execute(contract: PasswordChangeApiRequest) {
     const { password: passwordDto, passwordConfirm } = contract;
 
     if (passwordDto !== passwordConfirm) {

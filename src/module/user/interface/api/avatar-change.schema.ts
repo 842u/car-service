@@ -29,10 +29,10 @@ export type UserAvatarUrlChangeApiResponseError = z.infer<
   typeof userAvatarUrlChangeApiResponseErrorSchema
 >;
 
-export const userAvatarUrlChangeApiContractSchema = z.object({
+export const userAvatarUrlChangeApiRequestSchema = z.object({
   avatarUrl: avatarUrlSchema,
 });
 
-export type UserAvatarUrlChangeApiContract = z.infer<
-  typeof userAvatarUrlChangeApiContractSchema
+export type UserAvatarUrlChangeApiRequest = z.infer<
+  typeof userAvatarUrlChangeApiRequestSchema
 >;

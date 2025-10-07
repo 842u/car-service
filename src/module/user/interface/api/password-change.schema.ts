@@ -29,7 +29,7 @@ export type PasswordChangeApiResponseError = z.infer<
   typeof passwordChangeApiResponseErrorSchema
 >;
 
-export const passwordChangeApiContractSchema = z
+export const passwordChangeApiRequestSchema = z
   .object({
     password: passwordSchema,
     passwordConfirm: passwordSchema,
@@ -39,6 +39,6 @@ export const passwordChangeApiContractSchema = z
     path: ['passwordConfirm'],
   });
 
-export type PasswordChangeApiContract = z.infer<
-  typeof passwordChangeApiContractSchema
+export type PasswordChangeApiRequest = z.infer<
+  typeof passwordChangeApiRequestSchema
 >;

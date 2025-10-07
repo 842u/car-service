@@ -31,7 +31,7 @@ export type SignInApiResponseError = z.infer<
   typeof signInApiResponseErrorSchema
 >;
 
-export const signInApiContractSchema = z.object({
+export const signInApiRequestSchema = z.object({
   email: emailSchema,
   password: z
     .string({
@@ -44,4 +44,4 @@ export const signInApiContractSchema = z.object({
     .min(1, PASSWORD_REQUIRED_MESSAGE),
 });
 
-export type SignInApiContract = z.infer<typeof signInApiContractSchema>;
+export type SignInApiRequest = z.infer<typeof signInApiRequestSchema>;

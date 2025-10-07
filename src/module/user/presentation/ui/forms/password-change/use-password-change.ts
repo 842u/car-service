@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
-import type { PasswordChangeApiContract } from '@/user/interface/api/password-change.schema';
-import { passwordChangeApiContractSchema } from '@/user/interface/api/password-change.schema';
+import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
+import { passwordChangeApiRequestSchema } from '@/user/interface/api/password-change.schema';
 
-const defaultPasswordChangeFormValues: PasswordChangeApiContract = {
+const defaultPasswordChangeFormValues: PasswordChangeApiRequest = {
   password: '',
   passwordConfirm: '',
 };
@@ -20,8 +20,8 @@ export function usePasswordChangeForm() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<PasswordChangeApiContract>({
-    resolver: zodResolver(passwordChangeApiContractSchema),
+  } = useForm<PasswordChangeApiRequest>({
+    resolver: zodResolver(passwordChangeApiRequestSchema),
     mode: 'onTouched',
     defaultValues: defaultPasswordChangeFormValues,
   });

@@ -7,12 +7,12 @@ import type { UseCase } from '@/common/application/use-case/use-case.interface';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import { User } from '@/user/domain/user/user';
 import { Credentials } from '@/user/domain/user/value-object/credentials';
-import type { SignUpApiContract } from '@/user/interface/api/sign-up.schema';
+import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 
 type SignUpUseCaseError = { code: number };
 
 export class SignUpUserUseCase
-  implements UseCase<SignUpApiContract, SignUpUseCaseError>
+  implements UseCase<SignUpApiRequest, SignUpUseCaseError>
 {
   private readonly _authAdminClient: AuthAdminClient<AuthIdentity>;
   private readonly _userRepository: UserRepository;
@@ -25,7 +25,7 @@ export class SignUpUserUseCase
     this._userRepository = userRepository;
   }
 
-  async execute(contract: SignUpApiContract) {
+  async execute(contract: SignUpApiRequest) {
     const { email: emailDto, password: passwordDto } = contract;
 
     const credentialsResult = Credentials.create(emailDto, passwordDto);

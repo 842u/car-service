@@ -2,11 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import type { UserNameChangeApiContract } from '@/user/interface/api/name-change.schema';
-import { userNameChangeApiContractSchema } from '@/user/interface/api/name-change.schema';
+import type { UserNameChangeApiRequest } from '@/user/interface/api/name-change.schema';
+import { userNameChangeApiRequestSchema } from '@/user/interface/api/name-change.schema';
 import { useUserNameChange } from '@/user/presentation/ui/forms/name/use-name-change';
 
-const defaultNameFormValues: UserNameChangeApiContract = {
+const defaultNameFormValues: UserNameChangeApiRequest = {
   name: '',
 };
 
@@ -18,8 +18,8 @@ export function useNameForm({ name }: { name: string | null | undefined }) {
     handleSubmit,
     reset,
     formState: { isValid, isDirty, errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<UserNameChangeApiContract>({
-    resolver: zodResolver(userNameChangeApiContractSchema),
+  } = useForm<UserNameChangeApiRequest>({
+    resolver: zodResolver(userNameChangeApiRequestSchema),
     mode: 'onChange',
     defaultValues: defaultNameFormValues,
   });

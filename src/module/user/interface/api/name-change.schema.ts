@@ -29,10 +29,10 @@ export type UserNameChangeApiResponseError = z.infer<
   typeof userNameChangeApiResponseErrorSchema
 >;
 
-export const userNameChangeApiContractSchema = z.object({
+export const userNameChangeApiRequestSchema = z.object({
   name: nameSchema,
 });
 
-export type UserNameChangeApiContract = z.infer<
-  typeof userNameChangeApiContractSchema
+export type UserNameChangeApiRequest = z.infer<
+  typeof userNameChangeApiRequestSchema
 >;

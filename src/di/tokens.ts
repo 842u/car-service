@@ -25,27 +25,27 @@ import type { SignInUserWithOAuthUseCase } from '@/user/application/use-case/sig
 import type { SignInUserWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';
 import type { SignUpUserUseCase } from '@/user/application/use-case/sign-up-user-use-case';
 import type {
-  UserAvatarUrlChangeApiContract,
+  UserAvatarUrlChangeApiRequest,
   UserAvatarUrlChangeApiResponseData,
   UserAvatarUrlChangeApiResponseError,
 } from '@/user/interface/api/avatar-change.schema';
 import type {
-  UserNameChangeApiContract,
+  UserNameChangeApiRequest,
   UserNameChangeApiResponseData,
   UserNameChangeApiResponseError,
 } from '@/user/interface/api/name-change.schema';
 import type {
-  PasswordChangeApiContract,
+  PasswordChangeApiRequest,
   PasswordChangeApiResponseData,
   PasswordChangeApiResponseError,
 } from '@/user/interface/api/password-change.schema';
 import type {
-  SignInApiContract,
+  SignInApiRequest,
   SignInApiResponseData,
   SignInApiResponseError,
 } from '@/user/interface/api/sign-in.schema';
 import type {
-  SignUpApiContract,
+  SignUpApiRequest,
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
@@ -137,30 +137,30 @@ export const tokens = {
     Symbol('API_HANDLER'),
   ),
   SIGN_UP_API_HANDLER: new DependencyToken<
-    ApiHandler<SignUpApiResponseData, SignUpApiResponseError, SignUpApiContract>
+    ApiHandler<SignUpApiResponseData, SignUpApiResponseError, SignUpApiRequest>
   >(Symbol('SIGN_UP_API_HANDLER')),
   SIGN_IN_API_HANDLER: new DependencyToken<
-    ApiHandler<SignInApiResponseData, SignInApiResponseError, SignInApiContract>
+    ApiHandler<SignInApiResponseData, SignInApiResponseError, SignInApiRequest>
   >(Symbol('SIGN_IN_API_HANDLER')),
   PASSWORD_CHANGE_API_HANDLER: new DependencyToken<
     ApiHandler<
       PasswordChangeApiResponseData,
       PasswordChangeApiResponseError,
-      PasswordChangeApiContract
+      PasswordChangeApiRequest
     >
   >(Symbol('PASSWORD_CHANGE_API_HANDLER')),
   USER_NAME_CHANGE_API_HANDLER: new DependencyToken<
     ApiHandler<
       UserNameChangeApiResponseData,
       UserNameChangeApiResponseError,
-      UserNameChangeApiContract
+      UserNameChangeApiRequest
     >
   >(Symbol('USER_NAME_CHANGE_API_HANDLER')),
   USER_AVATAR_URL_CHANGE_API_HANDLER: new DependencyToken<
     ApiHandler<
       UserAvatarUrlChangeApiResponseData,
       UserAvatarUrlChangeApiResponseError,
-      UserAvatarUrlChangeApiContract
+      UserAvatarUrlChangeApiRequest
     >
   >(Symbol('USER_AVATAR_URL_CHANGE_API_HANDLER')),
 
