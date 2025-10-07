@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { validatorIssueSchema } from '@/common/application/validator/validator';
+
 import type { ApiResponseError } from './response';
 
 z.config({
@@ -35,3 +37,8 @@ export function createApiResponseSchema<
 
   return z.union([successSchema, failureSchema]);
 }
+
+export const apiResponseErrorSchema = z.object({
+  message: z.string(),
+  issues: z.array(validatorIssueSchema).optional(),
+});

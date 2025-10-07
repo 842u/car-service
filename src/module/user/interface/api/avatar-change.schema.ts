@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { validatorIssueSchema } from '@/common/application/validator/validator';
-import { createApiResponseSchema } from '@/common/interface/api/response.schema';
+import {
+  apiResponseErrorSchema,
+  createApiResponseSchema,
+} from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dto/user-dto';
 import { avatarUrlSchema } from '@/user/domain/user/value-object/avatar-url/avatar-url.schema';
 
@@ -9,10 +11,7 @@ z.config({
   jitless: true,
 });
 
-const userAvatarUrlChangeApiResponseErrorSchema = z.object({
-  message: z.string(),
-  issues: z.array(validatorIssueSchema).optional(),
-});
+const userAvatarUrlChangeApiResponseErrorSchema = apiResponseErrorSchema;
 
 const userAvatarUrlChangeApiResponseDataSchema = userDtoSchema;
 
