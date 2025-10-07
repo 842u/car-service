@@ -1,5 +1,3 @@
-import type { ButtonVariants } from '@/types';
-
 const baseClassName =
   'cursor-pointer rounded-md border disabled:cursor-not-allowed text-center block disabled:text-light-800 transition-colors h-10';
 
@@ -12,6 +10,13 @@ const transparentClassName = `${baseClassName} hover:bg-alpha-grey-200 border-0`
 const transparentErrorClassName = `${transparentClassName} text-error-500 dark:text-error-400`;
 
 const errorClassName = `${baseClassName} border-error-500 bg-error-700 disabled:bg-error-900 disabled:border-error-800 hover:border-error-300 hover:bg-error-600 text-light-500`;
+
+export type ButtonVariants =
+  | 'default'
+  | 'accent'
+  | 'transparent'
+  | 'transparentError'
+  | 'error';
 
 export const buttonVariants: Record<ButtonVariants, string> = {
   default: defaultClassName,

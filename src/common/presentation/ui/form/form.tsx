@@ -3,7 +3,7 @@ import { createContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
-import type { FormVariants } from '@/types';
+import type { FormVariants } from '@/utils/tailwindcss/form';
 import { formVariants } from '@/utils/tailwindcss/form';
 
 import { FormCheckboxGroup } from './compounds/checkbox-group/checkbox-group';

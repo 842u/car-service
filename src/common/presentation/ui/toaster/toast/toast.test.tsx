@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import type { ToastType } from '@/types';
-
+import type { ToastType } from './toast';
 import { ToasterToast } from './toast';
 
 jest.setTimeout(10000);

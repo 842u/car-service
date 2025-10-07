@@ -1,17 +1,82 @@
 import * as m from 'motion/react-m';
-import type { Ref } from 'react';
+import type { JSX, Ref } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { CheckCircleIcon } from '@/icons/check-circle';
+import { ExclamationCircleIcon } from '@/icons/exclamation-circle';
+import { ExclamationTriangleIcon } from '@/icons/exclamation-triangle';
+import { InformationCircleIcon } from '@/icons/information-circle';
 import { XCircleIcon } from '@/icons/x-circle';
-import type { Toast as ToastObject } from '@/types';
 import { IconButton } from '@/ui/icon-button/icon-button';
-import { getToastAssets } from '@/utils/toasts';
 
-type ToasterToastProps = ToastObject & {
+type ToasterToastProps = Toast & {
   ref?: Ref<HTMLLIElement>;
   className?: string;
 };
+
+export type ToastType = 'info' | 'success' | 'error' | 'warning';
+
+export type Toast = {
+  id: string;
+  message: string;
+  type: ToastType;
+};
+
+export type ToastAsset = {
+  style: string;
+  icon: JSX.Element;
+};
+
+const errorIcon = (
+  <ExclamationCircleIcon className="stroke-error-500 h-full w-full stroke-2" />
+);
+const errorClassName = 'border-error-500';
+
+const warningIcon = (
+  <ExclamationTriangleIcon className="stroke-warning-600 h-full w-full stroke-2" />
+);
+const warningClassName = 'border-warning-600';
+
+const successIcon = (
+  <CheckCircleIcon className="stroke-success-700 h-full w-full stroke-2" />
+);
+const successClassName = 'border-success-700';
+
+const infoIcon = (
+  <InformationCircleIcon className="stroke-light-500 h-full w-full stroke-2" />
+);
+
+export function getToastAssets(type: ToastType) {
+  switch (type) {
+    case 'error':
+      return {
+        style: errorClassName,
+        icon: errorIcon,
+      };
+
+    case 'warning':
+      return {
+        style: warningClassName,
+        icon: warningIcon,
+      };
+
+    case 'success':
+      return {
+        style: successClassName,
+        icon: successIcon,
+      };
+
+    case 'info':
+      return {
+        style: '',
+        icon: infoIcon,
+      };
+
+    default:
+      return null;
+  }
+}
 
 export function ToasterToast({
   message,

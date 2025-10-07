@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import type { ToastsContextType } from '@/common/presentation/context/toasts';
 import { ToastsContext } from '@/common/presentation/context/toasts';
-import type { Toast, ToastType } from '@/types';
+import type { Toast, ToastType } from '@/ui/toaster/toast/toast';
 
 type ToastsProviderProps = {
   children: ReactNode;

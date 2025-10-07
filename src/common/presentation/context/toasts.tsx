@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { Toast, ToastType } from '@/types';
+import type { Toast, ToastType } from '@/ui/toaster/toast/toast';
 
 export type ToastsContextType = {
   toasts: Toast[];

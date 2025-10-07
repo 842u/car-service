@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import type { SectionVariants } from '@/types';
+import type { SectionVariants } from '@/utils/tailwindcss/section';
 import { sectionVariants } from '@/utils/tailwindcss/section';
 
 import { SectionControls } from './compounds/controls/controls';
