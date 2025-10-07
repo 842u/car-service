@@ -1,7 +1,7 @@
 import type { NextURL } from 'next/dist/server/web/next-url';
 
 import type { Result } from '@/common/application/result/result';
-import type { ValidatorIssue } from '@/common/application/validator/validator.interface';
+import type { ValidatorIssue } from '@/common/application/validator/validator';
 
 export type ApiHandlerResponseError<U extends object = object> = {
   message: string;

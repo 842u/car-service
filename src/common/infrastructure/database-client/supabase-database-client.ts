@@ -8,7 +8,7 @@ import type { Database } from 'supabase/types/supabase';
 import type {
   DatabaseClient,
   DatabaseClientResult,
-} from '@/common/application/database-client/database-client.interface';
+} from '@/common/application/database-client/database-client';
 import { Result } from '@/common/application/result/result';
 
 export class SupabaseDatabaseClient implements DatabaseClient {

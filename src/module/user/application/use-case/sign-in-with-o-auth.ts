@@ -1,10 +1,10 @@
 import type { User as AuthIdentity } from '@supabase/supabase-js';
 
-import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
+import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
-import type { UseCase } from '@/common/application/use-case/use-case.interface';
+import type { UseCase } from '@/common/application/use-case/use-case';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
-import type { UserRepository } from '@/user/application/repository/user-repository.interface';
+import type { UserRepository } from '@/user/application/repository/user-repository';
 
 type SignInWithOAuthContract = {
   code: string;

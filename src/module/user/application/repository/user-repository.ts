@@ -1,7 +1,7 @@
 import type {
   Repository,
   RepositoryResult,
-} from '@/common/application/repository/repository.interface';
+} from '@/common/application/repository/repository';
 import type { User } from '@/user/domain/user/user';
 
 export interface UserRepository extends Repository<User> {

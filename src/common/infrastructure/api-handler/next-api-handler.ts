@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 import type {
   ApiHandler,
   ApiHandlerResponseError,
-} from '@/common/application/api-handler/api-handler.interface';
+} from '@/common/application/api-handler/api-handler';
 import {
   type FailureResult,
   Result,
@@ -14,7 +14,7 @@ import {
 import type {
   Validator,
   ValidatorIssue,
-} from '@/common/application/validator/validator.interface';
+} from '@/common/application/validator/validator';
 
 type ErrorResponseResult<E extends ApiHandlerResponseError> = FailureResult<
   E,

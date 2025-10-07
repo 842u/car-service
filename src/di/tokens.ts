@@ -6,18 +6,18 @@ import type {
 } from '@supabase/supabase-js';
 import type { Database } from 'supabase/types/supabase';
 
-import type { ApiHandler } from '@/common/application/api-handler/api-handler.interface';
+import type { ApiHandler } from '@/common/application/api-handler/api-handler';
 import type {
   AuthAdminClient,
   AuthClient,
-} from '@/common/application/auth-client/auth-client.interface';
-import type { HttpClient } from '@/common/application/http-client/http-client.interface';
-import type { Validator } from '@/common/application/validator/validator.interface';
+} from '@/common/application/auth-client/auth-client';
+import type { HttpClient } from '@/common/application/http-client/http-client';
+import type { Validator } from '@/common/application/validator/validator';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { SupabaseConfig } from '@/di/module/supabase-client';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
-import type { UserRepository } from '@/user/application/repository/user-repository.interface';
+import type { UserRepository } from '@/user/application/repository/user-repository';
 import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
 import type { UserNameChangeUseCase } from '@/user/application/use-case/name-change';
 import type { UserPasswordChangeUseCase } from '@/user/application/use-case/password-change';
@@ -49,8 +49,8 @@ import type {
   SignUpApiResponseData,
   SignUpApiResponseError,
 } from '@/user/interface/api/sign-up.schema';
-import type { UserApiClient } from '@/user/presentation/api-client/user-api-client.interface';
-import type { UserDataSource } from '@/user/presentation/data-source/user-data-source.interface';
+import type { UserApiClient } from '@/user/presentation/api-client/user-api-client';
+import type { UserDataSource } from '@/user/presentation/data-source/user-data-source';
 
 export class DependencyToken<_T, _P = void> {
   constructor(public readonly name: symbol) {}

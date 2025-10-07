@@ -1,9 +1,9 @@
 import type { User as AuthIdentity } from '@supabase/supabase-js';
 
-import type { AuthClient } from '@/common/application/auth-client/auth-client.interface';
+import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
-import type { UseCase } from '@/common/application/use-case/use-case.interface';
-import type { UserRepository } from '@/user/application/repository/user-repository.interface';
+import type { UseCase } from '@/common/application/use-case/use-case';
+import type { UserRepository } from '@/user/application/repository/user-repository';
 import type { UserAvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
 
 type UserAvatarUrlChangeUseCaseError = { code: number };

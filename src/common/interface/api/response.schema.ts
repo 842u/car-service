@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import type { ApiResponseError } from './response.interface';
+import type { ApiResponseError } from './response';
 
 z.config({
   jitless: true,

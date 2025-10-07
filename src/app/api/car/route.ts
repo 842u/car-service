@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import {
   errorApiResponse,
   successApiResponse,
-} from '@/common/interface/api/response.interface';
+} from '@/common/interface/api/response';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/schemas/zod/carFormSchema';

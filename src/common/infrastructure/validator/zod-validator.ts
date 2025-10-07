@@ -4,7 +4,7 @@ import { Result } from '@/common/application/result/result';
 import {
   type Validator,
   ValidatorError,
-} from '@/common/application/validator/validator.interface';
+} from '@/common/application/validator/validator';
 
 z.config({
   jitless: true,

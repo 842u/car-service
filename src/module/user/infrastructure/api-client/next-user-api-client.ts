@@ -1,9 +1,9 @@
 import type { Route } from 'next';
 import type { ZodType } from 'zod';
 
-import type { HttpClient } from '@/common/application/http-client/http-client.interface';
+import type { HttpClient } from '@/common/application/http-client/http-client';
 import { Result } from '@/common/application/result/result';
-import type { Validator } from '@/common/application/validator/validator.interface';
+import type { Validator } from '@/common/application/validator/validator';
 import {
   type UserAvatarUrlChangeApiRequest,
   userAvatarUrlChangeApiResponseSchema,
@@ -16,7 +16,7 @@ import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
 import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
-import type { UserApiClient } from '@/user/presentation/api-client/user-api-client.interface';
+import type { UserApiClient } from '@/user/presentation/api-client/user-api-client';
 
 type ApiResponse<T> =
   | { success: true; data: T }

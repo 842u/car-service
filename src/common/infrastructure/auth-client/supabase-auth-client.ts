@@ -9,7 +9,7 @@ import type { Database } from 'supabase/types/supabase';
 import type {
   AuthAdminClient,
   AuthClient,
-} from '@/common/application/auth-client/auth-client.interface';
+} from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 
 export class SupabaseAuthClient implements AuthClient<User> {

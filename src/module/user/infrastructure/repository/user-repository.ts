@@ -1,7 +1,7 @@
 import { Result } from '@/common/application/result/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
-import type { UserRepository } from '@/user/application/repository/user-repository.interface';
+import type { UserRepository } from '@/user/application/repository/user-repository';
 import type { User } from '@/user/domain/user/user';
 
 export class UserRepositoryImplementation implements UserRepository {

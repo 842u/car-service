@@ -5,7 +5,7 @@ import type { RefObject } from 'react';
 import { useRef } from 'react';
 
 import type { ApiCarResponse } from '@/app/api/car/route';
-import type { ApiResponseSuccessResult } from '@/common/interface/api/response.interface';
+import type { ApiResponseSuccessResult } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
