@@ -1,9 +1,9 @@
 import type { FileOptions } from '@supabase/storage-js';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from 'supabase/types/supabase';
 
 import { Result } from '@/common/application/result/result';
 import type { StorageClient } from '@/common/application/storage-client/storage-client.interface';
-import type { Database } from '@/types/supabase';
 
 type FileBody =
   | ArrayBuffer

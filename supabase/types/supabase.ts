@@ -130,24 +130,6 @@ export type Database = {
           },
         ];
       };
-      profiles: {
-        Row: {
-          avatar_url: string | null;
-          id: string;
-          username: string | null;
-        };
-        Insert: {
-          avatar_url?: string | null;
-          id: string;
-          username?: string | null;
-        };
-        Update: {
-          avatar_url?: string | null;
-          id?: string;
-          username?: string | null;
-        };
-        Relationships: [];
-      };
       service_logs: {
         Row: {
           car_id: string;
@@ -188,13 +170,6 @@ export type Database = {
             columns: ['car_id'];
             isOneToOne: false;
             referencedRelation: 'cars';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'service_logs_created_by_fkey';
-            columns: ['created_by'];
-            isOneToOne: false;
-            referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
         ];

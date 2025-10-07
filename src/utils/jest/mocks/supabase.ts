@@ -1,21 +1,22 @@
-import type { CarOwnership, Profile } from '@/types';
+import type { CarOwnership, User } from '@/types';
 
 export const MOCK_CAR_ID = '2c7e021f-fdf7-4a67-aef9-35fa96164864';
 
-export const MOCK_MAIN_OWNER_PROFILE: Profile = {
+export const MOCK_MAIN_OWNER: User = {
   avatar_url: 'http://some.url',
   id: 'a9132b5f-12d1-4cb6-955c-4e5d1733d1b1',
-  username: 'test user',
+  user_name: 'test user',
+  email: 'test@email.com',
 };
 
-export const MOCK_OWNERS_PROFILES: Profile[] = [MOCK_MAIN_OWNER_PROFILE];
+export const MOCK_OWNERS: User[] = [MOCK_MAIN_OWNER];
 
 export const MOCK_OWNERSHIPS: CarOwnership[] = [
   {
     car_id: MOCK_CAR_ID,
     created_at: new Date().toISOString(),
     is_primary_owner: true,
-    owner_id: MOCK_MAIN_OWNER_PROFILE.id,
+    owner_id: MOCK_MAIN_OWNER.id,
   },
 ];
 
@@ -32,7 +33,7 @@ jest.mock('@supabase/ssr', () => ({
       getUser: async () =>
         Promise.resolve({
           data: {
-            user: { id: MOCK_MAIN_OWNER_PROFILE.id },
+            user: { id: MOCK_MAIN_OWNER.id },
           },
         }),
     },

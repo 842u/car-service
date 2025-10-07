@@ -4,13 +4,13 @@ import type {
   SupabaseClient,
   User,
 } from '@supabase/supabase-js';
+import type { Database } from 'supabase/types/supabase';
 
 import type {
   AuthAdminClient,
   AuthClient,
 } from '@/common/application/auth-client/auth-client.interface';
 import { Result } from '@/common/application/result/result';
-import type { Database } from '@/types/supabase';
 
 export class SupabaseAuthClient implements AuthClient<User> {
   protected readonly _authClient: SupabaseClient<Database>['auth'];

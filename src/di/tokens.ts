@@ -4,6 +4,7 @@ import type {
   SupabaseClient,
   User as AuthIdentity,
 } from '@supabase/supabase-js';
+import type { Database } from 'supabase/types/supabase';
 
 import type { ApiHandler } from '@/common/application/api-handler/api-handler.interface';
 import type {
@@ -15,7 +16,6 @@ import type { Validator } from '@/common/application/validator/validator.interfa
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase-storage-client';
 import type { SupabaseConfig } from '@/di/module/supabase-client';
-import type { Database } from '@/types/supabase';
 import type { UserMapper } from '@/user/application/mapper/user-mapper';
 import type { UserRepository } from '@/user/application/repository/user-repository.interface';
 import type { UserAvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';

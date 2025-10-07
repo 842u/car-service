@@ -3,13 +3,13 @@ import type {
   PostgrestSingleResponse,
 } from '@supabase/postgrest-js';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from 'supabase/types/supabase';
 
 import type {
   DatabaseClient,
   DatabaseClientResult,
 } from '@/common/application/database-client/database-client.interface';
 import { Result } from '@/common/application/result/result';
-import type { Database } from '@/types/supabase';
 
 export class SupabaseDatabaseClient implements DatabaseClient {
   private readonly _client: SupabaseClient<Database>;

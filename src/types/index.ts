@@ -1,7 +1,6 @@
 import type { InfiniteData } from '@tanstack/react-query';
 import type { JSX } from 'react';
-
-import type { Database } from './supabase';
+import type { Database } from 'supabase/types/supabase';
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning';
 
@@ -16,7 +15,7 @@ export type ToastAsset = {
   icon: JSX.Element;
 };
 
-export type Profile = Database['public']['Tables']['profiles']['Row'];
+export type User = Database['public']['Tables']['users']['Row'];
 
 export type Car = Database['public']['Tables']['cars']['Row'];
 

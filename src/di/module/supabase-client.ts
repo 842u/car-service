@@ -1,9 +1,9 @@
 import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from 'supabase/types/supabase';
 
 import type { DependencyContainer } from '@/di/container';
 import { tokens } from '@/di/tokens';
-import type { Database } from '@/types/supabase';
 
 const defaultSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const defaultSupabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
