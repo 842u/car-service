@@ -7,7 +7,7 @@ import { dependencyContainer, dependencyTokens } from '@/di';
 import {
   type SignUpFormData,
   signUpFormDataSchema,
-} from '@/user/interface/ui/sign-up-form';
+} from '@/user/interface/ui/sign-up-form.schema';
 
 const defaultSignUpFormValues: SignUpFormData = {
   email: '',

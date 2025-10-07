@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import {
   type NameChangeFormData,
   nameChangeFormDataSchema,
-} from '@/user/interface/ui/name-change-form';
+} from '@/user/interface/ui/name-change-form.schema';
 import { useUserNameChange } from '@/user/presentation/ui/forms/name/use-name-change';
 
 const defaultNameFormValues: NameChangeFormData = {

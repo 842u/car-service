@@ -7,7 +7,7 @@ import { dependencyContainer, dependencyTokens } from '@/di';
 import {
   type PasswordChangeFormData,
   passwordChangeFormDataSchema,
-} from '@/user/interface/ui/password-change-form';
+} from '@/user/interface/ui/password-change-form.schema';
 
 const defaultPasswordChangeFormValues: PasswordChangeFormData = {
   password: '',

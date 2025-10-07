@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { dependencyContainer, dependencyTokens } from '@/di';
-import type { SignInFormData } from '@/user/interface/ui/sign-in-form';
-import { signInFormDataSchema } from '@/user/interface/ui/sign-in-form';
+import type { SignInFormData } from '@/user/interface/ui/sign-in-form.schema';
+import { signInFormDataSchema } from '@/user/interface/ui/sign-in-form.schema';
 
 const defaultSignInFormValues: SignInFormData = {
   email: '',
