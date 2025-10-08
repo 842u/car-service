@@ -6,7 +6,7 @@ import type { JSX } from 'react';
 import { useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { authClientBrowser } from '@/dependencies/auth-client/browser';
 import { GitHubIcon } from '@/icons/github';
 import { GoogleIcon } from '@/icons/google';
 import { Button } from '@/ui/button/button';
@@ -45,14 +45,10 @@ export function OAuthButton({ provider }: OAuthButtonProps) {
   const handleButtonClick = async () => {
     setIsLoading(true);
 
-    const authClient = await dependencyContainer.resolve(
-      dependencyTokens.AUTH_CLIENT_BROWSER,
-    );
-
     const redirectUrl = new URL(window.location.origin);
     redirectUrl.pathname = '/api/auth/o-auth' satisfies Route;
 
-    const signInResult = await authClient.signInWithOAuth({
+    const signInResult = await authClientBrowser.signInWithOAuth({
       provider,
       options: {
         redirectTo: redirectUrl.toString(),

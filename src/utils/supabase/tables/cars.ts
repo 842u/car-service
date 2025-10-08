@@ -1,12 +1,8 @@
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { databaseClientBrowser } from '@/dependencies/database-client/browser';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/utils/tanstack/cars';
 
 export async function getCar(carId: string) {
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_BROWSER,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
+  const queryResult = await databaseClientBrowser.query(async (from) =>
     from('cars').select().eq('id', carId).single(),
   );
 
@@ -21,11 +17,7 @@ export async function getCar(carId: string) {
 }
 
 export async function deleteCar(carId: string) {
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_BROWSER,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
+  const queryResult = await databaseClientBrowser.query(async (from) =>
     from('cars').delete().eq('id', carId).single(),
   );
 
@@ -44,11 +36,7 @@ export async function getCarsByPage({ pageParam }: { pageParam: number }) {
   const rangeIndexTo =
     (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
 
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_BROWSER,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
+  const queryResult = await databaseClientBrowser.query(async (from) =>
     from('cars')
       .select()
       .order('created_at', { ascending: false })

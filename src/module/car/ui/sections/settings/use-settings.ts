@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { userDataSource } from '@/dependencies/data-source/user';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
@@ -38,11 +39,7 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
       //eslint-disable-next-line
       queryKey: userQueryKeys.usersByContext({ carId }),
       queryFn: async () => {
-        const userStore = await dependencyContainer.resolve(
-          dependencyTokens.USER_DATA_SOURCE,
-        );
-
-        const usersResult = await userStore.getUsersByIds(ownersId || []);
+        const usersResult = await userDataSource.getUsersByIds(ownersId || []);
 
         if (!usersResult.success) {
           const { message } = usersResult.error;
@@ -66,11 +63,7 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
 
   useEffect(() => {
     const getUser = async () => {
-      const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_CLIENT_BROWSER,
-      );
-
-      const sessionResult = await authClient.getSession();
+      const sessionResult = await authClientBrowser.getSession();
 
       if (!sessionResult.success) {
         setUser(null);

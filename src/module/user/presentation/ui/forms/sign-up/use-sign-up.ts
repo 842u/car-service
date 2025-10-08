@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { userApiClient } from '@/dependencies/api-client/user';
 import {
   type SignUpFormData,
   signUpFormDataSchema,
@@ -29,10 +29,6 @@ export function useSignUpForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const userApiClient = await dependencyContainer.resolve(
-      dependencyTokens.USER_API_CLIENT,
-    );
-
     const signUpResult = await userApiClient.signUp(data);
 
     if (!signUpResult.success) {

@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 
 import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { httpClient } from '@/dependencies/http-client';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {
@@ -33,10 +34,6 @@ async function submitAddFormData(
 
   const url = new URL(window.location.origin);
   url.pathname = '/api/service-log' satisfies Route;
-
-  const httpClient = await dependencyContainer.resolve(
-    dependencyTokens.HTTP_CLIENT,
-  );
 
   const headers = { 'Content-Type': 'application/json' };
 
@@ -75,11 +72,7 @@ export function useAddForm({
 
   useEffect(() => {
     const getUserId = async () => {
-      const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_CLIENT_BROWSER,
-      );
-
-      const sessionResult = await authClient.getSession();
+      const sessionResult = await authClientBrowser.getSession();
 
       if (!sessionResult.success) {
         setUserId(undefined);

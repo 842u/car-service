@@ -1,7 +1,9 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { userApiClient } from '@/dependencies/api-client/user';
+import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { storageClientBrowser } from '@/dependencies/storage-client/browser';
 import type { UserDto } from '@/user/application/dto/user-dto';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { hashFile } from '@/utils/general';
@@ -19,11 +21,7 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       if (!image) throw new Error('No file was provided. Try again.');
 
-      const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_CLIENT_BROWSER,
-      );
-
-      const sessionResult = await authClient.getSession();
+      const sessionResult = await authClientBrowser.getSession();
 
       if (!sessionResult.success) {
         const { message } = sessionResult.error;
@@ -32,15 +30,11 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       const authIdentity = sessionResult.data;
 
-      const storageClient = await dependencyContainer.resolve(
-        dependencyTokens.STORAGE_CLIENT_BROWSER,
-      );
-
       const hashedFile = await hashFile(image);
 
       const uploadPath = `${authIdentity.id}/${hashedFile}`;
 
-      const uploadResult = await storageClient.upload(
+      const uploadResult = await storageClientBrowser.upload(
         'avatars',
         uploadPath,
         image,
@@ -52,10 +46,6 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
       }
 
       const avatarPath = uploadResult.data.fullPath;
-
-      const userApiClient = await dependencyContainer.resolve(
-        dependencyTokens.USER_API_CLIENT,
-      );
 
       const apiUrl =
         process.env.NEXT_PUBLIC_SUPABASE_URL! + '/storage/v1/object/public/';

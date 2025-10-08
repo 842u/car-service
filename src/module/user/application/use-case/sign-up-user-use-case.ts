@@ -1,7 +1,7 @@
 import type { User as AuthIdentity } from '@supabase/supabase-js';
 import type { Route } from 'next';
 
-import type { AuthAdminClient } from '@/common/application/auth-client/auth-client';
+import type { AuthClientAdmin } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case';
 import type { UserRepository } from '@/user/application/repository/user-repository';
@@ -14,15 +14,15 @@ type SignUpUseCaseError = { code: number };
 export class SignUpUserUseCase
   implements UseCase<SignUpApiRequest, SignUpUseCaseError>
 {
-  private readonly _authAdminClient: AuthAdminClient<AuthIdentity>;
+  private readonly _authAdminClient: AuthClientAdmin<AuthIdentity>;
   private readonly _userRepository: UserRepository;
 
   constructor(
-    authAdminClient: AuthAdminClient<AuthIdentity>,
-    userRepository: UserRepository,
+    authClientAdmin: AuthClientAdmin<AuthIdentity>,
+    userRepositoryAdmin: UserRepository,
   ) {
-    this._authAdminClient = authAdminClient;
-    this._userRepository = userRepository;
+    this._authAdminClient = authClientAdmin;
+    this._userRepository = userRepositoryAdmin;
   }
 
   async execute(contract: SignUpApiRequest) {

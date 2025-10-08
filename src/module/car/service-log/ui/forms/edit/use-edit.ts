@@ -4,7 +4,7 @@ import type { Route } from 'next';
 
 import type { ServiceLogPatchRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { httpClient } from '@/dependencies/http-client';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import type { ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';
@@ -36,10 +36,6 @@ async function submitEditFormData(
 
   const url = new URL(window.location.origin);
   url.pathname = '/api/service-log' satisfies Route;
-
-  const httpClient = await dependencyContainer.resolve(
-    dependencyTokens.HTTP_CLIENT,
-  );
 
   const headers = { 'Content-Type': 'application/json' };
 

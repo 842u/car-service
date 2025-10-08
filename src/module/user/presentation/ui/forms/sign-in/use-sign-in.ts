@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { userApiClient } from '@/dependencies/api-client/user';
 import type { SignInFormData } from '@/user/interface/ui/sign-in-form.schema';
 import { signInFormDataSchema } from '@/user/interface/ui/sign-in-form.schema';
 
@@ -30,10 +30,6 @@ export function useSignInForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const userApiClient = await dependencyContainer.resolve(
-      dependencyTokens.USER_API_CLIENT,
-    );
-
     const signInResult = await userApiClient.signIn(data);
 
     if (!signInResult.success) {

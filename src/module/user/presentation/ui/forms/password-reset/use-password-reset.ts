@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { authClientBrowser } from '@/dependencies/auth-client/browser';
 import {
   type PasswordResetFormData,
   passwordResetFormSchema,
@@ -28,13 +28,9 @@ export function usePasswordResetForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (formData) => {
-    const authClient = await dependencyContainer.resolve(
-      dependencyTokens.AUTH_CLIENT_BROWSER,
-    );
-
     const { email } = formData;
 
-    const resetPasswordResult = await authClient.resetPassword({
+    const resetPasswordResult = await authClientBrowser.resetPassword({
       email,
       options: {
         redirectTo: window.location.origin,

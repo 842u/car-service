@@ -1,16 +1,14 @@
 import type { NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { passwordChangeApiHandler } from '@/dependencies/api-handler/user';
+import { userMapper } from '@/dependencies/mapper/user';
+import { createPasswordChangeUseCase } from '@/dependencies/use-case/user';
 import { passwordChangeApiRequestSchema } from '@/user/interface/api/password-change.schema';
 
 export const maxDuration = 10;
 
 export async function PATCH(request: NextRequest) {
-  const apiHandler = await dependencyContainer.resolve(
-    dependencyTokens.PASSWORD_CHANGE_API_HANDLER,
-  );
-
-  const preprocessResult = await apiHandler.preprocessRequest(
+  const preprocessResult = await passwordChangeApiHandler.preprocessRequest(
     request,
     passwordChangeApiRequestSchema,
   );
@@ -18,29 +16,23 @@ export async function PATCH(request: NextRequest) {
   if (!preprocessResult.success) {
     const { message, issues } = preprocessResult.error;
     const { status } = preprocessResult;
-    return apiHandler.errorResponse({ message, issues }, status);
+    return passwordChangeApiHandler.errorResponse({ message, issues }, status);
   }
 
   const contract = preprocessResult.data;
 
-  const userPasswordChangeUseCase = await dependencyContainer.resolve(
-    dependencyTokens.USER_PASSWORD_CHANGE_USE_CASE,
-  );
+  const userPasswordChangeUseCase = await createPasswordChangeUseCase();
 
   const useCaseResult = await userPasswordChangeUseCase.execute(contract);
 
   if (!useCaseResult.success) {
     const { message, code } = useCaseResult.error;
-    return apiHandler.errorResponse({ message }, code);
+    return passwordChangeApiHandler.errorResponse({ message }, code);
   }
 
   const user = useCaseResult.data;
 
-  const userMapper = await dependencyContainer.resolve(
-    dependencyTokens.USER_MAPPER,
-  );
-
   const userDto = userMapper.domainToDto(user);
 
-  return apiHandler.successResponse(userDto, 200);
+  return passwordChangeApiHandler.successResponse(userDto, 200);
 }

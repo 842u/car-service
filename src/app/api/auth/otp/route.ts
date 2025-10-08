@@ -1,15 +1,12 @@
 import type { Route } from 'next';
 import type { NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { apiHandler } from '@/dependencies/api-handler';
+import { createSignInWithOtpUseCase } from '@/dependencies/use-case/user';
 
 export const maxDuration = 10;
 
 export async function GET(request: NextRequest) {
-  const apiHandler = await dependencyContainer.resolve(
-    dependencyTokens.API_HANDLER,
-  );
-
   const requestUrl = request.nextUrl.clone();
   const { searchParams } = requestUrl;
 
@@ -28,11 +25,9 @@ export async function GET(request: NextRequest) {
       500,
     );
 
-  const signInUserWithOtpUseCase = await dependencyContainer.resolve(
-    dependencyTokens.SIGN_IN_USER_WITH_OTP_USE_CASE,
-  );
+  const signInWithOtpUseCase = await createSignInWithOtpUseCase();
 
-  const useCaseResult = await signInUserWithOtpUseCase.execute({
+  const useCaseResult = await signInWithOtpUseCase.execute({
     token_hash,
     type,
   });

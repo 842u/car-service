@@ -8,7 +8,8 @@ import type { ApiCarResponse } from '@/app/api/car/route';
 import type { CarFormRef } from '@/car/ui/form/form';
 import type { ApiResponseSuccessResult } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { httpClient } from '@/dependencies/http-client';
+import { storageClientBrowser } from '@/dependencies/storage-client/browser';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/utils/general';
 import {
@@ -33,10 +34,6 @@ async function submitAddForm(formData: CarFormValues) {
   const url = new URL(window.location.origin);
   url.pathname = '/api/car' satisfies Route;
 
-  const httpClient = await dependencyContainer.resolve(
-    dependencyTokens.HTTP_CLIENT,
-  );
-
   const headers = { 'Content-Type': 'application/json' };
 
   const postResult = await httpClient.post(url.toString(), jsonDataToValidate, {
@@ -56,13 +53,9 @@ async function submitAddForm(formData: CarFormValues) {
 
   const hashedFile = await hashFile(image);
 
-  const storageClient = await dependencyContainer.resolve(
-    dependencyTokens.STORAGE_CLIENT_BROWSER,
-  );
-
   const uploadPath = `${id}/${hashedFile}`;
 
-  const uploadResult = await storageClient.upload(
+  const uploadResult = await storageClientBrowser.upload(
     'cars_images',
     uploadPath,
     image,

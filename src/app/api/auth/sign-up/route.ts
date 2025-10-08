@@ -1,18 +1,14 @@
 import { type NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { signUpApiHandler } from '@/dependencies/api-handler/user';
+import { userMapper } from '@/dependencies/mapper/user';
+import { createSignUpUseCase } from '@/dependencies/use-case/user';
 import { signUpApiRequestSchema } from '@/user/interface/api/sign-up.schema';
-
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export const maxDuration = 10;
 
 export async function POST(request: NextRequest) {
-  const apiHandler = await dependencyContainer.resolve(
-    dependencyTokens.SIGN_UP_API_HANDLER,
-  );
-
-  const preprocessRequestResult = await apiHandler.preprocessRequest(
+  const preprocessRequestResult = await signUpApiHandler.preprocessRequest(
     request,
     signUpApiRequestSchema,
   );
@@ -20,30 +16,23 @@ export async function POST(request: NextRequest) {
   if (!preprocessRequestResult.success) {
     const { message, issues } = preprocessRequestResult.error;
     const { status } = preprocessRequestResult;
-    return apiHandler.errorResponse({ message, issues }, status);
+    return signUpApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const signUpUserUseCase = await dependencyContainer.resolve(
-    dependencyTokens.SIGN_UP_USER_USE_CASE,
-    { supabaseKey },
-  );
+  const signUpUseCase = await createSignUpUseCase();
 
-  const useCaseResult = await signUpUserUseCase.execute(
+  const useCaseResult = await signUpUseCase.execute(
     preprocessRequestResult.data,
   );
 
   if (!useCaseResult.success) {
     const { message, code } = useCaseResult.error;
-    return apiHandler.errorResponse({ message }, code);
+    return signUpApiHandler.errorResponse({ message }, code);
   }
 
   const user = useCaseResult.data;
 
-  const userMapper = await dependencyContainer.resolve(
-    dependencyTokens.USER_MAPPER,
-  );
-
   const userDto = userMapper.domainToDto(user);
 
-  return apiHandler.successResponse(userDto, 200);
+  return signUpApiHandler.successResponse(userDto, 200);
 }

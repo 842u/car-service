@@ -1,13 +1,10 @@
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { databaseClientBrowser } from '@/dependencies/database-client/browser';
 import type { ServiceLog } from '@/types';
 import { toSafeNumber } from '@/utils/general';
 
 export async function getServiceLogsByCarId(carId: string) {
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_BROWSER,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
+  const queryResult = await databaseClientBrowser.query(async (from) =>
     from('service_logs')
       .select('*')
       .eq('car_id', carId)
@@ -24,22 +21,14 @@ export async function getServiceLogsByCarId(carId: string) {
 }
 
 export async function deleteServiceLogById(id: string) {
-  const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_CLIENT_BROWSER,
-  );
-
-  const sessionResult = await authClient.getSession();
+  const sessionResult = await authClientBrowser.getSession();
 
   if (!sessionResult.success) {
     const { message } = sessionResult.error;
     throw new Error(message);
   }
 
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_BROWSER,
-  );
-
-  const queryResult = await dbClient.query(async (from) =>
+  const queryResult = await databaseClientBrowser.query(async (from) =>
     from('service_logs').delete().eq('id', id).select('id').single(),
   );
 

@@ -5,7 +5,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { authClientBrowser } from '@/dependencies/auth-client/browser';
 import { KeyIcon } from '@/icons/key';
 import type { CarOwnership } from '@/types';
 import { Table } from '@/ui/table/table';
@@ -112,11 +112,7 @@ export function OwnershipsTable({
 
   useEffect(() => {
     const getUser = async () => {
-      const authClient = await dependencyContainer.resolve(
-        dependencyTokens.AUTH_CLIENT_BROWSER,
-      );
-
-      const sessionResult = await authClient.getSession();
+      const sessionResult = await authClientBrowser.getSession();
 
       if (!sessionResult.success) {
         setUser(null);

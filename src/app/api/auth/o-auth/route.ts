@@ -1,17 +1,12 @@
 import type { Route } from 'next';
 import type { NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
-
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+import { apiHandler } from '@/dependencies/api-handler';
+import { createSignInWithOAuthUseCase } from '@/dependencies/use-case/user';
 
 export const maxDuration = 10;
 
 export async function GET(request: NextRequest) {
-  const apiHandler = await dependencyContainer.resolve(
-    dependencyTokens.API_HANDLER,
-  );
-
   const requestUrl = request.nextUrl.clone();
   const { searchParams } = requestUrl;
 
@@ -28,12 +23,9 @@ export async function GET(request: NextRequest) {
       500,
     );
 
-  const signInUserWithOAuthUseCase = await dependencyContainer.resolve(
-    dependencyTokens.SIGN_IN_USER_WITH_O_AUTH_USE_CASE,
-    { supabaseKey },
-  );
+  const signInWithOAuthUseCase = await createSignInWithOAuthUseCase();
 
-  const useCaseResult = await signInUserWithOAuthUseCase.execute({
+  const useCaseResult = await signInWithOAuthUseCase.execute({
     code,
   });
 

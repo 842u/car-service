@@ -1,16 +1,14 @@
 import type { NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { avatarUrlChangeApiHandler } from '@/dependencies/api-handler/user';
+import { userMapper } from '@/dependencies/mapper/user';
+import { createAvatarUrlChangeUseCase } from '@/dependencies/use-case/user';
 import { userAvatarUrlChangeApiRequestSchema } from '@/user/interface/api/avatar-change.schema';
 
 export const maxDuration = 10;
 
 export async function PATCH(request: NextRequest) {
-  const apiHandler = await dependencyContainer.resolve(
-    dependencyTokens.USER_AVATAR_URL_CHANGE_API_HANDLER,
-  );
-
-  const preprocessResult = await apiHandler.preprocessRequest(
+  const preprocessResult = await avatarUrlChangeApiHandler.preprocessRequest(
     request,
     userAvatarUrlChangeApiRequestSchema,
   );
@@ -18,12 +16,10 @@ export async function PATCH(request: NextRequest) {
   if (!preprocessResult.success) {
     const { message, issues } = preprocessResult.error;
     const { status } = preprocessResult;
-    return apiHandler.errorResponse({ message, issues }, status);
+    return avatarUrlChangeApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const userAvatarUrlChangeUseCase = await dependencyContainer.resolve(
-    dependencyTokens.USER_AVATAR_URL_CHANGE_USE_CASE,
-  );
+  const userAvatarUrlChangeUseCase = await createAvatarUrlChangeUseCase();
 
   const contract = preprocessResult.data;
 
@@ -31,16 +27,12 @@ export async function PATCH(request: NextRequest) {
 
   if (!useCaseResult.success) {
     const { message, code } = useCaseResult.error;
-    return apiHandler.errorResponse({ message }, code);
+    return avatarUrlChangeApiHandler.errorResponse({ message }, code);
   }
-
-  const userMapper = await dependencyContainer.resolve(
-    dependencyTokens.USER_MAPPER,
-  );
 
   const user = useCaseResult.data;
 
   const userDto = userMapper.domainToDto(user);
 
-  return apiHandler.successResponse(userDto, 200);
+  return avatarUrlChangeApiHandler.successResponse(userDto, 200);
 }

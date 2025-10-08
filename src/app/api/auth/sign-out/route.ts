@@ -1,19 +1,14 @@
 import { type NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { apiHandler } from '@/dependencies/api-handler';
+import { createAuthClientServer } from '@/dependencies/auth-client/server';
 
 export const maxDuration = 10;
 
 export async function GET(request: NextRequest) {
-  const apiHandler = await dependencyContainer.resolve(
-    dependencyTokens.API_HANDLER,
-  );
-
   const redirectURL = request.nextUrl.clone();
 
-  const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_CLIENT_SERVER,
-  );
+  const authClient = await createAuthClientServer();
 
   const signOutResult = await authClient.signOut();
 

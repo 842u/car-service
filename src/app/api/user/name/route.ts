@@ -1,16 +1,14 @@
 import type { NextRequest } from 'next/server';
 
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { nameChangeApiHandler } from '@/dependencies/api-handler/user';
+import { userMapper } from '@/dependencies/mapper/user';
+import { createNameChangeUseCase } from '@/dependencies/use-case/user';
 import { userNameChangeApiRequestSchema } from '@/user/interface/api/name-change.schema';
 
 export const maxDuration = 10;
 
 export async function PATCH(request: NextRequest) {
-  const apiHandler = await dependencyContainer.resolve(
-    dependencyTokens.USER_NAME_CHANGE_API_HANDLER,
-  );
-
-  const preprocessRequestResult = await apiHandler.preprocessRequest(
+  const preprocessRequestResult = await nameChangeApiHandler.preprocessRequest(
     request,
     userNameChangeApiRequestSchema,
   );
@@ -18,12 +16,10 @@ export async function PATCH(request: NextRequest) {
   if (!preprocessRequestResult.success) {
     const { message, issues } = preprocessRequestResult.error;
     const { status } = preprocessRequestResult;
-    return apiHandler.errorResponse({ message, issues }, status);
+    return nameChangeApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const userNameChangeUseCase = await dependencyContainer.resolve(
-    dependencyTokens.USER_NAME_CHANGE_USE_CASE,
-  );
+  const userNameChangeUseCase = await createNameChangeUseCase();
 
   const contract = preprocessRequestResult.data;
 
@@ -31,16 +27,12 @@ export async function PATCH(request: NextRequest) {
 
   if (!useCaseResult.success) {
     const { message, code } = useCaseResult.error;
-    return apiHandler.errorResponse({ message }, code);
+    return nameChangeApiHandler.errorResponse({ message }, code);
   }
-
-  const userMapper = await dependencyContainer.resolve(
-    dependencyTokens.USER_MAPPER,
-  );
 
   const user = useCaseResult.data;
 
   const userDto = userMapper.domainToDto(user);
 
-  return apiHandler.successResponse(userDto, 200);
+  return nameChangeApiHandler.successResponse(userDto, 200);
 }

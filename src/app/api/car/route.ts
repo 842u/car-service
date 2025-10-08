@@ -5,7 +5,7 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { createDatabaseClientServer } from '@/dependencies/database-client/server';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/schemas/zod/carFormSchema';
 
@@ -48,9 +48,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_SERVER,
-  );
+  const dbClient = await createDatabaseClientServer();
 
   /*
    * While posting new car with image, its id is needed.
@@ -120,9 +118,7 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_SERVER,
-  );
+  const dbClient = await createDatabaseClientServer();
 
   const queryResult = await dbClient.query(async (from) =>
     from('cars')

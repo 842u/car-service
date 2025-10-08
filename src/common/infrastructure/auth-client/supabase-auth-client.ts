@@ -7,8 +7,8 @@ import type {
 import type { Database } from 'supabase/types/supabase';
 
 import type {
-  AuthAdminClient,
   AuthClient,
+  AuthClientAdmin,
 } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 
@@ -274,7 +274,7 @@ export class SupabaseAuthClient implements AuthClient<User> {
 
 export class SupabaseAuthAdminClient
   extends SupabaseAuthClient
-  implements AuthAdminClient<User>
+  implements AuthClientAdmin<User>
 {
   constructor(client: SupabaseClient) {
     super(client);

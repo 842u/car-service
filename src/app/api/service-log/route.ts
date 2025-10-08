@@ -5,7 +5,8 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response';
-import { dependencyContainer, dependencyTokens } from '@/di';
+import { createAuthClientServer } from '@/dependencies/auth-client/server';
+import { createDatabaseClientServer } from '@/dependencies/database-client/server';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
 
@@ -82,9 +83,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const authClient = await dependencyContainer.resolve(
-    dependencyTokens.AUTH_CLIENT_SERVER,
-  );
+  const authClient = await createAuthClientServer();
 
   const sessionResult = await authClient.getSession();
 
@@ -95,9 +94,7 @@ export async function POST(request: NextRequest) {
 
   const authIdentity = sessionResult.data;
 
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_SERVER,
-  );
+  const dbClient = await createDatabaseClientServer();
 
   const queryResult = await dbClient.query(async (from) =>
     from('service_logs')
@@ -177,9 +174,7 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
-  const dbClient = await dependencyContainer.resolve(
-    dependencyTokens.DATABASE_CLIENT_SERVER,
-  );
+  const dbClient = await createDatabaseClientServer();
 
   const queryResult = await dbClient.query(async (from) =>
     from('service_logs')

@@ -46,7 +46,7 @@ export interface AuthClient<T> {
   }): Promise<AuthClientResult<null>>;
 }
 
-export interface AuthAdminClient<T> extends AuthClient<T> {
+export interface AuthClientAdmin<T> extends AuthClient<T> {
   createUser(contract: {
     email: string;
     password: string;
