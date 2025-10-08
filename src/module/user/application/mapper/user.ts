@@ -1,8 +1,7 @@
-import type { User as AuthIdentity } from '@supabase/auth-js';
-
 import type { Mapper } from '@/common/application/mapper/mapper';
 import { Result } from '@/common/application/result/result';
 import type { UserDto } from '@/user/application/dto/user';
+import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 import type { UserPersistence } from '@/user/application/persistence-model/user';
 import { User } from '@/user/domain/user/user';
 
@@ -73,7 +72,7 @@ export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
     };
   }
 
-  authIdentityToDomain(model: AuthIdentity) {
+  authIdentityToDomain(model: AuthIdentityPersistence) {
     const userResult = User.create({
       id: model.id,
       name:

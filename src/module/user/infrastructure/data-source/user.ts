@@ -1,18 +1,17 @@
-import type { User as AuthIdentity } from '@supabase/supabase-js';
-
 import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { UserMapper } from '@/user/application/mapper/user';
+import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 import type { UserDataSource } from '@/user/presentation/data-source/user';
 
 export class UserDataSourceImplementation implements UserDataSource {
-  private readonly _authClient: AuthClient<AuthIdentity>;
+  private readonly _authClient: AuthClient<AuthIdentityPersistence>;
   private readonly _dbClient: SupabaseDatabaseClient;
   private readonly _userMapper: UserMapper;
 
   constructor(
-    authClient: AuthClient<AuthIdentity>,
+    authClient: AuthClient<AuthIdentityPersistence>,
     dbClient: SupabaseDatabaseClient,
     userMapper: UserMapper,
   ) {

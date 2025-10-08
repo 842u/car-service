@@ -1,6 +1,5 @@
 'use client';
 
-import type { User as AuthIdentity } from '@supabase/supabase-js';
 import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -11,6 +10,7 @@ import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
+import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';
@@ -28,7 +28,7 @@ export function ServiceLogsTable({
   serviceLogs,
   owners,
 }: ServiceLogsTableProps) {
-  const [user, setUser] = useState<AuthIdentity | null>(null);
+  const [user, setUser] = useState<AuthIdentityPersistence | null>(null);
 
   const tableRef = useRef<HTMLTableElement>(null);
 

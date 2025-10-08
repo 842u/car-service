@@ -1,10 +1,10 @@
-import type { User as AuthIdentity } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { authClientBrowser } from '@/dependencies/auth-client/browser';
 import { userDataSource } from '@/dependencies/data-source/user';
+import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { getCar } from '@/utils/supabase/tables/cars';
 import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
@@ -13,7 +13,7 @@ import { queryKeys } from '@/utils/tanstack/keys';
 import type { SettingsSectionProps } from './settings';
 
 export function useSettingsSection({ carId }: SettingsSectionProps) {
-  const [user, setUser] = useState<AuthIdentity | null>(null);
+  const [user, setUser] = useState<AuthIdentityPersistence | null>(null);
 
   const { addToast } = useToasts();
 
