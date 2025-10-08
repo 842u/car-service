@@ -2,13 +2,12 @@ import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case';
 import type { UserRepository } from '@/user/application/repository/user';
-import type { UserAvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
+import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
 
-type UserAvatarUrlChangeUseCaseError = { code: number };
+type AvatarUrlChangeUseCaseError = { code: number };
 
-export class UserAvatarUrlChangeUseCase
-  implements
-    UseCase<UserAvatarUrlChangeApiRequest, UserAvatarUrlChangeUseCaseError>
+export class AvatarUrlChangeUseCase
+  implements UseCase<AvatarUrlChangeApiRequest, AvatarUrlChangeUseCaseError>
 {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
@@ -18,7 +17,7 @@ export class UserAvatarUrlChangeUseCase
     this._userRepository = userRepository;
   }
 
-  async execute(contract: UserAvatarUrlChangeApiRequest) {
+  async execute(contract: AvatarUrlChangeApiRequest) {
     const sessionResult = await this._authClient.getSession();
 
     if (!sessionResult.success) {

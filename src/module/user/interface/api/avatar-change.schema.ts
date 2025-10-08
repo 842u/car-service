@@ -11,27 +11,27 @@ z.config({
   jitless: true,
 });
 
-const userAvatarUrlChangeApiResponseErrorSchema = apiResponseErrorSchema;
+const avatarUrlChangeApiResponseErrorSchema = apiResponseErrorSchema;
 
-const userAvatarUrlChangeApiResponseDataSchema = userDtoSchema;
+const avatarUrlChangeApiResponseDataSchema = userDtoSchema;
 
-export const userAvatarUrlChangeApiResponseSchema = createApiResponseSchema(
-  userAvatarUrlChangeApiResponseDataSchema,
-  userAvatarUrlChangeApiResponseErrorSchema,
+export const avatarUrlChangeApiResponseSchema = createApiResponseSchema(
+  avatarUrlChangeApiResponseDataSchema,
+  avatarUrlChangeApiResponseErrorSchema,
 );
 
-export type UserAvatarUrlChangeApiResponseData = z.infer<
-  typeof userAvatarUrlChangeApiResponseDataSchema
+export type AvatarUrlChangeApiResponseData = z.infer<
+  typeof avatarUrlChangeApiResponseDataSchema
 >;
 
-export type UserAvatarUrlChangeApiResponseError = z.infer<
-  typeof userAvatarUrlChangeApiResponseErrorSchema
+export type AvatarUrlChangeApiResponseError = z.infer<
+  typeof avatarUrlChangeApiResponseErrorSchema
 >;
 
-export const userAvatarUrlChangeApiRequestSchema = z.object({
+export const avatarUrlChangeApiRequestSchema = z.object({
   avatarUrl: avatarUrlSchema,
 });
 
-export type UserAvatarUrlChangeApiRequest = z.infer<
-  typeof userAvatarUrlChangeApiRequestSchema
+export type AvatarUrlChangeApiRequest = z.infer<
+  typeof avatarUrlChangeApiRequestSchema
 >;

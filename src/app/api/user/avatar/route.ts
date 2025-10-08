@@ -3,14 +3,14 @@ import type { NextRequest } from 'next/server';
 import { avatarUrlChangeApiHandler } from '@/dependencies/api-handler/user';
 import { userMapper } from '@/dependencies/mapper/user';
 import { createAvatarUrlChangeUseCase } from '@/dependencies/use-case/user';
-import { userAvatarUrlChangeApiRequestSchema } from '@/user/interface/api/avatar-change.schema';
+import { avatarUrlChangeApiRequestSchema } from '@/user/interface/api/avatar-change.schema';
 
 export const maxDuration = 10;
 
 export async function PATCH(request: NextRequest) {
   const preprocessResult = await avatarUrlChangeApiHandler.preprocessRequest(
     request,
-    userAvatarUrlChangeApiRequestSchema,
+    avatarUrlChangeApiRequestSchema,
   );
 
   if (!preprocessResult.success) {
@@ -19,11 +19,11 @@ export async function PATCH(request: NextRequest) {
     return avatarUrlChangeApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const userAvatarUrlChangeUseCase = await createAvatarUrlChangeUseCase();
+  const avatarUrlChangeUseCase = await createAvatarUrlChangeUseCase();
 
   const contract = preprocessResult.data;
 
-  const useCaseResult = await userAvatarUrlChangeUseCase.execute(contract);
+  const useCaseResult = await avatarUrlChangeUseCase.execute(contract);
 
   if (!useCaseResult.success) {
     const { message, code } = useCaseResult.error;

@@ -5,11 +5,13 @@ import type { HttpClient } from '@/common/application/http-client/http-client';
 import { Result } from '@/common/application/result/result';
 import type { Validator } from '@/common/application/validator/validator';
 import {
-  type UserAvatarUrlChangeApiRequest,
-  userAvatarUrlChangeApiResponseSchema,
+  type AvatarUrlChangeApiRequest,
+  avatarUrlChangeApiResponseSchema,
 } from '@/user/interface/api/avatar-change.schema';
-import type { UserNameChangeApiRequest } from '@/user/interface/api/name-change.schema';
-import { userNameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';
+import {
+  type NameChangeApiRequest,
+  nameChangeApiResponseSchema,
+} from '@/user/interface/api/name-change.schema';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
 import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
@@ -94,20 +96,20 @@ export class NextUserApiClient implements UserApiClient {
     );
   }
 
-  async nameChange(contract: UserNameChangeApiRequest) {
+  async nameChange(contract: NameChangeApiRequest) {
     return this.makeRequest(
       '/api/user/name',
       contract,
-      userNameChangeApiResponseSchema,
+      nameChangeApiResponseSchema,
       'PATCH',
     );
   }
 
-  async avatarChange(contract: UserAvatarUrlChangeApiRequest) {
+  async avatarChange(contract: AvatarUrlChangeApiRequest) {
     return this.makeRequest(
       '/api/user/avatar',
       contract,
-      userAvatarUrlChangeApiResponseSchema,
+      avatarUrlChangeApiResponseSchema,
       'PATCH',
     );
   }

@@ -1,14 +1,14 @@
 import { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
 import { validator } from '@/dependencies/validator';
 import type {
-  UserAvatarUrlChangeApiRequest,
-  UserAvatarUrlChangeApiResponseData,
-  UserAvatarUrlChangeApiResponseError,
+  AvatarUrlChangeApiRequest,
+  AvatarUrlChangeApiResponseData,
+  AvatarUrlChangeApiResponseError,
 } from '@/user/interface/api/avatar-change.schema';
 import type {
-  UserNameChangeApiRequest,
-  UserNameChangeApiResponseData,
-  UserNameChangeApiResponseError,
+  NameChangeApiRequest,
+  NameChangeApiResponseData,
+  NameChangeApiResponseError,
 } from '@/user/interface/api/name-change.schema';
 import type {
   PasswordChangeApiRequest,
@@ -27,15 +27,15 @@ import type {
 } from '@/user/interface/api/sign-up.schema';
 
 export const avatarUrlChangeApiHandler = new NextApiHandler<
-  UserAvatarUrlChangeApiResponseData,
-  UserAvatarUrlChangeApiResponseError,
-  UserAvatarUrlChangeApiRequest
+  AvatarUrlChangeApiResponseData,
+  AvatarUrlChangeApiResponseError,
+  AvatarUrlChangeApiRequest
 >(validator);
 
 export const nameChangeApiHandler = new NextApiHandler<
-  UserNameChangeApiResponseData,
-  UserNameChangeApiResponseError,
-  UserNameChangeApiRequest
+  NameChangeApiResponseData,
+  NameChangeApiResponseError,
+  NameChangeApiRequest
 >(validator);
 
 export const passwordChangeApiHandler = new NextApiHandler<

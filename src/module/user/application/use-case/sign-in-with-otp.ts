@@ -9,17 +9,17 @@ import {
 import type { UseCase } from '@/common/application/use-case/use-case';
 import type { UserMapper } from '@/user/application/mapper/user';
 
-type SignInUserWithOtpContract = {
+type SignInWithOtpContract = {
   token_hash: string;
   type: string;
 };
 
-type SignInUserWithOtpUseCaseError = {
+type SignInWithOtpUseCaseError = {
   code: number;
 };
 
-export class SignInUserWithOtpUseCase
-  implements UseCase<SignInUserWithOtpContract, SignInUserWithOtpUseCaseError>
+export class SignInWithOtpUseCase
+  implements UseCase<SignInWithOtpContract, SignInWithOtpUseCaseError>
 {
   private readonly _authClient: AuthClient;
   private readonly _userMapper: UserMapper;
@@ -30,10 +30,10 @@ export class SignInUserWithOtpUseCase
   }
 
   async execute(
-    contract: SignInUserWithOtpContract,
+    contract: SignInWithOtpContract,
   ): Promise<
     | SuccessResult<unknown, object>
-    | FailureResult<{ message: string } & SignInUserWithOtpUseCaseError, object>
+    | FailureResult<{ message: string } & SignInWithOtpUseCaseError, object>
   > {
     const { token_hash, type } = contract;
 

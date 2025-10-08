@@ -4,12 +4,12 @@ import { mutationOptions } from '@tanstack/react-query';
 import { userApiClient } from '@/dependencies/api-client/user';
 import type { UserDto } from '@/user/application/dto/user';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
-import type { UserNameChangeApiRequest } from '@/user/interface/api/name-change.schema';
+import type { NameChangeApiRequest } from '@/user/interface/api/name-change.schema';
 
 export const userNameChangeMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
     throwOnError: false,
-    mutationFn: async (variables: UserNameChangeApiRequest) => {
+    mutationFn: async (variables: NameChangeApiRequest) => {
       const nameChangeResult = await userApiClient.nameChange(variables);
 
       if (!nameChangeResult.success) {

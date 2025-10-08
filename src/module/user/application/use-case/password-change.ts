@@ -5,10 +5,10 @@ import type { UserRepository } from '@/user/application/repository/user';
 import { Password } from '@/user/domain/user/value-object/password/password';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 
-type UserPasswordChangeUseCaseError = { code: number };
+type PasswordChangeUseCaseError = { code: number };
 
-export class UserPasswordChangeUseCase
-  implements UseCase<PasswordChangeApiRequest, UserPasswordChangeUseCaseError>
+export class PasswordChangeUseCase
+  implements UseCase<PasswordChangeApiRequest, PasswordChangeUseCaseError>
 {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;

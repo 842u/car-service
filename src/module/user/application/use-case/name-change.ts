@@ -2,12 +2,12 @@ import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case';
 import type { UserRepository } from '@/user/application/repository/user';
-import type { UserNameChangeApiRequest } from '@/user/interface/api/name-change.schema';
+import type { NameChangeApiRequest } from '@/user/interface/api/name-change.schema';
 
-type UserNameChangeUseCaseError = { code: number };
+type NameChangeUseCaseError = { code: number };
 
-export class UserNameChangeUseCase
-  implements UseCase<UserNameChangeApiRequest, UserNameChangeUseCaseError>
+export class NameChangeUseCase
+  implements UseCase<NameChangeApiRequest, NameChangeUseCaseError>
 {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
@@ -17,7 +17,7 @@ export class UserNameChangeUseCase
     this._userRepository = userRepository;
   }
 
-  async execute(contract: UserNameChangeApiRequest) {
+  async execute(contract: NameChangeApiRequest) {
     const sessionResult = await this._authClient.getSession();
 
     if (!sessionResult.success) {

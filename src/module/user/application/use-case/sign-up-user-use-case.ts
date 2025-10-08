@@ -10,7 +10,7 @@ import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 
 type SignUpUseCaseError = { code: number };
 
-export class SignUpUserUseCase
+export class SignUpUseCase
   implements UseCase<SignUpApiRequest, SignUpUseCaseError>
 {
   private readonly _authAdminClient: AuthClientAdmin;

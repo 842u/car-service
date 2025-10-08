@@ -11,27 +11,25 @@ z.config({
   jitless: true,
 });
 
-const userNameChangeApiResponseErrorSchema = apiResponseErrorSchema;
+const nameChangeApiResponseErrorSchema = apiResponseErrorSchema;
 
-const userNameChangeApiResponseDataSchema = userDtoSchema;
+const nameChangeApiResponseDataSchema = userDtoSchema;
 
-export const userNameChangeApiResponseSchema = createApiResponseSchema(
-  userNameChangeApiResponseDataSchema,
-  userNameChangeApiResponseErrorSchema,
+export const nameChangeApiResponseSchema = createApiResponseSchema(
+  nameChangeApiResponseDataSchema,
+  nameChangeApiResponseErrorSchema,
 );
 
-export type UserNameChangeApiResponseData = z.infer<
-  typeof userNameChangeApiResponseDataSchema
+export type NameChangeApiResponseData = z.infer<
+  typeof nameChangeApiResponseDataSchema
 >;
 
-export type UserNameChangeApiResponseError = z.infer<
-  typeof userNameChangeApiResponseErrorSchema
+export type NameChangeApiResponseError = z.infer<
+  typeof nameChangeApiResponseErrorSchema
 >;
 
-export const userNameChangeApiRequestSchema = z.object({
+export const nameChangeApiRequestSchema = z.object({
   name: nameSchema,
 });
 
-export type UserNameChangeApiRequest = z.infer<
-  typeof userNameChangeApiRequestSchema
->;
+export type NameChangeApiRequest = z.infer<typeof nameChangeApiRequestSchema>;

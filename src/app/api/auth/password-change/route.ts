@@ -21,9 +21,9 @@ export async function PATCH(request: NextRequest) {
 
   const contract = preprocessResult.data;
 
-  const userPasswordChangeUseCase = await createPasswordChangeUseCase();
+  const passwordChangeUseCase = await createPasswordChangeUseCase();
 
-  const useCaseResult = await userPasswordChangeUseCase.execute(contract);
+  const useCaseResult = await passwordChangeUseCase.execute(contract);
 
   if (!useCaseResult.success) {
     const { message, code } = useCaseResult.error;
