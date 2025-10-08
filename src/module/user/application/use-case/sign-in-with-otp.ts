@@ -1,4 +1,4 @@
-import type { EmailOtpType, User as AuthIdentity } from '@supabase/supabase-js';
+import type { EmailOtpType } from '@supabase/supabase-js';
 
 import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import {
@@ -21,10 +21,10 @@ type SignInUserWithOtpUseCaseError = {
 export class SignInUserWithOtpUseCase
   implements UseCase<SignInUserWithOtpContract, SignInUserWithOtpUseCaseError>
 {
-  private readonly _authClient: AuthClient<AuthIdentity>;
+  private readonly _authClient: AuthClient;
   private readonly _userMapper: UserMapper;
 
-  constructor(authClient: AuthClient<AuthIdentity>, userMapper: UserMapper) {
+  constructor(authClient: AuthClient, userMapper: UserMapper) {
     this._authClient = authClient;
     this._userMapper = userMapper;
   }

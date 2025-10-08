@@ -2,7 +2,6 @@ import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case';
 import type { UserMapper } from '@/user/application/mapper/user';
-import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 import type { UserRepository } from '@/user/application/repository/user';
 
 type SignInWithOAuthContract = {
@@ -16,12 +15,12 @@ type SignInWithOAuthUseCaseError = {
 export class SignInUserWithOAuthUseCase
   implements UseCase<SignInWithOAuthContract, SignInWithOAuthUseCaseError>
 {
-  private readonly _authClient: AuthClient<AuthIdentityPersistence>;
+  private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
 
   constructor(
-    authClient: AuthClient<AuthIdentityPersistence>,
+    authClient: AuthClient,
     userRepository: UserRepository,
     userMapper: UserMapper,
   ) {

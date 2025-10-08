@@ -1,4 +1,5 @@
 import type { Result } from '@/common/application/result/result';
+import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 
 type AuthError = {
   message: string;
@@ -8,17 +9,17 @@ type AuthError = {
 
 type AuthClientResult<T> = Result<T, AuthError>;
 
-export interface AuthClient<T> {
-  getSession(): Promise<AuthClientResult<T>>;
+export interface AuthClient {
+  getSession(): Promise<AuthClientResult<AuthIdentityPersistence>>;
   signIn(contract: {
     email: string;
     password: string;
-  }): Promise<AuthClientResult<T>>;
+  }): Promise<AuthClientResult<AuthIdentityPersistence>>;
   signOut(): Promise<AuthClientResult<null>>;
   signUp(contract: {
     email: string;
     password: string;
-  }): Promise<AuthClientResult<T>>;
+  }): Promise<AuthClientResult<AuthIdentityPersistence>>;
   resetPassword(contract: {
     email: string;
     options?: {
@@ -30,12 +31,14 @@ export interface AuthClient<T> {
     options?: {
       emailRedirectTo?: string;
     };
-  }): Promise<AuthClientResult<T>>;
+  }): Promise<AuthClientResult<AuthIdentityPersistence>>;
   verifyOtp(contract: {
     type: string;
     token_hash: string;
-  }): Promise<AuthClientResult<T>>;
-  exchangeCodeForSession(code: string): Promise<AuthClientResult<T>>;
+  }): Promise<AuthClientResult<AuthIdentityPersistence>>;
+  exchangeCodeForSession(
+    code: string,
+  ): Promise<AuthClientResult<AuthIdentityPersistence>>;
   signInWithOAuth(contract: {
     provider: string;
     options: { redirectTo: string };
@@ -46,11 +49,13 @@ export interface AuthClient<T> {
   }): Promise<AuthClientResult<null>>;
 }
 
-export interface AuthClientAdmin<T> extends AuthClient<T> {
+export interface AuthClientAdmin extends AuthClient {
   createUser(contract: {
     email: string;
     password: string;
     email_confirm: boolean;
-  }): Promise<AuthClientResult<T>>;
-  deleteUser(contract: { id: string }): Promise<AuthClientResult<T>>;
+  }): Promise<AuthClientResult<AuthIdentityPersistence>>;
+  deleteUser(contract: {
+    id: string;
+  }): Promise<AuthClientResult<AuthIdentityPersistence>>;
 }

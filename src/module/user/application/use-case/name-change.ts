@@ -1,7 +1,6 @@
 import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case';
-import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 import type { UserRepository } from '@/user/application/repository/user';
 import type { UserNameChangeApiRequest } from '@/user/interface/api/name-change.schema';
 
@@ -10,13 +9,10 @@ type UserNameChangeUseCaseError = { code: number };
 export class UserNameChangeUseCase
   implements UseCase<UserNameChangeApiRequest, UserNameChangeUseCaseError>
 {
-  private readonly _authClient: AuthClient<AuthIdentityPersistence>;
+  private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
 
-  constructor(
-    authClient: AuthClient<AuthIdentityPersistence>,
-    userRepository: UserRepository,
-  ) {
+  constructor(authClient: AuthClient, userRepository: UserRepository) {
     this._authClient = authClient;
     this._userRepository = userRepository;
   }

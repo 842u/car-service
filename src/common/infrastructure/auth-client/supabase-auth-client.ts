@@ -2,7 +2,6 @@ import type {
   EmailOtpType,
   Provider,
   SupabaseClient,
-  User,
 } from '@supabase/supabase-js';
 import type { Database } from 'supabase/types/supabase';
 
@@ -12,7 +11,7 @@ import type {
 } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 
-export class SupabaseAuthClient implements AuthClient<User> {
+export class SupabaseAuthClient implements AuthClient {
   protected readonly _authClient: SupabaseClient<Database>['auth'];
 
   constructor(client: SupabaseClient) {
@@ -274,7 +273,7 @@ export class SupabaseAuthClient implements AuthClient<User> {
 
 export class SupabaseAuthAdminClient
   extends SupabaseAuthClient
-  implements AuthClientAdmin<User>
+  implements AuthClientAdmin
 {
   constructor(client: SupabaseClient) {
     super(client);
