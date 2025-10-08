@@ -1,4 +1,4 @@
-import { browserDatabaseClient } from '@/dependencies/database-client/browser';
+import { browserDatabaseClient } from '@/dependency/database-client/browser';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/utils/tanstack/cars';
 
 export async function getCar(carId: string) {

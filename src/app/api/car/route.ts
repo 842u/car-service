@@ -5,7 +5,7 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response';
-import { createServerDatabaseClient } from '@/dependencies/database-client/server';
+import { createServerDatabaseClient } from '@/dependency/database-client/server';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/schemas/zod/carFormSchema';
 

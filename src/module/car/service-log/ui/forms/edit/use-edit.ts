@@ -4,7 +4,7 @@ import type { Route } from 'next';
 
 import type { ServiceLogPatchRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { httpClient } from '@/dependencies/http-client';
+import { httpClient } from '@/dependency/http-client';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import type { ServiceLog } from '@/types';
 import { queryKeys } from '@/utils/tanstack/keys';

@@ -1,5 +1,5 @@
-import { adminAuthClient } from '@/dependencies/auth-client/admin';
-import { createServerAuthClient } from '@/dependencies/auth-client/server';
+import { adminAuthClient } from '@/dependency/auth-client/admin';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { AvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
 import { NameChangeUseCase } from '@/user/application/use-case/name-change';
 import { PasswordChangeUseCase } from '@/user/application/use-case/password-change';

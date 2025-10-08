@@ -8,8 +8,8 @@ import type { ApiCarResponse } from '@/app/api/car/route';
 import type { CarFormRef } from '@/car/ui/form/form';
 import type { ApiResponseSuccessResult } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { httpClient } from '@/dependencies/http-client';
-import { browserStorageClient } from '@/dependencies/storage-client/browser';
+import { httpClient } from '@/dependency/http-client';
+import { browserStorageClient } from '@/dependency/storage-client/browser';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/utils/general';
 import {

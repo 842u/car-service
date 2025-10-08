@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
-import { apiHandler } from '@/dependencies/api-handler';
-import { createServerAuthClient } from '@/dependencies/auth-client/server';
+import { apiHandler } from '@/dependency/api-handler';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
 
 export const maxDuration = 10;
 

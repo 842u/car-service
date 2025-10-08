@@ -1,4 +1,4 @@
-import { browserDatabaseClient } from '@/dependencies/database-client/browser';
+import { browserDatabaseClient } from '@/dependency/database-client/browser';
 
 export async function getCarOwnerships(carId: string) {
   const queryResult = await browserDatabaseClient.query(async (from) =>

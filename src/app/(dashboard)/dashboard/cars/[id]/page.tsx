@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 
 import { SettingsSection } from '@/car/ui/sections/settings/settings';
 import { DashboardMain } from '@/dashboard/ui/main/main';
-import { createServerAuthClient } from '@/dependencies/auth-client/server';
-import { createServerDatabaseClient } from '@/dependencies/database-client/server';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
+import { createServerDatabaseClient } from '@/dependency/database-client/server';
 
 type CarPageProps = {
   params: Promise<{ id: string }>;

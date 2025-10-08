@@ -1,5 +1,5 @@
 import { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createServerSupabaseClient } from '@/dependencies/supabase-client/server';
+import { createServerSupabaseClient } from '@/dependency/supabase-client/server';
 
 export async function createServerDatabaseClient() {
   const supabaseClient = await createServerSupabaseClient();

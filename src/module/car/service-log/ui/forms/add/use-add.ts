@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 
 import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { browserAuthClient } from '@/dependencies/auth-client/browser';
-import { httpClient } from '@/dependencies/http-client';
+import { browserAuthClient } from '@/dependency/auth-client/browser';
+import { httpClient } from '@/dependency/http-client';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { queryKeys } from '@/utils/tanstack/keys';
 import {

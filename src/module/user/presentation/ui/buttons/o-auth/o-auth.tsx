@@ -6,7 +6,7 @@ import type { JSX } from 'react';
 import { useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { browserAuthClient } from '@/dependencies/auth-client/browser';
+import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { GitHubIcon } from '@/icons/github';
 import { GoogleIcon } from '@/icons/google';
 import { Button } from '@/ui/button/button';

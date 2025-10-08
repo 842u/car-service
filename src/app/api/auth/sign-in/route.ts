@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server';
 
-import { createServerAuthClient } from '@/dependencies/auth-client/server';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { signInApiHandler } from '@/user/dependency/api-handler';
 import { userMapper } from '@/user/dependency/mapper';
 import { createUserRepository } from '@/user/dependency/repository';

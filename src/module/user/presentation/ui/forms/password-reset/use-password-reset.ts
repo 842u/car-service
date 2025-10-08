@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { browserAuthClient } from '@/dependencies/auth-client/browser';
+import { browserAuthClient } from '@/dependency/auth-client/browser';
 import {
   type PasswordResetFormData,
   passwordResetFormSchema,

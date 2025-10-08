@@ -1,5 +1,5 @@
 import { NextApiHandler } from '@/common/infrastructure/api-handler/next';
-import { validator } from '@/dependencies/validator';
+import { validator } from '@/dependency/validator';
 import type {
   AvatarUrlChangeApiRequest,
   AvatarUrlChangeApiResponseData,

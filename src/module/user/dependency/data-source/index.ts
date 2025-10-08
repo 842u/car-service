@@ -1,5 +1,5 @@
-import { browserAuthClient } from '@/dependencies/auth-client/browser';
-import { browserDatabaseClient } from '@/dependencies/database-client/browser';
+import { browserAuthClient } from '@/dependency/auth-client/browser';
+import { browserDatabaseClient } from '@/dependency/database-client/browser';
 import { userMapper } from '@/user/dependency/mapper';
 import { UserDataSourceImplementation } from '@/user/infrastructure/data-source/user';
 

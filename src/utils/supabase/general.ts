@@ -1,5 +1,5 @@
-import { adminAuthClient } from '@/dependencies/auth-client/admin';
-import { adminDatabaseClient } from '@/dependencies/database-client/admin';
+import { adminAuthClient } from '@/dependency/auth-client/admin';
+import { adminDatabaseClient } from '@/dependency/database-client/admin';
 
 const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
 const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;

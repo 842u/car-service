@@ -5,8 +5,8 @@ import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response';
-import { createServerAuthClient } from '@/dependencies/auth-client/server';
-import { createServerDatabaseClient } from '@/dependencies/database-client/server';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
+import { createServerDatabaseClient } from '@/dependency/database-client/server';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
 
