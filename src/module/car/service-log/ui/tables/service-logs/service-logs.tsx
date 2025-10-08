@@ -4,13 +4,13 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
 import { authClientBrowser } from '@/dependencies/auth-client/browser';
 import type { ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
-import type { AuthIdentityPersistence } from '@/user/application/persistence-model/auth-identity';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 import { TableActionsDropdown } from './actions-dropdown/actions-dropdown';
