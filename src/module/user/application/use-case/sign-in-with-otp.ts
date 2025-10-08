@@ -7,7 +7,7 @@ import {
   type SuccessResult,
 } from '@/common/application/result/result';
 import type { UseCase } from '@/common/application/use-case/use-case';
-import type { UserMapper } from '@/user/application/mapper/user-mapper';
+import type { UserMapper } from '@/user/application/mapper/user';
 
 type SignInUserWithOtpContract = {
   token_hash: string;

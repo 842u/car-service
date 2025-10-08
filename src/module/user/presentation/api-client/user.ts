@@ -1,5 +1,5 @@
 import type { Result } from '@/common/application/result/result';
-import type { UserDto } from '@/user/application/dto/user-dto';
+import type { UserDto } from '@/user/application/dto/user';
 import type { UserAvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
 import type { UserNameChangeApiRequest } from '@/user/interface/api/name-change.schema';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';

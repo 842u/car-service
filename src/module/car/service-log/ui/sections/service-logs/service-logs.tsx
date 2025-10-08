@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
-import type { UserDto } from '@/user/application/dto/user-dto';
+import type { UserDto } from '@/user/application/dto/user';
 import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
 import { queryKeys } from '@/utils/tanstack/keys';
 

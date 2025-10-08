@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import type { UserDto } from '@/user/application/dto/user-dto';
+import type { UserDto } from '@/user/application/dto/user';
 
 import { UserImage } from '../image/image';
 

@@ -4,7 +4,7 @@ import {
   apiResponseErrorSchema,
   createApiResponseSchema,
 } from '@/common/interface/api/response.schema';
-import { userDtoSchema } from '@/user/application/dto/user-dto';
+import { userDtoSchema } from '@/user/application/dto/user';
 import { avatarUrlSchema } from '@/user/domain/user/value-object/avatar-url/avatar-url.schema';
 
 z.config({

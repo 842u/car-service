@@ -3,8 +3,8 @@ import type { User as AuthIdentity } from '@supabase/supabase-js';
 import type { AuthClient } from '@/common/application/auth-client/auth-client';
 import { Result } from '@/common/application/result/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
-import type { UserMapper } from '@/user/application/mapper/user-mapper';
-import type { UserDataSource } from '@/user/presentation/data-source/user-data-source';
+import type { UserMapper } from '@/user/application/mapper/user';
+import type { UserDataSource } from '@/user/presentation/data-source/user';
 
 export class UserDataSourceImplementation implements UserDataSource {
   private readonly _authClient: AuthClient<AuthIdentity>;

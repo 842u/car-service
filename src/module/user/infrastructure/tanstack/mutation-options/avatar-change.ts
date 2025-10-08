@@ -4,7 +4,7 @@ import { mutationOptions } from '@tanstack/react-query';
 import { userApiClient } from '@/dependencies/api-client/user';
 import { authClientBrowser } from '@/dependencies/auth-client/browser';
 import { storageClientBrowser } from '@/dependencies/storage-client/browser';
-import type { UserDto } from '@/user/application/dto/user-dto';
+import type { UserDto } from '@/user/application/dto/user';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { hashFile } from '@/utils/general';
 

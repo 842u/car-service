@@ -16,7 +16,7 @@ import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
 import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
-import type { UserApiClient } from '@/user/presentation/api-client/user-api-client';
+import type { UserApiClient } from '@/user/presentation/api-client/user';
 
 type ApiResponse<T> =
   | { success: true; data: T }

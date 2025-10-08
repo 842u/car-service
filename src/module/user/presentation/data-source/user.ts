@@ -1,5 +1,5 @@
 import type { Result } from '@/common/application/result/result';
-import type { UserDto } from '@/user/application/dto/user-dto';
+import type { UserDto } from '@/user/application/dto/user';
 
 type UserDataSourceError = {
   message: string;
