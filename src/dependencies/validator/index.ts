@@ -1,3 +1,3 @@
-import { ZodValidator } from '@/common/infrastructure/validator/zod-validator';
+import { ZodValidator } from '@/common/infrastructure/validator/zod';
 
 export const validator = new ZodValidator();

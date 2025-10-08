@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { ZodValidator } from '@/common/infrastructure/validator/zod-validator';
+import { ZodValidator } from '@/common/infrastructure/validator/zod';
 
 z.config({
   jitless: true,

@@ -1,4 +1,4 @@
-import { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
+import { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
 import { createSupabaseClientServer } from '@/dependencies/supabase-client/server';
 
 export async function createDatabaseClientServer() {

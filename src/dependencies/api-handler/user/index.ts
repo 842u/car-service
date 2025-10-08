@@ -1,4 +1,4 @@
-import { NextApiHandler } from '@/common/infrastructure/api-handler/next-api-handler';
+import { NextApiHandler } from '@/common/infrastructure/api-handler/next';
 import { validator } from '@/dependencies/validator';
 import type {
   AvatarUrlChangeApiRequest,
