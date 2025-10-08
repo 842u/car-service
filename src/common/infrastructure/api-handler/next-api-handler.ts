@@ -5,16 +5,13 @@ import { NextResponse } from 'next/server';
 import type {
   ApiHandler,
   ApiHandlerResponseError,
-} from '@/common/application/api-handler/api-handler';
+} from '@/common/application/api-handler';
 import {
   type FailureResult,
   Result,
   type SuccessResult,
-} from '@/common/application/result/result';
-import type {
-  Validator,
-  ValidatorIssue,
-} from '@/common/application/validator/validator';
+} from '@/common/application/result';
+import type { Validator, ValidatorIssue } from '@/common/application/validator';
 
 type ErrorResponseResult<E extends ApiHandlerResponseError> = FailureResult<
   E,

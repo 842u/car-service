@@ -8,8 +8,8 @@ import type { Database } from 'supabase/types/supabase';
 import type {
   DatabaseClient,
   DatabaseClientResult,
-} from '@/common/application/database-client/database-client';
-import { Result } from '@/common/application/result/result';
+} from '@/common/application/database-client';
+import { Result } from '@/common/application/result';
 
 export class SupabaseDatabaseClient implements DatabaseClient {
   private readonly _client: SupabaseClient<Database>;

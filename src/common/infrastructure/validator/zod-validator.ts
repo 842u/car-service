@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
-import { Result } from '@/common/application/result/result';
-import {
-  type Validator,
-  ValidatorError,
-} from '@/common/application/validator/validator';
+import { Result } from '@/common/application/result';
+import { type Validator, ValidatorError } from '@/common/application/validator';
 
 z.config({
   jitless: true,

@@ -1,9 +1,9 @@
 import type { Route } from 'next';
 import type { ZodType } from 'zod';
 
-import type { HttpClient } from '@/common/application/http-client/http-client';
-import { Result } from '@/common/application/result/result';
-import type { Validator } from '@/common/application/validator/validator';
+import type { HttpClient } from '@/common/application/http-client';
+import { Result } from '@/common/application/result';
+import type { Validator } from '@/common/application/validator';
 import {
   type AvatarUrlChangeApiRequest,
   avatarUrlChangeApiResponseSchema,

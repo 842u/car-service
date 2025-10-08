@@ -1,5 +1,5 @@
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
-import type { Result } from '@/common/application/result/result';
+import type { Result } from '@/common/application/result';
 
 type AuthError = {
   message: string;

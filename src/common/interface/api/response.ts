@@ -1,10 +1,7 @@
 import type { NextURL } from 'next/dist/server/web/next-url';
 import { NextResponse } from 'next/server';
 
-import type {
-  FailureResult,
-  SuccessResult,
-} from '../../application/result/result';
+import type { FailureResult, SuccessResult } from '../../application/result';
 
 type ApiResponseMeta = { status: number };
 

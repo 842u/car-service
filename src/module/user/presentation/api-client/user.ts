@@ -1,4 +1,4 @@
-import type { Result } from '@/common/application/result/result';
+import type { Result } from '@/common/application/result';
 import type { UserDto } from '@/user/application/dto/user';
 import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
 import type { NameChangeApiRequest } from '@/user/interface/api/name-change.schema';

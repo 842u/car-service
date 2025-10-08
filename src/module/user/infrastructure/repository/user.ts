@@ -1,4 +1,4 @@
-import { Result } from '@/common/application/result/result';
+import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';

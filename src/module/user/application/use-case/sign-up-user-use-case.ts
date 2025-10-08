@@ -1,8 +1,8 @@
 import type { Route } from 'next';
 
-import type { AuthClientAdmin } from '@/common/application/auth-client/auth-client';
-import { Result } from '@/common/application/result/result';
-import type { UseCase } from '@/common/application/use-case/use-case';
+import type { AuthClientAdmin } from '@/common/application/auth-client';
+import { Result } from '@/common/application/result';
+import type { UseCase } from '@/common/application/use-case';
 import type { UserRepository } from '@/user/application/repository/user';
 import { User } from '@/user/domain/user/user';
 import { Credentials } from '@/user/domain/user/value-object/credentials';

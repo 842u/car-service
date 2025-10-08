@@ -1,5 +1,5 @@
-import { Result } from '@/common/application/result/result';
-import { Entity } from '@/common/domain/entity/entity';
+import { Result } from '@/common/application/result';
+import { Entity } from '@/common/domain/entity';
 import { AvatarUrl } from '@/user/domain/user/value-object/avatar-url/avatar-url';
 import { Email } from '@/user/domain/user/value-object/email/email';
 import { Name } from '@/user/domain/user/value-object/name/name';

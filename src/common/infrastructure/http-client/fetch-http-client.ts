@@ -3,12 +3,12 @@ import type {
   HttpClientResponse,
   RequestConfig,
   RequestController,
-} from '@/common/application/http-client/http-client';
+} from '@/common/application/http-client';
 import {
   HttpError,
   RequestCancelledError,
-} from '@/common/application/http-client/http-client';
-import { Result } from '@/common/application/result/result';
+} from '@/common/application/http-client';
+import { Result } from '@/common/application/result';
 
 class FetchRequestController implements RequestController {
   private abortController: AbortController;

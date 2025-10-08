@@ -1,5 +1,5 @@
-import { Result } from '@/common/application/result/result';
-import { ValueObject } from '@/common/domain/value-object/value-object';
+import { Result } from '@/common/application/result';
+import { ValueObject } from '@/common/domain/value-object';
 import { Email } from '@/user/domain/user/value-object/email/email';
 import { Password } from '@/user/domain/user/value-object/password/password';
 

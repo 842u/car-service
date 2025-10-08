@@ -1,6 +1,6 @@
-import type { Mapper } from '@/common/application/mapper/mapper';
+import type { Mapper } from '@/common/application/mapper';
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
-import { Result } from '@/common/application/result/result';
+import { Result } from '@/common/application/result';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserPersistence } from '@/user/application/persistence-model/user';
 import { User } from '@/user/domain/user/user';

@@ -2,8 +2,8 @@
  * Private constructor used with static factory method to avoid creating instances with malformed data.
  */
 
-import { Result } from '@/common/application/result/result';
-import { ValueObject } from '@/common/domain/value-object/value-object';
+import { Result } from '@/common/application/result';
+import { ValueObject } from '@/common/domain/value-object';
 import {
   emailSchema,
   emailValidator,

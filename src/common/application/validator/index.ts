@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import type { Result } from '@/common/application/result/result';
+import type { Result } from '@/common/application/result';
 
 z.config({
   jitless: true,

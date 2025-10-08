@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { validatorIssueSchema } from '@/common/application/validator/validator';
+import { validatorIssueSchema } from '@/common/application/validator';
 
 import type { ApiResponseError } from './response';
 

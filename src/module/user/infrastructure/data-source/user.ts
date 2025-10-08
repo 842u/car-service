@@ -1,5 +1,5 @@
-import type { AuthClient } from '@/common/application/auth-client/auth-client';
-import { Result } from '@/common/application/result/result';
+import type { AuthClient } from '@/common/application/auth-client';
+import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase-database-client';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserDataSource } from '@/user/presentation/data-source/user';

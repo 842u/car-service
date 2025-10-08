@@ -1,12 +1,12 @@
 import type { EmailOtpType } from '@supabase/supabase-js';
 
-import type { AuthClient } from '@/common/application/auth-client/auth-client';
+import type { AuthClient } from '@/common/application/auth-client';
 import {
   type FailureResult,
   Result,
   type SuccessResult,
-} from '@/common/application/result/result';
-import type { UseCase } from '@/common/application/use-case/use-case';
+} from '@/common/application/result';
+import type { UseCase } from '@/common/application/use-case';
 import type { UserMapper } from '@/user/application/mapper/user';
 
 type SignInWithOtpContract = {

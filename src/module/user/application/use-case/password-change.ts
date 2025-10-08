@@ -1,6 +1,6 @@
-import type { AuthClient } from '@/common/application/auth-client/auth-client';
-import { Result } from '@/common/application/result/result';
-import type { UseCase } from '@/common/application/use-case/use-case';
+import type { AuthClient } from '@/common/application/auth-client';
+import { Result } from '@/common/application/result';
+import type { UseCase } from '@/common/application/use-case';
 import type { UserRepository } from '@/user/application/repository/user';
 import { Password } from '@/user/domain/user/value-object/password/password';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';

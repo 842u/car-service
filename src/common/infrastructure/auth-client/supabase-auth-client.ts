@@ -8,8 +8,8 @@ import type { Database } from 'supabase/types/supabase';
 import type {
   AuthClient,
   AuthClientAdmin,
-} from '@/common/application/auth-client/auth-client';
-import { Result } from '@/common/application/result/result';
+} from '@/common/application/auth-client';
+import { Result } from '@/common/application/result';
 
 export class SupabaseAuthClient implements AuthClient {
   protected readonly _authClient: SupabaseClient<Database>['auth'];

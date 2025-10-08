@@ -1,4 +1,4 @@
-import type { Result } from '@/common/application/result/result';
+import type { Result } from '@/common/application/result';
 
 export interface Mapper<TDomain, TDto, TPersistence> {
   domainToDto(model: TDomain): TDto;

@@ -1,4 +1,4 @@
-import type { Result } from '@/common/application/result/result';
+import type { Result } from '@/common/application/result';
 
 type RepositoryError = {
   message: string;
