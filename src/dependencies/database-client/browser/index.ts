@@ -1,6 +1,6 @@
 import { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { supabaseClientBrowser } from '@/dependencies/supabase-client/browser';
+import { browserSupabaseClient } from '@/dependencies/supabase-client/browser';
 
-export const databaseClientBrowser = new SupabaseDatabaseClient(
-  supabaseClientBrowser,
+export const browserDatabaseClient = new SupabaseDatabaseClient(
+  browserSupabaseClient,
 );

@@ -1,6 +1,6 @@
 import { SupabaseStorageClient } from '@/common/infrastructure/storage-client/supabase';
-import { supabaseClientBrowser } from '@/dependencies/supabase-client/browser';
+import { browserSupabaseClient } from '@/dependencies/supabase-client/browser';
 
-export const storageClientBrowser = new SupabaseStorageClient(
-  supabaseClientBrowser,
+export const browserStorageClient = new SupabaseStorageClient(
+  browserSupabaseClient,
 );

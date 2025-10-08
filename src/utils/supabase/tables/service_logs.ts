@@ -1,10 +1,10 @@
-import { authClientBrowser } from '@/dependencies/auth-client/browser';
-import { databaseClientBrowser } from '@/dependencies/database-client/browser';
+import { browserAuthClient } from '@/dependencies/auth-client/browser';
+import { browserDatabaseClient } from '@/dependencies/database-client/browser';
 import type { ServiceLog } from '@/types';
 import { toSafeNumber } from '@/utils/general';
 
 export async function getServiceLogsByCarId(carId: string) {
-  const queryResult = await databaseClientBrowser.query(async (from) =>
+  const queryResult = await browserDatabaseClient.query(async (from) =>
     from('service_logs')
       .select('*')
       .eq('car_id', carId)
@@ -21,14 +21,14 @@ export async function getServiceLogsByCarId(carId: string) {
 }
 
 export async function deleteServiceLogById(id: string) {
-  const sessionResult = await authClientBrowser.getSession();
+  const sessionResult = await browserAuthClient.getSession();
 
   if (!sessionResult.success) {
     const { message } = sessionResult.error;
     throw new Error(message);
   }
 
-  const queryResult = await databaseClientBrowser.query(async (from) =>
+  const queryResult = await browserDatabaseClient.query(async (from) =>
     from('service_logs').delete().eq('id', id).select('id').single(),
   );
 

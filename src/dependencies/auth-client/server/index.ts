@@ -1,7 +1,7 @@
 import { SupabaseAuthClient } from '@/common/infrastructure/auth-client/supabase';
-import { createSupabaseClientServer } from '@/dependencies/supabase-client/server';
+import { createServerSupabaseClient } from '@/dependencies/supabase-client/server';
 
-export async function createAuthClientServer() {
-  const supabaseClientServer = await createSupabaseClientServer();
-  return new SupabaseAuthClient(supabaseClientServer);
+export async function createServerAuthClient() {
+  const supabaseClient = await createServerSupabaseClient();
+  return new SupabaseAuthClient(supabaseClient);
 }

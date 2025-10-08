@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import { signInApiHandler } from '@/dependencies/api-handler/user';
-import { createAuthClientServer } from '@/dependencies/auth-client/server';
+import { createServerAuthClient } from '@/dependencies/auth-client/server';
 import { userMapper } from '@/dependencies/mapper/user';
 import { createUserRepository } from '@/dependencies/repository';
 import { signInApiRequestSchema } from '@/user/interface/api/sign-in.schema';
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
   const { email, password } = preprocessResult.data;
 
-  const authClient = await createAuthClientServer();
+  const authClient = await createServerAuthClient();
 
   const signInResult = await authClient.signIn({ email, password });
 

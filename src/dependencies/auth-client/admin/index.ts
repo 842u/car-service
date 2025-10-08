@@ -1,4 +1,4 @@
-import { SupabaseAuthAdminClient } from '@/common/infrastructure/auth-client/supabase';
-import { supabaseClientAdmin } from '@/dependencies/supabase-client/admin';
+import { SupabaseAdminAuthClient } from '@/common/infrastructure/auth-client/supabase';
+import { adminSupabaseClient } from '@/dependencies/supabase-client/admin';
 
-export const authClientAdmin = new SupabaseAuthAdminClient(supabaseClientAdmin);
+export const adminAuthClient = new SupabaseAdminAuthClient(adminSupabaseClient);

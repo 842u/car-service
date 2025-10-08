@@ -1,8 +1,8 @@
-import { authClientAdmin } from '@/dependencies/auth-client/admin';
-import { createAuthClientServer } from '@/dependencies/auth-client/server';
+import { adminAuthClient } from '@/dependencies/auth-client/admin';
+import { createServerAuthClient } from '@/dependencies/auth-client/server';
 import { userMapper } from '@/dependencies/mapper/user';
 import { createUserRepository } from '@/dependencies/repository';
-import { userRepositoryAdmin } from '@/dependencies/repository/admin';
+import { adminUserRepository } from '@/dependencies/repository/admin';
 import { AvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
 import { NameChangeUseCase } from '@/user/application/use-case/name-change';
 import { PasswordChangeUseCase } from '@/user/application/use-case/password-change';
@@ -11,38 +11,34 @@ import { SignInWithOtpUseCase } from '@/user/application/use-case/sign-in-with-o
 import { SignUpUseCase } from '@/user/application/use-case/sign-up-user-use-case';
 
 export async function createSignUpUseCase() {
-  return new SignUpUseCase(authClientAdmin, userRepositoryAdmin);
+  return new SignUpUseCase(adminAuthClient, adminUserRepository);
 }
 
 export async function createSignInWithOAuthUseCase() {
-  const authClientServer = await createAuthClientServer();
+  const authClient = await createServerAuthClient();
   const userRepository = await createUserRepository();
-  return new SignInWithOAuthUseCase(
-    authClientServer,
-    userRepository,
-    userMapper,
-  );
+  return new SignInWithOAuthUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createSignInWithOtpUseCase() {
-  const authClientServer = await createAuthClientServer();
-  return new SignInWithOtpUseCase(authClientServer, userMapper);
+  const authClient = await createServerAuthClient();
+  return new SignInWithOtpUseCase(authClient, userMapper);
 }
 
 export async function createNameChangeUseCase() {
-  const authClientServer = await createAuthClientServer();
+  const authClient = await createServerAuthClient();
   const userRepository = await createUserRepository();
-  return new NameChangeUseCase(authClientServer, userRepository);
+  return new NameChangeUseCase(authClient, userRepository);
 }
 
 export async function createPasswordChangeUseCase() {
-  const authClientServer = await createAuthClientServer();
+  const authClient = await createServerAuthClient();
   const userRepository = await createUserRepository();
-  return new PasswordChangeUseCase(authClientServer, userRepository);
+  return new PasswordChangeUseCase(authClient, userRepository);
 }
 
 export async function createAvatarUrlChangeUseCase() {
-  const authClientServer = await createAuthClientServer();
+  const authClient = await createServerAuthClient();
   const userRepository = await createUserRepository();
-  return new AvatarUrlChangeUseCase(authClientServer, userRepository);
+  return new AvatarUrlChangeUseCase(authClient, userRepository);
 }

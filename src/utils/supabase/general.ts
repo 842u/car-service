@@ -1,5 +1,5 @@
-import { authClientAdmin } from '@/dependencies/auth-client/admin';
-import { databaseClientAdmin } from '@/dependencies/database-client/admin';
+import { adminAuthClient } from '@/dependencies/auth-client/admin';
+import { adminDatabaseClient } from '@/dependencies/database-client/admin';
 
 const testUserEmail = process.env.SUPABASE_TEST_USER_EMAIL!;
 const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
@@ -8,7 +8,7 @@ export async function createTestUser(testUserIndex: number) {
   const email = testUserIndex + testUserEmail;
   const password = testUserPassword;
 
-  const createUserResult = await authClientAdmin.createUser({
+  const createUserResult = await adminAuthClient.createUser({
     email: testUserIndex + testUserEmail,
     password: testUserPassword,
     email_confirm: true,
@@ -23,7 +23,7 @@ export async function createTestUser(testUserIndex: number) {
 }
 
 export async function deleteTestUser(testUserIndex: number) {
-  const rpcResult = await databaseClientAdmin.rpc(async (rpc) =>
+  const rpcResult = await adminDatabaseClient.rpc(async (rpc) =>
     rpc('delete_test_user', {
       test_user_index: testUserIndex,
     }),

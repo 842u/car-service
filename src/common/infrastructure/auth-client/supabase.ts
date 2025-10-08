@@ -271,7 +271,7 @@ export class SupabaseAuthClient implements AuthClient {
   }
 }
 
-export class SupabaseAuthAdminClient
+export class SupabaseAdminAuthClient
   extends SupabaseAuthClient
   implements AuthClientAdmin
 {

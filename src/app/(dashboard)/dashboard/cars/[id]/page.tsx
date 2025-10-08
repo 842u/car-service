@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 
 import { SettingsSection } from '@/car/ui/sections/settings/settings';
 import { DashboardMain } from '@/dashboard/ui/main/main';
-import { createAuthClientServer } from '@/dependencies/auth-client/server';
-import { createDatabaseClientServer } from '@/dependencies/database-client/server';
+import { createServerAuthClient } from '@/dependencies/auth-client/server';
+import { createServerDatabaseClient } from '@/dependencies/database-client/server';
 
 type CarPageProps = {
   params: Promise<{ id: string }>;
@@ -13,7 +13,7 @@ type CarPageProps = {
 export default async function CarPage({ params }: CarPageProps) {
   const { id } = await params;
 
-  const authClient = await createAuthClientServer();
+  const authClient = await createServerAuthClient();
 
   const sessionResult = await authClient.getSession();
 
@@ -21,7 +21,7 @@ export default async function CarPage({ params }: CarPageProps) {
 
   const authIdentity = sessionResult.data;
 
-  const dbClient = await createDatabaseClientServer();
+  const dbClient = await createServerDatabaseClient();
 
   const ownershipResult = await dbClient.query(async (from) =>
     from('cars_ownerships')

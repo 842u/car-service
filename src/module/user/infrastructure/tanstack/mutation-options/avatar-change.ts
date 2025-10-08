@@ -2,8 +2,8 @@ import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
 import { userApiClient } from '@/dependencies/api-client/user';
-import { authClientBrowser } from '@/dependencies/auth-client/browser';
-import { storageClientBrowser } from '@/dependencies/storage-client/browser';
+import { browserAuthClient } from '@/dependencies/auth-client/browser';
+import { browserStorageClient } from '@/dependencies/storage-client/browser';
 import type { UserDto } from '@/user/application/dto/user';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { hashFile } from '@/utils/general';
@@ -21,7 +21,7 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       if (!image) throw new Error('No file was provided. Try again.');
 
-      const sessionResult = await authClientBrowser.getSession();
+      const sessionResult = await browserAuthClient.getSession();
 
       if (!sessionResult.success) {
         const { message } = sessionResult.error;
@@ -34,7 +34,7 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       const uploadPath = `${authIdentity.id}/${hashedFile}`;
 
-      const uploadResult = await storageClientBrowser.upload(
+      const uploadResult = await browserStorageClient.upload(
         'avatars',
         uploadPath,
         image,

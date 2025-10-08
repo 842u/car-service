@@ -5,7 +5,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
-import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { browserAuthClient } from '@/dependencies/auth-client/browser';
 import type { ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/date-filter';
@@ -124,7 +124,7 @@ export function ServiceLogsTable({
 
   useEffect(() => {
     const getUser = async () => {
-      const sessionResult = await authClientBrowser.getSession();
+      const sessionResult = await browserAuthClient.getSession();
 
       if (!sessionResult.success) {
         setUser(null);

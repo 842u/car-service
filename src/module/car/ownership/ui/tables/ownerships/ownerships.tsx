@@ -5,7 +5,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
-import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { browserAuthClient } from '@/dependencies/auth-client/browser';
 import { KeyIcon } from '@/icons/key';
 import type { CarOwnership } from '@/types';
 import { Table } from '@/ui/table/table';
@@ -112,7 +112,7 @@ export function OwnershipsTable({
 
   useEffect(() => {
     const getUser = async () => {
-      const sessionResult = await authClientBrowser.getSession();
+      const sessionResult = await browserAuthClient.getSession();
 
       if (!sessionResult.success) {
         setUser(null);

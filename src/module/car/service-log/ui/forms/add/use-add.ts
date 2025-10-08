@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { browserAuthClient } from '@/dependencies/auth-client/browser';
 import { httpClient } from '@/dependencies/http-client';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { queryKeys } from '@/utils/tanstack/keys';
@@ -72,7 +72,7 @@ export function useAddForm({
 
   useEffect(() => {
     const getUserId = async () => {
-      const sessionResult = await authClientBrowser.getSession();
+      const sessionResult = await browserAuthClient.getSession();
 
       if (!sessionResult.success) {
         setUserId(undefined);

@@ -9,7 +9,7 @@ import type { CarFormRef } from '@/car/ui/form/form';
 import type { ApiResponseSuccessResult } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependencies/http-client';
-import { storageClientBrowser } from '@/dependencies/storage-client/browser';
+import { browserStorageClient } from '@/dependencies/storage-client/browser';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/utils/general';
 import {
@@ -55,7 +55,7 @@ async function submitAddForm(formData: CarFormValues) {
 
   const uploadPath = `${id}/${hashedFile}`;
 
-  const uploadResult = await storageClientBrowser.upload(
+  const uploadResult = await browserStorageClient.upload(
     'cars_images',
     uploadPath,
     image,

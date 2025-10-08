@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { browserAuthClient } from '@/dependencies/auth-client/browser';
 import {
   type PasswordResetFormData,
   passwordResetFormSchema,
@@ -30,7 +30,7 @@ export function usePasswordResetForm() {
   const handleFormSubmit = handleSubmit(async (formData) => {
     const { email } = formData;
 
-    const resetPasswordResult = await authClientBrowser.resetPassword({
+    const resetPasswordResult = await browserAuthClient.resetPassword({
       email,
       options: {
         redirectTo: window.location.origin,

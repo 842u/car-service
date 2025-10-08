@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { authClientBrowser } from '@/dependencies/auth-client/browser';
+import { browserAuthClient } from '@/dependencies/auth-client/browser';
 import { userDataSource } from '@/dependencies/data-source/user';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { getCar } from '@/utils/supabase/tables/cars';
@@ -63,7 +63,7 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
 
   useEffect(() => {
     const getUser = async () => {
-      const sessionResult = await authClientBrowser.getSession();
+      const sessionResult = await browserAuthClient.getSession();
 
       if (!sessionResult.success) {
         setUser(null);
