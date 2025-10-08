@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import { userDataSource } from '@/dependencies/data-source/user';
+import { userDataSource } from '@/user/dependency/data-source';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 export const getSessionUserQueryOptions = queryOptions({

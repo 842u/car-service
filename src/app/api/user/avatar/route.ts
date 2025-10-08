@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server';
 
-import { avatarUrlChangeApiHandler } from '@/dependencies/api-handler/user';
-import { userMapper } from '@/dependencies/mapper/user';
-import { createAvatarUrlChangeUseCase } from '@/dependencies/use-case/user';
+import { avatarUrlChangeApiHandler } from '@/user/dependency/api-handler';
+import { userMapper } from '@/user/dependency/mapper';
+import { createAvatarUrlChangeUseCase } from '@/user/dependency/use-case';
 import { avatarUrlChangeApiRequestSchema } from '@/user/interface/api/avatar-change.schema';
 
 export const maxDuration = 10;

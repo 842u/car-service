@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server';
 
-import { nameChangeApiHandler } from '@/dependencies/api-handler/user';
-import { userMapper } from '@/dependencies/mapper/user';
-import { createNameChangeUseCase } from '@/dependencies/use-case/user';
+import { nameChangeApiHandler } from '@/user/dependency/api-handler';
+import { userMapper } from '@/user/dependency/mapper';
+import { createNameChangeUseCase } from '@/user/dependency/use-case';
 import { nameChangeApiRequestSchema } from '@/user/interface/api/name-change.schema';
 
 export const maxDuration = 10;

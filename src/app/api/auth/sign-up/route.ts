@@ -1,8 +1,8 @@
 import { type NextRequest } from 'next/server';
 
-import { signUpApiHandler } from '@/dependencies/api-handler/user';
-import { userMapper } from '@/dependencies/mapper/user';
-import { createSignUpUseCase } from '@/dependencies/use-case/user';
+import { signUpApiHandler } from '@/user/dependency/api-handler';
+import { userMapper } from '@/user/dependency/mapper';
+import { createSignUpUseCase } from '@/user/dependency/use-case';
 import { signUpApiRequestSchema } from '@/user/interface/api/sign-up.schema';
 
 export const maxDuration = 10;

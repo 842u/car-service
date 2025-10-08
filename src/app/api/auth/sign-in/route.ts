@@ -1,9 +1,9 @@
 import { type NextRequest } from 'next/server';
 
-import { signInApiHandler } from '@/dependencies/api-handler/user';
 import { createServerAuthClient } from '@/dependencies/auth-client/server';
-import { userMapper } from '@/dependencies/mapper/user';
-import { createUserRepository } from '@/dependencies/repository';
+import { signInApiHandler } from '@/user/dependency/api-handler';
+import { userMapper } from '@/user/dependency/mapper';
+import { createUserRepository } from '@/user/dependency/repository';
 import { signInApiRequestSchema } from '@/user/interface/api/sign-in.schema';
 
 export const maxDuration = 10;

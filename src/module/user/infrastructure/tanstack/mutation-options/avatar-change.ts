@@ -1,10 +1,10 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
-import { userApiClient } from '@/dependencies/api-client/user';
 import { browserAuthClient } from '@/dependencies/auth-client/browser';
 import { browserStorageClient } from '@/dependencies/storage-client/browser';
 import type { UserDto } from '@/user/application/dto/user';
+import { userApiClient } from '@/user/dependency/api-client';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import { hashFile } from '@/utils/general';
 

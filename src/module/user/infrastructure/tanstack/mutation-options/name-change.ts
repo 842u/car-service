@@ -1,8 +1,8 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
-import { userApiClient } from '@/dependencies/api-client/user';
 import type { UserDto } from '@/user/application/dto/user';
+import { userApiClient } from '@/user/dependency/api-client';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import type { NameChangeApiRequest } from '@/user/interface/api/name-change.schema';
 

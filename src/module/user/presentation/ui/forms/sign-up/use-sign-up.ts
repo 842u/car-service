@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { userApiClient } from '@/dependencies/api-client/user';
+import { userApiClient } from '@/user/dependency/api-client';
 import {
   type SignUpFormData,
   signUpFormDataSchema,

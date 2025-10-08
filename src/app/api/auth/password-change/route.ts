@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server';
 
-import { passwordChangeApiHandler } from '@/dependencies/api-handler/user';
-import { userMapper } from '@/dependencies/mapper/user';
-import { createPasswordChangeUseCase } from '@/dependencies/use-case/user';
+import { passwordChangeApiHandler } from '@/user/dependency/api-handler';
+import { userMapper } from '@/user/dependency/mapper';
+import { createPasswordChangeUseCase } from '@/user/dependency/use-case';
 import { passwordChangeApiRequestSchema } from '@/user/interface/api/password-change.schema';
 
 export const maxDuration = 10;

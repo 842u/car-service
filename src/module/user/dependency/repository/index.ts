@@ -1,5 +1,5 @@
 import { createServerDatabaseClient } from '@/dependencies/database-client/server';
-import { userMapper } from '@/dependencies/mapper/user';
+import { userMapper } from '@/user/dependency/mapper';
 import { UserRepositoryImplementation } from '@/user/infrastructure/repository/user';
 
 export async function createUserRepository() {

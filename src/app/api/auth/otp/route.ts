@@ -2,7 +2,7 @@ import type { Route } from 'next';
 import type { NextRequest } from 'next/server';
 
 import { apiHandler } from '@/dependencies/api-handler';
-import { createSignInWithOtpUseCase } from '@/dependencies/use-case/user';
+import { createSignInWithOtpUseCase } from '@/user/dependency/use-case';
 
 export const maxDuration = 10;
 
