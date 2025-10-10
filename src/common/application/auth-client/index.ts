@@ -49,13 +49,13 @@ export interface AuthClient {
   }): Promise<AuthClientResult<null>>;
 }
 
-export interface AuthClientAdmin extends AuthClient {
-  createUser(contract: {
+export interface AdminAuthClient extends AuthClient {
+  createAuthIdentity(contract: {
     email: string;
     password: string;
     email_confirm: boolean;
   }): Promise<AuthClientResult<AuthIdentityPersistence>>;
-  deleteUser(contract: {
+  deleteAuthIdentity(contract: {
     id: string;
   }): Promise<AuthClientResult<AuthIdentityPersistence>>;
 }

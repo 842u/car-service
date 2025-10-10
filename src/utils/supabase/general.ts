@@ -8,7 +8,7 @@ export async function createTestUser(testUserIndex: number) {
   const email = testUserIndex + testUserEmail;
   const password = testUserPassword;
 
-  const createUserResult = await adminAuthClient.createUser({
+  const createUserResult = await adminAuthClient.createAuthIdentity({
     email: testUserIndex + testUserEmail,
     password: testUserPassword,
     email_confirm: true,

@@ -1,6 +1,6 @@
 import type { Route } from 'next';
 
-import type { AuthClientAdmin } from '@/common/application/auth-client';
+import type { AdminAuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import type { UseCase } from '@/common/application/use-case';
 import type { UserRepository } from '@/user/application/repository/user';
@@ -13,11 +13,11 @@ type SignUpUseCaseError = { code: number };
 export class SignUpUseCase
   implements UseCase<SignUpApiRequest, SignUpUseCaseError>
 {
-  private readonly _authAdminClient: AuthClientAdmin;
+  private readonly _authAdminClient: AdminAuthClient;
   private readonly _userRepository: UserRepository;
 
   constructor(
-    authClientAdmin: AuthClientAdmin,
+    authClientAdmin: AdminAuthClient,
     userRepositoryAdmin: UserRepository,
   ) {
     this._authAdminClient = authClientAdmin;
@@ -37,11 +37,12 @@ export class SignUpUseCase
       password: { value: password },
     } = credentialsResult.data;
 
-    const createAuthIdentityResult = await this._authAdminClient.createUser({
-      email,
-      password,
-      email_confirm: false,
-    });
+    const createAuthIdentityResult =
+      await this._authAdminClient.createAuthIdentity({
+        email,
+        password,
+        email_confirm: false,
+      });
 
     if (!createAuthIdentityResult.success) {
       const { message, code, status } = createAuthIdentityResult.error;
@@ -99,7 +100,7 @@ export class SignUpUseCase
     });
 
     if (!userResult.success) {
-      await this._authAdminClient.deleteUser({
+      await this._authAdminClient.deleteAuthIdentity({
         id: authIdentity.id,
       });
       const { message } = userResult.error;
@@ -109,7 +110,7 @@ export class SignUpUseCase
     const storeUserResult = await this._userRepository.store(userResult.data);
 
     if (!storeUserResult.success) {
-      await this._authAdminClient.deleteUser({
+      await this._authAdminClient.deleteAuthIdentity({
         id: authIdentity.id,
       });
       const { message } = storeUserResult.error;
@@ -126,7 +127,7 @@ export class SignUpUseCase
       });
 
     if (!sendConfirmationEmailResult.success) {
-      await this._authAdminClient.deleteUser({
+      await this._authAdminClient.deleteAuthIdentity({
         id: authIdentity.id,
       });
       const { message, status } = sendConfirmationEmailResult.error;

@@ -1,18 +1,18 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-import type { AuthClientAdmin } from '@/common/application/auth-client';
+import type { AdminAuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { SupabaseAuthClient } from '@/common/infrastructure/auth-client/supabase';
 
 export class SupabaseAdminAuthClient
   extends SupabaseAuthClient
-  implements AuthClientAdmin
+  implements AdminAuthClient
 {
   constructor(client: SupabaseClient) {
     super(client);
   }
 
-  async createUser(contract: {
+  async createAuthIdentity(contract: {
     email: string;
     password: string;
     email_confirm: boolean;
@@ -39,7 +39,7 @@ export class SupabaseAdminAuthClient
     }
   }
 
-  async deleteUser(contract: { id: string }) {
+  async deleteAuthIdentity(contract: { id: string }) {
     try {
       const { id } = contract;
       const { data, error } = await this._authClient.admin.deleteUser(id);
