@@ -67,7 +67,7 @@ export class NextApiHandler<T, E extends ApiHandlerResponseError, S>
         error: { message, issues },
       } = validationResult;
 
-      return Result.fail({ message, issues }, { status: 400 });
+      return Result.fail({ message, issues }, { status: 422 });
     }
 
     const { data } = validationResult;
