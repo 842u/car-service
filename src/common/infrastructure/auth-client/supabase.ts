@@ -5,10 +5,7 @@ import type {
 } from '@supabase/supabase-js';
 import type { Database } from 'supabase/types/supabase';
 
-import type {
-  AuthClient,
-  AuthClientAdmin,
-} from '@/common/application/auth-client';
+import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 
 export class SupabaseAuthClient implements AuthClient {
@@ -264,66 +261,6 @@ export class SupabaseAuthClient implements AuthClient {
       return Result.fail({
         message:
           error instanceof Error ? error.message : 'Unknown auth client error.',
-        code: 'unknown_error',
-        status: 500,
-      });
-    }
-  }
-}
-
-export class SupabaseAdminAuthClient
-  extends SupabaseAuthClient
-  implements AuthClientAdmin
-{
-  constructor(client: SupabaseClient) {
-    super(client);
-  }
-
-  async createUser(contract: {
-    email: string;
-    password: string;
-    email_confirm: boolean;
-  }) {
-    try {
-      const { data, error } = await this._authClient.admin.createUser(contract);
-
-      if (error) {
-        const { message, code, status } = error;
-        const parsedCode = String(code);
-        return Result.fail({ message, code: parsedCode, status });
-      }
-
-      return Result.ok(data.user);
-    } catch (error) {
-      return Result.fail({
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Unknown auth admin client error.',
-        code: 'unknown_error',
-        status: 500,
-      });
-    }
-  }
-
-  async deleteUser(contract: { id: string }) {
-    try {
-      const { id } = contract;
-      const { data, error } = await this._authClient.admin.deleteUser(id);
-
-      if (error) {
-        const { message, code, status } = error;
-        const parsedCode = String(code);
-        return Result.fail({ message, code: parsedCode, status });
-      }
-
-      return Result.ok(data.user);
-    } catch (error) {
-      return Result.fail({
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Unknown auth admin client error.',
         code: 'unknown_error',
         status: 500,
       });
