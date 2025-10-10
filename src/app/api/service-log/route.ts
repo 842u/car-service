@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
 
   const authClient = await createServerAuthClient();
 
-  const sessionResult = await authClient.getSession();
+  const sessionResult = await authClient.authenticate();
 
   if (!sessionResult.success) {
     const { message } = sessionResult.error;

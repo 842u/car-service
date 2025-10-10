@@ -15,7 +15,7 @@ export default async function CarPage({ params }: CarPageProps) {
 
   const authClient = await createServerAuthClient();
 
-  const sessionResult = await authClient.getSession();
+  const sessionResult = await authClient.authenticate();
 
   if (!sessionResult.success) redirect('/dashboard/sign-in' satisfies Route);
 

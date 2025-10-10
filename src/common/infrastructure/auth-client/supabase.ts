@@ -18,7 +18,7 @@ export class SupabaseAuthClient implements AuthClient {
     this._authClient = client.auth;
   }
 
-  async getSession() {
+  async authenticate() {
     try {
       const { data, error } = await this._authClient.getUser();
 
@@ -143,18 +143,18 @@ export class SupabaseAuthClient implements AuthClient {
     }
   }
 
-  async updateUser({
-    attributes,
+  async changePassword({
+    password,
     options,
   }: {
-    attributes: { password: string };
+    password: string;
     options?: {
       emailRedirectTo?: string;
     };
   }) {
     try {
       const { data, error } = await this._authClient.updateUser(
-        attributes,
+        { password },
         options,
       );
 

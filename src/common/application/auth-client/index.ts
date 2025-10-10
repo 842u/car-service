@@ -10,7 +10,7 @@ type AuthError = {
 type AuthClientResult<T> = Result<T, AuthError>;
 
 export interface AuthClient {
-  getSession(): Promise<AuthClientResult<AuthIdentityPersistence>>;
+  authenticate(): Promise<AuthClientResult<AuthIdentityPersistence>>;
   signIn(contract: {
     email: string;
     password: string;
@@ -26,8 +26,8 @@ export interface AuthClient {
       redirectTo?: string;
     };
   }): Promise<AuthClientResult<null>>;
-  updateUser(contract: {
-    attributes: { password: string };
+  changePassword(contract: {
+    password: string;
     options?: {
       emailRedirectTo?: string;
     };

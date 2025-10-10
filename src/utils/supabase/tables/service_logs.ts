@@ -21,7 +21,7 @@ export async function getServiceLogsByCarId(carId: string) {
 }
 
 export async function deleteServiceLogById(id: string) {
-  const sessionResult = await browserAuthClient.getSession();
+  const sessionResult = await browserAuthClient.authenticate();
 
   if (!sessionResult.success) {
     const { message } = sessionResult.error;

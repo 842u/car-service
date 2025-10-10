@@ -21,7 +21,7 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       if (!image) throw new Error('No file was provided. Try again.');
 
-      const sessionResult = await browserAuthClient.getSession();
+      const sessionResult = await browserAuthClient.authenticate();
 
       if (!sessionResult.success) {
         const { message } = sessionResult.error;

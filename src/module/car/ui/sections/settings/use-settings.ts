@@ -63,7 +63,7 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
 
   useEffect(() => {
     const getUser = async () => {
-      const sessionResult = await browserAuthClient.getSession();
+      const sessionResult = await browserAuthClient.authenticate();
 
       if (!sessionResult.success) {
         setUser(null);

@@ -56,7 +56,7 @@ export class UserDataSourceImplementation implements UserDataSource {
   }
 
   async getSessionUser() {
-    const sessionResult = await this._authClient.getSession();
+    const sessionResult = await this._authClient.authenticate();
 
     if (!sessionResult.success) {
       const { message } = sessionResult.error;

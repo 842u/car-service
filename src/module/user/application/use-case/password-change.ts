@@ -35,9 +35,7 @@ export class PasswordChangeUseCase
 
     const password = passwordResult.data.value;
 
-    const updateResult = await this._authClient.updateUser({
-      attributes: { password },
-    });
+    const updateResult = await this._authClient.changePassword({ password });
 
     if (!updateResult.success) {
       const { message } = updateResult.error;

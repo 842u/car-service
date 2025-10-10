@@ -18,7 +18,7 @@ export class AvatarUrlChangeUseCase
   }
 
   async execute(contract: AvatarUrlChangeApiRequest) {
-    const sessionResult = await this._authClient.getSession();
+    const sessionResult = await this._authClient.authenticate();
 
     if (!sessionResult.success) {
       const { message, status } = sessionResult.error;
