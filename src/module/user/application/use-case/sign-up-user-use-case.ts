@@ -13,14 +13,14 @@ type SignUpUseCaseError = { code: number };
 export class SignUpUseCase
   implements UseCase<SignUpApiRequest, SignUpUseCaseError>
 {
-  private readonly _authAdminClient: AdminAuthClient;
+  private readonly _adminAuthClient: AdminAuthClient;
   private readonly _userRepository: UserRepository;
 
   constructor(
-    authClientAdmin: AdminAuthClient,
+    adminAuthClient: AdminAuthClient,
     userRepositoryAdmin: UserRepository,
   ) {
-    this._authAdminClient = authClientAdmin;
+    this._adminAuthClient = adminAuthClient;
     this._userRepository = userRepositoryAdmin;
   }
 
@@ -38,7 +38,7 @@ export class SignUpUseCase
     } = credentialsResult.data;
 
     const createAuthIdentityResult =
-      await this._authAdminClient.createAuthIdentity({
+      await this._adminAuthClient.createAuthIdentity({
         email,
         password,
         email_confirm: false,
@@ -47,13 +47,13 @@ export class SignUpUseCase
     if (!createAuthIdentityResult.success) {
       const { message, code, status } = createAuthIdentityResult.error;
 
-      if (code !== 'email_exists')
+      if (code !== 'email_exists' && code !== 'user_already_exists')
         return Result.fail({ message, code: status || 500 });
 
       /**
        * If auth identity/user already exists, send password reset email and return obfuscated user to not expose such information to threat actors.
        */
-      const resetPasswordResult = await this._authAdminClient.resetPassword({
+      const resetPasswordResult = await this._adminAuthClient.resetPassword({
         email,
         options: {
           redirectTo: '/dashboard' satisfies Route,
@@ -100,7 +100,7 @@ export class SignUpUseCase
     });
 
     if (!userResult.success) {
-      await this._authAdminClient.deleteAuthIdentity({
+      await this._adminAuthClient.deleteAuthIdentity({
         id: authIdentity.id,
       });
       const { message } = userResult.error;
@@ -110,7 +110,7 @@ export class SignUpUseCase
     const storeUserResult = await this._userRepository.store(userResult.data);
 
     if (!storeUserResult.success) {
-      await this._authAdminClient.deleteAuthIdentity({
+      await this._adminAuthClient.deleteAuthIdentity({
         id: authIdentity.id,
       });
       const { message } = storeUserResult.error;
@@ -121,13 +121,13 @@ export class SignUpUseCase
     }
 
     const sendConfirmationEmailResult =
-      await this._authAdminClient.sendConfirmationEmail({
+      await this._adminAuthClient.sendConfirmationEmail({
         email: userResult.data.email.value,
         redirectTo: '/dashboard' satisfies Route,
       });
 
     if (!sendConfirmationEmailResult.success) {
-      await this._authAdminClient.deleteAuthIdentity({
+      await this._adminAuthClient.deleteAuthIdentity({
         id: authIdentity.id,
       });
       const { message, status } = sendConfirmationEmailResult.error;
