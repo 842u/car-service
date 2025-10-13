@@ -1,4 +1,4 @@
-Object.defineProperty(window.URL, 'revokeObjectURL', {
+Object.defineProperty(globalThis.URL, 'revokeObjectURL', {
   configurable: true,
   writable: true,
   value: jest.fn(),

@@ -8,7 +8,7 @@ class MockIntersectionObserver implements IntersectionObserver {
   thresholds: ReadonlyArray<number> = [];
 }
 
-Object.defineProperty(window, 'IntersectionObserver', {
+Object.defineProperty(globalThis, 'IntersectionObserver', {
   writable: true,
   configurable: true,
   value: MockIntersectionObserver,
