@@ -1,3 +1,5 @@
+import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
+
 export function createMockSupabaseAuthModule() {
   return {
     auth: {
@@ -17,4 +19,39 @@ export function createMockSupabaseAuthModule() {
       },
     },
   };
+}
+
+export function createMockAuthIdentity(
+  overrides?: Partial<AuthIdentityPersistence>,
+) {
+  return {
+    id: crypto.randomUUID(),
+    email: 'user@email.com',
+    created_at: new Date().toISOString(),
+    aud: '',
+    app_metadata: {},
+    user_metadata: {},
+    ...overrides,
+  };
+}
+
+export function mockMethodSuccess(
+  method: jest.Mock,
+  authIdentity: AuthIdentityPersistence | null,
+) {
+  method.mockResolvedValue({
+    data: authIdentity ? { user: authIdentity } : null,
+    error: null,
+  });
+}
+
+export function mockMethodFailure(method: jest.Mock, message: string) {
+  method.mockResolvedValue({
+    data: null,
+    error: {
+      message,
+      code: 'auth_module_error',
+      status: 500,
+    },
+  });
 }
