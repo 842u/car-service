@@ -80,7 +80,6 @@ export class SupabaseDatabaseClient implements DatabaseClient {
           code: error.code,
         });
       }
-
       return Result.ok(data);
     } catch (error) {
       return Result.fail({
