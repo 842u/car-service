@@ -4,8 +4,8 @@ import type { Database } from 'supabase/types/supabase';
 import { SupabaseAdminAuthClient } from '@/common/infrastructure/auth-client/supabase-admin';
 import {
   createMockAuthIdentity,
-  mockMethodFailure,
-  mockMethodSuccess,
+  mockInternalMethodFailure,
+  mockInternalMethodSuccess,
 } from '@/lib/jest/mock/@supabase/auth';
 
 describe('SupabaseAdminAuthClient', () => {
@@ -22,7 +22,7 @@ describe('SupabaseAdminAuthClient', () => {
   describe('createAuthIdentity', () => {
     it('should create auth identity', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAdminAuthClient.createUser as jest.Mock,
         mockAuthIdentity,
       );
@@ -48,7 +48,7 @@ describe('SupabaseAdminAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAdminAuthClient.createUser as jest.Mock,
         errorMessage,
       );
@@ -69,7 +69,7 @@ describe('SupabaseAdminAuthClient', () => {
   describe('deleteAuthIdentity', () => {
     it('should delete auth identity', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAdminAuthClient.deleteUser as jest.Mock,
         mockAuthIdentity,
       );
@@ -88,7 +88,7 @@ describe('SupabaseAdminAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAdminAuthClient.deleteUser as jest.Mock,
         errorMessage,
       );

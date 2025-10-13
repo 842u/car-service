@@ -35,7 +35,7 @@ export function createMockAuthIdentity(
   };
 }
 
-export function mockMethodSuccess(
+export function mockInternalMethodSuccess(
   method: jest.Mock,
   authIdentity: AuthIdentityPersistence | null,
 ) {
@@ -45,7 +45,7 @@ export function mockMethodSuccess(
   });
 }
 
-export function mockMethodFailure(method: jest.Mock, message: string) {
+export function mockInternalMethodFailure(method: jest.Mock, message: string) {
   method.mockResolvedValue({
     data: null,
     error: {

@@ -5,8 +5,8 @@ import type { Database } from 'supabase/types/supabase';
 import { SupabaseAuthClient } from '@/common/infrastructure/auth-client/supabase';
 import {
   createMockAuthIdentity,
-  mockMethodFailure,
-  mockMethodSuccess,
+  mockInternalMethodFailure,
+  mockInternalMethodSuccess,
 } from '@/lib/jest/mock/@supabase/auth';
 
 describe('SupabaseAuthClient', () => {
@@ -23,7 +23,7 @@ describe('SupabaseAuthClient', () => {
   describe('authenticate', () => {
     it('should return auth identity on success', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.getUser as jest.Mock,
         mockAuthIdentity,
       );
@@ -39,7 +39,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.getUser as jest.Mock,
         errorMessage,
       );
@@ -56,7 +56,7 @@ describe('SupabaseAuthClient', () => {
   describe('signIn', () => {
     it('should sign in user successfully', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.signInWithPassword as jest.Mock,
         mockAuthIdentity,
       );
@@ -78,7 +78,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.signInWithPassword as jest.Mock,
         errorMessage,
       );
@@ -97,7 +97,10 @@ describe('SupabaseAuthClient', () => {
 
   describe('signOut', () => {
     it('should sign out successfully', async () => {
-      mockMethodSuccess(mockInternalAuthClient.signOut as jest.Mock, null);
+      mockInternalMethodSuccess(
+        mockInternalAuthClient.signOut as jest.Mock,
+        null,
+      );
 
       const result = await authClient.signOut();
 
@@ -110,7 +113,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.signOut as jest.Mock,
         errorMessage,
       );
@@ -127,7 +130,7 @@ describe('SupabaseAuthClient', () => {
   describe('signUp', () => {
     it('should sign up user successfully', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.signUp as jest.Mock,
         mockAuthIdentity,
       );
@@ -151,7 +154,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.signUp as jest.Mock,
         errorMessage,
       );
@@ -171,7 +174,7 @@ describe('SupabaseAuthClient', () => {
   describe('resetPassword', () => {
     it('should send reset password email', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.resetPasswordForEmail as jest.Mock,
         mockAuthIdentity,
       );
@@ -195,7 +198,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.resetPasswordForEmail as jest.Mock,
         errorMessage,
       );
@@ -214,7 +217,7 @@ describe('SupabaseAuthClient', () => {
   describe('changePassword', () => {
     it('should update user password', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.updateUser as jest.Mock,
         mockAuthIdentity,
       );
@@ -235,7 +238,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.updateUser as jest.Mock,
         errorMessage,
       );
@@ -252,7 +255,7 @@ describe('SupabaseAuthClient', () => {
   describe('verifyOtp', () => {
     it('should verify OTP successfully', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.verifyOtp as jest.Mock,
         mockAuthIdentity,
       );
@@ -274,7 +277,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.verifyOtp as jest.Mock,
         errorMessage,
       );
@@ -294,7 +297,7 @@ describe('SupabaseAuthClient', () => {
   describe('exchangeCodeForSession', () => {
     it('should exchange code for session', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.exchangeCodeForSession as jest.Mock,
         mockAuthIdentity,
       );
@@ -313,7 +316,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.exchangeCodeForSession as jest.Mock,
         errorMessage,
       );
@@ -329,7 +332,7 @@ describe('SupabaseAuthClient', () => {
 
   describe('signInWithOAuth', () => {
     it('should initiate OAuth sign in', async () => {
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.signInWithOAuth as jest.Mock,
         null,
       );
@@ -351,7 +354,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.signInWithOAuth as jest.Mock,
         errorMessage,
       );
@@ -371,7 +374,7 @@ describe('SupabaseAuthClient', () => {
   describe('sendConfirmationEmail', () => {
     it('should resend confirmation email', async () => {
       const mockAuthIdentity = createMockAuthIdentity();
-      mockMethodSuccess(
+      mockInternalMethodSuccess(
         mockInternalAuthClient.resend as jest.Mock,
         mockAuthIdentity,
       );
@@ -396,7 +399,7 @@ describe('SupabaseAuthClient', () => {
 
     it('should return error on failure', async () => {
       const errorMessage = 'test error';
-      mockMethodFailure(
+      mockInternalMethodFailure(
         mockInternalAuthClient.resend as jest.Mock,
         errorMessage,
       );
