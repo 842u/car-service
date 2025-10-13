@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import 'whatwg-fetch';
-import '@/utils/jest/mocks/nextjs';
+import '@/lib/jest/mock/next/navigation';
 import '@/lib/jest/mock/@supabase/ssr';
 import '@/lib/jest/mock/@supabase/supabase-js';
 import '@/lib/jest/mock/globalThis/URL/createObjectURL';
