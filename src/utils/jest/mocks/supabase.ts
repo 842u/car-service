@@ -19,23 +19,3 @@ export const MOCK_OWNERSHIPS: CarOwnership[] = [
     owner_id: MOCK_MAIN_OWNER.id,
   },
 ];
-
-jest.mock('@supabase/ssr', () => ({
-  createBrowserClient: jest.fn(() => ({
-    from: () => ({
-      select: () => ({
-        eq: () => ({}),
-      }),
-    }),
-
-    auth: {
-      resetPasswordForEmail: () => ({ data: {}, error: null }),
-      getUser: async () =>
-        Promise.resolve({
-          data: {
-            user: { id: MOCK_MAIN_OWNER.id },
-          },
-        }),
-    },
-  })),
-}));

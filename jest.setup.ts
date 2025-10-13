@@ -6,3 +6,5 @@ import '@/utils/jest/mocks/revokeObjectURL';
 import '@/utils/jest/mocks/crypto';
 import '@/utils/jest/mocks/nextjs';
 import '@/utils/jest/mocks/supabase';
+import '@/lib/jest/mock/@supabase/ssr';
+import '@/lib/jest/mock/@supabase/supabase-js';
