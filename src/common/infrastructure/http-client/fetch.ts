@@ -10,7 +10,7 @@ import {
 } from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
 
-class FetchRequestController implements RequestController {
+export class FetchRequestController implements RequestController {
   private abortController: AbortController;
   private _reason?: string;
 
