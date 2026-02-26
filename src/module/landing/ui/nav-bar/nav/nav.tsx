@@ -1,3 +1,6 @@
+/* eslint-disable
+ jsx-a11y/click-events-have-key-events,
+ jsx-a11y/no-noninteractive-element-interactions  */
 import { twMerge } from 'tailwind-merge';
 
 import { LinkButton } from '@/ui/link-button/link-button';

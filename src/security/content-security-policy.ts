@@ -1,5 +1,7 @@
 import { allowedOrigins } from './allowed-origins';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 interface Directive {
   name: string;
   value: string[];
@@ -34,7 +36,7 @@ const scriptSrcDirective: Directive = {
   value: [
     "'self'",
     "'strict-dynamic'",
-    `${process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''}`,
+    `${isDevelopment ? "'unsafe-eval'" : ''}`,
   ],
 };
 
@@ -42,10 +44,12 @@ const scriptSrcElemDirective: Directive = {
   name: 'script-src-elem',
   value: [
     "'self'",
+    // next-themes - START
     "'sha256-rbbnijHn7DZ6ps39myQ3cVQF1H+U/PJfHh5ei/Q2kb8='",
+    "'sha256-n46vPwSWuMC0W703pBofImv82Z26xo4LXymv0E9caPk='",
+    // next-themes - END
     "'sha256-Vz0fwWS/RBGfX0CgDk4ZXv/OwIIEUP030prvqFa/e9s='",
     "'sha256-P+ENKuy1ajGdnkDBoylo2F59ICER0m6CNM4eemaFB+4='",
-    "'sha256-n46vPwSWuMC0W703pBofImv82Z26xo4LXymv0E9caPk='",
   ],
 };
 
@@ -57,16 +61,25 @@ const styleSrcDirective: Directive = {
     "'sha256-rZot9UVcdtXL99KiVSLfpDfxS3VtOsOY1PXjNX1ntxg='",
     "'sha256-sHwQzC2ZsVrt1faUYCjF/eo8aIoBlQbGjVstzanL9CU='",
     // Next - START
-    "'sha256-QknUhlq+bA4bg8QkOdghRZHreE5JGI3Z6r8emWTbClA='",
-    "'sha256-QCFKgBRT4/1dE2iOOdPA0dvDEE8ha6ghvogOX1ONFHE='",
-    "'sha256-Rhy8yaQLCXMiE7oSWWhNMMJtIsNap07+1/qnwtairBk='",
-    "'sha256-Ylx4sWaDgn6RRamxe7jevX4yDhNtiSG3CQWrPAdPh6A='",
-    "'sha256-m8dEh7VmKFRCO8jEWPbmkeO1mq4SIx8omtyx50rrS/M='",
-    "'sha256-vcAPIwtkyGYAib9fqB9x2914jj8vt7smJqLhKeLMPYE='",
-    "'sha256-csbTq2KBAUJKn3FYGRkmk76PbhLi6RmywozDmGN+6HE='",
-    "'sha256-I9GKdPiOauosrTFpRTOGBFg/1fmBPbBmnqDD5jhUeKc='",
+    "'sha256-4GzqRlwcGp7cD3kANBs5f/CO/iqLwfJq0WYAq59xN6E='",
+    "'sha256-OpIODBPkpoiPLrmWVWQAuUTdbHmO2qBKzuQ9qR3th9M='",
+    "'sha256-UAihfItDa9VybE65LGSN8u3Hsk+Obut4I2HMuUxGIAU='",
+    "'sha256-sYNsYvb9ed9Vsz/maFvMg1z3paljupR1kTQv+ihh3cM='",
+    "'sha256-1Rgj9Tmw9SU4h9nklK6l294O2abdhNs1l+3ZoCwzxUA='",
+    "'sha256-F6SKLtWtm7VErmrq0jDQtzJvpz6+LcrSfbyczc2xd6o='",
+    "'sha256-+OZewf8eCqvkslh1/Xykl0aVXjayV2Iy+vePINuzTcE='",
+    "'sha256-CHox7CF+XF5itK7YJMt8fpMltQv4/krVGqYhlFzvJys='",
+    "'sha256-mie6WmUG3QwG7eOyDWBx8Bce20N/LdzUH4Zq20+Xuac='",
+    "'sha256-YRU82gRq3tqvclIjICrc9UXxYBl+iOGd7Vv7bhPhyTQ='",
+    "'sha256-tzBMNZ7l8nZ/8oEITbEGeJAgNHg7KpJOduvhc+LO138='",
+    "'sha256-EGxSJ+22silg1bQ9JENEw9K11R7B+X79u4xwD5Qlxik='",
+    "'sha256-h/GKjXBq1QiwvO1y7p0JkvVZk4w7xTPz2rn2eswXu3k='",
+    "'sha256-WjBwDsyVeYZp1bK5jTu7D4KrA/IMa4ddhGMJxlQ1td0='",
+    "'sha256-XbNwOSjMIgSNj3ewh1FPDgy/T33iTuvdeceTh/VSFZg='",
+    "'sha256-Il3SIh3CKR0rFwTIxGnMrGJp/sFTpMthnrHh8gzEP20='",
+    "'sha256-ldz4/HaaQgxl7ClJjMpubp7p5ZryxWGew0BQJ/1ev0M='",
     // Next - END
-    `${process.env.NODE_ENV === 'development' ? `'nonce-reactQueryDevtools'` : ''}`,
+    `${isDevelopment ? `'nonce-reactQueryDevtools'` : ''}`,
   ],
 };
 

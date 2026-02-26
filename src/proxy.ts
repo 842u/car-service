@@ -9,7 +9,7 @@ import {
 } from './security/content-security-policy';
 import { getRouteAccessRedirection } from './security/route-access';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { cspString, nonce } = generateCspStringWithNonce(
     baseContentSecurityPolicy,
   );
