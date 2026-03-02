@@ -5,5 +5,6 @@ export function createMockUserRepository() {
     getById: jest.fn(),
     changeAvatarUrl: jest.fn(),
     changeName: jest.fn(),
+    store: jest.fn(),
   } as unknown as jest.Mocked<UserRepository>;
 }
