@@ -5,5 +5,4 @@ import '@/lib/jest/mock/@supabase/ssr';
 import '@/lib/jest/mock/@supabase/supabase-js';
 import '@/lib/jest/mock/globalThis/URL/createObjectURL';
 import '@/lib/jest/mock/globalThis/URL/revokeObjectURL';
-import '@/lib/jest/mock/globalThis/crypto/randomUUID';
 import '@/lib/jest/mock/globalThis/IntersectionObserver';
