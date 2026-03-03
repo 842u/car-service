@@ -3,6 +3,7 @@ import type { Route } from 'next';
 import type { AdminAuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import type { UseCase } from '@/common/application/use-case';
+import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
 import { User } from '@/user/domain/user/user';
 import { Credentials } from '@/user/domain/user/value-object/credentials';
@@ -10,18 +11,22 @@ import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 
 type SignUpUseCaseError = { code: number };
 
-export class SignUpUseCase
-  implements UseCase<SignUpApiRequest, SignUpUseCaseError>
-{
+export class SignUpUseCase implements UseCase<
+  SignUpApiRequest,
+  SignUpUseCaseError
+> {
   private readonly _adminAuthClient: AdminAuthClient;
   private readonly _userRepository: UserRepository;
+  private readonly _userMapper: UserMapper;
 
   constructor(
     adminAuthClient: AdminAuthClient,
     userRepositoryAdmin: UserRepository,
+    userMapper: UserMapper,
   ) {
     this._adminAuthClient = adminAuthClient;
     this._userRepository = userRepositoryAdmin;
+    this._userMapper = userMapper;
   }
 
   async execute(contract: SignUpApiRequest) {
@@ -88,16 +93,7 @@ export class SignUpUseCase
       });
     }
 
-    const userResult = User.create({
-      id: authIdentity.id,
-      email: authIdentity.email!,
-      name:
-        authIdentity.user_metadata?.full_name ||
-        authIdentity.user_metadata?.first_name ||
-        authIdentity.email ||
-        authIdentity.id,
-      avatarUrl: authIdentity.user_metadata?.avatar_url,
-    });
+    const userResult = this._userMapper.authIdentityToDomain(authIdentity);
 
     if (!userResult.success) {
       await this._adminAuthClient.deleteAuthIdentity({

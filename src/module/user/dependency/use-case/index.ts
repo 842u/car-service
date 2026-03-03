@@ -5,13 +5,13 @@ import { NameChangeUseCase } from '@/user/application/use-case/name-change';
 import { PasswordChangeUseCase } from '@/user/application/use-case/password-change';
 import { SignInWithOAuthUseCase } from '@/user/application/use-case/sign-in-with-o-auth';
 import { SignInWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';
-import { SignUpUseCase } from '@/user/application/use-case/sign-up-user-use-case';
+import { SignUpUseCase } from '@/user/application/use-case/sign-up';
 import { userMapper } from '@/user/dependency/mapper';
 import { createUserRepository } from '@/user/dependency/repository';
 import { adminUserRepository } from '@/user/dependency/repository/admin';
 
 export async function createSignUpUseCase() {
-  return new SignUpUseCase(adminAuthClient, adminUserRepository);
+  return new SignUpUseCase(adminAuthClient, adminUserRepository, userMapper);
 }
 
 export async function createSignInWithOAuthUseCase() {
