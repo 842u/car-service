@@ -1,4 +1,7 @@
-import type { AuthClient } from '@/common/application/auth-client';
+import type {
+  AdminAuthClient,
+  AuthClient,
+} from '@/common/application/auth-client';
 
 export function createMockAuthClient() {
   return {
@@ -13,4 +16,12 @@ export function createMockAuthClient() {
     signUp: jest.fn(),
     verifyOtp: jest.fn(),
   } as jest.Mocked<AuthClient>;
+}
+
+export function createMockAdminAuthClient() {
+  return {
+    ...createMockAuthClient(),
+    createAuthIdentity: jest.fn(),
+    deleteAuthIdentity: jest.fn(),
+  } as jest.Mocked<AdminAuthClient>;
 }
