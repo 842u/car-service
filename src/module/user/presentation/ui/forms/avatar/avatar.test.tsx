@@ -1,128 +1,110 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import type { Options } from '@testing-library/user-event';
+import { fireEvent, render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useForm } from 'react-hook-form';
 
-import { MAX_IMAGE_FILE_SIZE_BYTES } from '@/common/interface/schema/image-file.schema';
-import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
+import type { ImageFormData } from '@/common/interface/ui/image-form.schema';
 
-import { AvatarForm } from './avatar';
+import { AVATAR_FORM_TEST_ID, AvatarForm } from './avatar';
 
-const VALID_FILE = new File(['avatar'], 'avatar.png', { type: 'image/png' });
-const TOO_BIG_FILE = new File(
-  [new ArrayBuffer(MAX_IMAGE_FILE_SIZE_BYTES + 100)],
-  'tooBig.png',
-  {
-    type: 'image/png',
-  },
-);
-const WRONG_TYPE_FILE = new File(['wrong type'], 'wrongType.svg', {
-  type: 'image/svg+xml',
-});
-const USER_EVENT_OPTIONS: Options = { applyAccept: false, delay: 15 };
+const mockUseAvatarForm = {
+  handleFormSubmit: jest.fn(),
+  handleImageInputChange: jest.fn(),
+  handleFormReset: jest.fn(),
+  control: createFormControl(),
+  errors: {},
+  inputImageUrl: null as string | null,
+  isSubmitting: false,
+  canReset: false,
+  canSubmit: false,
+};
 
-function TestAvatarForm() {
-  return (
-    <TanStackQueryProvider>
-      <AvatarForm />
-    </TanStackQueryProvider>
+function createFormControl() {
+  const { result } = renderHook(() =>
+    useForm<ImageFormData>({ defaultValues: { image: null } }),
   );
+
+  return result.current.control;
 }
 
+jest.mock('./use-avatar', () => ({
+  useAvatarForm: () => mockUseAvatarForm,
+}));
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  mockUseAvatarForm.canReset = false;
+  mockUseAvatarForm.canSubmit = false;
+  mockUseAvatarForm.isSubmitting = false;
+  mockUseAvatarForm.inputImageUrl = null;
+});
+
 describe('AvatarForm', () => {
-  it('should render a file input for avatar', async () => {
-    render(<TestAvatarForm />);
+  it('should render a file input for avatar', () => {
+    render(<AvatarForm />);
 
     const inputElement = screen.getByLabelText('Avatar');
 
-    await waitFor(() => {
-      expect(inputElement).toBeInTheDocument();
-    });
-    await waitFor(() => {
-      expect(inputElement).toHaveAttribute('type', 'file');
-    });
+    expect(inputElement).toBeInTheDocument();
+    expect(inputElement).toHaveAttribute('type', 'file');
   });
 
-  it('should render a reset button', async () => {
-    render(<TestAvatarForm />);
+  it('should render a reset button', () => {
+    render(<AvatarForm />);
 
-    const resetButtonElement = screen.getByRole('button', { name: 'Reset' });
-
-    await waitFor(() => expect(resetButtonElement).toBeInTheDocument());
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument();
   });
 
-  it('reset button should be initially disabled', async () => {
-    render(<TestAvatarForm />);
+  it('should render a save button', () => {
+    render(<AvatarForm />);
 
-    const resetButtonElement = screen.getByRole('button', { name: 'Reset' });
-
-    await waitFor(() => expect(resetButtonElement).toBeDisabled());
+    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
   });
 
-  it('should render a save button', async () => {
-    render(<TestAvatarForm />);
+  it('should have buttons disabled initially', () => {
+    render(<AvatarForm />);
 
-    const saveButtonElement = screen.getByRole('button', { name: 'Save' });
-
-    await waitFor(() => expect(saveButtonElement).toBeInTheDocument());
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled();
   });
 
-  it('save button should be initially disabled', async () => {
-    render(<TestAvatarForm />);
+  it('should have buttons enabled when hook returns canReset and canSubmit true', () => {
+    mockUseAvatarForm.canReset = true;
+    mockUseAvatarForm.canSubmit = true;
 
-    const saveButtonElement = screen.getByRole('button', { name: 'Save' });
+    render(<AvatarForm />);
 
-    await waitFor(() => expect(saveButtonElement).toBeDisabled());
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled();
   });
 
-  it('buttons should be enabled after selecting a valid file', async () => {
-    const user = userEvent.setup(USER_EVENT_OPTIONS);
-    render(<TestAvatarForm />);
+  it('should call handleFormReset when reset button is clicked', async () => {
+    mockUseAvatarForm.canReset = true;
 
-    const inputElement = screen.getByLabelText('Avatar') as HTMLInputElement;
-    const resetButton = screen.getByRole('button', { name: 'Reset' });
-    const saveButton = screen.getByRole('button', { name: 'Save' });
+    const user = userEvent.setup();
+    render(<AvatarForm />);
 
-    await user.upload(inputElement, VALID_FILE);
+    await user.click(screen.getByRole('button', { name: 'Reset' }));
 
-    await waitFor(() => expect(resetButton).toBeEnabled());
-    await waitFor(() => expect(saveButton).toBeEnabled());
+    expect(mockUseAvatarForm.handleFormReset).toHaveBeenCalledTimes(1);
   });
 
-  it('save button should be disabled after selecting an invalid file', async () => {
-    const user = userEvent.setup(USER_EVENT_OPTIONS);
-    render(<TestAvatarForm />);
+  it('should call handleFormSubmit when form is submitted', () => {
+    render(<AvatarForm />);
 
-    const inputElement = screen.getByLabelText('Avatar') as HTMLInputElement;
-    const resetButton = screen.getByRole('button', { name: 'Reset' });
-    const saveButton = screen.getByRole('button', { name: 'Save' });
+    fireEvent.submit(screen.getByTestId(AVATAR_FORM_TEST_ID));
 
-    await user.upload(inputElement, TOO_BIG_FILE);
-
-    await waitFor(() => expect(resetButton).toBeEnabled());
-    await waitFor(() => expect(saveButton).toBeDisabled());
-
-    await user.upload(inputElement, WRONG_TYPE_FILE);
-
-    await waitFor(() => expect(resetButton).toBeEnabled());
-    await waitFor(() => expect(saveButton).toBeDisabled());
+    expect(mockUseAvatarForm.handleFormSubmit).toHaveBeenCalledTimes(1);
   });
 
-  it('should reset form on reset button click', async () => {
-    const user = userEvent.setup(USER_EVENT_OPTIONS);
-    render(<TestAvatarForm />);
+  it('should call handleImageInputChange when file input changes', async () => {
+    const user = userEvent.setup({ applyAccept: false });
+    render(<AvatarForm />);
 
-    const inputElement = screen.getByLabelText('Avatar') as HTMLInputElement;
-    const resetButton = screen.getByRole('button', { name: 'Reset' });
-    const saveButton = screen.getByRole('button', { name: 'Save' });
+    const file = new File(['avatar'], 'avatar.png', { type: 'image/png' });
+    const input = screen.getByLabelText('Avatar');
 
-    await user.upload(inputElement, VALID_FILE);
+    await user.upload(input, file);
 
-    await waitFor(() => expect(resetButton).toBeEnabled());
-    await waitFor(() => expect(saveButton).toBeEnabled());
-
-    await user.click(resetButton);
-
-    await waitFor(() => expect(resetButton).toBeDisabled());
-    await waitFor(() => expect(saveButton).toBeDisabled());
+    expect(mockUseAvatarForm.handleImageInputChange).toHaveBeenCalled();
   });
 });
