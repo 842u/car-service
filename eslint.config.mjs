@@ -30,6 +30,7 @@ export default tseslintConfig(
       'playwright-report/',
       'resources/',
       'test-result/',
+      '*.jsonc',
     ],
   },
   js.configs.recommended,
