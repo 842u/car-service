@@ -40,7 +40,7 @@ describe('NameSection', () => {
     render(<TestNameSection />);
 
     const nameConstraintsInfo = screen.getByText(
-      `Letters, numbers and single whitespaces allowed. Length between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
+      `Length between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
     );
 
     expect(nameConstraintsInfo).toBeInTheDocument();

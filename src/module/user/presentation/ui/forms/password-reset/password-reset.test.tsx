@@ -1,7 +1,7 @@
-import { createBrowserClient } from '@supabase/ssr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { browserSupabaseClient } from '@/dependency/supabase-client/browser';
 import { correctEmails, wrongEmails } from '@/utils/validation';
 
 import { PasswordResetForm } from './password-reset';
@@ -54,7 +54,9 @@ describe('PasswordResetForm', () => {
     await user.click(submitButton);
     await user.click(submitButton);
 
-    expect(createBrowserClient).not.toHaveBeenCalled();
+    expect(
+      browserSupabaseClient.auth.resetPasswordForEmail,
+    ).not.toHaveBeenCalled();
   });
 
   it('submit handler should be called while correct email provided', async () => {
@@ -70,7 +72,9 @@ describe('PasswordResetForm', () => {
     await user.click(submitButton);
     await user.click(submitButton);
 
-    expect(createBrowserClient).toHaveBeenCalledTimes(1);
+    expect(
+      browserSupabaseClient.auth.resetPasswordForEmail,
+    ).toHaveBeenCalledTimes(1);
   });
 
   it('should be disabled while wrong email format provided', async () => {

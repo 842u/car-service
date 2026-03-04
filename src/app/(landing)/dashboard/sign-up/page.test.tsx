@@ -26,7 +26,7 @@ describe('SignUpPage', () => {
   it('should render email authentication form for signing up', () => {
     render(<SignUpPage />);
 
-    const form = screen.getByRole('form', { name: /email authentication/i });
+    const form = screen.getByRole('form', { name: /sign up/i });
     const signUpButton = screen.getByRole('button', { name: /sign up/i });
 
     expect(form).toBeInTheDocument();

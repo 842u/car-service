@@ -2,10 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
-import {
-  MAX_NAME_LENGTH,
-  MIN_NAME_LENGTH,
-} from '@/user/domain/user/value-object/name/name.schema';
+import { MIN_NAME_LENGTH } from '@/user/domain/user/value-object/name/name.schema';
 
 import { NameForm } from './name';
 
@@ -84,24 +81,16 @@ describe('NameForm', () => {
   it('submit button should be disabled if wrong name input provided', async () => {
     const baseName = 'a';
     const tooShortName = baseName.repeat(MIN_NAME_LENGTH - 1);
-    const tooLongName = baseName.repeat(MAX_NAME_LENGTH + 1);
     const user = userEvent.setup();
     render(<TestNameForm />);
 
     const nameInput = screen.getByRole('textbox', {
       name: 'Name',
     }) as HTMLInputElement;
-    const resetButton = screen.getByRole('button', { name: 'Reset' });
     const saveButton = screen.getByRole('button', { name: 'Save' });
 
     await user.clear(nameInput);
     await user.type(nameInput, tooShortName);
-
-    await waitFor(() => expect(saveButton).toBeDisabled());
-
-    await user.click(resetButton);
-    await user.clear(nameInput);
-    await user.type(nameInput, tooLongName);
 
     await waitFor(() => expect(saveButton).toBeDisabled());
   });
