@@ -192,9 +192,11 @@ test.describe('password_reset_flow - @authenticated', () => {
     await newPasswordInput.fill(newPassword);
     await confirmPasswordInput.fill(newPassword);
     await submitButton.click();
-    const successToast = page.getByLabel(/success notification:/);
+    const successToast = page.getByRole('listitem', {
+      name: /success notification/i,
+    });
 
     await expect(successToast).toBeInViewport();
-    await expect(successToast).toHaveText(/your password has been changed/i);
+    await expect(successToast).toHaveText(/password changed/i);
   });
 });
