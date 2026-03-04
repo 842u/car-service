@@ -8,15 +8,28 @@ export async function createTestUser(testUserIndex: number) {
   const email = testUserIndex + testUserEmail;
   const password = testUserPassword;
 
-  const createUserResult = await adminAuthClient.createAuthIdentity({
+  const createAuthIdentityResult = await adminAuthClient.createAuthIdentity({
     email: testUserIndex + testUserEmail,
     password: testUserPassword,
     email_confirm: true,
   });
 
+  if (!createAuthIdentityResult.success) {
+    const { message } = createAuthIdentityResult.error;
+    throw new Error(`Error on creating auth identity: ${message}.`);
+  }
+
+  const createUserResult = await adminDatabaseClient.query(async (query) =>
+    query('users').insert({
+      id: createAuthIdentityResult.data.id,
+      email,
+      user_name: `test_user_${testUserIndex}`,
+    }),
+  );
+
   if (!createUserResult.success) {
-    const { message } = createUserResult.error;
-    throw new Error(`Error on creating test user: ${message}.`);
+    const { message, code } = createUserResult.error;
+    throw new Error(`Error on creating test user: ${message}, code: ${code}.`);
   }
 
   return { email, password };
