@@ -70,10 +70,12 @@ export class SignUpUseCase implements UseCase<
         return Result.fail({ message, code: status || 500 });
       }
 
+      const obfuscatedId = crypto.randomUUID();
+
       const obfuscatedUserResult = User.create({
-        id: crypto.randomUUID(),
+        id: obfuscatedId,
         email: email,
-        name: email,
+        name: `user-${obfuscatedId.substring(0, 8)}`,
       });
 
       if (!obfuscatedUserResult.success) {
