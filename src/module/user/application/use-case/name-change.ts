@@ -6,9 +6,10 @@ import type { NameChangeApiRequest } from '@/user/interface/api/name-change.sche
 
 type NameChangeUseCaseError = { code: number };
 
-export class NameChangeUseCase
-  implements UseCase<NameChangeApiRequest, NameChangeUseCaseError>
-{
+export class NameChangeUseCase implements UseCase<
+  NameChangeApiRequest,
+  NameChangeUseCaseError
+> {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
 

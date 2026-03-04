@@ -18,7 +18,7 @@ test.describe('sign_out_flow - @authenticated', () => {
     await signOutLink.click();
 
     await expect(page).toHaveURL('/' satisfies Route);
-    expect((await page.context().cookies()).length).toBe(0);
+    expect((await page.context().cookies()).length).toHaveLength(0);
   });
 
   test('should sign out user on sign out click - @desktop @tablet', async ({
@@ -32,6 +32,6 @@ test.describe('sign_out_flow - @authenticated', () => {
     await signOutLink.click();
 
     await expect(page).toHaveURL('/' satisfies Route);
-    expect((await page.context().cookies()).length).toBe(0);
+    expect((await page.context().cookies()).length).toHaveLength(0);
   });
 });

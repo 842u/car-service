@@ -18,9 +18,10 @@ type SignInWithOtpUseCaseError = {
   code: number;
 };
 
-export class SignInWithOtpUseCase
-  implements UseCase<SignInWithOtpContract, SignInWithOtpUseCaseError>
-{
+export class SignInWithOtpUseCase implements UseCase<
+  SignInWithOtpContract,
+  SignInWithOtpUseCaseError
+> {
   private readonly _authClient: AuthClient;
   private readonly _userMapper: UserMapper;
 

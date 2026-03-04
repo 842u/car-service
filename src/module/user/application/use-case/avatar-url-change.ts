@@ -6,9 +6,10 @@ import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-chan
 
 type AvatarUrlChangeUseCaseError = { code: number };
 
-export class AvatarUrlChangeUseCase
-  implements UseCase<AvatarUrlChangeApiRequest, AvatarUrlChangeUseCaseError>
-{
+export class AvatarUrlChangeUseCase implements UseCase<
+  AvatarUrlChangeApiRequest,
+  AvatarUrlChangeUseCaseError
+> {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
 

@@ -20,9 +20,11 @@ type ErrorResponseResult<E extends ApiHandlerResponseError> = FailureResult<
 
 type SuccessResponseResult<T> = SuccessResult<T, { status: number }>;
 
-export class NextApiHandler<T, E extends ApiHandlerResponseError, S>
-  implements ApiHandler<T, E, S>
-{
+export class NextApiHandler<
+  T,
+  E extends ApiHandlerResponseError,
+  S,
+> implements ApiHandler<T, E, S> {
   private readonly _validator: Validator;
 
   constructor(validator: Validator) {

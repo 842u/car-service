@@ -7,9 +7,10 @@ import type { PasswordChangeApiRequest } from '@/user/interface/api/password-cha
 
 type PasswordChangeUseCaseError = { code: number };
 
-export class PasswordChangeUseCase
-  implements UseCase<PasswordChangeApiRequest, PasswordChangeUseCaseError>
-{
+export class PasswordChangeUseCase implements UseCase<
+  PasswordChangeApiRequest,
+  PasswordChangeUseCaseError
+> {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
 

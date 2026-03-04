@@ -12,9 +12,10 @@ type SignInWithOAuthUseCaseError = {
   code: number;
 };
 
-export class SignInWithOAuthUseCase
-  implements UseCase<SignInWithOAuthContract, SignInWithOAuthUseCaseError>
-{
+export class SignInWithOAuthUseCase implements UseCase<
+  SignInWithOAuthContract,
+  SignInWithOAuthUseCaseError
+> {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
