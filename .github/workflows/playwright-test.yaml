@@ -53,8 +53,6 @@ jobs:
             ${{ runner.os }}-${{ github.job }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.job }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-        env:
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Load Cached Docker Images
         if: steps.cache-docker-and-playwright.outputs.cache-hit == 'true'
@@ -73,6 +71,8 @@ jobs:
 
       - name: Build Production App
         run: npm run build
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Run Supabase Instance
         run: npx supabase start ${{ inputs.supabaseStartFlags }}
