@@ -58,7 +58,7 @@ describe('SignUpUseCase', () => {
       expect(mockUserRepository.store).toHaveBeenCalledWith(mockUser);
       expect(mockAdminAuthClient.sendConfirmationEmail).toHaveBeenCalledWith({
         email: contract.email,
-        redirectTo: 'https://preview-branch.vercel.app/dashboard',
+        redirectTo: 'https://preview-branch.vercel.app/api/auth/otp',
       });
     });
 
@@ -188,7 +188,7 @@ describe('SignUpUseCase', () => {
       }
       expect(mockAdminAuthClient.sendConfirmationEmail).toHaveBeenCalledWith({
         email: contract.email,
-        redirectTo: 'https://preview-branch.vercel.app/dashboard',
+        redirectTo: 'https://preview-branch.vercel.app/api/auth/otp',
       });
       expect(mockUserRepository.store).toHaveBeenCalledWith(mockUser);
       expect(mockAdminAuthClient.deleteAuthIdentity).toHaveBeenCalledWith({

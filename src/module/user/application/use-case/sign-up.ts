@@ -122,7 +122,7 @@ export class SignUpUseCase implements UseCase<
     const sendConfirmationEmailResult =
       await this._adminAuthClient.sendConfirmationEmail({
         email: userResult.data.email.value,
-        redirectTo: `${this._origin}/dashboard`,
+        redirectTo: `${this._origin}/api/auth/otp`,
       });
 
     if (!sendConfirmationEmailResult.success) {

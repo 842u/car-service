@@ -2,8 +2,7 @@
 
 <p>Follow this link to confirm your user:</p>
 <p>
-  <a
-    href="{{ .RedirectTo }}/api/auth/otp?token_hash={{ .TokenHash }}&type=email"
+  <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email"
     >Confirm your email</a
   >
 </p>
