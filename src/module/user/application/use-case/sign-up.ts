@@ -1,5 +1,3 @@
-import type { Route } from 'next';
-
 import type { AdminAuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import type { UseCase } from '@/common/application/use-case';
@@ -18,15 +16,18 @@ export class SignUpUseCase implements UseCase<
   private readonly _adminAuthClient: AdminAuthClient;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
+  private readonly _origin: string;
 
   constructor(
     adminAuthClient: AdminAuthClient,
     userRepositoryAdmin: UserRepository,
     userMapper: UserMapper,
+    origin: string,
   ) {
     this._adminAuthClient = adminAuthClient;
     this._userRepository = userRepositoryAdmin;
     this._userMapper = userMapper;
+    this._origin = origin;
   }
 
   async execute(contract: SignUpApiRequest) {
@@ -61,7 +62,7 @@ export class SignUpUseCase implements UseCase<
       const resetPasswordResult = await this._adminAuthClient.resetPassword({
         email,
         options: {
-          redirectTo: '/dashboard' satisfies Route,
+          redirectTo: `${this._origin}/dashboard`,
         },
       });
 
@@ -121,7 +122,7 @@ export class SignUpUseCase implements UseCase<
     const sendConfirmationEmailResult =
       await this._adminAuthClient.sendConfirmationEmail({
         email: userResult.data.email.value,
-        redirectTo: '/dashboard' satisfies Route,
+        redirectTo: `${this._origin}/dashboard`,
       });
 
     if (!sendConfirmationEmailResult.success) {

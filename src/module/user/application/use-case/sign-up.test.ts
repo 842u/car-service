@@ -24,6 +24,7 @@ describe('SignUpUseCase', () => {
       mockAdminAuthClient,
       mockUserRepository,
       mockUserMapper,
+      'https://preview-branch.vercel.app',
     );
   });
 
@@ -34,7 +35,6 @@ describe('SignUpUseCase', () => {
       email: mockUser.email.value,
       password: 'password123',
     };
-
     it('should sign up successfully', async () => {
       mockAdminAuthClient.createAuthIdentity.mockResolvedValue(
         Result.ok(mockAuthIdentity),
@@ -58,7 +58,7 @@ describe('SignUpUseCase', () => {
       expect(mockUserRepository.store).toHaveBeenCalledWith(mockUser);
       expect(mockAdminAuthClient.sendConfirmationEmail).toHaveBeenCalledWith({
         email: contract.email,
-        redirectTo: '/dashboard',
+        redirectTo: 'https://preview-branch.vercel.app/dashboard',
       });
     });
 
@@ -78,7 +78,7 @@ describe('SignUpUseCase', () => {
       expect(mockAdminAuthClient.resetPassword).toHaveBeenCalledWith({
         email: contract.email,
         options: {
-          redirectTo: '/dashboard',
+          redirectTo: 'https://preview-branch.vercel.app/dashboard',
         },
       });
     });
@@ -132,7 +132,7 @@ describe('SignUpUseCase', () => {
       expect(mockAdminAuthClient.resetPassword).toHaveBeenCalledWith({
         email: contract.email,
         options: {
-          redirectTo: '/dashboard',
+          redirectTo: 'https://preview-branch.vercel.app/dashboard',
         },
       });
     });
@@ -188,7 +188,7 @@ describe('SignUpUseCase', () => {
       }
       expect(mockAdminAuthClient.sendConfirmationEmail).toHaveBeenCalledWith({
         email: contract.email,
-        redirectTo: '/dashboard',
+        redirectTo: 'https://preview-branch.vercel.app/dashboard',
       });
       expect(mockUserRepository.store).toHaveBeenCalledWith(mockUser);
       expect(mockAdminAuthClient.deleteAuthIdentity).toHaveBeenCalledWith({

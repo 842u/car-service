@@ -1,5 +1,6 @@
 import { type NextRequest } from 'next/server';
 
+import { getRequestOrigin } from '@/lib/http/get-request-origin';
 import { signUpApiHandler } from '@/user/dependency/api-handler';
 import { userMapper } from '@/user/dependency/mapper';
 import { createSignUpUseCase } from '@/user/dependency/use-case';
@@ -19,7 +20,8 @@ export async function POST(request: NextRequest) {
     return signUpApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const signUpUseCase = await createSignUpUseCase();
+  const origin = getRequestOrigin(request);
+  const signUpUseCase = await createSignUpUseCase(origin);
 
   const useCaseResult = await signUpUseCase.execute(
     preprocessRequestResult.data,

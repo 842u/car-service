@@ -10,8 +10,13 @@ import { userMapper } from '@/user/dependency/mapper';
 import { createUserRepository } from '@/user/dependency/repository';
 import { adminUserRepository } from '@/user/dependency/repository/admin';
 
-export async function createSignUpUseCase() {
-  return new SignUpUseCase(adminAuthClient, adminUserRepository, userMapper);
+export async function createSignUpUseCase(origin: string) {
+  return new SignUpUseCase(
+    adminAuthClient,
+    adminUserRepository,
+    userMapper,
+    origin,
+  );
 }
 
 export async function createSignInWithOAuthUseCase() {
