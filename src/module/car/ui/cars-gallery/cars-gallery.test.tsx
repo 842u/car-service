@@ -7,7 +7,7 @@ import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 import { CarsGallery } from './cars-gallery';
 
-jest.mock('@/utils/supabase/tables/cars.ts', () => ({
+jest.mock('@/lib/supabase/tables/cars.ts', () => ({
   getCarsByPage: jest.fn(),
 }));
 

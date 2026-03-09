@@ -6,11 +6,11 @@ import { addCarOwnershipByUserId } from '@/lib/supabase/tables/cars_ownerships';
 
 import { AddForm } from './add';
 
-jest.mock('@/utils/supabase/tables/cars_ownerships', () => ({
+jest.mock('@/lib/supabase/tables/cars_ownerships', () => ({
   addCarOwnershipByUserId: jest.fn(),
 }));
 
-jest.mock('@/utils/tanstack/cars_ownerships', () => ({
+jest.mock('@/lib/tanstack/cars_ownerships', () => ({
   carsOwnershipsAddOnError: jest.fn(),
   carsOwnershipsAddOnMutate: jest.fn(),
 }));
