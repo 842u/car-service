@@ -1,7 +1,7 @@
 import type { ZodType } from 'zod';
 import { z } from 'zod';
 
-import { parseDateToYyyyMmDd } from '@/lib/general';
+import { parseDateToYyyyMmDd } from '@/lib/utils';
 import type { ServiceCategoryMapping, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
 

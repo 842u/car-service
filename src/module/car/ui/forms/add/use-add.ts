@@ -10,12 +10,12 @@ import type { ApiResponseSuccessResult } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
-import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/lib/general';
 import {
   carsInfiniteAddOnError,
   carsInfiniteAddOnMutate,
 } from '@/lib/tanstack/cars';
 import { queryKeys } from '@/lib/tanstack/keys';
+import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/lib/utils';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 
 type MutationVariables = {

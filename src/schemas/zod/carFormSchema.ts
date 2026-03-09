@@ -2,7 +2,7 @@ import type { ZodType } from 'zod';
 import { z } from 'zod';
 
 import { imageFileSchema } from '@/common/interface/schema/image-file.schema';
-import { parseDateToYyyyMmDd } from '@/lib/general';
+import { parseDateToYyyyMmDd } from '@/lib/utils';
 import type {
   Car,
   DriveMapping,

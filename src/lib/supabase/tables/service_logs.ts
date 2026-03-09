@@ -1,6 +1,6 @@
 import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { browserDatabaseClient } from '@/dependency/database-client/browser';
-import { toSafeNumber } from '@/lib/general';
+import { toSafeNumber } from '@/lib/utils';
 import type { ServiceLog } from '@/types';
 
 export async function getServiceLogsByCarId(carId: string) {

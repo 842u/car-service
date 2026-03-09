@@ -3,7 +3,7 @@ import {
   MAX_IMAGE_FILE_SIZE_BYTES,
 } from '@/common/interface/schema/image-file.schema';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { getMimeTypeExtensions } from '@/lib/general';
+import { getMimeTypeExtensions } from '@/lib/utils';
 import { AvatarForm } from '@/user/presentation/ui/forms/avatar/avatar';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);

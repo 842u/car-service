@@ -6,7 +6,7 @@ import {
   type ImageFormData,
   imageFormSchema,
 } from '@/common/interface/ui/image-form.schema';
-import { enqueueRevokeObjectUrl } from '@/lib/general';
+import { enqueueRevokeObjectUrl } from '@/lib/utils';
 import { useUserAvatarChange } from '@/user/presentation/ui/forms/avatar/use-avatar-change';
 
 export const defaultAvatarFormValues: ImageFormData = {

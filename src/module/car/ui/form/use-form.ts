@@ -3,7 +3,7 @@ import { useEffect, useImperativeHandle, useState } from 'react';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
-import { enqueueRevokeObjectUrl } from '@/lib/general';
+import { enqueueRevokeObjectUrl } from '@/lib/utils';
 import type { CarFormValues } from '@/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/schemas/zod/carFormSchema';
 

@@ -1,4 +1,4 @@
-import { promiseWithTimeout, unslugify } from './general';
+import { promiseWithTimeout, unslugify } from './utils';
 
 describe('promiseWithTimeout()', () => {
   it('should resolve to original promise resolved value if it resolves within the timeout', async () => {
