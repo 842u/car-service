@@ -3,9 +3,9 @@ import { useEffect, useImperativeHandle, useState } from 'react';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
+import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
+import { carFormSchema } from '@/car/schemas/zod/carFormSchema';
 import { enqueueRevokeObjectUrl } from '@/lib/utils';
-import type { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { carFormSchema } from '@/schemas/zod/carFormSchema';
 
 import type { CarFormProps } from './form';
 

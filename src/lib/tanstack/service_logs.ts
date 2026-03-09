@@ -1,6 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 
-import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
 import type { ServiceLog } from '@/types';
 
 import { queryKeys } from './keys';

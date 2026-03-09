@@ -1,6 +1,6 @@
 import type { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
-import type { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import {
   CAR_VIN_LENGTH,
   MAX_CAR_BRAND_LENGTH,
@@ -19,7 +19,7 @@ import {
   MIN_CAR_NAME_LENGTH,
   MIN_CAR_PRODUCTION_YEAR_VALUE,
   MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE,
-} from '@/schemas/zod/carFormSchema';
+} from '@/car/schemas/zod/carFormSchema';
 import {
   driveTypesMapping,
   fuelTypesMapping,

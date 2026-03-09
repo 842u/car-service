@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import type { CarOwnershipAddFormValues } from '@/car/schemas/zod/carOwnershipAddFormSchema';
+import { carOwnershipAddFormSchema } from '@/car/schemas/zod/carOwnershipAddFormSchema';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { addCarOwnershipByUserId } from '@/lib/supabase/tables/cars_ownerships';
 import {
@@ -11,8 +13,6 @@ import {
   carsOwnershipsAddOnMutate,
 } from '@/lib/tanstack/cars_ownerships';
 import { queryKeys } from '@/lib/tanstack/keys';
-import type { CarOwnershipAddFormValues } from '@/schemas/zod/carOwnershipAddFormSchema';
-import { carOwnershipAddFormSchema } from '@/schemas/zod/carOwnershipAddFormSchema';
 import { queryKeys as useQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 import type { AddFormProps } from './add';

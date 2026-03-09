@@ -4,6 +4,7 @@ import type { Route } from 'next';
 import { useEffect, useState } from 'react';
 
 import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/route';
+import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { httpClient } from '@/dependency/http-client';
@@ -12,7 +13,6 @@ import {
   serviceLogsByCarIdAddOnError,
   serviceLogsByCarIdAddOnMutate,
 } from '@/lib/tanstack/service_logs';
-import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 
 import type { AddFormProps } from './add';
 

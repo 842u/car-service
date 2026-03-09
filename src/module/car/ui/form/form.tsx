@@ -1,6 +1,6 @@
 import type { Ref } from 'react';
 
-import type { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import type { Car } from '@/types';
 import { Button } from '@/ui/button/button';
 import type { FormProps } from '@/ui/form/form';

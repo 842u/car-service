@@ -1,13 +1,13 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 
+import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
+import { carFormSchema } from '@/car/schemas/zod/carFormSchema';
 import {
   errorApiResponse,
   successApiResponse,
 } from '@/common/interface/api/response';
 import { createServerDatabaseClient } from '@/dependency/database-client/server';
-import type { CarFormValues } from '@/schemas/zod/carFormSchema';
-import { carFormSchema } from '@/schemas/zod/carFormSchema';
 
 type CarFormValuesToValidate = Omit<CarFormValues, 'image'>;
 

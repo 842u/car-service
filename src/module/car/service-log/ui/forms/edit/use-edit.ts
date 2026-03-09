@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 
 import type { ServiceLogPatchRouteHandlerRequest } from '@/app/api/service-log/route';
+import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
 import { queryKeys } from '@/lib/tanstack/keys';
@@ -10,7 +11,6 @@ import {
   serviceLogsByCarIdEditOnError,
   serviceLogsByCarIdEditOnMutate,
 } from '@/lib/tanstack/service_logs';
-import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import type { ServiceLog } from '@/types';
 
 export type UseEditFormOptions = {

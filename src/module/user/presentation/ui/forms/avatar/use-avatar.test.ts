@@ -15,7 +15,7 @@ jest.mock('./use-avatar-change', () => ({
 
 const mockEnqueueRevokeObjectUrl = jest.fn();
 
-jest.mock('@/lib/general', () => ({
+jest.mock('@/lib/utils', () => ({
   enqueueRevokeObjectUrl: (...args: unknown[]) =>
     mockEnqueueRevokeObjectUrl(...args),
 }));
