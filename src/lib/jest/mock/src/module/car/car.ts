@@ -1,0 +1,43 @@
+import type { Car } from '@/types';
+
+export function createMockCar({
+  id = '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6',
+  custom_name = 'Name',
+  brand = 'Brand',
+  model = 'Model',
+  image_url = 'http://some.url',
+  license_plates = null,
+  additional_fuel_type = null,
+  created_at = null,
+  created_by = null,
+  drive_type = null,
+  engine_capacity = null,
+  fuel_type = null,
+  insurance_expiration = null,
+  mileage = null,
+  production_year = null,
+  technical_inspection_expiration = null,
+  transmission_type = null,
+  vin = null,
+}: Partial<Car> = {}): Car {
+  return {
+    id,
+    custom_name,
+    brand,
+    model,
+    license_plates,
+    image_url,
+    additional_fuel_type,
+    created_at,
+    created_by,
+    drive_type,
+    engine_capacity,
+    fuel_type,
+    insurance_expiration,
+    mileage,
+    production_year,
+    technical_inspection_expiration,
+    transmission_type,
+    vin,
+  };
+}

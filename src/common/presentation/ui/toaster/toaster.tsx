@@ -26,7 +26,7 @@ const ToastsAnimation: MotionProps = {
 };
 
 const framerFeatures = () =>
-  import('@/utils/motion/motion').then((mod) => mod.default);
+  import('@/lib/motion/motion').then((mod) => mod.default);
 
 export function Toaster({
   maxToasts = 3,

@@ -1,9 +1,9 @@
 import type { ZodType } from 'zod';
 import { z } from 'zod';
 
+import { parseDateToYyyyMmDd } from '@/lib/general';
 import type { ServiceCategoryMapping, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
-import { parseDateToYyyyMmDd } from '@/utils/general';
 
 import { carMileageSchema } from './carFormSchema';
 

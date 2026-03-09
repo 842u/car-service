@@ -7,12 +7,12 @@ import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/ro
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { httpClient } from '@/dependency/http-client';
-import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import { queryKeys } from '@/utils/tanstack/keys';
+import { queryKeys } from '@/lib/tanstack/keys';
 import {
   serviceLogsByCarIdAddOnError,
   serviceLogsByCarIdAddOnMutate,
-} from '@/utils/tanstack/service_logs';
+} from '@/lib/tanstack/service_logs';
+import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 
 import type { AddFormProps } from './add';
 

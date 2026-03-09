@@ -1,7 +1,7 @@
 import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { browserDatabaseClient } from '@/dependency/database-client/browser';
+import { toSafeNumber } from '@/lib/general';
 import type { ServiceLog } from '@/types';
-import { toSafeNumber } from '@/utils/general';
 
 export async function getServiceLogsByCarId(carId: string) {
   const queryResult = await browserDatabaseClient.query(async (from) =>

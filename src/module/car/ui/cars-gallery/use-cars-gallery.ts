@@ -6,8 +6,8 @@ import {
 import { useEffect, useRef } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getCarsByPage } from '@/utils/supabase/tables/cars';
-import { queryKeys } from '@/utils/tanstack/keys';
+import { getCarsByPage } from '@/lib/supabase/tables/cars';
+import { queryKeys } from '@/lib/tanstack/keys';
 
 export function useCarsGallery() {
   const intersectionTargetRef = useRef<HTMLDivElement>(null);

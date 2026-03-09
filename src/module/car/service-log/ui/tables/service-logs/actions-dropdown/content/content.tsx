@@ -5,16 +5,16 @@ import { useRef } from 'react';
 import { DeleteModal } from '@/car/service-log/ui/modals/delete/delete';
 import { EditModal } from '@/car/service-log/ui/modals/edit/edit';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { deleteServiceLogById } from '@/lib/supabase/tables/service_logs';
+import { queryKeys } from '@/lib/tanstack/keys';
+import {
+  serviceLogsByCarIdDeleteOnError,
+  serviceLogsByCarIdDeleteOnMutate,
+} from '@/lib/tanstack/service_logs';
 import type { ServiceLog } from '@/types';
 import { Button } from '@/ui/button/button';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { Dropdown } from '@/ui/dropdown/dropdown';
-import { deleteServiceLogById } from '@/utils/supabase/tables/service_logs';
-import { queryKeys } from '@/utils/tanstack/keys';
-import {
-  serviceLogsByCarIdDeleteOnError,
-  serviceLogsByCarIdDeleteOnMutate,
-} from '@/utils/tanstack/service_logs';
 
 export type DropdownContentProps = {
   canTakeAction: boolean;

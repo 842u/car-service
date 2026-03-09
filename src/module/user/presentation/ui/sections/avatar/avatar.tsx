@@ -3,8 +3,8 @@ import {
   MAX_IMAGE_FILE_SIZE_BYTES,
 } from '@/common/interface/schema/image-file.schema';
 import { DashboardSection } from '@/dashboard/ui/section/section';
+import { getMimeTypeExtensions } from '@/lib/general';
 import { AvatarForm } from '@/user/presentation/ui/forms/avatar/avatar';
-import { getMimeTypeExtensions } from '@/utils/general';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = MAX_IMAGE_FILE_SIZE_BYTES / (1024 * 1024);

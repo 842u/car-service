@@ -1,17 +1,22 @@
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
-import { MOCK_CAR_ID, MOCK_OWNERSHIPS } from '@/utils/jest/mocks/supabase';
+import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
+import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership';
+import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
 
 import { SECTION_CONTROLS_TEST_ID } from './controls/controls';
 import { OwnershipsSection } from './ownerships';
 
 function TestOwnershipsSection() {
+  const mockUser = createMockUser();
+  const mockCar = createMockCar();
+  const mockOwnership = createMockCarOwnership({ owner_id: mockUser.id.value });
   return (
     <TanStackQueryProvider>
       <OwnershipsSection
-        carId={MOCK_CAR_ID}
-        carOwnerships={MOCK_OWNERSHIPS}
+        carId={mockCar.id}
+        carOwnerships={[mockOwnership]}
         isCurrentUserPrimaryOwner={true}
         owners={[]}
       />

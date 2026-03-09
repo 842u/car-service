@@ -8,7 +8,7 @@ import type { UseMouseTiltAnimationOptions } from '@/common/presentation/hook/us
 import { useMouseTiltAnimation } from '@/common/presentation/hook/use-mouse-tilt-animation';
 
 const motionFeatures = () =>
-  import('@/utils/motion/motion').then((module) => module.default);
+  import('@/lib/motion/motion').then((module) => module.default);
 
 export type CardProps = HTMLMotionProps<'div'> & UseMouseTiltAnimationOptions;
 

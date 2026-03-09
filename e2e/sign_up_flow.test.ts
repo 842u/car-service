@@ -1,7 +1,7 @@
 import type { Route } from 'next';
 
-import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
-import { wrongEmails } from '@/utils/validation';
+import { createTestUser, deleteTestUser } from '@/lib/supabase/general';
+import { wrongEmails } from '@/lib/validation';
 
 import { expect, test } from './fixtures';
 

@@ -5,15 +5,15 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import type { CarOwnershipAddFormValues } from '@/schemas/zod/carOwnershipAddFormSchema';
-import { carOwnershipAddFormSchema } from '@/schemas/zod/carOwnershipAddFormSchema';
-import { queryKeys as useQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
-import { addCarOwnershipByUserId } from '@/utils/supabase/tables/cars_ownerships';
+import { addCarOwnershipByUserId } from '@/lib/supabase/tables/cars_ownerships';
 import {
   carsOwnershipsAddOnError,
   carsOwnershipsAddOnMutate,
-} from '@/utils/tanstack/cars_ownerships';
-import { queryKeys } from '@/utils/tanstack/keys';
+} from '@/lib/tanstack/cars_ownerships';
+import { queryKeys } from '@/lib/tanstack/keys';
+import type { CarOwnershipAddFormValues } from '@/schemas/zod/carOwnershipAddFormSchema';
+import { carOwnershipAddFormSchema } from '@/schemas/zod/carOwnershipAddFormSchema';
+import { queryKeys as useQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 import type { AddFormProps } from './add';
 

@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { browserAuthClient } from '@/dependency/auth-client/browser';
+import { getCar } from '@/lib/supabase/tables/cars';
+import { getCarOwnerships } from '@/lib/supabase/tables/cars_ownerships';
+import { queryKeys } from '@/lib/tanstack/keys';
 import { userDataSource } from '@/user/dependency/data-source';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
-import { getCar } from '@/utils/supabase/tables/cars';
-import { getCarOwnerships } from '@/utils/supabase/tables/cars_ownerships';
-import { queryKeys } from '@/utils/tanstack/keys';
 
 import type { SettingsSectionProps } from './settings';
 

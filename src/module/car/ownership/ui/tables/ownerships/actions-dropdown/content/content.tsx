@@ -7,21 +7,21 @@ import { useRef } from 'react';
 import { DeleteModal } from '@/car/ownership/ui/modals/delete/delete';
 import { PromoteModal } from '@/car/ownership/ui/modals/promote/promote';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import {
+  deleteCarOwnershipsByUsersIds,
+  updateCarPrimaryOwnershipByUserId,
+} from '@/lib/supabase/tables/cars_ownerships';
+import {
+  carsOwnershipsDeleteOnMutate,
+  carsOwnershipsUpdateOnError,
+  carsOwnershipsUpdateOnMutate,
+} from '@/lib/tanstack/cars_ownerships';
+import { queryKeys } from '@/lib/tanstack/keys';
 import type { CarOwnership } from '@/types';
 import { Button } from '@/ui/button/button';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
-import {
-  deleteCarOwnershipsByUsersIds,
-  updateCarPrimaryOwnershipByUserId,
-} from '@/utils/supabase/tables/cars_ownerships';
-import {
-  carsOwnershipsDeleteOnMutate,
-  carsOwnershipsUpdateOnError,
-  carsOwnershipsUpdateOnMutate,
-} from '@/utils/tanstack/cars_ownerships';
-import { queryKeys } from '@/utils/tanstack/keys';
 
 export type DropdownContentProps = {
   ownership: CarOwnership;

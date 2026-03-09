@@ -5,10 +5,10 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';
+import { getServiceLogsByCarId } from '@/lib/supabase/tables/service_logs';
+import { queryKeys } from '@/lib/tanstack/keys';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import type { UserDto } from '@/user/application/dto/user';
-import { getServiceLogsByCarId } from '@/utils/supabase/tables/service_logs';
-import { queryKeys } from '@/utils/tanstack/keys';
 
 import { ServiceLogsTable } from '../../tables/service-logs/service-logs';
 import type { SectionControlsProps } from './controls/controls';

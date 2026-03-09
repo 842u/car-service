@@ -1,12 +1,12 @@
 import type { QueryClient } from '@tanstack/react-query';
 
-import type { CarFormValues } from '@/schemas/zod/carFormSchema';
-import type { Car, CarsInfiniteQueryData } from '@/types';
-import type { ToastType } from '@/ui/toaster/toast/toast';
 import {
   CAR_IMAGE_UPLOAD_ERROR_CAUSE,
   parseDateToYyyyMmDd,
-} from '@/utils/general';
+} from '@/lib/general';
+import type { CarFormValues } from '@/schemas/zod/carFormSchema';
+import type { Car, CarsInfiniteQueryData } from '@/types';
+import type { ToastType } from '@/ui/toaster/toast/toast';
 
 import { queryKeys } from './keys';
 

@@ -1,8 +1,8 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import type { ButtonVariants } from '@/utils/tailwindcss/button';
-import { buttonVariants } from '@/utils/tailwindcss/button';
+import type { ButtonVariants } from '@/lib/tailwindcss/button';
+import { buttonVariants } from '@/lib/tailwindcss/button';
 
 export type ButtonProps = ComponentPropsWithoutRef<'button'> & {
   className?: string;

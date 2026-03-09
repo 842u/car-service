@@ -5,13 +5,13 @@ import type { Route } from 'next';
 import type { ServiceLogPatchRouteHandlerRequest } from '@/app/api/service-log/route';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
-import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import type { ServiceLog } from '@/types';
-import { queryKeys } from '@/utils/tanstack/keys';
+import { queryKeys } from '@/lib/tanstack/keys';
 import {
   serviceLogsByCarIdEditOnError,
   serviceLogsByCarIdEditOnMutate,
-} from '@/utils/tanstack/service_logs';
+} from '@/lib/tanstack/service_logs';
+import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
+import type { ServiceLog } from '@/types';
 
 export type UseEditFormOptions = {
   serviceLog: ServiceLog;

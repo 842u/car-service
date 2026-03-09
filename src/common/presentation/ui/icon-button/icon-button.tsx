@@ -1,8 +1,8 @@
 import type { ComponentProps, MouseEventHandler, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import type { ButtonVariants } from '@/utils/tailwindcss/button';
-import { buttonVariants } from '@/utils/tailwindcss/button';
+import type { ButtonVariants } from '@/lib/tailwindcss/button';
+import { buttonVariants } from '@/lib/tailwindcss/button';
 
 export type IconButtonProps = ComponentProps<'button'> & {
   children: ReactNode;

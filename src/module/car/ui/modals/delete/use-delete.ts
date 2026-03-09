@@ -4,13 +4,13 @@ import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import type { Car } from '@/types';
-import { deleteCar } from '@/utils/supabase/tables/cars';
+import { deleteCar } from '@/lib/supabase/tables/cars';
 import {
   carsInfiniteDeleteOnError,
   carsInfiniteDeleteOnMutate,
-} from '@/utils/tanstack/cars';
-import { queryKeys } from '@/utils/tanstack/keys';
+} from '@/lib/tanstack/cars';
+import { queryKeys } from '@/lib/tanstack/keys';
+import type { Car } from '@/types';
 
 export type UseDeleteModalOptions = {
   carId: string;

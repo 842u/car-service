@@ -2,9 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { parseDateToYyyyMmDd } from '@/lib/general';
 import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
 import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
-import { parseDateToYyyyMmDd } from '@/utils/general';
 
 import type { ServiceLogFormProps } from './form';
 

@@ -3,10 +3,10 @@ import { mutationOptions } from '@tanstack/react-query';
 
 import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
+import { hashFile } from '@/lib/general';
 import type { UserDto } from '@/user/application/dto/user';
 import { userApiClient } from '@/user/dependency/api-client';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
-import { hashFile } from '@/utils/general';
 
 type MutationVariables = {
   image: File | undefined | null;

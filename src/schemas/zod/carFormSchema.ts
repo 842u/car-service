@@ -2,6 +2,7 @@ import type { ZodType } from 'zod';
 import { z } from 'zod';
 
 import { imageFileSchema } from '@/common/interface/schema/image-file.schema';
+import { parseDateToYyyyMmDd } from '@/lib/general';
 import type {
   Car,
   DriveMapping,
@@ -13,7 +14,6 @@ import {
   fuelTypesMapping,
   transmissionTypesMapping,
 } from '@/types';
-import { parseDateToYyyyMmDd } from '@/utils/general';
 
 type CarFormSchemaShape = Omit<
   { [K in keyof Car]: ZodType },

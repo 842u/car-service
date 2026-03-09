@@ -1,6 +1,6 @@
 import type { ColumnFiltersState, Row } from '@tanstack/react-table';
 
-import { inputVariants } from '@/utils/tailwindcss/input';
+import { inputVariants } from '@/lib/tailwindcss/input';
 
 import { useTable } from '../../table';
 

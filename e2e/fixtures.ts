@@ -2,7 +2,7 @@ import type { Locator, Page } from '@playwright/test';
 import { expect, test as base } from '@playwright/test';
 import type { Route } from 'next';
 
-import { createTestUser, deleteTestUser } from '@/utils/supabase/general';
+import { createTestUser, deleteTestUser } from '@/lib/supabase/general';
 
 class AuthenticatedPage {
   public readonly page: Page;
