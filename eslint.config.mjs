@@ -31,6 +31,7 @@ export default tseslintConfig(
       'resources/',
       'test-result/',
       '*.jsonc',
+      'supabase/functions/',
     ],
   },
   js.configs.recommended,
