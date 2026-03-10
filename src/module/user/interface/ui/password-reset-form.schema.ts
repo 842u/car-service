@@ -1,0 +1,13 @@
+import { z } from 'zod';
+
+import { emailSchema } from '@/user/domain/user/value-object/email/email.schema';
+
+z.config({
+  jitless: true,
+});
+
+export const passwordResetFormSchema = z.object({
+  email: emailSchema,
+});
+
+export type PasswordResetFormData = z.infer<typeof passwordResetFormSchema>;

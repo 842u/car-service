@@ -1,10 +1,14 @@
 import type { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 
-import type { CarServiceLogFormValues } from '@/schemas/zod/carServiceLogFormSchema';
-import { carServiceLogFormSchema } from '@/schemas/zod/carServiceLogFormSchema';
-import { dataResponse, errorResponse } from '@/utils/next/routeHandlers';
-import { createClient } from '@/utils/supabase/server';
+import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
+import { carServiceLogFormSchema } from '@/car/schemas/zod/carServiceLogFormSchema';
+import {
+  errorApiResponse,
+  successApiResponse,
+} from '@/common/interface/api/response';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
+import { createServerDatabaseClient } from '@/dependency/database-client/server';
 
 export type ServiceLogPostRouteHandlerRequest = {
   formData: CarServiceLogFormValues;
@@ -24,8 +28,8 @@ export const maxDuration = 10;
 
 export async function POST(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json') {
-    return errorResponse(
-      "Invalid content type. Expected 'application/json'.",
+    return errorApiResponse(
+      { message: "Invalid content type. Expected 'application/json'." },
       415,
     );
   }
@@ -37,65 +41,86 @@ export async function POST(request: NextRequest) {
     ({ formData, car_id } =
       (await request.json()) as Partial<ServiceLogPostRouteHandlerRequest>);
   } catch (_) {
-    return errorResponse('Invalid JSON.', 400);
+    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
   if (!formData) {
-    return errorResponse('Missing form data in request body.', 400);
+    return errorApiResponse(
+      { message: 'Missing form data in request body.' },
+      400,
+    );
   }
 
   if (!car_id) {
-    return errorResponse("Missing 'car_id' in request body.", 400);
+    return errorApiResponse(
+      { message: "Missing 'car_id' in request body." },
+      400,
+    );
   }
 
   try {
     carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorResponse(
-        `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+      return errorApiResponse(
+        {
+          message: `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+        },
         400,
       );
     }
 
     if (error instanceof Error) {
-      return errorResponse(`Validation error: ${error.message}.`, 400);
+      return errorApiResponse(
+        { message: `Validation error: ${error.message}.` },
+        400,
+      );
     }
 
-    return errorResponse('Validation error: Unknown error occurred.', 400);
+    return errorApiResponse(
+      { message: 'Validation error: Unknown error occurred.' },
+      400,
+    );
   }
 
-  const supabase = await createClient();
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const authClient = await createServerAuthClient();
 
-  if (userError) {
-    return errorResponse('Failed to retrieve authenticated user.', 502);
+  const sessionResult = await authClient.authenticate();
+
+  if (!sessionResult.success) {
+    const { message } = sessionResult.error;
+    return errorApiResponse({ message }, 401);
   }
 
-  const { data: serviceLogData, error: serviceLogError } = await supabase
-    .from('service_logs')
-    .insert({
-      ...formData,
-      created_by: userData.user.id,
-      car_id,
-    })
-    .select('id')
-    .single();
+  const authIdentity = sessionResult.data;
 
-  if (serviceLogError) {
-    return errorResponse('Failed to insert service log entry.', 502);
-  }
+  const dbClient = await createServerDatabaseClient();
 
-  return dataResponse<ServiceLogRouteHandlerResponse>(
-    { id: serviceLogData.id },
-    201,
+  const queryResult = await dbClient.query(async (from) =>
+    from('service_logs')
+      .insert({
+        ...formData,
+        created_by: authIdentity.id,
+        car_id,
+      })
+      .select('id')
+      .single(),
   );
+
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    return errorApiResponse({ message }, 502);
+  }
+
+  const { id } = queryResult.data;
+
+  return successApiResponse({ id }, 201);
 }
 
 export async function PATCH(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json') {
-    return errorResponse(
-      "Invalid content type. Expected 'application/json'.",
+    return errorApiResponse(
+      { message: "Invalid content type. Expected 'application/json'." },
       415,
     );
   }
@@ -107,49 +132,64 @@ export async function PATCH(request: NextRequest) {
     ({ formData, service_log_id } =
       (await request.json()) as Partial<ServiceLogPatchRouteHandlerRequest>);
   } catch (_) {
-    return errorResponse('Invalid JSON.', 400);
+    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
   }
 
   if (!formData) {
-    return errorResponse('Missing form data in request body.', 400);
+    return errorApiResponse(
+      { message: 'Missing form data in request body.' },
+      400,
+    );
   }
 
   if (!service_log_id) {
-    return errorResponse("Missing 'service_log_id' in request body.", 400);
+    return errorApiResponse(
+      { message: "Missing 'service_log_id' in request body." },
+      400,
+    );
   }
 
   try {
     carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorResponse(
-        `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+      return errorApiResponse(
+        {
+          message: `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
+        },
         400,
       );
     }
 
     if (error instanceof Error) {
-      return errorResponse(`Validation error: ${error.message}.`, 400);
+      return errorApiResponse(
+        { message: `Validation error: ${error.message}.` },
+        400,
+      );
     }
 
-    return errorResponse('Validation error: Unknown error occurred.', 400);
+    return errorApiResponse(
+      { message: 'Validation error: Unknown error occurred.' },
+      400,
+    );
   }
 
-  const supabase = await createClient();
+  const dbClient = await createServerDatabaseClient();
 
-  const { data: serviceLogData, error: serviceLogError } = await supabase
-    .from('service_logs')
-    .update({ ...formData })
-    .eq('id', service_log_id)
-    .select('id')
-    .single();
-
-  if (serviceLogError) {
-    return errorResponse('Failed to update service log entry.', 502);
-  }
-
-  return dataResponse<ServiceLogRouteHandlerResponse>(
-    { id: serviceLogData.id },
-    200,
+  const queryResult = await dbClient.query(async (from) =>
+    from('service_logs')
+      .update({ ...formData })
+      .eq('id', service_log_id)
+      .select('id')
+      .single(),
   );
+
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    return errorApiResponse({ message }, 502);
+  }
+
+  const { id } = queryResult.data;
+
+  return successApiResponse({ id }, 200);
 }

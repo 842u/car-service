@@ -9,10 +9,9 @@ const configWithBundleAnalyzer = bundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
-  experimental: {
-    typedRoutes: true,
-  },
+  typedRoutes: true,
   images: {
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
         protocol: allowedOrigins.google.avatars.protocol.replace(':', '') as
@@ -33,9 +32,6 @@ const nextConfig: NextConfig = {
         hostname: allowedOrigins.supabase.app.hostname,
       },
     ],
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   async headers() {
     return [

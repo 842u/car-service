@@ -1,26 +1,7 @@
 import type { InfiniteData } from '@tanstack/react-query';
-import type { JSX } from 'react';
+import type { Database } from 'supabase/types/supabase';
 
-import type { Database } from './supabase';
-
-export type ToastType = 'info' | 'success' | 'error' | 'warning';
-
-export type Toast = {
-  id: string;
-  message: string;
-  type: ToastType;
-};
-
-export type ToastAsset = {
-  style: string;
-  icon: JSX.Element;
-};
-
-export type RouteHandlerResponse<T = unknown> =
-  | { error: null; data: T }
-  | { data: null; error: { message: string } };
-
-export type Profile = Database['public']['Tables']['profiles']['Row'];
+export type User = Database['public']['Tables']['users']['Row'];
 
 export type Car = Database['public']['Tables']['cars']['Row'];
 
@@ -84,20 +65,3 @@ export type CarsInfiniteQueryPageData = {
 };
 
 export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;
-
-export type ButtonVariants =
-  | 'default'
-  | 'accent'
-  | 'transparent'
-  | 'transparentError'
-  | 'error';
-
-export type SectionVariants =
-  | 'default'
-  | 'transparent'
-  | 'errorDefault'
-  | 'errorTransparent';
-
-export type FormVariants = 'default' | 'transparent' | 'raw';
-
-export type InputVariants = 'default' | 'transparent' | 'error';

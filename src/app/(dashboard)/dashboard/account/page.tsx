@@ -3,23 +3,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { PasswordChangeSection } from '@/auth/ui/sections/password-change/password-change';
-import { useToasts } from '@/common/hooks/use-toasts';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
-import { AvatarSection } from '@/user/ui/sections/avatar/avatar';
-import { IdSection } from '@/user/ui/sections/id/id';
-import { UsernameSection } from '@/user/ui/sections/username/username';
-import { getCurrentSessionProfile } from '@/utils/supabase/tables/profiles';
-import { queryKeys } from '@/utils/tanstack/keys';
+import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
+import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
+import { IdSection } from '@/user/presentation/ui/sections/id/id';
+import { NameSection } from '@/user/presentation/ui/sections/name/name';
+import { PasswordChangeSection } from '@/user/presentation/ui/sections/password-change/password-change';
 
 export default function AccountPage() {
   const { addToast } = useToasts();
 
-  const { data, error, isError } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.profilesCurrentSession,
-    queryFn: getCurrentSessionProfile,
-  });
+  const { data, error, isError } = useQuery(getSessionUserQueryOptions);
 
   useEffect(() => {
     isError && addToast(error.message, 'error');
@@ -32,8 +27,8 @@ export default function AccountPage() {
         className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
       >
         <IdSection id={data?.id} />
-        <UsernameSection username={data?.username} />
-        <AvatarSection avatarUrl={data?.avatar_url} />
+        <NameSection name={data?.name} />
+        <AvatarSection avatarUrl={data?.avatarUrl} />
         <PasswordChangeSection />
       </section>
     </DashboardMain>

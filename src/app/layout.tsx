@@ -3,9 +3,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 
-import { Providers } from '@/common/providers/providers';
+import { Providers } from '@/common/presentation/provider/providers';
+import { inter } from '@/lib/next/fonts';
 import LazyToaster from '@/ui/toaster/lazy-toaster';
-import { inter } from '@/utils/fonts';
 
 export const metadata: Metadata = {
   title: 'Car Service',

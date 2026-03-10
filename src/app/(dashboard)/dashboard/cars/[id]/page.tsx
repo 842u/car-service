@@ -3,7 +3,8 @@ import { redirect } from 'next/navigation';
 
 import { SettingsSection } from '@/car/ui/sections/settings/settings';
 import { DashboardMain } from '@/dashboard/ui/main/main';
-import { createClient } from '@/utils/supabase/server';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
+import { createServerDatabaseClient } from '@/dependency/database-client/server';
 
 type CarPageProps = {
   params: Promise<{ id: string }>;
@@ -12,22 +13,25 @@ type CarPageProps = {
 export default async function CarPage({ params }: CarPageProps) {
   const { id } = await params;
 
-  const supabase = await createClient();
+  const authClient = await createServerAuthClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const sessionResult = await authClient.authenticate();
 
-  if (!user) redirect('/dashboard/sign-in' satisfies Route);
+  if (!sessionResult.success) redirect('/dashboard/sign-in' satisfies Route);
 
-  const { data: ownership } = await supabase
-    .from('cars_ownerships')
-    .select()
-    .eq('car_id', id)
-    .eq('owner_id', user.id)
-    .single();
+  const authIdentity = sessionResult.data;
 
-  if (!ownership) redirect('/dashboard/cars' satisfies Route);
+  const dbClient = await createServerDatabaseClient();
+
+  const ownershipResult = await dbClient.query(async (from) =>
+    from('cars_ownerships')
+      .select()
+      .eq('car_id', id)
+      .eq('owner_id', authIdentity.id)
+      .single(),
+  );
+
+  if (!ownershipResult.success) redirect('/dashboard/cars' satisfies Route);
 
   return (
     <DashboardMain>

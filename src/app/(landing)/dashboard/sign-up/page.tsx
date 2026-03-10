@@ -1,8 +1,8 @@
-import EmailAuthForm from '@/auth/ui/forms/email-auth/email-auth';
-import { OAuthProvidersSection } from '@/auth/ui/sections/o-auth-providers/o-auth-providers';
-import { SignInLink } from '@/auth/ui/sign-in-link/sign-in-link';
-import { BrandFullIcon } from '@/features/common/ui/decorative/icons/brand-full';
+import { BrandFullIcon } from '@/icons/brand-full';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
+import { SignUpForm } from '@/user/presentation/ui/forms/sign-up/sign-up';
+import { OAuthProvidersSection } from '@/user/presentation/ui/sections/o-auth-providers/o-auth-providers';
+import { SignInLink } from '@/user/presentation/ui/sign-in-link/sign-in-link';
 
 export default function SignUpPage() {
   return (
@@ -20,7 +20,7 @@ export default function SignUpPage() {
           </h1>
           <OAuthProvidersSection />
           <TextSeparator text="or" />
-          <EmailAuthForm type="sign-up" />
+          <SignUpForm />
           <SignInLink className="mx-auto" />
         </section>
       </div>

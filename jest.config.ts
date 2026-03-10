@@ -1,5 +1,5 @@
 import type { Config } from 'jest';
-import nextJest from 'next/jest';
+import nextJest from 'next/jest.js';
 
 const createJestConfig = nextJest({
   dir: './',
@@ -19,26 +19,27 @@ const config: Config = {
   reporters: ['default', 'github-actions'],
 
   testPathIgnorePatterns: [
-    './node_modules',
-    './e2e',
-    './resources',
-    './next',
-    './coverage',
-    './playwright',
-    './playwright-report',
-    './test-results',
+    '<rootDir>/node_modules',
+    '<rootDir>/e2e',
+    '<rootDir>/resources',
+    '<rootDir>/.next',
+    '<rootDir>/coverage',
+    '<rootDir>/playwright',
+    '<rootDir>/playwright-report',
+    '<rootDir>/test-results',
   ],
 
   testEnvironment: 'jsdom',
 
   moduleNameMapper: {
-    '^@/ui/(.*)$': '<rootDir>/src/features/common/ui/$1',
-    '^@/landing/(.*)$': '<rootDir>/src/features/landing/$1',
-    '^@/dashboard/(.*)$': '<rootDir>/src/features/dashboard/$1',
-    '^@/auth/(.*)$': '<rootDir>/src/features/auth/$1',
-    '^@/user/(.*)$': '<rootDir>/src/features/user/$1',
-    '^@/car/(.*)$': '<rootDir>/src/features/car/$1',
-    '^@/common/(.*)$': '<rootDir>/src/features/common/$1',
+    '^@/icons/(.*)$':
+      '<rootDir>/src/common/presentation/ui/decorative/icons/$1',
+    '^@/ui/(.*)$': '<rootDir>/src/common/presentation/ui/$1',
+    '^@/landing/(.*)$': '<rootDir>/src/module/landing/$1',
+    '^@/dashboard/(.*)$': '<rootDir>/src/module/dashboard/$1',
+    '^@/user/(.*)$': '<rootDir>/src/module/user/$1',
+    '^@/car/(.*)$': '<rootDir>/src/module/car/$1',
+    '^@/common/(.*)$': '<rootDir>/src/common/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 };

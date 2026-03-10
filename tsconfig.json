@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "incremental": true,
     "plugins": [
@@ -21,18 +21,23 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@/icons/*": ["./src/features/common/ui/decorative/icons/*"],
-      "@/ui/*": ["./src/features/common/ui/*"],
-      "@/landing/*": ["./src/features/landing/*"],
-      "@/dashboard/*": ["./src/features/dashboard/*"],
-      "@/auth/*": ["./src/features/auth/*"],
-      "@/user/*": ["./src/features/user/*"],
-      "@/car/*": ["./src/features/car/*"],
-      "@/common/*": ["./src/features/common/*"],
+      "@/icons/*": ["src/common/presentation/ui/decorative/icons/*"],
+      "@/ui/*": ["./src/common/presentation/ui/*"],
+      "@/landing/*": ["./src/module/landing/*"],
+      "@/dashboard/*": ["./src/module/dashboard/*"],
+      "@/user/*": ["./src/module/user/*"],
+      "@/car/*": ["./src/module/car/*"],
+      "@/common/*": ["./src/common/*"],
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": [
     "coverage/",
     "node_modules/",

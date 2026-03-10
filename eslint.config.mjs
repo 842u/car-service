@@ -1,34 +1,26 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import pluginJs from '@eslint/js';
-import pluginQuery from '@tanstack/eslint-plugin-query';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import { flatConfigs as eslintPluginImportX } from 'eslint-plugin-import-x';
-import eslintPluginJestDom from 'eslint-plugin-jest-dom';
-import eslintPluginPlaywright from 'eslint-plugin-playwright';
-import pluginReact from 'eslint-plugin-react';
-import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
-import eslintPluginSimpleImportSort from 'eslint-plugin-simple-import-sort';
-import eslintPluginTestingLibrary from 'eslint-plugin-testing-library';
+import js from '@eslint/js';
+import nextPlugin from '@next/eslint-plugin-next';
+import query from '@tanstack/eslint-plugin-query';
+import prettier from 'eslint-config-prettier';
+import { flatConfigs as importX } from 'eslint-plugin-import-x';
+import jestDom from 'eslint-plugin-jest-dom';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import playwright from 'eslint-plugin-playwright';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import testingLibrary from 'eslint-plugin-testing-library';
 import globals from 'globals';
-import path from 'path';
 import {
-  config as typescriptEslintConfig,
-  configs as typescriptEslintConfigs,
+  config as tseslintConfig,
+  configs as tseslintConfigs,
 } from 'typescript-eslint';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+// eslint-disable-next-line
+const { configs: nextConfigs } = nextPlugin;
 
 /** @type {import('eslint').Linter.Config[]} */
-export default typescriptEslintConfig(
-  {
-    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-  },
+export default tseslintConfig(
   {
     ignores: [
       '.next/',
@@ -38,9 +30,23 @@ export default typescriptEslintConfig(
       'playwright-report/',
       'resources/',
       'test-result/',
+      '*.jsonc',
     ],
   },
+  js.configs.recommended,
+  ...tseslintConfigs.recommended,
+  importX.recommended,
+  importX.typescript,
+  ...query.configs['flat/recommended'],
   {
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    plugins: {
+      '@next/next': nextPlugin,
+      'jsx-a11y': jsxA11y,
+      react,
+      'react-hooks': reactHooks,
+      'simple-import-sort': simpleImportSort,
+    },
     languageOptions: {
       globals: globals.browser,
       ecmaVersion: 'latest',
@@ -51,16 +57,19 @@ export default typescriptEslintConfig(
         },
       },
     },
-  },
-  {
-    plugins: {
-      react: pluginReact,
-      'simple-import-sort': eslintPluginSimpleImportSort,
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
-  },
-  {
     rules: {
-      ...eslintPluginReactHooks.configs.recommended.rules,
+      ...react.configs.flat.recommended.rules,
+      ...react.configs.flat['jsx-runtime'].rules,
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      ...jsxA11y.flatConfigs.recommended.rules,
+      ...nextConfigs.recommended.rules,
+      ...nextConfigs['core-web-vitals'].rules,
       'no-restricted-syntax': [
         'warn',
         {
@@ -106,28 +115,24 @@ export default typescriptEslintConfig(
       'react/self-closing-comp': 'error',
     },
   },
-  ...pluginQuery.configs['flat/recommended'],
-  pluginJs.configs.recommended,
-  eslintPluginImportX.recommended,
-  eslintPluginImportX.typescript,
-  ...typescriptEslintConfigs.recommended,
-  pluginReact.configs.flat.recommended,
-  pluginReact.configs.flat['jsx-runtime'],
-  ...compat.config({
-    extends: ['next', 'next/core-web-vitals', 'next/typescript'],
-  }),
-  eslintConfigPrettier,
+  {
+    files: ['**/*.config.{js,ts,mjs,cjs}'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  prettier,
   {
     name: 'e2e',
     files: ['e2e/**/?(*.)+(spec|test).[jt]s?(x)'],
-    ...eslintPluginPlaywright.configs['flat/recommended'],
+    ...playwright.configs['flat/recommended'],
   },
   {
     name: 'jest',
     files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
     ignores: ['e2e/**'],
-    ...eslintPluginJestDom.configs['flat/recommended'],
-    ...eslintPluginTestingLibrary.configs['flat/dom'],
-    ...eslintPluginTestingLibrary.configs['flat/react'],
+    ...jestDom.configs['flat/recommended'],
+    ...testingLibrary.configs['flat/dom'],
+    ...testingLibrary.configs['flat/react'],
   },
 );

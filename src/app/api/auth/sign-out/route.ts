@@ -1,27 +1,23 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest } from 'next/server';
 
-import { createClient } from '@/utils/supabase/server';
+import { apiHandler } from '@/dependency/api-handler';
+import { createServerAuthClient } from '@/dependency/auth-client/server';
 
 export const maxDuration = 10;
 
 export async function GET(request: NextRequest) {
   const redirectURL = request.nextUrl.clone();
 
-  const { auth } = await createClient();
+  const authClient = await createServerAuthClient();
 
-  const {
-    data: { user },
-  } = await auth.getUser();
+  const signOutResult = await authClient.signOut();
 
-  if (!user) {
-    return NextResponse.redirect(redirectURL.origin, {
-      status: 401,
-    });
+  if (!signOutResult.success) {
+    const {
+      error: { message },
+    } = signOutResult;
+    return apiHandler.errorResponse({ message }, 500);
   }
 
-  await auth.signOut();
-
-  return NextResponse.redirect(redirectURL.origin, {
-    status: 302,
-  });
+  return apiHandler.redirectResponse(redirectURL.origin, 303);
 }

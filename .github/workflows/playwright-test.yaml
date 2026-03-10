@@ -71,6 +71,8 @@ jobs:
 
       - name: Build Production App
         run: npm run build
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Run Supabase Instance
         run: npx supabase start ${{ inputs.supabaseStartFlags }}
