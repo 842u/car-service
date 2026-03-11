@@ -52,7 +52,7 @@ async function getEmailConfig(payload: WebhookPayload): Promise<EmailConfig> {
     }
 
     case 'recovery': {
-      const resetUrl = `${redirect_to}?token_hash=${token_hash}}&type=recovery&next=/dashboard/account`;
+      const resetUrl = `${redirect_to}?token_hash=${token_hash}&type=recovery&next=/dashboard/account`;
       return {
         subject: 'Reset your password',
         html: await render(
