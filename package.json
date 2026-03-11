@@ -7,6 +7,7 @@
     "env:local": "env-cmd -f ./.env.development.local",
     "analyze-bundle": "cross-env ANALYZE=true npm run build",
     "dev": "next dev",
+    "email:dev": "email dev",
     "build": "next build",
     "build:local": "npm run env:local npm run build",
     "start": "next start",
