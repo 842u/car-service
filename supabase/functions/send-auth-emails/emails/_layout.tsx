@@ -32,7 +32,7 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
           <Container className="mx-auto max-w-140 px-4 py-12">
             <Section className="mb-8 text-center">
               <Text className="m-0 text-2xl font-bold text-gray-900">
-                YourApp
+                Car Service
               </Text>
             </Section>
 
@@ -43,7 +43,7 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
             <Section className="mt-8 text-center">
               <Hr className="mb-6 border-gray-200" />
               <Text className="m-0 text-xs text-gray-400">
-                © {new Date().getFullYear()} YourApp.
+                © {new Date().getFullYear()} Car Service.
               </Text>
             </Section>
           </Container>
