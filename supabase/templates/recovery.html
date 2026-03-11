@@ -3,7 +3,7 @@
 <p>Follow this link to reset the password for your user:</p>
 <p>
   <a
-    href="{{ .RedirectTo }}/api/auth/otp?token_hash={{ .TokenHash }}&type=recovery&next=/dashboard/account"
+    href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery&next=/dashboard/account"
     >Reset Password</a
   >
 </p>
