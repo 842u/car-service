@@ -1,5 +1,10 @@
 {
   "imports": {
-    "@supabase/functions-js": "jsr:@supabase/functions-js@^2"
+    "@supabase/functions-js": "jsr:@supabase/functions-js@^2",
+    "react": "npm:react@19.2.4",
+    "@react-email/render": "npm:@react-email/render@2.0.4",
+    "@react-email/components": "npm:@react-email/components@1.0.8",
+    "resend":"npm:resend@6.9.3",
+    "standardwebhooks":"https://esm.sh/standardwebhooks@1.0.0"
   }
 }
