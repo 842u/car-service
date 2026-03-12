@@ -33,7 +33,7 @@ export function usePasswordResetForm() {
     const resetPasswordResult = await browserAuthClient.resetPassword({
       email,
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/api/auth/otp`,
       },
     });
 
