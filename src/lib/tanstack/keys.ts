@@ -5,7 +5,7 @@ const baseQueryKeys = {
 };
 
 export const queryKeys = {
-  infiniteCars: ['infinite', baseQueryKeys.cars] as const,
+  carsInfinite: [baseQueryKeys.cars, 'infinite'] as const,
 
   cars: [baseQueryKeys.cars] as const,
   carsByCarId: (id: string) => [baseQueryKeys.cars, id] as const,
