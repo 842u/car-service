@@ -18,6 +18,21 @@ export async function getCarOwnerships(carId: string) {
   return data;
 }
 
+export async function getCarsOwnershipsByOwnerId(ownerId: string) {
+  const queryResult = await browserDatabaseClient.query(async (from) =>
+    from('cars_ownerships').select('*').eq('owner_id', ownerId),
+  );
+
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
+
+  const { data } = queryResult;
+
+  return data;
+}
+
 export async function addCarOwnershipByUserId(carId: string, userId: string) {
   const queryResult = await browserDatabaseClient.query(async (from) =>
     from('cars_ownerships')
