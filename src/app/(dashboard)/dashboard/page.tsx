@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { InsuranceExpirationSection } from '@/car/ownership/ui/sections/insurance-expiration/insurance-expiration';
+import { TechnicalInspectionExpirationSection } from '@/car/ownership/ui/sections/technical-inspection-expiration/technical-inspection-expiration';
 import { TotalOwnershipsSection } from '@/car/ownership/ui/sections/total-ownerships/total-ownerships';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
@@ -27,6 +28,7 @@ export default function DashboardPage() {
       <div>
         <TotalOwnershipsSection ownerId={userData?.id || ''} />
         <InsuranceExpirationSection />
+        <TechnicalInspectionExpirationSection />
       </div>
     </DashboardMain>
   );
