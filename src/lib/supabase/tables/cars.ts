@@ -47,6 +47,7 @@ export async function getCarsByPage({
   const queryResult = await browserDatabaseClient.query(async (from) =>
     from('cars')
       .select()
+      .not(orderBy.column, 'is', null)
       .order(orderBy.column, { ascending: orderBy.ascending })
       .limit(pageLimit)
       .range(rangeIndexFrom, rangeIndexTo),
