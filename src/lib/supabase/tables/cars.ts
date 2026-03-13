@@ -1,5 +1,6 @@
 import { browserDatabaseClient } from '@/dependency/database-client/browser';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/lib/tanstack/cars';
+import type { Car } from '@/types';
 
 export async function getCar(carId: string) {
   const queryResult = await browserDatabaseClient.query(async (from) =>
@@ -31,16 +32,23 @@ export async function deleteCar(carId: string) {
   return car;
 }
 
-export async function getCarsByPage({ pageParam }: { pageParam: number }) {
-  const rangeIndexFrom = pageParam * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT;
-  const rangeIndexTo =
-    (pageParam + 1) * CARS_INFINITE_QUERY_PAGE_DATA_LIMIT - 1;
+export async function getCarsByPage({
+  pageParam,
+  pageLimit = CARS_INFINITE_QUERY_PAGE_DATA_LIMIT,
+  orderBy = { column: 'created_at', ascending: false },
+}: {
+  pageParam: number;
+  pageLimit?: number;
+  orderBy?: { column: keyof Car; ascending: boolean };
+}) {
+  const rangeIndexFrom = pageParam * pageLimit;
+  const rangeIndexTo = (pageParam + 1) * pageLimit - 1;
 
   const queryResult = await browserDatabaseClient.query(async (from) =>
     from('cars')
       .select()
-      .order('created_at', { ascending: false })
-      .limit(CARS_INFINITE_QUERY_PAGE_DATA_LIMIT)
+      .order(orderBy.column, { ascending: orderBy.ascending })
+      .limit(pageLimit)
       .range(rangeIndexFrom, rangeIndexTo),
   );
 
@@ -51,7 +59,7 @@ export async function getCarsByPage({ pageParam }: { pageParam: number }) {
 
   const { data } = queryResult;
 
-  const hasMoreCars = !(data.length < CARS_INFINITE_QUERY_PAGE_DATA_LIMIT);
+  const hasMoreCars = !(data.length < pageLimit);
 
   return { data, nextPageParam: hasMoreCars ? pageParam + 1 : null };
 }
