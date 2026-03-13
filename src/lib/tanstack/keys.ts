@@ -22,4 +22,5 @@ export const queryKeys = {
 
   serviceLogsByCarId: (carId: string) =>
     [baseQueryKeys.serviceLogs, carId] as const,
+  serviceLogsWithCost: [baseQueryKeys.serviceLogs, 'withCost'] as const,
 };
