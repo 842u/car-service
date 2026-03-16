@@ -1,42 +1,28 @@
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
-import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { useTotalOwnershipsSection } from '@/car/ownership/ui/sections/total-ownerships/use-total-ownerships';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { getCarsOwnershipsByOwnerId } from '@/lib/supabase/tables/cars_ownerships';
-import { queryKeys } from '@/lib/tanstack/keys';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
 interface TotalOwnershipsSectionProps {
   ownerId: string;
+  className?: string;
 }
 
 export function TotalOwnershipsSection({
   ownerId,
+  className,
 }: TotalOwnershipsSectionProps) {
-  const { addToast } = useToasts();
-
-  const {
-    data: ownershipsData,
-    error: ownershipsError,
-    isError: ownershipsIsError,
-  } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.carsOwnershipsByOwnerId(ownerId),
-    queryFn: async () => await getCarsOwnershipsByOwnerId(ownerId),
-    enabled: !!ownerId,
-  });
-
-  useEffect(() => {
-    ownershipsIsError && addToast(ownershipsError?.message || '', 'error');
-  }, [ownershipsIsError, addToast, ownershipsError]);
+  const { data, isPending } = useTotalOwnershipsSection({ ownerId });
 
   return (
-    <DashboardSection>
-      <DashboardSection.Heading>Cars owned</DashboardSection.Heading>
+    <DashboardSection className={className}>
+      <DashboardSection.Heading headingLevel="h2">
+        Cars owned
+      </DashboardSection.Heading>
       <DashboardSection.Text className="text-9xl">
-        {ownershipsData?.length || (
+        {isPending ? (
           <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
+        ) : (
+          data?.length
         )}
       </DashboardSection.Text>
     </DashboardSection>
