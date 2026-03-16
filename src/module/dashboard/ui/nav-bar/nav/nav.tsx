@@ -41,7 +41,7 @@ export function NavBarNav({
         )}
       />
       <ul className="grow">
-        <NavItem href="/dashboard" text="Dashboard">
+        <NavItem href="/dashboard" text="Overview">
           <HomeIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </NavItem>
         <NavItem href="/dashboard/cars" text="Cars">
