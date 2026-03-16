@@ -18,7 +18,7 @@ export function TechnicalInspectionExpirationSection() {
             {page.data.map((car) => (
               <div key={car.id}>
                 <p>{car.id}</p>
-                <p>{car.insurance_expiration}</p>
+                <p>{car.technical_inspection_expiration}</p>
               </div>
             ))}
           </div>
