@@ -21,7 +21,7 @@ describe('NavBarNav', () => {
   it('should render a link to dashboard root tab', () => {
     render(<NavBarNav />);
 
-    const dashboardHomeLink = screen.getByRole('link', { name: /dashboard/i });
+    const dashboardHomeLink = screen.getByRole('link', { name: /overview/i });
 
     expect(dashboardHomeLink).toBeInTheDocument();
   });
