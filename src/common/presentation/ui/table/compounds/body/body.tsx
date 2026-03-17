@@ -1,17 +1,23 @@
 import { flexRender } from '@tanstack/react-table';
+import type { RefObject } from 'react';
 
 import { useTable } from '../../table';
 
-export function TableBody() {
+interface TableBodyProps {
+  lastRowRef?: RefObject<HTMLTableRowElement | null>;
+}
+
+export function TableBody({ lastRowRef }: TableBodyProps) {
   const { table } = useTable();
 
   const rows = table.getRowModel().rows;
 
   return (
     <tbody>
-      {rows.map((row) => (
+      {rows.map((row, index) => (
         <tr
           key={row.id}
+          ref={index === rows.length - 1 ? lastRowRef : null}
           className="border-alpha-grey-200 text-dark-400 dark:text-light-600 border-b last-of-type:border-0"
         >
           {row.getVisibleCells().map((cell) => {
