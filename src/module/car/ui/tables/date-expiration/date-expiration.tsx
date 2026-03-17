@@ -1,13 +1,25 @@
-import { useInsuranceExpirationTable } from '@/car/ui/tables/insurance-expiration/use-insurance-expiration';
+import { useDateExpirationTable } from '@/car/ui/tables/date-expiration/use-date-expiration';
 import { CheckCircleIcon } from '@/icons/check-circle';
 import { ExclamationCircleIcon } from '@/icons/exclamation-circle';
 import { ExclamationTriangleIcon } from '@/icons/exclamation-triangle';
+import type { Car } from '@/types';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { Table } from '@/ui/table/table';
 
-export function InsuranceExpirationTable() {
+interface DateExpirationTableProps {
+  label: string;
+  dateColumn: keyof Pick<
+    Car,
+    'created_at' | 'insurance_expiration' | 'technical_inspection_expiration'
+  >;
+}
+
+export function DateExpirationTable({
+  label,
+  dateColumn,
+}: DateExpirationTableProps) {
   const { columns, data, isPending, intersectionTargetRef } =
-    useInsuranceExpirationTable();
+    useDateExpirationTable({ label, dateColumn });
 
   if (isPending)
     return (

@@ -1,13 +1,13 @@
 import { EyeOpenIcon } from '@/icons/eye-open';
 import { LinkButton } from '@/ui/link-button/link-button';
 
-interface InsuranceExpirationTableViewButtonProps {
+interface DateExpirationTableViewButtonProps {
   carId: string;
 }
 
-export function InsuranceExpirationTableViewButton({
+export function DateExpirationTableViewButton({
   carId,
-}: InsuranceExpirationTableViewButtonProps) {
+}: DateExpirationTableViewButtonProps) {
   const carUrl = new URL(`${window.location.origin}/dashboard/cars/${carId}`);
 
   return (
