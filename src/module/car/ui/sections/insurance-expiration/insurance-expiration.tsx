@@ -1,11 +1,14 @@
-import { InsuranceExpirationTable } from '@/car/ui/tables/insurance-expiration/insurance-expiration';
+import { DateExpirationTable } from '@/car/ui/tables/date-expiration/date-expiration';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
 export function InsuranceExpirationSection() {
   return (
     <DashboardSection>
       <DashboardSection.Heading>Insurance expiration</DashboardSection.Heading>
-      <InsuranceExpirationTable />
+      <DateExpirationTable
+        dateColumn="insurance_expiration"
+        label="Insurance"
+      />
     </DashboardSection>
   );
 }
