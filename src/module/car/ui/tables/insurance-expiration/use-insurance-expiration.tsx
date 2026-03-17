@@ -4,6 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useRef } from 'react';
 
 import { CarBadge } from '@/car/ui/badge/badge';
+import { InsuranceExpirationTableViewButton } from '@/car/ui/tables/insurance-expiration/view-button/view-button';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { getCarsByPage } from '@/lib/supabase/tables/cars';
 import { queryKeys } from '@/lib/tanstack/keys';
@@ -61,6 +62,12 @@ const columns = [
       label: 'VIN',
       shouldSpan: true,
     },
+  }),
+  columnsHelper.display({
+    id: 'actions',
+    cell: ({ row }) => (
+      <InsuranceExpirationTableViewButton carId={row.original.id} />
+    ),
   }),
 ] as ColumnDef<Car>[];
 
