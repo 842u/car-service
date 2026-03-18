@@ -7,57 +7,85 @@ export function CostsSection() {
   const { data, isPending, fromDate, setFromDate, toDate, setToDate } =
     useCostsSection();
 
+  if (isPending)
+    return (
+      <DashboardSection>
+        <DashboardSection.Heading headingLevel="h2">
+          Costs
+        </DashboardSection.Heading>
+        <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
+      </DashboardSection>
+    );
+
   return (
     <DashboardSection>
-      <DashboardSection.Heading>Costs</DashboardSection.Heading>
-      {isPending && (
-        <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
-      )}
+      <DashboardSection.Heading headingLevel="h2">
+        Costs
+      </DashboardSection.Heading>
 
-      {!isPending && (
-        <>
-          <div>
-            <DashboardSection.Subtext>Total:</DashboardSection.Subtext>
-            <DashboardSection.Text className="text-5xl">
-              {data?.totalCost ?? 0}
-            </DashboardSection.Text>
-          </div>
+      <DashboardSection variant="raw">
+        <DashboardSection.Heading
+          className="text-alpha-grey-900"
+          headingLevel="h3"
+          withUnderline={false}
+        >
+          All time costs
+        </DashboardSection.Heading>
+        <DashboardSection.Text className="text-5xl">
+          {data?.totalCost ?? 0}
+        </DashboardSection.Text>
+      </DashboardSection>
 
-          <div className="my-3">
-            <DashboardSection.Subtext>Year to date:</DashboardSection.Subtext>
-            <DashboardSection.Text className="text-4xl">
-              {data?.yearToDateCost ?? 0}
-            </DashboardSection.Text>
-          </div>
+      <DashboardSection variant="raw">
+        <DashboardSection.Heading
+          className="text-alpha-grey-900"
+          headingLevel="h3"
+          withUnderline={false}
+        >
+          Past year costs
+        </DashboardSection.Heading>
+        <DashboardSection.Text className="text-5xl">
+          {data?.yearToDateCost ?? 0}
+        </DashboardSection.Text>
+      </DashboardSection>
 
-          <div className="my-4 flex flex-col gap-2 md:w-fit md:flex-row md:flex-wrap">
-            <label className="md:grow">
-              <p className="my-2 text-xs">From</p>
-              <input
-                className={inputVariants.default}
-                type="date"
-                value={fromDate}
-                onChange={(event) => setFromDate(event.target.value)}
-              />
-            </label>
+      <DashboardSection className="flex flex-col gap-2" variant="raw">
+        <DashboardSection.Heading
+          className="text-alpha-grey-900"
+          headingLevel="h3"
+        >
+          Custom period
+        </DashboardSection.Heading>
 
-            <label className="md:grow">
-              <p className="my-2 text-xs">To</p>
-              <input
-                className={inputVariants.default}
-                type="date"
-                value={toDate}
-                onChange={(event) => setToDate(event.target.value)}
-              />
-            </label>
-          </div>
+        <div>
+          <label>
+            <p className="my-2 text-xs">From</p>
+            <input
+              className={inputVariants.default}
+              type="date"
+              value={fromDate}
+              onChange={(event) => setFromDate(event.target.value)}
+            />
+          </label>
 
-          <DashboardSection.Subtext>Filtered</DashboardSection.Subtext>
-          <DashboardSection.Text className="text-4xl">
-            {data?.filteredCost ?? 0}
-          </DashboardSection.Text>
-        </>
-      )}
+          <label>
+            <p className="my-2 text-xs">To</p>
+            <input
+              className={inputVariants.default}
+              type="date"
+              value={toDate}
+              onChange={(event) => setToDate(event.target.value)}
+            />
+          </label>
+        </div>
+
+        <DashboardSection.Text className="text-alpha-grey-900 self-end text-base">
+          Period total costs
+        </DashboardSection.Text>
+        <DashboardSection.Text className="self-end text-5xl">
+          {data?.filteredCost ?? 0}
+        </DashboardSection.Text>
+      </DashboardSection>
     </DashboardSection>
   );
 }
