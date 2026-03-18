@@ -26,7 +26,7 @@ export function DateExpirationTable({
 
   return (
     <Table columns={columns} data={data}>
-      <Table.Root className="max-h-56 overflow-y-scroll">
+      <Table.Root className="max-h-72 overflow-y-auto">
         <Table.Head className="h-12" />
         <Table.Body lastRowRef={intersectionTargetRef} />
       </Table.Root>
