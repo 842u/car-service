@@ -1,7 +1,5 @@
+import { DateExpirationTableLegend } from '@/car/ui/tables/date-expiration/legend/legend';
 import { useDateExpirationTable } from '@/car/ui/tables/date-expiration/use-date-expiration';
-import { CheckCircleIcon } from '@/icons/check-circle';
-import { ExclamationCircleIcon } from '@/icons/exclamation-circle';
-import { ExclamationTriangleIcon } from '@/icons/exclamation-triangle';
 import type { Car } from '@/types';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { Table } from '@/ui/table/table';
@@ -32,22 +30,7 @@ export function DateExpirationTable({
         <Table.Head className="h-12" />
         <Table.Body lastRowRef={intersectionTargetRef} />
       </Table.Root>
-      <div className="m-6 flex gap-6 text-sm">
-        <div className="flex items-center gap-1">
-          <CheckCircleIcon className="stroke-success-500 h-4 stroke-2" />
-          Valid
-        </div>
-
-        <div className="flex items-center gap-1">
-          <ExclamationCircleIcon className="stroke-warning-500 h-4 stroke-2" />
-          Expires soon
-        </div>
-
-        <div className="flex items-center gap-1">
-          <ExclamationTriangleIcon className="stroke-error-500 h-4 stroke-2" />
-          Expired
-        </div>
-      </div>
+      <DateExpirationTableLegend />
     </Table>
   );
 }
