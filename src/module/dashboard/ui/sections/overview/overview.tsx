@@ -11,15 +11,23 @@ export function OverviewSection() {
   const { data } = useOverviewSection();
 
   return (
-    <DashboardSection className="self-stretch border-0" variant="transparent">
-      <DashboardSection.Heading className="text-3xl">
+    <DashboardSection
+      className="self-stretch border-0 lg:flex lg:flex-col lg:items-center lg:justify-center"
+      variant="transparent"
+    >
+      <DashboardSection.Heading className="self-start text-3xl">
         Overview
       </DashboardSection.Heading>
-      <div className="flex flex-col gap-5">
-        <TotalOwnershipsSection ownerId={data?.id || ''} />
-        <InsuranceExpirationSection />
-        <TechnicalInspectionExpirationSection />
-        <CostsSection />
+      <div className="lg:flex lg:grow lg:flex-col lg:items-center lg:justify-center">
+        <div className="flex flex-col gap-5 lg:grid lg:grid-cols-6">
+          <TotalOwnershipsSection
+            className="lg:col-start-1 lg:col-end-3 lg:row-start-1 lg:row-end-1"
+            ownerId={data?.id || ''}
+          />
+          <InsuranceExpirationSection className="lg:col-start-3 lg:col-end-7 lg:row-start-1 lg:row-end-1" />
+          <TechnicalInspectionExpirationSection className="lg:col-start-1 lg:col-end-5 lg:row-start-2 lg:row-end-2" />
+          <CostsSection className="lg:col-start-5 lg:col-end-7 lg:row-start-2 lg:row-end-2" />
+        </div>
       </div>
     </DashboardSection>
   );

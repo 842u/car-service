@@ -3,13 +3,17 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import { inputVariants } from '@/lib/tailwindcss/input';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-export function CostsSection() {
+interface CostsSectionProps {
+  className?: string;
+}
+
+export function CostsSection({ className }: CostsSectionProps) {
   const { data, isPending, fromDate, setFromDate, toDate, setToDate } =
     useCostsSection();
 
   if (isPending)
     return (
-      <DashboardSection>
+      <DashboardSection className={className}>
         <DashboardSection.Heading headingLevel="h2">
           Costs
         </DashboardSection.Heading>
@@ -18,7 +22,7 @@ export function CostsSection() {
     );
 
   return (
-    <DashboardSection>
+    <DashboardSection className={className}>
       <DashboardSection.Heading headingLevel="h2">
         Costs
       </DashboardSection.Heading>

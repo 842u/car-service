@@ -1,9 +1,15 @@
 import { DateExpirationTable } from '@/car/ui/tables/date-expiration/date-expiration';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
-export function TechnicalInspectionExpirationSection() {
+interface TechnicalInspectionExpirationSectionProps {
+  className?: string;
+}
+
+export function TechnicalInspectionExpirationSection({
+  className,
+}: TechnicalInspectionExpirationSectionProps) {
   return (
-    <DashboardSection>
+    <DashboardSection className={className}>
       <DashboardSection.Heading>
         Technical inspection expiration
       </DashboardSection.Heading>
