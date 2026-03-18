@@ -12,21 +12,19 @@ export function OverviewSection() {
 
   return (
     <DashboardSection
-      className="self-stretch border-0 lg:flex lg:flex-col lg:items-center lg:justify-center"
-      variant="transparent"
+      className="lg:flex lg:flex-col lg:self-stretch"
+      variant="raw"
     >
-      <DashboardSection.Heading className="self-start text-3xl">
-        Overview
-      </DashboardSection.Heading>
-      <div className="lg:flex lg:grow lg:flex-col lg:items-center lg:justify-center">
-        <div className="flex flex-col gap-5 lg:grid lg:grid-cols-6">
+      <DashboardSection.Heading>Overview</DashboardSection.Heading>
+      <div className="lg:mx-auto lg:flex lg:w-full lg:max-w-7xl lg:grow lg:items-center lg:justify-center">
+        <div className="flex flex-col gap-5 lg:grid lg:w-full lg:grid-cols-[auto_1fr_auto]">
           <TotalOwnershipsSection
-            className="lg:col-start-1 lg:col-end-3 lg:row-start-1 lg:row-end-1"
+            className="lg:col-span-1 lg:min-w-xs"
             ownerId={data?.id || ''}
           />
-          <InsuranceExpirationSection className="lg:col-start-3 lg:col-end-7 lg:row-start-1 lg:row-end-1" />
-          <TechnicalInspectionExpirationSection className="lg:col-start-1 lg:col-end-5 lg:row-start-2 lg:row-end-2" />
-          <CostsSection className="lg:col-start-5 lg:col-end-7 lg:row-start-2 lg:row-end-2" />
+          <InsuranceExpirationSection className="lg:col-span-2" />
+          <TechnicalInspectionExpirationSection className="lg:col-span-2" />
+          <CostsSection className="lg:col-span-1" />
         </div>
       </div>
     </DashboardSection>
