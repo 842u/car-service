@@ -15,7 +15,7 @@ export function OverviewSection() {
       <DashboardSection.Heading className="text-3xl">
         Overview
       </DashboardSection.Heading>
-      <div>
+      <div className="flex flex-col gap-5">
         <TotalOwnershipsSection ownerId={data?.id || ''} />
         <InsuranceExpirationSection />
         <TechnicalInspectionExpirationSection />
