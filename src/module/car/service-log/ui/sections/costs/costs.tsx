@@ -5,6 +5,10 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import { inputVariants } from '@/lib/tailwindcss/input';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
+export const FILTERED_COSTS_TEST_ID = 'FILTERED_COSTS_TEST_ID';
+export const YEAR_TO_DATE_COSTS_TEST_ID = 'YEAR_TO_DATE_COSTS_TEST_ID';
+export const TOTAL_COSTS_TEST_ID = 'TOTAL_COSTS_TEST_ID';
+
 interface CostsSectionProps {
   className?: string;
 }
@@ -38,7 +42,10 @@ export function CostsSection({ className }: CostsSectionProps) {
           >
             All time costs
           </DashboardSection.Heading>
-          <DashboardSection.Text className="text-5xl">
+          <DashboardSection.Text
+            className="text-5xl"
+            data-testid={TOTAL_COSTS_TEST_ID}
+          >
             {data?.totalCost ?? 0}
           </DashboardSection.Text>
         </DashboardSection>
@@ -51,7 +58,10 @@ export function CostsSection({ className }: CostsSectionProps) {
           >
             Past year costs
           </DashboardSection.Heading>
-          <DashboardSection.Text className="text-5xl">
+          <DashboardSection.Text
+            className="text-5xl"
+            data-testid={YEAR_TO_DATE_COSTS_TEST_ID}
+          >
             {data?.yearToDateCost ?? 0}
           </DashboardSection.Text>
         </DashboardSection>
@@ -87,7 +97,10 @@ export function CostsSection({ className }: CostsSectionProps) {
           </label>
         </div>
 
-        <DashboardSection.Text className="text-alpha-grey-900 self-end text-base">
+        <DashboardSection.Text
+          className="text-alpha-grey-900 self-end text-base"
+          data-testid={FILTERED_COSTS_TEST_ID}
+        >
           Period total costs
         </DashboardSection.Text>
         <DashboardSection.Text className="self-end text-5xl">
