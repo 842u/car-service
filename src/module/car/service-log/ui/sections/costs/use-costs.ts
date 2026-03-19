@@ -12,6 +12,9 @@ export function useCostsSection() {
   const oneYearAgo = new Date(today);
   oneYearAgo.setFullYear(today.getFullYear() - 1);
 
+  const todayStr = parseDateToYyyyMmDd(today);
+  const oneYearAgoStr = parseDateToYyyyMmDd(oneYearAgo);
+
   const [fromDate, setFromDate] = useState<string>(
     parseDateToYyyyMmDd(firstDayOfMonth),
   );
@@ -31,16 +34,13 @@ export function useCostsSection() {
       const yearToDateCost = serviceLogs
         .filter(
           (log) =>
-            new Date(log.service_date) >= oneYearAgo &&
-            new Date(log.service_date) <= today,
+            log.service_date >= oneYearAgoStr && log.service_date <= todayStr,
         )
         .reduce((sum, log) => sum + (log.service_cost ?? 0), 0);
 
       const filteredCost = serviceLogs
         .filter(
-          (log) =>
-            new Date(log.service_date) >= new Date(fromDate!) &&
-            new Date(log.service_date) <= new Date(toDate!),
+          (log) => log.service_date >= fromDate && log.service_date <= toDate,
         )
         .reduce((sum, log) => sum + (log.service_cost ?? 0), 0);
 
