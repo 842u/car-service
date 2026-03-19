@@ -21,9 +21,10 @@ export function getMimeTypeExtensions(mimeTypes: string[]) {
 }
 
 export function parseDateToYyyyMmDd(date: Date) {
-  const [year, month, dayWithTimezone] = date.toISOString().split('-');
-  const [day] = dayWithTimezone.split('T');
-  return [year, month, day].join('-');
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 export function enqueueRevokeObjectUrl(url: string) {
