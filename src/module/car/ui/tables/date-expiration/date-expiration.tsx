@@ -1,3 +1,5 @@
+'use client';
+
 import { DateExpirationTableLegend } from '@/car/ui/tables/date-expiration/legend/legend';
 import { useDateExpirationTable } from '@/car/ui/tables/date-expiration/use-date-expiration';
 import type { Car } from '@/types';

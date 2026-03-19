@@ -15,7 +15,7 @@ export const queryKeys = {
   carsOwnerships: [baseQueryKeys.carsOwnerships] as const,
   carsOwnershipsByCarId: (carId: string) =>
     [baseQueryKeys.carsOwnerships, carId] as const,
-  carsOwnershipsByOwnerId: (ownerId: string) => [
+  carsOwnershipsByOwnerId: (ownerId?: string) => [
     baseQueryKeys.carsOwnerships,
     ownerId,
   ],

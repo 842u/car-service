@@ -1,3 +1,5 @@
+'use client';
+
 import { useCostsSection } from '@/car/service-log/ui/sections/costs/use-costs';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { inputVariants } from '@/lib/tailwindcss/input';

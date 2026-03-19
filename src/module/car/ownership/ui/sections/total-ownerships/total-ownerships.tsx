@@ -1,3 +1,5 @@
+'use client';
+
 import { twMerge } from 'tailwind-merge';
 
 import { useTotalOwnershipsSection } from '@/car/ownership/ui/sections/total-ownerships/use-total-ownerships';
@@ -5,15 +7,13 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
 interface TotalOwnershipsSectionProps {
-  ownerId: string;
   className?: string;
 }
 
 export function TotalOwnershipsSection({
-  ownerId,
   className,
 }: TotalOwnershipsSectionProps) {
-  const { data, isPending } = useTotalOwnershipsSection({ ownerId });
+  const { data, isPending } = useTotalOwnershipsSection();
 
   return (
     <DashboardSection
