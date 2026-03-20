@@ -66,15 +66,11 @@ export function useCarsGallery() {
     isError && addToast(error.message, 'error');
   }, [isError, addToast, error]);
 
-  const hasNoCars = isSuccess && data.pages[0].data.length === 0;
+  const carsData = data?.pages.flatMap((page) => page.data) || [];
 
   return {
-    isError,
     isPending,
-    isSuccess,
-    error,
-    hasNoCars,
-    data,
+    data: carsData,
     intersectionTargetRef,
     isFetchingNextPage,
   };
