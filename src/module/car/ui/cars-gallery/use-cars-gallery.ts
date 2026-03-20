@@ -34,16 +34,16 @@ export function useCarsGallery() {
     throwOnError: false,
     enabled: !carsInfiniteIsMutating,
     queryKey: queryKeys.carsInfinite,
-    queryFn: async ({ pageParam }) => {
-      const { data, nextPageParam } = await getCarsByPage({ pageParam });
-
-      data.map((car) => queryClient.setQueryData(['cars', car.id], car));
-
-      return { data, nextPageParam };
-    },
+    queryFn: async ({ pageParam }) => await getCarsByPage({ pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
+
+  useEffect(() => {
+    data?.pages
+      .flatMap((page) => page.data)
+      .forEach((car) => queryClient.setQueryData(['cars', car.id], car));
+  }, [data, queryClient]);
 
   useEffect(() => {
     if (!intersectionTargetRef.current || !hasNextPage) return;
