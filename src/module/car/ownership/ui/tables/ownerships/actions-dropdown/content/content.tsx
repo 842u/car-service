@@ -75,7 +75,7 @@ export function DropdownContent({
 
       if (userId === ownerId) {
         queryClient.invalidateQueries({
-          queryKey: queryKeys.infiniteCars,
+          queryKey: queryKeys.carsInfinite,
         });
       }
 

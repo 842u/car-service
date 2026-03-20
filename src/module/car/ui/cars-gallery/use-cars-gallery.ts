@@ -15,7 +15,7 @@ export function useCarsGallery() {
   const { addToast } = useToasts();
 
   const carsInfiniteIsMutating = useIsMutating({
-    mutationKey: queryKeys.infiniteCars,
+    mutationKey: queryKeys.carsInfinite,
   });
 
   const queryClient = useQueryClient();
@@ -33,7 +33,7 @@ export function useCarsGallery() {
   } = useInfiniteQuery({
     throwOnError: false,
     enabled: !carsInfiniteIsMutating,
-    queryKey: queryKeys.infiniteCars,
+    queryKey: queryKeys.carsInfinite,
     queryFn: async ({ pageParam }) => {
       const { data, nextPageParam } = await getCarsByPage({ pageParam });
 

@@ -1,9 +1,10 @@
 import { DashboardMain } from '@/dashboard/ui/main/main';
+import { OverviewSection } from '@/dashboard/ui/sections/overview/overview';
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
   return (
     <DashboardMain>
-      <h1>DASHBOARD</h1>
+      <OverviewSection />
     </DashboardMain>
   );
 }

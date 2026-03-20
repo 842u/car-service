@@ -102,7 +102,7 @@ export function useAddForm({
       { formData, queryClient, carFormRef },
       {
         onSettled: (_, __, { queryClient }) =>
-          queryClient.invalidateQueries({ queryKey: queryKeys.infiniteCars }),
+          queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite }),
       },
     );
   };

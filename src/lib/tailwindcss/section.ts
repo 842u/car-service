@@ -1,20 +1,22 @@
-const baseClassName = 'border rounded-md p-4 text-sm w-full';
+const baseClassName = 'p-4 text-sm w-full';
 
-const defaultClassName = `${baseClassName} border-alpha-grey-200 bg-alpha-grey-50`;
+const defaultClassName = `${baseClassName} border rounded-md border-alpha-grey-200 bg-alpha-grey-50`;
 
-const transparentClassName = `${baseClassName} border-alpha-grey-200`;
+const transparentClassName = `${baseClassName} border rounded-md border-alpha-grey-200`;
 
-const errorDefaultClassName = `${baseClassName} border-error-500 bg-alpha-grey-50`;
+const errorDefaultClassName = `${baseClassName} border rounded-md border-error-500 bg-alpha-grey-50`;
 
-const errorTransparentClassName = `${baseClassName} border-error-500`;
+const errorTransparentClassName = `${baseClassName} border rounded-md border-error-500`;
 
 export type SectionVariants =
+  | 'raw'
   | 'default'
   | 'transparent'
   | 'errorDefault'
   | 'errorTransparent';
 
 export const sectionVariants: Record<SectionVariants, string> = {
+  raw: baseClassName,
   default: defaultClassName,
   transparent: transparentClassName,
   errorDefault: errorDefaultClassName,

@@ -42,7 +42,7 @@ export function useDeleteModal({
   const carName = carQueryData?.custom_name;
 
   const { mutate } = useMutation({
-    mutationKey: queryKeys.infiniteCars,
+    mutationKey: queryKeys.carsInfinite,
     throwOnError: false,
     mutationFn: ({ carId }: MutationVariables) => deleteCar(carId),
     onMutate: ({ carId, queryClient }) =>
@@ -67,7 +67,7 @@ export function useDeleteModal({
       {
         onSettled: (_, __, { queryClient }) =>
           queryClient.invalidateQueries({
-            queryKey: queryKeys.infiniteCars,
+            queryKey: queryKeys.carsInfinite,
           }),
       },
     );

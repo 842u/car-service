@@ -20,6 +20,23 @@ export async function getServiceLogsByCarId(carId: string) {
   return queryResult.data;
 }
 
+export async function getServiceLogsWithCost() {
+  const queryResult = await browserDatabaseClient.query(async (from) =>
+    from('service_logs')
+      .select('*')
+      .not('service_cost', 'is', null)
+      .order('service_date', { ascending: false })
+      .order('created_at', { ascending: false }),
+  );
+
+  if (!queryResult.success) {
+    const { message } = queryResult.error;
+    throw new Error(message);
+  }
+
+  return queryResult.data;
+}
+
 export async function deleteServiceLogById(id: string) {
   const sessionResult = await browserAuthClient.authenticate();
 
