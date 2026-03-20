@@ -33,8 +33,8 @@ export function CostsSection({ className }: CostsSectionProps) {
         Costs
       </DashboardSection.Heading>
 
-      <div className="md:flex">
-        <DashboardSection variant="raw">
+      <div className="md:flex md:max-w-full">
+        <DashboardSection className="flex-1 md:max-w-1/2" variant="raw">
           <DashboardSection.Heading
             className="text-alpha-grey-900 font-normal"
             headingLevel="h3"
@@ -43,14 +43,14 @@ export function CostsSection({ className }: CostsSectionProps) {
             All time costs
           </DashboardSection.Heading>
           <DashboardSection.Text
-            className="text-5xl"
+            className="overflow-x-auto overflow-y-hidden text-4xl"
             data-testid={TOTAL_COSTS_TEST_ID}
           >
             {data?.totalCost ?? 0}
           </DashboardSection.Text>
         </DashboardSection>
 
-        <DashboardSection variant="raw">
+        <DashboardSection className="flex-1 md:max-w-1/2" variant="raw">
           <DashboardSection.Heading
             className="text-alpha-grey-900 font-normal"
             headingLevel="h3"
@@ -59,7 +59,7 @@ export function CostsSection({ className }: CostsSectionProps) {
             Past year costs
           </DashboardSection.Heading>
           <DashboardSection.Text
-            className="text-5xl"
+            className="overflow-x-auto overflow-y-hidden text-4xl"
             data-testid={YEAR_TO_DATE_COSTS_TEST_ID}
           >
             {data?.yearToDateCost ?? 0}
@@ -103,7 +103,7 @@ export function CostsSection({ className }: CostsSectionProps) {
         >
           Period total costs
         </DashboardSection.Text>
-        <DashboardSection.Text className="self-end text-5xl">
+        <DashboardSection.Text className="max-w-full self-end overflow-x-auto overflow-y-hidden text-4xl">
           {data?.filteredCost ?? 0}
         </DashboardSection.Text>
       </DashboardSection>

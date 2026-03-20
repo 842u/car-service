@@ -16,7 +16,7 @@ export function OverviewSection() {
           <TotalOwnershipsSection className="lg:col-span-1 lg:min-w-xs" />
           <InsuranceExpirationSection className="lg:col-span-2" />
           <TechnicalInspectionExpirationSection className="lg:col-span-2" />
-          <CostsSection className="lg:col-span-1" />
+          <CostsSection className="lg:col-span-1 lg:max-w-md" />
         </div>
       </div>
     </DashboardSection>
