@@ -97,13 +97,15 @@ describe('DateExpirationTable', () => {
     expect(await screen.findByRole('table')).toBeInTheDocument();
   });
 
-  it('should render table with empty data', async () => {
+  it('should render placeholder if there is no data', async () => {
     mockGetCarsByPage.mockResolvedValue({ data: [], nextPageParam: null });
 
     render(<DateExpirationTable {...DEFAULT_PROPS} />, {
       wrapper: createWrapper(),
     });
 
-    expect(await screen.findByRole('table')).toBeInTheDocument();
+    expect(
+      await screen.findByText('No expiration data yet'),
+    ).toBeInTheDocument();
   });
 });
