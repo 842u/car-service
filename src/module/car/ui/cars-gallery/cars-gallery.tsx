@@ -7,7 +7,7 @@ import { AddModal } from '@/car/ui/modals/add/add';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-import { CarCard } from '../card/card';
+import { CarCard } from '../cards/car';
 import { useCarsGallery } from './use-cars-gallery';
 
 export function CarsGallery() {
