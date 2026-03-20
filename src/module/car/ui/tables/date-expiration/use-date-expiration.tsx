@@ -60,11 +60,13 @@ export function useDateExpirationTable({
             const { custom_name, image_url } = row.original;
 
             return (
-              <CarBadge
-                className="h-10 flex-row-reverse justify-end"
-                imageUrl={image_url}
-                name={custom_name}
-              />
+              <div className="max-w-40 overflow-auto">
+                <CarBadge
+                  className="h-10 flex-row-reverse justify-end"
+                  imageUrl={image_url}
+                  name={custom_name}
+                />
+              </div>
             );
           },
         }),
