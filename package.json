@@ -82,7 +82,7 @@
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "0.7.2",
     "react-email": "5.2.10",
-    "supabase": "2.77.0",
+    "supabase": "2.82.0",
     "tailwindcss": "4.2.1",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
