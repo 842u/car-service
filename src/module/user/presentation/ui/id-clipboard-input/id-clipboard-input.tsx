@@ -37,7 +37,10 @@ export function IdClipboardInput({
   };
 
   return (
-    <label className="selection:bg-accent-500 block max-w-72" title="Copy ID">
+    <label
+      className="selection:bg-accent-500 block md:max-w-72"
+      title="Copy ID"
+    >
       {label && (
         <p>
           <span className="text-xs">{label}</span>
