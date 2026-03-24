@@ -9,17 +9,15 @@ interface AddCardProps {
 export function AddCard({ onClick }: AddCardProps) {
   return (
     <Card
-      className="border-accent-500/40 flex w-80 cursor-pointer flex-col items-center justify-center gap-6 border-dashed p-6 text-center"
+      className="border-accent-500/40 relative flex w-80 cursor-pointer flex-col items-center justify-center gap-6 border-dashed p-6 text-center"
       role="button"
       tabIndex={0}
       onClick={onClick}
     >
-      <div className="relative">
-        <BrandFullIcon className="stroke-alpha-grey-500 w-full stroke-[0.1]" />
+      <BrandFullIcon className="stroke-alpha-grey-500 w-full stroke-[0.1]" />
 
-        <div className="bg-accent-100 dark:bg-accent-900/70 absolute -top-5 right-0 flex h-14 w-14 items-center justify-center rounded-lg font-bold text-white shadow">
-          <CarPlusIcon className="fill-light-500 stroke-light-500 stroke-[0.5] p-2" />
-        </div>
+      <div className="bg-accent-100 dark:bg-accent-900/70 absolute top-0 right-0 m-5 flex h-14 w-14 items-center justify-center rounded-lg font-bold text-white shadow">
+        <CarPlusIcon className="fill-accent-500 stroke-accent-500 stroke-[0.5] p-2" />
       </div>
 
       <div>
