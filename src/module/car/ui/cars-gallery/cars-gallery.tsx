@@ -23,7 +23,12 @@ export function CarsGallery() {
 
   if (isPending)
     return (
-      <Spinner className="stroke-accent-400 fill-accent-400 h-16 md:h-20 lg:h-24" />
+      <DashboardSection className="flex flex-col self-stretch" variant="raw">
+        <DashboardSection.Heading>Cars</DashboardSection.Heading>
+        <div className="flex grow items-center justify-center">
+          <Spinner className="stroke-accent-400 fill-accent-400 h-16 md:h-20 lg:h-24" />
+        </div>
+      </DashboardSection>
     );
 
   return (
