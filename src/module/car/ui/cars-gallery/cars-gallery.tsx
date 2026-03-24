@@ -4,6 +4,7 @@ import { useRef } from 'react';
 
 import { AddCard } from '@/car/ui/cards/add/add';
 import { AddModal } from '@/car/ui/modals/add/add';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
@@ -26,23 +27,26 @@ export function CarsGallery() {
     );
 
   return (
-    <section aria-label="user's cars">
-      <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-480">
-        <AddCard onClick={handleAddCardClick} />
+    <DashboardSection className="flex flex-col self-stretch" variant="raw">
+      <DashboardSection.Heading>Cars</DashboardSection.Heading>
+      <div className="flex grow items-center justify-center">
+        <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-480">
+          <AddCard onClick={handleAddCardClick} />
 
-        {data.map((car) => car && <CarCard key={car.id} car={car} />)}
+          {data.map((car) => car && <CarCard key={car.id} car={car} />)}
 
-        <div
-          ref={intersectionTargetRef}
-          className="absolute bottom-0 left-0 -z-10 h-[30vh] w-full"
-        />
+          <div
+            ref={intersectionTargetRef}
+            className="absolute bottom-0 left-0 -z-10 h-[30vh] w-full"
+          />
 
-        {isFetchingNextPage && (
-          <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
-        )}
+          {isFetchingNextPage && (
+            <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
+          )}
+        </div>
       </div>
 
       <AddModal ref={dialogRef} onSubmit={handleCarAddModalSubmit} />
-    </section>
+    </DashboardSection>
   );
 }
