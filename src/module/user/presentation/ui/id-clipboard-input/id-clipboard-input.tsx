@@ -6,9 +6,10 @@ import { inputVariants } from '@/lib/tailwindcss/input';
 
 type IdClipboardInputProps = {
   id?: string;
+  className?: string;
 };
 
-export function IdClipboardInput({ id }: IdClipboardInputProps) {
+export function IdClipboardInput({ id, className }: IdClipboardInputProps) {
   const { addToast } = useToasts();
 
   const handleInputClick = async (event: SyntheticEvent<HTMLInputElement>) => {
@@ -38,7 +39,8 @@ export function IdClipboardInput({ id }: IdClipboardInputProps) {
       aria-label="current user ID"
       className={twMerge(
         inputVariants['default'],
-        'selection:bg-accent-500 w-xs cursor-pointer overflow-x-auto text-center md:w-72 md:text-xs',
+        'selection:bg-accent-500 cursor-pointer overflow-x-auto text-center text-xs md:w-72',
+        className,
       )}
       defaultValue={id}
       placeholder="..."
