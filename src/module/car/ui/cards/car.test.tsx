@@ -3,7 +3,7 @@ import type { Route } from 'next';
 
 import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
 
-import { CarCard } from './card';
+import { CarCard } from './car';
 
 describe('CarCard', () => {
   const mockCar = createMockCar();
