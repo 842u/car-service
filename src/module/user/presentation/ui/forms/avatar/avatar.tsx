@@ -32,7 +32,7 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
       variant="raw"
       onSubmit={handleFormSubmit}
     >
-      <Form.InputWrapper>
+      <Form.InputWrapper className="mx-auto max-w-72 md:mx-0">
         <Form.InputImage<ImageFormData>
           control={control}
           errorMessage={errors.image?.message}
