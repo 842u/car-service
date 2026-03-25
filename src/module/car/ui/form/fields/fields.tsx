@@ -33,16 +33,14 @@ type FormFieldsProps = {
   register: UseFormRegister<CarFormValues>;
   control: Control<CarFormValues>;
   errors: FieldErrors<CarFormValues>;
-  inputImageUrl: string | null;
-  onImageInputChange: (file: File | undefined | null) => void;
+  imageUrl?: string | null;
 };
 
 export function FormFields({
   register,
   control,
   errors,
-  inputImageUrl,
-  onImageInputChange,
+  imageUrl,
 }: FormFieldsProps) {
   return (
     <>
@@ -52,9 +50,8 @@ export function FormFields({
           errorMessage={errors.image?.message}
           label="Image"
           name="image"
-          onChange={onImageInputChange}
         >
-          <CarImage src={inputImageUrl} />
+          {(previewUrl) => <CarImage src={previewUrl || imageUrl} />}
         </Form.InputImage>
       </Form.InputWrapper>
       <Form.InputWrapper>
@@ -122,7 +119,7 @@ export function FormFields({
         />
       </Form.InputWrapper>
       <Form.InputWrapper>
-        <div className="bg-alpha-grey-300 mb-4 h-[1px] w-full md:block lg:hidden" />
+        <div className="bg-alpha-grey-300 mb-4 h-px w-full md:block lg:hidden" />
         <Form.Input
           errorMessage={errors.engine_capacity?.message}
           label="Engine Capacity [cc]"
@@ -165,7 +162,7 @@ export function FormFields({
       </Form.InputWrapper>
 
       <Form.InputWrapper>
-        <div className="bg-alpha-grey-300 mb-4 h-[1px] w-full md:block lg:hidden" />
+        <div className="bg-alpha-grey-300 mb-4 h-px w-full md:block lg:hidden" />
         <Form.Input
           errorMessage={errors.mileage?.message}
           label="Mileage [km]"

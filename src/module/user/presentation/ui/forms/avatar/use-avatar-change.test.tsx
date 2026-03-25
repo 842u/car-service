@@ -13,7 +13,6 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 }));
 
 const mockMutationFn = jest.fn();
-
 jest.mock(
   '@/user/infrastructure/tanstack/mutation-options/avatar-change',
   () => ({
@@ -44,7 +43,7 @@ describe('useUserAvatarChange', () => {
 
     const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
 
-    await result.current.mutateAsync({ image: null, imageInputUrl: null });
+    await result.current.mutateAsync({ image: null });
 
     expect(mockAddToast).toHaveBeenCalledWith('Avatar changed.', 'success');
   });
@@ -54,9 +53,9 @@ describe('useUserAvatarChange', () => {
 
     const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
 
-    await expect(
-      result.current.mutateAsync({ image: null, imageInputUrl: null }),
-    ).rejects.toThrow('Upload failed');
+    await expect(result.current.mutateAsync({ image: null })).rejects.toThrow(
+      'Upload failed',
+    );
 
     expect(mockAddToast).toHaveBeenCalledWith('Upload failed', 'error');
   });
@@ -69,9 +68,9 @@ describe('useUserAvatarChange', () => {
 
     const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
 
-    await expect(
-      result.current.mutateAsync({ image: null, imageInputUrl: null }),
-    ).rejects.toThrow('Upload failed');
+    await expect(result.current.mutateAsync({ image: null })).rejects.toThrow(
+      'Upload failed',
+    );
 
     expect(queryClient.getQueryData(queryKeys.sessionUser)).toEqual(
       previousData,
@@ -85,7 +84,7 @@ describe('useUserAvatarChange', () => {
 
     const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
 
-    await result.current.mutateAsync({ image: null, imageInputUrl: null });
+    await result.current.mutateAsync({ image: null });
 
     expect(invalidateSpy).toHaveBeenCalledWith({
       queryKey: queryKeys.sessionUser,

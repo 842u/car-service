@@ -15,9 +15,7 @@ type AvatarFormProps = {
 
 export function AvatarForm({ avatarUrl }: AvatarFormProps) {
   const {
-    inputImageUrl,
     handleFormSubmit,
-    handleImageInputChange,
     handleFormReset,
     control,
     errors,
@@ -39,9 +37,8 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
           label="Avatar"
           name="image"
           withInfo={false}
-          onChange={handleImageInputChange}
         >
-          <UserImage src={inputImageUrl || avatarUrl} />
+          {(previewUrl) => <UserImage src={previewUrl || avatarUrl} />}
         </Form.InputImage>
       </Form.InputWrapper>
       <Form.Controls>

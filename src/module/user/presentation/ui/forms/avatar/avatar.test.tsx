@@ -95,16 +95,4 @@ describe('AvatarForm', () => {
 
     expect(mockUseAvatarForm.handleFormSubmit).toHaveBeenCalledTimes(1);
   });
-
-  it('should call handleImageInputChange when file input changes', async () => {
-    const user = userEvent.setup({ applyAccept: false });
-    render(<AvatarForm />);
-
-    const file = new File(['avatar'], 'avatar.png', { type: 'image/png' });
-    const input = screen.getByLabelText('Avatar');
-
-    await user.upload(input, file);
-
-    expect(mockUseAvatarForm.handleImageInputChange).toHaveBeenCalled();
-  });
 });

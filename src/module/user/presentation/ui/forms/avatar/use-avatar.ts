@@ -1,12 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
   type ImageFormData,
   imageFormSchema,
 } from '@/common/interface/ui/image-form.schema';
-import { enqueueRevokeObjectUrl } from '@/lib/utils';
 import { useUserAvatarChange } from '@/user/presentation/ui/forms/avatar/use-avatar-change';
 
 export const defaultAvatarFormValues: ImageFormData = {
@@ -14,8 +13,6 @@ export const defaultAvatarFormValues: ImageFormData = {
 };
 
 export function useAvatarForm() {
-  const [imageInputUrl, setImageInputUrl] = useState<string | null>(null);
-
   const { mutateAsync } = useUserAvatarChange();
 
   const {
@@ -30,15 +27,12 @@ export function useAvatarForm() {
   });
 
   const handleFormSubmit = handleSubmit(async (formData: ImageFormData) => {
-    await mutateAsync({ image: formData.image, imageInputUrl });
+    await mutateAsync({ image: formData.image });
   });
 
-  const handleImageInputChange = (file: File | undefined | null) => {
-    imageInputUrl && enqueueRevokeObjectUrl(imageInputUrl);
-    setImageInputUrl((file && URL.createObjectURL(file)) || null);
+  const handleFormReset = () => {
+    reset();
   };
-
-  const handleFormReset = () => reset();
 
   const canReset = isDirty && !isSubmitting;
 
@@ -50,11 +44,9 @@ export function useAvatarForm() {
 
   return {
     handleFormSubmit,
-    handleImageInputChange,
     handleFormReset,
     control,
     errors,
-    inputImageUrl: imageInputUrl,
     isSubmitting,
     canReset,
     canSubmit,
