@@ -65,9 +65,15 @@ export function IdClipboardInput({
 
         <div className="flex h-full cursor-pointer items-center justify-center p-2">
           {copied ? (
-            <CheckIcon className="h-full w-full stroke-3" />
+            <CheckIcon
+              className="h-full w-full stroke-3"
+              data-testid="check-icon"
+            />
           ) : (
-            <ClipboardIcon className="h-full w-full stroke-3" />
+            <ClipboardIcon
+              className="h-full w-full stroke-3"
+              data-testid="clipboard-icon"
+            />
           )}
         </div>
       </div>

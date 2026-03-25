@@ -34,7 +34,7 @@ describe('IdSection', () => {
   it('should render ID input', () => {
     render(<IdSection />);
 
-    const IDInput = screen.getByRole('textbox', { name: 'current user ID' });
+    const IDInput = screen.getByRole('textbox', { name: 'ID' });
 
     expect(IDInput).toBeInTheDocument();
   });
