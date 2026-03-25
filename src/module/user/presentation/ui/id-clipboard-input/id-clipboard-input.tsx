@@ -57,7 +57,7 @@ export function IdClipboardInput({
       >
         <input
           readOnly
-          className="text-alpha-grey-900 inline-block h-full w-full cursor-pointer truncate pl-3 text-xs outline-none"
+          className="text-alpha-grey-900 inline-block h-full w-full cursor-pointer truncate pl-3 text-center text-xs outline-none"
           placeholder="..."
           value={id ?? ''}
           onClick={handleCopy}
