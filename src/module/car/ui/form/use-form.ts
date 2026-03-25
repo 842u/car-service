@@ -1,11 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useImperativeHandle, useState } from 'react';
+import { useEffect } from 'react';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/car/schemas/zod/carFormSchema';
-import { enqueueRevokeObjectUrl } from '@/lib/utils';
 
 import type { CarFormProps } from './form';
 
@@ -27,9 +26,7 @@ const defaultCarFormValues: CarFormValues = {
   technical_inspection_expiration: null,
 };
 
-export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
-  const [imageInputUrl, setImageInputUrl] = useState<string | null>(null);
-
+export function useCarForm({ onSubmit, carData }: CarFormProps) {
   const {
     register,
     reset,
@@ -41,8 +38,6 @@ export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
     mode: 'onChange',
     defaultValues: defaultCarFormValues,
   });
-
-  useImperativeHandle(ref, () => ({ imageInputUrl }), [imageInputUrl]);
 
   useEffect(() => {
     carData &&
@@ -56,26 +51,23 @@ export function useCarForm({ onSubmit, ref, carData }: CarFormProps) {
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
-  const handleImageInputChange = (file: File | undefined | null) => {
-    imageInputUrl && enqueueRevokeObjectUrl(imageInputUrl);
-    setImageInputUrl((file && URL.createObjectURL(file)) || null);
-  };
-
   const handleFormSubmit = handleSubmit(
     (formValues: CarFormValues) => onSubmit && onSubmit(formValues),
   );
 
   const handleFormReset = () => reset();
 
+  const canReset = !isDirty;
+
+  const canSubmit = !isValid || !isDirty;
+
   return {
-    inputImageUrl: imageInputUrl,
     handleFormSubmit,
-    handleImageInputChange,
     handleFormReset,
     register,
     control,
     errors,
-    isDirty,
-    isValid,
+    canReset,
+    canSubmit,
   };
 }

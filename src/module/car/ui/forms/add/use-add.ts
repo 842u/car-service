@@ -1,12 +1,9 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
-import type { RefObject } from 'react';
-import { useRef } from 'react';
 
 import type { ApiCarResponse } from '@/app/api/car/route';
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
-import type { CarFormRef } from '@/car/ui/form/form';
 import type { ApiResponseSuccessResult } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
@@ -21,7 +18,6 @@ import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/lib/utils';
 type MutationVariables = {
   formData: CarFormValues;
   queryClient: QueryClient;
-  carFormRef: RefObject<CarFormRef | null>;
 };
 
 async function submitAddForm(formData: CarFormValues) {
@@ -76,20 +72,14 @@ export function useAddForm({
 }: {
   onSubmit: (() => void) | undefined;
 }) {
-  const carFormRef = useRef<CarFormRef>(null);
-
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     throwOnError: false,
     mutationFn: ({ formData }: MutationVariables) => submitAddForm(formData),
-    onMutate: ({ formData, queryClient, carFormRef }) =>
-      carsInfiniteAddOnMutate(
-        formData,
-        queryClient,
-        carFormRef.current?.imageInputUrl || null,
-      ),
+    onMutate: ({ formData, queryClient }) =>
+      carsInfiniteAddOnMutate(formData, queryClient),
     onSuccess: (_, { formData: { custom_name } }) =>
       addToast(`Car ${custom_name} added.`, 'success'),
     onError: (error, { queryClient }, context) =>
@@ -99,7 +89,7 @@ export function useAddForm({
   const handleFormSubmit = (formData: CarFormValues) => {
     onSubmit && onSubmit();
     mutate(
-      { formData, queryClient, carFormRef },
+      { formData, queryClient },
       {
         onSettled: (_, __, { queryClient }) =>
           queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite }),
@@ -107,5 +97,5 @@ export function useAddForm({
     );
   };
 
-  return { handleFormSubmit, carFormRef };
+  return { handleFormSubmit };
 }

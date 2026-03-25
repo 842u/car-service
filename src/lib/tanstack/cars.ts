@@ -68,14 +68,15 @@ function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
 export async function carsInfiniteAddOnMutate(
   carFormData: CarFormValues,
   queryClient: QueryClient,
-  optimisticCarImageUrl: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: queryKeys.carsInfinite });
+
+  const imageUrl = carFormData.image && URL.createObjectURL(carFormData.image);
 
   const newCar: Car = {
     ...carFormData,
     id: crypto.randomUUID(),
-    image_url: optimisticCarImageUrl,
+    image_url: imageUrl || null,
     created_at: parseDateToYyyyMmDd(new Date()),
     created_by: 'optimistic update',
   };
@@ -225,18 +226,22 @@ export async function carsUpdateOnMutate(
   queryClient: QueryClient,
   carId: string,
   carFormData: CarFormValues,
-  optimisticCarImageUrl: string | null,
 ) {
   await queryClient.cancelQueries({ queryKey: queryKeys.carsByCarId(carId) });
+
   const previousCarsQueryData = queryClient.getQueryData([
     'cars',
     carId,
   ]) as Car;
 
+  const image = carFormData.image;
+
+  const imageUrl = (image && URL.createObjectURL(image)) || null;
+
   const editedCar: Car = {
     ...previousCarsQueryData,
     ...carFormData,
-    image_url: optimisticCarImageUrl || previousCarsQueryData.image_url,
+    image_url: imageUrl,
   };
 
   queryClient.setQueryData(queryKeys.carsByCarId(carId), () => ({

@@ -10,7 +10,6 @@ import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 type MutationVariables = {
   image: File | undefined | null;
-  imageInputUrl: string | null;
 };
 
 export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
@@ -70,12 +69,14 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       const previousQueryData = queryClient.getQueryData(queryKeys.sessionUser);
 
+      const imageUrl = variables.image && URL.createObjectURL(variables.image);
+
       queryClient.setQueryData(
         queryKeys.sessionUser,
         (currentQueryData: UserDto) => {
           const updatedQueryData = {
             ...currentQueryData,
-            avatarUrl: variables.imageInputUrl,
+            avatarUrl: imageUrl,
           };
 
           return updatedQueryData;

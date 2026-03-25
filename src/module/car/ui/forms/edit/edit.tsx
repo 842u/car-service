@@ -1,20 +1,18 @@
-import type { UseEditFormOptions } from '@/car/ui/forms/edit/use-edit';
 import { useEditForm } from '@/car/ui/forms/edit/use-edit';
 import type { Car } from '@/types';
 
 import { CarForm } from '../../form/form';
 
-export type EditFormProps = {
+interface EditFormProps {
   carData?: Car;
-} & Omit<UseEditFormOptions, 'carId'>;
+  onSubmit?: () => void;
+}
 
 export function EditForm({ carData, onSubmit }: EditFormProps) {
-  const { handleFormSubmit, carFormRef } = useEditForm({
+  const { handleFormSubmit } = useEditForm({
     carId: carData?.id || '',
     onSubmit,
   });
 
-  return (
-    <CarForm ref={carFormRef} carData={carData} onSubmit={handleFormSubmit} />
-  );
+  return <CarForm carData={carData} onSubmit={handleFormSubmit} />;
 }

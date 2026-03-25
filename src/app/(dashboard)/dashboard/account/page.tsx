@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
@@ -22,15 +23,15 @@ export default function AccountPage() {
 
   return (
     <DashboardMain>
-      <section
-        aria-label="account settings"
-        className="flex w-full flex-col items-center justify-center gap-5 p-5 lg:max-w-4xl"
-      >
-        <IdSection id={data?.id} />
-        <NameSection name={data?.name} />
-        <AvatarSection avatarUrl={data?.avatarUrl} />
-        <PasswordChangeSection />
-      </section>
+      <DashboardSection variant="raw">
+        <DashboardSection.Heading>Account settings</DashboardSection.Heading>
+        <div className="mx-auto flex max-w-3xl flex-col gap-5">
+          <IdSection id={data?.id} />
+          <NameSection name={data?.name} />
+          <AvatarSection avatarUrl={data?.avatarUrl} />
+          <PasswordChangeSection />
+        </div>
+      </DashboardSection>
     </DashboardMain>
   );
 }

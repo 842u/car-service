@@ -1,49 +1,82 @@
-import type { SyntheticEvent } from 'react';
+import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { CheckIcon } from '@/icons/check';
+import { ClipboardIcon } from '@/icons/clipboard';
 import { inputVariants } from '@/lib/tailwindcss/input';
 
 type IdClipboardInputProps = {
   id?: string;
+  label?: string;
+  className?: string;
+  variant?: keyof typeof inputVariants;
 };
 
-export function IdClipboardInput({ id }: IdClipboardInputProps) {
+export function IdClipboardInput({
+  id,
+  label = 'ID',
+  className,
+  variant = 'default',
+}: IdClipboardInputProps) {
   const { addToast } = useToasts();
+  const [copied, setCopied] = useState(false);
 
-  const handleInputClick = async (event: SyntheticEvent<HTMLInputElement>) => {
+  const handleCopy = async () => {
     if (!id) return;
 
-    event.currentTarget.select();
-
-    const clipboardItemData = {
-      'text/plain': id,
-    };
-
-    const clipboardItem = new ClipboardItem(clipboardItemData);
-
     try {
-      await navigator.clipboard.write([clipboardItem]);
+      await navigator.clipboard.writeText(id);
+      setCopied(true);
       addToast('ID copied.', 'success');
-    } catch (error) {
-      if (error instanceof Error) {
-        addToast('Writing to the clipboard is not allowed.', 'error');
-      }
+
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      addToast('Clipboard not allowed.', 'error');
     }
   };
 
   return (
-    <input
-      readOnly
-      aria-label="current user ID"
-      className={twMerge(
-        inputVariants['default'],
-        'selection:bg-accent-500 w-xs cursor-pointer overflow-x-auto text-center md:w-72 md:text-xs',
+    <label
+      className="selection:bg-accent-500 block md:max-w-72"
+      title="Copy ID"
+    >
+      {label && (
+        <p>
+          <span className="text-xs">{label}</span>
+        </p>
       )}
-      defaultValue={id}
-      placeholder="..."
-      type="text"
-      onClick={handleInputClick}
-    />
+
+      <div
+        className={twMerge(
+          inputVariants[variant],
+          'my-1 flex items-center p-0',
+          'focus-within:border-accent-500 hover:border-accent-500 transition-colors',
+          className,
+        )}
+      >
+        <input
+          readOnly
+          className="text-alpha-grey-900 inline-block h-full w-full cursor-pointer truncate pl-3 text-center text-xs outline-none"
+          placeholder="..."
+          value={id ?? ''}
+          onClick={handleCopy}
+        />
+
+        <div className="flex h-full cursor-pointer items-center justify-center p-2">
+          {copied ? (
+            <CheckIcon
+              className="h-full w-full stroke-3"
+              data-testid="check-icon"
+            />
+          ) : (
+            <ClipboardIcon
+              className="h-full w-full stroke-3"
+              data-testid="clipboard-icon"
+            />
+          )}
+        </div>
+      </div>
+    </label>
   );
 }

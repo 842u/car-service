@@ -1,8 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
-import type { RefObject } from 'react';
-import { useRef } from 'react';
 
 import type { ApiCarResponse } from '@/app/api/car/route';
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
@@ -14,18 +12,15 @@ import { carsUpdateOnMutate } from '@/lib/tanstack/cars';
 import { queryKeys } from '@/lib/tanstack/keys';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/lib/utils';
 
-import type { CarFormRef } from '../../form/form';
-
-export type UseEditFormOptions = {
+interface UseEditFormParams {
   carId: string;
   onSubmit?: () => void;
-};
+}
 
 type MutationVariables = {
   formData: CarFormValues;
   carId: string;
   queryClient: QueryClient;
-  carFormRef: RefObject<CarFormRef | null>;
 };
 
 async function submitEditForm(carId: string, formData: CarFormValues) {
@@ -80,9 +75,7 @@ async function submitEditForm(carId: string, formData: CarFormValues) {
   }
 }
 
-export function useEditForm({ carId, onSubmit }: UseEditFormOptions) {
-  const carFormRef = useRef<CarFormRef>(null);
-
+export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
@@ -91,18 +84,12 @@ export function useEditForm({ carId, onSubmit }: UseEditFormOptions) {
     throwOnError: false,
     mutationFn: ({ formData, carId }: MutationVariables) =>
       submitEditForm(carId, formData),
-    onMutate: ({ formData, carId, queryClient, carFormRef }) =>
-      carsUpdateOnMutate(
-        queryClient,
-        carId,
-        formData,
-        carFormRef.current?.imageInputUrl || null,
-      ),
+    onMutate: ({ formData, carId, queryClient }) =>
+      carsUpdateOnMutate(queryClient, carId, formData),
     onSuccess: (_, { formData: { custom_name } }) =>
       addToast(`Car ${custom_name} edited.`, 'success'),
     onError: (error, { carId, queryClient }, context) => {
       addToast(error.message, 'error');
-
       queryClient.setQueryData(['cars', carId], context?.previousCarsQueryData);
     },
   });
@@ -111,7 +98,7 @@ export function useEditForm({ carId, onSubmit }: UseEditFormOptions) {
     onSubmit && onSubmit();
 
     mutate(
-      { formData, queryClient, carId, carFormRef },
+      { formData, queryClient, carId },
       {
         onSettled: (_, __, { carId, queryClient }) =>
           queryClient.invalidateQueries({
@@ -121,5 +108,5 @@ export function useEditForm({ carId, onSubmit }: UseEditFormOptions) {
     );
   };
 
-  return { handleFormSubmit, carFormRef };
+  return { handleFormSubmit };
 }
