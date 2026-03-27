@@ -1,4 +1,4 @@
-import { DetailsTable } from '@/car/ui/tables/details/details';
+import { DetailsCard } from '@/car/ui/cards/details/details';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
 import type { SectionControlsProps } from './controls/controls';
@@ -11,11 +11,8 @@ export function DetailsSection({
   carData,
 }: DetailsSectionProps) {
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">
-        Details
-      </DashboardSection.Heading>
-      <DetailsTable carData={carData} />
+    <DashboardSection aria-label="Vehicle details">
+      <DetailsCard className="mb-5" data={carData} />
       <SectionControls
         carData={carData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}

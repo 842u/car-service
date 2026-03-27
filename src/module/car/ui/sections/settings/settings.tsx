@@ -2,10 +2,9 @@
 
 import { OwnershipsSection } from '@/car/ownership/ui/sections/ownerships/ownerships';
 import { ServiceLogsSection } from '@/car/service-log/ui/sections/service-logs/service-logs';
+import { DetailsSection } from '@/car/ui/sections/details/details';
 
 import { DeleteSection } from '../delete/delete';
-import { DetailsSection } from '../details/details';
-import { IdentitySection } from '../identity/identity';
 import { useSettingsSection } from './use-settings';
 
 export type SettingsSectionProps = {
@@ -15,7 +14,6 @@ export type SettingsSectionProps = {
 export function SettingsSection({ carId }: SettingsSectionProps) {
   const {
     carData,
-    isPending,
     isCurrentUserPrimaryOwner,
     carOwnershipData,
     ownersProfilesData,
@@ -23,11 +21,6 @@ export function SettingsSection({ carId }: SettingsSectionProps) {
 
   return (
     <section className="flex w-full flex-col gap-5 p-5">
-      <IdentitySection
-        imageUrl={carData?.image_url}
-        isPending={isPending}
-        name={carData?.custom_name}
-      />
       <DetailsSection
         carData={carData}
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
