@@ -2,10 +2,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { useCarCostsSection } from '@/car/service-log/ui/sections/car-costs/use-car-costs';
 import { createMockServiceLog } from '@/lib/jest/mock/src/module/car/service-log';
-import { getServiceLogsWithCost } from '@/lib/supabase/tables/service_logs';
-
-import { useCostsSection } from './use-costs';
+import { getServiceLogsWithCostByCarId } from '@/lib/supabase/tables/service_logs';
 
 jest.mock('@/lib/supabase/tables/service_logs');
 
@@ -14,8 +13,10 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
   useToasts: () => ({ addToast: mockAddToast }),
 }));
 
-const mockGetServiceLogsWithCost =
-  getServiceLogsWithCost as jest.MockedFunction<typeof getServiceLogsWithCost>;
+const mockGetServiceLogsWithCostByCarId =
+  getServiceLogsWithCostByCarId as jest.MockedFunction<
+    typeof getServiceLogsWithCostByCarId
+  >;
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -35,12 +36,12 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('useCostsSection', () => {
+describe('useCarCostsSection', () => {
   describe('loading state', () => {
     it('should return isPending true initially', () => {
-      mockGetServiceLogsWithCost.mockReturnValue(new Promise(() => {}));
+      mockGetServiceLogsWithCostByCarId.mockReturnValue(new Promise(() => {}));
 
-      const { result } = renderHook(() => useCostsSection(), {
+      const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
       });
 
@@ -48,9 +49,9 @@ describe('useCostsSection', () => {
     });
 
     it('should return isPending false after data loads', async () => {
-      mockGetServiceLogsWithCost.mockResolvedValue([]);
+      mockGetServiceLogsWithCostByCarId.mockResolvedValue([]);
 
-      const { result } = renderHook(() => useCostsSection(), {
+      const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
       });
 
@@ -60,9 +61,9 @@ describe('useCostsSection', () => {
 
   describe('data fetching', () => {
     it('should return undefined serviceLogs while pending', () => {
-      mockGetServiceLogsWithCost.mockReturnValue(new Promise(() => {}));
+      mockGetServiceLogsWithCostByCarId.mockReturnValue(new Promise(() => {}));
 
-      const { result } = renderHook(() => useCostsSection(), {
+      const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
       });
 
@@ -70,9 +71,9 @@ describe('useCostsSection', () => {
     });
 
     it('should return empty array when no service logs exist', async () => {
-      mockGetServiceLogsWithCost.mockResolvedValue([]);
+      mockGetServiceLogsWithCostByCarId.mockResolvedValue([]);
 
-      const { result } = renderHook(() => useCostsSection(), {
+      const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
       });
 
@@ -87,9 +88,9 @@ describe('useCostsSection', () => {
         createMockServiceLog({ service_cost: 200, service_date: '2026-02-01' }),
       ];
 
-      mockGetServiceLogsWithCost.mockResolvedValue(mockLogs);
+      mockGetServiceLogsWithCostByCarId.mockResolvedValue(mockLogs);
 
-      const { result } = renderHook(() => useCostsSection(), {
+      const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
       });
 
@@ -101,9 +102,13 @@ describe('useCostsSection', () => {
 
   describe('error handling', () => {
     it('should show error toast when fetch fails', async () => {
-      mockGetServiceLogsWithCost.mockRejectedValue(new Error('DB error'));
+      mockGetServiceLogsWithCostByCarId.mockRejectedValue(
+        new Error('DB error'),
+      );
 
-      renderHook(() => useCostsSection(), { wrapper: createWrapper() });
+      renderHook(() => useCarCostsSection({ carId: '1' }), {
+        wrapper: createWrapper(),
+      });
 
       await waitFor(() =>
         expect(mockAddToast).toHaveBeenCalledWith('DB error', 'error'),
@@ -111,9 +116,11 @@ describe('useCostsSection', () => {
     });
 
     it('should fall back to generic message when error has no message', async () => {
-      mockGetServiceLogsWithCost.mockRejectedValue(new Error(''));
+      mockGetServiceLogsWithCostByCarId.mockRejectedValue(new Error(''));
 
-      renderHook(() => useCostsSection(), { wrapper: createWrapper() });
+      renderHook(() => useCarCostsSection({ carId: '1' }), {
+        wrapper: createWrapper(),
+      });
 
       await waitFor(() =>
         expect(mockAddToast).toHaveBeenCalledWith(

@@ -2,15 +2,19 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getServiceLogsWithCost } from '@/lib/supabase/tables/service_logs';
+import { getServiceLogsWithCostByCarId } from '@/lib/supabase/tables/service_logs';
 import { queryKeys } from '@/lib/tanstack/keys';
 
-export function useCostsSection() {
+interface UseCarCostsSectionParams {
+  carId: string;
+}
+
+export function useCarCostsSection({ carId }: UseCarCostsSectionParams) {
   const { addToast } = useToasts();
 
   const { data, isError, error, isPending } = useQuery({
-    queryKey: queryKeys.serviceLogsWithCost,
-    queryFn: getServiceLogsWithCost,
+    queryKey: queryKeys.serviceLogsWithCostByCarId(carId),
+    queryFn: async () => getServiceLogsWithCostByCarId(carId),
   });
 
   useEffect(() => {

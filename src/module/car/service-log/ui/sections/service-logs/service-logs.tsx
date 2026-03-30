@@ -17,12 +17,14 @@ import { SectionControls } from './controls/controls';
 type ServiceLogsSectionProps = SectionControlsProps & {
   isCurrentUserPrimaryOwner: boolean;
   owners?: UserDto[];
+  className?: string;
 };
 
 export function ServiceLogsSection({
   carId,
   isCurrentUserPrimaryOwner,
   owners,
+  className,
 }: ServiceLogsSectionProps) {
   const { addToast } = useToasts();
 
@@ -37,7 +39,7 @@ export function ServiceLogsSection({
   }, [addToast, error]);
 
   return (
-    <DashboardSection>
+    <DashboardSection aria-label="Service logs" className={className}>
       <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>

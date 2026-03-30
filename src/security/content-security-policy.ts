@@ -79,6 +79,7 @@ const styleSrcDirective: Directive = {
     "'sha256-9zL9D7V4ZS7/Ejl2hJBaUhvb6Kz0qP63cZJdse7FKNQ='",
     "'sha256-1RxEtrnAd5b7dSm+dsmII7JA/VKWYqnnpz1uflgEuHM='",
     "'sha256-CUsJx2gBDO+oKhgx2vFJvbgkZLqueGGG5FC5IxI938I='",
+    "'sha256-Wwucq8eX2r0YFymkQhDXm5hN0+FfSvI3s4JSSaqa4iw='",
     // Next - END
     `${isDevelopment ? `'nonce-reactQueryDevtools'` : ''}`,
   ],
