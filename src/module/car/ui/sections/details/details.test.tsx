@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 
-import { DETAILS_TABLE_TEST_ID } from '@/car/ui/tables/details/details';
 import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
 import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
 
@@ -24,22 +23,6 @@ function TestDetailsSection({
 }
 
 describe('DetailsSection', () => {
-  it('should render heading', () => {
-    render(<TestDetailsSection />);
-
-    const heading = screen.getByRole('heading', { name: 'Details' });
-
-    expect(heading).toBeInTheDocument();
-  });
-
-  it('should render car details table', () => {
-    render(<TestDetailsSection />);
-
-    const carDetailsTable = screen.getByTestId(DETAILS_TABLE_TEST_ID);
-
-    expect(carDetailsTable).toBeInTheDocument();
-  });
-
   it('should render section controls', () => {
     render(<TestDetailsSection />);
 

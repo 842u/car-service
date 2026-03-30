@@ -26,7 +26,7 @@ const STATUS_CONFIG = {
   less_than_month: {
     Icon: ExclamationCircleIcon,
     iconClassName: 'stroke-warning-500',
-    label: 'Expires within 30 days',
+    label: 'Expires in 30 days',
   },
   valid: {
     Icon: CheckCircleIcon,
@@ -54,5 +54,6 @@ export function useDateExpirationStatusIcon({
     Icon,
     iconClassName,
     tooltip,
+    statusLabel,
   };
 }
