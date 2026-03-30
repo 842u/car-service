@@ -4,6 +4,7 @@ import { useCostsSection } from '@/car/service-log/ui/sections/costs/use-costs';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { inputVariants } from '@/lib/tailwindcss/input';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
+import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 
 export const FILTERED_COSTS_TEST_ID = 'FILTERED_COSTS_TEST_ID';
 export const YEAR_TO_DATE_COSTS_TEST_ID = 'YEAR_TO_DATE_COSTS_TEST_ID';
@@ -33,51 +34,37 @@ export function CostsSection({ className }: CostsSectionProps) {
         Costs
       </DashboardSection.Heading>
 
-      <div className="md:flex md:max-w-full">
-        <DashboardSection className="flex-1 md:max-w-1/2" variant="raw">
-          <DashboardSection.Heading
-            className="text-alpha-grey-900 font-normal"
-            headingLevel="h3"
-            withUnderline={false}
-          >
-            All time costs
-          </DashboardSection.Heading>
-          <DashboardSection.Text
-            className="overflow-x-auto overflow-y-hidden text-4xl"
+      <div className="flex flex-col gap-5 md:flex-row lg:flex-col">
+        <div className="md:flex-1">
+          <p className="text-alpha-grey-900">ALL TIME COSTS</p>
+          <p
+            className="overflow-x-auto overflow-y-clip text-7xl"
             data-testid={TOTAL_COSTS_TEST_ID}
           >
             {data?.totalCost ?? 0}
-          </DashboardSection.Text>
-        </DashboardSection>
+          </p>
+        </div>
 
-        <DashboardSection className="flex-1 md:max-w-1/2" variant="raw">
-          <DashboardSection.Heading
-            className="text-alpha-grey-900 font-normal"
-            headingLevel="h3"
-            withUnderline={false}
-          >
-            Past year costs
-          </DashboardSection.Heading>
-          <DashboardSection.Text
-            className="overflow-x-auto overflow-y-hidden text-4xl"
+        <div className="md:flex-1">
+          <p className="text-alpha-grey-900">PAST YEAR COSTS</p>
+          <p
+            className="overflow-x-auto overflow-y-clip text-6xl md:text-7xl lg:text-6xl"
             data-testid={YEAR_TO_DATE_COSTS_TEST_ID}
           >
             {data?.yearToDateCost ?? 0}
-          </DashboardSection.Text>
-        </DashboardSection>
+          </p>
+        </div>
       </div>
 
-      <DashboardSection className="flex flex-col gap-2" variant="raw">
-        <DashboardSection.Heading
-          className="text-alpha-grey-900 font-normal"
-          headingLevel="h3"
-        >
-          Custom period
-        </DashboardSection.Heading>
+      <div className="flex flex-col gap-5">
+        <TextSeparator
+          className="text-alpha-grey-900 mt-5"
+          text="CUSTOM PERIOD"
+        />
 
-        <div className="md:flex md:gap-5">
-          <label className="md:w-full">
-            <p className="my-2 text-xs">From</p>
+        <div className="flex flex-col gap-2 md:flex-row md:gap-5">
+          <label className="flex-1">
+            <p className="text-alpha-grey-900">From</p>
             <input
               className={inputVariants.default}
               type="date"
@@ -86,8 +73,8 @@ export function CostsSection({ className }: CostsSectionProps) {
             />
           </label>
 
-          <label className="md:w-full">
-            <p className="my-2 text-xs">To</p>
+          <label className="flex-1">
+            <p className="text-alpha-grey-900">To</p>
             <input
               className={inputVariants.default}
               type="date"
@@ -97,16 +84,18 @@ export function CostsSection({ className }: CostsSectionProps) {
           </label>
         </div>
 
-        <DashboardSection.Text
-          className="text-alpha-grey-900 self-end text-base"
-          data-testid={FILTERED_COSTS_TEST_ID}
-        >
-          Period total costs
-        </DashboardSection.Text>
-        <DashboardSection.Text className="max-w-full self-end overflow-x-auto overflow-y-hidden text-4xl">
-          {data?.filteredCost ?? 0}
-        </DashboardSection.Text>
-      </DashboardSection>
+        <div>
+          <p
+            className="text-alpha-grey-900"
+            data-testid={FILTERED_COSTS_TEST_ID}
+          >
+            PERIOD TOTAL COSTS
+          </p>
+          <p className="overflow-x-auto overflow-y-clip text-6xl">
+            {data?.filteredCost ?? 0}
+          </p>
+        </div>
+      </div>
     </DashboardSection>
   );
 }
