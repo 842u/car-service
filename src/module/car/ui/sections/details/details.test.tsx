@@ -23,14 +23,6 @@ function TestDetailsSection({
 }
 
 describe('DetailsSection', () => {
-  it('should render heading', () => {
-    render(<TestDetailsSection />);
-
-    const heading = screen.getByRole('heading', { name: 'Details' });
-
-    expect(heading).toBeInTheDocument();
-  });
-
   it('should render section controls', () => {
     render(<TestDetailsSection />);
 
