@@ -9,6 +9,7 @@ import { SectionControls } from './controls/controls';
 type OwnershipsSectionProps = SectionControlsProps & {
   owners?: UserDto[];
   carOwnerships?: CarOwnership[];
+  className?: string;
 };
 
 export function OwnershipsSection({
@@ -16,9 +17,10 @@ export function OwnershipsSection({
   carOwnerships,
   isCurrentUserPrimaryOwner,
   owners,
+  className,
 }: OwnershipsSectionProps) {
   return (
-    <DashboardSection className="overflow-x-auto">
+    <DashboardSection className={className}>
       <DashboardSection.Heading headingLevel="h2">
         Ownerships
       </DashboardSection.Heading>

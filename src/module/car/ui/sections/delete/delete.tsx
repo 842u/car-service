@@ -3,14 +3,15 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { SectionControlsProps } from './controls/controls';
 import { SectionControls } from './controls/controls';
 
-type DeleteSectionProps = SectionControlsProps;
+type DeleteSectionProps = { className?: string } & SectionControlsProps;
 
 export function DeleteSection({
   carId,
   isCurrentUserPrimaryOwner,
+  className,
 }: DeleteSectionProps) {
   return (
-    <DashboardSection variant="errorDefault">
+    <DashboardSection className={className} variant="errorDefault">
       <DashboardSection.Heading headingLevel="h2">
         Delete Car
       </DashboardSection.Heading>

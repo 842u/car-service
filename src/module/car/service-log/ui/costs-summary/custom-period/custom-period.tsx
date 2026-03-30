@@ -18,7 +18,7 @@ export function CustomPeriodCostsSummary({
   return (
     <div className="flex flex-col gap-5">
       <TextSeparator
-        className="text-alpha-grey-900 mt-5"
+        className="text-alpha-grey-500 mt-5 text-xs"
         text="CUSTOM PERIOD"
       />
 
