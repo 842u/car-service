@@ -1,96 +1,14 @@
-import type { ColumnFiltersState, Row } from '@tanstack/react-table';
-
 import { inputVariants } from '@/lib/tailwindcss/input';
+import { useDateFilter } from '@/ui/table/compounds/date-filter/use-date-filter';
 
-import { useTable } from '../../table';
-
-type DateFilter = { from?: string; to?: string };
-
-// eslint-disable-next-line
-export function filterColumnByDate<T extends Record<string, any>>(
-  row: Row<T>,
-  columnId: string,
-  filterValue: DateFilter,
-) {
-  const rowDate = new Date(row.original[columnId]);
-
-  if (Number.isNaN(rowDate.valueOf())) {
-    return false;
-  }
-
-  let filterFromDate: Date | null = new Date(filterValue.from || '');
-  let filterToDate: Date | null = new Date(filterValue.to || '');
-
-  if (Number.isNaN(filterFromDate.valueOf())) {
-    filterFromDate = null;
-  }
-  if (Number.isNaN(filterToDate.valueOf())) {
-    filterToDate = null;
-  }
-
-  if (!filterFromDate && !filterToDate) {
-    return true;
-  }
-
-  if (filterFromDate && !filterToDate) {
-    return rowDate.getTime() >= filterFromDate.getTime();
-  }
-
-  if (!filterFromDate && filterToDate) {
-    return rowDate.getTime() <= filterToDate.getTime();
-  }
-
-  if (filterFromDate && filterToDate) {
-    if (filterToDate.getTime() < filterFromDate.getTime()) {
-      return false;
-    }
-    return (
-      rowDate.getTime() >= filterFromDate.getTime() &&
-      rowDate.getTime() <= filterToDate.getTime()
-    );
-  }
-
-  return true;
-}
-
-function getUpdatedFiltersState(
-  filters: ColumnFiltersState,
-  columnId: string,
-  valueKey: 'from' | 'to',
-  value: string,
-) {
-  const currentColumnFilter = filters.find((filter) => filter.id === columnId);
-
-  if (!currentColumnFilter) {
-    return [
-      ...filters,
-      {
-        id: columnId,
-        value: {
-          [valueKey]: value,
-        },
-      },
-    ];
-  } else {
-    if (currentColumnFilter.value instanceof Object) {
-      currentColumnFilter.value = {
-        ...currentColumnFilter.value,
-        [valueKey]: value,
-      };
-    }
-
-    return [...filters];
-  }
-}
-
-type TableDateFilterProps = {
+interface TableDateFilterProps {
   columnId: string;
-};
+}
 
 export function TableDateFilter({ columnId }: TableDateFilterProps) {
-  const { table } = useTable();
-
-  const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
+  const { columnLabel, onFromDateChange, onToDateChange } = useDateFilter({
+    columnId,
+  });
 
   return (
     <div className="my-4 flex flex-col gap-2 md:w-fit md:flex-row md:flex-wrap">
@@ -99,16 +17,7 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
         <input
           className={inputVariants.default}
           type="date"
-          onChange={(event) => {
-            table.setColumnFilters((currentFilters) =>
-              getUpdatedFiltersState(
-                currentFilters,
-                columnId,
-                'from',
-                event.target.value,
-              ),
-            );
-          }}
+          onChange={onFromDateChange}
         />
       </label>
 
@@ -117,16 +26,7 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
         <input
           className={inputVariants.default}
           type="date"
-          onChange={(event) => {
-            table.setColumnFilters((currentFilters) =>
-              getUpdatedFiltersState(
-                currentFilters,
-                columnId,
-                'to',
-                event.target.value,
-              ),
-            );
-          }}
+          onChange={onToDateChange}
         />
       </label>
     </div>
