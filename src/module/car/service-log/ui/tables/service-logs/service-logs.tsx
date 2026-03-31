@@ -163,7 +163,6 @@ export function ServiceLogsTable({
         <Table.DateFilter columnId="service_date" />
         <Table.ValuesFilter
           checkboxLabelValueMapping={serviceCategoryMapping}
-          className="my-4"
           columnId="category"
         />
         <Table.TextFilter columnId="created_by" />

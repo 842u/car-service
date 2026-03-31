@@ -1,87 +1,64 @@
 'use client';
 
-import type { ChangeEvent } from 'react';
+import { FunnelIcon } from '@/icons/funnel';
+import { Dropdown } from '@/ui/dropdown/dropdown';
+import { IconButton } from '@/ui/icon-button/icon-button';
+import { useValuesFilter } from '@/ui/table/compounds/values-filter/use-values-filter';
 
-import { useTable } from '../../table';
-
-type TableValuesFilterProps = {
+interface ValuesFilterProps {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
   className?: string;
-};
+}
 
 export function ValuesFilter({
   columnId,
   checkboxLabelValueMapping,
   className,
-}: TableValuesFilterProps) {
-  const { table } = useTable();
-
-  const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
-
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = event.target;
-
-    table.setColumnFilters((currentFilters) => {
-      const currentColumnFilter = currentFilters.find(
-        (filter) => filter.id === columnId,
-      );
-
-      if (checked) {
-        if (!currentColumnFilter) {
-          return [...currentFilters, { id: columnId, value: [value] }];
-        } else {
-          const currentValues = currentColumnFilter.value as unknown[];
-
-          if (!currentValues.includes(value)) {
-            return currentFilters.map((filter) =>
-              filter.id === columnId
-                ? { ...filter, value: [...currentValues, value] }
-                : filter,
-            );
-          }
-
-          return currentFilters;
-        }
-      } else {
-        if (currentColumnFilter) {
-          const newValues = (currentColumnFilter.value as unknown[]).filter(
-            (filterValue) => filterValue !== value,
-          );
-
-          return currentFilters.map((filter) =>
-            filter.id === columnId ? { ...filter, value: newValues } : filter,
-          );
-        }
-
-        return currentFilters;
-      }
-    });
-  };
+}: ValuesFilterProps) {
+  const { columnLabel, handleCheckboxChange } = useValuesFilter({ columnId });
 
   return (
-    <fieldset className={className}>
-      <legend>
-        <p className="text-xs">Filter by {columnLabel}</p>
-      </legend>
-      {Object.keys(checkboxLabelValueMapping).map((checkboxLabel) => {
-        return (
-          <label
-            key={checkboxLabel}
-            className="accent-accent-500 block text-base"
+    <Dropdown className={className}>
+      <Dropdown.Trigger>
+        {({ onClick, ref }) => (
+          <IconButton
+            ref={ref}
+            text={columnLabel}
+            title={`Filter by ${columnLabel}`}
+            onClick={onClick}
           >
-            <input
-              className="mr-2"
-              id={`checkbox-${checkboxLabel}`}
-              name={columnId}
-              type="checkbox"
-              value={checkboxLabelValueMapping[checkboxLabel]}
-              onChange={handleCheckboxChange}
-            />
-            {checkboxLabel}
-          </label>
-        );
-      })}
-    </fieldset>
+            <FunnelIcon className="stroke-accent-500 h-5 w-5 stroke-2" />
+          </IconButton>
+        )}
+      </Dropdown.Trigger>
+      <Dropdown.Content>
+        <fieldset className="p-1">
+          <legend>
+            <p className="text-alpha-grey-900 my-2">Filter by {columnLabel}</p>
+          </legend>
+          <div className="flex flex-col gap-1">
+            {Object.keys(checkboxLabelValueMapping).map((checkboxLabel) => {
+              return (
+                <label
+                  key={checkboxLabel}
+                  className="hover:bg-alpha-grey-100 cursor-pointer rounded-md px-2 py-1"
+                >
+                  <input
+                    className="accent-accent-500 mr-2"
+                    id={`checkbox-${checkboxLabel}`}
+                    name={columnId}
+                    type="checkbox"
+                    value={checkboxLabelValueMapping[checkboxLabel]}
+                    onChange={handleCheckboxChange}
+                  />
+                  {checkboxLabel}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      </Dropdown.Content>
+    </Dropdown>
   );
 }
