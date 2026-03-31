@@ -20,7 +20,7 @@ import { TableHead } from './compounds/head/head';
 import { TableRoot } from './compounds/root/root';
 import { TableSortBreadcrumb } from './compounds/sort-breadcrumb/sort-breadcrumb';
 import { TableTextFilter } from './compounds/text-filter/text-filter';
-import { ValuesFilter } from './compounds/values-filter/values-filter';
+import { TableValuesFilter } from './compounds/values-filter/values-filter';
 
 type TableContextValue<T> = { table: TanstackTable<T> };
 
@@ -59,5 +59,5 @@ Table.Head = TableHead;
 Table.Body = TableBody;
 Table.SortBreadcrumb = TableSortBreadcrumb;
 Table.DateFilter = TableDateFilter;
-Table.ValuesFilter = ValuesFilter;
+Table.ValuesFilter = TableValuesFilter;
 Table.TextFilter = TableTextFilter;

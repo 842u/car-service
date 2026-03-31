@@ -5,17 +5,17 @@ import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 import { useValuesFilter } from '@/ui/table/compounds/values-filter/use-values-filter';
 
-interface ValuesFilterProps {
+interface TableValuesFilterProps {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
   className?: string;
 }
 
-export function ValuesFilter({
+export function TableValuesFilter({
   columnId,
   checkboxLabelValueMapping,
   className,
-}: ValuesFilterProps) {
+}: TableValuesFilterProps) {
   const { columnLabel, handleCheckboxChange } = useValuesFilter({ columnId });
 
   return (
@@ -24,6 +24,8 @@ export function ValuesFilter({
         {({ onClick, ref }) => (
           <IconButton
             ref={ref}
+            className="border-alpha-grey-200 bg-alpha-grey-50 px-2"
+            iconSide="left"
             text={columnLabel}
             title={`Filter by ${columnLabel}`}
             onClick={onClick}
