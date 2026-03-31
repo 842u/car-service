@@ -1,62 +1,33 @@
-import type { ChangeEvent } from 'react';
-import { useRef } from 'react';
+import { SearchIcon } from '@/icons/search';
+import { useTextFilter } from '@/ui/table/compounds/text-filter/use-text-filter';
 
-import { inputVariants } from '@/lib/tailwindcss/input';
-
-import { useTable } from '../../table';
-
-type TableTextFilterProps = {
+interface TableTextFilterProps {
   columnId: string;
   debounceDelay?: number;
-};
+}
 
 export function TableTextFilter({
   columnId,
-  debounceDelay = 200,
+  debounceDelay,
 }: TableTextFilterProps) {
-  const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
-
-  const { table } = useTable();
-
-  const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
-  const inputId = `filter-${columnId}`;
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    clearTimeout(debounceTimerRef.current);
-
-    debounceTimerRef.current = setTimeout(() => {
-      const inputValue = event.target.value;
-
-      table.setColumnFilters((currentFilters) => {
-        const currentColumnFilter = currentFilters.find(
-          (filter) => filter.id === columnId,
-        );
-
-        if (!currentColumnFilter) {
-          currentFilters.push({ id: columnId, value: inputValue });
-          return currentFilters;
-        } else {
-          const updatedFilters = currentFilters.map((filter) => {
-            if (filter.id === columnId) {
-              filter.value = inputValue;
-            }
-
-            return { ...filter };
-          });
-
-          return updatedFilters;
-        }
-      });
-    }, debounceDelay);
-  };
+  const { columnLabel, inputId, handleInputChange } = useTextFilter({
+    columnId,
+    debounceDelay,
+  });
 
   return (
-    <label className="my-4 block w-fit" htmlFor={inputId}>
-      <p className="my-2 text-xs">Filter {columnLabel}</p>
+    <label className="border-alpha-grey-200 bg-alpha-grey-50 focus-within:ring-accent-500 flex h-10 w-full items-center rounded-md border focus-within:ring-1">
+      <SearchIcon
+        aria-hidden="true"
+        className="stroke-accent-500 dark:accent-accent-400 pointer-events-none ml-2 h-5 w-5 shrink-0 stroke-2"
+      />
+
+      <span className="sr-only">Filter {columnLabel}</span>
+
       <input
-        className={inputVariants.default}
+        className="ml-2 w-full outline-none"
         id={inputId}
-        placeholder="Enter filter text..."
+        placeholder={`Search by ${columnLabel}`}
         type="text"
         onChange={handleInputChange}
       />
