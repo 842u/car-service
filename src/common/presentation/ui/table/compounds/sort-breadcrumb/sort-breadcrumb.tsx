@@ -1,5 +1,5 @@
 import { useTable } from '../../table';
-import { ThDropdown } from '../head/th/dropdown/dropdown';
+import { TableSortDropdown } from '../sort-dropdown/sort-dropdown';
 
 interface TableSortBreadcrumbProps {
   className?: string;
@@ -26,7 +26,7 @@ export function TableSortBreadcrumb({ className }: TableSortBreadcrumbProps) {
 
           return (
             <div key={rule.id}>
-              <ThDropdown
+              <TableSortDropdown
                 className="inline-block"
                 columnId={rule.id}
                 label={table.getColumn(rule.id)?.columnDef.meta?.label}

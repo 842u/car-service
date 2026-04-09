@@ -6,13 +6,17 @@ import { Dropdown as BaseDropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 import { useTable } from '@/ui/table/table';
 
-type ThDropdownProps = {
+interface TableSortDropdownProps {
   columnId: string;
   label?: string;
   className?: string;
-};
+}
 
-export function ThDropdown({ columnId, label, className }: ThDropdownProps) {
+export function TableSortDropdown({
+  columnId,
+  label,
+  className,
+}: TableSortDropdownProps) {
   const { table } = useTable();
 
   const column = table.getColumn(columnId);
