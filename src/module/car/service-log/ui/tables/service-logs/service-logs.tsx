@@ -8,7 +8,6 @@ import type { AuthIdentityPersistence } from '@/common/application/persistence-m
 import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
 import type { ServiceLog } from '@/types';
-import { serviceCategoryMapping } from '@/types';
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
@@ -160,14 +159,12 @@ export function ServiceLogsTable({
           },
         }}
       >
-        <Table.DateFilter columnId="service_date" />
-        <Table.ValuesFilter
-          checkboxLabelValueMapping={serviceCategoryMapping}
-          columnId="category"
-        />
-        <Table.TextFilter columnId="created_by" />
-        <Table.SortBreadcrumb />
-        <Table.Root ref={tableRef} className="my-4 max-h-96 overflow-auto">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center">
+          <Table.DateFilter columnId="service_date" />
+          <Table.TextFilter className="lg:w-fit" columnId="created_by" />
+        </div>
+        <Table.SortBreadcrumb className="my-5" />
+        <Table.Root ref={tableRef} className="max-h-96 overflow-auto">
           <Table.Head />
           <Table.Body />
         </Table.Root>
