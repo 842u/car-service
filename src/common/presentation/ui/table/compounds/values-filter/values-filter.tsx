@@ -18,9 +18,14 @@ export function TableValuesFilter({
   showLabel = true,
   className,
 }: TableValuesFilterProps) {
-  const { columnLabel, selectedValues, handleCheckboxChange } = useValuesFilter(
-    { columnId },
-  );
+  const {
+    columnLabel,
+    selectedValues,
+    handleCheckboxChange,
+    allSelected,
+    someSelected,
+    handleToggleAll,
+  } = useValuesFilter({ columnId, checkboxLabelValueMapping });
 
   return (
     <Dropdown className={className}>
@@ -46,7 +51,21 @@ export function TableValuesFilter({
               Filter by {columnLabel}
             </p>
           </legend>
+
           <div className="flex flex-col gap-1">
+            <label className="hover:bg-alpha-grey-100 cursor-pointer rounded-md px-2 py-1">
+              <input
+                ref={(el) => {
+                  if (el) el.indeterminate = someSelected;
+                }}
+                checked={allSelected}
+                className="accent-accent-500 mr-2"
+                type="checkbox"
+                onChange={handleToggleAll}
+              />
+              All
+            </label>
+
             {Object.keys(checkboxLabelValueMapping).map((checkboxLabel) => {
               return (
                 <label

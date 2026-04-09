@@ -4,56 +4,62 @@ import { useTable } from '@/ui/table/table';
 
 interface UseValuesFilterParams {
   columnId: string;
+  checkboxLabelValueMapping: Record<string, string>;
 }
 
-export function useValuesFilter({ columnId }: UseValuesFilterParams) {
+export function useValuesFilter({
+  columnId,
+  checkboxLabelValueMapping,
+}: UseValuesFilterParams) {
   const { table } = useTable();
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
 
   const currentFilter = table
     .getState()
-    .columnFilters.find((f) => f.id === columnId);
+    .columnFilters.find((filter) => filter.id === columnId);
 
   const selectedValues = (currentFilter?.value as string[]) ?? [];
+  const allValues = Object.values(checkboxLabelValueMapping);
+  const allSelected = allValues.every((value) =>
+    selectedValues.includes(value),
+  );
+  const someSelected =
+    !allSelected && allValues.some((value) => selectedValues.includes(value));
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
 
     table.setColumnFilters((currentFilters) => {
-      const currentColumnFilter = currentFilters.find(
-        (filter) => filter.id === columnId,
+      const currentValues =
+        (currentFilters.find((filter) => filter.id === columnId)
+          ?.value as string[]) ?? [];
+
+      const newValues = checked
+        ? [...new Set([...currentValues, value])]
+        : currentValues.filter((filterValue) => filterValue !== value);
+
+      const withoutCurrent = currentFilters.filter(
+        (filter) => filter.id !== columnId,
       );
 
-      if (checked) {
-        if (!currentColumnFilter) {
-          return [...currentFilters, { id: columnId, value: [value] }];
-        } else {
-          const currentValues = currentColumnFilter.value as unknown[];
+      if (newValues.length === 0) return withoutCurrent;
 
-          if (!currentValues.includes(value)) {
-            return currentFilters.map((filter) =>
-              filter.id === columnId
-                ? { ...filter, value: [...currentValues, value] }
-                : filter,
-            );
-          }
+      return [...withoutCurrent, { id: columnId, value: newValues }];
+    });
+  };
 
-          return currentFilters;
-        }
-      } else {
-        if (currentColumnFilter) {
-          const newValues = (currentColumnFilter.value as unknown[]).filter(
-            (filterValue) => filterValue !== value,
-          );
+  const handleToggleAll = () => {
+    table.setColumnFilters((currentFilters) => {
+      const withoutCurrent = currentFilters.filter(
+        (filter) => filter.id !== columnId,
+      );
 
-          return currentFilters.map((filter) =>
-            filter.id === columnId ? { ...filter, value: newValues } : filter,
-          );
-        }
-
-        return currentFilters;
+      if (allSelected || someSelected) {
+        return withoutCurrent;
       }
+
+      return [...withoutCurrent, { id: columnId, value: allValues }];
     });
   };
 
@@ -61,5 +67,8 @@ export function useValuesFilter({ columnId }: UseValuesFilterParams) {
     columnLabel,
     selectedValues,
     handleCheckboxChange,
+    allSelected,
+    someSelected,
+    handleToggleAll,
   };
 }
