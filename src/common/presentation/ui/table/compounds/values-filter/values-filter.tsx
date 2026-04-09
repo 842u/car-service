@@ -18,7 +18,9 @@ export function TableValuesFilter({
   showLabel = true,
   className,
 }: TableValuesFilterProps) {
-  const { columnLabel, handleCheckboxChange } = useValuesFilter({ columnId });
+  const { columnLabel, selectedValues, handleCheckboxChange } = useValuesFilter(
+    { columnId },
+  );
 
   return (
     <Dropdown className={className}>
@@ -52,6 +54,9 @@ export function TableValuesFilter({
                   className="hover:bg-alpha-grey-100 cursor-pointer rounded-md px-2 py-1"
                 >
                   <input
+                    checked={selectedValues.includes(
+                      checkboxLabelValueMapping[checkboxLabel],
+                    )}
                     className="accent-accent-500 mr-2"
                     id={`checkbox-${checkboxLabel}`}
                     name={columnId}

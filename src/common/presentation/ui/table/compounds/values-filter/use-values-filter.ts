@@ -11,6 +11,12 @@ export function useValuesFilter({ columnId }: UseValuesFilterParams) {
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
 
+  const currentFilter = table
+    .getState()
+    .columnFilters.find((f) => f.id === columnId);
+
+  const selectedValues = (currentFilter?.value as string[]) ?? [];
+
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
 
@@ -53,6 +59,7 @@ export function useValuesFilter({ columnId }: UseValuesFilterParams) {
 
   return {
     columnLabel,
+    selectedValues,
     handleCheckboxChange,
   };
 }
