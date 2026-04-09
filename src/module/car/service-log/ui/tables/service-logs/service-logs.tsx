@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
 import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
-import type { ServiceLog } from '@/types';
+import { serviceCategoryMapping, type ServiceLog } from '@/types';
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
@@ -51,6 +51,10 @@ export function ServiceLogsTable({
         columnsHelper.accessor('category', {
           meta: {
             label: 'Category',
+            filter: {
+              type: 'values',
+              valuesMapping: serviceCategoryMapping,
+            },
           },
           enableColumnFilter: true,
           filterFn: 'arrIncludesSome',
