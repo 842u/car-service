@@ -77,53 +77,53 @@ export function ThDropdown({ columnId, label, className }: ThDropdownProps) {
         {({ onClick, ref }) => (
           <IconButton
             ref={ref}
-            className="px-1"
+            className="h-fit p-2 px-3"
             text={label}
             title="sort"
             variant="transparent"
             onClick={onClick}
           >
             {isColumnSortSet && !columnSortDesc && (
-              <ChevronUpIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-[5] py-2.5" />
+              <ChevronUpIcon className="stroke-dark-500 dark:stroke-light-500 h-5 w-5 stroke-3 p-0.5" />
             )}
             {isColumnSortSet && columnSortDesc && (
-              <ChevronDownIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-[5] py-2.5" />
+              <ChevronDownIcon className="stroke-dark-500 dark:stroke-light-500 h-5 w-5 stroke-3 p-0.5" />
             )}
             {!isColumnSortSet && (
-              <ChevronUpDownIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-[5] py-2" />
+              <ChevronUpDownIcon className="stroke-dark-500 dark:stroke-light-500 h-5 w-5 stroke-3 p-0.5" />
             )}
           </IconButton>
         )}
       </BaseDropdown.Trigger>
       <BaseDropdown.Content>
         <IconButton
-          className="w-full justify-between pr-0"
+          className="h-fit w-full justify-between p-2 px-3"
           text="Asc"
           variant="transparent"
           onClick={handleAscButtonClick}
         >
           <ChevronUpIcon
-            className={`aspect-square h-full py-2.5 ${isColumnSortSet && !columnSortDesc ? 'stroke-accent-500 stroke-[7]' : 'stroke-dark-500 dark:stroke-light-500 stroke-[5]'}`}
+            className={`h-5 w-5 stroke-3 p-0.5 ${isColumnSortSet && !columnSortDesc ? 'stroke-accent-500' : 'stroke-dark-500 dark:stroke-light-500'}`}
           />
         </IconButton>
         <IconButton
-          className="w-full justify-between pr-0"
+          className="h-fit w-full justify-between p-2 px-3"
           text="Desc"
           variant="transparent"
           onClick={handleDescButtonClick}
         >
           <ChevronDownIcon
-            className={`aspect-square h-full py-2.5 ${isColumnSortSet && columnSortDesc ? 'stroke-accent-500 stroke-[7]' : 'stroke-dark-500 dark:stroke-light-500 stroke-[5]'}`}
+            className={`h-5 w-5 stroke-3 p-0.5 ${isColumnSortSet && columnSortDesc ? 'stroke-accent-500' : 'stroke-dark-500 dark:stroke-light-500'}`}
           />
         </IconButton>
         {isColumnSortSet && (
           <IconButton
-            className="w-full justify-between pr-0"
+            className="h-fit w-full justify-between p-2 px-3"
             text="Reset"
             variant="transparent"
             onClick={handleResetButtonClick}
           >
-            <XMarkIcon className="stroke-dark-500 dark:stroke-light-500 aspect-square h-full stroke-[7] py-2.5" />
+            <XMarkIcon className="stroke-dark-500 dark:stroke-light-500 h-5 w-5 stroke-3 p-0.5" />
           </IconButton>
         )}
       </BaseDropdown.Content>
