@@ -8,12 +8,14 @@ import { useValuesFilter } from '@/ui/table/compounds/values-filter/use-values-f
 interface TableValuesFilterProps {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
+  showLabel?: boolean;
   className?: string;
 }
 
 export function TableValuesFilter({
   columnId,
   checkboxLabelValueMapping,
+  showLabel = true,
   className,
 }: TableValuesFilterProps) {
   const { columnLabel, handleCheckboxChange } = useValuesFilter({ columnId });
@@ -24,20 +26,23 @@ export function TableValuesFilter({
         {({ onClick, ref }) => (
           <IconButton
             ref={ref}
-            className="border-alpha-grey-200 bg-alpha-grey-50 px-2"
-            iconSide="left"
+            className="h-fit p-2 px-3"
+            iconSide="right"
             text={columnLabel}
             title={`Filter by ${columnLabel}`}
+            variant="transparent"
             onClick={onClick}
           >
-            <FunnelIcon className="stroke-accent-500 h-5 w-5 stroke-2" />
+            <FunnelIcon className="h-5 w-5 stroke-2 p-0.5" />
           </IconButton>
         )}
       </Dropdown.Trigger>
       <Dropdown.Content>
         <fieldset className="p-1">
           <legend>
-            <p className="text-alpha-grey-900 my-2">Filter by {columnLabel}</p>
+            <p className={showLabel ? 'text-alpha-grey-900 my-2' : 'sr-only'}>
+              Filter by {columnLabel}
+            </p>
           </legend>
           <div className="flex flex-col gap-1">
             {Object.keys(checkboxLabelValueMapping).map((checkboxLabel) => {
