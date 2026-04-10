@@ -6,9 +6,10 @@ interface TableDateFilterProps {
 }
 
 export function TableDateFilter({ columnId }: TableDateFilterProps) {
-  const { columnLabel, onFromDateChange, onToDateChange } = useDateFilter({
-    columnId,
-  });
+  const { columnLabel, onFromDateChange, onToDateChange, fromDate, toDate } =
+    useDateFilter({
+      columnId,
+    });
 
   return (
     <div className="border-alpha-grey-200 bg-alpha-grey-50 flex flex-col rounded-md border md:h-10 md:flex-row md:items-center md:justify-evenly md:gap-2 md:p-1">
@@ -18,6 +19,7 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
           className="text-alpha-grey-900 h-full w-full cursor-pointer outline-none"
           title={`From ${columnLabel}`}
           type="date"
+          value={fromDate}
           onChange={onFromDateChange}
         />
       </label>
@@ -30,6 +32,7 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
           className="text-alpha-grey-900 h-full w-full cursor-pointer outline-none"
           title={`To ${columnLabel}`}
           type="date"
+          value={toDate}
           onChange={onToDateChange}
         />
       </label>

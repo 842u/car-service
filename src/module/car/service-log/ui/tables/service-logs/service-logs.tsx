@@ -37,6 +37,9 @@ export function ServiceLogsTable({
         columnsHelper.accessor('service_date', {
           meta: {
             label: 'Date',
+            filter: {
+              type: 'date',
+            },
           },
           enableSorting: true,
           enableColumnFilter: true,
