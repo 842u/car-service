@@ -13,7 +13,7 @@ export function useValuesFilter({
 }: UseValuesFilterParams) {
   const { table } = useTable();
 
-  const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
+  const label = table.getColumn(columnId)?.columnDef.meta?.label;
 
   const currentFilter = table
     .getState()
@@ -64,7 +64,7 @@ export function useValuesFilter({
   };
 
   return {
-    columnLabel,
+    label,
     selectedValues,
     handleCheckboxChange,
     allSelected,
