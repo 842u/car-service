@@ -89,6 +89,9 @@ export function ServiceLogsTable({
           {
             meta: {
               label: 'Creator',
+              filter: {
+                type: 'text',
+              },
             },
             id: 'created_by',
             enableSorting: true,

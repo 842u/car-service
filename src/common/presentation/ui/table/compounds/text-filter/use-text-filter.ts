@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useTable } from '@/ui/table/table';
 
@@ -17,40 +17,45 @@ export function useTextFilter({
   const { table } = useTable();
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
-  const inputId = `filter-${columnId}`;
+
+  const currentFilter = table
+    .getState()
+    .columnFilters.find((filter) => filter.id === columnId);
+
+  const committedValue =
+    typeof currentFilter?.value === 'string' ? currentFilter.value : '';
+
+  const [inputValue, setInputValue] = useState(committedValue);
+
+  useEffect(() => {
+    setInputValue(committedValue);
+  }, [committedValue]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    setInputValue(value);
+
     clearTimeout(debounceTimerRef.current);
 
     debounceTimerRef.current = setTimeout(() => {
-      const inputValue = event.target.value;
-
       table.setColumnFilters((currentFilters) => {
-        const currentColumnFilter = currentFilters.find(
-          (filter) => filter.id === columnId,
-        );
+        const exists = currentFilters.some((filter) => filter.id === columnId);
 
-        if (!currentColumnFilter) {
-          currentFilters.push({ id: columnId, value: inputValue });
-          return currentFilters;
-        } else {
-          const updatedFilters = currentFilters.map((filter) => {
-            if (filter.id === columnId) {
-              filter.value = inputValue;
-            }
-
-            return { ...filter };
-          });
-
-          return updatedFilters;
+        if (!exists) {
+          return [...currentFilters, { id: columnId, value }];
         }
+
+        return currentFilters.map((filter) =>
+          filter.id === columnId ? { ...filter, value } : filter,
+        );
       });
     }, debounceDelay);
   };
 
   return {
     columnLabel,
-    inputId,
+    inputValue,
     handleInputChange,
   };
 }

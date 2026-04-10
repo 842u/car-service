@@ -14,7 +14,7 @@ export function TableTextFilter({
   debounceDelay,
   className,
 }: TableTextFilterProps) {
-  const { columnLabel, inputId, handleInputChange } = useTextFilter({
+  const { columnLabel, inputValue, handleInputChange } = useTextFilter({
     columnId,
     debounceDelay,
   });
@@ -35,9 +35,9 @@ export function TableTextFilter({
 
       <input
         className="placeholder:text-alpha-grey-900 ml-2 w-full outline-none"
-        id={inputId}
         placeholder={`Search by ${columnLabel}`}
         type="text"
+        value={inputValue}
         onChange={handleInputChange}
       />
     </label>
