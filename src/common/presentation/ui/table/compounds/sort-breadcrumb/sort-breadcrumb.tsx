@@ -12,7 +12,7 @@ export function TableSortBreadcrumb({ className }: TableSortBreadcrumbProps) {
 
   return (
     <div className={className}>
-      <p className="text-alpha-grey-900 text-xs">SORT ORDER</p>
+      <p className="text-alpha-grey-900 text-[10px]">SORT ORDER</p>
       <div className="flex flex-wrap">
         {sorting.every(
           (rule) => rule.id === table.options.meta?.intrinsicSort?.id,
