@@ -174,7 +174,10 @@ export function ServiceLogsTable({
           <Table.TextFilter className="lg:w-fit" columnId="created_by" />
         </div>
         <Table.SortBreadcrumb className="my-5" />
-        <Table.Root ref={tableRef} className="max-h-96 overflow-auto">
+        <Table.Root
+          ref={tableRef}
+          className="max-h-96 overflow-auto [scrollbar-gutter:stable]"
+        >
           <Table.Head />
           <Table.Body />
         </Table.Root>
