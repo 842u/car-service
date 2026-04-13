@@ -31,12 +31,7 @@ export function SettingsSection({ carId }: SettingsSectionProps) {
         className="lg:col-span-3 lg:w-auto"
         isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
       />
-      <ServiceLogsSection
-        carId={carId}
-        className="lg:col-span-3"
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        owners={ownersProfilesData}
-      />
+      <ServiceLogsSection carId={carId} className="lg:col-span-3" />
       <OwnershipsSection
         carId={carId}
         carOwnerships={carOwnershipData}

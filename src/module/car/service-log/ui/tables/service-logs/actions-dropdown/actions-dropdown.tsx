@@ -5,26 +5,21 @@ import { IconButton } from '@/ui/icon-button/icon-button';
 
 import { DropdownContent } from './content/content';
 
-type TableActionsDropdownProps = {
+interface TableActionsDropdownProps {
   carId: string;
   serviceLog: ServiceLog;
-  isCurrentUserPrimaryOwner: boolean;
-  userId?: string;
+  canTakeAction: boolean;
   className?: string;
   collisionDetectionRoot?: HTMLElement | null;
-};
+}
 
 export function TableActionsDropdown({
   carId,
-  userId,
   serviceLog,
-  isCurrentUserPrimaryOwner,
+  canTakeAction,
   collisionDetectionRoot,
   className,
 }: TableActionsDropdownProps) {
-  const canTakeAction =
-    isCurrentUserPrimaryOwner || userId === serviceLog.created_by;
-
   return (
     <Dropdown
       className={className}

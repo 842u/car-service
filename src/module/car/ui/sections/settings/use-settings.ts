@@ -1,19 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { getCar } from '@/lib/supabase/tables/cars';
 import { getCarOwnerships } from '@/lib/supabase/tables/cars_ownerships';
 import { queryKeys } from '@/lib/tanstack/keys';
 import { userDataSource } from '@/user/dependency/data-source';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 import type { SettingsSectionProps } from './settings';
 
 export function useSettingsSection({ carId }: SettingsSectionProps) {
-  const [user, setUser] = useState<AuthIdentityPersistence | null>(null);
+  const user = useSessionUser();
 
   const { addToast } = useToasts();
 
@@ -60,23 +59,6 @@ export function useSettingsSection({ carId }: SettingsSectionProps) {
     ownersProfilesDataError &&
       addToast(ownersProfilesDataError.message, 'error');
   }, [addToast, ownersProfilesDataError]);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const sessionResult = await browserAuthClient.authenticate();
-
-      if (!sessionResult.success) {
-        setUser(null);
-        return;
-      }
-
-      const authIdentity = sessionResult.data;
-
-      setUser(authIdentity);
-    };
-
-    getUser();
-  }, []);
 
   const isCurrentUserPrimaryOwner = !!carOwnershipData?.find(
     (ownership) =>
