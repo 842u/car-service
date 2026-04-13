@@ -20,12 +20,14 @@ type ServiceLogsTableProps = {
   isCurrentUserPrimaryOwner: boolean;
   serviceLogs?: ServiceLog[];
   owners?: UserDto[];
+  className?: string;
 };
 
 export function ServiceLogsTable({
   isCurrentUserPrimaryOwner,
   serviceLogs,
   owners,
+  className = '',
 }: ServiceLogsTableProps) {
   const [user, setUser] = useState<AuthIdentityPersistence | null>(null);
 
@@ -174,10 +176,7 @@ export function ServiceLogsTable({
           <Table.TextFilter className="lg:w-fit" columnId="created_by" />
         </div>
         <Table.SortBreadcrumb className="my-5" />
-        <Table.Root
-          ref={tableRef}
-          className="max-h-96 overflow-auto [scrollbar-gutter:stable]"
-        >
+        <Table.Root ref={tableRef} className={className}>
           <Table.Head />
           <Table.Body />
         </Table.Root>
