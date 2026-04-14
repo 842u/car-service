@@ -33,11 +33,13 @@ export function DateExpirationTable({
 
   return (
     <Table columns={columns} data={data}>
-      <Table.Root className="max-h-96 overflow-y-auto lg:max-h-72">
-        <Table.Head className="h-12" />
-        <Table.Body lastRowRef={intersectionTargetRef} />
-      </Table.Root>
-      <DateExpirationTableLegend />
+      <div className="flex grow flex-col justify-between">
+        <Table.Root className="max-h-96 overflow-y-auto lg:max-h-80">
+          <Table.Head className="h-12" />
+          <Table.Body lastRowRef={intersectionTargetRef} />
+        </Table.Root>
+        <DateExpirationTableLegend />
+      </div>
     </Table>
   );
 }

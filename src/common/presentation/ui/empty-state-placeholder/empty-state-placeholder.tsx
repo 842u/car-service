@@ -26,8 +26,10 @@ export function EmptyStatePlaceholder({
       </div>
 
       <div>
-        <p className="text-base font-medium">{text}</p>
-        {subtext && <p className="text-alpha-grey-900 text-sm">{subtext}</p>}
+        <p className="text-base font-medium text-balance">{text}</p>
+        {subtext && (
+          <p className="text-alpha-grey-900 text-sm text-pretty">{subtext}</p>
+        )}
       </div>
     </div>
   );
