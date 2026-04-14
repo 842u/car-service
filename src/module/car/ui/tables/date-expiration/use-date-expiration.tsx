@@ -39,7 +39,7 @@ export function useDateExpirationTable({
 
             return (
               <DateExpirationStatusIcon
-                className="h-full"
+                className="aspect-square h-full p-0.5"
                 date={date}
                 label={label}
               />
@@ -60,7 +60,7 @@ export function useDateExpirationTable({
             const { custom_name, image_url } = row.original;
 
             return (
-              <div className="max-w-40 overflow-auto">
+              <div className="max-w-32">
                 <CarBadge
                   className="h-10 flex-row-reverse justify-end"
                   imageUrl={image_url}
