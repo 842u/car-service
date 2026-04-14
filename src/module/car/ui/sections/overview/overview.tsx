@@ -1,5 +1,3 @@
-'use client';
-
 import { OwnershipsSection } from '@/car/ownership/ui/sections/ownerships/ownerships';
 import { CarCostsSection } from '@/car/service-log/ui/sections/car-costs/car-costs';
 import { ServiceLogsSection } from '@/car/service-log/ui/sections/service-logs/service-logs';
@@ -8,11 +6,11 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 
 import { DeleteSection } from '../delete/delete';
 
-export type SettingsSectionProps = {
+interface OverviewSectionProps {
   carId: string;
-};
+}
 
-export function SettingsSection({ carId }: SettingsSectionProps) {
+export function OverviewSection({ carId }: OverviewSectionProps) {
   return (
     <DashboardSection
       className="flex flex-col gap-5 lg:grid lg:max-w-7xl lg:grid-cols-[auto_1fr_auto] lg:gap-5"

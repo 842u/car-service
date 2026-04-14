@@ -1,14 +1,14 @@
 import type { Route } from 'next';
 import { redirect } from 'next/navigation';
 
-import { SettingsSection } from '@/car/ui/sections/settings/settings';
+import { OverviewSection } from '@/car/ui/sections/overview/overview';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { createServerDatabaseClient } from '@/dependency/database-client/server';
 
-type CarPageProps = {
+interface CarPageProps {
   params: Promise<{ id: string }>;
-};
+}
 
 export default async function CarPage({ params }: CarPageProps) {
   const { id } = await params;
@@ -35,7 +35,7 @@ export default async function CarPage({ params }: CarPageProps) {
 
   return (
     <DashboardMain>
-      <SettingsSection carId={id} />
+      <OverviewSection carId={id} />
     </DashboardMain>
   );
 }

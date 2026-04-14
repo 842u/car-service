@@ -1,3 +1,5 @@
+'use client';
+
 import { useOwnershipsSection } from '@/car/ownership/ui/sections/ownerships/use-ownerships';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';

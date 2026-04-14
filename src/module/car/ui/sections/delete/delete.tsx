@@ -1,3 +1,5 @@
+'use client';
+
 import { useDeleteSection } from '@/car/ui/sections/delete/use-delete';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
