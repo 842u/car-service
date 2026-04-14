@@ -1,15 +1,16 @@
+import { useDeleteSection } from '@/car/ui/sections/delete/use-delete';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
-import type { SectionControlsProps } from './controls/controls';
 import { SectionControls } from './controls/controls';
 
-type DeleteSectionProps = { className?: string } & SectionControlsProps;
+interface DeleteSectionProps {
+  carId: string;
+  className?: string;
+}
 
-export function DeleteSection({
-  carId,
-  isCurrentUserPrimaryOwner,
-  className,
-}: DeleteSectionProps) {
+export function DeleteSection({ carId, className }: DeleteSectionProps) {
+  const { isSessionUserPrimaryOwner } = useDeleteSection({ carId });
+
   return (
     <DashboardSection className={className} variant="errorDefault">
       <DashboardSection.Heading headingLevel="h2">
@@ -25,10 +26,7 @@ export function DeleteSection({
         If you do not want to see that car you can pass primary ownership to
         someone else and remove yourself from the owners list.
       </DashboardSection.Subtext>
-      <SectionControls
-        carId={carId}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-      />
+      <SectionControls canDelete={isSessionUserPrimaryOwner} carId={carId} />
     </DashboardSection>
   );
 }
