@@ -1,33 +1,29 @@
 import { EllipsisIcon } from '@/icons/ellipsis';
+import type { CarOwnership } from '@/types';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
-import type { DropdownContentProps } from './content/content';
 import { DropdownContent } from './content/content';
 
-type TableActionsDropdownProps = Omit<
-  DropdownContentProps,
-  'canDelete' | 'canPromote'
-> & {
-  isCurrentUserPrimaryOwner: boolean;
+interface TableActionsDropdownProps {
+  canDelete: boolean;
+  canPromote: boolean;
+  canTakeAction: boolean;
   collisionDetectionRoot?: HTMLElement | null;
-};
+  ownership: CarOwnership;
+  username?: string | null;
+  sessionUserId?: string;
+}
 
 export function TableActionsDropdown({
-  isCurrentUserPrimaryOwner,
+  canDelete,
+  canPromote,
+  canTakeAction,
   ownership,
-  ownerUsername,
+  username,
   collisionDetectionRoot,
-  userId,
+  sessionUserId,
 }: TableActionsDropdownProps) {
-  const canPromote = isCurrentUserPrimaryOwner && userId !== ownership.owner_id;
-
-  const canDelete =
-    (isCurrentUserPrimaryOwner && userId !== ownership.owner_id) ||
-    (!isCurrentUserPrimaryOwner && userId === ownership.owner_id);
-
-  const canTakeAction = canPromote || canDelete;
-
   return (
     <Dropdown className="w-12" collisionDetectionRoot={collisionDetectionRoot}>
       <Dropdown.Trigger>
@@ -48,8 +44,8 @@ export function TableActionsDropdown({
         canDelete={canDelete}
         canPromote={canPromote}
         ownership={ownership}
-        ownerUsername={ownerUsername}
-        userId={userId}
+        sessionUserId={sessionUserId}
+        username={username}
       />
     </Dropdown>
   );

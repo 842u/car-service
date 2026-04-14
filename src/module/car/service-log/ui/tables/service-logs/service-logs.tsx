@@ -27,36 +27,35 @@ export function ServiceLogsTable({
   });
 
   return (
-    serviceLogs && (
-      <Table
-        columns={columns}
-        data={serviceLogs}
-        options={{
-          initialState: {
-            columnVisibility: {
-              created_at: false,
-              actions: true,
-            },
-            sorting: [
-              { id: 'service_date', desc: true },
-              { id: 'created_at', desc: true },
-            ],
+    <Table
+      columns={columns}
+      data={serviceLogs || []}
+      options={{
+        initialState: {
+          columnVisibility: {
+            created_at: false,
+            actions: true,
           },
-          meta: {
-            intrinsicSort: { id: 'created_at', desc: true },
-          },
-        }}
-      >
-        <div className="flex flex-col gap-5 md:flex-row md:items-center">
-          <Table.DateFilter columnId="service_date" />
-          <Table.TextFilter className="lg:w-fit" columnId="created_by" />
-        </div>
-        <Table.SortBreadcrumb className="my-5" />
-        <Table.Root ref={tableRef} className={className}>
-          <Table.Head />
-          <Table.Body />
-        </Table.Root>
-      </Table>
-    )
+          sorting: [
+            { id: 'service_date', desc: true },
+            { id: 'created_at', desc: true },
+          ],
+        },
+        meta: {
+          intrinsicSort: { id: 'created_at', desc: true },
+        },
+      }}
+    >
+      <div className="flex flex-col gap-5 md:flex-row md:items-center">
+        <Table.DateFilter columnId="service_date" />
+        <Table.TextFilter className="lg:w-fit" columnId="created_by" />
+      </div>
+      <Table.SortBreadcrumb className="mt-5" />
+      <Table.Root ref={tableRef} className={className}>
+        <caption className="sr-only">car service logs</caption>
+        <Table.Head />
+        <Table.Body />
+      </Table.Root>
+    </Table>
   );
 }

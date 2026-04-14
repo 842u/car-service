@@ -14,8 +14,7 @@ export type SettingsSectionProps = {
 };
 
 export function SettingsSection({ carId }: SettingsSectionProps) {
-  const { isCurrentUserPrimaryOwner, carOwnershipData, ownersProfilesData } =
-    useSettingsSection({ carId });
+  const { isCurrentUserPrimaryOwner } = useSettingsSection({ carId });
 
   return (
     <DashboardSection
@@ -24,13 +23,7 @@ export function SettingsSection({ carId }: SettingsSectionProps) {
     >
       <DetailsSection carId={carId} className="lg:col-span-3 lg:w-auto" />
       <ServiceLogsSection carId={carId} className="lg:col-span-3" />
-      <OwnershipsSection
-        carId={carId}
-        carOwnerships={carOwnershipData}
-        className="lg:col-span-2"
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        owners={ownersProfilesData}
-      />
+      <OwnershipsSection carId={carId} className="lg:col-span-2" />
       <CarCostsSection carId={carId} className="lg:col-span-1" />
       <DeleteSection
         carId={carId}

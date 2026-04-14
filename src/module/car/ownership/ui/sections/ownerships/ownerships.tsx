@@ -1,39 +1,50 @@
+import { useOwnershipsSection } from '@/car/ownership/ui/sections/ownerships/use-ownerships';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import type { CarOwnership } from '@/types';
-import type { UserDto } from '@/user/application/dto/user';
+import { Spinner } from '@/ui/decorative/spinner/spinner';
 
 import { OwnershipsTable } from '../../tables/ownerships/ownerships';
-import type { SectionControlsProps } from './controls/controls';
 import { SectionControls } from './controls/controls';
 
-type OwnershipsSectionProps = SectionControlsProps & {
-  owners?: UserDto[];
-  carOwnerships?: CarOwnership[];
+interface OwnershipsSectionProps {
+  carId: string;
   className?: string;
-};
+}
 
 export function OwnershipsSection({
   carId,
-  carOwnerships,
-  isCurrentUserPrimaryOwner,
-  owners,
   className,
 }: OwnershipsSectionProps) {
+  const {
+    isSessionUserPrimaryOwner,
+    ownerships,
+    sessionUserId,
+    users,
+    isLoading,
+  } = useOwnershipsSection({ carId });
+
+  if (isLoading) {
+    return (
+      <DashboardSection className={className}>
+        <DashboardSection.Heading headingLevel="h2">
+          Ownerships
+        </DashboardSection.Heading>
+        <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
+      </DashboardSection>
+    );
+  }
+
   return (
     <DashboardSection className={className}>
       <DashboardSection.Heading headingLevel="h2">
         Ownerships
       </DashboardSection.Heading>
       <OwnershipsTable
-        key={owners ? 'loaded' : 'loading'}
-        carOwnerships={carOwnerships}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-        owners={owners}
+        isSessionUserPrimaryOwner={isSessionUserPrimaryOwner}
+        ownerships={ownerships}
+        sessionUserId={sessionUserId}
+        users={users}
       />
-      <SectionControls
-        carId={carId}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-      />
+      <SectionControls canAdd={isSessionUserPrimaryOwner} carId={carId} />
     </DashboardSection>
   );
 }
