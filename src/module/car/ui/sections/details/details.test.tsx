@@ -5,19 +5,12 @@ import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
 
 import { DetailsSection } from './details';
 
-function TestDetailsSection({
-  isCurrentUserPrimaryOwner = true,
-}: {
-  isCurrentUserPrimaryOwner?: boolean;
-}) {
+function TestDetailsSection() {
   const mockCar = createMockCar();
 
   return (
     <TanStackQueryProvider>
-      <DetailsSection
-        carData={mockCar}
-        isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-      />
+      <DetailsSection carId={mockCar.id} />
     </TanStackQueryProvider>
   );
 }
@@ -32,7 +25,7 @@ describe('DetailsSection', () => {
   });
 
   it('edit car button should be disabled if !isCurrentUserPrimaryOwner', () => {
-    render(<TestDetailsSection isCurrentUserPrimaryOwner={false} />);
+    render(<TestDetailsSection />);
 
     const editCarButton = screen.getByRole('button', { name: 'Edit car' });
 
