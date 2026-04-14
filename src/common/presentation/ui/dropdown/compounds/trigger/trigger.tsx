@@ -2,14 +2,13 @@ import type { MouseEventHandler, Ref } from 'react';
 
 import { useDropdown } from '../../dropdown';
 
+type TriggerRenderProps = {
+  ref: Ref<HTMLButtonElement>;
+  onClick: MouseEventHandler<HTMLButtonElement>;
+};
+
 type DropdownTriggerProps = {
-  children: ({
-    ref,
-    onClick,
-  }: {
-    ref: Ref<HTMLButtonElement>;
-    onClick: MouseEventHandler<HTMLButtonElement>;
-  }) => React.ReactNode;
+  children: (props: TriggerRenderProps) => React.ReactNode;
 };
 
 export function DropdownTrigger({ children }: DropdownTriggerProps) {
