@@ -1,14 +1,18 @@
-import { useTable } from '@/ui/table/table';
+import { Dropdown, useDropdown } from '@/ui/dropdown/dropdown';
+import { TableSortDropdownInnerContent } from '@/ui/table/compounds/sort-dropdown/content/inner';
+import { useColumnSortState } from '@/ui/table/use-column-sort-state';
 
-export function useSort(columnId: string) {
-  const { table } = useTable();
+interface TableSortDropdownContentProps {
+  columnId: string;
+}
 
-  const column = table.getColumn(columnId);
-  const isColumnSortSet = !!column?.getIsSorted();
-  const columnSortState = table
-    .getState()
-    .sorting.find((sort) => sort.id === columnId);
-  const columnSortDesc = !!columnSortState?.desc;
+export function TableSortDropdownContent({
+  columnId,
+}: TableSortDropdownContentProps) {
+  const { isColumnSortDesc, isColumnSortSet, columnSortState, table } =
+    useColumnSortState(columnId);
+
+  const { close } = useDropdown();
 
   const handleAscClick = () => {
     table.setSorting((currentSorting) => {
@@ -26,6 +30,7 @@ export function useSort(columnId: string) {
       intrinsicSort && newSortingState.push(intrinsicSort);
       return newSortingState;
     });
+
     close();
   };
 
@@ -45,16 +50,21 @@ export function useSort(columnId: string) {
       intrinsicSort && newSortingState.push(intrinsicSort);
       return newSortingState;
     });
+
     close();
   };
 
-  const handleReset = () => column?.clearSorting();
+  const handleReset = () => table.getColumn(columnId)?.clearSorting();
 
-  return {
-    isColumnSortSet,
-    columnSortDesc,
-    handleAscClick,
-    handleDescClick,
-    handleReset,
-  };
+  return (
+    <Dropdown.Content>
+      <TableSortDropdownInnerContent
+        handleAscClick={handleAscClick}
+        handleDescClick={handleDescClick}
+        handleReset={handleReset}
+        isColumnSortDesc={isColumnSortDesc}
+        isColumnSortSet={!!isColumnSortSet}
+      />
+    </Dropdown.Content>
+  );
 }

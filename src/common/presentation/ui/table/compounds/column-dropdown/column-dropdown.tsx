@@ -2,8 +2,8 @@ import { FunnelIcon } from '@/icons/funnel';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import { Dropdown as BaseDropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
-import { TableSortDropdownContent } from '@/ui/table/compounds/sort-dropdown/content';
-import { TableSortDropdownIcon } from '@/ui/table/compounds/sort-dropdown/icon';
+import { TableSortDropdownInnerContent } from '@/ui/table/compounds/sort-dropdown/content/inner';
+import { TableSortDropdownIcon } from '@/ui/table/compounds/sort-dropdown/trigger/icon';
 import { useTable } from '@/ui/table/table';
 import { useSort } from '@/ui/table/use-sort';
 
@@ -51,7 +51,7 @@ export function TableColumnDropdown({
           >
             {isSortable && (
               <TableSortDropdownIcon
-                columnSortDesc={columnSortDesc}
+                isColumnSortDesc={columnSortDesc}
                 isColumnSortSet={isColumnSortSet}
               />
             )}
@@ -67,11 +67,11 @@ export function TableColumnDropdown({
 
       <BaseDropdown.Content>
         {isSortable && (
-          <TableSortDropdownContent
-            columnSortDesc={columnSortDesc}
+          <TableSortDropdownInnerContent
             handleAscClick={handleAscClick}
             handleDescClick={handleDescClick}
             handleReset={handleReset}
+            isColumnSortDesc={columnSortDesc}
             isColumnSortSet={isColumnSortSet}
           />
         )}
