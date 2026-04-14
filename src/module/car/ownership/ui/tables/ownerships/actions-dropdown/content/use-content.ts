@@ -17,6 +17,7 @@ import {
 import { queryKeys } from '@/lib/tanstack/keys';
 import type { CarOwnership } from '@/types';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import { useDropdown } from '@/ui/dropdown/dropdown';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 interface MutationVariables {
@@ -38,12 +39,13 @@ export function useDropdownContent({
   username,
   sessionUserId,
 }: UseDropdownContentParams) {
+  const { close } = useDropdown();
+  const { addToast } = useToasts();
+
   const deleteModalRef = useRef<DialogModalRef>(null);
   const promoteModalRef = useRef<DialogModalRef>(null);
 
   const router = useRouter();
-
-  const { addToast } = useToasts();
 
   const { mutate: mutateDelete } = useMutation({
     throwOnError: false,
@@ -103,10 +105,14 @@ export function useDropdownContent({
 
   const handleDeleteButtonClick = () => deleteModalRef.current?.showModal();
 
-  const handleDeleteModalCancel = () => deleteModalRef.current?.closeModal();
+  const handleDeleteModalCancel = () => {
+    deleteModalRef.current?.closeModal();
+    close();
+  };
 
   const handleDeleteModalConfirm = () => {
     deleteModalRef.current?.closeModal();
+    close();
 
     if (sessionUserId === ownerId) {
       router.replace('/dashboard/cars' satisfies Route);
@@ -123,7 +129,10 @@ export function useDropdownContent({
 
   const handlePromoteButtonClick = () => promoteModalRef.current?.showModal();
 
-  const handlePromoteModalCancel = () => promoteModalRef.current?.closeModal();
+  const handlePromoteModalCancel = () => {
+    promoteModalRef.current?.closeModal();
+    close();
+  };
 
   const handlePromoteModalConfirm = () => {
     promoteModalRef.current?.closeModal();
@@ -134,6 +143,8 @@ export function useDropdownContent({
       username,
       queryClient,
     });
+
+    close();
   };
 
   return {

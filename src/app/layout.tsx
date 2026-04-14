@@ -20,7 +20,11 @@ export default async function RootLayout({
   await headers();
 
   return (
-    <html suppressHydrationWarning lang="en">
+    <html
+      suppressHydrationWarning
+      className="[scrollbar-gutter:stable]"
+      lang="en"
+    >
       <body
         className={`bg-light-500 text-dark-500 dark:bg-dark-500 dark:text-light-500 transition-colors ${inter.className}`}
       >
