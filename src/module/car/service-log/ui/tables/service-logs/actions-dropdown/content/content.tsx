@@ -24,6 +24,7 @@ export function DropdownContent({
     handleDeleteModalConfirm,
     handleEditButtonClick,
     handleEditModalSubmit,
+    handleModalClose,
   } = useDropdownContent({ carId, serviceLogId: serviceLog.id });
 
   return (
@@ -39,6 +40,7 @@ export function DropdownContent({
       <EditModal
         ref={editModalRef}
         serviceLog={serviceLog}
+        onClose={handleModalClose}
         onSubmit={handleEditModalSubmit}
       />
       <Button
@@ -52,6 +54,7 @@ export function DropdownContent({
         ref={deleteModalRef}
         canTakeAction={canTakeAction}
         onCancel={handleDeleteModalCancel}
+        onClose={handleModalClose}
         onConfirm={handleDeleteModalConfirm}
       />
     </Dropdown.Content>

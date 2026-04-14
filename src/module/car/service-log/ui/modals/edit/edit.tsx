@@ -11,12 +11,18 @@ type EditModalProps = {
   serviceLog: ServiceLog;
   ref?: RefObject<DialogModalRef | null>;
   onSubmit?: () => void;
+  onClose?: () => void;
 };
 
-export function EditModal({ serviceLog, ref, onSubmit }: EditModalProps) {
+export function EditModal({
+  serviceLog,
+  ref,
+  onSubmit,
+  onClose,
+}: EditModalProps) {
   return (
     <DialogModal ref={ref}>
-      <DialogModal.Root>
+      <DialogModal.Root onClose={onClose}>
         <DialogModal.Heading>Edit service log</DialogModal.Heading>
         <TextSeparator className="my-4" />
         <EditForm serviceLog={serviceLog} onSubmit={onSubmit} />

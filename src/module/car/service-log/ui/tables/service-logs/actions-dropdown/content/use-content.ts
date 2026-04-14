@@ -10,6 +10,7 @@ import {
   serviceLogsByCarIdDeleteOnMutate,
 } from '@/lib/tanstack/service_logs';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import { useDropdown } from '@/ui/dropdown/dropdown';
 
 interface MutationVariables {
   carId: string;
@@ -26,10 +27,11 @@ export function useDropdownContent({
   carId,
   serviceLogId,
 }: UseDropdownContentParams) {
+  const { close } = useDropdown();
+  const { addToast } = useToasts();
+
   const editModalRef = useRef<DialogModalRef>(null);
   const deleteModalRef = useRef<DialogModalRef>(null);
-
-  const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
 
@@ -68,6 +70,8 @@ export function useDropdownContent({
     );
   };
 
+  const handleModalClose = () => close();
+
   return {
     editModalRef,
     deleteModalRef,
@@ -76,5 +80,6 @@ export function useDropdownContent({
     handleDeleteButtonClick,
     handleDeleteModalCancel,
     handleDeleteModalConfirm,
+    handleModalClose,
   };
 }
