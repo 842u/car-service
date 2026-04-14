@@ -1,5 +1,7 @@
 'use client';
 
+import { twMerge } from 'tailwind-merge';
+
 import { useOwnershipsSection } from '@/car/ownership/ui/sections/ownerships/use-ownerships';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
@@ -36,16 +38,18 @@ export function OwnershipsSection({
   }
 
   return (
-    <DashboardSection className={className}>
+    <DashboardSection className={twMerge('flex flex-col', className)}>
       <DashboardSection.Heading headingLevel="h2">
         Ownerships
       </DashboardSection.Heading>
-      <OwnershipsTable
-        isSessionUserPrimaryOwner={isSessionUserPrimaryOwner}
-        ownerships={ownerships}
-        sessionUserId={sessionUserId}
-        users={users}
-      />
+      <div className="flex-1">
+        <OwnershipsTable
+          isSessionUserPrimaryOwner={isSessionUserPrimaryOwner}
+          ownerships={ownerships}
+          sessionUserId={sessionUserId}
+          users={users}
+        />
+      </div>
       <SectionControls canAdd={isSessionUserPrimaryOwner} carId={carId} />
     </DashboardSection>
   );
