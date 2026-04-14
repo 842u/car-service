@@ -12,6 +12,7 @@ interface DeleteModalProps {
   ref?: RefObject<DialogModalRef | null>;
   onConfirm?: () => void;
   onCancel?: () => void;
+  onClose?: () => void;
 }
 
 export function DeleteModal({
@@ -21,10 +22,11 @@ export function DeleteModal({
   ref,
   onCancel,
   onConfirm,
+  onClose,
 }: DeleteModalProps) {
   return (
     <DialogModal ref={ref}>
-      <DialogModal.Root>
+      <DialogModal.Root onClose={onClose}>
         <DialogModal.Heading>Delete owner</DialogModal.Heading>
         <TextSeparator className="my-4" />
         {selfDeletion ? (

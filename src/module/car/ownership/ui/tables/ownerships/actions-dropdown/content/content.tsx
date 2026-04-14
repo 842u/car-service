@@ -30,6 +30,7 @@ export function DropdownContent({
     handlePromoteButtonClick,
     handlePromoteModalCancel,
     handlePromoteModalConfirm,
+    handleModalClose,
   } = useDropdownContent({
     ownership,
     sessionUserId,
@@ -50,6 +51,7 @@ export function DropdownContent({
         canPromote={canPromote}
         username={username}
         onCancel={handlePromoteModalCancel}
+        onClose={handleModalClose}
         onConfirm={handlePromoteModalConfirm}
       />
       <Button
@@ -66,6 +68,7 @@ export function DropdownContent({
         selfDeletion={selfDeletion}
         username={username}
         onCancel={handleDeleteModalCancel}
+        onClose={handleModalClose}
         onConfirm={handleDeleteModalConfirm}
       />
     </Dropdown.Content>

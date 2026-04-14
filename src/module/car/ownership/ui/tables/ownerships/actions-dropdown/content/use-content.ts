@@ -105,14 +105,10 @@ export function useDropdownContent({
 
   const handleDeleteButtonClick = () => deleteModalRef.current?.showModal();
 
-  const handleDeleteModalCancel = () => {
-    deleteModalRef.current?.closeModal();
-    close();
-  };
+  const handleDeleteModalCancel = () => deleteModalRef.current?.closeModal();
 
   const handleDeleteModalConfirm = () => {
     deleteModalRef.current?.closeModal();
-    close();
 
     if (sessionUserId === ownerId) {
       router.replace('/dashboard/cars' satisfies Route);
@@ -129,10 +125,7 @@ export function useDropdownContent({
 
   const handlePromoteButtonClick = () => promoteModalRef.current?.showModal();
 
-  const handlePromoteModalCancel = () => {
-    promoteModalRef.current?.closeModal();
-    close();
-  };
+  const handlePromoteModalCancel = () => promoteModalRef.current?.closeModal();
 
   const handlePromoteModalConfirm = () => {
     promoteModalRef.current?.closeModal();
@@ -143,9 +136,9 @@ export function useDropdownContent({
       username,
       queryClient,
     });
-
-    close();
   };
+
+  const handleModalClose = () => close();
 
   return {
     handleDeleteButtonClick,
@@ -154,6 +147,7 @@ export function useDropdownContent({
     handlePromoteButtonClick,
     handlePromoteModalCancel,
     handlePromoteModalConfirm,
+    handleModalClose,
     deleteModalRef,
     promoteModalRef,
     selfDeletion: sessionUserId === ownerId,

@@ -11,6 +11,7 @@ interface PromoteModalProps {
   ref?: RefObject<DialogModalRef | null>;
   onConfirm?: () => void;
   onCancel?: () => void;
+  onClose?: () => void;
 }
 
 export function PromoteModal({
@@ -19,10 +20,11 @@ export function PromoteModal({
   ref,
   onCancel,
   onConfirm,
+  onClose,
 }: PromoteModalProps) {
   return (
     <DialogModal ref={ref}>
-      <DialogModal.Root>
+      <DialogModal.Root onClose={onClose}>
         <DialogModal.Heading>Promote owner</DialogModal.Heading>
         <TextSeparator className="my-4" />
         <p className="my-10 max-w-full text-wrap">
