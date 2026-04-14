@@ -29,11 +29,7 @@ export function HeadTh({ header, ...props }: HeadThProps) {
       {...props}
     >
       {isSortable || filter ? (
-        <TableColumnDropdown
-          columnId={columnId}
-          isSortable={isSortable}
-          label={meta?.label}
-        />
+        <TableColumnDropdown columnId={columnId} label={meta?.label} />
       ) : (
         meta?.label
       )}

@@ -12,7 +12,7 @@ export function TableSortDropdownTrigger({
   columnId,
   label,
 }: TableSortDropdownTriggerProps) {
-  const { isColumnSortDesc, isColumnSortSet } = useColumnSortState(columnId);
+  const { isSortDesc, isSorted } = useColumnSortState(columnId);
 
   return (
     <Dropdown.Trigger>
@@ -25,10 +25,7 @@ export function TableSortDropdownTrigger({
           variant="transparent"
           onClick={onClick}
         >
-          <TableSortDropdownIcon
-            isColumnSortDesc={isColumnSortDesc}
-            isColumnSortSet={isColumnSortSet}
-          />
+          <TableSortDropdownIcon isSortDesc={isSortDesc} isSorted={isSorted} />
         </IconButton>
       )}
     </Dropdown.Trigger>

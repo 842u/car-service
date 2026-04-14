@@ -4,16 +4,18 @@ export function useColumnSortState(columnId: string) {
   const { table } = useTable();
 
   const column = table.getColumn(columnId);
-  const isColumnSortSet = !!column?.getIsSorted();
-  const columnSortState = table
+  const isSorted = !!column?.getIsSorted();
+  const sortState = table
     .getState()
     .sorting.find((sort) => sort.id === columnId);
-  const isColumnSortDesc = !!columnSortState?.desc;
+  const isSortDesc = !!sortState?.desc;
+  const isSortable = !!column?.getCanSort();
 
   return {
-    isColumnSortSet,
-    isColumnSortDesc,
-    columnSortState,
+    isSorted,
+    isSortDesc,
+    sortState,
+    isSortable,
     table,
   };
 }

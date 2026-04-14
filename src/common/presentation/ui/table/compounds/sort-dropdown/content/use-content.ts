@@ -1,14 +1,17 @@
-import { useTable } from '@/ui/table/table';
+import { useDropdown } from '@/ui/dropdown/dropdown';
+import { useColumnSortState } from '@/ui/table/use-column-sort-state';
 
-export function useSort(columnId: string) {
-  const { table } = useTable();
+interface UseTableSortDropdownContentParams {
+  columnId: string;
+}
 
-  const column = table.getColumn(columnId);
-  const isColumnSortSet = !!column?.getIsSorted();
-  const columnSortState = table
-    .getState()
-    .sorting.find((sort) => sort.id === columnId);
-  const columnSortDesc = !!columnSortState?.desc;
+export function useTableSortDropdownContent({
+  columnId,
+}: UseTableSortDropdownContentParams) {
+  const { isSortDesc, isSorted, sortState, table, isSortable } =
+    useColumnSortState(columnId);
+
+  const { close } = useDropdown();
 
   const handleAscClick = () => {
     table.setSorting((currentSorting) => {
@@ -17,15 +20,17 @@ export function useSort(columnId: string) {
         (sort) => sort.id !== intrinsicSort?.id,
       );
 
-      if (isColumnSortSet && columnSortState) {
-        columnSortState.desc = false;
+      if (isSorted && sortState) {
+        sortState.desc = false;
       } else {
         newSortingState.push({ id: columnId, desc: false });
       }
 
       intrinsicSort && newSortingState.push(intrinsicSort);
+
       return newSortingState;
     });
+
     close();
   };
 
@@ -36,23 +41,27 @@ export function useSort(columnId: string) {
         (sort) => sort.id !== intrinsicSort?.id,
       );
 
-      if (isColumnSortSet && columnSortState) {
-        columnSortState.desc = true;
+      if (isSorted && sortState) {
+        sortState.desc = true;
       } else {
         newSortingState.push({ id: columnId, desc: true });
       }
 
       intrinsicSort && newSortingState.push(intrinsicSort);
+
       return newSortingState;
     });
+
     close();
   };
 
-  const handleReset = () => column?.clearSorting();
+  const handleReset = () => table.getColumn(columnId)?.clearSorting();
 
   return {
-    isColumnSortSet,
-    columnSortDesc,
+    isSortable,
+    isSortDesc,
+    isSorted,
+    sortState,
     handleAscClick,
     handleDescClick,
     handleReset,
