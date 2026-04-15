@@ -9,7 +9,7 @@ export function useColumnSortState(columnId: string) {
     .getState()
     .sorting.find((sort) => sort.id === columnId);
   const isSortDesc = !!sortState?.desc;
-  const isSortable = !!column?.getCanSort();
+  const isSortable = column?.columnDef.enableSorting;
 
   return {
     isSorted,

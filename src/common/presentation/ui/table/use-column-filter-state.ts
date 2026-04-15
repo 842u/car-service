@@ -6,7 +6,7 @@ export function useColumnFilterState(columnId: string) {
   const column = table.getColumn(columnId);
   const filterMeta = column?.columnDef.meta?.filter;
   const isFiltered = column?.getIsFiltered();
-  const isFilterable = !!column?.getCanFilter();
+  const isFilterable = !!column?.columnDef.enableColumnFilter;
 
   return {
     filterMeta,

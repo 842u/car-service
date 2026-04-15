@@ -35,7 +35,7 @@ export function TableColumnDropdownContent({
         />
       )}
 
-      {isSortable && filterMeta && (
+      {isSortable && isFilterable && filterMeta && (
         <TextSeparator
           className="text-alpha-grey-600 m-2 text-[10px]"
           text="FILTER"

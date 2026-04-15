@@ -31,7 +31,6 @@ export function useServiceLogsTable({
         columnsHelper.accessor('service_date', {
           meta: { label: 'Date', filter: { type: 'date' } },
           enableSorting: true,
-          enableColumnFilter: true,
           filterFn: filterColumnByDate,
         }),
         columnsHelper.accessor('created_at', {
@@ -64,7 +63,6 @@ export function useServiceLogsTable({
             id: 'created_by',
             enableSorting: true,
             sortingFn: 'alphanumeric',
-            enableColumnFilter: true,
             filterFn: 'includesString',
             cell: ({ row }) => {
               const owner = getUserById(users, row.original.created_by);
