@@ -14,13 +14,13 @@ export function CostsSummary({ serviceLogs }: CostsSummaryProps) {
   const { summary } = useCostsSummary({ serviceLogs });
 
   return (
-    <>
+    <div>
       <div className="flex flex-col gap-5 md:flex-row lg:flex-col">
         <AllTimeCostsSummary costs={summary?.totalCost} />
         <PastYearCostsSummary costs={summary?.yearToDateCost} />
       </div>
 
       <CustomPeriodCostsSummary serviceLogs={serviceLogs} />
-    </>
+    </div>
   );
 }
