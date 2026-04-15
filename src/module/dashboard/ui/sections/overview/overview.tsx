@@ -15,7 +15,7 @@ export function OverviewSection() {
         <div className="flex flex-col gap-5 lg:grid lg:w-full lg:grid-cols-[auto_1fr_auto]">
           <TotalOwnershipsSection className="lg:col-span-1 lg:min-w-xs" />
           <InsuranceExpirationSection className="lg:col-span-2" />
-          <TechnicalInspectionExpirationSection className="lg:col-span-2" />
+          <TechnicalInspectionExpirationSection className="lg:col-span-2 lg:min-w-fit" />
           <CostsSection className="lg:col-span-1 lg:max-w-md" />
         </div>
       </div>
