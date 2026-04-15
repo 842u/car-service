@@ -5,6 +5,7 @@ import { useMemo, useRef } from 'react';
 import { TableActionsDropdown } from '@/car/service-log/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
 import { serviceCategoryMapping, type ServiceLog } from '@/types';
+import { Tag } from '@/ui/tag/tag';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
@@ -44,17 +45,51 @@ export function useServiceLogsTable({
           },
           enableColumnFilter: true,
           filterFn: 'arrIncludesSome',
+          cell: ({ row }) => {
+            const categories = row.original.category;
+
+            return (
+              <div className="flex w-44 max-w-52 flex-wrap gap-1">
+                {categories.map((category) => (
+                  <Tag key={category}>{category}</Tag>
+                ))}
+              </div>
+            );
+          },
         }),
         columnsHelper.accessor('mileage', {
           meta: { label: 'Mileage' },
           enableSorting: true,
+          cell: ({ row }) => {
+            return (
+              <div className="max-w-32 overflow-x-auto text-ellipsis">
+                {row.original.mileage}
+              </div>
+            );
+          },
         }),
         columnsHelper.accessor('service_cost', {
           meta: { label: 'Cost' },
           enableSorting: true,
+          cell: ({ row }) => {
+            return (
+              <div className="max-w-32 overflow-x-auto">
+                {row.original.service_cost}
+              </div>
+            );
+          },
         }),
         columnsHelper.accessor('notes', {
           meta: { label: 'Notes', shouldSpan: true },
+          cell: ({ row }) => {
+            const note = row.original.notes;
+
+            return (
+              <div className="max-h-24 w-52 overflow-y-auto text-wrap lg:w-fit">
+                {note}
+              </div>
+            );
+          },
         }),
         columnsHelper.accessor(
           (row) => getUserById(users, row.created_by)?.name,
