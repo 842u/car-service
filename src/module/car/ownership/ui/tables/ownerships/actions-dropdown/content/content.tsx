@@ -30,47 +30,47 @@ export function DropdownContent({
     handlePromoteButtonClick,
     handlePromoteModalCancel,
     handlePromoteModalConfirm,
-    handleModalClose,
   } = useDropdownContent({
     ownership,
     sessionUserId,
   });
 
   return (
-    <Dropdown.Content collisionDetection align="end" side="bottom">
-      <Button
-        className="w-full"
-        disabled={!canPromote}
-        variant="transparent"
-        onClick={handlePromoteButtonClick}
-      >
-        Promote
-      </Button>
-      <PromoteModal
-        ref={promoteModalRef}
-        canPromote={canPromote}
-        username={username}
-        onCancel={handlePromoteModalCancel}
-        onClose={handleModalClose}
-        onConfirm={handlePromoteModalConfirm}
-      />
-      <Button
-        className="w-full"
-        disabled={!canDelete}
-        variant="transparentError"
-        onClick={handleDeleteButtonClick}
-      >
-        Delete
-      </Button>
+    <>
       <DeleteModal
         ref={deleteModalRef}
         canDelete={canDelete}
         selfDeletion={selfDeletion}
         username={username}
         onCancel={handleDeleteModalCancel}
-        onClose={handleModalClose}
         onConfirm={handleDeleteModalConfirm}
       />
-    </Dropdown.Content>
+      <PromoteModal
+        ref={promoteModalRef}
+        canPromote={canPromote}
+        username={username}
+        onCancel={handlePromoteModalCancel}
+        onConfirm={handlePromoteModalConfirm}
+      />
+      <Dropdown.Content collisionDetection align="end" side="bottom">
+        <Button
+          className="w-full"
+          disabled={!canPromote}
+          variant="transparent"
+          onClick={handlePromoteButtonClick}
+        >
+          Promote
+        </Button>
+
+        <Button
+          className="w-full"
+          disabled={!canDelete}
+          variant="transparentError"
+          onClick={handleDeleteButtonClick}
+        >
+          Delete
+        </Button>
+      </Dropdown.Content>
+    </>
   );
 }

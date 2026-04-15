@@ -103,7 +103,10 @@ export function useDropdownContent({
 
   const ownerId = ownership.owner_id;
 
-  const handleDeleteButtonClick = () => deleteModalRef.current?.showModal();
+  const handleDeleteButtonClick = () => {
+    deleteModalRef.current?.showModal();
+    close();
+  };
 
   const handleDeleteModalCancel = () => deleteModalRef.current?.closeModal();
 
@@ -123,7 +126,10 @@ export function useDropdownContent({
     });
   };
 
-  const handlePromoteButtonClick = () => promoteModalRef.current?.showModal();
+  const handlePromoteButtonClick = () => {
+    promoteModalRef.current?.showModal();
+    close();
+  };
 
   const handlePromoteModalCancel = () => promoteModalRef.current?.closeModal();
 
@@ -138,8 +144,6 @@ export function useDropdownContent({
     });
   };
 
-  const handleModalClose = () => close();
-
   return {
     handleDeleteButtonClick,
     handleDeleteModalCancel,
@@ -147,7 +151,6 @@ export function useDropdownContent({
     handlePromoteButtonClick,
     handlePromoteModalCancel,
     handlePromoteModalConfirm,
-    handleModalClose,
     deleteModalRef,
     promoteModalRef,
     selfDeletion: sessionUserId === ownerId,
