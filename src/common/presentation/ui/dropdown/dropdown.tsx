@@ -1,6 +1,5 @@
 import type { ReactNode, RefObject } from 'react';
 import { createContext, useRef, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
 
@@ -45,7 +44,7 @@ export function Dropdown({
     <DropdownContext
       value={{ isOpen, toggle, close, triggerRef, collisionDetectionRoot }}
     >
-      <div className={twMerge('relative', className)}>{children}</div>
+      <div className={className}>{children}</div>
     </DropdownContext>
   );
 }

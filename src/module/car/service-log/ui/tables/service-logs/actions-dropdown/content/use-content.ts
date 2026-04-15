@@ -48,11 +48,17 @@ export function useDropdownContent({
     onSuccess: () => addToast('Service log deleted.', 'success'),
   });
 
-  const handleEditButtonClick = () => editModalRef.current?.showModal();
+  const handleEditButtonClick = () => {
+    editModalRef.current?.showModal();
+    close();
+  };
 
   const handleEditModalSubmit = () => editModalRef.current?.closeModal();
 
-  const handleDeleteButtonClick = () => deleteModalRef.current?.showModal();
+  const handleDeleteButtonClick = () => {
+    deleteModalRef.current?.showModal();
+    close();
+  };
 
   const handleDeleteModalCancel = () => deleteModalRef.current?.closeModal();
 
@@ -70,8 +76,6 @@ export function useDropdownContent({
     );
   };
 
-  const handleModalClose = () => close();
-
   return {
     editModalRef,
     deleteModalRef,
@@ -80,6 +84,5 @@ export function useDropdownContent({
     handleDeleteButtonClick,
     handleDeleteModalCancel,
     handleDeleteModalConfirm,
-    handleModalClose,
   };
 }

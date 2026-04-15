@@ -24,39 +24,39 @@ export function DropdownContent({
     handleDeleteModalConfirm,
     handleEditButtonClick,
     handleEditModalSubmit,
-    handleModalClose,
   } = useDropdownContent({ carId, serviceLogId: serviceLog.id });
 
   return (
-    <Dropdown.Content collisionDetection align="end" side="bottom">
-      <Button
-        className="w-full"
-        disabled={!canTakeAction}
-        variant="transparent"
-        onClick={handleEditButtonClick}
-      >
-        Edit
-      </Button>
+    <>
       <EditModal
         ref={editModalRef}
         serviceLog={serviceLog}
-        onClose={handleModalClose}
         onSubmit={handleEditModalSubmit}
       />
-      <Button
-        disabled={!canTakeAction}
-        variant="transparentError"
-        onClick={handleDeleteButtonClick}
-      >
-        Delete
-      </Button>
       <DeleteModal
         ref={deleteModalRef}
         canTakeAction={canTakeAction}
         onCancel={handleDeleteModalCancel}
-        onClose={handleModalClose}
         onConfirm={handleDeleteModalConfirm}
       />
-    </Dropdown.Content>
+
+      <Dropdown.Content collisionDetection align="end" side="bottom">
+        <Button
+          className="w-full"
+          disabled={!canTakeAction}
+          variant="transparent"
+          onClick={handleEditButtonClick}
+        >
+          Edit
+        </Button>
+        <Button
+          disabled={!canTakeAction}
+          variant="transparentError"
+          onClick={handleDeleteButtonClick}
+        >
+          Delete
+        </Button>
+      </Dropdown.Content>
+    </>
   );
 }
