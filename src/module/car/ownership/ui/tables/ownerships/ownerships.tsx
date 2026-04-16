@@ -18,16 +18,17 @@ export function OwnershipsTable({
   users,
   sessionUserId,
 }: OwnershipsTableProps) {
-  const { columns, tableRef } = useOwnershipsTable({
+  const { columns, tableRef, data } = useOwnershipsTable({
     users,
     isSessionUserPrimaryOwner,
     sessionUserId,
+    ownerships,
   });
 
   return (
     <Table
       columns={columns}
-      data={ownerships || []}
+      data={data}
       options={{
         initialState: {
           columnVisibility: {

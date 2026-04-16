@@ -18,8 +18,8 @@ export function OverviewSection({ carId }: OverviewSectionProps) {
     >
       <DetailsSection carId={carId} className="lg:col-span-3 lg:w-auto" />
       <ServiceLogsSection carId={carId} className="lg:col-span-3" />
-      <OwnershipsSection carId={carId} className="lg:col-span-2 lg:min-w-fit" />
-      <CarCostsSection carId={carId} className="lg:col-span-1 lg:max-w-md" />
+      <OwnershipsSection carId={carId} className="lg:col-span-2" />
+      <CarCostsSection carId={carId} className="lg:col-span-1 lg:max-w-sm" />
       <DeleteSection carId={carId} className="lg:col-span-3" />
     </DashboardSection>
   );
