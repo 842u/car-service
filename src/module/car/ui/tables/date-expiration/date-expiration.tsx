@@ -19,10 +19,10 @@ export function DateExpirationTable({
   label,
   dateColumn,
 }: DateExpirationTableProps) {
-  const { columns, data, isPending, intersectionTargetRef } =
+  const { columns, data, isLoading, intersectionTargetRef } =
     useDateExpirationTable({ label, dateColumn });
 
-  if (isPending)
+  if (isLoading)
     return (
       <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
     );

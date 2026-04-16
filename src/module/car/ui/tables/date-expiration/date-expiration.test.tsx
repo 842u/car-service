@@ -105,7 +105,9 @@ describe('DateExpirationTable', () => {
     });
 
     expect(
-      await screen.findByText('No expiration data yet'),
+      await screen.findByText(
+        `No ${DEFAULT_PROPS.label.toLowerCase()} expiration data yet`,
+      ),
     ).toBeInTheDocument();
   });
 });

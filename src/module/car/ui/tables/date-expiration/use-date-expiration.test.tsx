@@ -90,7 +90,7 @@ beforeEach(() => {
 });
 
 describe('useDateExpirationTable', () => {
-  it('should return isPending true initially', () => {
+  it('should return isLoading true initially', () => {
     mockGetCarsByPage.mockReturnValue(new Promise(() => {}));
 
     const { result } = renderHook(
@@ -98,7 +98,7 @@ describe('useDateExpirationTable', () => {
       { wrapper: createWrapper() },
     );
 
-    expect(result.current.isPending).toBe(true);
+    expect(result.current.isLoading).toBe(true);
   });
 
   it('should return table data after successful fetch', async () => {
@@ -107,7 +107,7 @@ describe('useDateExpirationTable', () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(result.current.isPending).toBe(false));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.data).toEqual(MOCK_CARS);
   });
@@ -118,7 +118,7 @@ describe('useDateExpirationTable', () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(result.current.isPending).toBe(false));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(mockGetCarsByPage).toHaveBeenCalledWith({
       pageParam: 0,
@@ -133,7 +133,7 @@ describe('useDateExpirationTable', () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(result.current.isPending).toBe(false));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.columns).toHaveLength(6);
   });
@@ -151,7 +151,7 @@ describe('useDateExpirationTable', () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(result.current.isPending).toBe(false));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
     triggerIntersection(true);
 
     await waitFor(() =>
@@ -194,7 +194,7 @@ describe('useDateExpirationTable', () => {
       { wrapper: createWrapper() },
     );
 
-    await waitFor(() => expect(result.current.isPending).toBe(false));
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.data).toEqual([]);
   });
@@ -210,7 +210,7 @@ describe('useDateExpirationTable', () => {
         { wrapper: createWrapper() },
       );
 
-      await waitFor(() => expect(result.current.isPending).toBe(false));
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
       triggerIntersection(true);
 
@@ -228,7 +228,7 @@ describe('useDateExpirationTable', () => {
         { wrapper: createWrapper() },
       );
 
-      await waitFor(() => expect(result.current.isPending).toBe(false));
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
       triggerIntersection(false);
 
@@ -246,7 +246,7 @@ describe('useDateExpirationTable', () => {
         { wrapper: createWrapper() },
       );
 
-      await waitFor(() => expect(result.current.isPending).toBe(false));
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
       unmount();
 

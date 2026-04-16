@@ -25,6 +25,8 @@ export function useDateExpirationTable({
   label,
   dateColumn,
 }: UseDateExpirationTableParams) {
+  const { addToast } = useToasts();
+
   const intersectionTargetRef = useRef<HTMLTableRowElement>(null);
 
   const columns = useMemo(
@@ -34,31 +36,23 @@ export function useDateExpirationTable({
           id: 'status',
           cell: ({ row }) => {
             const date = row.original[dateColumn];
-
-            if (!date) return;
-
-            return (
+            return date ? (
               <DateExpirationStatusIcon
                 className="aspect-square h-full p-0.5"
                 date={date}
                 label={label}
               />
-            );
+            ) : null;
           },
         }),
         columnsHelper.accessor(dateColumn, {
-          meta: {
-            label: 'Expiration Date',
-          },
+          meta: { label: 'Expiration Date' },
         }),
         columnsHelper.accessor('id', {
-          meta: {
-            label: 'Car',
-          },
           id: 'id',
+          meta: { label: 'Car' },
           cell: ({ row }) => {
             const { custom_name, image_url } = row.original;
-
             return (
               <div className="max-w-32">
                 <CarBadge
@@ -71,15 +65,10 @@ export function useDateExpirationTable({
           },
         }),
         columnsHelper.accessor('license_plates', {
-          meta: {
-            label: 'License plates',
-          },
+          meta: { label: 'License plates' },
         }),
         columnsHelper.accessor('vin', {
-          meta: {
-            label: 'VIN',
-            shouldSpan: true,
-          },
+          meta: { label: 'VIN', shouldSpan: true },
         }),
         columnsHelper.display({
           id: 'actions',
@@ -91,67 +80,71 @@ export function useDateExpirationTable({
     [dateColumn, label],
   );
 
-  const { addToast } = useToasts();
-
   const {
     data,
     isError,
     error,
-    isPending,
-    isSuccess,
+    isLoading,
     isFetching,
     isFetchingNextPage,
+    isSuccess,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    throwOnError: false,
     queryKey: queryKeys.carsInfiniteByColumnOrder(dateColumn),
+    initialPageParam: 0,
+    throwOnError: false,
     queryFn: async ({ pageParam }) => {
-      const { data, nextPageParam } = await getCarsByPage({
+      const result = await getCarsByPage({
         pageParam,
         pageLimit: 6,
         orderBy: { column: dateColumn, ascending: true },
       });
 
-      return { data, nextPageParam };
+      return result;
     },
-    initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
+
+  const tableData = useMemo(
+    () => data?.pages.flatMap((p) => p.data) ?? [],
+    [data],
+  );
 
   useEffect(() => {
     const target = intersectionTargetRef.current;
     if (!target || !hasNextPage) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          isSuccess && !isFetching && !isFetchingNextPage && fetchNextPage();
-        }
-      },
-      { threshold: 0.1 },
-    );
+    const observer = new IntersectionObserver(([entry]) => {
+      if (
+        entry.isIntersecting &&
+        isSuccess &&
+        !isFetching &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage();
+      }
+    });
 
     observer.observe(target);
 
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, isSuccess]);
+  }, [hasNextPage, isSuccess, isFetching, isFetchingNextPage, fetchNextPage]);
 
   useEffect(() => {
-    isError &&
-      addToast(
-        error?.message ||
-          `Cannot get cars ${label.toLowerCase()} expiration data.`,
-        'error',
-      );
-  }, [isError, addToast, error, label]);
+    if (!isError) return;
 
-  const tableData = data?.pages.flatMap((page) => page.data) || [];
+    addToast(
+      error?.message ||
+        `Cannot get cars ${label.toLowerCase()} expiration data.`,
+      'error',
+    );
+  }, [isError, error, label, addToast]);
 
   return {
     columns,
     data: tableData,
-    isPending,
-    intersectionTargetRef,
+    isLoading,
+    intersectionTargetRef: intersectionTargetRef,
   };
 }
