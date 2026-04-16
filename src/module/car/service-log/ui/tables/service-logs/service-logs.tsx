@@ -20,7 +20,8 @@ export function ServiceLogsTable({
   sessionUserId,
   className = '',
 }: ServiceLogsTableProps) {
-  const { columns, tableRef } = useServiceLogsTable({
+  const { data, columns, tableRef } = useServiceLogsTable({
+    serviceLogs,
     isSessionUserPrimaryOwner,
     sessionUserId,
     users,
@@ -29,7 +30,7 @@ export function ServiceLogsTable({
   return (
     <Table
       columns={columns}
-      data={serviceLogs || []}
+      data={data}
       options={{
         initialState: {
           columnVisibility: {

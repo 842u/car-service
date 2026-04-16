@@ -1,6 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
 
 import { TableActionsDropdown } from '@/car/service-log/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
@@ -11,20 +11,101 @@ import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 const columnsHelper = createColumnHelper<ServiceLog>();
 
-const getUserById = (users: UserDto[] | undefined, id: string) =>
-  users?.find((user) => user.id === id);
+const CategoryCell = memo(function CategoryCell({
+  categories,
+}: {
+  categories: string[];
+}) {
+  return (
+    <div className="flex w-44 max-w-52 flex-wrap gap-1">
+      {categories.map((category) => (
+        <Tag key={category}>{category}</Tag>
+      ))}
+    </div>
+  );
+});
+
+const MileageCell = memo(function MileageCell({
+  mileage,
+}: {
+  mileage: ServiceLog['mileage'];
+}) {
+  return <div className="max-w-32 overflow-x-auto">{mileage}</div>;
+});
+
+const CostCell = memo(function CostCell({
+  cost,
+}: {
+  cost: ServiceLog['service_cost'];
+}) {
+  return <div className="max-w-32 overflow-x-auto">{cost}</div>;
+});
+
+const NotesCell = memo(function NotesCell({
+  notes,
+}: {
+  notes: ServiceLog['notes'];
+}) {
+  return (
+    <div className="max-h-24 w-52 overflow-y-auto text-wrap lg:w-fit">
+      {notes}
+    </div>
+  );
+});
+
+const CreatorCell = memo(function CreatorCell({
+  user,
+}: {
+  user: UserDto | undefined;
+}) {
+  return user ? (
+    <UserBadge className="h-10 flex-row-reverse justify-end" user={user} />
+  ) : null;
+});
+
+const ActionsCell = memo(function ActionsCell({
+  canTakeAction,
+  carId,
+  serviceLog,
+  collisionDetectionRoot,
+}: {
+  canTakeAction: boolean;
+  carId: string;
+  serviceLog: ServiceLog;
+  collisionDetectionRoot: HTMLElement | null;
+}) {
+  return (
+    <TableActionsDropdown
+      canTakeAction={canTakeAction}
+      carId={carId}
+      className="w-12"
+      collisionDetectionRoot={collisionDetectionRoot}
+      serviceLog={serviceLog}
+    />
+  );
+});
 
 interface UseServiceLogsTableParams {
+  serviceLogs?: ServiceLog[];
   users?: UserDto[];
   sessionUserId?: string;
   isSessionUserPrimaryOwner?: boolean;
 }
+
 export function useServiceLogsTable({
+  serviceLogs,
   users,
   sessionUserId,
   isSessionUserPrimaryOwner,
 }: UseServiceLogsTableParams) {
   const tableRef = useRef<HTMLTableElement>(null);
+
+  const memoData = useMemo(() => serviceLogs || [], [serviceLogs]);
+
+  const usersMap = useMemo(() => {
+    if (!users) return new Map<string, UserDto>();
+    return new Map(users.map((u) => [u.id, u]));
+  }, [users]);
 
   const columns = useMemo(
     () =>
@@ -45,73 +126,35 @@ export function useServiceLogsTable({
           },
           enableColumnFilter: true,
           filterFn: 'arrIncludesSome',
-          cell: ({ row }) => {
-            const categories = row.original.category;
-
-            return (
-              <div className="flex w-44 max-w-52 flex-wrap gap-1">
-                {categories.map((category) => (
-                  <Tag key={category}>{category}</Tag>
-                ))}
-              </div>
-            );
-          },
+          cell: ({ row }) => (
+            <CategoryCell categories={row.original.category} />
+          ),
         }),
         columnsHelper.accessor('mileage', {
           meta: { label: 'Mileage' },
           enableSorting: true,
-          cell: ({ row }) => {
-            return (
-              <div className="max-w-32 overflow-x-auto text-ellipsis">
-                {row.original.mileage}
-              </div>
-            );
-          },
+          cell: ({ row }) => <MileageCell mileage={row.original.mileage} />,
         }),
         columnsHelper.accessor('service_cost', {
           meta: { label: 'Cost' },
           enableSorting: true,
-          cell: ({ row }) => {
-            return (
-              <div className="max-w-32 overflow-x-auto">
-                {row.original.service_cost}
-              </div>
-            );
-          },
+          cell: ({ row }) => <CostCell cost={row.original.service_cost} />,
         }),
         columnsHelper.accessor('notes', {
           meta: { label: 'Notes', shouldSpan: true },
-          cell: ({ row }) => {
-            const note = row.original.notes;
-
-            return (
-              <div className="max-h-24 w-52 overflow-y-auto text-wrap lg:w-fit">
-                {note}
-              </div>
-            );
-          },
+          cell: ({ row }) => <NotesCell notes={row.original.notes} />,
         }),
-        columnsHelper.accessor(
-          (row) => getUserById(users, row.created_by)?.name,
-          {
-            meta: { label: 'Creator', filter: { type: 'text' } },
-            id: 'created_by',
-            enableSorting: true,
-            sortingFn: 'alphanumeric',
-            filterFn: 'includesString',
-            cell: ({ row }) => {
-              const owner = getUserById(users, row.original.created_by);
-              return (
-                owner && (
-                  <UserBadge
-                    className="h-10 flex-row-reverse justify-end"
-                    user={owner}
-                  />
-                )
-              );
-            },
-          },
-        ),
+        columnsHelper.accessor((row) => usersMap.get(row.created_by)?.name, {
+          id: 'created_by',
+          enableSorting: true,
+          sortingFn: 'alphanumeric',
+          enableColumnFilter: true,
+          filterFn: 'includesString',
+          meta: { label: 'Creator' },
+          cell: ({ row }) => (
+            <CreatorCell user={usersMap.get(row.original.created_by)} />
+          ),
+        }),
         columnsHelper.display({
           id: 'actions',
           cell: ({ row }) => {
@@ -120,10 +163,9 @@ export function useServiceLogsTable({
               row.original.created_by === sessionUserId;
 
             return (
-              <TableActionsDropdown
+              <ActionsCell
                 canTakeAction={!!canTakeAction}
                 carId={row.original.car_id}
-                className="w-12"
                 collisionDetectionRoot={tableRef.current}
                 serviceLog={row.original}
               />
@@ -131,10 +173,11 @@ export function useServiceLogsTable({
           },
         }),
       ] as ColumnDef<ServiceLog>[],
-    [users, sessionUserId, isSessionUserPrimaryOwner],
+    [usersMap, sessionUserId, isSessionUserPrimaryOwner],
   );
 
   return {
+    data: memoData,
     columns,
     tableRef,
   };
