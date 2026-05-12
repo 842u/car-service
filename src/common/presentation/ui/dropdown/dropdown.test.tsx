@@ -74,6 +74,17 @@ describe('Dropdown', () => {
 
     expect(screen.queryByText('menu content')).not.toBeInTheDocument();
   });
+
+  it('should render opened content with top and left position styles', async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+
+    await user.click(screen.getByRole('button', { name: 'open' }));
+
+    const content = screen.getByText('menu content');
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(content.parentElement).toHaveAttribute('style');
+  });
 });
 
 describe('useDropdown', () => {

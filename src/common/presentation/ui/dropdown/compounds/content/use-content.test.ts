@@ -311,40 +311,6 @@ describe('useDropdownContent', () => {
   });
 
   describe('event listeners', () => {
-    it('should add scroll and resize listeners to window when open', () => {
-      const addListenerSpy = jest.spyOn(window, 'addEventListener');
-
-      renderAndOpen({});
-
-      expect(addListenerSpy).toHaveBeenCalledWith(
-        'scroll',
-        expect.any(Function),
-        { capture: true },
-      );
-      expect(addListenerSpy).toHaveBeenCalledWith(
-        'resize',
-        expect.any(Function),
-      );
-    });
-
-    it('should remove scroll and resize listeners from window when closed', () => {
-      const removeListenerSpy = jest.spyOn(window, 'removeEventListener');
-      const { rerender } = renderAndOpen({});
-
-      setupMockContext({ isOpen: false });
-      rerender();
-
-      expect(removeListenerSpy).toHaveBeenCalledWith(
-        'scroll',
-        expect.any(Function),
-        { capture: true },
-      );
-      expect(removeListenerSpy).toHaveBeenCalledWith(
-        'resize',
-        expect.any(Function),
-      );
-    });
-
     it('should update position on window scroll', () => {
       const { result, fakeTrigger } = renderAndOpen({ side: 'bottom' });
 

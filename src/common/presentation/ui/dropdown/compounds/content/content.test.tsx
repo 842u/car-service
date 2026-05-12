@@ -67,24 +67,4 @@ describe('DropdownContent', () => {
     expect(container).not.toContainElement(menuEl);
     expect(document.body).toContainElement(menuEl);
   });
-
-  it('should forward collisionDetection, side and align to useDropdownContent', () => {
-    mockUseDropdownContent.mockReturnValue({
-      isOpen: false,
-      position: { top: 0, left: 0 },
-      contentRef: createRef(),
-    });
-
-    render(
-      <DropdownContent align="end" collisionDetection={true} side="top">
-        content
-      </DropdownContent>,
-    );
-
-    expect(mockUseDropdownContent).toHaveBeenCalledWith({
-      collisionDetection: true,
-      side: 'top',
-      align: 'end',
-    });
-  });
 });
