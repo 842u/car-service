@@ -21,14 +21,12 @@ function getUpdatedFiltersState(
       },
     ];
   } else {
-    if (currentColumnFilter.value instanceof Object) {
-      currentColumnFilter.value = {
-        ...currentColumnFilter.value,
-        [valueKey]: value,
-      };
-    }
-
-    return [...filters];
+    return filters.map((filter) => {
+      if (filter.id !== columnId || !(filter.value instanceof Object)) {
+        return filter;
+      }
+      return { ...filter, value: { ...filter.value, [valueKey]: value } };
+    });
   }
 }
 
