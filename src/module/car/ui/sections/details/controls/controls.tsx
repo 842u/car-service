@@ -6,15 +6,12 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { Car } from '@/types';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-export type SectionControlsProps = {
-  isCurrentUserPrimaryOwner: boolean;
-  carData?: Car;
-};
+interface SectionControlsProps {
+  canEdit: boolean;
+  car?: Car;
+}
 
-export function SectionControls({
-  isCurrentUserPrimaryOwner,
-  carData,
-}: SectionControlsProps) {
+export function SectionControls({ canEdit, car }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
   const handleEditButtonClick = () => dialogRef.current?.showModal();
@@ -23,15 +20,8 @@ export function SectionControls({
 
   return (
     <DashboardSection.Controls>
-      <EditButton
-        disabled={!isCurrentUserPrimaryOwner}
-        onClick={handleEditButtonClick}
-      />
-      <EditModal
-        ref={dialogRef}
-        carData={carData}
-        onSubmit={handleEditModalSubmit}
-      />
+      <EditButton disabled={!canEdit} onClick={handleEditButtonClick} />
+      <EditModal ref={dialogRef} car={car} onSubmit={handleEditModalSubmit} />
     </DashboardSection.Controls>
   );
 }

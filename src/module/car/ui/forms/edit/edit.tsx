@@ -4,15 +4,15 @@ import type { Car } from '@/types';
 import { CarForm } from '../../form/form';
 
 interface EditFormProps {
-  carData?: Car;
+  car?: Car;
   onSubmit?: () => void;
 }
 
-export function EditForm({ carData, onSubmit }: EditFormProps) {
+export function EditForm({ car, onSubmit }: EditFormProps) {
   const { handleFormSubmit } = useEditForm({
-    carId: carData?.id || '',
+    carId: car?.id || '',
     onSubmit,
   });
 
-  return <CarForm carData={carData} onSubmit={handleFormSubmit} />;
+  return <CarForm car={car} onSubmit={handleFormSubmit} />;
 }

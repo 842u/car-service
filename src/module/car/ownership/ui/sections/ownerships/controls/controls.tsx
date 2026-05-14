@@ -7,15 +7,12 @@ import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
 export const SECTION_CONTROLS_TEST_ID = 'section-controls';
 
-export type SectionControlsProps = {
+interface SectionControlsProps {
   carId: string;
-  isCurrentUserPrimaryOwner: boolean;
-};
+  canAdd: boolean;
+}
 
-export function SectionControls({
-  carId,
-  isCurrentUserPrimaryOwner,
-}: SectionControlsProps) {
+export function SectionControls({ carId, canAdd }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);
 
   const handleAddButtonClick = () => dialogRef.current?.showModal();
@@ -24,10 +21,7 @@ export function SectionControls({
 
   return (
     <DashboardSection.Controls data-testid={SECTION_CONTROLS_TEST_ID}>
-      <AddButton
-        disabled={!isCurrentUserPrimaryOwner}
-        onClick={handleAddButtonClick}
-      />
+      <AddButton disabled={!canAdd} onClick={handleAddButtonClick} />
       <AddModal ref={dialogRef} carId={carId} onSubmit={handleAddModalSubmit} />
     </DashboardSection.Controls>
   );

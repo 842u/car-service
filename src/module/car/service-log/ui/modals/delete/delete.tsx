@@ -10,6 +10,7 @@ type DeleteModalProps = {
   ref?: RefObject<DialogModalRef | null>;
   onCancel?: () => void;
   onConfirm?: () => void;
+  onClose?: () => void;
 };
 
 export function DeleteModal({
@@ -17,10 +18,11 @@ export function DeleteModal({
   ref,
   onCancel,
   onConfirm,
+  onClose,
 }: DeleteModalProps) {
   return (
     <DialogModal ref={ref}>
-      <DialogModal.Root>
+      <DialogModal.Root onClose={onClose}>
         <DialogModal.Heading>Delete service log</DialogModal.Heading>
         <TextSeparator className="my-4" />
         <p className="my-4">Are you sure you want to delete service log?</p>

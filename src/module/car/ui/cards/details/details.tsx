@@ -30,14 +30,14 @@ const DATA_FIELDS: {
 ];
 
 interface DetailsCardProps {
-  data?: Car;
+  car?: Car;
   className?: string;
 }
 
-export function DetailsCard({ data, className }: DetailsCardProps) {
+export function DetailsCard({ car, className }: DetailsCardProps) {
   return (
     <div className={className}>
-      <DetailsCardHeader data={data} />
+      <DetailsCardHeader car={car} />
 
       <TextSeparator
         className="text-alpha-grey-500 my-10 text-xs"
@@ -50,7 +50,7 @@ export function DetailsCard({ data, className }: DetailsCardProps) {
             key={key}
             icon={icon}
             label={label}
-            value={data?.[key]}
+            value={car?.[key]}
           />
         ))}
       </div>
@@ -62,12 +62,12 @@ export function DetailsCard({ data, className }: DetailsCardProps) {
 
       <div className="flex flex-col gap-5">
         <DetailsCardExpirationRow
-          date={data?.insurance_expiration}
+          date={car?.insurance_expiration}
           icon={CheckShieldIcon}
           label="Insurance"
         />
         <DetailsCardExpirationRow
-          date={data?.technical_inspection_expiration}
+          date={car?.technical_inspection_expiration}
           icon={ToolsIcon}
           label="Technical inspection"
         />

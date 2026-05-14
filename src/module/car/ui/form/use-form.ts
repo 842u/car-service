@@ -5,10 +5,9 @@ import { useForm } from 'react-hook-form';
 
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/car/schemas/zod/carFormSchema';
+import type { Car } from '@/types';
 
-import type { CarFormProps } from './form';
-
-const defaultCarFormValues: CarFormValues = {
+const DEFAULT_FORM_VALUES: CarFormValues = {
   image: null,
   custom_name: '',
   brand: null,
@@ -26,7 +25,12 @@ const defaultCarFormValues: CarFormValues = {
   technical_inspection_expiration: null,
 };
 
-export function useCarForm({ onSubmit, carData }: CarFormProps) {
+interface UseCarFormParams {
+  onSubmit?: (carFormData: CarFormValues) => void;
+  car?: Car;
+}
+
+export function useCarForm({ onSubmit, car }: UseCarFormParams) {
   const {
     register,
     reset,
@@ -36,16 +40,16 @@ export function useCarForm({ onSubmit, carData }: CarFormProps) {
   } = useForm({
     resolver: zodResolver(carFormSchema) as Resolver<CarFormValues>,
     mode: 'onChange',
-    defaultValues: defaultCarFormValues,
+    defaultValues: DEFAULT_FORM_VALUES,
   });
 
   useEffect(() => {
-    carData &&
+    car &&
       reset({
-        ...carData,
+        ...car,
         image: null,
       });
-  }, [carData, reset]);
+  }, [car, reset]);
 
   useEffect(() => {
     isSubmitSuccessful && reset();

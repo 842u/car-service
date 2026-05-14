@@ -16,7 +16,7 @@ export function CarBadge({ name, imageUrl, className }: CarBadgeProps) {
         className,
       )}
     >
-      <p className="overflow-auto">{name}</p>
+      <p className="truncate">{name}</p>
       <CarImage
         className="border-alpha-grey-300 aspect-square h-full w-fit shrink-0 overflow-hidden rounded-full border"
         src={imageUrl}

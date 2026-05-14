@@ -2,23 +2,23 @@ import type { Header } from '@tanstack/react-table';
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { TableColumnDropdown } from '@/ui/table/compounds/column-dropdown/column-dropdown';
 import { useTable } from '@/ui/table/table';
 
-import { ThDropdown } from './dropdown/dropdown';
-
-type HeadThProps = ComponentProps<'th'> & {
-  // eslint-disable-next-line
+interface HeadThProps extends ComponentProps<'th'> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   header: Header<any, unknown>;
-};
+}
 
 export function HeadTh({ header, ...props }: HeadThProps) {
   useTable();
 
   const column = header.column;
-  const headerLabel = column.columnDef.meta?.label;
-  const isSortable = column.columnDef.enableSorting;
   const columnId = column.id;
-  const shouldSpan = column.columnDef.meta?.shouldSpan;
+  const meta = column.columnDef.meta;
+  const isSortable = column.columnDef.enableSorting;
+  const shouldSpan = meta?.shouldSpan;
+  const filter = meta?.filter;
 
   return (
     <th
@@ -28,10 +28,10 @@ export function HeadTh({ header, ...props }: HeadThProps) {
       )}
       {...props}
     >
-      {isSortable ? (
-        <ThDropdown columnId={columnId} label={headerLabel} />
+      {isSortable || filter ? (
+        <TableColumnDropdown columnId={columnId} label={meta?.label} />
       ) : (
-        headerLabel
+        meta?.label
       )}
     </th>
   );

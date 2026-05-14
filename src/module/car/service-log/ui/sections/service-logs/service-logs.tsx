@@ -1,58 +1,71 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
-import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { useServiceLogsSection } from '@/car/service-log/ui/sections/service-logs/use-service-logs';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { getServiceLogsByCarId } from '@/lib/supabase/tables/service_logs';
-import { queryKeys } from '@/lib/tanstack/keys';
+import { BookIcon } from '@/icons/book';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
-import type { UserDto } from '@/user/application/dto/user';
+import { EmptyStatePlaceholder } from '@/ui/empty-state-placeholder/empty-state-placeholder';
 
 import { ServiceLogsTable } from '../../tables/service-logs/service-logs';
-import type { SectionControlsProps } from './controls/controls';
 import { SectionControls } from './controls/controls';
 
-type ServiceLogsSectionProps = SectionControlsProps & {
-  isCurrentUserPrimaryOwner: boolean;
-  owners?: UserDto[];
+interface ServiceLogsSectionProps {
+  carId: string;
   className?: string;
-};
+}
 
 export function ServiceLogsSection({
   carId,
-  isCurrentUserPrimaryOwner,
-  owners,
   className,
 }: ServiceLogsSectionProps) {
-  const { addToast } = useToasts();
+  const {
+    isLoading,
+    serviceLogs,
+    users,
+    isSessionUserPrimaryOwner,
+    sessionUserId,
+  } = useServiceLogsSection({ carId });
 
-  const { data, error, isLoading } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.serviceLogsByCarId(carId),
-    queryFn: () => getServiceLogsByCarId(carId),
-  });
+  if (isLoading) {
+    return (
+      <DashboardSection aria-label="Service logs" className={className}>
+        <DashboardSection.Heading headingLevel="h2">
+          Service Logs
+        </DashboardSection.Heading>
+        <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
+      </DashboardSection>
+    );
+  }
 
-  useEffect(() => {
-    error && addToast(error.message, 'error');
-  }, [addToast, error]);
+  if (!serviceLogs?.length) {
+    return (
+      <DashboardSection aria-label="Service logs" className={className}>
+        <DashboardSection.Heading headingLevel="h2">
+          Service Logs
+        </DashboardSection.Heading>
+        <EmptyStatePlaceholder
+          className="my-5 h-fit"
+          icon={BookIcon}
+          subtext="You haven't added any service logs. Once you do, they will appear here."
+          text="No service logs data yet"
+        />
+        <SectionControls carId={carId} />
+      </DashboardSection>
+    );
+  }
 
   return (
     <DashboardSection aria-label="Service logs" className={className}>
       <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>
-      {isLoading ? (
-        <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
-      ) : (
-        <ServiceLogsTable
-          key={owners ? 'loaded' : 'loading'}
-          isCurrentUserPrimaryOwner={isCurrentUserPrimaryOwner}
-          owners={owners}
-          serviceLogs={data}
-        />
-      )}
+      <ServiceLogsTable
+        className="my-5 max-h-96 overflow-auto [scrollbar-gutter:stable]"
+        isSessionUserPrimaryOwner={isSessionUserPrimaryOwner}
+        serviceLogs={serviceLogs}
+        sessionUserId={sessionUserId}
+        users={users}
+      />
       <SectionControls carId={carId} />
     </DashboardSection>
   );

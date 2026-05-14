@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
-import type { UseDropdownContentOptions } from './use-content';
+import type { UseDropdownContentParams } from './use-content';
 import { useDropdownContent } from './use-content';
 
 type DropdownContentProps = {
   children: ReactNode;
-} & UseDropdownContentOptions;
+} & UseDropdownContentParams;
 
 export function DropdownContent({
   collisionDetection,
@@ -19,15 +20,16 @@ export function DropdownContent({
     align,
   });
 
-  return (
-    isOpen && (
-      <div
-        ref={contentRef}
-        className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 absolute z-10 rounded-lg border p-1"
-        style={{ top: position.top, left: position.left }}
-      >
-        {children}
-      </div>
-    )
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div
+      ref={contentRef}
+      className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 fixed z-10 rounded-lg border p-1"
+      style={{ top: position.top, left: position.left }}
+    >
+      {children}
+    </div>,
+    document.body,
   );
 }

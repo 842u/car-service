@@ -19,10 +19,10 @@ export function DateExpirationTable({
   label,
   dateColumn,
 }: DateExpirationTableProps) {
-  const { columns, data, isPending, intersectionTargetRef } =
+  const { columns, data, isLoading, intersectionTargetRef } =
     useDateExpirationTable({ label, dateColumn });
 
-  if (isPending)
+  if (isLoading)
     return (
       <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
     );
@@ -33,11 +33,13 @@ export function DateExpirationTable({
 
   return (
     <Table columns={columns} data={data}>
-      <Table.Root className="max-h-72 overflow-y-auto">
-        <Table.Head className="h-12" />
-        <Table.Body lastRowRef={intersectionTargetRef} />
-      </Table.Root>
-      <DateExpirationTableLegend />
+      <div className="flex grow flex-col justify-between">
+        <Table.Root className="max-h-96 overflow-y-auto lg:max-h-80">
+          <Table.Head className="h-12" />
+          <Table.Body lastRowRef={intersectionTargetRef} />
+        </Table.Root>
+        <DateExpirationTableLegend />
+      </div>
     </Table>
   );
 }

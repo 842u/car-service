@@ -6,6 +6,14 @@ declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
     label: string;
     shouldSpan?: boolean;
+    filter?:
+      | {
+          type: 'values';
+          valuesMapping: Record<string, string>;
+        }
+      | {
+          type: 'date' | 'text';
+        };
   }
 
   interface TableMeta<TData extends RowData> {

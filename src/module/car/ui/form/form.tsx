@@ -7,12 +7,12 @@ import { Form } from '@/ui/form/form';
 import { FormFields } from './fields/fields';
 import { useCarForm } from './use-form';
 
-export type CarFormProps = Omit<FormProps, 'ref' | 'onSubmit'> & {
+interface CarFormProps extends Omit<FormProps, 'ref' | 'onSubmit'> {
+  car?: Car;
   onSubmit?: (carFormData: CarFormValues) => void;
-  carData?: Car;
-};
+}
 
-export function CarForm({ onSubmit, carData, ...props }: CarFormProps) {
+export function CarForm({ onSubmit, car, ...props }: CarFormProps) {
   const {
     handleFormSubmit,
     handleFormReset,
@@ -23,7 +23,7 @@ export function CarForm({ onSubmit, carData, ...props }: CarFormProps) {
     canSubmit,
   } = useCarForm({
     onSubmit,
-    carData,
+    car,
   });
 
   return (
@@ -36,7 +36,7 @@ export function CarForm({ onSubmit, carData, ...props }: CarFormProps) {
       <FormFields
         control={control}
         errors={errors}
-        imageUrl={carData?.image_url}
+        imageUrl={car?.image_url}
         register={register}
       />
       <Form.Controls>
