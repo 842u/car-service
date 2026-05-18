@@ -20,7 +20,7 @@ export async function getServiceLogsByCarId(carId: string) {
   return queryResult.data;
 }
 
-export async function getServiceLogsWithCost() {
+export async function getServiceLogsWithCost(): Promise<ServiceLog[]> {
   const queryResult = await browserDatabaseClient.query(async (from) =>
     from('service_logs')
       .select('*')
@@ -34,10 +34,12 @@ export async function getServiceLogsWithCost() {
     throw new Error(message);
   }
 
-  return queryResult.data;
+  return queryResult.data as ServiceLog[];
 }
 
-export async function getServiceLogsWithCostByCarId(carId: string) {
+export async function getServiceLogsWithCostByCarId(
+  carId: string,
+): Promise<ServiceLog[]> {
   const queryResult = await browserDatabaseClient.query(async (from) =>
     from('service_logs')
       .select('*')
@@ -52,7 +54,7 @@ export async function getServiceLogsWithCostByCarId(carId: string) {
     throw new Error(message);
   }
 
-  return queryResult.data;
+  return queryResult.data as ServiceLog[];
 }
 
 export async function deleteServiceLogById(id: string) {
