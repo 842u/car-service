@@ -45,7 +45,7 @@
   "devDependencies": {
     "@eslint/js": "9.32.0",
     "@next/eslint-plugin-next": "16.2.6",
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "1.60.0",
     "@postgres-language-server/cli": "0.22.1",
     "@react-email/ui": "6.1.4",
     "@tailwindcss/postcss": "4.2.2",
