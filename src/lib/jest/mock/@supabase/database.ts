@@ -14,6 +14,7 @@ export async function mockInternalMethodSuccess(mockData: unknown) {
     count: null,
     status: 200,
     statusText: 'OK',
+    success: true as const,
   });
 }
 
@@ -26,9 +27,19 @@ export async function mockInternalMethodFailure(errorMessage: string) {
       details: 'error details',
       hint: 'error hint',
       name: 'PostgrestError',
+      toJSON() {
+        return {
+          message: this.message,
+          code: this.code,
+          details: this.details,
+          hint: this.hint,
+          name: this.name,
+        };
+      },
     } satisfies PostgrestError,
     count: null,
     status: 400,
     statusText: 'Bad Request',
+    success: false as const,
   });
 }
