@@ -60,7 +60,7 @@ export function ServiceLogsSection({
         Service Logs
       </DashboardSection.Heading>
       <ServiceLogsTable
-        className="my-5 max-h-96 overflow-auto [scrollbar-gutter:stable]"
+        className="my-5 max-h-96 scrollbar-gutter-stable overflow-auto"
         isSessionUserPrimaryOwner={isSessionUserPrimaryOwner}
         serviceLogs={serviceLogs}
         sessionUserId={sessionUserId}
