@@ -27,10 +27,9 @@
         "name": "next"
       }
     ],
-    "baseUrl": "./",
     "paths": {
       "@/icons/*": [
-        "src/common/presentation/ui/decorative/icons/*"
+        "./src/common/presentation/ui/decorative/icons/*"
       ],
       "@/ui/*": [
         "./src/common/presentation/ui/*"
@@ -52,7 +51,10 @@
       ],
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "*": [
+        "./*"
+      ],
     }
   },
   "include": [

@@ -84,8 +84,8 @@
     "supabase": "2.98.2",
     "tailwindcss": "4.3.0",
     "ts-node": "10.9.2",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.57.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.59.3",
     "whatwg-fetch": "3.6.20"
   }
 }
