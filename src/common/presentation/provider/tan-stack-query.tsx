@@ -25,10 +25,7 @@ export function TanStackQueryProvider({
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools
-        initialIsOpen={false}
-        styleNonce={'reactQueryDevtools'}
-      />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
