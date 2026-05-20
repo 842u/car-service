@@ -9,16 +9,19 @@ import {
 } from './security/content-security-policy';
 import { getRouteAccessRedirection } from './security/route-access';
 
-export async function proxy(request: NextRequest) {
-  const { cspString, nonce } = generateCspStringWithNonce(
-    baseContentSecurityPolicy,
-  );
+const isProduction = process.env.NODE_ENV === 'production';
 
+export async function proxy(request: NextRequest) {
   const requestUrl = request.nextUrl.clone();
   const responseHeaders = new Headers();
 
-  responseHeaders.set('x-nonce', nonce);
-  responseHeaders.set('content-security-policy', cspString);
+  if (isProduction) {
+    const { cspString, nonce } = generateCspStringWithNonce(
+      baseContentSecurityPolicy,
+    );
+    responseHeaders.set('x-nonce', nonce);
+    responseHeaders.set('content-security-policy', cspString);
+  }
 
   const response = NextResponse.next({ request, headers: responseHeaders });
 
