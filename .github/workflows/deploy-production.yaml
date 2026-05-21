@@ -1,42 +1,42 @@
-name: Vercel Deploy Preview
+name: Deploy Production
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
   workflow_dispatch:
 
 jobs:
-  prettier-format-check:
-    uses: ./.github/workflows/prettier-format-check.yaml
+  format:
+    uses: ./.github/workflows/format.yaml
 
-  eslint-lint:
-    uses: ./.github/workflows/eslint-lint.yaml
+  lint:
+    uses: ./.github/workflows/lint.yaml
 
-  jest-test:
-    uses: ./.github/workflows/jest-test.yaml
+  test-jest:
+    uses: ./.github/workflows/test-jest.yaml
     secrets: inherit
 
-  typescript-check:
-    uses: ./.github/workflows/typescript-check.yaml
+  type-check:
+    uses: ./.github/workflows/type-check.yaml
 
-  playwright-test:
-    needs: [prettier-format-check, eslint-lint, jest-test, typescript-check]
-    uses: ./.github/workflows/playwright-test.yaml
+  test-playwright:
+    needs: [format, lint, test-jest, type-check]
+    uses: ./.github/workflows/test-playwright.yaml
     # Setting 'secrets: inherit' does not necessarily pass secrets from this workflow.
-    # Inside 'playwright-test.yaml' -> 'environment: name: Test' are set.
+    # Inside 'test-playwright.yaml' -> 'environment: name: Test' are set.
     # This means secrets from test environment will be used.
     # However 'secrets: inherit' is needed.
     secrets: inherit
 
-  vercel-deploy-preview:
-    needs: playwright-test
+  vercel-deploy-production:
+    needs: test-playwright
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
-      name: Preview
-      url: ${{ steps.vercel-deploy.outputs.url }}
+      name: Production
+      url: https://car-service.842u.dev
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -72,18 +72,17 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Pull Vercel Remote Environment Variables
-        run: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: vercel build --token=$VERCEL_TOKEN
+        run: vercel build --prod --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-        id: vercel-deploy
-        run: echo "url=$(vercel deploy --prebuilt --token=${VERCEL_TOKEN})" >> $GITHUB_OUTPUT
+        run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
@@ -95,5 +94,10 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            New PR PREVIEW for {{ EVENT_PAYLOAD.repository.full_name }}
-            ${{ steps.vercel-deploy.outputs.url }}
+            New PRODUCTION for {{ EVENT_PAYLOAD.repository.full_name }}
+            https://car-service.842u.dev
+
+  create-audit:
+    needs: vercel-deploy-production
+    uses: ./.github/workflows/create-audit.yaml
+    secrets: inherit

@@ -1,11 +1,11 @@
-name: Eslint Lint
+name: Format
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  eslint-lint:
+  format:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
@@ -19,5 +19,5 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Eslint
-        run: npm run lint
+      - name: Run Format Script
+        run: npm run format
