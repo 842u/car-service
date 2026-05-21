@@ -1,1 +1,1 @@
-npm run format && npm run lint && npm run type-check && npm run test:jest && npm run build && npm run test:playwright
+npm run format && npm run lint && npm run type-check && npm run test:jest && npm run env:test:local -- npm run build && npm run env:test:local -- npm run test:playwright
