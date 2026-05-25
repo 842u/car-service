@@ -1,13 +1,15 @@
-name: Eslint Lint
+name: Test Jest
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  eslint-lint:
+  test-jest:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    environment:
+      name: Test
 
     steps:
       - uses: actions/checkout@v6
@@ -19,5 +21,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Eslint
-        run: npm run lint
+      - name: Run Jest Tests
+        run: npm run test:jest
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}

@@ -1,11 +1,11 @@
-name: Create Unlighthouse Audit
+name: Create Audit
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  create-unlighthouse-audit:
+  create-audit:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:

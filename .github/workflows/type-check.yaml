@@ -1,17 +1,13 @@
-name: Jest Test
+name: Type Check
 
 on:
   workflow_dispatch:
   workflow_call:
 
 jobs:
-  jest-test:
+  type-check:
     timeout-minutes: 10
     runs-on: ubuntu-latest
-    environment:
-      name: Test
-    env:
-      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
 
     steps:
       - uses: actions/checkout@v6
@@ -23,5 +19,5 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Jest Tests
-        run: npm run test:jest
+      - name: Run Type Check Script
+        run: npm run type-check
