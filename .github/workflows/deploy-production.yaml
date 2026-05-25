@@ -30,7 +30,7 @@ jobs:
     # However 'secrets: inherit' is needed.
     secrets: inherit
 
-  vercel-deploy-production:
+  deploy-production:
     needs: test-playwright
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -98,6 +98,10 @@ jobs:
             https://car-service.842u.dev
 
   create-audit:
-    needs: vercel-deploy-production
+    needs: deploy-production
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     uses: ./.github/workflows/create-audit.yaml
     secrets: inherit
