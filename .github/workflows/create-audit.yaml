@@ -4,13 +4,22 @@ on:
   workflow_dispatch:
   workflow_call:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   create-audit:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     environment:
-      name: Insights
-      url: https://insights.car-service.842u.dev
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v6
@@ -49,13 +58,17 @@ jobs:
       - name: Run Unlighthouse Audit
         run: unlighthouse-ci --site https://www.car-service.842u.dev --build-static --throttle --no-cache --samples 3
 
-      - name: Push To Static Audit Repo
-        uses: s0/git-publish-subdir-action@v2.6.0
-        env:
-          REPO: git@github.com:842u/insights-car-service.git
-          BRANCH: main
-          FOLDER: .unlighthouse
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .unlighthouse
+
+      - name: Deploy To GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
       - name: Discord Notification
         env:
@@ -66,4 +79,4 @@ jobs:
         with:
           args: |
             New AUDIT for {{ EVENT_PAYLOAD.repository.full_name }}
-            https://insights.car-service.842u.dev
+            ${{ steps.deployment.outputs.page_url }}
