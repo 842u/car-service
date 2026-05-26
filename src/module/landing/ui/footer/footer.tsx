@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { GitHubIcon } from '@/icons/github';
 import { MailIcon } from '@/icons/mail';
 import { LandingSection } from '@/landing/ui/section/section';
@@ -6,28 +8,61 @@ import { BrandLabel } from '@/ui/brand-label/brand-label';
 
 export function LandingFooter() {
   return (
-    <footer className="from-light-500 to-light-600 before:from-alpha-grey-50 before:via-alpha-grey-300 before:to-alpha-grey-50 dark:from-dark-500 dark:to-dark-900 bg-linear-to-b before:absolute before:h-[1px] before:w-full before:bg-linear-to-l">
-      <LandingSection className="my-0 py-5 md:my-0 lg:my-0">
-        <BrandLabel className="mx-auto my-5 block w-fit md:h-20 md:w-fit" />
+    <footer className="border-alpha-grey-300 bg-light-500 dark:bg-dark-500 border-t">
+      <LandingSection className="my-0 flex flex-col gap-8 py-8 md:my-0 md:flex-row md:items-start md:justify-between lg:my-0">
+        <div className="flex flex-col gap-4">
+          <BrandLabel className="block w-fit" />
+          <p className="text-alpha-grey-900 text-sm">
+            Car&apos;s Story Safely Managed.
+          </p>
+          <address className="flex h-10 items-center gap-2">
+            <a
+              aria-label="GitHub"
+              className={buttonVariants.transparent}
+              href="https://github.com/842u/car-service"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <GitHubIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-2 p-2" />
+            </a>
+            <a
+              aria-label="Mail"
+              className={buttonVariants.transparent}
+              href="mailto:contact@842u.dev"
+            >
+              <MailIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-2 p-2" />
+            </a>
+          </address>
+        </div>
 
-        <address className="flex h-10 items-center justify-evenly lg:justify-start lg:gap-10">
-          <a
-            aria-label="GitHub"
-            className={buttonVariants.transparent}
-            href="https://github.com/842u/car-service"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <GitHubIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-2 p-1" />
-          </a>
-          <a
-            aria-label="Mail"
-            className={buttonVariants.transparent}
-            href="mailto:contact@842u.dev"
-          >
-            <MailIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-2 p-1" />
-          </a>
-        </address>
+        <nav aria-label="footer navigation">
+          <ul className="flex flex-col gap-1">
+            <li>
+              <Link
+                className="text-alpha-grey-900 hover:text-dark-500 dark:hover:text-light-500 block py-1 text-sm transition-colors"
+                href="/dashboard"
+              >
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-alpha-grey-900 hover:text-dark-500 dark:hover:text-light-500 block py-1 text-sm transition-colors"
+                href="/dashboard/sign-in"
+              >
+                Sign In
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-alpha-grey-900 hover:text-dark-500 dark:hover:text-light-500 block py-1 text-sm transition-colors"
+                href="/dashboard/sign-up"
+              >
+                Sign Up
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </LandingSection>
     </footer>
   );
