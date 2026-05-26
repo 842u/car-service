@@ -11,11 +11,15 @@ export function FeatureCardIcon({
   return (
     <div
       className={twMerge(
-        'bg-alpha-grey-50 border-alpha-grey-300 w-16 overflow-hidden rounded-md border p-1',
+        'bg-light-500 dark:bg-dark-500 border-alpha-grey-300 relative z-10 w-16 overflow-hidden rounded-md border p-1',
         className,
       )}
       {...props}
     >
+      <div
+        aria-hidden="true"
+        className="bg-alpha-grey-50 absolute top-0 left-0 h-full w-full"
+      />
       {children}
     </div>
   );
