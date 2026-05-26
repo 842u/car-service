@@ -57,13 +57,15 @@ export function FeaturesSection() {
   return (
     <LandingSection
       aria-label="platform features"
-      className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-5"
+      className="grid max-w-6xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-7"
     >
       {features.map((feature) => (
         <FeatureCard
           key={feature.heading}
           className={
-            feature.wide ? 'lg:col-span-3' : 'lg:col-span-2 lg:mx-auto'
+            feature.wide
+              ? 'lg:col-span-5 lg:mx-auto'
+              : 'lg:col-span-2 lg:mx-auto'
           }
         >
           <FeatureCard.Icon>{feature.icon}</FeatureCard.Icon>
