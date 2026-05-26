@@ -12,7 +12,10 @@ import { FeatureCardIcon } from './compounds/icon/icon';
 export function FeatureCard({ className, children, ...props }: CardProps) {
   return (
     <Card
-      className={twMerge('@container h-96 w-full overflow-hidden', className)}
+      className={twMerge(
+        'group @container h-96 w-full overflow-hidden',
+        className,
+      )}
       {...props}
     >
       <div className="flex flex-col items-center justify-start gap-4 text-center @sm:items-start @sm:text-left">
