@@ -75,7 +75,7 @@
     "jest-environment-jsdom": "30.4.1",
     "lint-staged": "17.0.8",
     "postcss": "8.5.15",
-    "prettier": "3.8.3",
+    "prettier": "3.8.5",
     "prettier-plugin-tailwindcss": "0.8.0",
     "react-email": "6.1.4",
     "supabase": "2.108.0",
