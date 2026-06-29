@@ -45,7 +45,7 @@
     "@playwright/test": "1.60.0",
     "@postgres-language-server/cli": "0.24.0",
     "@react-email/ui": "6.1.4",
-    "@tailwindcss/postcss": "4.3.0",
+    "@tailwindcss/postcss": "4.3.1",
     "@tanstack/eslint-plugin-query": "5.100.10",
     "@tanstack/react-query-devtools": "5.100.10",
     "@testing-library/jest-dom": "6.9.1",
