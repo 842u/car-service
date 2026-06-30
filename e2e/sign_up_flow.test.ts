@@ -1,6 +1,5 @@
 import type { Route } from 'next';
 
-import { createTestUser, deleteTestUser } from '@/lib/supabase/general';
 import { wrongEmails } from '@/lib/validation';
 
 import { expect, test } from './fixtures';
@@ -29,36 +28,9 @@ test.describe('sign_up_flow - @unauthenticated', () => {
 
   test('success info should be displayed on successful sign up - @desktop @tablet @mobile', async ({
     page,
+    freshUserCredentials,
   }) => {
-    const workerIndex = test.info().workerIndex;
-    const signUpPage: Route = '/dashboard/sign-up';
-    const testUserEmail = workerIndex + process.env.SUPABASE_TEST_USER_EMAIL!;
-    const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
-
-    await page.goto(signUpPage);
-    const emailInput = page.getByPlaceholder(/enter your email/i);
-    const passwordInput = page.getByPlaceholder(/enter your password/i);
-    const submitButton = page.getByRole('button', { name: 'Sign Up' });
-    const togglePasswordVisibility = page.getByRole('button', {
-      name: 'toggle visibility',
-    });
-    await togglePasswordVisibility.click();
-    await emailInput.fill(testUserEmail);
-    await passwordInput.fill(testUserPassword);
-    await submitButton.click();
-    const successToast = page.getByLabel(/success notification/i);
-
-    await expect(successToast).toBeInViewport();
-    await expect(page).toHaveURL(signUpPage);
-
-    await deleteTestUser(workerIndex);
-  });
-
-  test('success info should be displayed on existing user email sign up - @desktop @tablet @mobile', async ({
-    page,
-  }) => {
-    const workerIndex = test.info().workerIndex;
-    const { email, password } = await createTestUser(workerIndex);
+    const { email, password } = freshUserCredentials;
     const signUpPage: Route = '/dashboard/sign-up';
 
     await page.goto(signUpPage);
@@ -76,7 +48,29 @@ test.describe('sign_up_flow - @unauthenticated', () => {
 
     await expect(successToast).toBeInViewport();
     await expect(page).toHaveURL(signUpPage);
+  });
 
-    await deleteTestUser(workerIndex);
+  test('success info should be displayed on existing user email sign up - @desktop @tablet @mobile', async ({
+    page,
+    testUserAccountCredentials,
+  }) => {
+    const { email, password } = testUserAccountCredentials;
+    const signUpPage: Route = '/dashboard/sign-up';
+
+    await page.goto(signUpPage);
+    const emailInput = page.getByPlaceholder(/enter your email/i);
+    const passwordInput = page.getByPlaceholder(/enter your password/i);
+    const submitButton = page.getByRole('button', { name: 'Sign Up' });
+    const togglePasswordVisibility = page.getByRole('button', {
+      name: 'toggle visibility',
+    });
+    await togglePasswordVisibility.click();
+    await emailInput.fill(email);
+    await passwordInput.fill(password);
+    await submitButton.click();
+    const successToast = page.getByLabel(/success notification/i);
+
+    await expect(successToast).toBeInViewport();
+    await expect(page).toHaveURL(signUpPage);
   });
 });

@@ -125,8 +125,13 @@ export default tseslintConfig(
   prettier,
   {
     name: 'e2e',
-    files: ['e2e/**/?(*.)+(spec|test).[jt]s?(x)'],
+    files: ['e2e/**'],
     ...playwright.configs['flat/recommended'],
+    rules: {
+      ...playwright.configs['flat/recommended'].rules,
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+    },
   },
   {
     name: 'jest',
