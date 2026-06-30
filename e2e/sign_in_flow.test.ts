@@ -1,6 +1,5 @@
 import type { Route } from 'next';
 
-import { createTestUser, deleteTestUser } from '@/lib/supabase/general';
 import { wrongEmails } from '@/lib/validation';
 
 import { expect, test } from './fixtures';
@@ -51,9 +50,9 @@ test.describe('sign_in_flow - @unauthenticated', () => {
 
   test('success info should be displayed on successful auth form sign in - @desktop @tablet @mobile', async ({
     page,
+    testUserAccountCredentials,
   }) => {
-    const workerIndex = test.info().workerIndex;
-    const { email, password } = await createTestUser(workerIndex);
+    const { email, password } = testUserAccountCredentials;
     const signInPath: Route = '/dashboard/sign-in';
     const dashboardPath: Route = '/dashboard';
 
@@ -72,7 +71,5 @@ test.describe('sign_in_flow - @unauthenticated', () => {
 
     await expect(page).toHaveURL(dashboardPath);
     await expect(successToast).toBeInViewport();
-
-    await deleteTestUser(workerIndex);
   });
 });

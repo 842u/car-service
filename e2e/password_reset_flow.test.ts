@@ -1,7 +1,5 @@
-/* eslint playwright/no-skipped-test:0 */
 import type { Route } from 'next';
 
-import { createTestUser, deleteTestUser } from '@/lib/supabase/general';
 import { wrongEmails } from '@/lib/validation';
 
 import { expect, test } from './fixtures';
@@ -43,9 +41,9 @@ test.describe('password_reset_flow - @unauthenticated', () => {
 
   test('password reset page should display success info for existing email - @desktop @tablet @mobile', async ({
     page,
+    testUserAccountCredentials,
   }) => {
-    const testUserIndex = test.info().workerIndex;
-    const { email } = await createTestUser(testUserIndex);
+    const { email } = testUserAccountCredentials;
     const passwordResetPath: Route = '/dashboard/forgot-password';
 
     await page.goto(passwordResetPath);
@@ -58,8 +56,6 @@ test.describe('password_reset_flow - @unauthenticated', () => {
     const successToast = page.getByLabel(/success notification/i);
 
     await expect(successToast).toBeInViewport();
-
-    await deleteTestUser(testUserIndex);
   });
 });
 
