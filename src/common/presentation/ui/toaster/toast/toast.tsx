@@ -106,9 +106,21 @@ export function ToasterToast({
   const onRemoveRef = useRef(onRemove);
   onRemoveRef.current = onRemove;
 
+  const elapsedRef = useRef(0);
+  const lastStartRef = useRef<number | null>(null);
+
   useEffect(() => {
-    if (paused) return;
-    const timeout = setTimeout(() => onRemoveRef.current(), toastLifeTime);
+    if (paused) {
+      if (lastStartRef.current !== null) {
+        elapsedRef.current += Date.now() - lastStartRef.current;
+        lastStartRef.current = null;
+      }
+      return;
+    }
+
+    lastStartRef.current = Date.now();
+    const remaining = Math.max(0, toastLifeTime - elapsedRef.current);
+    const timeout = setTimeout(() => onRemoveRef.current(), remaining);
     return () => clearTimeout(timeout);
   }, [paused, toastLifeTime]);
 
