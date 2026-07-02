@@ -21,6 +21,7 @@ export type Toast = {
   id: string;
   message: string;
   type: ToastType;
+  key?: string;
 };
 
 export type ToastAsset = {
