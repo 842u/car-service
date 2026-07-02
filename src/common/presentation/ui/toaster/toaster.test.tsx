@@ -68,7 +68,7 @@ describe('Toaster', () => {
     await waitForElementToBeRemoved(
       () => screen.queryByRole('listitem', { name: toastNameRegExp }),
       {
-        timeout: TOAST_LIFETIME * 2, // Add some buffer time to ensure the toast is removed
+        timeout: TOAST_LIFETIME * 2,
       },
     );
 
