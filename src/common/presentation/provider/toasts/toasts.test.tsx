@@ -1,75 +1,97 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, renderHook } from '@testing-library/react';
+import type { ReactNode } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { ToastType } from '@/ui/toaster/toast/toast';
 
 import { ToastsProvider } from './toasts';
 
-const TOAST_TEST_ID = 'toast';
 const TOAST_MESSAGE = 'test message';
 const TOAST_TYPE: ToastType = 'info';
 
-function TestComponent() {
-  const { toasts, addToast, removeToast } = useToasts();
-
-  return (
-    <>
-      <button onClick={() => addToast(TOAST_MESSAGE, TOAST_TYPE)}>
-        Add Toast
-      </button>
-      {toasts.map((toast) => (
-        <div key={toast.id} data-testid={TOAST_TEST_ID}>
-          {toast.message}
-          <button onClick={() => removeToast(toast.id)}>Remove Toast</button>
-        </div>
-      ))}
-    </>
-  );
-}
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <ToastsProvider>{children}</ToastsProvider>
+);
 
 describe('ToastsProvider', () => {
   it('initially should have no toasts', () => {
-    render(
-      <ToastsProvider>
-        <TestComponent />
-      </ToastsProvider>,
-    );
+    const { result } = renderHook(() => useToasts(), { wrapper });
 
-    const toast = screen.queryByTestId(TOAST_TEST_ID);
-
-    expect(toast).not.toBeInTheDocument();
+    expect(result.current.toasts).toHaveLength(0);
   });
 
-  it('should add toast on addToast call', async () => {
-    const user = userEvent.setup();
-    render(
-      <ToastsProvider>
-        <TestComponent />
-      </ToastsProvider>,
-    );
+  it('should add toast on addToast call', () => {
+    const { result } = renderHook(() => useToasts(), { wrapper });
 
-    const addButton = screen.getByRole('button', { name: /add toast/i });
-    await user.click(addButton);
-    const toast = screen.getByText(TOAST_MESSAGE);
+    act(() => {
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE);
+    });
 
-    expect(toast).toBeInTheDocument();
+    expect(result.current.toasts).toHaveLength(1);
   });
 
-  it('should remove toast on removeToast call', async () => {
-    const user = userEvent.setup();
-    render(
-      <ToastsProvider>
-        <TestComponent />
-      </ToastsProvider>,
-    );
+  it('should remove toast on removeToast call', () => {
+    const { result } = renderHook(() => useToasts(), { wrapper });
 
-    const addButton = screen.getByRole('button', { name: /add toast/i });
-    await user.click(addButton);
-    const removeButton = screen.getByRole('button', { name: /remove toast/i });
-    await user.click(removeButton);
-    const toast = screen.queryByText(TOAST_MESSAGE);
+    act(() => {
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE);
+    });
 
-    expect(toast).not.toBeInTheDocument();
+    act(() => {
+      result.current.removeToast(result.current.toasts[0].id);
+    });
+
+    expect(result.current.toasts).toHaveLength(0);
+  });
+
+  it('should not add a second toast with the same dedupeKey', () => {
+    const { result } = renderHook(() => useToasts(), { wrapper });
+
+    act(() => {
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE, 'my-key');
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE, 'my-key');
+    });
+
+    expect(result.current.toasts).toHaveLength(1);
+  });
+
+  it('should add toasts with different dedupeKeys', () => {
+    const { result } = renderHook(() => useToasts(), { wrapper });
+
+    act(() => {
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE, 'key-a');
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE, 'key-b');
+    });
+
+    expect(result.current.toasts).toHaveLength(2);
+  });
+
+  it('should add multiple toasts when no dedupeKey is provided', () => {
+    const { result } = renderHook(() => useToasts(), { wrapper });
+
+    act(() => {
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE);
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE);
+    });
+
+    expect(result.current.toasts).toHaveLength(2);
+  });
+
+  it('should allow re-adding a toast after removal with the same dedupeKey', () => {
+    const { result } = renderHook(() => useToasts(), { wrapper });
+
+    act(() => {
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE, 'my-key');
+    });
+
+    act(() => {
+      result.current.removeToast(result.current.toasts[0].id);
+    });
+
+    act(() => {
+      result.current.addToast(TOAST_MESSAGE, TOAST_TYPE, 'my-key');
+    });
+
+    expect(result.current.toasts).toHaveLength(1);
   });
 });
