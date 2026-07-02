@@ -1,10 +1,9 @@
 import type { MotionProps } from 'motion/react';
 import * as m from 'motion/react-m';
 import type { JSX, Ref } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { CheckCircleIcon } from '@/icons/check-circle';
 import { ExclamationCircleIcon } from '@/icons/exclamation-circle';
 import { ExclamationTriangleIcon } from '@/icons/exclamation-triangle';
@@ -22,11 +21,15 @@ const toastAnimation: MotionProps = {
   exit: { scale: 0.5, opacity: 0.5 },
 };
 
-type ToasterToastProps = Toast & {
-  ref?: Ref<HTMLLIElement>;
+type ToasterToastProps = {
+  id: string;
+  message: string;
+  type: ToastType;
   className?: string;
+  ref?: Ref<HTMLLIElement>;
   paused: boolean;
   toastLifeTime?: number;
+  onRemove: () => void;
 };
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning';
@@ -98,20 +101,18 @@ export function ToasterToast({
   ref,
   paused,
   toastLifeTime = TOAST_LIFETIME,
+  onRemove,
 }: ToasterToastProps) {
-  const { removeToast } = useToasts();
+  const onRemoveRef = useRef(onRemove);
+  onRemoveRef.current = onRemove;
 
   useEffect(() => {
     if (paused) return;
-    const timeout = setTimeout(() => removeToast(id), toastLifeTime);
+    const timeout = setTimeout(() => onRemoveRef.current(), toastLifeTime);
     return () => clearTimeout(timeout);
-  }, [id, paused, removeToast, toastLifeTime]);
+  }, [paused, toastLifeTime]);
 
   const { style, icon } = getToastAssets(type);
-
-  const handleCloseButtonClick = () => {
-    removeToast(id);
-  };
 
   return (
     <m.li
@@ -131,7 +132,7 @@ export function ToasterToast({
         aria-label="close notification"
         className="aspect-square h-10 shrink-0 p-2"
         title="close toast"
-        onClick={handleCloseButtonClick}
+        onClick={onRemove}
       >
         <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
       </IconButton>

@@ -16,7 +16,7 @@ const framerFeatures = () =>
   import('@/lib/motion/motion').then((mod) => mod.default);
 
 export function Toaster({ maxToasts = 3, toastLifeTime }: ToasterProps) {
-  const { toasts } = useToasts();
+  const { toasts, removeToast } = useToasts();
   const [paused, setPaused] = useState(false);
 
   return (
@@ -41,6 +41,7 @@ export function Toaster({ maxToasts = 3, toastLifeTime }: ToasterProps) {
                 paused={paused}
                 toastLifeTime={toastLifeTime}
                 type={toast.type}
+                onRemove={() => removeToast(toast.id)}
               />
             ))}
           </AnimatePresence>

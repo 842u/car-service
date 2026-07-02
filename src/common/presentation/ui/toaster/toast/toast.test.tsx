@@ -3,7 +3,11 @@ import { render, screen } from '@testing-library/react';
 import type { ToastType } from './toast';
 import { ToasterToast } from './toast';
 
-const defaultProps = { paused: false, toastLifeTime: 6000 };
+const defaultProps = {
+  paused: false,
+  toastLifeTime: 6000,
+  onRemove: jest.fn(),
+};
 
 describe('ToasterToast', () => {
   it('should render a button to close the toast', () => {
