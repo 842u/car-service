@@ -3,8 +3,6 @@ import { render, screen } from '@testing-library/react';
 import type { ToastType } from './toast';
 import { ToasterToast } from './toast';
 
-jest.setTimeout(10000);
-
 const defaultProps = { paused: false, toastLifeTime: 6000 };
 
 describe('ToasterToast', () => {
