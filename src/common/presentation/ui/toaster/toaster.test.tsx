@@ -89,27 +89,13 @@ describe('Toaster', () => {
     const testToast = screen.getByRole('listitem', { name: toastNameRegExp });
 
     await user.hover(testToast);
-    try {
-      /*
-       * While user hovering toasts wait for the toast to be removed.
-       * (timeout = not removed), so ensure if the toast it's in the document.
-       */
-      await waitForElementToBeRemoved(
-        () => screen.queryByRole('listitem', { name: toastNameRegExp }),
-        {
-          timeout: TOAST_LIFETIME * 2,
-        },
-      );
-    } catch (_error) {
-      expect(testToast).toBeInTheDocument();
-    }
+    await new Promise((resolve) => setTimeout(resolve, TOAST_LIFETIME + 100));
+    expect(testToast).toBeInTheDocument();
 
     await user.unhover(testToast);
     await waitForElementToBeRemoved(
       () => screen.queryByRole('listitem', { name: toastNameRegExp }),
-      {
-        timeout: TOAST_LIFETIME * 2,
-      },
+      { timeout: TOAST_LIFETIME * 2 },
     );
     expect(testToast).not.toBeInTheDocument();
   });
