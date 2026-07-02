@@ -87,9 +87,6 @@ export function getToastAssets(type: ToastType) {
         style: '',
         icon: infoIcon,
       };
-
-    default:
-      return null;
   }
 }
 
@@ -110,7 +107,7 @@ export function ToasterToast({
     return () => clearTimeout(timeout);
   }, [id, paused, removeToast, toastLifeTime]);
 
-  const { style, icon } = getToastAssets(type)!;
+  const { style, icon } = getToastAssets(type);
 
   const handleCloseButtonClick = () => {
     removeToast(id);
