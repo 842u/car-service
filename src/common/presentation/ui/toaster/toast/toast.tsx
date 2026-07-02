@@ -1,5 +1,7 @@
+import type { MotionProps } from 'motion/react';
 import * as m from 'motion/react-m';
 import type { JSX, Ref } from 'react';
+import { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
@@ -10,9 +12,21 @@ import { InformationCircleIcon } from '@/icons/information-circle';
 import { XCircleIcon } from '@/icons/x-circle';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
+const TOAST_LIFETIME = 6000;
+
+const toastAnimation: MotionProps = {
+  layout: true,
+  transition: { ease: 'anticipate' },
+  initial: { opacity: 0, scale: 0 },
+  animate: { scale: 1, opacity: 1 },
+  exit: { scale: 0.5, opacity: 0.5 },
+};
+
 type ToasterToastProps = Toast & {
   ref?: Ref<HTMLLIElement>;
   className?: string;
+  paused: boolean;
+  toastLifeTime?: number;
 };
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning';
@@ -85,9 +99,16 @@ export function ToasterToast({
   type,
   className,
   ref,
-  ...props
+  paused,
+  toastLifeTime = TOAST_LIFETIME,
 }: ToasterToastProps) {
   const { removeToast } = useToasts();
+
+  useEffect(() => {
+    if (paused) return;
+    const timeout = setTimeout(() => removeToast(id), toastLifeTime);
+    return () => clearTimeout(timeout);
+  }, [id, paused, removeToast, toastLifeTime]);
 
   const { style, icon } = getToastAssets(type)!;
 
@@ -98,6 +119,7 @@ export function ToasterToast({
   return (
     <m.li
       ref={ref}
+      {...toastAnimation}
       aria-label={`${type} notification: ${message}`}
       className={twMerge(
         'border-alpha-grey-300 bg-light-600 dark:bg-dark-600 my-2 flex w-full items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm',
@@ -105,7 +127,6 @@ export function ToasterToast({
         className,
       )}
       id={id}
-      {...props}
     >
       <div className="h-10 shrink-0 p-2">{icon}</div>
       <span className="max-h-20 overflow-auto">{message}</span>

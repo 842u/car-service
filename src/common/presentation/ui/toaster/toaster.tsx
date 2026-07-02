@@ -1,66 +1,23 @@
 'use client';
 
-import type { MotionProps } from 'motion/react';
 import { AnimatePresence, LazyMotion } from 'motion/react';
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 import { ToasterToast } from './toast/toast';
-
-const TOAST_LIFETIME = 6000;
 
 type ToasterProps = {
   maxToasts?: number;
   toastLifeTime?: number;
 };
 
-const ToastsAnimation: MotionProps = {
-  layout: true,
-  transition: {
-    ease: 'anticipate',
-  },
-  initial: { opacity: 0, scale: 0 },
-  animate: { scale: 1, opacity: 1 },
-  exit: { scale: 0.5, opacity: 0.5 },
-};
-
 const framerFeatures = () =>
   import('@/lib/motion/motion').then((mod) => mod.default);
 
-export function Toaster({
-  maxToasts = 3,
-  toastLifeTime = TOAST_LIFETIME,
-}: ToasterProps) {
-  const { toasts, removeToast } = useToasts();
-
-  const toastCloseInterval = useRef<NodeJS.Timeout>(undefined);
-
-  const handleToasterMouseOver = () => {
-    clearInterval(toastCloseInterval.current);
-  };
-
-  const handleToasterMouseLeave = () => {
-    toastCloseInterval.current = setInterval(() => {
-      const latestToastId = toasts.at(-1)?.id;
-
-      if (latestToastId) {
-        removeToast(latestToastId);
-      }
-    }, toastLifeTime);
-  };
-
-  useEffect(() => {
-    toastCloseInterval.current = setInterval(() => {
-      const latestToastId = toasts.at(-1)?.id;
-
-      if (latestToastId) {
-        removeToast(latestToastId);
-      }
-    }, toastLifeTime);
-
-    return () => clearInterval(toastCloseInterval.current);
-  }, [removeToast, toasts, toastLifeTime]);
+export function Toaster({ maxToasts = 3, toastLifeTime }: ToasterProps) {
+  const { toasts } = useToasts();
+  const [paused, setPaused] = useState(false);
 
   return (
     <section
@@ -69,28 +26,23 @@ export function Toaster({
     >
       <ol
         className="relative"
-        onBlur={handleToasterMouseLeave}
-        onFocus={handleToasterMouseOver}
-        onMouseLeave={handleToasterMouseLeave}
-        onMouseOver={handleToasterMouseOver}
+        onBlur={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onMouseOver={() => setPaused(true)}
       >
         <LazyMotion features={framerFeatures}>
           <AnimatePresence mode="popLayout">
-            {toasts.map((toast, index) => {
-              if (index < toasts.length - maxToasts) {
-                return;
-              }
-
-              return (
-                <ToasterToast
-                  key={toast.id}
-                  id={toast.id}
-                  message={toast.message}
-                  type={toast.type}
-                  {...ToastsAnimation}
-                />
-              );
-            })}
+            {toasts.slice(-maxToasts).map((toast) => (
+              <ToasterToast
+                key={toast.id}
+                id={toast.id}
+                message={toast.message}
+                paused={paused}
+                toastLifeTime={toastLifeTime}
+                type={toast.type}
+              />
+            ))}
           </AnimatePresence>
         </LazyMotion>
       </ol>
