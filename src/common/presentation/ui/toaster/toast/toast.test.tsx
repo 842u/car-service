@@ -3,11 +3,17 @@ import { render, screen } from '@testing-library/react';
 import type { ToastType } from './toast';
 import { ToasterToast } from './toast';
 
-jest.setTimeout(10000);
+const defaultProps = {
+  paused: false,
+  toastLifeTime: 6000,
+  onRemove: jest.fn(),
+};
 
 describe('ToasterToast', () => {
   it('should render a button to close the toast', () => {
-    render(<ToasterToast id="id" message="Toast" type="error" />);
+    render(
+      <ToasterToast {...defaultProps} id="id" message="Toast" type="error" />,
+    );
 
     const closeButton = screen.getByRole('button', { name: /close/i });
 
@@ -17,7 +23,14 @@ describe('ToasterToast', () => {
   it('should render provided message', () => {
     const toastMessage = 'test';
     const regexp = new RegExp(toastMessage, 'i');
-    render(<ToasterToast id="id" message={toastMessage} type="error" />);
+    render(
+      <ToasterToast
+        {...defaultProps}
+        id="id"
+        message={toastMessage}
+        type="error"
+      />,
+    );
 
     const toast = screen.getByRole('listitem', { name: regexp });
 
@@ -28,7 +41,9 @@ describe('ToasterToast', () => {
     const toastTypes: ToastType[] = ['error', 'info', 'success', 'warning'];
     toastTypes.forEach((type) => {
       const regexp = new RegExp(`${type} notification:`, 'i');
-      render(<ToasterToast id="id" message="Toast" type={type} />);
+      render(
+        <ToasterToast {...defaultProps} id="id" message="Toast" type={type} />,
+      );
 
       const toast = screen.getByRole('listitem', { name: regexp });
 

@@ -13,6 +13,7 @@ import { Toaster } from './toaster';
 
 const TEST_TOAST_MESSAGE = 'test toast';
 const TOAST_LIFETIME = 500;
+const toastNameRegExp = new RegExp(TEST_TOAST_MESSAGE, 'i');
 
 function ToastAdder() {
   const { addToast } = useToasts();
@@ -35,7 +36,6 @@ describe('Toaster', () => {
 
   it('should render a toast when toast is added to context', async () => {
     const user = userEvent.setup();
-    const toastNameRegExp = new RegExp(TEST_TOAST_MESSAGE, 'i');
     render(
       <ToastsProvider>
         <ToastAdder />
@@ -50,9 +50,8 @@ describe('Toaster', () => {
     expect(testToast).toBeInTheDocument();
   });
 
-  it('should remove added toast after some time', async () => {
+  it('should remove added toast after toastLifeTime', async () => {
     const user = userEvent.setup();
-    const toastNameRegExp = new RegExp(TEST_TOAST_MESSAGE, 'i');
     render(
       <ToastsProvider>
         <ToastAdder />
@@ -78,7 +77,6 @@ describe('Toaster', () => {
 
   it('should not remove toast while user hover over toasts', async () => {
     const user = userEvent.setup();
-    const toastNameRegExp = new RegExp(TEST_TOAST_MESSAGE, 'i');
     render(
       <ToastsProvider>
         <ToastAdder />
@@ -91,27 +89,13 @@ describe('Toaster', () => {
     const testToast = screen.getByRole('listitem', { name: toastNameRegExp });
 
     await user.hover(testToast);
-    try {
-      /*
-       * While user hovering toasts wait for the toast to be removed.
-       * (timeout = not removed), so ensure if the toast it's in the document.
-       */
-      await waitForElementToBeRemoved(
-        () => screen.queryByRole('listitem', { name: toastNameRegExp }),
-        {
-          timeout: TOAST_LIFETIME * 2,
-        },
-      );
-    } catch (_error) {
-      expect(testToast).toBeInTheDocument();
-    }
+    await new Promise((resolve) => setTimeout(resolve, TOAST_LIFETIME + 100));
+    expect(testToast).toBeInTheDocument();
 
     await user.unhover(testToast);
     await waitForElementToBeRemoved(
       () => screen.queryByRole('listitem', { name: toastNameRegExp }),
-      {
-        timeout: TOAST_LIFETIME * 2,
-      },
+      { timeout: TOAST_LIFETIME * 2 },
     );
     expect(testToast).not.toBeInTheDocument();
   });

@@ -1,8 +1,9 @@
+import type { MotionProps } from 'motion/react';
 import * as m from 'motion/react-m';
 import type { JSX, Ref } from 'react';
+import { useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { CheckCircleIcon } from '@/icons/check-circle';
 import { ExclamationCircleIcon } from '@/icons/exclamation-circle';
 import { ExclamationTriangleIcon } from '@/icons/exclamation-triangle';
@@ -10,9 +11,25 @@ import { InformationCircleIcon } from '@/icons/information-circle';
 import { XCircleIcon } from '@/icons/x-circle';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
-type ToasterToastProps = Toast & {
-  ref?: Ref<HTMLLIElement>;
+const TOAST_LIFETIME = 6000;
+
+const toastAnimation: MotionProps = {
+  layout: true,
+  transition: { ease: 'anticipate' },
+  initial: { opacity: 0, scale: 0 },
+  animate: { scale: 1, opacity: 1 },
+  exit: { scale: 0.5, opacity: 0.5 },
+};
+
+type ToasterToastProps = {
+  id: string;
+  message: string;
+  type: ToastType;
   className?: string;
+  ref?: Ref<HTMLLIElement>;
+  paused: boolean;
+  toastLifeTime?: number;
+  onRemove: () => void;
 };
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning';
@@ -21,6 +38,7 @@ export type Toast = {
   id: string;
   message: string;
   type: ToastType;
+  dedupeKey?: string;
 };
 
 export type ToastAsset = {
@@ -72,9 +90,6 @@ export function getToastAssets(type: ToastType) {
         style: '',
         icon: infoIcon,
       };
-
-    default:
-      return null;
   }
 }
 
@@ -84,19 +99,37 @@ export function ToasterToast({
   type,
   className,
   ref,
-  ...props
+  paused,
+  toastLifeTime = TOAST_LIFETIME,
+  onRemove,
 }: ToasterToastProps) {
-  const { removeToast } = useToasts();
+  const onRemoveRef = useRef(onRemove);
+  onRemoveRef.current = onRemove;
 
-  const { style, icon } = getToastAssets(type)!;
+  const elapsedRef = useRef(0);
+  const lastStartRef = useRef<number | null>(null);
 
-  const handleCloseButtonClick = () => {
-    removeToast(id);
-  };
+  useEffect(() => {
+    if (paused) {
+      if (lastStartRef.current !== null) {
+        elapsedRef.current += Date.now() - lastStartRef.current;
+        lastStartRef.current = null;
+      }
+      return;
+    }
+
+    lastStartRef.current = Date.now();
+    const remaining = Math.max(0, toastLifeTime - elapsedRef.current);
+    const timeout = setTimeout(() => onRemoveRef.current(), remaining);
+    return () => clearTimeout(timeout);
+  }, [paused, toastLifeTime]);
+
+  const { style, icon } = getToastAssets(type);
 
   return (
     <m.li
       ref={ref}
+      {...toastAnimation}
       aria-label={`${type} notification: ${message}`}
       className={twMerge(
         'border-alpha-grey-300 bg-light-600 dark:bg-dark-600 my-2 flex w-full items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm',
@@ -104,7 +137,6 @@ export function ToasterToast({
         className,
       )}
       id={id}
-      {...props}
     >
       <div className="h-10 shrink-0 p-2">{icon}</div>
       <span className="max-h-20 overflow-auto">{message}</span>
@@ -112,7 +144,7 @@ export function ToasterToast({
         aria-label="close notification"
         className="aspect-square h-10 shrink-0 p-2"
         title="close toast"
-        onClick={handleCloseButtonClick}
+        onClick={onRemove}
       >
         <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
       </IconButton>
