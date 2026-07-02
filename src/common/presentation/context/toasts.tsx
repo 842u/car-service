@@ -4,7 +4,7 @@ import type { Toast, ToastType } from '@/ui/toaster/toast/toast';
 
 export type ToastsContextType = {
   toasts: Toast[];
-  addToast: (message: string, type: ToastType, key?: string) => void;
+  addToast: (message: string, type: ToastType, dedupeKey?: string) => void;
   removeToast: (id: string) => void;
 };
 

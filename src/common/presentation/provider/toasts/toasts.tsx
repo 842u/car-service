@@ -15,16 +15,19 @@ export function ToastsProvider({ children }: ToastsProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = useCallback(
-    (message: string, type: ToastType, key?: string) => {
+    (message: string, type: ToastType, dedupeKey?: string) => {
       setToasts((currentToasts) => {
-        if (key && currentToasts.some((toast) => toast.key === key))
+        if (
+          dedupeKey &&
+          currentToasts.some((toast) => toast.dedupeKey === dedupeKey)
+        )
           return currentToasts;
 
         const newToast = {
           id: crypto.randomUUID(),
           message,
           type,
-          key,
+          dedupeKey,
         };
 
         return [...currentToasts, newToast];

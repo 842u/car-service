@@ -35,7 +35,7 @@ export type Toast = {
   id: string;
   message: string;
   type: ToastType;
-  key?: string;
+  dedupeKey?: string;
 };
 
 export type ToastAsset = {
