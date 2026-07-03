@@ -1,4 +1,3 @@
-import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { browserDatabaseClient } from '@/dependency/database-client/browser';
 import { toSafeNumber } from '@/lib/utils';
 import type { ServiceLog } from '@/types';
@@ -58,13 +57,6 @@ export async function getServiceLogsWithCostByCarId(
 }
 
 export async function deleteServiceLogById(id: string) {
-  const sessionResult = await browserAuthClient.authenticate();
-
-  if (!sessionResult.success) {
-    const { message } = sessionResult.error;
-    throw new Error(message);
-  }
-
   const queryResult = await browserDatabaseClient.query(async (from) =>
     from('service_logs').delete().eq('id', id).select('id').single(),
   );

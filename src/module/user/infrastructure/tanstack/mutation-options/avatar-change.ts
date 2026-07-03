@@ -1,7 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
-import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
 import { hashFile } from '@/lib/utils';
 import type { UserDto } from '@/user/application/dto/user';
@@ -20,18 +19,17 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       if (!image) throw new Error('No file was provided. Try again.');
 
-      const sessionResult = await browserAuthClient.authenticate();
+      const sessionUser = queryClient.getQueryData<UserDto>(
+        queryKeys.sessionUser,
+      );
 
-      if (!sessionResult.success) {
-        const { message } = sessionResult.error;
-        throw new Error(message);
+      if (!sessionUser) {
+        throw new Error('You must be signed in to change your avatar.');
       }
-
-      const authIdentity = sessionResult.data;
 
       const hashedFile = await hashFile(image);
 
-      const uploadPath = `${authIdentity.id}/${hashedFile}`;
+      const uploadPath = `${sessionUser.id}/${hashedFile}`;
 
       const uploadResult = await browserStorageClient.upload(
         'avatars',

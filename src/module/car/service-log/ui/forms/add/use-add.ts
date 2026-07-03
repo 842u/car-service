@@ -1,18 +1,17 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
-import { useEffect, useState } from 'react';
 
 import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/route';
 import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { browserAuthClient } from '@/dependency/auth-client/browser';
 import { httpClient } from '@/dependency/http-client';
 import { queryKeys } from '@/lib/tanstack/keys';
 import {
   serviceLogsByCarIdAddOnError,
   serviceLogsByCarIdAddOnMutate,
 } from '@/lib/tanstack/service_logs';
+import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 import type { AddFormProps } from './add';
 
@@ -51,7 +50,8 @@ export function useAddForm({
   carId,
   onSubmit,
 }: Pick<AddFormProps, 'carId' | 'onSubmit'>) {
-  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const { data: sessionUser } = useSessionUser();
+  const userId = sessionUser?.id;
 
   const { addToast } = useToasts();
 
@@ -69,23 +69,6 @@ export function useAddForm({
       addToast(error.message, 'error');
     },
   });
-
-  useEffect(() => {
-    const getUserId = async () => {
-      const sessionResult = await browserAuthClient.authenticate();
-
-      if (!sessionResult.success) {
-        setUserId(undefined);
-        return;
-      }
-
-      const authIdentity = sessionResult.data;
-
-      setUserId(authIdentity.id);
-    };
-
-    getUserId();
-  }, []);
 
   const handleFormSubmit = async (formData: CarServiceLogFormValues) => {
     mutate(
