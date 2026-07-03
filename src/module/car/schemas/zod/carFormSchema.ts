@@ -26,6 +26,17 @@ z.config({
   jitless: true,
 });
 
+function nullifyEmptyString<T extends ZodType>(schema: T) {
+  return z.preprocess((val) => (val === '' ? null : val), schema.nullable());
+}
+
+function nullifyNaN<T extends ZodType>(schema: T) {
+  return z.preprocess(
+    (val) => (typeof val === 'number' && Number.isNaN(val) ? null : val),
+    schema.nullable(),
+  );
+}
+
 const CAR_NAME_REQUIRED_MESSAGE = 'Name is required.';
 const CAR_NAME_TYPE_MESSAGE = 'Name must be a string.';
 export const MIN_CAR_NAME_LENGTH = 1;
@@ -201,20 +212,11 @@ const carDriveEnumSchema = z.enum(
   },
 );
 
-const carFuelTypeSchema = z
-  .string()
-  .transform((val) => (val === '' ? null : val))
-  .pipe(carFuelEnumSchema.nullable());
+const carFuelTypeSchema = nullifyEmptyString(carFuelEnumSchema);
 
-const carTransmissionTypeSchema = z
-  .string()
-  .transform((val) => (val === '' ? null : val))
-  .pipe(carTransmissionEnumSchema.nullable());
+const carTransmissionTypeSchema = nullifyEmptyString(carTransmissionEnumSchema);
 
-const carDriveTypeSchema = z
-  .string()
-  .transform((val) => (val === '' ? null : val))
-  .pipe(carDriveEnumSchema.nullable());
+const carDriveTypeSchema = nullifyEmptyString(carDriveEnumSchema);
 
 const CAR_INSURANCE_EXPIRATION_DATE_REQUIRED_MESSAGE =
   'Insurance expiration date is required.';
@@ -252,28 +254,26 @@ const carTechnicalInspectionExpirationSchema = z.coerce
   .min(new Date(MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE), {
     error: MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_MESSAGE,
   })
-  .transform((date) => (date ? parseDateToYyyyMmDd(date) : null));
+  .transform((date) => parseDateToYyyyMmDd(date));
 
 export const carFormSchema = z.object({
   image: imageFileSchema.nullable().optional(),
   custom_name: carNameSchema,
-  brand: carBrandSchema.nullable().or(z.literal('')),
-  model: carModelSchema.nullable().or(z.literal('')),
-  license_plates: carLicensePlatesSchema.nullable().or(z.literal('')),
-  vin: carVinSchema.nullable().or(z.literal('')),
-  engine_capacity: carEngineCapacitySchema.nullable().or(z.nan()),
-  mileage: carMileageSchema.nullable().or(z.nan()),
-  production_year: carProductionYearSchema.nullable().or(z.nan()),
-  fuel_type: carFuelTypeSchema.nullable(),
-  additional_fuel_type: carFuelTypeSchema.nullable(),
-  transmission_type: carTransmissionTypeSchema.nullable(),
-  drive_type: carDriveTypeSchema.nullable(),
-  insurance_expiration: carInsuranceExpirationSchema
-    .nullable()
-    .or(z.literal('')),
-  technical_inspection_expiration: carTechnicalInspectionExpirationSchema
-    .nullable()
-    .or(z.literal('')),
+  brand: nullifyEmptyString(carBrandSchema),
+  model: nullifyEmptyString(carModelSchema),
+  license_plates: nullifyEmptyString(carLicensePlatesSchema),
+  vin: nullifyEmptyString(carVinSchema),
+  engine_capacity: nullifyNaN(carEngineCapacitySchema),
+  mileage: nullifyNaN(carMileageSchema),
+  production_year: nullifyNaN(carProductionYearSchema),
+  fuel_type: carFuelTypeSchema,
+  additional_fuel_type: carFuelTypeSchema,
+  transmission_type: carTransmissionTypeSchema,
+  drive_type: carDriveTypeSchema,
+  insurance_expiration: nullifyEmptyString(carInsuranceExpirationSchema),
+  technical_inspection_expiration: nullifyEmptyString(
+    carTechnicalInspectionExpirationSchema,
+  ),
 } satisfies CarFormSchemaShape);
 
 export type CarFormValues = z.infer<typeof carFormSchema>;
