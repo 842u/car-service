@@ -17,3 +17,22 @@ export const getSessionUserQueryOptions = queryOptions({
     return userResult.data;
   },
 });
+
+export const getCarOwnersQueryOptions = (context: {
+  carId: string;
+  ownerIds: string[];
+}) =>
+  queryOptions({
+    throwOnError: false,
+    queryKey: queryKeys.usersByContext(context),
+    queryFn: async () => {
+      const usersResult = await userDataSource.getUsersByIds(context.ownerIds);
+
+      if (!usersResult.success) {
+        const { message } = usersResult.error;
+        throw new Error(message);
+      }
+
+      return usersResult.data;
+    },
+  });

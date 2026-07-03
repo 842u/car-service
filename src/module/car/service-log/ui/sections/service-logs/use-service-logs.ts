@@ -5,8 +5,8 @@ import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { getCarOwnerships } from '@/lib/supabase/tables/cars_ownerships';
 import { getServiceLogsByCarId } from '@/lib/supabase/tables/service_logs';
 import { queryKeys } from '@/lib/tanstack/keys';
-import { userDataSource } from '@/user/dependency/data-source';
-import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { queryKeySerialize } from '@/lib/tanstack/utils';
+import { getCarOwnersQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 interface UseServiceLogsSectionParams {
@@ -36,38 +36,37 @@ export function useServiceLogsSection({ carId }: UseServiceLogsSectionParams) {
 
   const allowDependentQueries = !!(ownerships && ownerships.length);
 
+  const carOwnersQueryOptions = getCarOwnersQueryOptions({
+    carId,
+    ownerIds: ownerships?.map((owner) => owner.owner_id) || [],
+  });
+
   const { data: users, error: usersError } = useQuery({
-    throwOnError: false,
-    queryKey: userQueryKeys.usersByContext({
-      carId,
-      ownershipsId: ownerships?.map((owner) => owner.owner_id) || [],
-    }),
-    queryFn: async () => {
-      const usersResult = await userDataSource.getUsersByIds(
-        ownerships?.map((owner) => owner.owner_id) || [],
-      );
-
-      if (!usersResult.success) {
-        const { message } = usersResult.error;
-        throw new Error(message);
-      }
-
-      return usersResult.data;
-    },
+    ...carOwnersQueryOptions,
     enabled: allowDependentQueries,
   });
 
   useEffect(() => {
-    serviceLogsError && addToast(serviceLogsError.message, 'error');
+    if (!serviceLogsError) return;
+
+    addToast(serviceLogsError.message, 'error');
   }, [addToast, serviceLogsError]);
 
   useEffect(() => {
-    ownershipsError && addToast(ownershipsError.message, 'error');
+    if (!ownershipsError) return;
+
+    addToast(ownershipsError.message, 'error');
   }, [addToast, ownershipsError]);
 
   useEffect(() => {
-    usersError && addToast(usersError.message, 'error');
-  }, [addToast, usersError]);
+    if (!usersError) return;
+
+    addToast(
+      usersError.message,
+      'error',
+      queryKeySerialize(carOwnersQueryOptions.queryKey),
+    );
+  }, [addToast, usersError, carOwnersQueryOptions.queryKey]);
 
   const isSessionUserPrimaryOwner = !!ownerships?.find(
     (ownership) =>
