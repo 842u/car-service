@@ -58,8 +58,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  let validatedFormData: CarServiceLogFormValues;
+
   try {
-    carServiceLogFormSchema.parse(formData);
+    validatedFormData = carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
       return errorApiResponse(
@@ -99,7 +101,7 @@ export async function POST(request: NextRequest) {
   const queryResult = await dbClient.query(async (from) =>
     from('service_logs')
       .insert({
-        ...formData,
+        ...validatedFormData,
         created_by: authIdentity.id,
         car_id,
       })
@@ -149,8 +151,10 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
+  let validatedFormData: CarServiceLogFormValues;
+
   try {
-    carServiceLogFormSchema.parse(formData);
+    validatedFormData = carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
       return errorApiResponse(
@@ -178,7 +182,7 @@ export async function PATCH(request: NextRequest) {
 
   const queryResult = await dbClient.query(async (from) =>
     from('service_logs')
-      .update({ ...formData })
+      .update({ ...validatedFormData })
       .eq('id', service_log_id)
       .select('id')
       .single(),

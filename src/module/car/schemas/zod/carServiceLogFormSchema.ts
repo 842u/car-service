@@ -1,6 +1,10 @@
 import type { ZodType } from 'zod';
 import { z } from 'zod';
 
+import {
+  nullifyEmptyString,
+  nullifyNaN,
+} from '@/common/interface/schema/nullify.schema';
 import { parseDateToYyyyMmDd } from '@/lib/utils';
 import type { ServiceCategoryMapping, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
@@ -45,6 +49,7 @@ const SERVICE_COST_REQUIRED_MESSAGE = 'Cost is required.';
 const SERVICE_COST_TYPE_MESSAGE = 'Cost must be a number.';
 const SERVICE_COST_NONNEGATIVE_MESSAGE =
   'Service cost must be a positive number.';
+const SERVICE_COST_SCALE_MESSAGE = 'Cost must have at most 2 decimal places.';
 
 const serviceCostSchema = z
   .number({
@@ -53,7 +58,8 @@ const serviceCostSchema = z
         ? SERVICE_COST_REQUIRED_MESSAGE
         : SERVICE_COST_TYPE_MESSAGE,
   })
-  .nonnegative({ error: SERVICE_COST_NONNEGATIVE_MESSAGE });
+  .nonnegative({ error: SERVICE_COST_NONNEGATIVE_MESSAGE })
+  .multipleOf(0.01, { error: SERVICE_COST_SCALE_MESSAGE });
 
 const SERVICE_DATE_REQUIRED_MESSAGE = 'Date is required.';
 const SERVICE_DATE_TYPE_MESSAGE = 'Invalid date.';
@@ -75,9 +81,9 @@ const serviceDateSchema = z.coerce
 export const carServiceLogFormSchema = z.object({
   service_date: serviceDateSchema,
   category: serviceCategorySchema,
-  mileage: carMileageSchema.nullable().or(z.nan()),
-  notes: serviceNoteSchema.nullable().or(z.literal('')),
-  service_cost: serviceCostSchema.nullable().or(z.nan()),
+  mileage: nullifyNaN(carMileageSchema),
+  notes: nullifyEmptyString(serviceNoteSchema),
+  service_cost: nullifyNaN(serviceCostSchema),
 } satisfies CarServiceLogFormSchemaShape);
 
 export type CarServiceLogFormValues = z.infer<typeof carServiceLogFormSchema>;
