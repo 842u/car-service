@@ -4,7 +4,7 @@ import type { Route } from 'next';
 
 import type { ApiCarResponse } from '@/app/api/car/route';
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
-import type { ApiResponseSuccessResult } from '@/common/interface/api/response';
+import type { ApiResponseBody } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
@@ -41,11 +41,17 @@ async function submitAddForm(formData: CarFormValues) {
     throw new Error(message);
   }
 
+  const body = postResult.data as ApiResponseBody<ApiCarResponse>;
+
+  if (!body.success) {
+    throw new Error(`Request failed: ${body.error.message}`);
+  }
+
   if (!image) return;
 
   const {
     data: { id },
-  } = postResult.data as ApiResponseSuccessResult<ApiCarResponse>;
+  } = body;
 
   const hashedFile = await hashFile(image);
 

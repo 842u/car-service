@@ -2,8 +2,12 @@ import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 
-import type { ServiceLogPostRouteHandlerRequest } from '@/app/api/service-log/route';
+import type {
+  ServiceLogPostRouteHandlerRequest,
+  ServiceLogRouteHandlerResponse,
+} from '@/app/api/service-log/route';
 import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
+import type { ApiResponseBody } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
 import { queryKeys } from '@/lib/tanstack/keys';
@@ -43,6 +47,13 @@ async function submitAddFormData(
   if (!postResult.success) {
     const { message } = postResult.error;
     throw new Error(message);
+  }
+
+  const body =
+    postResult.data as ApiResponseBody<ServiceLogRouteHandlerResponse>;
+
+  if (!body.success) {
+    throw new Error(`Request failed: ${body.error.message}`);
   }
 }
 
