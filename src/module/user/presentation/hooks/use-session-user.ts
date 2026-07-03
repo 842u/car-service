@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
 export function useSessionUser() {
@@ -10,7 +11,13 @@ export function useSessionUser() {
   const { data, error, isError } = useQuery(getSessionUserQueryOptions);
 
   useEffect(() => {
-    isError && addToast(error.message, 'error');
+    if (!isError) return;
+
+    addToast(
+      error.message,
+      'error',
+      queryKeySerialize(getSessionUserQueryOptions.queryKey),
+    );
   }, [isError, addToast, error]);
 
   return data;
