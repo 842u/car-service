@@ -2,6 +2,10 @@ import type { ZodType } from 'zod';
 import { z } from 'zod';
 
 import { imageFileSchema } from '@/common/interface/schema/image-file.schema';
+import {
+  nullifyEmptyString,
+  nullifyNaN,
+} from '@/common/interface/schema/nullify.schema';
 import { parseDateToYyyyMmDd } from '@/lib/utils';
 import type {
   Car,
@@ -25,17 +29,6 @@ type CarFormSchemaShape = Omit<
 z.config({
   jitless: true,
 });
-
-function nullifyEmptyString<T extends ZodType>(schema: T) {
-  return z.preprocess((val) => (val === '' ? null : val), schema.nullable());
-}
-
-function nullifyNaN<T extends ZodType>(schema: T) {
-  return z.preprocess(
-    (val) => (typeof val === 'number' && Number.isNaN(val) ? null : val),
-    schema.nullable(),
-  );
-}
 
 // Postgres "integer" (int4) upper bound; engine_capacity and mileage columns are int4.
 export const POSTGRES_INT4_MAX_VALUE = 2147483647;
