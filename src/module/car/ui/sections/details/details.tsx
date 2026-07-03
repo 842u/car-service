@@ -20,7 +20,7 @@ interface DetailsSectionProps {
 }
 
 export function DetailsSection({ carId, className }: DetailsSectionProps) {
-  const sessionUser = useSessionUser();
+  const { data: sessionUser } = useSessionUser();
 
   const { addToast } = useToasts();
 

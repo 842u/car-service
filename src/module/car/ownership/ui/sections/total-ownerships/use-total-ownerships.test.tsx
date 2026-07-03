@@ -6,7 +6,9 @@ import { useTotalOwnershipsSection } from '@/car/ownership/ui/sections/total-own
 import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership';
 import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
 import { getCarsOwnershipsByOwnerId } from '@/lib/supabase/tables/cars_ownerships';
+import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { userDataSource } from '@/user/dependency/data-source';
+import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
 const mockGetCarsOwnershipsByOwnerId =
   getCarsOwnershipsByOwnerId as jest.MockedFunction<
@@ -138,7 +140,11 @@ describe('useTotalOwnershipsSection', () => {
     });
 
     await waitFor(() =>
-      expect(mockAddToast).toHaveBeenCalledWith('Unauthorized', 'error'),
+      expect(mockAddToast).toHaveBeenCalledWith(
+        'Unauthorized',
+        'error',
+        queryKeySerialize(getSessionUserQueryOptions.queryKey),
+      ),
     );
   });
 });
