@@ -37,6 +37,9 @@ function nullifyNaN<T extends ZodType>(schema: T) {
   );
 }
 
+// Postgres "integer" (int4) upper bound; engine_capacity and mileage columns are int4.
+export const POSTGRES_INT4_MAX_VALUE = 2147483647;
+
 const CAR_NAME_REQUIRED_MESSAGE = 'Name is required.';
 const CAR_NAME_TYPE_MESSAGE = 'Name must be a string.';
 export const MIN_CAR_NAME_LENGTH = 1;
@@ -134,8 +137,10 @@ const CAR_ENGINE_CAPACITY_TYPE_MESSAGE = 'Engine capacity must be a number.';
 export const MIN_CAR_ENGINE_CAPACITY_VALUE = 1;
 const MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE =
   'Engine capacity must be a positive number.';
-export const MAX_CAR_ENGINE_CAPACITY_VALUE = Number.MAX_SAFE_INTEGER;
-const CAR_ENGINE_CAPACITY_VALUE_RANGE_MESSAGE = `Engine capacity value must be between ${Number.MIN_SAFE_INTEGER} and ${MAX_CAR_ENGINE_CAPACITY_VALUE}.`;
+export const MAX_CAR_ENGINE_CAPACITY_VALUE = POSTGRES_INT4_MAX_VALUE;
+const MAX_CAR_ENGINE_CAPACITY_VALUE_MESSAGE = `Maximum engine capacity is ${MAX_CAR_ENGINE_CAPACITY_VALUE}.`;
+const CAR_ENGINE_CAPACITY_NOT_INTEGER_MESSAGE =
+  'Engine capacity must be a whole number.';
 
 const carEngineCapacitySchema = z
   .number({
@@ -147,15 +152,19 @@ const carEngineCapacitySchema = z
   .min(MIN_CAR_ENGINE_CAPACITY_VALUE, {
     error: MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE,
   })
+  .max(MAX_CAR_ENGINE_CAPACITY_VALUE, {
+    error: MAX_CAR_ENGINE_CAPACITY_VALUE_MESSAGE,
+  })
   .nonnegative({ error: MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE })
-  .int({ error: CAR_ENGINE_CAPACITY_VALUE_RANGE_MESSAGE });
+  .int({ error: CAR_ENGINE_CAPACITY_NOT_INTEGER_MESSAGE });
 
 const CAR_MILEAGE_REQUIRED_MESSAGE = 'Mileage is required.';
 const CAR_MILEAGE_TYPE_MESSAGE = 'Mileage must be a number.';
 export const MIN_CAR_MILEAGE_VALUE = 1;
 const MIN_CAR_MILEAGE_VALUE_MESSAGE = 'Mileage must be positive number.';
-export const MAX_CAR_MILEAGE_VALUE = Number.MAX_SAFE_INTEGER;
-const CAR_MILEAGE_VALUE_RANGE_MESSAGE = `Mileage value must be between ${Number.MIN_SAFE_INTEGER} and ${MAX_CAR_MILEAGE_VALUE}.`;
+export const MAX_CAR_MILEAGE_VALUE = POSTGRES_INT4_MAX_VALUE;
+const MAX_CAR_MILEAGE_VALUE_MESSAGE = `Maximum mileage is ${MAX_CAR_MILEAGE_VALUE}.`;
+const CAR_MILEAGE_NOT_INTEGER_MESSAGE = 'Mileage must be a whole number.';
 
 export const carMileageSchema = z
   .number({
@@ -165,8 +174,9 @@ export const carMileageSchema = z
         : CAR_MILEAGE_TYPE_MESSAGE,
   })
   .min(MIN_CAR_MILEAGE_VALUE, { error: MIN_CAR_MILEAGE_VALUE_MESSAGE })
+  .max(MAX_CAR_MILEAGE_VALUE, { error: MAX_CAR_MILEAGE_VALUE_MESSAGE })
   .nonnegative({ error: MIN_CAR_MILEAGE_VALUE_MESSAGE })
-  .int({ error: CAR_MILEAGE_VALUE_RANGE_MESSAGE });
+  .int({ error: CAR_MILEAGE_NOT_INTEGER_MESSAGE });
 
 const CAR_PRODUCTION_YEAR_REQUIRED_MESSAGE = 'Production year is required.';
 const CAR_PRODUCTION_YEAR_TYPE_MESSAGE = 'Production year must be a number.';
@@ -177,7 +187,8 @@ export const MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE =
   'Hey! First car was made in 1885.';
 export const MAX_CAR_PRODUCTION_YEAR_VALUE = new Date().getFullYear() + 5;
 const MAX_CAR_PRODUCTION_YEAR_VALUE_MESSAGE = `Maximum production year is ${MAX_CAR_PRODUCTION_YEAR_VALUE}.`;
-const CAR_PRODUCTION_YEAR_VALUE_RANGE_MESSAGE = `Production year value must be between ${Number.MIN_SAFE_INTEGER} and ${Number.MAX_SAFE_INTEGER}.`;
+const CAR_PRODUCTION_YEAR_NOT_INTEGER_MESSAGE =
+  'Production year must be a whole number.';
 
 const carProductionYearSchema = z
   .number({
@@ -193,7 +204,7 @@ const carProductionYearSchema = z
     error: MAX_CAR_PRODUCTION_YEAR_VALUE_MESSAGE,
   })
   .nonnegative({ error: CAR_PRODUCTION_YEAR_NONNEGATIVE_MESSAGE })
-  .int({ error: CAR_PRODUCTION_YEAR_VALUE_RANGE_MESSAGE });
+  .int({ error: CAR_PRODUCTION_YEAR_NOT_INTEGER_MESSAGE });
 
 const carFuelEnumSchema = z.enum(
   Object.values(fuelTypesMapping) as [keyof FuelMapping],
