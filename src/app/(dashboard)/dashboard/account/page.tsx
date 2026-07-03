@@ -1,32 +1,15 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
-import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { queryKeySerialize } from '@/lib/tanstack/utils';
-import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
+import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
 import { NameSection } from '@/user/presentation/ui/sections/name/name';
 import { PasswordChangeSection } from '@/user/presentation/ui/sections/password-change/password-change';
 
 export default function AccountPage() {
-  const { addToast } = useToasts();
-
-  const { data, error, isError } = useQuery(getSessionUserQueryOptions);
-
-  useEffect(() => {
-    if (!isError) return;
-
-    addToast(
-      error.message,
-      'error',
-      queryKeySerialize(getSessionUserQueryOptions.queryKey),
-    );
-  }, [isError, addToast, error]);
+  const { data } = useSessionUser();
 
   return (
     <DashboardMain>

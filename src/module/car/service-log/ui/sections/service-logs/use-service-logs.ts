@@ -14,7 +14,7 @@ interface UseServiceLogsSectionParams {
 }
 
 export function useServiceLogsSection({ carId }: UseServiceLogsSectionParams) {
-  const sessionUser = useSessionUser();
+  const { data: sessionUser } = useSessionUser();
 
   const { addToast } = useToasts();
 

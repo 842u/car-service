@@ -13,7 +13,7 @@ interface UseOwnershipsSectionParams {
 }
 
 export function useOwnershipsSection({ carId }: UseOwnershipsSectionParams) {
-  const sessionUser = useSessionUser();
+  const { data: sessionUser } = useSessionUser();
 
   const { addToast } = useToasts();
 

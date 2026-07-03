@@ -11,7 +11,7 @@ interface UseDeleteSectionParams {
 }
 
 export function useDeleteSection({ carId }: UseDeleteSectionParams) {
-  const sessionUser = useSessionUser();
+  const { data: sessionUser } = useSessionUser();
 
   const { addToast } = useToasts();
 

@@ -8,7 +8,9 @@ import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query
 export function useSessionUser() {
   const { addToast } = useToasts();
 
-  const { data, error, isError } = useQuery(getSessionUserQueryOptions);
+  const { data, error, isError, isPending } = useQuery(
+    getSessionUserQueryOptions,
+  );
 
   useEffect(() => {
     if (!isError) return;
@@ -20,5 +22,5 @@ export function useSessionUser() {
     );
   }, [isError, addToast, error]);
 
-  return data;
+  return { data, isPending };
 }
