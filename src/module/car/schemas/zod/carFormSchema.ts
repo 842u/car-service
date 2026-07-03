@@ -2,6 +2,10 @@ import type { ZodType } from 'zod';
 import { z } from 'zod';
 
 import { imageFileSchema } from '@/common/interface/schema/image-file.schema';
+import {
+  nullifyEmptyString,
+  nullifyNaN,
+} from '@/common/interface/schema/nullify.schema';
 import { parseDateToYyyyMmDd } from '@/lib/utils';
 import type {
   Car,
@@ -25,6 +29,9 @@ type CarFormSchemaShape = Omit<
 z.config({
   jitless: true,
 });
+
+// Postgres "integer" (int4) upper bound; engine_capacity and mileage columns are int4.
+export const POSTGRES_INT4_MAX_VALUE = 2147483647;
 
 const CAR_NAME_REQUIRED_MESSAGE = 'Name is required.';
 const CAR_NAME_TYPE_MESSAGE = 'Name must be a string.';
@@ -123,8 +130,10 @@ const CAR_ENGINE_CAPACITY_TYPE_MESSAGE = 'Engine capacity must be a number.';
 export const MIN_CAR_ENGINE_CAPACITY_VALUE = 1;
 const MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE =
   'Engine capacity must be a positive number.';
-export const MAX_CAR_ENGINE_CAPACITY_VALUE = Number.MAX_SAFE_INTEGER;
-const CAR_ENGINE_CAPACITY_VALUE_RANGE_MESSAGE = `Engine capacity value must be between ${Number.MIN_SAFE_INTEGER} and ${MAX_CAR_ENGINE_CAPACITY_VALUE}.`;
+export const MAX_CAR_ENGINE_CAPACITY_VALUE = POSTGRES_INT4_MAX_VALUE;
+const MAX_CAR_ENGINE_CAPACITY_VALUE_MESSAGE = `Maximum engine capacity is ${MAX_CAR_ENGINE_CAPACITY_VALUE}.`;
+const CAR_ENGINE_CAPACITY_NOT_INTEGER_MESSAGE =
+  'Engine capacity must be a whole number.';
 
 const carEngineCapacitySchema = z
   .number({
@@ -136,15 +145,19 @@ const carEngineCapacitySchema = z
   .min(MIN_CAR_ENGINE_CAPACITY_VALUE, {
     error: MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE,
   })
+  .max(MAX_CAR_ENGINE_CAPACITY_VALUE, {
+    error: MAX_CAR_ENGINE_CAPACITY_VALUE_MESSAGE,
+  })
   .nonnegative({ error: MIN_CAR_ENGINE_CAPACITY_VALUE_MESSAGE })
-  .int({ error: CAR_ENGINE_CAPACITY_VALUE_RANGE_MESSAGE });
+  .int({ error: CAR_ENGINE_CAPACITY_NOT_INTEGER_MESSAGE });
 
 const CAR_MILEAGE_REQUIRED_MESSAGE = 'Mileage is required.';
 const CAR_MILEAGE_TYPE_MESSAGE = 'Mileage must be a number.';
 export const MIN_CAR_MILEAGE_VALUE = 1;
 const MIN_CAR_MILEAGE_VALUE_MESSAGE = 'Mileage must be positive number.';
-export const MAX_CAR_MILEAGE_VALUE = Number.MAX_SAFE_INTEGER;
-const CAR_MILEAGE_VALUE_RANGE_MESSAGE = `Mileage value must be between ${Number.MIN_SAFE_INTEGER} and ${MAX_CAR_MILEAGE_VALUE}.`;
+export const MAX_CAR_MILEAGE_VALUE = POSTGRES_INT4_MAX_VALUE;
+const MAX_CAR_MILEAGE_VALUE_MESSAGE = `Maximum mileage is ${MAX_CAR_MILEAGE_VALUE}.`;
+const CAR_MILEAGE_NOT_INTEGER_MESSAGE = 'Mileage must be a whole number.';
 
 export const carMileageSchema = z
   .number({
@@ -154,8 +167,9 @@ export const carMileageSchema = z
         : CAR_MILEAGE_TYPE_MESSAGE,
   })
   .min(MIN_CAR_MILEAGE_VALUE, { error: MIN_CAR_MILEAGE_VALUE_MESSAGE })
+  .max(MAX_CAR_MILEAGE_VALUE, { error: MAX_CAR_MILEAGE_VALUE_MESSAGE })
   .nonnegative({ error: MIN_CAR_MILEAGE_VALUE_MESSAGE })
-  .int({ error: CAR_MILEAGE_VALUE_RANGE_MESSAGE });
+  .int({ error: CAR_MILEAGE_NOT_INTEGER_MESSAGE });
 
 const CAR_PRODUCTION_YEAR_REQUIRED_MESSAGE = 'Production year is required.';
 const CAR_PRODUCTION_YEAR_TYPE_MESSAGE = 'Production year must be a number.';
@@ -166,7 +180,8 @@ export const MIN_CAR_PRODUCTION_YEAR_VALUE_MESSAGE =
   'Hey! First car was made in 1885.';
 export const MAX_CAR_PRODUCTION_YEAR_VALUE = new Date().getFullYear() + 5;
 const MAX_CAR_PRODUCTION_YEAR_VALUE_MESSAGE = `Maximum production year is ${MAX_CAR_PRODUCTION_YEAR_VALUE}.`;
-const CAR_PRODUCTION_YEAR_VALUE_RANGE_MESSAGE = `Production year value must be between ${Number.MIN_SAFE_INTEGER} and ${Number.MAX_SAFE_INTEGER}.`;
+const CAR_PRODUCTION_YEAR_NOT_INTEGER_MESSAGE =
+  'Production year must be a whole number.';
 
 const carProductionYearSchema = z
   .number({
@@ -182,7 +197,7 @@ const carProductionYearSchema = z
     error: MAX_CAR_PRODUCTION_YEAR_VALUE_MESSAGE,
   })
   .nonnegative({ error: CAR_PRODUCTION_YEAR_NONNEGATIVE_MESSAGE })
-  .int({ error: CAR_PRODUCTION_YEAR_VALUE_RANGE_MESSAGE });
+  .int({ error: CAR_PRODUCTION_YEAR_NOT_INTEGER_MESSAGE });
 
 const carFuelEnumSchema = z.enum(
   Object.values(fuelTypesMapping) as [keyof FuelMapping],
@@ -201,20 +216,11 @@ const carDriveEnumSchema = z.enum(
   },
 );
 
-const carFuelTypeSchema = z
-  .string()
-  .transform((val) => (val === '' ? null : val))
-  .pipe(carFuelEnumSchema.nullable());
+const carFuelTypeSchema = nullifyEmptyString(carFuelEnumSchema);
 
-const carTransmissionTypeSchema = z
-  .string()
-  .transform((val) => (val === '' ? null : val))
-  .pipe(carTransmissionEnumSchema.nullable());
+const carTransmissionTypeSchema = nullifyEmptyString(carTransmissionEnumSchema);
 
-const carDriveTypeSchema = z
-  .string()
-  .transform((val) => (val === '' ? null : val))
-  .pipe(carDriveEnumSchema.nullable());
+const carDriveTypeSchema = nullifyEmptyString(carDriveEnumSchema);
 
 const CAR_INSURANCE_EXPIRATION_DATE_REQUIRED_MESSAGE =
   'Insurance expiration date is required.';
@@ -252,28 +258,26 @@ const carTechnicalInspectionExpirationSchema = z.coerce
   .min(new Date(MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE), {
     error: MIN_CAR_TECHNICAL_INSPECTION_EXPIRATION_DATE_MESSAGE,
   })
-  .transform((date) => (date ? parseDateToYyyyMmDd(date) : null));
+  .transform((date) => parseDateToYyyyMmDd(date));
 
 export const carFormSchema = z.object({
   image: imageFileSchema.nullable().optional(),
   custom_name: carNameSchema,
-  brand: carBrandSchema.nullable().or(z.literal('')),
-  model: carModelSchema.nullable().or(z.literal('')),
-  license_plates: carLicensePlatesSchema.nullable().or(z.literal('')),
-  vin: carVinSchema.nullable().or(z.literal('')),
-  engine_capacity: carEngineCapacitySchema.nullable().or(z.nan()),
-  mileage: carMileageSchema.nullable().or(z.nan()),
-  production_year: carProductionYearSchema.nullable().or(z.nan()),
-  fuel_type: carFuelTypeSchema.nullable(),
-  additional_fuel_type: carFuelTypeSchema.nullable(),
-  transmission_type: carTransmissionTypeSchema.nullable(),
-  drive_type: carDriveTypeSchema.nullable(),
-  insurance_expiration: carInsuranceExpirationSchema
-    .nullable()
-    .or(z.literal('')),
-  technical_inspection_expiration: carTechnicalInspectionExpirationSchema
-    .nullable()
-    .or(z.literal('')),
+  brand: nullifyEmptyString(carBrandSchema),
+  model: nullifyEmptyString(carModelSchema),
+  license_plates: nullifyEmptyString(carLicensePlatesSchema),
+  vin: nullifyEmptyString(carVinSchema),
+  engine_capacity: nullifyNaN(carEngineCapacitySchema),
+  mileage: nullifyNaN(carMileageSchema),
+  production_year: nullifyNaN(carProductionYearSchema),
+  fuel_type: carFuelTypeSchema,
+  additional_fuel_type: carFuelTypeSchema,
+  transmission_type: carTransmissionTypeSchema,
+  drive_type: carDriveTypeSchema,
+  insurance_expiration: nullifyEmptyString(carInsuranceExpirationSchema),
+  technical_inspection_expiration: nullifyEmptyString(
+    carTechnicalInspectionExpirationSchema,
+  ),
 } satisfies CarFormSchemaShape);
 
 export type CarFormValues = z.infer<typeof carFormSchema>;

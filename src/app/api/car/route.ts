@@ -25,8 +25,10 @@ export async function POST(request: NextRequest) {
 
   const { carFormData } = (await request.json()) as ApiCarRequestBody;
 
+  let validatedCarFormData: CarFormValuesToValidate;
+
   try {
-    carFormSchema.parse(carFormData);
+    validatedCarFormData = carFormSchema.parse(carFormData);
   } catch (error) {
     if (error instanceof ZodError) {
       return errorApiResponse(
@@ -61,21 +63,23 @@ export async function POST(request: NextRequest) {
    */
   const rpcResult = await dbClient.rpc(async (rpc) =>
     rpc('create_new_car', {
-      additional_fuel_type: carFormData.additional_fuel_type || undefined,
-      custom_name: carFormData.custom_name || 'New car',
-      brand: carFormData.brand || undefined,
-      drive_type: carFormData.drive_type || undefined,
-      engine_capacity: carFormData.engine_capacity || undefined,
-      fuel_type: carFormData.fuel_type || undefined,
-      insurance_expiration: carFormData.insurance_expiration || undefined,
+      additional_fuel_type:
+        validatedCarFormData.additional_fuel_type ?? undefined,
+      custom_name: validatedCarFormData.custom_name || 'New car',
+      brand: validatedCarFormData.brand ?? undefined,
+      drive_type: validatedCarFormData.drive_type ?? undefined,
+      engine_capacity: validatedCarFormData.engine_capacity ?? undefined,
+      fuel_type: validatedCarFormData.fuel_type ?? undefined,
+      insurance_expiration:
+        validatedCarFormData.insurance_expiration ?? undefined,
       technical_inspection_expiration:
-        carFormData.technical_inspection_expiration || undefined,
-      license_plates: carFormData.license_plates || undefined,
-      mileage: carFormData.mileage || undefined,
-      model: carFormData.model || undefined,
-      production_year: carFormData.production_year || undefined,
-      transmission_type: carFormData.transmission_type || undefined,
-      vin: carFormData.vin || undefined,
+        validatedCarFormData.technical_inspection_expiration ?? undefined,
+      license_plates: validatedCarFormData.license_plates ?? undefined,
+      mileage: validatedCarFormData.mileage ?? undefined,
+      model: validatedCarFormData.model ?? undefined,
+      production_year: validatedCarFormData.production_year ?? undefined,
+      transmission_type: validatedCarFormData.transmission_type ?? undefined,
+      vin: validatedCarFormData.vin ?? undefined,
     }),
   );
 
@@ -95,8 +99,10 @@ export async function PATCH(request: NextRequest) {
 
   const { carFormData, carId } = (await request.json()) as ApiCarRequestBody;
 
+  let validatedCarFormData: CarFormValuesToValidate;
+
   try {
-    carFormSchema.parse(carFormData);
+    validatedCarFormData = carFormSchema.parse(carFormData);
   } catch (error) {
     if (error instanceof ZodError) {
       return errorApiResponse(
@@ -123,21 +129,21 @@ export async function PATCH(request: NextRequest) {
   const queryResult = await dbClient.query(async (from) =>
     from('cars')
       .update({
-        custom_name: carFormData.custom_name,
-        brand: carFormData.brand || undefined,
-        model: carFormData.model || undefined,
-        production_year: carFormData.production_year || undefined,
-        engine_capacity: carFormData.engine_capacity || undefined,
-        fuel_type: carFormData.fuel_type || undefined,
-        additional_fuel_type: carFormData.additional_fuel_type || undefined,
-        drive_type: carFormData.drive_type || undefined,
-        transmission_type: carFormData.transmission_type || undefined,
-        license_plates: carFormData.license_plates || undefined,
-        vin: carFormData.vin || undefined,
-        mileage: carFormData.mileage || undefined,
-        insurance_expiration: carFormData.insurance_expiration || undefined,
+        custom_name: validatedCarFormData.custom_name,
+        brand: validatedCarFormData.brand,
+        model: validatedCarFormData.model,
+        production_year: validatedCarFormData.production_year,
+        engine_capacity: validatedCarFormData.engine_capacity,
+        fuel_type: validatedCarFormData.fuel_type,
+        additional_fuel_type: validatedCarFormData.additional_fuel_type,
+        drive_type: validatedCarFormData.drive_type,
+        transmission_type: validatedCarFormData.transmission_type,
+        license_plates: validatedCarFormData.license_plates,
+        vin: validatedCarFormData.vin,
+        mileage: validatedCarFormData.mileage,
+        insurance_expiration: validatedCarFormData.insurance_expiration,
         technical_inspection_expiration:
-          carFormData.technical_inspection_expiration || undefined,
+          validatedCarFormData.technical_inspection_expiration,
       })
       .eq('id', carId || '')
       .select('id')
