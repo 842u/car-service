@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
@@ -33,7 +34,13 @@ export function DashboardNavBar() {
   );
 
   useEffect(() => {
-    error && addToast(error.message, 'error');
+    if (!error) return;
+
+    addToast(
+      error.message,
+      'error',
+      queryKeySerialize(getSessionUserQueryOptions.queryKey),
+    );
   }, [addToast, error]);
 
   return (
