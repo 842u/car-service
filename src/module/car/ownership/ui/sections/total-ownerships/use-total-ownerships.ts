@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { getCarsOwnershipsByOwnerId } from '@/lib/supabase/tables/cars_ownerships';
 import { queryKeys } from '@/lib/tanstack/keys';
+import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
 export function useTotalOwnershipsSection() {
@@ -29,15 +30,22 @@ export function useTotalOwnershipsSection() {
   });
 
   useEffect(() => {
-    userIsError && addToast(userError.message, 'error');
+    if (!userIsError) return;
+
+    addToast(
+      userError.message,
+      'error',
+      queryKeySerialize(getSessionUserQueryOptions.queryKey),
+    );
   }, [userIsError, addToast, userError]);
 
   useEffect(() => {
-    ownershipsIsError &&
-      addToast(
-        ownershipsError?.message || 'Cannot get user ownerships.',
-        'error',
-      );
+    if (!ownershipsIsError) return;
+
+    addToast(
+      ownershipsError?.message || 'Cannot get user ownerships.',
+      'error',
+    );
   }, [ownershipsIsError, addToast, ownershipsError]);
 
   return {
