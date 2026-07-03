@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { DashboardSection } from '@/dashboard/ui/section/section';
+import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
@@ -18,7 +19,13 @@ export default function AccountPage() {
   const { data, error, isError } = useQuery(getSessionUserQueryOptions);
 
   useEffect(() => {
-    isError && addToast(error.message, 'error');
+    if (!isError) return;
+
+    addToast(
+      error.message,
+      'error',
+      queryKeySerialize(getSessionUserQueryOptions.queryKey),
+    );
   }, [isError, addToast, error]);
 
   return (
