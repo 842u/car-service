@@ -8,6 +8,15 @@ import { parseDateToYyyyMmDd } from '@/lib/utils';
 
 import type { ServiceLogFormProps } from './form';
 
+const DEFAULT_FORM_VALUES: CarServiceLogFormValues = {
+  // Intentionally do not set required category to enforce user do it.
+  service_date: parseDateToYyyyMmDd(new Date()),
+  mileage: null,
+  notes: null,
+  service_cost: null,
+  category: [],
+};
+
 export function useServiceLogForm({
   onSubmit,
   serviceLog,
@@ -20,29 +29,18 @@ export function useServiceLogForm({
   } = useForm({
     resolver: zodResolver(carServiceLogFormSchema),
     mode: 'onChange',
-    defaultValues: serviceLog
-      ? {
-          ...serviceLog,
-        }
-      : {
-          // Intentionally do not set required category to enforce user do it.
-          service_date: parseDateToYyyyMmDd(new Date()),
-          mileage: null,
-          notes: null,
-          service_cost: null,
-          category: [],
-        },
+    defaultValues: DEFAULT_FORM_VALUES,
   });
-
-  useEffect(() => {
-    isSubmitSuccessful && reset();
-  }, [isSubmitSuccessful, reset]);
 
   useEffect(() => {
     if (serviceLog) {
       reset(serviceLog);
     }
   }, [serviceLog, reset]);
+
+  useEffect(() => {
+    isSubmitSuccessful && reset();
+  }, [isSubmitSuccessful, reset]);
 
   const handleResetButtonClick = () => reset();
 
