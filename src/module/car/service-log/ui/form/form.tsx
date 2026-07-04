@@ -39,7 +39,6 @@ export function ServiceLogForm({
             label="Date"
             name="service_date"
             register={register}
-            registerOptions={{ valueAsDate: true }}
             type="date"
           />
         </Form.InputWrapper>
@@ -51,7 +50,6 @@ export function ServiceLogForm({
             name="mileage"
             placeholder="Enter mileage"
             register={register}
-            registerOptions={{ valueAsNumber: true }}
             type="number"
           />
         </Form.InputWrapper>
