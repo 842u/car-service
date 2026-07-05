@@ -1,11 +1,6 @@
+import type { ApplicationError } from '@/common/application/error';
 import type { Result } from '@/common/application/result';
 
-type UseCaseError<U> = {
-  message: string;
-} & U;
-
-type UseCaseResult<U> = Result<unknown, UseCaseError<U>>;
-
-export interface UseCase<C, U extends Record<string, unknown>> {
-  execute(contract?: C): Promise<UseCaseResult<U>>;
+export interface UseCase<TContract, TData, TError = ApplicationError> {
+  execute(contract: TContract): Promise<Result<TData, TError>>;
 }

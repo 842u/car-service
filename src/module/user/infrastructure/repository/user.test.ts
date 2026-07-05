@@ -180,25 +180,32 @@ describe('UserRepositoryImplementation', () => {
     });
   });
 
-  describe('changeName', () => {
+  describe('update', () => {
     it('should return success result on success', async () => {
+      const persistence = createMockUserPersistence();
+
+      mockUserMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
 
-      const result = await repository.changeName(user);
+      const result = await repository.update(user);
 
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toBeNull();
       }
+      expect(mockUserMapper.domainToPersistence).toHaveBeenCalledWith(user);
       expect(mockDbClient.query).toHaveBeenCalled();
     });
 
     it('should return error when query fails', async () => {
+      mockUserMapper.domainToPersistence.mockReturnValue(
+        createMockUserPersistence(),
+      );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),
       );
 
-      const result = await repository.changeName(user);
+      const result = await repository.update(user);
 
       expect(result.success).toBe(false);
       if (!result.success) {

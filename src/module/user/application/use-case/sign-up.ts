@@ -11,6 +11,7 @@ type SignUpUseCaseError = { code: number };
 
 export class SignUpUseCase implements UseCase<
   SignUpApiRequest,
+  unknown,
   SignUpUseCaseError
 > {
   private readonly _adminAuthClient: AdminAuthClient;

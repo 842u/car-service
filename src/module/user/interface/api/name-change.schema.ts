@@ -5,7 +5,6 @@ import {
   createApiResponseSchema,
 } from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dto/user';
-import { nameSchema } from '@/user/domain/user/value-object/name/name.schema';
 
 z.config({
   jitless: true,
@@ -29,7 +28,7 @@ export type NameChangeApiResponseError = z.infer<
 >;
 
 export const nameChangeApiRequestSchema = z.object({
-  name: nameSchema,
+  name: z.string(),
 });
 
 export type NameChangeApiRequest = z.infer<typeof nameChangeApiRequestSchema>;

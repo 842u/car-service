@@ -9,6 +9,7 @@ type PasswordChangeUseCaseError = { code: number };
 
 export class PasswordChangeUseCase implements UseCase<
   PasswordChangeApiRequest,
+  unknown,
   PasswordChangeUseCaseError
 > {
   private readonly _authClient: AuthClient;

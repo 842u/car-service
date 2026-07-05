@@ -33,7 +33,7 @@ export async function createSignInWithOtpUseCase() {
 export async function createNameChangeUseCase() {
   const authClient = await createServerAuthClient();
   const userRepository = await createUserRepository();
-  return new NameChangeUseCase(authClient, userRepository);
+  return new NameChangeUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createPasswordChangeUseCase() {

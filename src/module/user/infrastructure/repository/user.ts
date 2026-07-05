@@ -82,13 +82,11 @@ export class UserRepositoryImplementation implements UserRepository {
     return Result.ok(userResult.data);
   }
 
-  async changeName(user: User) {
+  async update(user: User) {
+    const userPersistence = this._userMapper.domainToPersistence(user);
+
     const queryResult = await this._dbClient.query(async (from) =>
-      from('users')
-        .update({ user_name: user.name.value })
-        .eq('id', user.id.value)
-        .select()
-        .single(),
+      from('users').update(userPersistence).eq('id', user.id.value),
     );
 
     if (!queryResult.success) {

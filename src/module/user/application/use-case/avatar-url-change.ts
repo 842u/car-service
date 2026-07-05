@@ -8,6 +8,7 @@ type AvatarUrlChangeUseCaseError = { code: number };
 
 export class AvatarUrlChangeUseCase implements UseCase<
   AvatarUrlChangeApiRequest,
+  unknown,
   AvatarUrlChangeUseCaseError
 > {
   private readonly _authClient: AuthClient;

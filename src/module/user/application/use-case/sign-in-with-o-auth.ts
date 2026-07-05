@@ -14,6 +14,7 @@ type SignInWithOAuthUseCaseError = {
 
 export class SignInWithOAuthUseCase implements UseCase<
   SignInWithOAuthContract,
+  unknown,
   SignInWithOAuthUseCaseError
 > {
   private readonly _authClient: AuthClient;

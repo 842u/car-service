@@ -20,6 +20,7 @@ type SignInWithOtpUseCaseError = {
 
 export class SignInWithOtpUseCase implements UseCase<
   SignInWithOtpContract,
+  unknown,
   SignInWithOtpUseCaseError
 > {
   private readonly _authClient: AuthClient;
