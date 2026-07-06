@@ -9,14 +9,10 @@ import { Result } from '@/common/application/result';
 import type { UseCase } from '@/common/application/use-case';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
-
-type SignInWithOtpContract = {
-  token_hash: string;
-  type: string;
-};
+import type { SignInWithOtpApiRequest } from '@/user/interface/api/sign-in-with-otp.schema';
 
 export class SignInWithOtpUseCase implements UseCase<
-  SignInWithOtpContract,
+  SignInWithOtpApiRequest,
   UserDto
 > {
   private readonly _authClient: AuthClient;
@@ -28,7 +24,7 @@ export class SignInWithOtpUseCase implements UseCase<
   }
 
   async execute(
-    contract: SignInWithOtpContract,
+    contract: SignInWithOtpApiRequest,
   ): Promise<Result<UserDto, ApplicationError>> {
     const { token_hash, type } = contract;
 

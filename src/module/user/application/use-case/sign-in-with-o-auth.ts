@@ -8,13 +8,10 @@ import type { UseCase } from '@/common/application/use-case';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
-
-type SignInWithOAuthContract = {
-  code: string;
-};
+import type { SignInWithOAuthApiRequest } from '@/user/interface/api/sign-in-with-o-auth.schema';
 
 export class SignInWithOAuthUseCase implements UseCase<
-  SignInWithOAuthContract,
+  SignInWithOAuthApiRequest,
   UserDto
 > {
   private readonly _authClient: AuthClient;
@@ -32,7 +29,7 @@ export class SignInWithOAuthUseCase implements UseCase<
   }
 
   async execute(
-    contract: SignInWithOAuthContract,
+    contract: SignInWithOAuthApiRequest,
   ): Promise<Result<UserDto, ApplicationError>> {
     const { code } = contract;
     /**
