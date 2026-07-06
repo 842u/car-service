@@ -6,6 +6,7 @@ import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/aut
 import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
 import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
 import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
 import { SignInWithOAuthUseCase } from '@/user/application/use-case/sign-in-with-o-auth';
@@ -32,18 +33,26 @@ describe('SignInWithOAuthUseCase', () => {
 
     const mockAuthIdentity = createMockAuthIdentity();
 
+    const mockUserDto: UserDto = {
+      id: '44dd8410-a912-480f-95be-9ad4cbe30d7f',
+      email: 'test@example.com',
+      name: 'Test User',
+      avatarUrl: null,
+    };
+
     it('should sign in successfully with existing user', async () => {
       const mockUser = createMockUser();
       mockAuthClient.exchangeCodeForSession.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
       mockUserRepository.getById.mockResolvedValue(Result.ok(mockUser));
+      mockUserMapper.domainToDto.mockReturnValue(mockUserDto);
 
       const result = await useCase.execute(validContract);
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data).toBe(mockUser);
+        expect(result.data).toBe(mockUserDto);
       }
       expect(mockAuthClient.exchangeCodeForSession).toHaveBeenCalledWith(
         validContract.code,
@@ -51,6 +60,7 @@ describe('SignInWithOAuthUseCase', () => {
       expect(mockUserRepository.getById).toHaveBeenCalledWith(
         mockAuthIdentity.id,
       );
+      expect(mockUserMapper.domainToDto).toHaveBeenCalledWith(mockUser);
       expect(mockUserRepository.store).not.toHaveBeenCalled();
     });
 
@@ -64,20 +74,22 @@ describe('SignInWithOAuthUseCase', () => {
       );
       mockUserMapper.authIdentityToDomain.mockReturnValue(Result.ok(mockUser));
       mockUserRepository.store.mockResolvedValue(Result.ok(null));
+      mockUserMapper.domainToDto.mockReturnValue(mockUserDto);
 
       const result = await useCase.execute(validContract);
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data).toBe(mockUser);
+        expect(result.data).toBe(mockUserDto);
       }
       expect(mockAuthClient.exchangeCodeForSession).toHaveBeenCalledWith(
         validContract.code,
       );
       expect(mockUserRepository.store).toHaveBeenCalledWith(mockUser);
+      expect(mockUserMapper.domainToDto).toHaveBeenCalledWith(mockUser);
     });
 
-    it('should fail when code exchange fails', async () => {
+    it('should fail as unauthorized when code exchange fails', async () => {
       mockAuthClient.exchangeCodeForSession.mockResolvedValue(
         Result.fail({ message: 'Invalid code', code: '', status: 400 }),
       );
@@ -87,7 +99,7 @@ describe('SignInWithOAuthUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Invalid code');
-        expect(result.error.code).toBe(400);
+        expect(result.error.kind).toBe('unauthorized');
       }
       expect(mockAuthClient.exchangeCodeForSession).toHaveBeenCalledWith(
         validContract.code,
@@ -96,7 +108,7 @@ describe('SignInWithOAuthUseCase', () => {
       expect(mockUserRepository.store).not.toHaveBeenCalled();
     });
 
-    it('should fail when user mapping fails', async () => {
+    it('should fail as unexpected when user mapping fails', async () => {
       mockAuthClient.exchangeCodeForSession.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
@@ -116,7 +128,7 @@ describe('SignInWithOAuthUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Mapping failed');
-        expect(result.error.code).toBe(500);
+        expect(result.error.kind).toBe('unexpected');
       }
 
       expect(mockAuthClient.exchangeCodeForSession).toHaveBeenCalledWith(
@@ -125,7 +137,7 @@ describe('SignInWithOAuthUseCase', () => {
       expect(mockUserRepository.store).not.toHaveBeenCalled();
     });
 
-    it('should fail when user persistence fails', async () => {
+    it('should fail as unexpected when user persistence fails', async () => {
       const mockUser = createMockUser();
       mockAuthClient.exchangeCodeForSession.mockResolvedValue(
         Result.ok(mockAuthIdentity),
@@ -143,7 +155,7 @@ describe('SignInWithOAuthUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Database error');
-        expect(result.error.code).toBe(500);
+        expect(result.error.kind).toBe('unexpected');
       }
       expect(mockAuthClient.exchangeCodeForSession).toHaveBeenCalledWith(
         validContract.code,

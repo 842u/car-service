@@ -2,11 +2,12 @@ import type { EmailOtpType } from '@supabase/supabase-js';
 
 import type { AuthClient } from '@/common/application/auth-client';
 import {
-  type FailureResult,
-  Result,
-  type SuccessResult,
-} from '@/common/application/result';
+  type ApplicationError,
+  applicationError,
+} from '@/common/application/error';
+import { Result } from '@/common/application/result';
 import type { UseCase } from '@/common/application/use-case';
+import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 
 type SignInWithOtpContract = {
@@ -14,14 +15,9 @@ type SignInWithOtpContract = {
   type: string;
 };
 
-type SignInWithOtpUseCaseError = {
-  code: number;
-};
-
 export class SignInWithOtpUseCase implements UseCase<
   SignInWithOtpContract,
-  unknown,
-  SignInWithOtpUseCaseError
+  UserDto
 > {
   private readonly _authClient: AuthClient;
   private readonly _userMapper: UserMapper;
@@ -33,10 +29,7 @@ export class SignInWithOtpUseCase implements UseCase<
 
   async execute(
     contract: SignInWithOtpContract,
-  ): Promise<
-    | SuccessResult<unknown, object>
-    | FailureResult<{ message: string } & SignInWithOtpUseCaseError, object>
-  > {
+  ): Promise<Result<UserDto, ApplicationError>> {
     const { token_hash, type } = contract;
 
     const otpResult = await this._authClient.verifyOtp({
@@ -45,26 +38,25 @@ export class SignInWithOtpUseCase implements UseCase<
     });
 
     if (!otpResult.success) {
-      const { message, status } = otpResult.error;
-      return Result.fail({ message, code: status || 500 });
+      const { message } = otpResult.error;
+      return Result.fail(applicationError.unauthorized(message));
     }
 
     const authIdentity = otpResult.data;
 
     if (!authIdentity) {
-      return Result.fail({
-        message: 'Cannot retrieve auth identity',
-        code: 500,
-      });
+      return Result.fail(
+        applicationError.unexpected('Cannot retrieve auth identity'),
+      );
     }
 
     const userResult = this._userMapper.authIdentityToDomain(authIdentity);
 
     if (!userResult.success) {
       const { message } = userResult.error;
-      return Result.fail({ message, code: 500 });
+      return Result.fail(applicationError.unexpected(message));
     }
 
-    return Result.ok(userResult.data);
+    return Result.ok(this._userMapper.domainToDto(userResult.data));
   }
 }

@@ -1,6 +1,7 @@
 import type { Route } from 'next';
 import type { NextRequest } from 'next/server';
 
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 import { apiHandler } from '@/dependency/api-handler';
 import { createSignInWithOAuthUseCase } from '@/user/dependency/use-case';
 
@@ -30,8 +31,8 @@ export async function GET(request: NextRequest) {
   });
 
   if (!useCaseResult.success) {
-    const { message, code } = useCaseResult.error;
-    return apiHandler.errorResponse({ message }, code);
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return apiHandler.errorResponse(error, status);
   }
 
   return apiHandler.redirectResponse(requestUrl, 307);
