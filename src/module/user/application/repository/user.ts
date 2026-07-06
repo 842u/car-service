@@ -5,6 +5,5 @@ import type {
 import type { User } from '@/user/domain/user/user';
 
 export interface UserRepository extends Repository<User> {
-  getByEmail(email: string): Promise<RepositoryResult<User>>;
   getById(id: string): Promise<RepositoryResult<User>>;
 }

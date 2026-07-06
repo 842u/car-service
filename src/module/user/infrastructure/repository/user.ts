@@ -14,13 +14,10 @@ export class UserRepositoryImplementation implements UserRepository {
   }
 
   async store(user: User) {
+    const userPersistence = this._userMapper.domainToPersistence(user);
+
     const queryResult = await this._dbClient.query(async (from) =>
-      from('users').insert({
-        id: user.id.value,
-        email: user.email.value,
-        user_name: user.name.value,
-        avatar_url: user.avatarUrl?.value,
-      }),
+      from('users').insert(userPersistence),
     );
 
     if (!queryResult.success) {
@@ -40,26 +37,6 @@ export class UserRepositoryImplementation implements UserRepository {
     }
 
     return Result.ok(null);
-  }
-
-  async getByEmail(email: string) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('users').select('*').eq('email', email).single(),
-    );
-
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
-    }
-
-    const userPersistence = queryResult.data;
-
-    const userResult = this._userMapper.persistenceToDomain(userPersistence);
-
-    if (!userResult.success) {
-      return Result.fail(userResult.error);
-    }
-
-    return Result.ok(userResult.data);
   }
 
   async getById(id: string) {

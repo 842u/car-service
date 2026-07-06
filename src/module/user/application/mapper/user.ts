@@ -26,30 +26,6 @@ export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
     };
   }
 
-  dtoToDomain(model: UserDto) {
-    const userResult = User.create({
-      id: model.id,
-      name: model.name,
-      email: model.email,
-      avatarUrl: model.avatarUrl,
-    });
-
-    if (!userResult.success) {
-      return Result.fail(userResult.error);
-    }
-
-    return Result.ok(userResult.data);
-  }
-
-  dtoToPersistence(model: UserDto): UserPersistence {
-    return {
-      id: model.id,
-      email: model.email,
-      user_name: model.name,
-      avatar_url: model.avatarUrl || null,
-    };
-  }
-
   persistenceToDomain(model: UserPersistence) {
     const userResult = User.create({
       id: model.id,
