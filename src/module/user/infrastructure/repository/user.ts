@@ -95,20 +95,4 @@ export class UserRepositoryImplementation implements UserRepository {
 
     return Result.ok(null);
   }
-
-  async changeAvatarUrl(user: User) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('users')
-        .update({ avatar_url: user.avatarUrl?.value })
-        .eq('id', user.id.value)
-        .select()
-        .single(),
-    );
-
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
-    }
-
-    return Result.ok(null);
-  }
 }

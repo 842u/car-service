@@ -213,31 +213,4 @@ describe('UserRepositoryImplementation', () => {
       }
     });
   });
-
-  describe('changeAvatarUrl', () => {
-    it('should return success result on on success', async () => {
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
-
-      const result = await repository.changeAvatarUrl(user);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toBeNull();
-      }
-      expect(mockDbClient.query).toHaveBeenCalled();
-    });
-
-    it('should return error when query fails', async () => {
-      mockDbClient.query.mockResolvedValue(
-        Result.fail({ message: 'Update failed' }),
-      );
-
-      const result = await repository.changeAvatarUrl(user);
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.message).toBe('Update failed');
-      }
-    });
-  });
 });

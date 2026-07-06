@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 import { avatarUrlChangeApiHandler } from '@/user/dependency/api-handler';
-import { userMapper } from '@/user/dependency/mapper';
 import { createAvatarUrlChangeUseCase } from '@/user/dependency/use-case';
 import { avatarUrlChangeApiRequestSchema } from '@/user/interface/api/avatar-change.schema';
 
@@ -26,13 +26,11 @@ export async function PATCH(request: NextRequest) {
   const useCaseResult = await avatarUrlChangeUseCase.execute(contract);
 
   if (!useCaseResult.success) {
-    const { message, code } = useCaseResult.error;
-    return avatarUrlChangeApiHandler.errorResponse({ message }, code);
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return avatarUrlChangeApiHandler.errorResponse(error, status);
   }
 
-  const user = useCaseResult.data;
-
-  const userDto = userMapper.domainToDto(user);
+  const userDto = useCaseResult.data;
 
   return avatarUrlChangeApiHandler.successResponse(userDto, 200);
 }
