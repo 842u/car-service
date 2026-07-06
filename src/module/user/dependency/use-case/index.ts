@@ -3,6 +3,7 @@ import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { AvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
 import { NameChangeUseCase } from '@/user/application/use-case/name-change';
 import { PasswordChangeUseCase } from '@/user/application/use-case/password-change';
+import { SignInUseCase } from '@/user/application/use-case/sign-in';
 import { SignInWithOAuthUseCase } from '@/user/application/use-case/sign-in-with-o-auth';
 import { SignInWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';
 import { SignUpUseCase } from '@/user/application/use-case/sign-up';
@@ -17,6 +18,12 @@ export async function createSignUpUseCase(origin: string) {
     userMapper,
     origin,
   );
+}
+
+export async function createSignInUseCase() {
+  const authClient = await createServerAuthClient();
+  const userRepository = await createUserRepository();
+  return new SignInUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createSignInWithOAuthUseCase() {
