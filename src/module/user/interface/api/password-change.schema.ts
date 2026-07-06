@@ -5,7 +5,6 @@ import {
   createApiResponseSchema,
 } from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dto/user';
-import { passwordSchema } from '@/user/domain/user/value-object/password/password.schema';
 
 z.config({
   jitless: true,
@@ -28,15 +27,10 @@ export type PasswordChangeApiResponseError = z.infer<
   typeof passwordChangeApiResponseErrorSchema
 >;
 
-export const passwordChangeApiRequestSchema = z
-  .object({
-    password: passwordSchema,
-    passwordConfirm: passwordSchema,
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: 'Passwords must match.',
-    path: ['passwordConfirm'],
-  });
+export const passwordChangeApiRequestSchema = z.object({
+  password: z.string(),
+  passwordConfirm: z.string(),
+});
 
 export type PasswordChangeApiRequest = z.infer<
   typeof passwordChangeApiRequestSchema

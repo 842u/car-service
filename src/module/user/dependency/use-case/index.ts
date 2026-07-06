@@ -39,7 +39,7 @@ export async function createNameChangeUseCase() {
 export async function createPasswordChangeUseCase() {
   const authClient = await createServerAuthClient();
   const userRepository = await createUserRepository();
-  return new PasswordChangeUseCase(authClient, userRepository);
+  return new PasswordChangeUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createAvatarUrlChangeUseCase() {
