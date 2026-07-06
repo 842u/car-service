@@ -6,6 +6,7 @@ import { createMockAdminAuthClient } from '@/lib/jest/mock/src/common/applicatio
 import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
 import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
 import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
 import { SignUpUseCase } from '@/user/application/use-case/sign-up';
@@ -35,11 +36,20 @@ describe('SignUpUseCase', () => {
       email: mockUser.email.value,
       password: 'password123',
     };
+
+    const mockUserDto: UserDto = {
+      id: '44dd8410-a912-480f-95be-9ad4cbe30d7f',
+      email: mockUser.email.value,
+      name: 'Test User',
+      avatarUrl: null,
+    };
+
     it('should sign up successfully', async () => {
       mockAdminAuthClient.createAuthIdentity.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
       mockUserMapper.authIdentityToDomain.mockReturnValue(Result.ok(mockUser));
+      mockUserMapper.domainToDto.mockReturnValue(mockUserDto);
       mockAdminAuthClient.sendConfirmationEmail.mockResolvedValue(
         Result.ok(null),
       );
@@ -49,17 +59,44 @@ describe('SignUpUseCase', () => {
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data).toEqual(mockUser);
+        expect(result.data).toBe(mockUserDto);
       }
       expect(mockAdminAuthClient.createAuthIdentity).toHaveBeenCalledWith({
         ...contract,
         email_confirm: false,
       });
       expect(mockUserRepository.store).toHaveBeenCalledWith(mockUser);
+      expect(mockUserMapper.domainToDto).toHaveBeenCalledWith(mockUser);
       expect(mockAdminAuthClient.sendConfirmationEmail).toHaveBeenCalledWith({
         email: contract.email,
         redirectTo: 'https://preview-branch.vercel.app/api/auth/otp',
       });
+    });
+
+    it('should fail as validation when the email is invalid', async () => {
+      const result = await useCase.execute({
+        email: 'not-an-email',
+        password: 'password123',
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('validation');
+      }
+      expect(mockAdminAuthClient.createAuthIdentity).not.toHaveBeenCalled();
+    });
+
+    it('should fail as validation when the password is invalid', async () => {
+      const result = await useCase.execute({
+        email: mockUser.email.value,
+        password: 'short',
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('validation');
+      }
+      expect(mockAdminAuthClient.createAuthIdentity).not.toHaveBeenCalled();
     });
 
     it('should send password reset email if user already exists', async () => {
@@ -71,6 +108,7 @@ describe('SignUpUseCase', () => {
         }),
       );
       mockAdminAuthClient.resetPassword.mockResolvedValue(Result.ok(null));
+      mockUserMapper.domainToDto.mockReturnValue(mockUserDto);
 
       const result = await useCase.execute(contract);
 
@@ -83,7 +121,7 @@ describe('SignUpUseCase', () => {
       });
     });
 
-    it('should fail if cannot create auth identity for reasons other than existing user', async () => {
+    it('should fail as unexpected if cannot create auth identity for reasons other than existing user', async () => {
       mockAdminAuthClient.createAuthIdentity.mockResolvedValue(
         Result.fail({
           message: 'Database error',
@@ -97,7 +135,7 @@ describe('SignUpUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Database error');
-        expect(result.error.code).toBe(500);
+        expect(result.error.kind).toBe('unexpected');
       }
       expect(mockAdminAuthClient.createAuthIdentity).toHaveBeenCalledWith({
         ...contract,
@@ -106,7 +144,7 @@ describe('SignUpUseCase', () => {
       expect(mockAdminAuthClient.resetPassword).not.toHaveBeenCalled();
     });
 
-    it('should fail if sending password reset email fails', async () => {
+    it('should fail as unexpected if sending password reset email fails', async () => {
       mockAdminAuthClient.createAuthIdentity.mockResolvedValue(
         Result.fail({
           message: 'User already exists',
@@ -127,7 +165,7 @@ describe('SignUpUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Email service error');
-        expect(result.error.code).toBe(500);
+        expect(result.error.kind).toBe('unexpected');
       }
       expect(mockAdminAuthClient.resetPassword).toHaveBeenCalledWith({
         email: contract.email,
@@ -137,7 +175,7 @@ describe('SignUpUseCase', () => {
       });
     });
 
-    it('should fail and delete created auth identity if user creation fails', async () => {
+    it('should fail as unexpected and delete created auth identity if user creation fails', async () => {
       mockAdminAuthClient.createAuthIdentity.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
@@ -153,7 +191,7 @@ describe('SignUpUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Invalid user data');
-        expect(result.error.code).toBe(422);
+        expect(result.error.kind).toBe('unexpected');
       }
       expect(mockAdminAuthClient.createAuthIdentity).toHaveBeenCalledWith({
         ...contract,
@@ -165,7 +203,7 @@ describe('SignUpUseCase', () => {
       expect(mockUserRepository.store).not.toHaveBeenCalled();
     });
 
-    it('should fail and delete created auth identity if sending confirmation email fails', async () => {
+    it('should fail as unexpected and delete created auth identity if sending confirmation email fails', async () => {
       mockAdminAuthClient.createAuthIdentity.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
@@ -184,7 +222,7 @@ describe('SignUpUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Email service error');
-        expect(result.error.code).toBe(500);
+        expect(result.error.kind).toBe('unexpected');
       }
       expect(mockAdminAuthClient.sendConfirmationEmail).toHaveBeenCalledWith({
         email: contract.email,

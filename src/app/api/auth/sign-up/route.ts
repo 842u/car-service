@@ -1,8 +1,8 @@
 import { type NextRequest } from 'next/server';
 
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 import { getRequestOrigin } from '@/lib/http/get-request-origin';
 import { signUpApiHandler } from '@/user/dependency/api-handler';
-import { userMapper } from '@/user/dependency/mapper';
 import { createSignUpUseCase } from '@/user/dependency/use-case';
 import { signUpApiRequestSchema } from '@/user/interface/api/sign-up.schema';
 
@@ -28,13 +28,11 @@ export async function POST(request: NextRequest) {
   );
 
   if (!useCaseResult.success) {
-    const { message, code } = useCaseResult.error;
-    return signUpApiHandler.errorResponse({ message }, code);
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return signUpApiHandler.errorResponse(error, status);
   }
 
-  const user = useCaseResult.data;
-
-  const userDto = userMapper.domainToDto(user);
+  const userDto = useCaseResult.data;
 
   return signUpApiHandler.successResponse(userDto, 200);
 }
