@@ -1,8 +1,11 @@
 import type { Route } from 'next';
 import type { NextRequest } from 'next/server';
 
+import { applicationError } from '@/common/application/error';
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 import { apiHandler } from '@/dependency/api-handler';
 import { createSignInWithOtpUseCase } from '@/user/dependency/use-case';
+import { signInWithOtpApiRequestSchema } from '@/user/interface/api/sign-in-with-otp.schema';
 
 export const maxDuration = 10;
 
@@ -19,22 +22,25 @@ export async function GET(request: NextRequest) {
   searchParams.delete('token_hash');
   searchParams.delete('type');
 
-  if (!token_hash || !type)
-    return apiHandler.errorResponse(
-      { message: 'Cannot retrieve auth token or its type.' },
-      500,
-    );
-
-  const signInWithOtpUseCase = await createSignInWithOtpUseCase();
-
-  const useCaseResult = await signInWithOtpUseCase.execute({
+  const contractResult = signInWithOtpApiRequestSchema.safeParse({
     token_hash,
     type,
   });
 
+  if (!contractResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(
+      applicationError.validation('Cannot retrieve auth token or its type.'),
+    );
+    return apiHandler.errorResponse(error, status);
+  }
+
+  const signInWithOtpUseCase = await createSignInWithOtpUseCase();
+
+  const useCaseResult = await signInWithOtpUseCase.execute(contractResult.data);
+
   if (!useCaseResult.success) {
-    const { message, code } = useCaseResult.error;
-    return apiHandler.errorResponse({ message }, code);
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return apiHandler.errorResponse(error, status);
   }
 
   return apiHandler.redirectResponse(requestUrl, 307);

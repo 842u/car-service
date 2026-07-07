@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 import { nameChangeApiHandler } from '@/user/dependency/api-handler';
-import { userMapper } from '@/user/dependency/mapper';
 import { createNameChangeUseCase } from '@/user/dependency/use-case';
 import { nameChangeApiRequestSchema } from '@/user/interface/api/name-change.schema';
 
@@ -26,13 +26,11 @@ export async function PATCH(request: NextRequest) {
   const useCaseResult = await nameChangeUseCase.execute(contract);
 
   if (!useCaseResult.success) {
-    const { message, code } = useCaseResult.error;
-    return nameChangeApiHandler.errorResponse({ message }, code);
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return nameChangeApiHandler.errorResponse(error, status);
   }
 
-  const user = useCaseResult.data;
-
-  const userDto = userMapper.domainToDto(user);
+  const userDto = useCaseResult.data;
 
   return nameChangeApiHandler.successResponse(userDto, 200);
 }

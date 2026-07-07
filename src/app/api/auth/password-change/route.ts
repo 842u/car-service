@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 import { passwordChangeApiHandler } from '@/user/dependency/api-handler';
-import { userMapper } from '@/user/dependency/mapper';
 import { createPasswordChangeUseCase } from '@/user/dependency/use-case';
 import { passwordChangeApiRequestSchema } from '@/user/interface/api/password-change.schema';
 
@@ -26,13 +26,11 @@ export async function PATCH(request: NextRequest) {
   const useCaseResult = await passwordChangeUseCase.execute(contract);
 
   if (!useCaseResult.success) {
-    const { message, code } = useCaseResult.error;
-    return passwordChangeApiHandler.errorResponse({ message }, code);
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return passwordChangeApiHandler.errorResponse(error, status);
   }
 
-  const user = useCaseResult.data;
-
-  const userDto = userMapper.domainToDto(user);
+  const userDto = useCaseResult.data;
 
   return passwordChangeApiHandler.successResponse(userDto, 200);
 }

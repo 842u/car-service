@@ -1,29 +1,13 @@
 import type { Mapper } from '@/common/application/mapper';
 import type { AuthIdentityPersistence } from '@/common/application/persistence-model/auth-identity';
 import { Result } from '@/common/application/result';
+import { ValidatorError } from '@/common/application/validator';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserPersistence } from '@/user/application/persistence-model/user';
 import { User } from '@/user/domain/user/user';
+import { Name } from '@/user/domain/user/value-object/name/name';
 
 export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
-  private _resolveName(model: AuthIdentityPersistence): string {
-    const rawName =
-      model.user_metadata?.user_name ||
-      model.user_metadata?.full_name ||
-      model.user_metadata?.first_name ||
-      model.user_metadata?.second_name;
-
-    if (rawName && rawName.length <= 32) {
-      return rawName;
-    }
-
-    if (model.email && model.email.length <= 32) {
-      return model.email;
-    }
-
-    return `user-${model.id.slice(0, 8)}`;
-  }
-
   domainToDto(model: User): UserDto {
     return {
       id: model.id.value,
@@ -39,30 +23,6 @@ export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
       email: model.email.value,
       user_name: model.name.value,
       avatar_url: model.avatarUrl?.value || null,
-    };
-  }
-
-  dtoToDomain(model: UserDto) {
-    const userResult = User.create({
-      id: model.id,
-      name: model.name,
-      email: model.email,
-      avatarUrl: model.avatarUrl,
-    });
-
-    if (!userResult.success) {
-      return Result.fail(userResult.error);
-    }
-
-    return Result.ok(userResult.data);
-  }
-
-  dtoToPersistence(model: UserDto): UserPersistence {
-    return {
-      id: model.id,
-      email: model.email,
-      user_name: model.name,
-      avatar_url: model.avatarUrl || null,
     };
   }
 
@@ -91,10 +51,33 @@ export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
   }
 
   authIdentityToDomain(model: AuthIdentityPersistence) {
+    const { email } = model;
+
+    if (!email) {
+      return Result.fail(
+        new ValidatorError('Auth identity is missing an email.'),
+      );
+    }
+
+    const nameResult = Name.fromCandidates(
+      [
+        model.user_metadata?.user_name,
+        model.user_metadata?.full_name,
+        model.user_metadata?.first_name,
+        model.user_metadata?.second_name,
+        email,
+        `user-${model.id.slice(0, 8)}`,
+      ].filter((candidate): candidate is string => Boolean(candidate)),
+    );
+
+    if (!nameResult.success) {
+      return Result.fail(nameResult.error);
+    }
+
     const userResult = User.create({
       id: model.id,
-      name: this._resolveName(model),
-      email: model.email!,
+      name: nameResult.data.value,
+      email,
       avatarUrl: model.user_metadata?.avatar_url,
     });
 

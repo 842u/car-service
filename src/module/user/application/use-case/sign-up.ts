@@ -1,18 +1,19 @@
 import type { AdminAuthClient } from '@/common/application/auth-client';
+import {
+  type ApplicationError,
+  applicationError,
+} from '@/common/application/error';
 import { Result } from '@/common/application/result';
 import type { UseCase } from '@/common/application/use-case';
+import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
 import { User } from '@/user/domain/user/user';
-import { Credentials } from '@/user/domain/user/value-object/credentials';
+import { Email } from '@/user/domain/user/value-object/email/email';
+import { Password } from '@/user/domain/user/value-object/password/password';
 import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 
-type SignUpUseCaseError = { code: number };
-
-export class SignUpUseCase implements UseCase<
-  SignUpApiRequest,
-  SignUpUseCaseError
-> {
+export class SignUpUseCase implements UseCase<SignUpApiRequest, UserDto> {
   private readonly _adminAuthClient: AdminAuthClient;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
@@ -30,18 +31,24 @@ export class SignUpUseCase implements UseCase<
     this._origin = origin;
   }
 
-  async execute(contract: SignUpApiRequest) {
-    const { email: emailDto, password: passwordDto } = contract;
+  async execute(
+    contract: SignUpApiRequest,
+  ): Promise<Result<UserDto, ApplicationError>> {
+    const { email, password } = contract;
 
-    const credentialsResult = Credentials.create(emailDto, passwordDto);
-    if (!credentialsResult.success) {
-      const { message } = credentialsResult.error;
-      return Result.fail({ message, code: 422 });
+    const emailResult = Email.create(email);
+
+    if (!emailResult.success) {
+      const { message, issues } = emailResult.error;
+      return Result.fail(applicationError.validation(message, issues));
     }
-    const {
-      email: { value: email },
-      password: { value: password },
-    } = credentialsResult.data;
+
+    const passwordResult = Password.create(password);
+
+    if (!passwordResult.success) {
+      const { message, issues } = passwordResult.error;
+      return Result.fail(applicationError.validation(message, issues));
+    }
 
     const createAuthIdentityResult =
       await this._adminAuthClient.createAuthIdentity({
@@ -51,10 +58,11 @@ export class SignUpUseCase implements UseCase<
       });
 
     if (!createAuthIdentityResult.success) {
-      const { message, code, status } = createAuthIdentityResult.error;
+      const { message, code } = createAuthIdentityResult.error;
 
-      if (code !== 'email_exists' && code !== 'user_already_exists')
-        return Result.fail({ message, code: status || 500 });
+      if (code !== 'email_exists' && code !== 'user_already_exists') {
+        return Result.fail(applicationError.unexpected(message));
+      }
 
       /**
        * If auth identity/user already exists, send password reset email and return obfuscated user to not expose such information to threat actors.
@@ -67,33 +75,32 @@ export class SignUpUseCase implements UseCase<
       });
 
       if (!resetPasswordResult.success) {
-        const { message, status } = resetPasswordResult.error;
-        return Result.fail({ message, code: status || 500 });
+        const { message } = resetPasswordResult.error;
+        return Result.fail(applicationError.unexpected(message));
       }
 
       const obfuscatedId = crypto.randomUUID();
 
       const obfuscatedUserResult = User.create({
         id: obfuscatedId,
-        email: email,
+        email,
         name: `user-${obfuscatedId.substring(0, 8)}`,
       });
 
       if (!obfuscatedUserResult.success) {
         const { message } = obfuscatedUserResult.error;
-        return Result.fail({ message, code: 500 });
+        return Result.fail(applicationError.unexpected(message));
       }
 
-      return Result.ok(obfuscatedUserResult.data);
+      return Result.ok(this._userMapper.domainToDto(obfuscatedUserResult.data));
     }
 
     const authIdentity = createAuthIdentityResult.data;
 
     if (!authIdentity) {
-      return Result.fail({
-        message: 'Cannot get authentication identity.',
-        code: 500,
-      });
+      return Result.fail(
+        applicationError.unexpected('Cannot get authentication identity.'),
+      );
     }
 
     const userResult = this._userMapper.authIdentityToDomain(authIdentity);
@@ -103,7 +110,7 @@ export class SignUpUseCase implements UseCase<
         id: authIdentity.id,
       });
       const { message } = userResult.error;
-      return Result.fail({ message, code: 422 });
+      return Result.fail(applicationError.unexpected(message));
     }
 
     const storeUserResult = await this._userRepository.store(userResult.data);
@@ -113,10 +120,7 @@ export class SignUpUseCase implements UseCase<
         id: authIdentity.id,
       });
       const { message } = storeUserResult.error;
-      return Result.fail({
-        message,
-        code: 500,
-      });
+      return Result.fail(applicationError.unexpected(message));
     }
 
     const sendConfirmationEmailResult =
@@ -129,13 +133,10 @@ export class SignUpUseCase implements UseCase<
       await this._adminAuthClient.deleteAuthIdentity({
         id: authIdentity.id,
       });
-      const { message, status } = sendConfirmationEmailResult.error;
-      return Result.fail({
-        message,
-        code: status || 500,
-      });
+      const { message } = sendConfirmationEmailResult.error;
+      return Result.fail(applicationError.unexpected(message));
     }
 
-    return Result.ok(userResult.data);
+    return Result.ok(this._userMapper.domainToDto(userResult.data));
   }
 }

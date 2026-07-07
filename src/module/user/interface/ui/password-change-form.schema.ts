@@ -1,12 +1,20 @@
 import { z } from 'zod';
 
-import { passwordChangeApiRequestSchema } from '@/user/interface/api/password-change.schema';
+import { passwordSchema } from '@/user/domain/user/value-object/password/password.schema';
 
 z.config({
   jitless: true,
 });
 
-export const passwordChangeFormDataSchema = passwordChangeApiRequestSchema;
+export const passwordChangeFormDataSchema = z
+  .object({
+    password: passwordSchema,
+    passwordConfirm: passwordSchema,
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'Passwords must match.',
+    path: ['passwordConfirm'],
+  });
 
 export type PasswordChangeFormData = z.infer<
   typeof passwordChangeFormDataSchema

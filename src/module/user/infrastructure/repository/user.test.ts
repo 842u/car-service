@@ -24,6 +24,9 @@ describe('UserRepositoryImplementation', () => {
 
   describe('store', () => {
     it('should return success result on success', async () => {
+      const persistence = createMockUserPersistence();
+
+      mockUserMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
 
       const result = await repository.store(user);
@@ -32,10 +35,14 @@ describe('UserRepositoryImplementation', () => {
       if (result.success) {
         expect(result.data).toBeNull();
       }
+      expect(mockUserMapper.domainToPersistence).toHaveBeenCalledWith(user);
       expect(mockDbClient.query).toHaveBeenCalled();
     });
 
     it('should return error when query fails', async () => {
+      mockUserMapper.domainToPersistence.mockReturnValue(
+        createMockUserPersistence(),
+      );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
       );
@@ -72,58 +79,6 @@ describe('UserRepositoryImplementation', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Delete failed');
-      }
-    });
-  });
-
-  describe('getByEmail', () => {
-    const email = 'test@example.com';
-
-    it('should return user domain on success', async () => {
-      const persistence = createMockUserPersistence({ email });
-
-      mockDbClient.query.mockResolvedValue(Result.ok(persistence));
-      mockUserMapper.persistenceToDomain.mockReturnValue(Result.ok(user));
-
-      const result = await repository.getByEmail(email);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual(user);
-      }
-      expect(mockDbClient.query).toHaveBeenCalled();
-      expect(mockUserMapper.persistenceToDomain).toHaveBeenCalledWith(
-        persistence,
-      );
-    });
-
-    it('should return error when query fails', async () => {
-      mockDbClient.query.mockResolvedValue(
-        Result.fail({ message: 'User not found' }),
-      );
-
-      const result = await repository.getByEmail(email);
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.message).toBe('User not found');
-      }
-      expect(mockUserMapper.persistenceToDomain).not.toHaveBeenCalled();
-    });
-
-    it('should return error when mapping fails', async () => {
-      const persistence = createMockUserPersistence({ email });
-
-      mockDbClient.query.mockResolvedValue(Result.ok(persistence));
-      mockUserMapper.persistenceToDomain.mockReturnValue(
-        Result.fail({ message: 'Mapping failed', issues: [], name: '' }),
-      );
-
-      const result = await repository.getByEmail(email);
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.message).toBe('Mapping failed');
       }
     });
   });
@@ -180,52 +135,32 @@ describe('UserRepositoryImplementation', () => {
     });
   });
 
-  describe('changeName', () => {
+  describe('update', () => {
     it('should return success result on success', async () => {
+      const persistence = createMockUserPersistence();
+
+      mockUserMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
 
-      const result = await repository.changeName(user);
+      const result = await repository.update(user);
 
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toBeNull();
       }
+      expect(mockUserMapper.domainToPersistence).toHaveBeenCalledWith(user);
       expect(mockDbClient.query).toHaveBeenCalled();
     });
 
     it('should return error when query fails', async () => {
+      mockUserMapper.domainToPersistence.mockReturnValue(
+        createMockUserPersistence(),
+      );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),
       );
 
-      const result = await repository.changeName(user);
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.message).toBe('Update failed');
-      }
-    });
-  });
-
-  describe('changeAvatarUrl', () => {
-    it('should return success result on on success', async () => {
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
-
-      const result = await repository.changeAvatarUrl(user);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toBeNull();
-      }
-      expect(mockDbClient.query).toHaveBeenCalled();
-    });
-
-    it('should return error when query fails', async () => {
-      mockDbClient.query.mockResolvedValue(
-        Result.fail({ message: 'Update failed' }),
-      );
-
-      const result = await repository.changeAvatarUrl(user);
+      const result = await repository.update(user);
 
       expect(result.success).toBe(false);
       if (!result.success) {

@@ -3,10 +3,7 @@ import { ZodError } from 'zod';
 
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import { carFormSchema } from '@/car/schemas/zod/carFormSchema';
-import {
-  errorApiResponse,
-  successApiResponse,
-} from '@/common/interface/api/response';
+import { apiHandler } from '@/dependency/api-handler';
 import { createServerDatabaseClient } from '@/dependency/database-client/server';
 
 type CarFormValuesToValidate = Omit<CarFormValues, 'image'>;
@@ -21,7 +18,7 @@ export const maxDuration = 10;
 
 export async function POST(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json')
-    return errorApiResponse({ message: 'Unsupported Media Type' }, 415);
+    return apiHandler.errorResponse({ message: 'Unsupported Media Type' }, 415);
 
   const { carFormData } = (await request.json()) as ApiCarRequestBody;
 
@@ -31,7 +28,7 @@ export async function POST(request: NextRequest) {
     validatedCarFormData = carFormSchema.parse(carFormData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         {
           message: `Server validation failed: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
         },
@@ -39,12 +36,12 @@ export async function POST(request: NextRequest) {
       );
     }
     if (error instanceof Error) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         { message: `Server validation failed: ${error.message}.` },
         400,
       );
     }
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: 'Server data validation failed. Try again.' },
       400,
     );
@@ -85,17 +82,17 @@ export async function POST(request: NextRequest) {
 
   if (!rpcResult.success) {
     const { message } = rpcResult.error;
-    return errorApiResponse({ message }, 502);
+    return apiHandler.errorResponse({ message }, 502);
   }
 
   const { data } = rpcResult;
 
-  return successApiResponse({ id: data }, 201);
+  return apiHandler.successResponse({ id: data }, 201);
 }
 
 export async function PATCH(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json')
-    return errorApiResponse({ message: 'Unsupported Media Type' }, 415);
+    return apiHandler.errorResponse({ message: 'Unsupported Media Type' }, 415);
 
   const { carFormData, carId } = (await request.json()) as ApiCarRequestBody;
 
@@ -105,7 +102,7 @@ export async function PATCH(request: NextRequest) {
     validatedCarFormData = carFormSchema.parse(carFormData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         {
           message: `Server validation failed: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
         },
@@ -113,12 +110,12 @@ export async function PATCH(request: NextRequest) {
       );
     }
     if (error instanceof Error) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         { message: `Server validation failed: ${error.message}.` },
         400,
       );
     }
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: 'Server data validation failed. Try again.' },
       400,
     );
@@ -152,10 +149,10 @@ export async function PATCH(request: NextRequest) {
 
   if (!queryResult.success) {
     const { message } = queryResult.error;
-    return errorApiResponse({ message }, 502);
+    return apiHandler.errorResponse({ message }, 502);
   }
 
   const { id } = queryResult.data;
 
-  return successApiResponse({ id }, 200);
+  return apiHandler.successResponse({ id }, 200);
 }

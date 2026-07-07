@@ -5,8 +5,6 @@ import {
   createApiResponseSchema,
 } from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dto/user';
-import { emailSchema } from '@/user/domain/user/value-object/email/email.schema';
-import { passwordSchema } from '@/user/domain/user/value-object/password/password.schema';
 
 z.config({
   jitless: true,
@@ -28,8 +26,8 @@ export type SignUpApiResponseError = z.infer<
 >;
 
 export const signUpApiRequestSchema = z.object({
-  email: emailSchema,
-  password: passwordSchema,
+  email: z.string(),
+  password: z.string(),
 });
 
 export type SignUpApiRequest = z.infer<typeof signUpApiRequestSchema>;

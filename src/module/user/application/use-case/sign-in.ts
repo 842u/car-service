@@ -8,12 +8,9 @@ import type { UseCase } from '@/common/application/use-case';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
-import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
+import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 
-export class AvatarUrlChangeUseCase implements UseCase<
-  AvatarUrlChangeApiRequest,
-  UserDto
-> {
+export class SignInUseCase implements UseCase<SignInApiRequest, UserDto> {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
@@ -29,16 +26,18 @@ export class AvatarUrlChangeUseCase implements UseCase<
   }
 
   async execute(
-    contract: AvatarUrlChangeApiRequest,
+    contract: SignInApiRequest,
   ): Promise<Result<UserDto, ApplicationError>> {
-    const sessionResult = await this._authClient.authenticate();
+    const { email, password } = contract;
 
-    if (!sessionResult.success) {
-      const { message } = sessionResult.error;
+    const signInResult = await this._authClient.signIn({ email, password });
+
+    if (!signInResult.success) {
+      const { message } = signInResult.error;
       return Result.fail(applicationError.unauthorized(message));
     }
 
-    const authIdentity = sessionResult.data;
+    const authIdentity = signInResult.data;
 
     const getUserResult = await this._userRepository.getById(authIdentity.id);
 
@@ -47,24 +46,6 @@ export class AvatarUrlChangeUseCase implements UseCase<
       return Result.fail(applicationError.unexpected(message));
     }
 
-    const user = getUserResult.data;
-
-    const { avatarUrl } = contract;
-
-    const changeAvatarUrlResult = user.changeAvatarUrl(avatarUrl);
-
-    if (!changeAvatarUrlResult.success) {
-      const { message, issues } = changeAvatarUrlResult.error;
-      return Result.fail(applicationError.validation(message, issues));
-    }
-
-    const updateResult = await this._userRepository.update(user);
-
-    if (!updateResult.success) {
-      const { message } = updateResult.error;
-      return Result.fail(applicationError.unexpected(message));
-    }
-
-    return Result.ok(this._userMapper.domainToDto(user));
+    return Result.ok(this._userMapper.domainToDto(getUserResult.data));
   }
 }

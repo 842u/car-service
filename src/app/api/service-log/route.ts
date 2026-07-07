@@ -3,10 +3,7 @@ import { ZodError } from 'zod';
 
 import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
 import { carServiceLogFormSchema } from '@/car/schemas/zod/carServiceLogFormSchema';
-import {
-  errorApiResponse,
-  successApiResponse,
-} from '@/common/interface/api/response';
+import { apiHandler } from '@/dependency/api-handler';
 import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { createServerDatabaseClient } from '@/dependency/database-client/server';
 
@@ -28,7 +25,7 @@ export const maxDuration = 10;
 
 export async function POST(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json') {
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: "Invalid content type. Expected 'application/json'." },
       415,
     );
@@ -41,18 +38,18 @@ export async function POST(request: NextRequest) {
     ({ formData, car_id } =
       (await request.json()) as Partial<ServiceLogPostRouteHandlerRequest>);
   } catch (_) {
-    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
+    return apiHandler.errorResponse({ message: 'Invalid JSON.' }, 400);
   }
 
   if (!formData) {
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: 'Missing form data in request body.' },
       400,
     );
   }
 
   if (!car_id) {
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: "Missing 'car_id' in request body." },
       400,
     );
@@ -64,7 +61,7 @@ export async function POST(request: NextRequest) {
     validatedFormData = carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         {
           message: `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
         },
@@ -73,13 +70,13 @@ export async function POST(request: NextRequest) {
     }
 
     if (error instanceof Error) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         { message: `Validation error: ${error.message}.` },
         400,
       );
     }
 
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: 'Validation error: Unknown error occurred.' },
       400,
     );
@@ -91,7 +88,7 @@ export async function POST(request: NextRequest) {
 
   if (!sessionResult.success) {
     const { message } = sessionResult.error;
-    return errorApiResponse({ message }, 401);
+    return apiHandler.errorResponse({ message }, 401);
   }
 
   const authIdentity = sessionResult.data;
@@ -111,17 +108,17 @@ export async function POST(request: NextRequest) {
 
   if (!queryResult.success) {
     const { message } = queryResult.error;
-    return errorApiResponse({ message }, 502);
+    return apiHandler.errorResponse({ message }, 502);
   }
 
   const { id } = queryResult.data;
 
-  return successApiResponse({ id }, 201);
+  return apiHandler.successResponse({ id }, 201);
 }
 
 export async function PATCH(request: NextRequest) {
   if (request.headers.get('content-type') !== 'application/json') {
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: "Invalid content type. Expected 'application/json'." },
       415,
     );
@@ -134,18 +131,18 @@ export async function PATCH(request: NextRequest) {
     ({ formData, service_log_id } =
       (await request.json()) as Partial<ServiceLogPatchRouteHandlerRequest>);
   } catch (_) {
-    return errorApiResponse({ message: 'Invalid JSON.' }, 400);
+    return apiHandler.errorResponse({ message: 'Invalid JSON.' }, 400);
   }
 
   if (!formData) {
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: 'Missing form data in request body.' },
       400,
     );
   }
 
   if (!service_log_id) {
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: "Missing 'service_log_id' in request body." },
       400,
     );
@@ -157,7 +154,7 @@ export async function PATCH(request: NextRequest) {
     validatedFormData = carServiceLogFormSchema.parse(formData);
   } catch (error) {
     if (error instanceof ZodError) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         {
           message: `Validation error: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
         },
@@ -166,13 +163,13 @@ export async function PATCH(request: NextRequest) {
     }
 
     if (error instanceof Error) {
-      return errorApiResponse(
+      return apiHandler.errorResponse(
         { message: `Validation error: ${error.message}.` },
         400,
       );
     }
 
-    return errorApiResponse(
+    return apiHandler.errorResponse(
       { message: 'Validation error: Unknown error occurred.' },
       400,
     );
@@ -190,10 +187,10 @@ export async function PATCH(request: NextRequest) {
 
   if (!queryResult.success) {
     const { message } = queryResult.error;
-    return errorApiResponse({ message }, 502);
+    return apiHandler.errorResponse({ message }, 502);
   }
 
   const { id } = queryResult.data;
 
-  return successApiResponse({ id }, 200);
+  return apiHandler.successResponse({ id }, 200);
 }

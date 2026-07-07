@@ -5,7 +5,6 @@ import {
   createApiResponseSchema,
 } from '@/common/interface/api/response.schema';
 import { userDtoSchema } from '@/user/application/dto/user';
-import { avatarUrlSchema } from '@/user/domain/user/value-object/avatar-url/avatar-url.schema';
 
 z.config({
   jitless: true,
@@ -29,7 +28,7 @@ export type AvatarUrlChangeApiResponseError = z.infer<
 >;
 
 export const avatarUrlChangeApiRequestSchema = z.object({
-  avatarUrl: avatarUrlSchema,
+  avatarUrl: z.string(),
 });
 
 export type AvatarUrlChangeApiRequest = z.infer<

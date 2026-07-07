@@ -1,9 +1,8 @@
 import { type NextRequest } from 'next/server';
 
-import { createServerAuthClient } from '@/dependency/auth-client/server';
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 import { signInApiHandler } from '@/user/dependency/api-handler';
-import { userMapper } from '@/user/dependency/mapper';
-import { createUserRepository } from '@/user/dependency/repository';
+import { createSignInUseCase } from '@/user/dependency/use-case';
 import { signInApiRequestSchema } from '@/user/interface/api/sign-in.schema';
 
 export const maxDuration = 10;
@@ -20,28 +19,14 @@ export async function POST(request: NextRequest) {
     return signInApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const { email, password } = preprocessResult.data;
+  const signInUseCase = await createSignInUseCase();
 
-  const authClient = await createServerAuthClient();
+  const useCaseResult = await signInUseCase.execute(preprocessResult.data);
 
-  const signInResult = await authClient.signIn({ email, password });
-
-  if (!signInResult.success) {
-    const { message } = signInResult.error;
-    return signInApiHandler.errorResponse({ message }, 401);
+  if (!useCaseResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return signInApiHandler.errorResponse(error, status);
   }
 
-  const authIdentity = signInResult.data;
-
-  const userRepository = await createUserRepository();
-
-  const userResult = await userRepository.getById(authIdentity.id);
-
-  if (!userResult.success) {
-    return signInApiHandler.errorResponse(userResult.error, 500);
-  }
-
-  const userDto = userMapper.domainToDto(userResult.data);
-
-  return signInApiHandler.successResponse(userDto, 200);
+  return signInApiHandler.successResponse(useCaseResult.data, 200);
 }

@@ -2,8 +2,11 @@ import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
+import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
 import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
 import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import type { UserDto } from '@/user/application/dto/user';
+import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
 import { AvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
 import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
@@ -12,11 +15,17 @@ describe('AvatarUrlChangeUseCase', () => {
   let useCase: AvatarUrlChangeUseCase;
   let mockAuthClient: jest.Mocked<AuthClient>;
   let mockUserRepository: jest.Mocked<UserRepository>;
+  let mockUserMapper: jest.Mocked<UserMapper>;
 
   beforeEach(() => {
     mockAuthClient = createMockAuthClient();
     mockUserRepository = createMockUserRepository();
-    useCase = new AvatarUrlChangeUseCase(mockAuthClient, mockUserRepository);
+    mockUserMapper = createMockUserMapper();
+    useCase = new AvatarUrlChangeUseCase(
+      mockAuthClient,
+      mockUserRepository,
+      mockUserMapper,
+    );
   });
 
   describe('execute', () => {
@@ -26,7 +35,14 @@ describe('AvatarUrlChangeUseCase', () => {
 
     const mockAuthIdentity = createMockAuthIdentity();
 
-    it('should successfully change avatar URL', async () => {
+    const mockUserDto: UserDto = {
+      id: '44dd8410-a912-480f-95be-9ad4cbe30d7f',
+      email: 'test@example.com',
+      name: 'Test User',
+      avatarUrl: 'https://example.com/avatar.jpg',
+    };
+
+    it('should change the avatar URL successfully', async () => {
       const mockUser = createMockUser();
 
       mockAuthClient.authenticate.mockResolvedValue(
@@ -35,24 +51,27 @@ describe('AvatarUrlChangeUseCase', () => {
 
       mockUserRepository.getById.mockResolvedValue(Result.ok(mockUser));
 
-      mockUserRepository.changeAvatarUrl.mockResolvedValue(Result.ok(null));
+      mockUserRepository.update.mockResolvedValue(Result.ok(null));
+
+      mockUserMapper.domainToDto.mockReturnValue(mockUserDto);
 
       const result = await useCase.execute(validContract);
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data).toBe(mockUser);
-        expect(result.data.avatarUrl?.value).toBe(validContract.avatarUrl);
+        expect(result.data).toBe(mockUserDto);
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
       expect(mockUserRepository.getById).toHaveBeenCalledWith(
         mockAuthIdentity.id,
       );
-      expect(mockUserRepository.changeAvatarUrl).toHaveBeenCalledWith(mockUser);
+      expect(mockUser.avatarUrl?.value).toBe(validContract.avatarUrl);
+      expect(mockUserRepository.update).toHaveBeenCalledWith(mockUser);
+      expect(mockUserMapper.domainToDto).toHaveBeenCalledWith(mockUser);
     });
 
-    it('should fail when authentication fails', async () => {
+    it('should fail as unauthorized when authentication fails', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.fail({ message: 'Unauthorized', code: '', status: 401 }),
       );
@@ -62,28 +81,15 @@ describe('AvatarUrlChangeUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Unauthorized');
-        expect(result.error.code).toBe(401);
+        expect(result.error.kind).toBe('unauthorized');
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
       expect(mockUserRepository.getById).not.toHaveBeenCalled();
-      expect(mockUserRepository.changeAvatarUrl).not.toHaveBeenCalled();
+      expect(mockUserRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should use default 401 code when auth fails without status', async () => {
-      mockAuthClient.authenticate.mockResolvedValue(
-        Result.fail({ message: 'Unauthorized', status: 401, code: '' }),
-      );
-
-      const result = await useCase.execute(validContract);
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.code).toBe(401);
-      }
-    });
-
-    it('should fail when user not found', async () => {
+    it('should fail as unexpected when user retrieval fails', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
@@ -97,17 +103,17 @@ describe('AvatarUrlChangeUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('User not found');
-        expect(result.error.code).toBe(500);
+        expect(result.error.kind).toBe('unexpected');
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
       expect(mockUserRepository.getById).toHaveBeenCalledWith(
         mockAuthIdentity.id,
       );
-      expect(mockUserRepository.changeAvatarUrl).not.toHaveBeenCalled();
+      expect(mockUserRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should fail when avatar URL is invalid', async () => {
+    it('should fail as validation when avatar URL is invalid', async () => {
       const mockUser = createMockUser();
       const invalidContract: AvatarUrlChangeApiRequest = {
         avatarUrl: 'invalid-url',
@@ -123,7 +129,7 @@ describe('AvatarUrlChangeUseCase', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.code).toBe(400);
+        expect(result.error.kind).toBe('validation');
         expect(result.error.message).toBeDefined();
       }
 
@@ -131,10 +137,10 @@ describe('AvatarUrlChangeUseCase', () => {
       expect(mockUserRepository.getById).toHaveBeenCalledWith(
         mockAuthIdentity.id,
       );
-      expect(mockUserRepository.changeAvatarUrl).not.toHaveBeenCalled();
+      expect(mockUserRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should fail when persistence fails', async () => {
+    it('should fail as unexpected when persistence fails', async () => {
       const mockUser = createMockUser();
 
       mockAuthClient.authenticate.mockResolvedValue(
@@ -143,7 +149,7 @@ describe('AvatarUrlChangeUseCase', () => {
 
       mockUserRepository.getById.mockResolvedValue(Result.ok(mockUser));
 
-      mockUserRepository.changeAvatarUrl.mockResolvedValue(
+      mockUserRepository.update.mockResolvedValue(
         Result.fail({ message: 'Database error' }),
       );
 
@@ -152,14 +158,14 @@ describe('AvatarUrlChangeUseCase', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Database error');
-        expect(result.error.code).toBe(500);
+        expect(result.error.kind).toBe('unexpected');
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
       expect(mockUserRepository.getById).toHaveBeenCalledWith(
         mockAuthIdentity.id,
       );
-      expect(mockUserRepository.changeAvatarUrl).toHaveBeenCalledWith(mockUser);
+      expect(mockUserRepository.update).toHaveBeenCalledWith(mockUser);
     });
   });
 });
