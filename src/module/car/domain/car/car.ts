@@ -17,6 +17,7 @@ import { Vin } from '@/car/domain/car/value-object/vin/vin';
 import { Result } from '@/common/application/result';
 import type { ValidatorError } from '@/common/application/validator';
 import { Entity } from '@/common/domain/entity';
+import { optionalValueObject } from '@/common/domain/value-object';
 
 type CarEditableValue = {
   customName: CustomName;
@@ -62,146 +63,62 @@ export type CarCreateParams = CarEditParams & {
   imageUrl?: string | null;
 };
 
-// Runs a value object factory only when a value is present; absent (null /
-// undefined) nullable fields resolve to `null` without validation.
-function optionalValueObject<Input, Vo>(
-  create: (value: Input) => Result<Vo, ValidatorError>,
-  value: Input | null | undefined,
-): Result<Vo | null, ValidatorError> {
-  if (value === null || value === undefined) {
-    return Result.ok(null);
-  }
-
-  return create(value);
-}
-
 export class Car extends Entity<CarValue> {
   private constructor(value: CarValue) {
     super(value);
   }
 
-  // Constructs and validates the 14 editable value objects atomically, failing
-  // on the first invalid field. Shared by `create` and `edit`.
+  /**
+   * Constructs and validates the 14 editable value objects atomically, failing
+   * on the first invalid field in declaration order. Shared by `create` and
+   * `edit`.
+   */
   private static buildEditable(
     params: CarEditParams,
   ): Result<CarEditableValue, ValidatorError> {
-    const customNameResult = CustomName.create(params.customName);
-    if (!customNameResult.success) {
-      return Result.fail(customNameResult.error);
-    }
-
-    const brandResult = optionalValueObject(Brand.create, params.brand);
-    if (!brandResult.success) {
-      return Result.fail(brandResult.error);
-    }
-
-    const modelResult = optionalValueObject(Model.create, params.model);
-    if (!modelResult.success) {
-      return Result.fail(modelResult.error);
-    }
-
-    const licensePlatesResult = optionalValueObject(
-      LicensePlates.create,
-      params.licensePlates,
-    );
-    if (!licensePlatesResult.success) {
-      return Result.fail(licensePlatesResult.error);
-    }
-
-    const vinResult = optionalValueObject(Vin.create, params.vin);
-    if (!vinResult.success) {
-      return Result.fail(vinResult.error);
-    }
-
-    const fuelTypeResult = optionalValueObject(
-      FuelType.create,
-      params.fuelType,
-    );
-    if (!fuelTypeResult.success) {
-      return Result.fail(fuelTypeResult.error);
-    }
-
-    const additionalFuelTypeResult = optionalValueObject(
-      AdditionalFuelType.create,
-      params.additionalFuelType,
-    );
-    if (!additionalFuelTypeResult.success) {
-      return Result.fail(additionalFuelTypeResult.error);
-    }
-
-    const transmissionTypeResult = optionalValueObject(
-      TransmissionType.create,
-      params.transmissionType,
-    );
-    if (!transmissionTypeResult.success) {
-      return Result.fail(transmissionTypeResult.error);
-    }
-
-    const driveTypeResult = optionalValueObject(
-      DriveType.create,
-      params.driveType,
-    );
-    if (!driveTypeResult.success) {
-      return Result.fail(driveTypeResult.error);
-    }
-
-    const productionYearResult = optionalValueObject(
-      ProductionYear.create,
-      params.productionYear,
-    );
-    if (!productionYearResult.success) {
-      return Result.fail(productionYearResult.error);
-    }
-
-    const engineCapacityResult = optionalValueObject(
-      EngineCapacity.create,
-      params.engineCapacity,
-    );
-    if (!engineCapacityResult.success) {
-      return Result.fail(engineCapacityResult.error);
-    }
-
-    const mileageResult = optionalValueObject(Mileage.create, params.mileage);
-    if (!mileageResult.success) {
-      return Result.fail(mileageResult.error);
-    }
-
-    const insuranceExpirationResult = optionalValueObject(
-      InsuranceExpiration.create,
-      params.insuranceExpiration,
-    );
-    if (!insuranceExpirationResult.success) {
-      return Result.fail(insuranceExpirationResult.error);
-    }
-
-    const technicalInspectionExpirationResult = optionalValueObject(
-      TechnicalInspectionExpiration.create,
-      params.technicalInspectionExpiration,
-    );
-    if (!technicalInspectionExpirationResult.success) {
-      return Result.fail(technicalInspectionExpirationResult.error);
-    }
-
-    return Result.ok({
-      customName: customNameResult.data,
-      brand: brandResult.data,
-      model: modelResult.data,
-      licensePlates: licensePlatesResult.data,
-      vin: vinResult.data,
-      fuelType: fuelTypeResult.data,
-      additionalFuelType: additionalFuelTypeResult.data,
-      transmissionType: transmissionTypeResult.data,
-      driveType: driveTypeResult.data,
-      productionYear: productionYearResult.data,
-      engineCapacity: engineCapacityResult.data,
-      mileage: mileageResult.data,
-      insuranceExpiration: insuranceExpirationResult.data,
-      technicalInspectionExpiration: technicalInspectionExpirationResult.data,
+    return Result.combine({
+      customName: CustomName.create(params.customName),
+      brand: optionalValueObject(Brand.create, params.brand),
+      model: optionalValueObject(Model.create, params.model),
+      licensePlates: optionalValueObject(
+        LicensePlates.create,
+        params.licensePlates,
+      ),
+      vin: optionalValueObject(Vin.create, params.vin),
+      fuelType: optionalValueObject(FuelType.create, params.fuelType),
+      additionalFuelType: optionalValueObject(
+        AdditionalFuelType.create,
+        params.additionalFuelType,
+      ),
+      transmissionType: optionalValueObject(
+        TransmissionType.create,
+        params.transmissionType,
+      ),
+      driveType: optionalValueObject(DriveType.create, params.driveType),
+      productionYear: optionalValueObject(
+        ProductionYear.create,
+        params.productionYear,
+      ),
+      engineCapacity: optionalValueObject(
+        EngineCapacity.create,
+        params.engineCapacity,
+      ),
+      mileage: optionalValueObject(Mileage.create, params.mileage),
+      insuranceExpiration: optionalValueObject(
+        InsuranceExpiration.create,
+        params.insuranceExpiration,
+      ),
+      technicalInspectionExpiration: optionalValueObject(
+        TechnicalInspectionExpiration.create,
+        params.technicalInspectionExpiration,
+      ),
     });
   }
 
-  // Single factory for both a brand-new Car (add passes a generated id) and
-  // reconstitution from persistence (mapper passes the stored id).
+  /**
+   * Single factory for both a brand-new Car (add passes a generated id) and
+   * reconstitution from persistence (mapper passes the stored id).
+   */
   static create(params: CarCreateParams): Result<Car, ValidatorError> {
     const idResult = CarId.create(params.id);
     if (!idResult.success) {
@@ -227,7 +144,10 @@ export class Car extends Entity<CarValue> {
     );
   }
 
-  // Atomic edit of all 14 editable fields; leaves `id` and `imageUrl` untouched.
+  /**
+   * Atomic edit of all 14 editable fields; leaves `id` and `imageUrl`
+   * untouched.
+   */
   edit(params: CarEditParams): Result<undefined, ValidatorError> {
     const editableResult = Car.buildEditable(params);
     if (!editableResult.success) {
