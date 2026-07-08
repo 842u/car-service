@@ -55,6 +55,53 @@ describe('Result', () => {
     });
   });
 
+  describe('combine', () => {
+    it('should merge success results into a record of unwrapped data', () => {
+      const result = Result.combine({
+        name: Result.ok('test'),
+        age: Result.ok(11),
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual({ name: 'test', age: 11 });
+      }
+    });
+
+    it('should return the first failure in key order', () => {
+      const result = Result.combine({
+        name: Result.fail('name error'),
+        age: Result.fail('age error'),
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toBe('name error');
+      }
+    });
+
+    it('should fail when any result fails', () => {
+      const result = Result.combine({
+        name: Result.ok('test'),
+        age: Result.fail('age error'),
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toBe('age error');
+      }
+    });
+
+    it('should produce an empty record for no results', () => {
+      const result = Result.combine({});
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual({});
+      }
+    });
+  });
+
   describe('return type narrowing', () => {
     it('should narrow types correctly in success case', () => {
       const data = 'test data';
