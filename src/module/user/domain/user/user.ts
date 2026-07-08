@@ -1,5 +1,7 @@
 import { Result } from '@/common/application/result';
+import type { ValidatorError } from '@/common/application/validator';
 import { Entity } from '@/common/domain/entity';
+import { optionalValueObject } from '@/common/domain/value-object';
 import { AvatarUrl } from '@/user/domain/user/value-object/avatar-url/avatar-url';
 import { Email } from '@/user/domain/user/value-object/email/email';
 import { Name } from '@/user/domain/user/value-object/name/name';
@@ -25,34 +27,18 @@ export class User extends Entity<UserValue> {
   }
 
   static create({ id, email, name, avatarUrl }: UserCreateParams) {
-    const idResult = UserId.create(id);
-    if (!idResult.success) {
-      return Result.fail(idResult.error);
-    }
-    const emailResult = Email.create(email);
-    if (!emailResult.success) {
-      return Result.fail(emailResult.error);
-    }
-    const nameResult = Name.create(name);
-    if (!nameResult.success) {
-      return Result.fail(nameResult.error);
-    }
-    let avatarUrlResult;
-    if (avatarUrl) {
-      avatarUrlResult = AvatarUrl.create(avatarUrl);
-      if (!avatarUrlResult.success) {
-        return Result.fail(avatarUrlResult.error);
-      }
+    const result: Result<UserValue, ValidatorError> = Result.combine({
+      id: UserId.create(id),
+      email: Email.create(email),
+      name: Name.create(name),
+      avatarUrl: optionalValueObject(AvatarUrl.create, avatarUrl),
+    });
+
+    if (!result.success) {
+      return Result.fail(result.error);
     }
 
-    return Result.ok(
-      new User({
-        id: idResult.data,
-        email: emailResult.data,
-        name: nameResult.data,
-        avatarUrl: avatarUrlResult?.data || null,
-      }),
-    );
+    return Result.ok(new User(result.data));
   }
 
   get email(): Email {
