@@ -1,5 +1,5 @@
-import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
-import type { Car } from '@/types';
+import type { CarDto } from '@/car/application/dto/car';
+import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import { Button } from '@/ui/button/button';
 import type { FormProps } from '@/ui/form/form';
 import { Form } from '@/ui/form/form';
@@ -8,8 +8,8 @@ import { FormFields } from './fields/fields';
 import { useCarForm } from './use-form';
 
 interface CarFormProps extends Omit<FormProps, 'ref' | 'onSubmit'> {
-  car?: Car;
-  onSubmit?: (carFormData: CarFormValues) => void;
+  car?: CarDto;
+  onSubmit?: (carFormData: CarFormData) => void;
 }
 
 export function CarForm({ onSubmit, car, ...props }: CarFormProps) {
@@ -36,7 +36,7 @@ export function CarForm({ onSubmit, car, ...props }: CarFormProps) {
       <FormFields
         control={control}
         errors={errors}
-        imageUrl={car?.image_url}
+        imageUrl={car?.imageUrl}
         register={register}
       />
       <Form.Controls>

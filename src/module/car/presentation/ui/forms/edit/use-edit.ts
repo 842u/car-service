@@ -4,11 +4,12 @@ import type { Route } from 'next';
 
 import type { CarDto } from '@/car/application/dto/car';
 import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
-import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
+import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import type { ApiResponseBody } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
+import type { LegacyCarFormValues } from '@/lib/tanstack/cars';
 import { carsUpdateOnMutate } from '@/lib/tanstack/cars';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/lib/utils';
 
@@ -18,12 +19,35 @@ interface UseEditFormParams {
 }
 
 type MutationVariables = {
-  formData: CarFormValues;
+  formData: LegacyCarFormValues;
   carId: string;
   queryClient: QueryClient;
 };
 
-async function submitEditForm(carId: string, formData: CarFormValues) {
+// Temporary: the mutation path (this file + lib/tanstack/cars.ts) still
+// expects the legacy snake_case row shape. Removed once mutation wiring
+// takes CarFormData directly.
+function toLegacyCarFormValues(formData: CarFormData): LegacyCarFormValues {
+  return {
+    image: formData.image,
+    custom_name: formData.customName,
+    brand: formData.brand,
+    model: formData.model,
+    license_plates: formData.licensePlates,
+    vin: formData.vin,
+    fuel_type: formData.fuelType,
+    additional_fuel_type: formData.additionalFuelType,
+    transmission_type: formData.transmissionType,
+    drive_type: formData.driveType,
+    production_year: formData.productionYear,
+    engine_capacity: formData.engineCapacity,
+    mileage: formData.mileage,
+    insurance_expiration: formData.insuranceExpiration,
+    technical_inspection_expiration: formData.technicalInspectionExpiration,
+  };
+}
+
+async function submitEditForm(carId: string, formData: LegacyCarFormValues) {
   const { image, ...data } = formData;
 
   const jsonDataToValidate = JSON.stringify({
@@ -100,11 +124,11 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
     },
   });
 
-  const handleFormSubmit = (formData: CarFormValues) => {
+  const handleFormSubmit = (formData: CarFormData) => {
     onSubmit && onSubmit();
 
     mutate(
-      { formData, queryClient, carId },
+      { formData: toLegacyCarFormValues(formData), queryClient, carId },
       {
         onSettled: (_, __, { carId, queryClient }) =>
           queryClient.invalidateQueries({

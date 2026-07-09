@@ -1,10 +1,10 @@
+import type { CarDto } from '@/car/application/dto/car';
 import { useEditForm } from '@/car/presentation/ui/forms/edit/use-edit';
-import type { Car } from '@/types';
 
 import { CarForm } from '../../form/form';
 
 interface EditFormProps {
-  car?: Car;
+  car?: CarDto;
   onSubmit?: () => void;
 }
 

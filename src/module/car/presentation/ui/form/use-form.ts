@@ -3,31 +3,31 @@ import { useEffect } from 'react';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
-import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
-import { carFormSchema } from '@/car/schemas/zod/carFormSchema';
-import type { Car } from '@/types';
+import type { CarDto } from '@/car/application/dto/car';
+import type { CarFormData } from '@/car/interface/ui/car-form.schema';
+import { carFormDataSchema } from '@/car/interface/ui/car-form.schema';
 
-const DEFAULT_FORM_VALUES: CarFormValues = {
+const DEFAULT_FORM_VALUES: CarFormData = {
   image: null,
-  custom_name: '',
+  customName: '',
   brand: null,
   model: null,
-  license_plates: null,
+  licensePlates: null,
   vin: null,
-  fuel_type: null,
-  additional_fuel_type: null,
-  transmission_type: null,
-  drive_type: null,
-  production_year: null,
-  engine_capacity: null,
+  fuelType: null,
+  additionalFuelType: null,
+  transmissionType: null,
+  driveType: null,
+  productionYear: null,
+  engineCapacity: null,
   mileage: null,
-  insurance_expiration: null,
-  technical_inspection_expiration: null,
+  insuranceExpiration: null,
+  technicalInspectionExpiration: null,
 };
 
 interface UseCarFormParams {
-  onSubmit?: (carFormData: CarFormValues) => void;
-  car?: Car;
+  onSubmit?: (carFormData: CarFormData) => void;
+  car?: CarDto;
 }
 
 export function useCarForm({ onSubmit, car }: UseCarFormParams) {
@@ -38,7 +38,7 @@ export function useCarForm({ onSubmit, car }: UseCarFormParams) {
     control,
     formState: { errors, isValid, isDirty, isSubmitSuccessful },
   } = useForm({
-    resolver: zodResolver(carFormSchema) as Resolver<CarFormValues>,
+    resolver: zodResolver(carFormDataSchema) as Resolver<CarFormData>,
     mode: 'onChange',
     defaultValues: DEFAULT_FORM_VALUES,
   });
@@ -56,7 +56,7 @@ export function useCarForm({ onSubmit, car }: UseCarFormParams) {
   }, [isSubmitSuccessful, reset]);
 
   const handleFormSubmit = handleSubmit(
-    (formValues: CarFormValues) => onSubmit && onSubmit(formValues),
+    (formValues: CarFormData) => onSubmit && onSubmit(formValues),
   );
 
   const handleFormReset = () => reset();

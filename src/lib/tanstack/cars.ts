@@ -2,10 +2,19 @@ import type { QueryClient } from '@tanstack/react-query';
 
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/car/infrastructure/data-source/car';
 import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
-import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, parseDateToYyyyMmDd } from '@/lib/utils';
 import type { Car, CarsInfiniteQueryData } from '@/types';
 import type { ToastType } from '@/ui/toaster/toast/toast';
+
+// Temporary: mirrors the retired `carFormSchema.ts`'s shape so these
+// optimistic-update helpers (still on the legacy snake_case `Car` row) keep
+// compiling. Removed once mutation wiring moves off this file.
+export type LegacyCarFormValues = Omit<
+  Car,
+  'id' | 'image_url' | 'created_at' | 'created_by'
+> & {
+  image?: File | null;
+};
 
 function addCarToInfiniteQueryData(
   newCar: Car,
@@ -64,7 +73,7 @@ function deepCopyCarsInfiniteQueryData(data: CarsInfiniteQueryData) {
 }
 
 export async function carsInfiniteAddOnMutate(
-  carFormData: CarFormValues,
+  carFormData: LegacyCarFormValues,
   queryClient: QueryClient,
 ) {
   await queryClient.cancelQueries({ queryKey: queryKeys.carsInfinite });
@@ -223,7 +232,7 @@ export async function carsInfiniteDeleteOnError(
 export async function carsUpdateOnMutate(
   queryClient: QueryClient,
   carId: string,
-  carFormData: CarFormValues,
+  carFormData: LegacyCarFormValues,
 ) {
   await queryClient.cancelQueries({ queryKey: queryKeys.carsByCarId(carId) });
 

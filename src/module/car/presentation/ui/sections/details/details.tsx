@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { carMapper } from '@/car/dependency/mapper';
 import { getCarByIdQueryOptions } from '@/car/infrastructure/tanstack/query/options';
 import { DetailsCard } from '@/car/presentation/ui/cards/details/details';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
@@ -61,10 +60,7 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
   return (
     <DashboardSection aria-label="Vehicle details" className={className}>
       <DetailsCard car={carData} className="mb-5" />
-      <SectionControls
-        canEdit={isSessionUserPrimaryOwner}
-        car={carData && carMapper.dtoToPersistence(carData)}
-      />
+      <SectionControls canEdit={isSessionUserPrimaryOwner} car={carData} />
     </DashboardSection>
   );
 }
