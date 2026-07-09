@@ -63,20 +63,4 @@ describe('CarMapper', () => {
       expect(dto.createdAt).toBe(persistence.created_at);
     });
   });
-
-  describe('dtoToPersistence', () => {
-    it('maps a DTO back into a snake_case row, with createdBy null', () => {
-      const persistence = createMockCarPersistence();
-      const dto = mapper.persistenceToDto(persistence);
-
-      const row = mapper.dtoToPersistence(dto);
-
-      expect(row.id).toBe(dto.id);
-      expect(row.custom_name).toBe(dto.customName);
-      expect(row.fuel_type).toBe(dto.fuelType);
-      expect(row.production_year).toBe(dto.productionYear);
-      expect(row.created_at).toBe(dto.createdAt);
-      expect(row.created_by).toBeNull();
-    });
-  });
 });

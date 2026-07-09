@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { AriaRole } from 'react';
 
-import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
+import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import { FORM_IMAGE_INPUT_TEST_ID } from '@/ui/form/compounds/input-image/image-input';
 
 import { CarForm } from './form';
 
 const CAR_FORM_VALUES_MAP: {
-  [K in keyof CarFormValues]: {
+  [K in keyof CarFormData]: {
     label?: string | RegExp;
     inputRole?: AriaRole;
     testId?: string;
@@ -18,7 +18,7 @@ const CAR_FORM_VALUES_MAP: {
     label: 'Image',
     testId: FORM_IMAGE_INPUT_TEST_ID,
   },
-  additional_fuel_type: {
+  additionalFuelType: {
     label: 'Additional Fuel Type',
     inputRole: 'combobox',
   },
@@ -26,19 +26,19 @@ const CAR_FORM_VALUES_MAP: {
     label: 'Brand',
     inputRole: 'textbox',
   },
-  drive_type: {
+  driveType: {
     label: 'Drive Type',
     inputRole: 'combobox',
   },
-  engine_capacity: {
+  engineCapacity: {
     label: /engine capacity/i,
     inputRole: 'spinbutton',
   },
-  fuel_type: {
+  fuelType: {
     label: 'Fuel Type',
     inputRole: 'combobox',
   },
-  license_plates: {
+  licensePlates: {
     label: 'License Plates',
     inputRole: 'textbox',
   },
@@ -50,15 +50,15 @@ const CAR_FORM_VALUES_MAP: {
     label: 'Model',
     inputRole: 'textbox',
   },
-  custom_name: {
+  customName: {
     label: /name/i,
     inputRole: 'textbox',
   },
-  production_year: {
+  productionYear: {
     label: 'Production Year',
     inputRole: 'spinbutton',
   },
-  transmission_type: {
+  transmissionType: {
     label: 'Transmission Type',
     inputRole: 'combobox',
   },
@@ -66,10 +66,10 @@ const CAR_FORM_VALUES_MAP: {
     label: 'VIN',
     inputRole: 'textbox',
   },
-  insurance_expiration: {
+  insuranceExpiration: {
     label: 'Insurance Expiration Date',
   },
-  technical_inspection_expiration: {
+  technicalInspectionExpiration: {
     label: 'Technical Inspection Expiration Date',
   },
 };
@@ -139,8 +139,8 @@ describe('CarForm', () => {
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const nameInput = screen.getByRole(
-      CAR_FORM_VALUES_MAP.custom_name.inputRole || '',
-      { name: CAR_FORM_VALUES_MAP.custom_name.label },
+      CAR_FORM_VALUES_MAP.customName.inputRole || '',
+      { name: CAR_FORM_VALUES_MAP.customName.label },
     );
 
     expect(resetButton).toBeDisabled();
@@ -157,8 +157,8 @@ describe('CarForm', () => {
 
     const resetButton = screen.getByRole('button', { name: 'Reset' });
     const nameInput = screen.getByRole(
-      CAR_FORM_VALUES_MAP.custom_name.inputRole || '',
-      { name: CAR_FORM_VALUES_MAP.custom_name.label },
+      CAR_FORM_VALUES_MAP.customName.inputRole || '',
+      { name: CAR_FORM_VALUES_MAP.customName.label },
     );
 
     await user.type(nameInput, nameInputText);
