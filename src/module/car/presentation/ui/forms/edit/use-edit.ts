@@ -3,28 +3,32 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 
 import type { CarDto } from '@/car/application/dto/car';
+import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import type { ApiResponseBody } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { httpClient } from '@/dependency/http-client';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
-import {
-  carsInfiniteAddOnError,
-  carsInfiniteAddOnMutate,
-} from '@/lib/tanstack/cars';
-import { queryKeys } from '@/lib/tanstack/keys';
+import { carsUpdateOnMutate } from '@/lib/tanstack/cars';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/lib/utils';
+
+interface UseEditFormParams {
+  carId: string;
+  onSubmit?: () => void;
+}
 
 type MutationVariables = {
   formData: CarFormValues;
+  carId: string;
   queryClient: QueryClient;
 };
 
-async function submitAddForm(formData: CarFormValues) {
+async function submitEditForm(carId: string, formData: CarFormValues) {
   const { image, ...data } = formData;
 
   const jsonDataToValidate = JSON.stringify({
     carFormData: data,
+    carId,
   });
 
   const url = new URL(window.location.origin);
@@ -32,16 +36,20 @@ async function submitAddForm(formData: CarFormValues) {
 
   const headers = { 'Content-Type': 'application/json' };
 
-  const postResult = await httpClient.post(url.toString(), jsonDataToValidate, {
-    headers,
-  });
+  const patchResult = await httpClient.patch(
+    url.toString(),
+    jsonDataToValidate,
+    {
+      headers,
+    },
+  );
 
-  if (!postResult.success) {
-    const { message } = postResult.error;
+  if (!patchResult.success) {
+    const { message } = patchResult.error;
     throw new Error(message);
   }
 
-  const body = postResult.data as ApiResponseBody<CarDto>;
+  const body = patchResult.data as ApiResponseBody<CarDto>;
 
   if (!body.success) {
     throw new Error(`Request failed: ${body.error.message}`);
@@ -65,7 +73,7 @@ async function submitAddForm(formData: CarFormValues) {
 
   if (!uploadResult.success) {
     throw new Error(
-      'Car added successfully, but image upload failed. Try again by editing car details.',
+      'Car edited successfully, but image upload failed. Try again.',
       {
         cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE,
       },
@@ -73,32 +81,35 @@ async function submitAddForm(formData: CarFormValues) {
   }
 }
 
-export function useAddForm({
-  onSubmit,
-}: {
-  onSubmit: (() => void) | undefined;
-}) {
+export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     throwOnError: false,
-    mutationFn: ({ formData }: MutationVariables) => submitAddForm(formData),
-    onMutate: ({ formData, queryClient }) =>
-      carsInfiniteAddOnMutate(formData, queryClient),
+    mutationFn: ({ formData, carId }: MutationVariables) =>
+      submitEditForm(carId, formData),
+    onMutate: ({ formData, carId, queryClient }) =>
+      carsUpdateOnMutate(queryClient, carId, formData),
     onSuccess: (_, { formData: { custom_name } }) =>
-      addToast(`Car ${custom_name} added.`, 'success'),
-    onError: (error, { queryClient }, context) =>
-      carsInfiniteAddOnError(error, context, queryClient, addToast),
+      addToast(`Car ${custom_name} edited.`, 'success'),
+    onError: (error, { carId, queryClient }, context) => {
+      addToast(error.message, 'error');
+      queryClient.setQueryData(['cars', carId], context?.previousCarsQueryData);
+    },
   });
 
   const handleFormSubmit = (formData: CarFormValues) => {
     onSubmit && onSubmit();
+
     mutate(
-      { formData, queryClient },
+      { formData, queryClient, carId },
       {
-        onSettled: (_, __, { queryClient }) =>
-          queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite }),
+        onSettled: (_, __, { carId, queryClient }) =>
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.carsByCarId(carId),
+          }),
       },
     );
   };

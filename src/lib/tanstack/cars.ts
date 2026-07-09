@@ -1,13 +1,11 @@
 import type { QueryClient } from '@tanstack/react-query';
 
+import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/car/infrastructure/data-source/car';
+import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, parseDateToYyyyMmDd } from '@/lib/utils';
 import type { Car, CarsInfiniteQueryData } from '@/types';
 import type { ToastType } from '@/ui/toaster/toast/toast';
-
-import { queryKeys } from './keys';
-
-export const CARS_INFINITE_QUERY_PAGE_DATA_LIMIT = 15;
 
 function addCarToInfiniteQueryData(
   newCar: Car,

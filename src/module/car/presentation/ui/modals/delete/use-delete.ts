@@ -3,13 +3,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
+import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { deleteCar } from '@/lib/supabase/tables/cars';
 import {
   carsInfiniteDeleteOnError,
   carsInfiniteDeleteOnMutate,
 } from '@/lib/tanstack/cars';
-import { queryKeys } from '@/lib/tanstack/keys';
 import type { Car } from '@/types';
 
 export type UseDeleteModalOptions = {
