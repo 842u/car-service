@@ -2,7 +2,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 
-import type { ApiCarResponse } from '@/app/api/car/route';
+import type { CarDto } from '@/car/application/dto/car';
 import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
 import type { ApiResponseBody } from '@/common/interface/api/response';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
@@ -49,7 +49,7 @@ async function submitEditForm(carId: string, formData: CarFormValues) {
     throw new Error(message);
   }
 
-  const body = patchResult.data as ApiResponseBody<ApiCarResponse>;
+  const body = patchResult.data as ApiResponseBody<CarDto>;
 
   if (!body.success) {
     throw new Error(`Request failed: ${body.error.message}`);
