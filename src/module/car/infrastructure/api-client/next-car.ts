@@ -5,6 +5,10 @@ import {
   type AddCarApiRequest,
   addCarApiResponseSchema,
 } from '@/car/interface/api/add.schema';
+import {
+  type EditCarApiRequest,
+  editCarApiResponseSchema,
+} from '@/car/interface/api/edit.schema';
 import type { CarApiClient } from '@/car/presentation/api-client/car';
 import type { HttpClient } from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
@@ -27,10 +31,14 @@ export class NextCarApiClient implements CarApiClient {
     endpoint: Route,
     contract: unknown,
     schema: ZodType<ApiResponse<T>>,
+    method: 'POST' | 'PATCH' = 'POST',
   ): Promise<Result<T, { message: string }>> {
     const data = JSON.stringify(contract);
 
-    const httpResult = await this._httpClient.post(endpoint, data);
+    const httpResult =
+      method === 'POST'
+        ? await this._httpClient.post(endpoint, data)
+        : await this._httpClient.patch(endpoint, data);
 
     if (!httpResult.success) {
       return Result.fail({
@@ -57,5 +65,14 @@ export class NextCarApiClient implements CarApiClient {
 
   async add(contract: AddCarApiRequest) {
     return this.makeRequest('/api/car', contract, addCarApiResponseSchema);
+  }
+
+  async edit(contract: EditCarApiRequest) {
+    return this.makeRequest(
+      '/api/car',
+      contract,
+      editCarApiResponseSchema,
+      'PATCH',
+    );
   }
 }
