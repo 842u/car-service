@@ -1,9 +1,6 @@
-import type { InfiniteData } from '@tanstack/react-query';
 import type { Database } from 'supabase/types/supabase';
 
 export type User = Database['public']['Tables']['users']['Row'];
-
-export type Car = Database['public']['Tables']['cars']['Row'];
 
 export type CarOwnership =
   Database['public']['Tables']['cars_ownerships']['Row'];
@@ -25,10 +22,3 @@ export const serviceCategoryMapping: ServiceCategoryMapping = {
   suspension: 'suspension',
   tires: 'tires',
 };
-
-export type CarsInfiniteQueryPageData = {
-  data: (Car | null)[];
-  nextPageParam: number | null;
-};
-
-export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;
