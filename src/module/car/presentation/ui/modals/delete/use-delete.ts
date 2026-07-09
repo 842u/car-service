@@ -1,27 +1,22 @@
-import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
+import type { CarDto } from '@/car/application/dto/car';
+import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/car/infrastructure/data-source/car';
+import { carRemoveMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/remove';
+import {
+  addCarToInfiniteQueryData,
+  type CarsInfiniteQueryData,
+  deepCopyCarsInfiniteQueryData,
+} from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
 import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { deleteCar } from '@/lib/supabase/tables/cars';
-import {
-  carsInfiniteDeleteOnError,
-  carsInfiniteDeleteOnMutate,
-} from '@/lib/tanstack/cars';
-import type { Car } from '@/types';
 
 export type UseDeleteModalOptions = {
   carId: string;
   onCancel?: () => void;
   onConfirm?: () => void;
-};
-
-type MutationVariables = {
-  carId: string;
-  carName?: string;
-  queryClient: QueryClient;
 };
 
 export function useDeleteModal({
@@ -35,24 +30,48 @@ export function useDeleteModal({
 
   const queryClient = useQueryClient();
 
-  const carQueryData = queryClient.getQueryData<Car>(
+  const carQueryData = queryClient.getQueryData<CarDto>(
     queryKeys.carsByCarId(carId),
   );
 
-  const carName = carQueryData?.custom_name;
+  const carName = carQueryData?.customName;
 
   const { mutate } = useMutation({
+    ...carRemoveMutationOptions(queryClient),
     mutationKey: queryKeys.carsInfinite,
-    throwOnError: false,
-    mutationFn: ({ carId }: MutationVariables) => deleteCar(carId),
-    onMutate: ({ carId, queryClient }) =>
-      carsInfiniteDeleteOnMutate(carId, queryClient),
-    onSuccess: (_, { carName }) =>
-      addToast(`Car ${carName} deleted.`, 'success'),
-    onError: (error, { queryClient }, context) => {
+    onSuccess: () => addToast(`Car ${carName} deleted.`, 'success'),
+    onError: (error, _, context) => {
       addToast(error.message, 'error');
-      carsInfiniteDeleteOnError(queryClient, context);
+
+      if (
+        !context ||
+        context.deletedCar === null ||
+        context.deletedCarPageIndex == null ||
+        context.deletedCarPagePositionIndex == null
+      ) {
+        return;
+      }
+
+      const previousData = queryClient.getQueryData<CarsInfiniteQueryData>(
+        queryKeys.carsInfinite,
+      );
+
+      if (!previousData) return;
+
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(previousData);
+
+      addCarToInfiniteQueryData(
+        context.deletedCar,
+        updatedQueryData,
+        CARS_INFINITE_QUERY_PAGE_DATA_LIMIT,
+        context.deletedCarPageIndex,
+        context.deletedCarPagePositionIndex,
+      );
+
+      queryClient.setQueryData(queryKeys.carsInfinite, updatedQueryData);
     },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite }),
   });
 
   const handleCancelButtonClick = () => {
@@ -62,15 +81,7 @@ export function useDeleteModal({
   const handleDeleteButtonClick = () => {
     onConfirm && onConfirm();
 
-    mutate(
-      { carId, carName, queryClient },
-      {
-        onSettled: (_, __, { queryClient }) =>
-          queryClient.invalidateQueries({
-            queryKey: queryKeys.carsInfinite,
-          }),
-      },
-    );
+    mutate(carId);
 
     router.replace('/dashboard/cars' satisfies Route);
   };
