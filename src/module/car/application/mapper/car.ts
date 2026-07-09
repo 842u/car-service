@@ -98,33 +98,4 @@ export class CarMapper implements Mapper<Car, CarDto, CarPersistence> {
       createdAt: model.created_at,
     };
   }
-
-  /**
-   * Temporary bridge for UI still on the legacy snake_case row shape
-   * (removed once the form chain flips to CarDto). createdBy isn't part of
-   * CarDto (RLS-only), so it comes back as null.
-   */
-  dtoToPersistence(model: CarDto): CarPersistence {
-    return {
-      id: model.id,
-      image_url: model.imageUrl ?? null,
-      custom_name: model.customName,
-      brand: model.brand ?? null,
-      model: model.model ?? null,
-      license_plates: model.licensePlates ?? null,
-      vin: model.vin ?? null,
-      fuel_type: model.fuelType ?? null,
-      additional_fuel_type: model.additionalFuelType ?? null,
-      transmission_type: model.transmissionType ?? null,
-      drive_type: model.driveType ?? null,
-      production_year: model.productionYear ?? null,
-      engine_capacity: model.engineCapacity ?? null,
-      mileage: model.mileage ?? null,
-      insurance_expiration: model.insuranceExpiration ?? null,
-      technical_inspection_expiration:
-        model.technicalInspectionExpiration ?? null,
-      created_at: model.createdAt ?? null,
-      created_by: null,
-    } as CarPersistence;
-  }
 }
