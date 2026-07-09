@@ -1,6 +1,7 @@
 import type { ZodType } from 'zod';
 import { z } from 'zod';
 
+import { mileageSchema } from '@/car/domain/car/value-object/mileage/mileage.schema';
 import {
   nullifyEmptyString,
   nullifyNaN,
@@ -8,8 +9,6 @@ import {
 import { parseDateToYyyyMmDd } from '@/lib/utils';
 import type { ServiceCategoryMapping, ServiceLog } from '@/types';
 import { serviceCategoryMapping } from '@/types';
-
-import { carMileageSchema } from './carFormSchema';
 
 z.config({
   jitless: true,
@@ -81,7 +80,7 @@ const serviceDateSchema = z.coerce
 export const carServiceLogFormSchema = z.object({
   service_date: serviceDateSchema,
   category: serviceCategorySchema,
-  mileage: nullifyNaN(carMileageSchema),
+  mileage: nullifyNaN(mileageSchema),
   notes: nullifyEmptyString(serviceNoteSchema),
   service_cost: nullifyNaN(serviceCostSchema),
 } satisfies CarServiceLogFormSchemaShape);
