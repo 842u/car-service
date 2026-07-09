@@ -6,5 +6,6 @@ export function createMockCarMapper() {
     domainToPersistence: jest.fn(),
     persistenceToDomain: jest.fn(),
     persistenceToDto: jest.fn(),
+    dtoToPersistence: jest.fn(),
   } as unknown as jest.Mocked<CarMapper>;
 }
