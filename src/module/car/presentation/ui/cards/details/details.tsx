@@ -1,6 +1,7 @@
-import { DetailsCardDataField } from '@/car/ui/cards/details/data-field/data-field';
-import { DetailsCardExpirationRow } from '@/car/ui/cards/details/expiration-row/expiration-row';
-import { DetailsCardHeader } from '@/car/ui/cards/details/header/header';
+import type { CarDto } from '@/car/application/dto/car';
+import { DetailsCardDataField } from '@/car/presentation/ui/cards/details/data-field/data-field';
+import { DetailsCardExpirationRow } from '@/car/presentation/ui/cards/details/expiration-row/expiration-row';
+import { DetailsCardHeader } from '@/car/presentation/ui/cards/details/header/header';
 import { CalendarIcon } from '@/icons/calendar';
 import { CheckShieldIcon } from '@/icons/check-shield';
 import { DriveIcon } from '@/icons/drive';
@@ -10,27 +11,26 @@ import { FuelIcon } from '@/icons/fuel';
 import { GaugeIcon } from '@/icons/gauge';
 import { ToolsIcon } from '@/icons/tools';
 import { TransmissionIcon } from '@/icons/transmission';
-import type { Car } from '@/types';
 import type { SvgA11yProps } from '@/ui/decorative/svg-a11y/svg-a11y';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 
 const DATA_FIELDS: {
   label: string;
-  key: keyof Car;
+  key: keyof CarDto;
   icon: React.ComponentType<SvgA11yProps>;
 }[] = [
   { label: 'VIN', key: 'vin', icon: FingerprintIcon },
-  { label: 'YEAR', key: 'production_year', icon: CalendarIcon },
+  { label: 'YEAR', key: 'productionYear', icon: CalendarIcon },
   { label: 'MILEAGE', key: 'mileage', icon: GaugeIcon },
-  { label: 'ENGINE CAPACITY', key: 'engine_capacity', icon: EngineIcon },
-  { label: 'DRIVE TYPE', key: 'drive_type', icon: DriveIcon },
-  { label: 'TRANSMISSION', key: 'transmission_type', icon: TransmissionIcon },
-  { label: 'FUEL TYPE', key: 'fuel_type', icon: FuelIcon },
-  { label: 'ADDITIONAL FUEL', key: 'additional_fuel_type', icon: FuelIcon },
+  { label: 'ENGINE CAPACITY', key: 'engineCapacity', icon: EngineIcon },
+  { label: 'DRIVE TYPE', key: 'driveType', icon: DriveIcon },
+  { label: 'TRANSMISSION', key: 'transmissionType', icon: TransmissionIcon },
+  { label: 'FUEL TYPE', key: 'fuelType', icon: FuelIcon },
+  { label: 'ADDITIONAL FUEL', key: 'additionalFuelType', icon: FuelIcon },
 ];
 
 interface DetailsCardProps {
-  car?: Car;
+  car?: CarDto;
   className?: string;
 }
 
@@ -62,12 +62,12 @@ export function DetailsCard({ car, className }: DetailsCardProps) {
 
       <div className="flex flex-col gap-5">
         <DetailsCardExpirationRow
-          date={car?.insurance_expiration}
+          date={car?.insuranceExpiration}
           icon={CheckShieldIcon}
           label="Insurance"
         />
         <DetailsCardExpirationRow
-          date={car?.technical_inspection_expiration}
+          date={car?.technicalInspectionExpiration}
           icon={ToolsIcon}
           label="Technical inspection"
         />

@@ -3,21 +3,20 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef } from 'react';
 
-import { CarBadge } from '@/car/ui/badge/badge';
-import { DateExpirationTableViewButton } from '@/car/ui/tables/date-expiration/view-button/view-button';
+import type { CarDto } from '@/car/application/dto/car';
+import { getCarsInfiniteQueryOptions } from '@/car/infrastructure/tanstack/query/options';
+import { CarBadge } from '@/car/presentation/ui/badge/badge';
+import { DateExpirationTableViewButton } from '@/car/presentation/ui/tables/date-expiration/view-button/view-button';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getCarsByPage } from '@/lib/supabase/tables/cars';
-import { queryKeys } from '@/lib/tanstack/keys';
-import type { Car } from '@/types';
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
 
-const columnsHelper = createColumnHelper<Car>();
+const columnsHelper = createColumnHelper<CarDto>();
 
 interface UseDateExpirationTableParams {
   label: string;
   dateColumn: keyof Pick<
-    Car,
-    'created_at' | 'insurance_expiration' | 'technical_inspection_expiration'
+    CarDto,
+    'createdAt' | 'insuranceExpiration' | 'technicalInspectionExpiration'
   >;
 }
 
@@ -52,19 +51,19 @@ export function useDateExpirationTable({
           id: 'id',
           meta: { label: 'Car' },
           cell: ({ row }) => {
-            const { custom_name, image_url } = row.original;
+            const { customName, imageUrl } = row.original;
             return (
               <div className="max-w-32">
                 <CarBadge
                   className="h-10 flex-row-reverse justify-end"
-                  imageUrl={image_url}
-                  name={custom_name}
+                  imageUrl={imageUrl}
+                  name={customName}
                 />
               </div>
             );
           },
         }),
-        columnsHelper.accessor('license_plates', {
+        columnsHelper.accessor('licensePlates', {
           meta: { label: 'License plates' },
         }),
         columnsHelper.accessor('vin', {
@@ -76,7 +75,7 @@ export function useDateExpirationTable({
             <DateExpirationTableViewButton carId={row.original.id} />
           ),
         }),
-      ] as ColumnDef<Car>[],
+      ] as ColumnDef<CarDto>[],
     [dateColumn, label],
   );
 
@@ -90,21 +89,12 @@ export function useDateExpirationTable({
     isSuccess,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery({
-    queryKey: queryKeys.carsInfiniteByColumnOrder(dateColumn),
-    initialPageParam: 0,
-    throwOnError: false,
-    queryFn: async ({ pageParam }) => {
-      const result = await getCarsByPage({
-        pageParam,
-        pageLimit: 6,
-        orderBy: { column: dateColumn, ascending: true },
-      });
-
-      return result;
-    },
-    getNextPageParam: (lastPage) => lastPage.nextPageParam,
-  });
+  } = useInfiniteQuery(
+    getCarsInfiniteQueryOptions({
+      pageLimit: 6,
+      orderBy: { column: dateColumn, ascending: true },
+    }),
+  );
 
   const tableData = useMemo(
     () => data?.pages.flatMap((p) => p.data) ?? [],

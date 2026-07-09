@@ -1,13 +1,13 @@
 import type { Route } from 'next';
 import Link from 'next/link';
 
-import type { Car } from '@/types';
+import type { CarDto } from '@/car/application/dto/car';
 import { Card } from '@/ui/card/card';
 
 import { CarImage } from '../image/image';
 
 type CarCardProps = {
-  car: Car;
+  car: CarDto;
 };
 
 export function CarCard({ car }: CarCardProps) {
@@ -16,10 +16,10 @@ export function CarCard({ car }: CarCardProps) {
   return (
     <Link className="w-80" href={`${staticSegment}/${car.id}`} prefetch={true}>
       <Card className="flex h-full flex-col gap-4">
-        <CarImage className="overflow-hidden rounded-lg" src={car.image_url} />
+        <CarImage className="overflow-hidden rounded-lg" src={car.imageUrl} />
         <div className="overflow-hidden">
-          <p className="mb-1 text-3xl font-bold">{car.custom_name}</p>
-          <p className="text-lg">{car.license_plates}</p>
+          <p className="mb-1 text-3xl font-bold">{car.customName}</p>
+          <p className="text-lg">{car.licensePlates}</p>
         </div>
         <p className="overflow-hidden text-right">
           <span>{car.brand}</span>

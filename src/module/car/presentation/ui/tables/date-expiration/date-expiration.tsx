@@ -1,17 +1,17 @@
 'use client';
 
-import { DateExpirationTableLegend } from '@/car/ui/tables/date-expiration/legend/legend';
-import { DateExpirationTablePlaceholder } from '@/car/ui/tables/date-expiration/placeholder/placeholder';
-import { useDateExpirationTable } from '@/car/ui/tables/date-expiration/use-date-expiration';
-import type { Car } from '@/types';
+import type { CarDto } from '@/car/application/dto/car';
+import { DateExpirationTableLegend } from '@/car/presentation/ui/tables/date-expiration/legend/legend';
+import { DateExpirationTablePlaceholder } from '@/car/presentation/ui/tables/date-expiration/placeholder/placeholder';
+import { useDateExpirationTable } from '@/car/presentation/ui/tables/date-expiration/use-date-expiration';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { Table } from '@/ui/table/table';
 
 interface DateExpirationTableProps {
   label: string;
   dateColumn: keyof Pick<
-    Car,
-    'created_at' | 'insurance_expiration' | 'technical_inspection_expiration'
+    CarDto,
+    'createdAt' | 'insuranceExpiration' | 'technicalInspectionExpiration'
   >;
 }
 

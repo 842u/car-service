@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { DateExpirationTable } from '@/car/ui/tables/date-expiration/date-expiration';
+import { DateExpirationTable } from '@/car/presentation/ui/tables/date-expiration/date-expiration';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
 interface TechnicalInspectionExpirationSectionProps {
@@ -17,7 +17,7 @@ export function TechnicalInspectionExpirationSection({
       </DashboardSection.Heading>
       <div className="lg:flex lg:grow lg:flex-col lg:justify-center">
         <DateExpirationTable
-          dateColumn="technical_inspection_expiration"
+          dateColumn="technicalInspectionExpiration"
           label="Technical inspection"
         />
       </div>

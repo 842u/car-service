@@ -5,9 +5,9 @@ import {
 } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
+import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
+import { getCarsInfiniteQueryOptions } from '@/car/infrastructure/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getCarsByPage } from '@/lib/supabase/tables/cars';
-import { queryKeys } from '@/lib/tanstack/keys';
 
 export function useCarsGallery() {
   const intersectionTargetRef = useRef<HTMLDivElement>(null);
@@ -31,18 +31,17 @@ export function useCarsGallery() {
     isFetchingNextPage,
     fetchNextPage,
   } = useInfiniteQuery({
-    throwOnError: false,
+    ...getCarsInfiniteQueryOptions(),
     enabled: !carsInfiniteIsMutating,
-    queryKey: queryKeys.carsInfinite,
-    queryFn: async ({ pageParam }) => await getCarsByPage({ pageParam }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
 
   useEffect(() => {
     data?.pages
       .flatMap((page) => page.data)
-      .forEach((car) => car && queryClient.setQueryData(['cars', car.id], car));
+      .forEach(
+        (car) =>
+          car && queryClient.setQueryData(queryKeys.carsByCarId(car.id), car),
+      );
   }, [data, queryClient]);
 
   useEffect(() => {
