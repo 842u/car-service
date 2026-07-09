@@ -3,13 +3,16 @@ import type { NextRequest } from 'next/server';
 import {
   addCarApiHandler,
   editCarApiHandler,
+  removeCarApiHandler,
 } from '@/car/dependency/api-handler';
 import {
   createAddCarUseCase,
   createEditCarUseCase,
+  createRemoveCarUseCase,
 } from '@/car/dependency/use-case';
 import { addCarApiRequestSchema } from '@/car/interface/api/add.schema';
 import { editCarApiRequestSchema } from '@/car/interface/api/edit.schema';
+import { removeCarApiRequestSchema } from '@/car/interface/api/remove.schema';
 import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 
 export const maxDuration = 10;
@@ -68,4 +71,30 @@ export async function PATCH(request: NextRequest) {
   const carDto = useCaseResult.data;
 
   return editCarApiHandler.successResponse(carDto, 200);
+}
+
+export async function DELETE(request: NextRequest) {
+  const preprocessRequestResult = await removeCarApiHandler.preprocessRequest(
+    request,
+    removeCarApiRequestSchema,
+  );
+
+  if (!preprocessRequestResult.success) {
+    const { message, issues } = preprocessRequestResult.error;
+    const { status } = preprocessRequestResult;
+    return removeCarApiHandler.errorResponse({ message, issues }, status);
+  }
+
+  const removeCarUseCase = await createRemoveCarUseCase();
+
+  const contract = preprocessRequestResult.data;
+
+  const useCaseResult = await removeCarUseCase.execute(contract);
+
+  if (!useCaseResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return removeCarApiHandler.errorResponse(error, status);
+  }
+
+  return removeCarApiHandler.successResponse(null, 200);
 }
