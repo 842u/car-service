@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
-import { DeleteButton } from '@/car/ui/buttons/delete/delete';
-import { DeleteModal } from '@/car/ui/modals/delete/delete';
+import { DeleteButton } from '@/car/presentation/ui/buttons/delete/delete';
+import { DeleteModal } from '@/car/presentation/ui/modals/delete/delete';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 

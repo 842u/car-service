@@ -1,4 +1,4 @@
-import { useEditForm } from '@/car/ui/forms/edit/use-edit';
+import { useEditForm } from '@/car/presentation/ui/forms/edit/use-edit';
 import type { Car } from '@/types';
 
 import { CarForm } from '../../form/form';

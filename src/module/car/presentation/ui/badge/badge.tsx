@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-import { CarImage } from '@/car/ui/image/image';
+import { CarImage } from '@/car/presentation/ui/image/image';
 
 interface CarBadgeProps {
   name: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useDeleteSection } from '@/car/ui/sections/delete/use-delete';
+import { useDeleteSection } from '@/car/presentation/ui/sections/delete/use-delete';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
 import { SectionControls } from './controls/controls';

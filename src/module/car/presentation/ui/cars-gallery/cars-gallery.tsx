@@ -2,8 +2,8 @@
 
 import { useRef } from 'react';
 
-import { AddCard } from '@/car/ui/cards/add/add';
-import { AddModal } from '@/car/ui/modals/add/add';
+import { AddCard } from '@/car/presentation/ui/cards/add/add';
+import { AddModal } from '@/car/presentation/ui/modals/add/add';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';

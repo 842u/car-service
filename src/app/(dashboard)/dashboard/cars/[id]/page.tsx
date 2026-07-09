@@ -1,7 +1,7 @@
 import type { Route } from 'next';
 import { redirect } from 'next/navigation';
 
-import { OverviewSection } from '@/car/ui/sections/overview/overview';
+import { OverviewSection } from '@/car/presentation/ui/sections/overview/overview';
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { createServerDatabaseClient } from '@/dependency/database-client/server';

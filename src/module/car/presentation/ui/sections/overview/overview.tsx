@@ -1,7 +1,7 @@
 import { OwnershipsSection } from '@/car/ownership/ui/sections/ownerships/ownerships';
+import { DetailsSection } from '@/car/presentation/ui/sections/details/details';
 import { CarCostsSection } from '@/car/service-log/ui/sections/car-costs/car-costs';
 import { ServiceLogsSection } from '@/car/service-log/ui/sections/service-logs/service-logs';
-import { DetailsSection } from '@/car/ui/sections/details/details';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
 import { DeleteSection } from '../delete/delete';
