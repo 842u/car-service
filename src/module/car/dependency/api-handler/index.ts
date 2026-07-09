@@ -9,6 +9,11 @@ import type {
   EditCarApiResponseError,
 } from '@/car/interface/api/edit.schema';
 import type {
+  CarImageChangeApiRequest,
+  CarImageChangeApiResponseData,
+  CarImageChangeApiResponseError,
+} from '@/car/interface/api/image-change.schema';
+import type {
   RemoveCarApiRequest,
   RemoveCarApiResponseData,
   RemoveCarApiResponseError,
@@ -32,4 +37,10 @@ export const removeCarApiHandler = new NextApiHandler<
   RemoveCarApiResponseData,
   RemoveCarApiResponseError,
   RemoveCarApiRequest
+>(validator);
+
+export const carImageChangeApiHandler = new NextApiHandler<
+  CarImageChangeApiResponseData,
+  CarImageChangeApiResponseError,
+  CarImageChangeApiRequest
 >(validator);
