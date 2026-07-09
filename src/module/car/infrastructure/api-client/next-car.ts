@@ -9,8 +9,12 @@ import {
   type EditCarApiRequest,
   editCarApiResponseSchema,
 } from '@/car/interface/api/edit.schema';
+import { removeCarApiResponseSchema } from '@/car/interface/api/remove.schema';
 import type { CarApiClient } from '@/car/presentation/api-client/car';
-import type { HttpClient } from '@/common/application/http-client';
+import type {
+  HttpClient,
+  HttpClientResponse,
+} from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
 
@@ -31,14 +35,23 @@ export class NextCarApiClient implements CarApiClient {
     endpoint: Route,
     contract: unknown,
     schema: ZodType<ApiResponse<T>>,
-    method: 'POST' | 'PATCH' = 'POST',
+    method: 'POST' | 'PATCH' | 'DELETE' = 'POST',
   ): Promise<Result<T, { message: string }>> {
     const data = JSON.stringify(contract);
 
-    const httpResult =
-      method === 'POST'
-        ? await this._httpClient.post(endpoint, data)
-        : await this._httpClient.patch(endpoint, data);
+    let httpResult: HttpClientResponse;
+
+    switch (method) {
+      case 'POST':
+        httpResult = await this._httpClient.post(endpoint, data);
+        break;
+      case 'PATCH':
+        httpResult = await this._httpClient.patch(endpoint, data);
+        break;
+      case 'DELETE':
+        httpResult = await this._httpClient.delete(endpoint, data);
+        break;
+    }
 
     if (!httpResult.success) {
       return Result.fail({
@@ -73,6 +86,15 @@ export class NextCarApiClient implements CarApiClient {
       contract,
       editCarApiResponseSchema,
       'PATCH',
+    );
+  }
+
+  async remove(carId: string) {
+    return this.makeRequest(
+      '/api/car',
+      { carId },
+      removeCarApiResponseSchema,
+      'DELETE',
     );
   }
 }

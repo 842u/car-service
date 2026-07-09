@@ -8,6 +8,11 @@ import type {
   EditCarApiResponseData,
   EditCarApiResponseError,
 } from '@/car/interface/api/edit.schema';
+import type {
+  RemoveCarApiRequest,
+  RemoveCarApiResponseData,
+  RemoveCarApiResponseError,
+} from '@/car/interface/api/remove.schema';
 import { NextApiHandler } from '@/common/infrastructure/api-handler/next';
 import { validator } from '@/dependency/validator';
 
@@ -21,4 +26,10 @@ export const editCarApiHandler = new NextApiHandler<
   EditCarApiResponseData,
   EditCarApiResponseError,
   EditCarApiRequest
+>(validator);
+
+export const removeCarApiHandler = new NextApiHandler<
+  RemoveCarApiResponseData,
+  RemoveCarApiResponseError,
+  RemoveCarApiRequest
 >(validator);

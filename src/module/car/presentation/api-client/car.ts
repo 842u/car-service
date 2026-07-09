@@ -8,4 +8,5 @@ type CarApiClientError = { message: string };
 export interface CarApiClient {
   add(contract: AddCarApiRequest): Promise<Result<CarDto, CarApiClientError>>;
   edit(contract: EditCarApiRequest): Promise<Result<CarDto, CarApiClientError>>;
+  remove(carId: string): Promise<Result<null, CarApiClientError>>;
 }
