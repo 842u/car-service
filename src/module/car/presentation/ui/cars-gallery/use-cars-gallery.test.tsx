@@ -2,15 +2,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
-import { getCarsByPage } from '@/lib/supabase/tables/cars';
+import { carDataSource } from '@/car/dependency/data-source';
+import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
 
 import { useCarsGallery } from './use-cars-gallery';
 
-const mockGetCarsByPage = getCarsByPage as jest.MockedFunction<
-  typeof getCarsByPage
->;
-jest.mock('@/lib/supabase/tables/cars');
+const mockCarDataSource = carDataSource as jest.Mocked<typeof carDataSource>;
+jest.mock('@/car/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
@@ -60,19 +58,19 @@ function createWrapper() {
   return Wrapper;
 }
 
-const MOCK_CARS = [createMockCar(), createMockCar()];
+const MOCK_CARS = [createMockCarDto(), createMockCarDto()];
 
 beforeEach(() => {
   jest.clearAllMocks();
-  mockGetCarsByPage.mockResolvedValue({
-    data: MOCK_CARS,
-    nextPageParam: null,
+  mockCarDataSource.getByPage.mockResolvedValue({
+    success: true,
+    data: { data: MOCK_CARS, nextPageParam: null },
   });
 });
 
 describe('useCarsGallery', () => {
   it('should return isPending true initially', () => {
-    mockGetCarsByPage.mockReturnValue(new Promise(() => {}));
+    mockCarDataSource.getByPage.mockReturnValue(new Promise(() => {}));
 
     const { result } = renderHook(() => useCarsGallery(), {
       wrapper: createWrapper(),
@@ -91,23 +89,33 @@ describe('useCarsGallery', () => {
     expect(result.current.data).toEqual(MOCK_CARS);
   });
 
-  it('should call getCarsByPage with correct params', async () => {
+  it('should call getByPage with correct params', async () => {
     const { result } = renderHook(() => useCarsGallery(), {
       wrapper: createWrapper(),
     });
 
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
-    expect(mockGetCarsByPage).toHaveBeenCalledWith({ pageParam: 0 });
+    expect(mockCarDataSource.getByPage).toHaveBeenCalledWith({
+      pageParam: 0,
+      pageLimit: undefined,
+      orderBy: undefined,
+    });
   });
 
   it('should flatten pages into gallery data', async () => {
-    const PAGE_1 = [createMockCar(), createMockCar()];
-    const PAGE_2 = [createMockCar()];
+    const PAGE_1 = [createMockCarDto(), createMockCarDto()];
+    const PAGE_2 = [createMockCarDto()];
 
-    mockGetCarsByPage
-      .mockResolvedValueOnce({ data: PAGE_1, nextPageParam: 1 })
-      .mockResolvedValueOnce({ data: PAGE_2, nextPageParam: null });
+    mockCarDataSource.getByPage
+      .mockResolvedValueOnce({
+        success: true,
+        data: { data: PAGE_1, nextPageParam: 1 },
+      })
+      .mockResolvedValueOnce({
+        success: true,
+        data: { data: PAGE_2, nextPageParam: null },
+      });
 
     const { result } = renderHook(() => useCarsGallery(), {
       wrapper: createWrapper(),
@@ -122,7 +130,10 @@ describe('useCarsGallery', () => {
   });
 
   it('should return empty array when data is undefined', async () => {
-    mockGetCarsByPage.mockResolvedValue({ data: [], nextPageParam: null });
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: true,
+      data: { data: [], nextPageParam: null },
+    });
 
     const { result } = renderHook(() => useCarsGallery(), {
       wrapper: createWrapper(),
@@ -134,7 +145,10 @@ describe('useCarsGallery', () => {
   });
 
   it('should show error toast when fetch fails', async () => {
-    mockGetCarsByPage.mockRejectedValue(new Error('DB error'));
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: false,
+      error: { message: 'DB error' },
+    });
 
     renderHook(() => useCarsGallery(), { wrapper: createWrapper() });
 
@@ -145,9 +159,15 @@ describe('useCarsGallery', () => {
 
   describe('IntersectionObserver', () => {
     it('should call fetchNextPage when target intersects and next page exists', async () => {
-      mockGetCarsByPage
-        .mockResolvedValueOnce({ data: MOCK_CARS, nextPageParam: 1 })
-        .mockResolvedValueOnce({ data: [], nextPageParam: null });
+      mockCarDataSource.getByPage
+        .mockResolvedValueOnce({
+          success: true,
+          data: { data: MOCK_CARS, nextPageParam: 1 },
+        })
+        .mockResolvedValueOnce({
+          success: true,
+          data: { data: [], nextPageParam: null },
+        });
 
       const { result } = renderHook(() => useCarsGallery(), {
         wrapper: createWrapper(),
@@ -157,13 +177,15 @@ describe('useCarsGallery', () => {
 
       triggerIntersection(true);
 
-      await waitFor(() => expect(mockGetCarsByPage).toHaveBeenCalledTimes(2));
+      await waitFor(() =>
+        expect(mockCarDataSource.getByPage).toHaveBeenCalledTimes(2),
+      );
     });
 
     it('should not call fetchNextPage when target does not intersect', async () => {
-      mockGetCarsByPage.mockResolvedValue({
-        data: MOCK_CARS,
-        nextPageParam: 1,
+      mockCarDataSource.getByPage.mockResolvedValue({
+        success: true,
+        data: { data: MOCK_CARS, nextPageParam: 1 },
       });
 
       const { result } = renderHook(() => useCarsGallery(), {
@@ -174,13 +196,13 @@ describe('useCarsGallery', () => {
 
       triggerIntersection(false);
 
-      expect(mockGetCarsByPage).toHaveBeenCalledTimes(1);
+      expect(mockCarDataSource.getByPage).toHaveBeenCalledTimes(1);
     });
 
     it('should disconnect observer on unmount', async () => {
-      mockGetCarsByPage.mockResolvedValue({
-        data: MOCK_CARS,
-        nextPageParam: 1,
+      mockCarDataSource.getByPage.mockResolvedValue({
+        success: true,
+        data: { data: MOCK_CARS, nextPageParam: 1 },
       });
 
       const { result, unmount } = renderHook(() => useCarsGallery(), {

@@ -2,23 +2,21 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
-import { getCarsByPage } from '@/lib/supabase/tables/cars';
+import { carDataSource } from '@/car/dependency/data-source';
+import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 import { CarsGallery } from './cars-gallery';
 
-const mockGetCarsByPage = getCarsByPage as jest.MockedFunction<
-  typeof getCarsByPage
->;
-jest.mock('@/lib/supabase/tables/cars');
+const mockCarDataSource = carDataSource as jest.Mocked<typeof carDataSource>;
+jest.mock('@/car/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
   useToasts: () => ({ addToast: mockAddToast }),
 }));
 
-jest.mock('@/car/ui/cards/add/add', () => ({
+jest.mock('@/car/presentation/ui/cards/add/add', () => ({
   AddCard: ({ onClick }: { onClick: () => void }) => (
     <button onClick={onClick}>Add car</button>
   ),
@@ -26,7 +24,7 @@ jest.mock('@/car/ui/cards/add/add', () => ({
 jest.mock('../cards/car', () => ({
   CarCard: ({ car }: { car: { id: string } }) => <div>{car.id}</div>,
 }));
-jest.mock('@/car/ui/modals/add/add', () => ({
+jest.mock('@/car/presentation/ui/modals/add/add', () => ({
   AddModal: () => null,
 }));
 jest.mock('@/dashboard/ui/section/section', () => ({
@@ -45,7 +43,10 @@ DashboardSectionMock.Heading = function DashboardSectionHeading({
   return <h2>{children}</h2>;
 };
 
-const MOCK_CARS = [createMockCar({ id: crypto.randomUUID() }), createMockCar()];
+const MOCK_CARS = [
+  createMockCarDto({ id: crypto.randomUUID() }),
+  createMockCarDto(),
+];
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -87,7 +88,7 @@ beforeEach(() => {
 
 describe('CarsGallery', () => {
   it('should render spinner while pending', () => {
-    mockGetCarsByPage.mockReturnValue(new Promise(() => {}));
+    mockCarDataSource.getByPage.mockReturnValue(new Promise(() => {}));
 
     render(<CarsGallery />, { wrapper: createWrapper() });
 
@@ -95,9 +96,9 @@ describe('CarsGallery', () => {
   });
 
   it('should not render spinner after data loads', async () => {
-    mockGetCarsByPage.mockResolvedValue({
-      data: MOCK_CARS,
-      nextPageParam: null,
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: true,
+      data: { data: MOCK_CARS, nextPageParam: null },
     });
 
     render(<CarsGallery />, { wrapper: createWrapper() });
@@ -108,7 +109,7 @@ describe('CarsGallery', () => {
   });
 
   it('should render heading', async () => {
-    mockGetCarsByPage.mockReturnValue(new Promise(() => {}));
+    mockCarDataSource.getByPage.mockReturnValue(new Promise(() => {}));
 
     render(<CarsGallery />, { wrapper: createWrapper() });
 
@@ -116,9 +117,9 @@ describe('CarsGallery', () => {
   });
 
   it('should render a CarCard for each car', async () => {
-    mockGetCarsByPage.mockResolvedValue({
-      data: MOCK_CARS,
-      nextPageParam: null,
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: true,
+      data: { data: MOCK_CARS, nextPageParam: null },
     });
 
     render(<CarsGallery />, { wrapper: createWrapper() });
@@ -131,9 +132,9 @@ describe('CarsGallery', () => {
   });
 
   it('should render add car card', async () => {
-    mockGetCarsByPage.mockResolvedValue({
-      data: MOCK_CARS,
-      nextPageParam: null,
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: true,
+      data: { data: MOCK_CARS, nextPageParam: null },
     });
 
     render(<CarsGallery />, { wrapper: createWrapper() });
@@ -142,8 +143,11 @@ describe('CarsGallery', () => {
   });
 
   it('should render fetching spinner when fetching next page', async () => {
-    mockGetCarsByPage
-      .mockResolvedValueOnce({ data: MOCK_CARS, nextPageParam: 1 })
+    mockCarDataSource.getByPage
+      .mockResolvedValueOnce({
+        success: true,
+        data: { data: MOCK_CARS, nextPageParam: 1 },
+      })
       .mockReturnValueOnce(new Promise(() => {}));
 
     render(<CarsGallery />, { wrapper: createWrapper() });

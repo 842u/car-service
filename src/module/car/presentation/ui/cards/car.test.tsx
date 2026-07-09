@@ -1,18 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import type { Route } from 'next';
 
-import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
+import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
 
 import { CarCard } from './car';
 
 describe('CarCard', () => {
-  const mockCar = createMockCar();
+  const mockCar = createMockCarDto();
 
   it('should render as a link element', async () => {
     render(<CarCard car={mockCar} />);
 
     const linkElement = await screen.findByRole('link', {
-      name: new RegExp(`${mockCar.custom_name}`, 'i'),
+      name: new RegExp(`${mockCar.customName}`, 'i'),
     });
 
     expect(linkElement).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe('CarCard', () => {
     render(<CarCard car={mockCar} />);
 
     const linkElement = await screen.findByRole('link', {
-      name: new RegExp(`${mockCar.custom_name}`, 'i'),
+      name: new RegExp(`${mockCar.customName}`, 'i'),
     });
 
     expect(linkElement).toHaveAttribute('href', properHref);
@@ -41,11 +41,11 @@ describe('CarCard', () => {
   it('should render car basic info', async () => {
     render(<CarCard car={mockCar} />);
 
-    const carName = await screen.findByText(mockCar.custom_name);
+    const carName = await screen.findByText(mockCar.customName);
     const carBrand = await screen.findByText(mockCar.brand || 'brandNotFound');
     const carModel = await screen.findByText(mockCar.model || 'modelNotFound');
     const carLicensePlates = await screen.findByText(
-      mockCar.license_plates || 'licensePlatesNotFound',
+      mockCar.licensePlates || 'licensePlatesNotFound',
     );
 
     expect(carName).toBeInTheDocument();

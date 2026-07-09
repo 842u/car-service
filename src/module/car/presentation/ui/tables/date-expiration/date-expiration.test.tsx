@@ -2,42 +2,43 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { createMockCar } from '@/lib/jest/mock/src/module/car/car';
-import { getCarsByPage } from '@/lib/supabase/tables/cars';
+import { carDataSource } from '@/car/dependency/data-source';
+import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 import { DateExpirationTable } from './date-expiration';
 
-const mockGetCarsByPage = getCarsByPage as jest.MockedFunction<
-  typeof getCarsByPage
->;
-jest.mock('@/lib/supabase/tables/cars');
+const mockCarDataSource = carDataSource as jest.Mocked<typeof carDataSource>;
+jest.mock('@/car/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
   useToasts: () => ({ addToast: mockAddToast }),
 }));
 
-jest.mock('@/car/ui/badge/badge', () => ({
+jest.mock('@/car/presentation/ui/badge/badge', () => ({
   CarBadge: () => null,
 }));
-jest.mock('@/car/ui/tables/date-expiration/view-button/view-button', () => ({
-  DateExpirationTableViewButton: () => null,
-}));
+jest.mock(
+  '@/car/presentation/ui/tables/date-expiration/view-button/view-button',
+  () => ({
+    DateExpirationTableViewButton: () => null,
+  }),
+);
 jest.mock(
   '@/ui/date-expiration-status-icon/date-expiration-status-icon',
   () => ({
     DateExpirationStatusIcon: () => null,
   }),
 );
-jest.mock('@/car/ui/tables/date-expiration/legend/legend', () => ({
+jest.mock('@/car/presentation/ui/tables/date-expiration/legend/legend', () => ({
   DateExpirationTableLegend: () => null,
 }));
 
-const MOCK_CARS = [createMockCar(), createMockCar()];
+const MOCK_CARS = [createMockCarDto(), createMockCarDto()];
 const DEFAULT_PROPS = {
   label: 'Insurance',
-  dateColumn: 'insurance_expiration' as const,
+  dateColumn: 'insuranceExpiration' as const,
 };
 
 function createWrapper() {
@@ -60,7 +61,7 @@ beforeEach(() => {
 
 describe('DateExpirationTable', () => {
   it('should render spinner while pending', () => {
-    mockGetCarsByPage.mockReturnValue(new Promise(() => {}));
+    mockCarDataSource.getByPage.mockReturnValue(new Promise(() => {}));
 
     render(<DateExpirationTable {...DEFAULT_PROPS} />, {
       wrapper: createWrapper(),
@@ -70,9 +71,9 @@ describe('DateExpirationTable', () => {
   });
 
   it('should not render spinner after data loads', async () => {
-    mockGetCarsByPage.mockResolvedValue({
-      data: MOCK_CARS,
-      nextPageParam: null,
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: true,
+      data: { data: MOCK_CARS, nextPageParam: null },
     });
 
     render(<DateExpirationTable {...DEFAULT_PROPS} />, {
@@ -85,9 +86,9 @@ describe('DateExpirationTable', () => {
   });
 
   it('should render table after data loads', async () => {
-    mockGetCarsByPage.mockResolvedValue({
-      data: MOCK_CARS,
-      nextPageParam: null,
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: true,
+      data: { data: MOCK_CARS, nextPageParam: null },
     });
 
     render(<DateExpirationTable {...DEFAULT_PROPS} />, {
@@ -98,7 +99,10 @@ describe('DateExpirationTable', () => {
   });
 
   it('should render placeholder if there is no data', async () => {
-    mockGetCarsByPage.mockResolvedValue({ data: [], nextPageParam: null });
+    mockCarDataSource.getByPage.mockResolvedValue({
+      success: true,
+      data: { data: [], nextPageParam: null },
+    });
 
     render(<DateExpirationTable {...DEFAULT_PROPS} />, {
       wrapper: createWrapper(),
