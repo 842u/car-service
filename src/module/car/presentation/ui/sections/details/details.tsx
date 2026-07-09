@@ -3,10 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { DetailsCard } from '@/car/ui/cards/details/details';
+import { carMapper } from '@/car/dependency/mapper';
+import { getCarByIdQueryOptions } from '@/car/infrastructure/tanstack/query/options';
+import { DetailsCard } from '@/car/presentation/ui/cards/details/details';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { getCar } from '@/lib/supabase/tables/cars';
 import { getCarOwnerships } from '@/lib/supabase/tables/cars_ownerships';
 import { queryKeys } from '@/lib/tanstack/keys';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
@@ -28,11 +29,7 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
     data: carData,
     error: carError,
     isLoading: isCarDataLoading,
-  } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.carsByCarId(carId),
-    queryFn: () => getCar(carId),
-  });
+  } = useQuery(getCarByIdQueryOptions(carId));
 
   const { data: ownerships, error: ownershipsError } = useQuery({
     throwOnError: false,
@@ -64,7 +61,10 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
   return (
     <DashboardSection aria-label="Vehicle details" className={className}>
       <DetailsCard car={carData} className="mb-5" />
-      <SectionControls canEdit={isSessionUserPrimaryOwner} car={carData} />
+      <SectionControls
+        canEdit={isSessionUserPrimaryOwner}
+        car={carData && carMapper.dtoToPersistence(carData)}
+      />
     </DashboardSection>
   );
 }
