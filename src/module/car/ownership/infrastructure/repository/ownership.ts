@@ -68,4 +68,19 @@ export class OwnershipRepositoryImplementation implements OwnershipRepository {
 
     return Result.ok(null);
   }
+
+  async promotePrimary(carOwnership: CarOwnership, newPrimaryOwnerId: OwnerId) {
+    const rpcResult = await this._dbClient.rpc(async (rpc) =>
+      rpc('switch_primary_car_owner', {
+        new_primary_owner_id: newPrimaryOwnerId.value,
+        target_car_id: carOwnership.id.value,
+      }),
+    );
+
+    if (!rpcResult.success) {
+      return Result.fail(rpcResult.error);
+    }
+
+    return Result.ok(null);
+  }
 }

@@ -17,4 +17,8 @@ export interface OwnershipRepository {
     carOwnership: CarOwnership,
     targetId: OwnerId,
   ): Promise<RepositoryResult<null>>;
+  promotePrimary(
+    carOwnership: CarOwnership,
+    newPrimaryOwnerId: OwnerId,
+  ): Promise<RepositoryResult<null>>;
 }

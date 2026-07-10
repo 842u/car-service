@@ -137,6 +137,56 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
     return Result.ok(target);
   }
 
+  /**
+   * Hands primary ownership to an existing co-owner, demoting the former
+   * primary to co-owner in the same act, and returns the new primary's id.
+   * Authorization is target-independent (only the current primary may promote),
+   * so it is checked before the target id is validated, as in `addOwner`. The
+   * target must already be a co-owner; promoting the primary to itself falls
+   * through the same membership check as a stranger, since the primary is not
+   * among the co-owners.
+   */
+  promotePrimary(
+    actingId: string,
+    targetId: string,
+  ): Result<OwnerId, OwnershipDomainError> {
+    if (actingId !== this._value.primaryOwner.value) {
+      return Result.fail({
+        kind: 'unauthorized',
+        message: 'Only the primary owner may hand over primary ownership.',
+      });
+    }
+
+    const targetIdResult = OwnerId.create(targetId);
+
+    if (!targetIdResult.success) {
+      const { message, issues } = targetIdResult.error;
+      return Result.fail({ kind: 'validation', message, issues });
+    }
+
+    const target = targetIdResult.data;
+
+    const isTargetCoOwner = this._value.coOwners.some(
+      (coOwner) => coOwner.value === target.value,
+    );
+
+    if (!isTargetCoOwner) {
+      return Result.fail({
+        kind: 'conflict',
+        message: 'This user is not a co-owner of this car.',
+      });
+    }
+
+    const formerPrimary = this._value.primaryOwner;
+
+    this._value.primaryOwner = target;
+    this._value.coOwners = this._value.coOwners
+      .filter((coOwner) => coOwner.value !== target.value)
+      .concat(formerPrimary);
+
+    return Result.ok(target);
+  }
+
   get id(): CarId {
     return this._value.id;
   }
