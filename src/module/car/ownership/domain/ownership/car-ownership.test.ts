@@ -58,6 +58,17 @@ describe('CarOwnership', () => {
       expect(carOwnership.coOwners).toHaveLength(1);
     });
 
+    it('rejects a non-primary actor before validating the new owner id', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.addOwner(CO_OWNER_ID, 'not-a-uuid');
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+    });
+
     it('rejects a malformed new owner id', () => {
       const carOwnership = buildCarOwnership();
 
