@@ -13,4 +13,8 @@ export interface OwnershipRepository {
     carOwnership: CarOwnership,
     newOwnerId: OwnerId,
   ): Promise<RepositoryResult<null>>;
+  removeOwner(
+    carOwnership: CarOwnership,
+    targetId: OwnerId,
+  ): Promise<RepositoryResult<null>>;
 }
