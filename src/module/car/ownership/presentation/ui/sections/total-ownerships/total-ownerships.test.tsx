@@ -2,16 +2,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership';
+import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
+import { Result } from '@/common/application/result';
+import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
 import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
-import { getCarsOwnershipsByOwnerId } from '@/lib/supabase/tables/cars_ownerships';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 import { userDataSource } from '@/user/dependency/data-source';
 
 import { TotalOwnershipsSection } from './total-ownerships';
 
 jest.mock('@/user/dependency/data-source');
-jest.mock('@/lib/supabase/tables/cars_ownerships');
+jest.mock('@/car/ownership/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
@@ -19,13 +20,12 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 }));
 
 const mockUserDataSource = userDataSource as jest.Mocked<typeof userDataSource>;
-const mockGetCarsOwnershipsByOwnerId =
-  getCarsOwnershipsByOwnerId as jest.MockedFunction<
-    typeof getCarsOwnershipsByOwnerId
-  >;
+const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<
+  typeof ownershipDataSource
+>;
 
 const MOCK_USER = createMockUserDto();
-const MOCK_OWNERSHIPS = [createMockCarOwnership(), createMockCarOwnership()];
+const MOCK_OWNERSHIPS = [createMockOwnershipDto(), createMockOwnershipDto()];
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -59,7 +59,7 @@ describe('TotalOwnershipsSection', () => {
   });
 
   it('should render spinner while ownerships are pending', () => {
-    mockGetCarsOwnershipsByOwnerId.mockReturnValue(new Promise(() => {}));
+    mockOwnershipDataSource.getByOwnerId.mockReturnValue(new Promise(() => {}));
 
     render(<TotalOwnershipsSection />, { wrapper: createWrapper() });
 
@@ -67,7 +67,9 @@ describe('TotalOwnershipsSection', () => {
   });
 
   it('should render ownership count when data is loaded', async () => {
-    mockGetCarsOwnershipsByOwnerId.mockResolvedValue(MOCK_OWNERSHIPS);
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(
+      Result.ok(MOCK_OWNERSHIPS),
+    );
 
     render(<TotalOwnershipsSection />, { wrapper: createWrapper() });
 
@@ -77,7 +79,7 @@ describe('TotalOwnershipsSection', () => {
   });
 
   it('should render 0 when user has no ownerships', async () => {
-    mockGetCarsOwnershipsByOwnerId.mockResolvedValue([]);
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(Result.ok([]));
 
     render(<TotalOwnershipsSection />, { wrapper: createWrapper() });
 
@@ -85,7 +87,9 @@ describe('TotalOwnershipsSection', () => {
   });
 
   it('should not render spinner after data is loaded', async () => {
-    mockGetCarsOwnershipsByOwnerId.mockResolvedValue(MOCK_OWNERSHIPS);
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(
+      Result.ok(MOCK_OWNERSHIPS),
+    );
 
     render(<TotalOwnershipsSection />, { wrapper: createWrapper() });
 

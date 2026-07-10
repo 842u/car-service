@@ -2,19 +2,19 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { useTotalOwnershipsSection } from '@/car/ownership/ui/sections/total-ownerships/use-total-ownerships';
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership';
+import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
+import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/sections/total-ownerships/use-total-ownerships';
+import { Result } from '@/common/application/result';
+import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
 import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
-import { getCarsOwnershipsByOwnerId } from '@/lib/supabase/tables/cars_ownerships';
 import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { userDataSource } from '@/user/dependency/data-source';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
-const mockGetCarsOwnershipsByOwnerId =
-  getCarsOwnershipsByOwnerId as jest.MockedFunction<
-    typeof getCarsOwnershipsByOwnerId
-  >;
-jest.mock('@/lib/supabase/tables/cars_ownerships');
+const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<
+  typeof ownershipDataSource
+>;
+jest.mock('@/car/ownership/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
@@ -24,16 +24,8 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 const mockUserDataSource = userDataSource as jest.Mocked<typeof userDataSource>;
 jest.mock('@/user/dependency/data-source');
 
-beforeEach(() => {
-  jest.clearAllMocks();
-  mockUserDataSource.getSessionUser.mockResolvedValue({
-    success: true,
-    data: MOCK_USER,
-  });
-});
-
 const MOCK_USER = createMockUserDto();
-const MOCK_OWNERSHIPS = [createMockCarOwnership(), createMockCarOwnership()];
+const MOCK_OWNERSHIPS = [createMockOwnershipDto(), createMockOwnershipDto()];
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -59,7 +51,9 @@ beforeEach(() => {
 
 describe('useTotalOwnershipsSection', () => {
   it('should return isPending true initially', () => {
-    mockGetCarsOwnershipsByOwnerId.mockResolvedValue(MOCK_OWNERSHIPS);
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(
+      Result.ok(MOCK_OWNERSHIPS),
+    );
 
     const { result } = renderHook(() => useTotalOwnershipsSection(), {
       wrapper: createWrapper(),
@@ -69,7 +63,9 @@ describe('useTotalOwnershipsSection', () => {
   });
 
   it('should return ownerships data after successful fetch', async () => {
-    mockGetCarsOwnershipsByOwnerId.mockResolvedValue(MOCK_OWNERSHIPS);
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(
+      Result.ok(MOCK_OWNERSHIPS),
+    );
 
     const { result } = renderHook(() => useTotalOwnershipsSection(), {
       wrapper: createWrapper(),
@@ -80,8 +76,10 @@ describe('useTotalOwnershipsSection', () => {
     expect(result.current.data).toEqual(MOCK_OWNERSHIPS);
   });
 
-  it('should call getCarsOwnershipsByOwnerId with the user id', async () => {
-    mockGetCarsOwnershipsByOwnerId.mockResolvedValue(MOCK_OWNERSHIPS);
+  it('should call getByOwnerId with the user id', async () => {
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(
+      Result.ok(MOCK_OWNERSHIPS),
+    );
 
     const { result } = renderHook(() => useTotalOwnershipsSection(), {
       wrapper: createWrapper(),
@@ -89,21 +87,25 @@ describe('useTotalOwnershipsSection', () => {
 
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
-    expect(mockGetCarsOwnershipsByOwnerId).toHaveBeenCalledWith(MOCK_USER.id);
+    expect(mockOwnershipDataSource.getByOwnerId).toHaveBeenCalledWith(
+      MOCK_USER.id,
+    );
   });
 
-  it('should not call getCarsOwnershipsByOwnerId when user is not yet resolved', () => {
+  it('should not call getByOwnerId when user is not yet resolved', () => {
     mockUserDataSource.getSessionUser.mockReturnValue(new Promise(() => {}));
 
     renderHook(() => useTotalOwnershipsSection(), {
       wrapper: createWrapper(),
     });
 
-    expect(mockGetCarsOwnershipsByOwnerId).not.toHaveBeenCalled();
+    expect(mockOwnershipDataSource.getByOwnerId).not.toHaveBeenCalled();
   });
 
   it('should show error toast when ownerships fetch fails', async () => {
-    mockGetCarsOwnershipsByOwnerId.mockRejectedValue(new Error('DB error'));
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(
+      Result.fail({ message: 'DB error' }),
+    );
 
     renderHook(() => useTotalOwnershipsSection(), {
       wrapper: createWrapper(),
@@ -115,7 +117,9 @@ describe('useTotalOwnershipsSection', () => {
   });
 
   it('should fall back to generic message when ownerships error has no message', async () => {
-    mockGetCarsOwnershipsByOwnerId.mockRejectedValue(new Error(''));
+    mockOwnershipDataSource.getByOwnerId.mockResolvedValue(
+      Result.fail({ message: '' }),
+    );
 
     renderHook(() => useTotalOwnershipsSection(), {
       wrapper: createWrapper(),
