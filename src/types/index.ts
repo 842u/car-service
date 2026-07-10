@@ -1,45 +1,9 @@
-import type { InfiniteData } from '@tanstack/react-query';
 import type { Database } from 'supabase/types/supabase';
 
 export type User = Database['public']['Tables']['users']['Row'];
 
-export type Car = Database['public']['Tables']['cars']['Row'];
-
 export type CarOwnership =
   Database['public']['Tables']['cars_ownerships']['Row'];
-
-export type Fuel = Database['public']['Enums']['fuel'];
-export type FuelMapping = { [K in Fuel]: K };
-
-export type Transmission = Database['public']['Enums']['transmission'];
-export type TransmissionMapping = { [K in Transmission]: K };
-
-export type Drive = Database['public']['Enums']['drive'];
-export type DriveMapping = { [K in Drive]: K };
-
-export const fuelTypesMapping: FuelMapping = {
-  diesel: 'diesel',
-  gasoline: 'gasoline',
-  LPG: 'LPG',
-  hybrid: 'hybrid',
-  electric: 'electric',
-  CNG: 'CNG',
-  ethanol: 'ethanol',
-  hydrogen: 'hydrogen',
-};
-
-export const transmissionTypesMapping: TransmissionMapping = {
-  manual: 'manual',
-  automatic: 'automatic',
-  CVT: 'CVT',
-};
-
-export const driveTypesMapping: DriveMapping = {
-  FWD: 'FWD',
-  RWD: 'RWD',
-  AWD: 'AWD',
-  '4WD': '4WD',
-};
 
 export type ServiceLog = Database['public']['Tables']['service_logs']['Row'];
 
@@ -58,10 +22,3 @@ export const serviceCategoryMapping: ServiceCategoryMapping = {
   suspension: 'suspension',
   tires: 'tires',
 };
-
-export type CarsInfiniteQueryPageData = {
-  data: (Car | null)[];
-  nextPageParam: number | null;
-};
-
-export type CarsInfiniteQueryData = InfiniteData<CarsInfiniteQueryPageData>;

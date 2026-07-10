@@ -4,6 +4,7 @@ import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
+import { queryKeys as carQueryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import {
   deleteCarOwnershipsByUsersIds,
@@ -69,7 +70,7 @@ export function useDropdownContent({
 
       if (sessionUserId === ownerId) {
         queryClient.invalidateQueries({
-          queryKey: queryKeys.carsInfinite,
+          queryKey: carQueryKeys.carsInfinite,
         });
       }
 

@@ -1,158 +1,100 @@
 import type { NextRequest } from 'next/server';
-import { ZodError } from 'zod';
 
-import type { CarFormValues } from '@/car/schemas/zod/carFormSchema';
-import { carFormSchema } from '@/car/schemas/zod/carFormSchema';
-import { apiHandler } from '@/dependency/api-handler';
-import { createServerDatabaseClient } from '@/dependency/database-client/server';
-
-type CarFormValuesToValidate = Omit<CarFormValues, 'image'>;
-
-export type ApiCarResponse = { id: string };
-export type ApiCarRequestBody = {
-  carFormData: CarFormValuesToValidate;
-  carId: string | null;
-};
+import {
+  addCarApiHandler,
+  editCarApiHandler,
+  removeCarApiHandler,
+} from '@/car/dependency/api-handler';
+import {
+  createAddCarUseCase,
+  createEditCarUseCase,
+  createRemoveCarUseCase,
+} from '@/car/dependency/use-case';
+import { addCarApiRequestSchema } from '@/car/interface/api/add.schema';
+import { editCarApiRequestSchema } from '@/car/interface/api/edit.schema';
+import { removeCarApiRequestSchema } from '@/car/interface/api/remove.schema';
+import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 
 export const maxDuration = 10;
 
 export async function POST(request: NextRequest) {
-  if (request.headers.get('content-type') !== 'application/json')
-    return apiHandler.errorResponse({ message: 'Unsupported Media Type' }, 415);
-
-  const { carFormData } = (await request.json()) as ApiCarRequestBody;
-
-  let validatedCarFormData: CarFormValuesToValidate;
-
-  try {
-    validatedCarFormData = carFormSchema.parse(carFormData);
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return apiHandler.errorResponse(
-        {
-          message: `Server validation failed: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
-        },
-        400,
-      );
-    }
-    if (error instanceof Error) {
-      return apiHandler.errorResponse(
-        { message: `Server validation failed: ${error.message}.` },
-        400,
-      );
-    }
-    return apiHandler.errorResponse(
-      { message: 'Server data validation failed. Try again.' },
-      400,
-    );
-  }
-
-  const dbClient = await createServerDatabaseClient();
-
-  /*
-   * While posting new car with image, its id is needed.
-   * Due to RLS policies on "cars" table for SELECT,
-   * usage of RPC is required to immediately return a new car id.
-   * User to be able to select a car, must have ownership of that specific car,
-   * and corresponding row in "cars_ownerships" table should exist.
-   * However rows in "cars_ownerships" are created AFTER INSERT on "cars" table,
-   * so RLS restricts immediate SELECT while using "supabase.from().insert().select()".
-   */
-  const rpcResult = await dbClient.rpc(async (rpc) =>
-    rpc('create_new_car', {
-      additional_fuel_type:
-        validatedCarFormData.additional_fuel_type ?? undefined,
-      custom_name: validatedCarFormData.custom_name || 'New car',
-      brand: validatedCarFormData.brand ?? undefined,
-      drive_type: validatedCarFormData.drive_type ?? undefined,
-      engine_capacity: validatedCarFormData.engine_capacity ?? undefined,
-      fuel_type: validatedCarFormData.fuel_type ?? undefined,
-      insurance_expiration:
-        validatedCarFormData.insurance_expiration ?? undefined,
-      technical_inspection_expiration:
-        validatedCarFormData.technical_inspection_expiration ?? undefined,
-      license_plates: validatedCarFormData.license_plates ?? undefined,
-      mileage: validatedCarFormData.mileage ?? undefined,
-      model: validatedCarFormData.model ?? undefined,
-      production_year: validatedCarFormData.production_year ?? undefined,
-      transmission_type: validatedCarFormData.transmission_type ?? undefined,
-      vin: validatedCarFormData.vin ?? undefined,
-    }),
+  const preprocessRequestResult = await addCarApiHandler.preprocessRequest(
+    request,
+    addCarApiRequestSchema,
   );
 
-  if (!rpcResult.success) {
-    const { message } = rpcResult.error;
-    return apiHandler.errorResponse({ message }, 502);
+  if (!preprocessRequestResult.success) {
+    const { message, issues } = preprocessRequestResult.error;
+    const { status } = preprocessRequestResult;
+    return addCarApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const { data } = rpcResult;
+  const addCarUseCase = await createAddCarUseCase();
 
-  return apiHandler.successResponse({ id: data }, 201);
+  const contract = preprocessRequestResult.data;
+
+  const useCaseResult = await addCarUseCase.execute(contract);
+
+  if (!useCaseResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return addCarApiHandler.errorResponse(error, status);
+  }
+
+  const carDto = useCaseResult.data;
+
+  return addCarApiHandler.successResponse(carDto, 201);
 }
 
 export async function PATCH(request: NextRequest) {
-  if (request.headers.get('content-type') !== 'application/json')
-    return apiHandler.errorResponse({ message: 'Unsupported Media Type' }, 415);
-
-  const { carFormData, carId } = (await request.json()) as ApiCarRequestBody;
-
-  let validatedCarFormData: CarFormValuesToValidate;
-
-  try {
-    validatedCarFormData = carFormSchema.parse(carFormData);
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return apiHandler.errorResponse(
-        {
-          message: `Server validation failed: ${error.issues.map((issueError) => `${issueError.message}\n`)}`,
-        },
-        400,
-      );
-    }
-    if (error instanceof Error) {
-      return apiHandler.errorResponse(
-        { message: `Server validation failed: ${error.message}.` },
-        400,
-      );
-    }
-    return apiHandler.errorResponse(
-      { message: 'Server data validation failed. Try again.' },
-      400,
-    );
-  }
-
-  const dbClient = await createServerDatabaseClient();
-
-  const queryResult = await dbClient.query(async (from) =>
-    from('cars')
-      .update({
-        custom_name: validatedCarFormData.custom_name,
-        brand: validatedCarFormData.brand,
-        model: validatedCarFormData.model,
-        production_year: validatedCarFormData.production_year,
-        engine_capacity: validatedCarFormData.engine_capacity,
-        fuel_type: validatedCarFormData.fuel_type,
-        additional_fuel_type: validatedCarFormData.additional_fuel_type,
-        drive_type: validatedCarFormData.drive_type,
-        transmission_type: validatedCarFormData.transmission_type,
-        license_plates: validatedCarFormData.license_plates,
-        vin: validatedCarFormData.vin,
-        mileage: validatedCarFormData.mileage,
-        insurance_expiration: validatedCarFormData.insurance_expiration,
-        technical_inspection_expiration:
-          validatedCarFormData.technical_inspection_expiration,
-      })
-      .eq('id', carId || '')
-      .select('id')
-      .single(),
+  const preprocessRequestResult = await editCarApiHandler.preprocessRequest(
+    request,
+    editCarApiRequestSchema,
   );
 
-  if (!queryResult.success) {
-    const { message } = queryResult.error;
-    return apiHandler.errorResponse({ message }, 502);
+  if (!preprocessRequestResult.success) {
+    const { message, issues } = preprocessRequestResult.error;
+    const { status } = preprocessRequestResult;
+    return editCarApiHandler.errorResponse({ message, issues }, status);
   }
 
-  const { id } = queryResult.data;
+  const editCarUseCase = await createEditCarUseCase();
 
-  return apiHandler.successResponse({ id }, 200);
+  const contract = preprocessRequestResult.data;
+
+  const useCaseResult = await editCarUseCase.execute(contract);
+
+  if (!useCaseResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return editCarApiHandler.errorResponse(error, status);
+  }
+
+  const carDto = useCaseResult.data;
+
+  return editCarApiHandler.successResponse(carDto, 200);
+}
+
+export async function DELETE(request: NextRequest) {
+  const preprocessRequestResult = await removeCarApiHandler.preprocessRequest(
+    request,
+    removeCarApiRequestSchema,
+  );
+
+  if (!preprocessRequestResult.success) {
+    const { message, issues } = preprocessRequestResult.error;
+    const { status } = preprocessRequestResult;
+    return removeCarApiHandler.errorResponse({ message, issues }, status);
+  }
+
+  const removeCarUseCase = await createRemoveCarUseCase();
+
+  const contract = preprocessRequestResult.data;
+
+  const useCaseResult = await removeCarUseCase.execute(contract);
+
+  if (!useCaseResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return removeCarApiHandler.errorResponse(error, status);
+  }
+
+  return removeCarApiHandler.successResponse(null, 200);
 }

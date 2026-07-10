@@ -1,0 +1,113 @@
+import type { Route } from 'next';
+import type { ZodType } from 'zod';
+
+import {
+  type AddCarApiRequest,
+  addCarApiResponseSchema,
+} from '@/car/interface/api/add.schema';
+import {
+  type EditCarApiRequest,
+  editCarApiResponseSchema,
+} from '@/car/interface/api/edit.schema';
+import {
+  type CarImageChangeApiRequest,
+  carImageChangeApiResponseSchema,
+} from '@/car/interface/api/image-change.schema';
+import { removeCarApiResponseSchema } from '@/car/interface/api/remove.schema';
+import type { CarApiClient } from '@/car/presentation/api-client/car';
+import type {
+  HttpClient,
+  HttpClientResponse,
+} from '@/common/application/http-client';
+import { Result } from '@/common/application/result';
+import type { Validator } from '@/common/application/validator';
+
+type ApiResponse<T> =
+  | { success: true; data: T }
+  | { success: false; error: { message: string } };
+
+export class NextCarApiClient implements CarApiClient {
+  private readonly _httpClient: HttpClient;
+  private readonly _validator: Validator;
+
+  constructor(httpClient: HttpClient, validator: Validator) {
+    this._httpClient = httpClient;
+    this._validator = validator;
+  }
+
+  private async makeRequest<T>(
+    endpoint: Route,
+    contract: unknown,
+    schema: ZodType<ApiResponse<T>>,
+    method: 'POST' | 'PATCH' | 'DELETE' = 'POST',
+  ): Promise<Result<T, { message: string }>> {
+    const data = JSON.stringify(contract);
+
+    let httpResult: HttpClientResponse;
+
+    switch (method) {
+      case 'POST':
+        httpResult = await this._httpClient.post(endpoint, data);
+        break;
+      case 'PATCH':
+        httpResult = await this._httpClient.patch(endpoint, data);
+        break;
+      case 'DELETE':
+        httpResult = await this._httpClient.delete(endpoint, data);
+        break;
+    }
+
+    if (!httpResult.success) {
+      return Result.fail({
+        message: `HTTP request failed: ${httpResult.error.message}`,
+      });
+    }
+
+    const validationResult = this._validator.validate(httpResult.data, schema);
+
+    if (!validationResult.success) {
+      return Result.fail({
+        message: `API response validation failed: ${validationResult.error.message}`,
+      });
+    }
+
+    const apiResponse = validationResult.data;
+
+    if (!apiResponse.success) {
+      return Result.fail({ message: apiResponse.error.message });
+    }
+
+    return Result.ok(apiResponse.data);
+  }
+
+  async add(contract: AddCarApiRequest) {
+    return this.makeRequest('/api/car', contract, addCarApiResponseSchema);
+  }
+
+  async edit(contract: EditCarApiRequest) {
+    return this.makeRequest(
+      '/api/car',
+      contract,
+      editCarApiResponseSchema,
+      'PATCH',
+    );
+  }
+
+  async remove(carId: string) {
+    return this.makeRequest(
+      '/api/car',
+      { carId },
+      removeCarApiResponseSchema,
+      'DELETE',
+    );
+  }
+
+  async imageChange(contract: CarImageChangeApiRequest) {
+    return this.makeRequest(
+      '/api/car/image',
+      contract,
+      carImageChangeApiResponseSchema,
+      'PATCH',
+    );
+  }
+}

@@ -1,4 +1,4 @@
-import type { Car } from '@/types';
+import type { CarPersistence } from '@/car/application/persistence-model/car';
 
 export function createMockCar({
   id = '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6',
@@ -19,7 +19,7 @@ export function createMockCar({
   technical_inspection_expiration = null,
   transmission_type = null,
   vin = null,
-}: Partial<Car> = {}): Car {
+}: Partial<CarPersistence> = {}): CarPersistence {
   return {
     id,
     custom_name,

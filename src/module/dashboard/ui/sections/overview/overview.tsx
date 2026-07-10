@@ -1,7 +1,7 @@
 import { TotalOwnershipsSection } from '@/car/ownership/ui/sections/total-ownerships/total-ownerships';
+import { InsuranceExpirationSection } from '@/car/presentation/ui/sections/insurance-expiration/insurance-expiration';
+import { TechnicalInspectionExpirationSection } from '@/car/presentation/ui/sections/technical-inspection-expiration/technical-inspection-expiration';
 import { CostsSection } from '@/car/service-log/ui/sections/costs/costs';
-import { InsuranceExpirationSection } from '@/car/ui/sections/insurance-expiration/insurance-expiration';
-import { TechnicalInspectionExpirationSection } from '@/car/ui/sections/technical-inspection-expiration/technical-inspection-expiration';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
 export function OverviewSection() {
