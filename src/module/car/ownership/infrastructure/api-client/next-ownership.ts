@@ -6,6 +6,10 @@ import {
   addOwnerApiResponseSchema,
 } from '@/car/ownership/interface/api/add.schema';
 import {
+  type PromotePrimaryOwnerApiRequest,
+  promotePrimaryOwnerApiResponseSchema,
+} from '@/car/ownership/interface/api/promote.schema';
+import {
   type RemoveOwnerApiRequest,
   removeOwnerApiResponseSchema,
 } from '@/car/ownership/interface/api/remove.schema';
@@ -34,7 +38,7 @@ export class NextOwnershipApiClient implements OwnershipApiClient {
     endpoint: Route,
     contract: unknown,
     schema: ZodType<ApiResponse<T>>,
-    method: 'POST' | 'DELETE' = 'POST',
+    method: 'POST' | 'DELETE' | 'PATCH' = 'POST',
   ): Promise<Result<T, { message: string }>> {
     const data = JSON.stringify(contract);
 
@@ -46,6 +50,9 @@ export class NextOwnershipApiClient implements OwnershipApiClient {
         break;
       case 'DELETE':
         httpResult = await this._httpClient.delete(endpoint, data);
+        break;
+      case 'PATCH':
+        httpResult = await this._httpClient.patch(endpoint, data);
         break;
     }
 
@@ -86,6 +93,15 @@ export class NextOwnershipApiClient implements OwnershipApiClient {
       contract,
       removeOwnerApiResponseSchema,
       'DELETE',
+    );
+  }
+
+  async promote(contract: PromotePrimaryOwnerApiRequest) {
+    return this.makeRequest(
+      '/api/car/ownership',
+      contract,
+      promotePrimaryOwnerApiResponseSchema,
+      'PATCH',
     );
   }
 }
