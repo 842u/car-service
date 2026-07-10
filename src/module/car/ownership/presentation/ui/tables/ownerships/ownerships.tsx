@@ -1,13 +1,13 @@
 'use client';
 
-import { useOwnershipsTable } from '@/car/ownership/ui/tables/ownerships/use-ownerships';
-import type { CarOwnership } from '@/types';
+import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
+import { useOwnershipsTable } from '@/car/ownership/presentation/ui/tables/ownerships/use-ownerships';
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
 
 interface OwnershipsTableProps {
   isSessionUserPrimaryOwner: boolean;
-  ownerships?: CarOwnership[];
+  ownerships?: OwnershipDto[];
   users?: UserDto[];
   sessionUserId?: string;
 }
@@ -32,21 +32,21 @@ export function OwnershipsTable({
       options={{
         initialState: {
           columnVisibility: {
-            created_at: false,
+            createdAt: false,
           },
           sorting: [
-            { id: 'is_primary_owner', desc: true },
-            { id: 'created_at', desc: true },
+            { id: 'isPrimary', desc: true },
+            { id: 'createdAt', desc: true },
           ],
         },
         meta: {
-          intrinsicSort: { id: 'created_at', desc: true },
+          intrinsicSort: { id: 'createdAt', desc: true },
         },
       }}
     >
       <div className="flex flex-col gap-5 md:flex-row">
         <Table.TextFilter className="lg:w-fit" columnId="user" />
-        <Table.TextFilter className="lg:w-fit" columnId="owner_id" />
+        <Table.TextFilter className="lg:w-fit" columnId="ownerId" />
       </div>
       <Table.SortBreadcrumb className="mt-5" />
       <Table.Root

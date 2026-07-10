@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
 import { queryKeys as carQueryKeys } from '@/car/infrastructure/tanstack/query/keys';
+import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import {
   deleteCarOwnershipsByUsersIds,
@@ -16,7 +17,6 @@ import {
   carsOwnershipsUpdateOnMutate,
 } from '@/lib/tanstack/cars_ownerships';
 import { queryKeys } from '@/lib/tanstack/keys';
-import type { CarOwnership } from '@/types';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';
 import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
@@ -30,7 +30,7 @@ interface MutationVariables {
 }
 
 interface UseDropdownContentParams {
-  ownership: CarOwnership;
+  ownership: OwnershipDto;
   username?: string | null;
   sessionUserId?: string;
 }
@@ -100,9 +100,9 @@ export function useDropdownContent({
 
   const queryClient = useQueryClient();
 
-  const carId = ownership.car_id;
+  const carId = ownership.carId;
 
-  const ownerId = ownership.owner_id;
+  const ownerId = ownership.ownerId;
 
   const handleDeleteButtonClick = () => {
     deleteModalRef.current?.showModal();

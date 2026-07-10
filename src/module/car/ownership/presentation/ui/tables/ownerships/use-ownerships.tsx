@@ -2,13 +2,13 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { memo, useMemo, useRef } from 'react';
 
-import { TableActionsDropdown } from '@/car/ownership/ui/tables/ownerships/actions-dropdown/actions-dropdown';
+import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
+import { TableActionsDropdown } from '@/car/ownership/presentation/ui/tables/ownerships/actions-dropdown/actions-dropdown';
 import { KeyIcon } from '@/icons/key';
-import type { CarOwnership } from '@/types';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
-const columnsHelper = createColumnHelper<CarOwnership>();
+const columnsHelper = createColumnHelper<OwnershipDto>();
 
 const PrimaryOwnerCell = memo(function PrimaryOwnerCell({
   isPrimaryOwner,
@@ -45,7 +45,7 @@ const ActionsCell = memo(function ActionsCell({
   canPromote: boolean;
   canTakeAction: boolean;
   collisionDetectionRoot: HTMLElement | null;
-  ownership: CarOwnership;
+  ownership: OwnershipDto;
   sessionUserId?: string;
   username?: string;
 }) {
@@ -64,7 +64,7 @@ const ActionsCell = memo(function ActionsCell({
 
 interface UseOwnershipsTableParams {
   isSessionUserPrimaryOwner: boolean;
-  ownerships?: CarOwnership[];
+  ownerships?: OwnershipDto[];
   sessionUserId?: string;
   users?: UserDto[];
 }
@@ -87,15 +87,15 @@ export function useOwnershipsTable({
   const columns = useMemo(
     () =>
       [
-        columnsHelper.accessor('created_at', { enableSorting: true }),
-        columnsHelper.accessor('is_primary_owner', {
+        columnsHelper.accessor('createdAt', { enableSorting: true }),
+        columnsHelper.accessor('isPrimary', {
           meta: { label: 'Main Owner' },
           enableSorting: true,
           cell: ({ row }) => (
-            <PrimaryOwnerCell isPrimaryOwner={row.original.is_primary_owner} />
+            <PrimaryOwnerCell isPrimaryOwner={row.original.isPrimary} />
           ),
         }),
-        columnsHelper.accessor((row) => usersMap.get(row.owner_id)?.name, {
+        columnsHelper.accessor((row) => usersMap.get(row.ownerId)?.name, {
           meta: { label: 'User' },
           id: 'user',
           enableSorting: true,
@@ -103,10 +103,10 @@ export function useOwnershipsTable({
           enableColumnFilter: true,
           filterFn: 'includesString',
           cell: ({ row }) => (
-            <UserCell user={usersMap.get(row.original.owner_id)} />
+            <UserCell user={usersMap.get(row.original.ownerId)} />
           ),
         }),
-        columnsHelper.accessor('owner_id', {
+        columnsHelper.accessor('ownerId', {
           enableColumnFilter: true,
           filterFn: 'includesString',
           meta: { label: 'ID', shouldSpan: true },
@@ -114,7 +114,7 @@ export function useOwnershipsTable({
         columnsHelper.display({
           id: 'actions',
           cell: ({ row }) => {
-            const owner = usersMap.get(row.original.owner_id);
+            const owner = usersMap.get(row.original.ownerId);
             const canPromote =
               isSessionUserPrimaryOwner && sessionUserId !== owner?.id;
             const canDelete =
@@ -135,7 +135,7 @@ export function useOwnershipsTable({
             );
           },
         }),
-      ] as ColumnDef<CarOwnership>[],
+      ] as ColumnDef<OwnershipDto>[],
     [usersMap, isSessionUserPrimaryOwner, sessionUserId],
   );
 

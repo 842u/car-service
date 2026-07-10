@@ -1,5 +1,5 @@
+import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import { EllipsisIcon } from '@/icons/ellipsis';
-import type { CarOwnership } from '@/types';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
@@ -10,7 +10,7 @@ interface TableActionsDropdownProps {
   canPromote: boolean;
   canTakeAction: boolean;
   collisionDetectionRoot?: HTMLElement | null;
-  ownership: CarOwnership;
+  ownership: OwnershipDto;
   username?: string | null;
   sessionUserId?: string;
 }

@@ -1,14 +1,14 @@
-import { DeleteModal } from '@/car/ownership/ui/modals/delete/delete';
-import { PromoteModal } from '@/car/ownership/ui/modals/promote/promote';
-import { useDropdownContent } from '@/car/ownership/ui/tables/ownerships/actions-dropdown/content/use-content';
-import type { CarOwnership } from '@/types';
+import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
+import { DeleteModal } from '@/car/ownership/presentation/ui/modals/delete/delete';
+import { PromoteModal } from '@/car/ownership/presentation/ui/modals/promote/promote';
+import { useDropdownContent } from '@/car/ownership/presentation/ui/tables/ownerships/actions-dropdown/content/use-content';
 import { Button } from '@/ui/button/button';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 
 interface DropdownContentProps {
   canDelete: boolean;
   canPromote: boolean;
-  ownership: CarOwnership;
+  ownership: OwnershipDto;
   username?: string | null;
   sessionUserId?: string;
 }

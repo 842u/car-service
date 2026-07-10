@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import {
+  getOwnerProfilesQueryOptions,
+  getOwnershipsByCarIdQueryOptions,
+} from '@/car/ownership/infrastructure/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getCarOwnerships } from '@/lib/supabase/tables/cars_ownerships';
-import { queryKeys } from '@/lib/tanstack/keys';
 import { queryKeySerialize } from '@/lib/tanstack/utils';
-import { getCarOwnersQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 interface UseOwnershipsSectionParams {
@@ -21,17 +22,13 @@ export function useOwnershipsSection({ carId }: UseOwnershipsSectionParams) {
     data: ownerships,
     error: ownershipsError,
     isLoading: ownershipsLoading,
-  } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.carsOwnershipsByCarId(carId),
-    queryFn: () => getCarOwnerships(carId),
-  });
+  } = useQuery(getOwnershipsByCarIdQueryOptions(carId));
 
   const allowDependentQueries = !!(ownerships && ownerships.length);
 
-  const carOwnersQueryOptions = getCarOwnersQueryOptions({
+  const ownerProfilesQueryOptions = getOwnerProfilesQueryOptions({
     carId,
-    ownerIds: ownerships?.map((owner) => owner.owner_id) || [],
+    ownerIds: ownerships?.map((ownership) => ownership.ownerId) || [],
   });
 
   const {
@@ -39,7 +36,7 @@ export function useOwnershipsSection({ carId }: UseOwnershipsSectionParams) {
     error: usersError,
     isLoading: usersLoading,
   } = useQuery({
-    ...carOwnersQueryOptions,
+    ...ownerProfilesQueryOptions,
     enabled: allowDependentQueries,
   });
 
@@ -55,13 +52,12 @@ export function useOwnershipsSection({ carId }: UseOwnershipsSectionParams) {
     addToast(
       usersError.message,
       'error',
-      queryKeySerialize(carOwnersQueryOptions.queryKey),
+      queryKeySerialize(ownerProfilesQueryOptions.queryKey),
     );
-  }, [addToast, usersError, carOwnersQueryOptions.queryKey]);
+  }, [addToast, usersError, ownerProfilesQueryOptions.queryKey]);
 
   const isSessionUserPrimaryOwner = !!ownerships?.find(
-    (ownership) =>
-      ownership.owner_id === sessionUser?.id && ownership.is_primary_owner,
+    (ownership) => ownership.ownerId === sessionUser?.id && ownership.isPrimary,
   );
 
   return {
