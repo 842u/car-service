@@ -147,4 +147,43 @@ describe('OwnershipRepositoryImplementation', () => {
       }
     });
   });
+
+  describe('promotePrimary', () => {
+    it('should call the swap function on success', async () => {
+      const newPrimaryOwnerId =
+        carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
+
+      mockDbClient.rpc.mockResolvedValue(Result.ok(newPrimaryOwnerId.value));
+
+      const result = await repository.promotePrimary(
+        carOwnership,
+        newPrimaryOwnerId,
+      );
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toBeNull();
+      }
+      expect(mockDbClient.rpc).toHaveBeenCalled();
+    });
+
+    it('should return error when the swap function fails', async () => {
+      const newPrimaryOwnerId =
+        carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
+
+      mockDbClient.rpc.mockResolvedValue(
+        Result.fail({ message: 'Promote failed' }),
+      );
+
+      const result = await repository.promotePrimary(
+        carOwnership,
+        newPrimaryOwnerId,
+      );
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe('Promote failed');
+      }
+    });
+  });
 });

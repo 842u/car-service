@@ -5,5 +5,6 @@ export function createMockOwnershipRepository() {
     getByCarId: jest.fn(),
     addOwner: jest.fn(),
     removeOwner: jest.fn(),
+    promotePrimary: jest.fn(),
   } as unknown as jest.Mocked<OwnershipRepository>;
 }

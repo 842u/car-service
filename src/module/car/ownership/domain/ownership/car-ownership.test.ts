@@ -206,4 +206,94 @@ describe('CarOwnership', () => {
       }
     });
   });
+
+  describe('promotePrimary', () => {
+    it('swaps roles when the primary owner promotes a co-owner', () => {
+      const carOwnership = buildCarOwnership({
+        coOwners: [CO_OWNER_ID, NEW_OWNER_ID],
+      });
+
+      const result = carOwnership.promotePrimary(PRIMARY_OWNER_ID, CO_OWNER_ID);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.value).toBe(CO_OWNER_ID);
+      }
+      expect(carOwnership.primaryOwner.value).toBe(CO_OWNER_ID);
+
+      const coOwnerIds = carOwnership.coOwners.map((owner) => owner.value);
+      expect(coOwnerIds).toContain(PRIMARY_OWNER_ID);
+      expect(coOwnerIds).not.toContain(CO_OWNER_ID);
+      expect(coOwnerIds).toContain(NEW_OWNER_ID);
+    });
+
+    it('rejects the promotion when the actor is not the primary owner', () => {
+      const carOwnership = buildCarOwnership({
+        coOwners: [CO_OWNER_ID, NEW_OWNER_ID],
+      });
+
+      const result = carOwnership.promotePrimary(CO_OWNER_ID, NEW_OWNER_ID);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+      expect(carOwnership.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
+    });
+
+    it('rejects a non-primary actor before validating the target id', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.promotePrimary(CO_OWNER_ID, 'not-a-uuid');
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+    });
+
+    it('rejects a malformed target id', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.promotePrimary(
+        PRIMARY_OWNER_ID,
+        'not-a-uuid',
+      );
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('validation');
+      }
+    });
+
+    it('rejects promoting a target that is not a co-owner', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.promotePrimary(
+        PRIMARY_OWNER_ID,
+        NEW_OWNER_ID,
+      );
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('conflict');
+      }
+      expect(carOwnership.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
+    });
+
+    it('rejects the primary owner promoting themselves', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.promotePrimary(
+        PRIMARY_OWNER_ID,
+        PRIMARY_OWNER_ID,
+      );
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('conflict');
+      }
+      expect(carOwnership.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
+    });
+  });
 });
