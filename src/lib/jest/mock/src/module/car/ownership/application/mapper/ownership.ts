@@ -5,5 +5,6 @@ export function createMockOwnershipMapper() {
     domainToDto: jest.fn(),
     persistenceToDomain: jest.fn(),
     persistenceToDto: jest.fn(),
+    newCoOwnerToPersistence: jest.fn(),
   } as unknown as jest.Mocked<OwnershipMapper>;
 }

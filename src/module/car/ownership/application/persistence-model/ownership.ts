@@ -9,3 +9,6 @@ import type { Database } from 'supabase/types/supabase';
 
 export type OwnershipPersistence =
   Database['public']['Tables']['cars_ownerships']['Row'];
+
+export type OwnershipInsertPersistence =
+  Database['public']['Tables']['cars_ownerships']['Insert'];
