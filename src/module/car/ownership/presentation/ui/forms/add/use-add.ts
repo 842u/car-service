@@ -32,7 +32,20 @@ export function useAddForm({ carId, onSubmit }: AddFormProps) {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(ownershipAddMutationOptions(queryClient));
+  // onSubmit closes the add modal, unmounting this form before the request
+  // settles. React Query drops callbacks passed to mutate() once the caller
+  // unmounts, so the toasts live on the mutation options (which still run).
+  // onError is composed so the options' optimistic rollback still runs.
+  const addMutationOptions = ownershipAddMutationOptions(queryClient);
+
+  const { mutate } = useMutation({
+    ...addMutationOptions,
+    onSuccess: () => addToast('Owner added.', 'success'),
+    onError: (...args) => {
+      addMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
+    },
+  });
 
   useEffect(() => {
     isSubmitSuccessful && reset();
@@ -40,13 +53,7 @@ export function useAddForm({ carId, onSubmit }: AddFormProps) {
 
   const handleFormSubmit = handleSubmit(({ ownerId }) => {
     onSubmit && onSubmit();
-    mutate(
-      { carId, ownerId },
-      {
-        onSuccess: () => addToast('Owner added.', 'success'),
-        onError: (error) => addToast(error.message, 'error'),
-      },
-    );
+    mutate({ carId, ownerId });
   });
 
   const handleFormReset = () => reset();
