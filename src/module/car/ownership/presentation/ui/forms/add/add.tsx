@@ -31,11 +31,11 @@ export function AddForm({ carId, onSubmit }: AddFormProps) {
       <Form.InputWrapper>
         <Form.Input
           required
-          errorMessage={errors.userId?.message}
-          label="User ID"
+          errorMessage={errors.ownerId?.message}
+          label="Owner ID"
           maxLength={36}
           minLength={36}
-          name="userId"
+          name="ownerId"
           register={register}
           type="text"
         />

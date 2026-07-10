@@ -1,22 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { ownershipApiClient } from '@/car/ownership/dependency/api-client';
 import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
-import { addCarOwnershipByUserId } from '@/lib/supabase/tables/cars_ownerships';
 
 import { AddForm } from './add';
 
-jest.mock('@/lib/supabase/tables/cars_ownerships', () => ({
-  addCarOwnershipByUserId: jest.fn(),
-}));
-
-jest.mock('@/lib/tanstack/cars_ownerships', () => ({
-  carsOwnershipsAddOnError: jest.fn(),
-  carsOwnershipsAddOnMutate: jest.fn(),
+jest.mock('@/car/ownership/dependency/api-client', () => ({
+  ownershipApiClient: {
+    add: jest.fn(),
+  },
 }));
 
 const MOCK_CAR_ID = 'e63b96e8-8643-4084-915f-2e0421dd68e5';
-const MOCK_USER_ID = 'c9625093-4dec-4704-84c4-11268e54cd2c';
+const MOCK_OWNER_ID = 'c9625093-4dec-4704-84c4-11268e54cd2c';
 
 function TestAddForm() {
   return (
@@ -27,12 +24,12 @@ function TestAddForm() {
 }
 
 describe('AddForm', () => {
-  it('should render a user ID input', () => {
+  it('should render an owner ID input', () => {
     render(<TestAddForm />);
 
-    const userIDInput = screen.getByRole('textbox', { name: /user id/i });
+    const ownerIdInput = screen.getByRole('textbox', { name: /owner id/i });
 
-    expect(userIDInput).toBeInTheDocument();
+    expect(ownerIdInput).toBeInTheDocument();
   });
 
   it('should render a form reset button', () => {
@@ -61,15 +58,15 @@ describe('AddForm', () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it('reset button should be enabled after user ID input change', async () => {
+  it('reset button should be enabled after owner ID input change', async () => {
     const inputText = 'some input';
     const user = userEvent.setup();
     render(<TestAddForm />);
 
-    const userIDInput = screen.getByRole('textbox', { name: /user id/i });
+    const ownerIdInput = screen.getByRole('textbox', { name: /owner id/i });
     const resetButton = screen.getByRole('button', { name: 'Reset' });
 
-    await user.type(userIDInput, inputText);
+    await user.type(ownerIdInput, inputText);
 
     expect(resetButton).toBeEnabled();
   });
@@ -79,39 +76,44 @@ describe('AddForm', () => {
     const user = userEvent.setup();
     render(<TestAddForm />);
 
-    const userIDInput = screen.getByRole('textbox', { name: /user id/i });
+    const ownerIdInput = screen.getByRole('textbox', { name: /owner id/i });
     const submitButton = screen.getByRole('button', { name: 'Save' });
 
-    await user.type(userIDInput, wrongFormatInput);
+    await user.type(ownerIdInput, wrongFormatInput);
 
     expect(submitButton).toBeDisabled();
   });
 
-  it('submit button should be enabled while correct user ID is provided', async () => {
+  it('submit button should be enabled while correct owner ID is provided', async () => {
     const user = userEvent.setup();
     render(<TestAddForm />);
 
-    const userIDInput = screen.getByRole('textbox', { name: /user id/i });
+    const ownerIdInput = screen.getByRole('textbox', { name: /owner id/i });
     const submitButton = screen.getByRole('button', { name: 'Save' });
 
-    await user.type(userIDInput, MOCK_USER_ID);
+    await user.type(ownerIdInput, MOCK_OWNER_ID);
 
     expect(submitButton).toBeEnabled();
   });
 
-  it('should call proper submit handler on submit', async () => {
+  it('should call the ownership api client on submit', async () => {
+    jest.mocked(ownershipApiClient.add).mockResolvedValue({
+      success: true,
+      data: [],
+    });
+
     const user = userEvent.setup();
     render(<TestAddForm />);
 
-    const userIDInput = screen.getByRole('textbox', { name: /user id/i });
+    const ownerIdInput = screen.getByRole('textbox', { name: /owner id/i });
     const submitButton = screen.getByRole('button', { name: 'Save' });
 
-    await user.type(userIDInput, MOCK_USER_ID);
+    await user.type(ownerIdInput, MOCK_OWNER_ID);
     await user.click(submitButton);
 
-    expect(addCarOwnershipByUserId).toHaveBeenCalledWith(
-      MOCK_CAR_ID,
-      MOCK_USER_ID,
-    );
+    expect(ownershipApiClient.add).toHaveBeenCalledWith({
+      carId: MOCK_CAR_ID,
+      ownerId: MOCK_OWNER_ID,
+    });
   });
 });

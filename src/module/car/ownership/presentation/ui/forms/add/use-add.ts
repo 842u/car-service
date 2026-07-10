@@ -1,30 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import type { CarOwnershipAddFormValues } from '@/car/schemas/zod/carOwnershipAddFormSchema';
-import { carOwnershipAddFormSchema } from '@/car/schemas/zod/carOwnershipAddFormSchema';
-import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { addCarOwnershipByUserId } from '@/lib/supabase/tables/cars_ownerships';
+import { ownershipAddMutationOptions } from '@/car/ownership/infrastructure/tanstack/mutation-options/add';
 import {
-  carsOwnershipsAddOnError,
-  carsOwnershipsAddOnMutate,
-} from '@/lib/tanstack/cars_ownerships';
-import { queryKeys } from '@/lib/tanstack/keys';
-import { queryKeys as useQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
+  addOwnerFormSchema,
+  type AddOwnerFormValues,
+} from '@/car/ownership/interface/ui/add-form.schema';
+import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 import type { AddFormProps } from './add';
 
-type MutationVariables = {
-  formData: CarOwnershipAddFormValues;
-  carId: string;
-  queryClient: QueryClient;
-};
-
-const defaultAddFormValues: CarOwnershipAddFormValues = {
-  userId: '',
+const defaultAddFormValues: AddOwnerFormValues = {
+  ownerId: '',
 };
 
 export function useAddForm({ carId, onSubmit }: AddFormProps) {
@@ -35,45 +24,27 @@ export function useAddForm({ carId, onSubmit }: AddFormProps) {
     reset,
     handleSubmit,
     formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
-  } = useForm<CarOwnershipAddFormValues>({
-    resolver: zodResolver(carOwnershipAddFormSchema),
+  } = useForm<AddOwnerFormValues>({
+    resolver: zodResolver(addOwnerFormSchema),
     mode: 'onChange',
     defaultValues: defaultAddFormValues,
   });
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
-    throwOnError: false,
-    mutationFn: ({ formData: { userId } }: MutationVariables) =>
-      addCarOwnershipByUserId(carId, userId),
-    onMutate: ({ queryClient, carId, formData: { userId } }) =>
-      carsOwnershipsAddOnMutate(queryClient, carId, userId),
-    onSuccess: () => addToast('Owner added.', 'success'),
-    onError: (error, { queryClient, carId }, context) => {
-      addToast(error.message, 'error');
-      carsOwnershipsAddOnError(queryClient, context, carId);
-    },
-  });
+  const { mutate } = useMutation(ownershipAddMutationOptions(queryClient));
 
   useEffect(() => {
     isSubmitSuccessful && reset();
   }, [isSubmitSuccessful, reset]);
 
-  const handleFormSubmit = handleSubmit((formData) => {
+  const handleFormSubmit = handleSubmit(({ ownerId }) => {
     onSubmit && onSubmit();
     mutate(
-      { formData, carId, queryClient },
+      { carId, ownerId },
       {
-        onSettled: (_, __, { queryClient, carId }) => {
-          queryClient.invalidateQueries({
-            queryKey: queryKeys.carsOwnershipsByCarId(carId),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: useQueryKeys.usersByContext({ carId }),
-          });
-        },
+        onSuccess: () => addToast('Owner added.', 'success'),
+        onError: (error) => addToast(error.message, 'error'),
       },
     );
   });
