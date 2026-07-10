@@ -6,27 +6,22 @@ import { useRef } from 'react';
 
 import { queryKeys as carQueryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
+import { ownershipRemoveMutationOptions } from '@/car/ownership/infrastructure/tanstack/mutation-options/remove';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { updateCarPrimaryOwnershipByUserId } from '@/lib/supabase/tables/cars_ownerships';
 import {
-  deleteCarOwnershipsByUsersIds,
-  updateCarPrimaryOwnershipByUserId,
-} from '@/lib/supabase/tables/cars_ownerships';
-import {
-  carsOwnershipsDeleteOnMutate,
   carsOwnershipsUpdateOnError,
   carsOwnershipsUpdateOnMutate,
 } from '@/lib/tanstack/cars_ownerships';
 import { queryKeys } from '@/lib/tanstack/keys';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';
-import { queryKeys as userQueryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
 interface MutationVariables {
   carId: string;
   ownerId: string;
   queryClient: QueryClient;
   username?: string | null;
-  sessionUserId?: string;
 }
 
 interface UseDropdownContentParams {
@@ -48,37 +43,11 @@ export function useDropdownContent({
 
   const router = useRouter();
 
-  const { mutate: mutateDelete } = useMutation({
-    throwOnError: false,
-    mutationFn: ({ carId, ownerId }: MutationVariables) =>
-      deleteCarOwnershipsByUsersIds(carId, [ownerId]),
-    onMutate: ({ carId, ownerId, queryClient }) =>
-      carsOwnershipsDeleteOnMutate([ownerId], queryClient, carId),
-    onSuccess: (_, { username }) =>
-      addToast(`Owner ${username} removed.`, 'success'),
-    onError: (error, { carId, queryClient }, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(
-        queryKeys.carsOwnershipsByCarId(carId),
-        context?.previousQueryData,
-      );
-    },
-    onSettled: (_, __, { queryClient, carId, ownerId, sessionUserId }) => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.carsOwnershipsByCarId(carId),
-      });
+  const queryClient = useQueryClient();
 
-      if (sessionUserId === ownerId) {
-        queryClient.invalidateQueries({
-          queryKey: carQueryKeys.carsInfinite,
-        });
-      }
-
-      queryClient.invalidateQueries({
-        queryKey: userQueryKeys.usersByContext({ carId }),
-      });
-    },
-  });
+  const { mutate: mutateDelete } = useMutation(
+    ownershipRemoveMutationOptions(queryClient),
+  );
 
   const { mutate: mutateUpdate } = useMutation({
     throwOnError: false,
@@ -98,11 +67,11 @@ export function useDropdownContent({
       }),
   });
 
-  const queryClient = useQueryClient();
-
   const carId = ownership.carId;
 
   const ownerId = ownership.ownerId;
+
+  const selfDeletion = sessionUserId === ownerId;
 
   const handleDeleteButtonClick = () => {
     deleteModalRef.current?.showModal();
@@ -114,17 +83,18 @@ export function useDropdownContent({
   const handleDeleteModalConfirm = () => {
     deleteModalRef.current?.closeModal();
 
-    if (sessionUserId === ownerId) {
+    if (selfDeletion) {
+      queryClient.invalidateQueries({ queryKey: carQueryKeys.carsInfinite });
       router.replace('/dashboard/cars' satisfies Route);
     }
 
-    mutateDelete({
-      sessionUserId,
-      carId,
-      ownerId,
-      username,
-      queryClient,
-    });
+    mutateDelete(
+      { carId, ownerId },
+      {
+        onSuccess: () => addToast(`Owner ${username} removed.`, 'success'),
+        onError: (error) => addToast(error.message, 'error'),
+      },
+    );
   };
 
   const handlePromoteButtonClick = () => {
@@ -154,6 +124,6 @@ export function useDropdownContent({
     handlePromoteModalConfirm,
     deleteModalRef,
     promoteModalRef,
-    selfDeletion: sessionUserId === ownerId,
+    selfDeletion,
   };
 }
