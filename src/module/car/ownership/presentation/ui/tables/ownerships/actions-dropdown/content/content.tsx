@@ -32,6 +32,7 @@ export function DropdownContent({
     handlePromoteModalConfirm,
   } = useDropdownContent({
     ownership,
+    username,
     sessionUserId,
   });
 
