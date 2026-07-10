@@ -5,6 +5,10 @@ import {
   type AddOwnerApiRequest,
   addOwnerApiResponseSchema,
 } from '@/car/ownership/interface/api/add.schema';
+import {
+  type RemoveOwnerApiRequest,
+  removeOwnerApiResponseSchema,
+} from '@/car/ownership/interface/api/remove.schema';
 import type { OwnershipApiClient } from '@/car/ownership/presentation/api-client/ownership';
 import type {
   HttpClient,
@@ -30,13 +34,20 @@ export class NextOwnershipApiClient implements OwnershipApiClient {
     endpoint: Route,
     contract: unknown,
     schema: ZodType<ApiResponse<T>>,
+    method: 'POST' | 'DELETE' = 'POST',
   ): Promise<Result<T, { message: string }>> {
     const data = JSON.stringify(contract);
 
-    const httpResult: HttpClientResponse = await this._httpClient.post(
-      endpoint,
-      data,
-    );
+    let httpResult: HttpClientResponse;
+
+    switch (method) {
+      case 'POST':
+        httpResult = await this._httpClient.post(endpoint, data);
+        break;
+      case 'DELETE':
+        httpResult = await this._httpClient.delete(endpoint, data);
+        break;
+    }
 
     if (!httpResult.success) {
       return Result.fail({
@@ -66,6 +77,15 @@ export class NextOwnershipApiClient implements OwnershipApiClient {
       '/api/car/ownership',
       contract,
       addOwnerApiResponseSchema,
+    );
+  }
+
+  async remove(contract: RemoveOwnerApiRequest) {
+    return this.makeRequest(
+      '/api/car/ownership',
+      contract,
+      removeOwnerApiResponseSchema,
+      'DELETE',
     );
   }
 }
