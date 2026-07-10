@@ -2,7 +2,7 @@
 
 import { twMerge } from 'tailwind-merge';
 
-import { useOwnershipsSection } from '@/car/ownership/ui/sections/ownerships/use-ownerships';
+import { useOwnershipsSection } from '@/car/ownership/presentation/ui/sections/ownerships/use-ownerships';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
