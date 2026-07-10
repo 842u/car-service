@@ -103,4 +103,107 @@ describe('CarOwnership', () => {
       expect(carOwnership.coOwners).toHaveLength(1);
     });
   });
+
+  describe('removeOwner', () => {
+    it('removes a co-owner when the actor is the primary owner', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.removeOwner(PRIMARY_OWNER_ID, CO_OWNER_ID);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.value).toBe(CO_OWNER_ID);
+      }
+      expect(carOwnership.coOwners.map((owner) => owner.value)).not.toContain(
+        CO_OWNER_ID,
+      );
+    });
+
+    it('removes a co-owner acting on their own ownership (leave)', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.removeOwner(CO_OWNER_ID, CO_OWNER_ID);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.value).toBe(CO_OWNER_ID);
+      }
+      expect(carOwnership.coOwners).toHaveLength(0);
+    });
+
+    it('rejects the primary owner removing themselves', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.removeOwner(
+        PRIMARY_OWNER_ID,
+        PRIMARY_OWNER_ID,
+      );
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+      expect(carOwnership.coOwners).toHaveLength(1);
+    });
+
+    it('rejects a co-owner removing a different owner', () => {
+      const carOwnership = buildCarOwnership({
+        coOwners: [CO_OWNER_ID, NEW_OWNER_ID],
+      });
+
+      const result = carOwnership.removeOwner(CO_OWNER_ID, NEW_OWNER_ID);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+      expect(carOwnership.coOwners).toHaveLength(2);
+    });
+
+    it('rejects an actor who is not an owner of the car', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.removeOwner(NEW_OWNER_ID, CO_OWNER_ID);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+      expect(carOwnership.coOwners).toHaveLength(1);
+    });
+
+    it('rejects removing a target that is not an owner', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.removeOwner(PRIMARY_OWNER_ID, NEW_OWNER_ID);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('conflict');
+      }
+      expect(carOwnership.coOwners).toHaveLength(1);
+    });
+
+    it('rejects a malformed target id', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.removeOwner(PRIMARY_OWNER_ID, 'not-a-uuid');
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('validation');
+      }
+    });
+
+    it('validates the target id before judging the actor relationship', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      const result = carOwnership.removeOwner(CO_OWNER_ID, 'not-a-uuid');
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('validation');
+      }
+    });
+  });
 });

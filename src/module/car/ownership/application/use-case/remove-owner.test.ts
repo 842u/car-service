@@ -1,0 +1,203 @@
+import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
+import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
+import { RemoveOwnerUseCase } from '@/car/ownership/application/use-case/remove-owner';
+import type { RemoveOwnerApiRequest } from '@/car/ownership/interface/api/remove.schema';
+import type { AuthClient } from '@/common/application/auth-client';
+import { Result } from '@/common/application/result';
+import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
+import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
+import { createMockOwnershipMapper } from '@/lib/jest/mock/src/module/car/ownership/application/mapper/ownership';
+import { createMockOwnershipRepository } from '@/lib/jest/mock/src/module/car/ownership/application/ownership-repository';
+import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
+
+const PRIMARY_OWNER_ID = 'b5b55395-e32f-4376-be03-f66be0a63ec4';
+const CO_OWNER_ID = '5202140b-aa28-4058-9191-e4a117e15353';
+const OTHER_OWNER_ID = '9c3f6f8a-1e2b-4c3d-9f4e-5a6b7c8d9e0f';
+const CAR_ID = '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6';
+
+describe('RemoveOwnerUseCase', () => {
+  let useCase: RemoveOwnerUseCase;
+  let mockAuthClient: jest.Mocked<AuthClient>;
+  let mockOwnershipRepository: jest.Mocked<OwnershipRepository>;
+  let mockOwnershipMapper: jest.Mocked<OwnershipMapper>;
+
+  beforeEach(() => {
+    mockAuthClient = createMockAuthClient();
+    mockOwnershipRepository = createMockOwnershipRepository();
+    mockOwnershipMapper = createMockOwnershipMapper();
+    useCase = new RemoveOwnerUseCase(mockAuthClient, mockOwnershipRepository);
+  });
+
+  describe('execute', () => {
+    const mockAuthIdentity = createMockAuthIdentity({ id: PRIMARY_OWNER_ID });
+
+    const validContract: RemoveOwnerApiRequest = {
+      carId: CAR_ID,
+      ownerId: CO_OWNER_ID,
+    };
+
+    it('removes a co-owner when the actor is the primary owner', async () => {
+      const carOwnership = createMockCarOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+        coOwnerIds: [CO_OWNER_ID],
+      });
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.ok(carOwnership),
+      );
+      mockOwnershipRepository.removeOwner.mockResolvedValue(Result.ok(null));
+
+      const result = await useCase.execute(validContract);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toBeNull();
+      }
+
+      expect(mockOwnershipRepository.getByCarId).toHaveBeenCalledWith(CAR_ID);
+      expect(mockOwnershipRepository.removeOwner).toHaveBeenCalledWith(
+        carOwnership,
+        expect.objectContaining({ value: CO_OWNER_ID }),
+      );
+      expect(mockOwnershipMapper.domainToDto).not.toHaveBeenCalled();
+    });
+
+    it('fails as unauthorized when the session is not authenticated', async () => {
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.fail({ message: 'Unauthorized', code: '', status: 401 }),
+      );
+
+      const result = await useCase.execute(validContract);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+      expect(mockOwnershipRepository.getByCarId).not.toHaveBeenCalled();
+    });
+
+    it('fails as not-found when the ownership cannot be retrieved', async () => {
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.fail({ message: 'Ownership not found' }),
+      );
+
+      const result = await useCase.execute(validContract);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('not-found');
+      }
+      expect(mockOwnershipRepository.removeOwner).not.toHaveBeenCalled();
+    });
+
+    it('fails as unauthorized when a co-owner removes a different owner', async () => {
+      const carOwnership = createMockCarOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+        coOwnerIds: [CO_OWNER_ID, OTHER_OWNER_ID],
+      });
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(createMockAuthIdentity({ id: CO_OWNER_ID })),
+      );
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.ok(carOwnership),
+      );
+
+      const result = await useCase.execute({
+        carId: CAR_ID,
+        ownerId: OTHER_OWNER_ID,
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unauthorized');
+      }
+      expect(mockOwnershipRepository.removeOwner).not.toHaveBeenCalled();
+    });
+
+    it('fails as validation when the target owner id is malformed', async () => {
+      const carOwnership = createMockCarOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+        coOwnerIds: [CO_OWNER_ID],
+      });
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.ok(carOwnership),
+      );
+
+      const result = await useCase.execute({
+        carId: CAR_ID,
+        ownerId: 'not-a-uuid',
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('validation');
+      }
+      expect(mockOwnershipRepository.removeOwner).not.toHaveBeenCalled();
+    });
+
+    it('fails as conflict when the target is not an owner', async () => {
+      const carOwnership = createMockCarOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+        coOwnerIds: [CO_OWNER_ID],
+      });
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.ok(carOwnership),
+      );
+
+      const result = await useCase.execute({
+        carId: CAR_ID,
+        ownerId: OTHER_OWNER_ID,
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('conflict');
+      }
+      expect(mockOwnershipRepository.removeOwner).not.toHaveBeenCalled();
+    });
+
+    it('fails as unexpected when persistence fails', async () => {
+      const carOwnership = createMockCarOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+        coOwnerIds: [CO_OWNER_ID],
+      });
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.ok(carOwnership),
+      );
+      mockOwnershipRepository.removeOwner.mockResolvedValue(
+        Result.fail({ message: 'Database error' }),
+      );
+
+      const result = await useCase.execute(validContract);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unexpected');
+      }
+    });
+  });
+});

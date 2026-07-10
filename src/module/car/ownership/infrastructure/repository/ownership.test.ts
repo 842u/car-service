@@ -116,4 +116,35 @@ describe('OwnershipRepositoryImplementation', () => {
       }
     });
   });
+
+  describe('removeOwner', () => {
+    it('should delete the target owner row on success', async () => {
+      const targetId = carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
+
+      mockDbClient.query.mockResolvedValue(Result.ok(null));
+
+      const result = await repository.removeOwner(carOwnership, targetId);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toBeNull();
+      }
+      expect(mockDbClient.query).toHaveBeenCalled();
+    });
+
+    it('should return error when query fails', async () => {
+      const targetId = carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
+
+      mockDbClient.query.mockResolvedValue(
+        Result.fail({ message: 'Delete failed' }),
+      );
+
+      const result = await repository.removeOwner(carOwnership, targetId);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe('Delete failed');
+      }
+    });
+  });
 });
