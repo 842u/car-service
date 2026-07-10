@@ -4,11 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { getCarByIdQueryOptions } from '@/car/infrastructure/tanstack/query/options';
+import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/infrastructure/tanstack/query/options';
 import { DetailsCard } from '@/car/presentation/ui/cards/details/details';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { getCarOwnerships } from '@/lib/supabase/tables/cars_ownerships';
-import { queryKeys } from '@/lib/tanstack/keys';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
@@ -30,11 +29,9 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
     isLoading: isCarDataLoading,
   } = useQuery(getCarByIdQueryOptions(carId));
 
-  const { data: ownerships, error: ownershipsError } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.carsOwnershipsByCarId(carId),
-    queryFn: () => getCarOwnerships(carId),
-  });
+  const { data: ownerships, error: ownershipsError } = useQuery(
+    getOwnershipsByCarIdQueryOptions(carId),
+  );
 
   useEffect(() => {
     carError && addToast(carError.message, 'error');
@@ -45,8 +42,7 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
   }, [addToast, ownershipsError]);
 
   const isSessionUserPrimaryOwner = !!ownerships?.find(
-    (ownership) =>
-      ownership.owner_id === sessionUser?.id && ownership.is_primary_owner,
+    (ownership) => ownership.ownerId === sessionUser?.id && ownership.isPrimary,
   );
 
   if (isCarDataLoading) {

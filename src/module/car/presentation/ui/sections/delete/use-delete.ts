@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/infrastructure/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getCarOwnerships } from '@/lib/supabase/tables/cars_ownerships';
-import { queryKeys } from '@/lib/tanstack/keys';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 interface UseDeleteSectionParams {
@@ -15,19 +14,16 @@ export function useDeleteSection({ carId }: UseDeleteSectionParams) {
 
   const { addToast } = useToasts();
 
-  const { data: ownerships, error: ownershipsError } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.carsOwnershipsByCarId(carId),
-    queryFn: () => getCarOwnerships(carId),
-  });
+  const { data: ownerships, error: ownershipsError } = useQuery(
+    getOwnershipsByCarIdQueryOptions(carId),
+  );
 
   useEffect(() => {
     ownershipsError && addToast(ownershipsError.message, 'error');
   }, [addToast, ownershipsError]);
 
   const isSessionUserPrimaryOwner = !!ownerships?.find(
-    (ownership) =>
-      ownership.owner_id === sessionUser?.id && ownership.is_primary_owner,
+    (ownership) => ownership.ownerId === sessionUser?.id && ownership.isPrimary,
   );
 
   return { isSessionUserPrimaryOwner };
