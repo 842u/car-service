@@ -4,6 +4,11 @@ import type {
   AddOwnerApiResponseError,
 } from '@/car/ownership/interface/api/add.schema';
 import type {
+  PromotePrimaryOwnerApiRequest,
+  PromotePrimaryOwnerApiResponseData,
+  PromotePrimaryOwnerApiResponseError,
+} from '@/car/ownership/interface/api/promote.schema';
+import type {
   RemoveOwnerApiRequest,
   RemoveOwnerApiResponseData,
   RemoveOwnerApiResponseError,
@@ -21,4 +26,10 @@ export const removeOwnerApiHandler = new NextApiHandler<
   RemoveOwnerApiResponseData,
   RemoveOwnerApiResponseError,
   RemoveOwnerApiRequest
+>(validator);
+
+export const promotePrimaryOwnerApiHandler = new NextApiHandler<
+  PromotePrimaryOwnerApiResponseData,
+  PromotePrimaryOwnerApiResponseError,
+  PromotePrimaryOwnerApiRequest
 >(validator);
