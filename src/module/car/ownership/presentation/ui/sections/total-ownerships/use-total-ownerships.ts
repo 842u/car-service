@@ -1,9 +1,8 @@
-import { skipToken, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { getOwnershipsByOwnerIdQueryOptions } from '@/car/ownership/infrastructure/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getCarsOwnershipsByOwnerId } from '@/lib/supabase/tables/cars_ownerships';
-import { queryKeys } from '@/lib/tanstack/keys';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 export function useTotalOwnershipsSection() {
@@ -16,13 +15,7 @@ export function useTotalOwnershipsSection() {
     error: ownershipsError,
     isError: ownershipsIsError,
     isPending: ownershipsIsPending,
-  } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.carsOwnershipsByOwnerId(userData?.id),
-    queryFn: userData?.id
-      ? async () => await getCarsOwnershipsByOwnerId(userData.id)
-      : skipToken,
-  });
+  } = useQuery(getOwnershipsByOwnerIdQueryOptions(userData?.id));
 
   useEffect(() => {
     if (!ownershipsIsError) return;
