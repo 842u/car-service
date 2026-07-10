@@ -1,8 +1,15 @@
 import type { NextRequest } from 'next/server';
 
-import { addOwnerApiHandler } from '@/car/ownership/dependency/api-handler';
-import { createAddOwnerUseCase } from '@/car/ownership/dependency/use-case';
+import {
+  addOwnerApiHandler,
+  removeOwnerApiHandler,
+} from '@/car/ownership/dependency/api-handler';
+import {
+  createAddOwnerUseCase,
+  createRemoveOwnerUseCase,
+} from '@/car/ownership/dependency/use-case';
 import { addOwnerApiRequestSchema } from '@/car/ownership/interface/api/add.schema';
+import { removeOwnerApiRequestSchema } from '@/car/ownership/interface/api/remove.schema';
 import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 
 export const maxDuration = 10;
@@ -33,4 +40,30 @@ export async function POST(request: NextRequest) {
   const ownershipDtos = useCaseResult.data;
 
   return addOwnerApiHandler.successResponse(ownershipDtos, 201);
+}
+
+export async function DELETE(request: NextRequest) {
+  const preprocessRequestResult = await removeOwnerApiHandler.preprocessRequest(
+    request,
+    removeOwnerApiRequestSchema,
+  );
+
+  if (!preprocessRequestResult.success) {
+    const { message, issues } = preprocessRequestResult.error;
+    const { status } = preprocessRequestResult;
+    return removeOwnerApiHandler.errorResponse({ message, issues }, status);
+  }
+
+  const removeOwnerUseCase = await createRemoveOwnerUseCase();
+
+  const contract = preprocessRequestResult.data;
+
+  const useCaseResult = await removeOwnerUseCase.execute(contract);
+
+  if (!useCaseResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return removeOwnerApiHandler.errorResponse(error, status);
+  }
+
+  return removeOwnerApiHandler.successResponse(null, 200);
 }
