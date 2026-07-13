@@ -210,6 +210,18 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
     return Result.ok(target);
   }
 
+  /**
+   * True for the primary owner or any co-owner. Backs cross-aggregate
+   * authorization rules (e.g. Service Log's `canRecord` policy) that only
+   * need to know whether someone owns the car, not which role they hold.
+   */
+  isOwner(userId: string): boolean {
+    return (
+      this._value.primaryOwner.value === userId ||
+      this._value.coOwners.some((coOwner) => coOwner.value === userId)
+    );
+  }
+
   get id(): CarId {
     return this._value.id;
   }
