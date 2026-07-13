@@ -1,4 +1,4 @@
-import { OwnershipsSection } from '@/car/ownership/ui/sections/ownerships/ownerships';
+import { OwnershipsSection } from '@/car/ownership/presentation/ui/sections/ownerships/ownerships';
 import { DetailsSection } from '@/car/presentation/ui/sections/details/details';
 import { CarCostsSection } from '@/car/service-log/ui/sections/car-costs/car-costs';
 import { ServiceLogsSection } from '@/car/service-log/ui/sections/service-logs/service-logs';
