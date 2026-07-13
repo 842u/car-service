@@ -204,6 +204,10 @@ export type Database = {
         Args: { secret_name: string; secret_value: string };
         Returns: undefined;
       };
+      create_car_with_primary_owner: {
+        Args: { car: Json; primary_owner: Json };
+        Returns: undefined;
+      };
       delete_test_user_by_email: {
         Args: { user_email: string };
         Returns: undefined;
