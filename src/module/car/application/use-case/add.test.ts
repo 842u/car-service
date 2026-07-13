@@ -1,28 +1,28 @@
 import type { CarDto } from '@/car/application/dto/car';
 import type { CarMapper } from '@/car/application/mapper/car';
-import type { CarRepository } from '@/car/application/repository/car';
+import type { CarProvisioning } from '@/car/application/provisioning/car';
 import { AddCarUseCase } from '@/car/application/use-case/add';
 import type { AddCarApiRequest } from '@/car/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarRepository } from '@/lib/jest/mock/src/module/car/application/car-repository';
+import { createMockCarProvisioning } from '@/lib/jest/mock/src/module/car/application/car-provisioning';
 import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
 
 describe('AddCarUseCase', () => {
   let useCase: AddCarUseCase;
   let mockAuthClient: jest.Mocked<AuthClient>;
-  let mockCarRepository: jest.Mocked<CarRepository>;
+  let mockCarProvisioning: jest.Mocked<CarProvisioning>;
   let mockCarMapper: jest.Mocked<CarMapper>;
 
   beforeEach(() => {
     mockAuthClient = createMockAuthClient();
-    mockCarRepository = createMockCarRepository();
+    mockCarProvisioning = createMockCarProvisioning();
     mockCarMapper = createMockCarMapper();
     useCase = new AddCarUseCase(
       mockAuthClient,
-      mockCarRepository,
+      mockCarProvisioning,
       mockCarMapper,
     );
   });
@@ -58,7 +58,9 @@ describe('AddCarUseCase', () => {
         Result.ok(mockAuthIdentity),
       );
 
-      mockCarRepository.store.mockResolvedValue(Result.ok(null));
+      mockCarProvisioning.createWithPrimaryOwner.mockResolvedValue(
+        Result.ok(null),
+      );
 
       mockCarMapper.domainToDto.mockReturnValue(mockCarDto);
 
@@ -70,7 +72,9 @@ describe('AddCarUseCase', () => {
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
-      expect(mockCarRepository.store).toHaveBeenCalledTimes(1);
+      expect(mockCarProvisioning.createWithPrimaryOwner).toHaveBeenCalledTimes(
+        1,
+      );
       expect(mockCarMapper.domainToDto).toHaveBeenCalledTimes(1);
     });
 
@@ -88,7 +92,22 @@ describe('AddCarUseCase', () => {
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
-      expect(mockCarRepository.store).not.toHaveBeenCalled();
+      expect(mockCarProvisioning.createWithPrimaryOwner).not.toHaveBeenCalled();
+    });
+
+    it('should fail as unexpected when the session id is malformed', async () => {
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(createMockAuthIdentity({ id: 'not-a-uuid' })),
+      );
+
+      const result = await useCase.execute(validContract);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unexpected');
+      }
+
+      expect(mockCarProvisioning.createWithPrimaryOwner).not.toHaveBeenCalled();
     });
 
     it('should fail as validation when a field is invalid', async () => {
@@ -109,15 +128,15 @@ describe('AddCarUseCase', () => {
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
-      expect(mockCarRepository.store).not.toHaveBeenCalled();
+      expect(mockCarProvisioning.createWithPrimaryOwner).not.toHaveBeenCalled();
     });
 
-    it('should fail as unexpected when persistence fails', async () => {
+    it('should fail as unexpected when provisioning fails', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
 
-      mockCarRepository.store.mockResolvedValue(
+      mockCarProvisioning.createWithPrimaryOwner.mockResolvedValue(
         Result.fail({ message: 'Database error' }),
       );
 
@@ -130,7 +149,9 @@ describe('AddCarUseCase', () => {
       }
 
       expect(mockAuthClient.authenticate).toHaveBeenCalledTimes(1);
-      expect(mockCarRepository.store).toHaveBeenCalledTimes(1);
+      expect(mockCarProvisioning.createWithPrimaryOwner).toHaveBeenCalledTimes(
+        1,
+      );
       expect(mockCarMapper.domainToDto).not.toHaveBeenCalled();
     });
   });
