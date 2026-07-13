@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
-import { AddButton } from '@/car/service-log/ui/buttons/add/add';
-import { AddModal } from '@/car/service-log/ui/modals/add/add';
+import { AddButton } from '@/car/service-log/presentation/ui/buttons/add/add';
+import { AddModal } from '@/car/service-log/presentation/ui/modals/add/add';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
