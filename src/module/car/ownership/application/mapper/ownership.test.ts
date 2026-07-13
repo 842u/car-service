@@ -155,4 +155,26 @@ describe('OwnershipMapper', () => {
       });
     });
   });
+
+  describe('primaryOwnerToPersistence', () => {
+    it('builds the insert row for a birth primary owner', () => {
+      const idResult = CarId.create(CAR_ID);
+      const ownerIdResult = OwnerId.create(PRIMARY_OWNER_ID);
+
+      if (!idResult.success || !ownerIdResult.success) {
+        throw new Error('Failed to build test fixture.');
+      }
+
+      const row = mapper.primaryOwnerToPersistence(
+        idResult.data,
+        ownerIdResult.data,
+      );
+
+      expect(row).toEqual({
+        car_id: CAR_ID,
+        owner_id: PRIMARY_OWNER_ID,
+        is_primary_owner: true,
+      });
+    });
+  });
 });

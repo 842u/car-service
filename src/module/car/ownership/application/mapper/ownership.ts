@@ -112,4 +112,21 @@ export class OwnershipMapper implements CollectionMapper<
       is_primary_owner: false,
     };
   }
+
+  /**
+   * Builds the single-row insert payload for a Car's birth Ownership.
+   * Sibling of `newCoOwnerToPersistence`, kept off the `CollectionMapper`
+   * interface for the same reason: Ownership has no whole-aggregate
+   * persistence representation.
+   */
+  primaryOwnerToPersistence(
+    carId: CarId,
+    ownerId: OwnerId,
+  ): OwnershipInsertPersistence {
+    return {
+      car_id: carId.value,
+      owner_id: ownerId.value,
+      is_primary_owner: true,
+    };
+  }
 }
