@@ -31,6 +31,33 @@ function buildCarOwnership({
 }
 
 describe('CarOwnership', () => {
+  describe('create', () => {
+    it('births an ownership with the given primary owner and no co-owners', () => {
+      const idResult = CarId.create(CAR_ID);
+      const primaryOwnerResult = OwnerId.create(PRIMARY_OWNER_ID);
+
+      if (!idResult.success || !primaryOwnerResult.success) {
+        throw new Error('Failed to build test fixture.');
+      }
+
+      const result = CarOwnership.create({
+        carId: idResult.data,
+        primaryOwnerId: primaryOwnerResult.data,
+      });
+
+      expect(result.success).toBe(true);
+      if (!result.success) {
+        throw new Error('Expected create to succeed.');
+      }
+
+      const carOwnership = result.data;
+
+      expect(carOwnership.id.value).toBe(CAR_ID);
+      expect(carOwnership.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
+      expect(carOwnership.coOwners).toHaveLength(0);
+    });
+  });
+
   describe('addOwner', () => {
     it('adds a co-owner when the actor is the primary owner', () => {
       const carOwnership = buildCarOwnership();

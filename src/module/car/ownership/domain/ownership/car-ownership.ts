@@ -22,11 +22,34 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
 
   /**
    * Rebuilds an already-existing Ownership from persisted, pre-validated
-   * owners. There is no `create`: Ownership is born by the car-insert
-   * trigger, never originated from the application.
+   * owners.
    */
   static reconstitute(value: CarOwnershipValue): CarOwnership {
     return new CarOwnership(value);
+  }
+
+  /**
+   * Births a new Ownership: its creator as sole primary owner, zero
+   * co-owners. Trusted like `reconstitute`, not validated like the mutators:
+   * both ids are already-valid domain objects handed in by the use case, and
+   * "exactly one primary, zero co-owners" holds by construction here, not by
+   * checking. Wrapped in `Result` (which can never fail) only to match
+   * `Entity`'s static `create` contract, not because birth can fail.
+   */
+  static create({
+    carId,
+    primaryOwnerId,
+  }: {
+    carId: CarId;
+    primaryOwnerId: OwnerId;
+  }): Result<CarOwnership, never> {
+    return Result.ok(
+      new CarOwnership({
+        id: carId,
+        primaryOwner: primaryOwnerId,
+        coOwners: [],
+      }),
+    );
   }
 
   /**
