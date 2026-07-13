@@ -204,30 +204,11 @@ export type Database = {
         Args: { secret_name: string; secret_value: string };
         Returns: undefined;
       };
-      create_new_car: {
-        Args: {
-          additional_fuel_type?: Database['public']['Enums']['fuel'];
-          brand?: string;
-          custom_name: string;
-          drive_type?: Database['public']['Enums']['drive'];
-          engine_capacity?: number;
-          fuel_type?: Database['public']['Enums']['fuel'];
-          insurance_expiration?: string;
-          license_plates?: string;
-          mileage?: number;
-          model?: string;
-          production_year?: number;
-          technical_inspection_expiration?: string;
-          transmission_type?: Database['public']['Enums']['transmission'];
-          vin?: string;
-        };
-        Returns: string;
-      };
       delete_test_user_by_email: {
         Args: { user_email: string };
         Returns: undefined;
       };
-      switch_primary_car_owner: {
+      promote_primary_car_owner: {
         Args: { new_primary_owner_id: string; target_car_id: string };
         Returns: string;
       };
