@@ -62,4 +62,42 @@ describe('ServiceLogDataSourceImplementation', () => {
       }
     });
   });
+
+  describe('getAll', () => {
+    it('returns service log DTOs on success', async () => {
+      const persistenceList = [
+        createMockServiceLogPersistence(),
+        createMockServiceLogPersistence(),
+      ];
+      const dtoA = createMockServiceLogDto();
+      const dtoB = createMockServiceLogDto();
+
+      mockDbClient.query.mockResolvedValue(Result.ok(persistenceList));
+      mockServiceLogMapper.persistenceToDto
+        .mockReturnValueOnce(dtoA)
+        .mockReturnValueOnce(dtoB);
+
+      const result = await dataSource.getAll();
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual([dtoA, dtoB]);
+      }
+      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockServiceLogMapper.persistenceToDto).toHaveBeenCalledTimes(2);
+    });
+
+    it('returns an error when the query fails', async () => {
+      mockDbClient.query.mockResolvedValue(
+        Result.fail({ message: 'Service logs not found' }),
+      );
+
+      const result = await dataSource.getAll();
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe('Service logs not found');
+      }
+    });
+  });
 });

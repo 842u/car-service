@@ -9,4 +9,5 @@ export interface ServiceLogDataSource {
   getByCarId(
     carId: string,
   ): Promise<Result<ServiceLogDto[], ServiceLogDataSourceError>>;
+  getAll(): Promise<Result<ServiceLogDto[], ServiceLogDataSourceError>>;
 }

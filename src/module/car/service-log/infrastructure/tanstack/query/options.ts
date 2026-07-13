@@ -18,3 +18,19 @@ export const getServiceLogsByCarIdQueryOptions = (carId: string) =>
       return serviceLogsResult.data;
     },
   });
+
+export const getServiceLogsQueryOptions = () =>
+  queryOptions({
+    throwOnError: false,
+    queryKey: queryKeys.serviceLogs,
+    queryFn: async () => {
+      const serviceLogsResult = await serviceLogDataSource.getAll();
+
+      if (!serviceLogsResult.success) {
+        const { message } = serviceLogsResult.error;
+        throw new Error(message);
+      }
+
+      return serviceLogsResult.data;
+    },
+  });

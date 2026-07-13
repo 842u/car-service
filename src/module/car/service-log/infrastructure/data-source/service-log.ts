@@ -35,4 +35,24 @@ export class ServiceLogDataSourceImplementation implements ServiceLogDataSource 
 
     return Result.ok(serviceLogsDto);
   }
+
+  async getAll() {
+    const queryResult = await this._dbClient.query(async (from) =>
+      from('service_logs')
+        .select('*')
+        .order('service_date', { ascending: false })
+        .order('created_at', { ascending: false }),
+    );
+
+    if (!queryResult.success) {
+      const { message } = queryResult.error;
+      return Result.fail({ message });
+    }
+
+    const serviceLogsDto = queryResult.data.map((row) =>
+      this._serviceLogMapper.persistenceToDto(row),
+    );
+
+    return Result.ok(serviceLogsDto);
+  }
 }
