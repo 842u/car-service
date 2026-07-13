@@ -2,9 +2,6 @@ import type { Database } from 'supabase/types/supabase';
 
 export type User = Database['public']['Tables']['users']['Row'];
 
-export type CarOwnership =
-  Database['public']['Tables']['cars_ownerships']['Row'];
-
 export type ServiceLog = Database['public']['Tables']['service_logs']['Row'];
 
 export type ServiceCategory = Database['public']['Enums']['service_category'];
