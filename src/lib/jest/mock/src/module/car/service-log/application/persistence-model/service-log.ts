@@ -11,7 +11,7 @@ export function createMockServiceLogPersistence(
     mileage: 100000,
     notes: null,
     service_cost: 100,
-    service_date: '2024-01-01T00:00:00Z',
+    service_date: '2024-01-01',
     created_at: '2024-01-01T00:00:00Z',
     ...overrides,
   };
