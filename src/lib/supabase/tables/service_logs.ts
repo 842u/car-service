@@ -2,23 +2,6 @@ import { browserDatabaseClient } from '@/dependency/database-client/browser';
 import { toSafeNumber } from '@/lib/utils';
 import type { ServiceLog } from '@/types';
 
-export async function getServiceLogsByCarId(carId: string) {
-  const queryResult = await browserDatabaseClient.query(async (from) =>
-    from('service_logs')
-      .select('*')
-      .eq('car_id', carId)
-      .order('service_date', { ascending: false })
-      .order('created_at', { ascending: false }),
-  );
-
-  if (!queryResult.success) {
-    const { message } = queryResult.error;
-    throw new Error(message);
-  }
-
-  return queryResult.data;
-}
-
 export async function getServiceLogsWithCost(): Promise<ServiceLog[]> {
   const queryResult = await browserDatabaseClient.query(async (from) =>
     from('service_logs')
