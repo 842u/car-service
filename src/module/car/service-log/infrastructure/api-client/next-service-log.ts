@@ -1,0 +1,52 @@
+import {
+  type AddServiceLogApiRequest,
+  addServiceLogApiResponseSchema,
+} from '@/car/service-log/interface/api/add.schema';
+import type { ServiceLogApiClient } from '@/car/service-log/presentation/api-client/service-log';
+import type { HttpClient } from '@/common/application/http-client';
+import { Result } from '@/common/application/result';
+import type { Validator } from '@/common/application/validator';
+
+export class NextServiceLogApiClient implements ServiceLogApiClient {
+  private readonly _httpClient: HttpClient;
+  private readonly _validator: Validator;
+
+  constructor(httpClient: HttpClient, validator: Validator) {
+    this._httpClient = httpClient;
+    this._validator = validator;
+  }
+
+  async add(contract: AddServiceLogApiRequest) {
+    const data = JSON.stringify(contract);
+
+    const httpResult = await this._httpClient.post(
+      '/api/car/service-log',
+      data,
+    );
+
+    if (!httpResult.success) {
+      return Result.fail({
+        message: `HTTP request failed: ${httpResult.error.message}`,
+      });
+    }
+
+    const validationResult = this._validator.validate(
+      httpResult.data,
+      addServiceLogApiResponseSchema,
+    );
+
+    if (!validationResult.success) {
+      return Result.fail({
+        message: `API response validation failed: ${validationResult.error.message}`,
+      });
+    }
+
+    const apiResponse = validationResult.data;
+
+    if (!apiResponse.success) {
+      return Result.fail({ message: apiResponse.error.message });
+    }
+
+    return Result.ok(apiResponse.data);
+  }
+}
