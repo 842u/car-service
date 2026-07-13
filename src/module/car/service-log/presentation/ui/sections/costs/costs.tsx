@@ -1,19 +1,16 @@
 'use client';
 
-import { CostsSummary } from '@/car/service-log/ui/costs-summary/costs-summary';
-import { useCarCostsSection } from '@/car/service-log/ui/sections/car-costs/use-car-costs';
+import { CostsSummary } from '@/car/service-log/presentation/ui/costs-summary/costs-summary';
+import { useCostsSection } from '@/car/service-log/presentation/ui/sections/costs/use-costs';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-interface CarCostsSectionProps {
-  carId: string;
+interface CostsSectionProps {
   className?: string;
 }
 
-export function CarCostsSection({ carId, className }: CarCostsSectionProps) {
-  const { serviceLogs, isPending } = useCarCostsSection({
-    carId,
-  });
+export function CostsSection({ className }: CostsSectionProps) {
+  const { serviceLogs, isPending } = useCostsSection();
 
   return (
     <DashboardSection className={className}>

@@ -2,21 +2,22 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { useCarCostsSection } from '@/car/service-log/ui/sections/car-costs/use-car-costs';
-import { createMockServiceLog } from '@/lib/jest/mock/src/module/car/service-log';
-import { getServiceLogsWithCostByCarId } from '@/lib/supabase/tables/service_logs';
+import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
+import { queryKeys } from '@/car/service-log/infrastructure/tanstack/query/keys';
+import { useCarCostsSection } from '@/car/service-log/presentation/ui/sections/car-costs/use-car-costs';
+import { Result } from '@/common/application/result';
+import { createMockServiceLogDto } from '@/lib/jest/mock/src/module/car/service-log/application/dto/service-log';
+import { queryKeySerialize } from '@/lib/tanstack/utils';
 
-jest.mock('@/lib/supabase/tables/service_logs');
+const mockServiceLogDataSource = serviceLogDataSource as jest.Mocked<
+  typeof serviceLogDataSource
+>;
+jest.mock('@/car/service-log/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
   useToasts: () => ({ addToast: mockAddToast }),
 }));
-
-const mockGetServiceLogsWithCostByCarId =
-  getServiceLogsWithCostByCarId as jest.MockedFunction<
-    typeof getServiceLogsWithCostByCarId
-  >;
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -39,7 +40,9 @@ beforeEach(() => {
 describe('useCarCostsSection', () => {
   describe('loading state', () => {
     it('should return isPending true initially', () => {
-      mockGetServiceLogsWithCostByCarId.mockReturnValue(new Promise(() => {}));
+      mockServiceLogDataSource.getByCarId.mockReturnValue(
+        new Promise(() => {}),
+      );
 
       const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
@@ -49,7 +52,7 @@ describe('useCarCostsSection', () => {
     });
 
     it('should return isPending false after data loads', async () => {
-      mockGetServiceLogsWithCostByCarId.mockResolvedValue([]);
+      mockServiceLogDataSource.getByCarId.mockResolvedValue(Result.ok([]));
 
       const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
@@ -61,7 +64,9 @@ describe('useCarCostsSection', () => {
 
   describe('data fetching', () => {
     it('should return undefined serviceLogs while pending', () => {
-      mockGetServiceLogsWithCostByCarId.mockReturnValue(new Promise(() => {}));
+      mockServiceLogDataSource.getByCarId.mockReturnValue(
+        new Promise(() => {}),
+      );
 
       const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
@@ -71,7 +76,7 @@ describe('useCarCostsSection', () => {
     });
 
     it('should return empty array when no service logs exist', async () => {
-      mockGetServiceLogsWithCostByCarId.mockResolvedValue([]);
+      mockServiceLogDataSource.getByCarId.mockResolvedValue(Result.ok([]));
 
       const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
@@ -84,11 +89,19 @@ describe('useCarCostsSection', () => {
 
     it('should return fetched service logs', async () => {
       const mockLogs = [
-        createMockServiceLog({ service_cost: 100, service_date: '2026-01-01' }),
-        createMockServiceLog({ service_cost: 200, service_date: '2026-02-01' }),
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: '2026-01-01',
+        }),
+        createMockServiceLogDto({
+          serviceCost: 200,
+          serviceDate: '2026-02-01',
+        }),
       ];
 
-      mockGetServiceLogsWithCostByCarId.mockResolvedValue(mockLogs);
+      mockServiceLogDataSource.getByCarId.mockResolvedValue(
+        Result.ok(mockLogs),
+      );
 
       const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
@@ -98,12 +111,24 @@ describe('useCarCostsSection', () => {
 
       expect(result.current.serviceLogs).toEqual(mockLogs);
     });
+
+    it('should call getByCarId with the given carId', async () => {
+      mockServiceLogDataSource.getByCarId.mockResolvedValue(Result.ok([]));
+
+      const { result } = renderHook(() => useCarCostsSection({ carId: '1' }), {
+        wrapper: createWrapper(),
+      });
+
+      await waitFor(() => expect(result.current.isPending).toBe(false));
+
+      expect(mockServiceLogDataSource.getByCarId).toHaveBeenCalledWith('1');
+    });
   });
 
   describe('error handling', () => {
-    it('should show error toast when fetch fails', async () => {
-      mockGetServiceLogsWithCostByCarId.mockRejectedValue(
-        new Error('DB error'),
+    it('should show error toast deduped against the service logs table query', async () => {
+      mockServiceLogDataSource.getByCarId.mockResolvedValue(
+        Result.fail({ message: 'DB error' }),
       );
 
       renderHook(() => useCarCostsSection({ carId: '1' }), {
@@ -111,12 +136,18 @@ describe('useCarCostsSection', () => {
       });
 
       await waitFor(() =>
-        expect(mockAddToast).toHaveBeenCalledWith('DB error', 'error'),
+        expect(mockAddToast).toHaveBeenCalledWith(
+          'DB error',
+          'error',
+          queryKeySerialize(queryKeys.serviceLogsByCarId('1')),
+        ),
       );
     });
 
     it('should fall back to generic message when error has no message', async () => {
-      mockGetServiceLogsWithCostByCarId.mockRejectedValue(new Error(''));
+      mockServiceLogDataSource.getByCarId.mockResolvedValue(
+        Result.fail({ message: '' }),
+      );
 
       renderHook(() => useCarCostsSection({ carId: '1' }), {
         wrapper: createWrapper(),
@@ -126,6 +157,7 @@ describe('useCarCostsSection', () => {
         expect(mockAddToast).toHaveBeenCalledWith(
           'Cannot get service logs costs.',
           'error',
+          queryKeySerialize(queryKeys.serviceLogsByCarId('1')),
         ),
       );
     });

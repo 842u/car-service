@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
+import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
+import { sumServiceLogCosts } from '@/car/service-log/presentation/ui/costs-summary/sum-service-log-costs';
 import { parseDateToYyyyMmDd } from '@/lib/utils';
-import type { ServiceLog } from '@/types';
 
 interface UseCustomPeriodCostsSummaryParams {
-  serviceLogs?: ServiceLog[];
+  serviceLogs?: ServiceLogDto[];
 }
 
 export function useCustomPeriodCostsSummary({
@@ -20,11 +21,7 @@ export function useCustomPeriodCostsSummary({
 
   const costs =
     serviceLogs &&
-    serviceLogs
-      .filter(
-        (log) => log.service_date >= fromDate && log.service_date <= toDate,
-      )
-      .reduce((sum, log) => sum + (log.service_cost ?? 0), 0);
+    sumServiceLogCosts(serviceLogs, { from: fromDate, to: toDate });
 
   return { costs, fromDate, setFromDate, toDate, setToDate };
 }

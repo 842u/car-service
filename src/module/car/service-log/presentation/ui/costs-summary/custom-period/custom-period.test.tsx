@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { createMockServiceLog } from '@/lib/jest/mock/src/module/car/service-log';
+import { createMockServiceLogDto } from '@/lib/jest/mock/src/module/car/service-log/application/dto/service-log';
 import { parseDateToYyyyMmDd } from '@/lib/utils';
 
 import {
@@ -79,8 +79,14 @@ describe('CustomPeriodCostsSummary', () => {
   describe('costs display', () => {
     it('should display costs for logs within the default period', () => {
       const logs = [
-        createMockServiceLog({ service_cost: 200, service_date: '2026-03-10' }),
-        createMockServiceLog({ service_cost: 999, service_date: '2026-02-01' }),
+        createMockServiceLogDto({
+          serviceCost: 200,
+          serviceDate: '2026-03-10',
+        }),
+        createMockServiceLogDto({
+          serviceCost: 999,
+          serviceDate: '2026-02-01',
+        }),
       ];
 
       render(<CustomPeriodCostsSummary serviceLogs={logs} />);
@@ -91,8 +97,14 @@ describe('CustomPeriodCostsSummary', () => {
     it('should recalculate costs when fromDate changes', async () => {
       const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
       const logs = [
-        createMockServiceLog({ service_cost: 100, service_date: '2026-02-01' }),
-        createMockServiceLog({ service_cost: 200, service_date: '2026-03-10' }),
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: '2026-02-01',
+        }),
+        createMockServiceLogDto({
+          serviceCost: 200,
+          serviceDate: '2026-03-10',
+        }),
       ];
 
       render(<CustomPeriodCostsSummary serviceLogs={logs} />);

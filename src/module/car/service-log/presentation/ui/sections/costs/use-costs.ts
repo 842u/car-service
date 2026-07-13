@@ -1,17 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { getServiceLogsQueryOptions } from '@/car/service-log/infrastructure/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getServiceLogsWithCost } from '@/lib/supabase/tables/service_logs';
-import { queryKeys } from '@/lib/tanstack/keys';
 
 export function useCostsSection() {
   const { addToast } = useToasts();
 
-  const { data, isError, error, isPending } = useQuery({
-    queryKey: queryKeys.serviceLogsWithCost,
-    queryFn: getServiceLogsWithCost,
-  });
+  const { data, isError, error, isPending } = useQuery(
+    getServiceLogsQueryOptions(),
+  );
 
   useEffect(() => {
     isError &&

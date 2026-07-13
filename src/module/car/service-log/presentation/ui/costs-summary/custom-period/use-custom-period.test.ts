@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { createMockServiceLog } from '@/lib/jest/mock/src/module/car/service-log';
+import { createMockServiceLogDto } from '@/lib/jest/mock/src/module/car/service-log/application/dto/service-log';
 import { parseDateToYyyyMmDd } from '@/lib/utils';
 
 import { useCustomPeriodCostsSummary } from './use-custom-period';
@@ -87,14 +87,17 @@ describe('useCustomPeriodCostsSummary', () => {
 
     it('should sum only logs within the default period', () => {
       const logs = [
-        createMockServiceLog({ service_cost: 100, service_date: '2026-03-05' }),
-        createMockServiceLog({
-          service_cost: 200,
-          service_date: WITHIN_THIS_MONTH,
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: '2026-03-05',
         }),
-        createMockServiceLog({
-          service_cost: 999,
-          service_date: BEFORE_THIS_MONTH,
+        createMockServiceLogDto({
+          serviceCost: 200,
+          serviceDate: WITHIN_THIS_MONTH,
+        }),
+        createMockServiceLogDto({
+          serviceCost: 999,
+          serviceDate: BEFORE_THIS_MONTH,
         }),
       ];
 
@@ -107,11 +110,11 @@ describe('useCustomPeriodCostsSummary', () => {
 
     it('should include logs on boundary dates', () => {
       const logs = [
-        createMockServiceLog({
-          service_cost: 100,
-          service_date: FIRST_DAY_OF_MONTH_STR,
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: FIRST_DAY_OF_MONTH_STR,
         }),
-        createMockServiceLog({ service_cost: 200, service_date: TODAY_STR }),
+        createMockServiceLogDto({ serviceCost: 200, serviceDate: TODAY_STR }),
       ];
 
       const { result } = renderHook(() =>
@@ -123,13 +126,13 @@ describe('useCustomPeriodCostsSummary', () => {
 
     it('should recalculate costs when fromDate changes', () => {
       const logs = [
-        createMockServiceLog({
-          service_cost: 100,
-          service_date: BEFORE_THIS_MONTH,
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: BEFORE_THIS_MONTH,
         }),
-        createMockServiceLog({
-          service_cost: 200,
-          service_date: WITHIN_THIS_MONTH,
+        createMockServiceLogDto({
+          serviceCost: 200,
+          serviceDate: WITHIN_THIS_MONTH,
         }),
       ];
 
@@ -147,11 +150,11 @@ describe('useCustomPeriodCostsSummary', () => {
     it('should recalculate costs when toDate changes', () => {
       const futureDate = '2026-03-25';
       const logs = [
-        createMockServiceLog({
-          service_cost: 100,
-          service_date: WITHIN_THIS_MONTH,
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: WITHIN_THIS_MONTH,
         }),
-        createMockServiceLog({ service_cost: 200, service_date: futureDate }),
+        createMockServiceLogDto({ serviceCost: 200, serviceDate: futureDate }),
       ];
 
       const { result } = renderHook(() =>
@@ -165,15 +168,15 @@ describe('useCustomPeriodCostsSummary', () => {
       expect(result.current.costs).toBe(300);
     });
 
-    it('should treat null service_cost as 0', () => {
+    it('should treat null serviceCost as 0', () => {
       const logs = [
-        createMockServiceLog({
-          service_cost: 100,
-          service_date: WITHIN_THIS_MONTH,
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: WITHIN_THIS_MONTH,
         }),
-        createMockServiceLog({
-          service_cost: null,
-          service_date: WITHIN_THIS_MONTH,
+        createMockServiceLogDto({
+          serviceCost: null,
+          serviceDate: WITHIN_THIS_MONTH,
         }),
       ];
 

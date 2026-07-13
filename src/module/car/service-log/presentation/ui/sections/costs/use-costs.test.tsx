@@ -2,20 +2,21 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { createMockServiceLog } from '@/lib/jest/mock/src/module/car/service-log';
-import { getServiceLogsWithCost } from '@/lib/supabase/tables/service_logs';
+import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
+import { Result } from '@/common/application/result';
+import { createMockServiceLogDto } from '@/lib/jest/mock/src/module/car/service-log/application/dto/service-log';
 
 import { useCostsSection } from './use-costs';
 
-jest.mock('@/lib/supabase/tables/service_logs');
+const mockServiceLogDataSource = serviceLogDataSource as jest.Mocked<
+  typeof serviceLogDataSource
+>;
+jest.mock('@/car/service-log/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
   useToasts: () => ({ addToast: mockAddToast }),
 }));
-
-const mockGetServiceLogsWithCost =
-  getServiceLogsWithCost as jest.MockedFunction<typeof getServiceLogsWithCost>;
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -38,7 +39,7 @@ beforeEach(() => {
 describe('useCostsSection', () => {
   describe('loading state', () => {
     it('should return isPending true initially', () => {
-      mockGetServiceLogsWithCost.mockReturnValue(new Promise(() => {}));
+      mockServiceLogDataSource.getAll.mockReturnValue(new Promise(() => {}));
 
       const { result } = renderHook(() => useCostsSection(), {
         wrapper: createWrapper(),
@@ -48,7 +49,7 @@ describe('useCostsSection', () => {
     });
 
     it('should return isPending false after data loads', async () => {
-      mockGetServiceLogsWithCost.mockResolvedValue([]);
+      mockServiceLogDataSource.getAll.mockResolvedValue(Result.ok([]));
 
       const { result } = renderHook(() => useCostsSection(), {
         wrapper: createWrapper(),
@@ -60,7 +61,7 @@ describe('useCostsSection', () => {
 
   describe('data fetching', () => {
     it('should return undefined serviceLogs while pending', () => {
-      mockGetServiceLogsWithCost.mockReturnValue(new Promise(() => {}));
+      mockServiceLogDataSource.getAll.mockReturnValue(new Promise(() => {}));
 
       const { result } = renderHook(() => useCostsSection(), {
         wrapper: createWrapper(),
@@ -70,7 +71,7 @@ describe('useCostsSection', () => {
     });
 
     it('should return empty array when no service logs exist', async () => {
-      mockGetServiceLogsWithCost.mockResolvedValue([]);
+      mockServiceLogDataSource.getAll.mockResolvedValue(Result.ok([]));
 
       const { result } = renderHook(() => useCostsSection(), {
         wrapper: createWrapper(),
@@ -83,11 +84,17 @@ describe('useCostsSection', () => {
 
     it('should return fetched service logs', async () => {
       const mockLogs = [
-        createMockServiceLog({ service_cost: 100, service_date: '2026-01-01' }),
-        createMockServiceLog({ service_cost: 200, service_date: '2026-02-01' }),
+        createMockServiceLogDto({
+          serviceCost: 100,
+          serviceDate: '2026-01-01',
+        }),
+        createMockServiceLogDto({
+          serviceCost: 200,
+          serviceDate: '2026-02-01',
+        }),
       ];
 
-      mockGetServiceLogsWithCost.mockResolvedValue(mockLogs);
+      mockServiceLogDataSource.getAll.mockResolvedValue(Result.ok(mockLogs));
 
       const { result } = renderHook(() => useCostsSection(), {
         wrapper: createWrapper(),
@@ -101,7 +108,9 @@ describe('useCostsSection', () => {
 
   describe('error handling', () => {
     it('should show error toast when fetch fails', async () => {
-      mockGetServiceLogsWithCost.mockRejectedValue(new Error('DB error'));
+      mockServiceLogDataSource.getAll.mockResolvedValue(
+        Result.fail({ message: 'DB error' }),
+      );
 
       renderHook(() => useCostsSection(), { wrapper: createWrapper() });
 
@@ -111,7 +120,9 @@ describe('useCostsSection', () => {
     });
 
     it('should fall back to generic message when error has no message', async () => {
-      mockGetServiceLogsWithCost.mockRejectedValue(new Error(''));
+      mockServiceLogDataSource.getAll.mockResolvedValue(
+        Result.fail({ message: '' }),
+      );
 
       renderHook(() => useCostsSection(), { wrapper: createWrapper() });
 
