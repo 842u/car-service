@@ -5,9 +5,8 @@ import {
   getOwnerProfilesQueryOptions,
   getOwnershipsByCarIdQueryOptions,
 } from '@/car/ownership/infrastructure/tanstack/query/options';
+import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/infrastructure/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { getServiceLogsByCarId } from '@/lib/supabase/tables/service_logs';
-import { queryKeys } from '@/lib/tanstack/keys';
 import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
@@ -24,11 +23,7 @@ export function useServiceLogsSection({ carId }: UseServiceLogsSectionParams) {
     data: serviceLogs,
     error: serviceLogsError,
     isLoading,
-  } = useQuery({
-    throwOnError: false,
-    queryKey: queryKeys.serviceLogsByCarId(carId),
-    queryFn: () => getServiceLogsByCarId(carId),
-  });
+  } = useQuery(getServiceLogsByCarIdQueryOptions(carId));
 
   const { data: ownerships, error: ownershipsError } = useQuery(
     getOwnershipsByCarIdQueryOptions(carId),

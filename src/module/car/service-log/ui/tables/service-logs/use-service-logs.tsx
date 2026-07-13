@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { memo, useMemo, useRef } from 'react';
 
+import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import { TableActionsDropdown } from '@/car/service-log/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
 import { serviceCategoryMapping, type ServiceLog } from '@/types';
@@ -9,7 +10,26 @@ import { Tag } from '@/ui/tag/tag';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
-const columnsHelper = createColumnHelper<ServiceLog>();
+const columnsHelper = createColumnHelper<ServiceLogDto>();
+
+/**
+ * Bridges a DTO row back to the legacy row shape the actions-dropdown /
+ * edit-modal chain still expects (it resets a form keyed by these exact
+ * field names). Goes away once that chain is reworked onto the DTO.
+ */
+function toLegacyServiceLog(dto: ServiceLogDto): ServiceLog {
+  return {
+    id: dto.id,
+    car_id: dto.carId,
+    created_by: dto.authorId,
+    service_date: dto.serviceDate,
+    category: dto.categories,
+    mileage: dto.mileage ?? null,
+    notes: dto.notes ?? null,
+    service_cost: dto.serviceCost ?? null,
+    created_at: dto.createdAt ?? null,
+  };
+}
 
 const CategoryCell = memo(function CategoryCell({
   categories,
@@ -28,7 +48,7 @@ const CategoryCell = memo(function CategoryCell({
 const MileageCell = memo(function MileageCell({
   mileage,
 }: {
-  mileage: ServiceLog['mileage'];
+  mileage: ServiceLogDto['mileage'];
 }) {
   return <div className="max-w-32 overflow-x-auto">{mileage}</div>;
 });
@@ -36,7 +56,7 @@ const MileageCell = memo(function MileageCell({
 const CostCell = memo(function CostCell({
   cost,
 }: {
-  cost: ServiceLog['service_cost'];
+  cost: ServiceLogDto['serviceCost'];
 }) {
   return <div className="max-w-32 overflow-x-auto">{cost}</div>;
 });
@@ -44,7 +64,7 @@ const CostCell = memo(function CostCell({
 const NotesCell = memo(function NotesCell({
   notes,
 }: {
-  notes: ServiceLog['notes'];
+  notes: ServiceLogDto['notes'];
 }) {
   return (
     <div className="max-h-24 w-52 overflow-y-auto text-wrap lg:w-fit">
@@ -86,7 +106,7 @@ const ActionsCell = memo(function ActionsCell({
 });
 
 interface UseServiceLogsTableParams {
-  serviceLogs?: ServiceLog[];
+  serviceLogs?: ServiceLogDto[];
   users?: UserDto[];
   sessionUserId?: string;
   isSessionUserPrimaryOwner?: boolean;
@@ -110,16 +130,16 @@ export function useServiceLogsTable({
   const columns = useMemo(
     () =>
       [
-        columnsHelper.accessor('service_date', {
+        columnsHelper.accessor('serviceDate', {
           meta: { label: 'Date', filter: { type: 'date' } },
           enableSorting: true,
           filterFn: filterColumnByDate,
         }),
-        columnsHelper.accessor('created_at', {
+        columnsHelper.accessor('createdAt', {
           meta: { label: 'created_at' },
           enableSorting: true,
         }),
-        columnsHelper.accessor('category', {
+        columnsHelper.accessor('categories', {
           meta: {
             label: 'Category',
             filter: { type: 'values', valuesMapping: serviceCategoryMapping },
@@ -127,7 +147,7 @@ export function useServiceLogsTable({
           enableColumnFilter: true,
           filterFn: 'arrIncludesSome',
           cell: ({ row }) => (
-            <CategoryCell categories={row.original.category} />
+            <CategoryCell categories={row.original.categories} />
           ),
         }),
         columnsHelper.accessor('mileage', {
@@ -135,24 +155,24 @@ export function useServiceLogsTable({
           enableSorting: true,
           cell: ({ row }) => <MileageCell mileage={row.original.mileage} />,
         }),
-        columnsHelper.accessor('service_cost', {
+        columnsHelper.accessor('serviceCost', {
           meta: { label: 'Cost' },
           enableSorting: true,
-          cell: ({ row }) => <CostCell cost={row.original.service_cost} />,
+          cell: ({ row }) => <CostCell cost={row.original.serviceCost} />,
         }),
         columnsHelper.accessor('notes', {
           meta: { label: 'Notes', shouldSpan: true },
           cell: ({ row }) => <NotesCell notes={row.original.notes} />,
         }),
-        columnsHelper.accessor((row) => usersMap.get(row.created_by)?.name, {
-          id: 'created_by',
+        columnsHelper.accessor((row) => usersMap.get(row.authorId)?.name, {
+          id: 'author',
           enableSorting: true,
           sortingFn: 'alphanumeric',
           enableColumnFilter: true,
           filterFn: 'includesString',
           meta: { label: 'Creator' },
           cell: ({ row }) => (
-            <CreatorCell user={usersMap.get(row.original.created_by)} />
+            <CreatorCell user={usersMap.get(row.original.authorId)} />
           ),
         }),
         columnsHelper.display({
@@ -160,19 +180,19 @@ export function useServiceLogsTable({
           cell: ({ row }) => {
             const canTakeAction =
               isSessionUserPrimaryOwner ||
-              row.original.created_by === sessionUserId;
+              row.original.authorId === sessionUserId;
 
             return (
               <ActionsCell
                 canTakeAction={!!canTakeAction}
-                carId={row.original.car_id}
+                carId={row.original.carId}
                 collisionDetectionRoot={tableRef.current}
-                serviceLog={row.original}
+                serviceLog={toLegacyServiceLog(row.original)}
               />
             );
           },
         }),
-      ] as ColumnDef<ServiceLog>[],
+      ] as ColumnDef<ServiceLogDto>[],
     [usersMap, sessionUserId, isSessionUserPrimaryOwner],
   );
 
