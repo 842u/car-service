@@ -1,9 +1,8 @@
 import type { QueryClient } from '@tanstack/react-query';
 
 import type { CarServiceLogFormValues } from '@/car/schemas/zod/carServiceLogFormSchema';
-import type { ServiceLog } from '@/types';
-
-import { queryKeys } from './keys';
+import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
+import { queryKeys } from '@/car/service-log/infrastructure/tanstack/query/keys';
 
 export async function serviceLogsByCarIdAddOnMutate(
   formData: CarServiceLogFormValues,
@@ -17,27 +16,29 @@ export async function serviceLogsByCarIdAddOnMutate(
 
   const optimisticServiceLogId = crypto.randomUUID();
 
-  const optimisticCarServiceLog = {
-    ...formData,
+  const optimisticServiceLog = {
+    id: optimisticServiceLogId,
+    carId,
+    authorId: userId || 'optimistic update',
+    serviceDate: formData.service_date,
+    categories: formData.category,
     mileage: Number.isNaN(formData.mileage) ? null : formData.mileage,
-    service_cost: Number.isNaN(formData.service_cost)
+    notes: formData.notes,
+    serviceCost: Number.isNaN(formData.service_cost)
       ? null
       : formData.service_cost,
-    id: optimisticServiceLogId,
-    car_id: carId,
-    created_by: userId || 'optimistic update',
-    created_at: new Date().toISOString(),
-  } satisfies ServiceLog;
+    createdAt: new Date().toISOString(),
+  } satisfies ServiceLogDto;
 
   const previousQueryData = queryClient.getQueryData(
     queryKeys.serviceLogsByCarId(carId),
-  ) as ServiceLog[] | undefined;
+  ) as ServiceLogDto[] | undefined;
 
   const updatedQueryData = previousQueryData?.map((serviceLog) => ({
     ...serviceLog,
   }));
 
-  updatedQueryData?.push(optimisticCarServiceLog);
+  updatedQueryData?.push(optimisticServiceLog);
 
   queryClient.setQueryData(
     queryKeys.serviceLogsByCarId(carId),
@@ -56,7 +57,7 @@ export async function serviceLogsByCarIdAddOnError(
 ) {
   const previousQueryData = queryClient.getQueryData(
     queryKeys.serviceLogsByCarId(carId),
-  ) as ServiceLog[] | undefined;
+  ) as ServiceLogDto[] | undefined;
 
   let updatedQueryData = previousQueryData?.map((serviceLog) => ({
     ...serviceLog,
@@ -84,7 +85,7 @@ export async function serviceLogsByCarIdEditOnMutate(
 
   const previousQueryData = queryClient.getQueryData(
     queryKeys.serviceLogsByCarId(carId),
-  ) as ServiceLog[] | undefined;
+  ) as ServiceLogDto[] | undefined;
 
   if (!previousQueryData) return { previousServiceLog: undefined };
 
@@ -102,9 +103,11 @@ export async function serviceLogsByCarIdEditOnMutate(
 
   updatedQueryData[updatedServiceLogIndex] = {
     ...updatedQueryData[updatedServiceLogIndex],
-    ...formData,
+    serviceDate: formData.service_date,
+    categories: formData.category,
     mileage: Number.isNaN(formData.mileage) ? null : formData.mileage,
-    service_cost: Number.isNaN(formData.service_cost)
+    notes: formData.notes,
+    serviceCost: Number.isNaN(formData.service_cost)
       ? null
       : formData.service_cost,
   };
@@ -127,7 +130,7 @@ export async function serviceLogsByCarIdEditOnError(
 ) {
   const previousQueryData = queryClient.getQueryData(
     queryKeys.serviceLogsByCarId(carId),
-  ) as ServiceLog[] | undefined;
+  ) as ServiceLogDto[] | undefined;
 
   if (!previousQueryData) return;
 
@@ -157,11 +160,11 @@ export async function serviceLogsByCarIdDeleteOnMutate(
   serviceLogId: string,
   queryClient: QueryClient,
 ) {
-  let optimisticDeletedServiceLog: ServiceLog | undefined = undefined;
+  let optimisticDeletedServiceLog: ServiceLogDto | undefined = undefined;
 
   const previousQueryData = queryClient.getQueryData(
     queryKeys.serviceLogsByCarId(carId),
-  ) as ServiceLog[] | undefined;
+  ) as ServiceLogDto[] | undefined;
 
   if (!previousQueryData) return { optimisticDeletedServiceLog };
 
@@ -196,7 +199,7 @@ export async function serviceLogsByCarIdDeleteOnError(
 ) {
   const previousQueryData = queryClient.getQueryData(
     queryKeys.serviceLogsByCarId(carId),
-  ) as ServiceLog[] | undefined;
+  ) as ServiceLogDto[] | undefined;
 
   if (!previousQueryData || !context?.optimisticDeletedServiceLog) return;
 

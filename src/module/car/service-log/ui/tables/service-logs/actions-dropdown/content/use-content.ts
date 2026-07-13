@@ -2,9 +2,9 @@ import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
 
+import { queryKeys } from '@/car/service-log/infrastructure/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { deleteServiceLogById } from '@/lib/supabase/tables/service_logs';
-import { queryKeys } from '@/lib/tanstack/keys';
 import {
   serviceLogsByCarIdDeleteOnError,
   serviceLogsByCarIdDeleteOnMutate,
