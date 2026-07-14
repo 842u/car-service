@@ -222,6 +222,15 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
     );
   }
 
+  /**
+   * True only for the primary owner. Backs cross-aggregate authorization
+   * rules (e.g. Service Log's `canModify` policy) that need the stronger,
+   * primary-only role rather than mere membership.
+   */
+  isPrimaryOwner(userId: string): boolean {
+    return this._value.primaryOwner.value === userId;
+  }
+
   get id(): CarId {
     return this._value.id;
   }

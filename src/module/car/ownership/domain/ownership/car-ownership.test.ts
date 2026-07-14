@@ -78,6 +78,26 @@ describe('CarOwnership', () => {
     });
   });
 
+  describe('isPrimaryOwner', () => {
+    it('returns true for the primary owner', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      expect(carOwnership.isPrimaryOwner(PRIMARY_OWNER_ID)).toBe(true);
+    });
+
+    it('returns false for a co-owner', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      expect(carOwnership.isPrimaryOwner(CO_OWNER_ID)).toBe(false);
+    });
+
+    it('returns false for a non-owner', () => {
+      const carOwnership = buildCarOwnership({ coOwners: [CO_OWNER_ID] });
+
+      expect(carOwnership.isPrimaryOwner(NEW_OWNER_ID)).toBe(false);
+    });
+  });
+
   describe('addOwner', () => {
     it('adds a co-owner when the actor is the primary owner', () => {
       const carOwnership = buildCarOwnership();
