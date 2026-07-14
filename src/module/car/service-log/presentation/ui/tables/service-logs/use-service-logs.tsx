@@ -3,7 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { memo, useMemo, useRef } from 'react';
 
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
-import { TableActionsDropdown } from '@/car/service-log/ui/tables/service-logs/actions-dropdown/actions-dropdown';
+import { TableActionsDropdown } from '@/car/service-log/presentation/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
 import { serviceCategoryMapping } from '@/types';
 import { Tag } from '@/ui/tag/tag';

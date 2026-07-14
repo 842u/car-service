@@ -1,7 +1,7 @@
 'use client';
 
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
-import { useServiceLogsTable } from '@/car/service-log/ui/tables/service-logs/use-service-logs';
+import { useServiceLogsTable } from '@/car/service-log/presentation/ui/tables/service-logs/use-service-logs';
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
 

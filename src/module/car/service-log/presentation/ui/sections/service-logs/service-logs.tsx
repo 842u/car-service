@@ -1,6 +1,6 @@
 'use client';
 
-import { useServiceLogsSection } from '@/car/service-log/ui/sections/service-logs/use-service-logs';
+import { useServiceLogsSection } from '@/car/service-log/presentation/ui/sections/service-logs/use-service-logs';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { BookIcon } from '@/icons/book';
 import { Spinner } from '@/ui/decorative/spinner/spinner';

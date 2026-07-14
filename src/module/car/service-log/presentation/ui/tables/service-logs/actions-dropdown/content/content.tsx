@@ -1,7 +1,7 @@
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import { DeleteModal } from '@/car/service-log/presentation/ui/modals/delete/delete';
 import { EditModal } from '@/car/service-log/presentation/ui/modals/edit/edit';
-import { useDropdownContent } from '@/car/service-log/ui/tables/service-logs/actions-dropdown/content/use-content';
+import { useDropdownContent } from '@/car/service-log/presentation/ui/tables/service-logs/actions-dropdown/content/use-content';
 import { Button } from '@/ui/button/button';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 
