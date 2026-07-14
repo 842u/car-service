@@ -5,8 +5,8 @@ import type { ReactNode } from 'react';
 import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { Result } from '@/common/application/result';
-import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
+import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userDataSource } from '@/user/dependency/data-source';
 
 import { TotalOwnershipsSection } from './total-ownerships';
@@ -24,7 +24,7 @@ const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<
   typeof ownershipDataSource
 >;
 
-const MOCK_USER = createMockUserDto();
+const MOCK_USER = buildUserDto();
 const MOCK_OWNERSHIPS = [buildOwnershipDto(), buildOwnershipDto()];
 
 function createWrapper() {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 jest.mock('@/dependency/auth-client/browser', () => ({

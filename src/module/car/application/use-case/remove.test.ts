@@ -4,8 +4,8 @@ import { RemoveCarUseCase } from '@/car/application/use-case/remove';
 import { buildCar } from '@/car/domain/car/car.builder';
 import type { RemoveCarApiRequest } from '@/car/interface/api/remove.schema';
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('RemoveCarUseCase', () => {

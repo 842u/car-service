@@ -1,6 +1,6 @@
 import type { UserPersistence } from '@/user/application/persistence-model/user';
 
-export function createMockUserPersistence(
+export function buildUserPersistence(
   overrides?: Partial<UserPersistence>,
 ): UserPersistence {
   return {

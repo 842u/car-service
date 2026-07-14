@@ -7,7 +7,7 @@ import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/sections/total-ownerships/use-total-ownerships';
 import { Result } from '@/common/application/result';
 import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
-import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
+import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userDataSource } from '@/user/dependency/data-source';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
@@ -24,7 +24,7 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 const mockUserDataSource = userDataSource as jest.Mocked<typeof userDataSource>;
 jest.mock('@/user/dependency/data-source');
 
-const MOCK_USER = createMockUserDto();
+const MOCK_USER = buildUserDto();
 const MOCK_OWNERSHIPS = [buildOwnershipDto(), buildOwnershipDto()];
 
 function createWrapper() {

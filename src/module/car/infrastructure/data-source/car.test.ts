@@ -5,7 +5,7 @@ import { createMockCarMapper } from '@/car/application/mapper/car.mock';
 import { buildCarPersistence } from '@/car/application/persistence-model/car.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 
 import { CarDataSourceImplementation } from './car';
 

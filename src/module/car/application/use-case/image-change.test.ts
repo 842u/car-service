@@ -7,8 +7,8 @@ import { CarImageChangeUseCase } from '@/car/application/use-case/image-change';
 import { buildCar } from '@/car/domain/car/car.builder';
 import type { CarImageChangeApiRequest } from '@/car/interface/api/image-change.schema';
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('CarImageChangeUseCase', () => {

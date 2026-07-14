@@ -10,8 +10,8 @@ import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/ed
 import { buildServiceLog } from '@/car/service-log/domain/service-log/service-log.builder';
 import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/edit.schema';
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 const PRIMARY_OWNER_ID = 'b5b55395-e32f-4376-be03-f66be0a63ec4';

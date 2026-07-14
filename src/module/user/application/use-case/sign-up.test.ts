@@ -1,15 +1,15 @@
 import type { AdminAuthClient } from '@/common/application/auth-client';
+import { createMockAdminAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
 import { ValidatorError } from '@/common/application/validator';
-import { createMockAdminAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
-import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
-import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
+import { createMockUserMapper } from '@/user/application/mapper/user.mock';
 import type { UserRepository } from '@/user/application/repository/user';
+import { createMockUserRepository } from '@/user/application/repository/user.mock';
 import { SignUpUseCase } from '@/user/application/use-case/sign-up';
+import { buildUser } from '@/user/domain/user/user.builder';
 
 describe('SignUpUseCase', () => {
   let mockAdminAuthClient: jest.Mocked<AdminAuthClient>;
@@ -30,7 +30,7 @@ describe('SignUpUseCase', () => {
   });
 
   describe('execute', () => {
-    const mockUser = createMockUser();
+    const mockUser = buildUser();
     const mockAuthIdentity = createMockAuthIdentity();
     const contract = {
       email: mockUser.email.value,

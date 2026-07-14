@@ -9,7 +9,7 @@ import { buildOwnershipPersistence } from '@/car/ownership/application/persisten
 import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 
 import { CarProvisioningImplementation } from './car';
 

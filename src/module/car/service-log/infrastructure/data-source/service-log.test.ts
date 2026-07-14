@@ -5,7 +5,7 @@ import { createMockServiceLogMapper } from '@/car/service-log/application/mapper
 import { buildServiceLogPersistence } from '@/car/service-log/application/persistence-model/service-log.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 
 import { ServiceLogDataSourceImplementation } from './service-log';
 

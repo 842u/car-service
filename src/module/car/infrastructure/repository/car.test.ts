@@ -5,7 +5,7 @@ import { buildCarPersistence } from '@/car/application/persistence-model/car.bui
 import { buildCar } from '@/car/domain/car/car.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 
 import { CarRepositoryImplementation } from './car';
 

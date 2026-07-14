@@ -7,8 +7,8 @@ import { EditCarUseCase } from '@/car/application/use-case/edit';
 import { buildCar } from '@/car/domain/car/car.builder';
 import type { EditCarApiRequest } from '@/car/interface/api/edit.schema';
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('EditCarUseCase', () => {
