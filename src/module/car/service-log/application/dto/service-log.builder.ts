@@ -1,6 +1,6 @@
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 
-export function createMockServiceLogDto(
+export function buildServiceLogDto(
   overrides?: Partial<ServiceLogDto>,
 ): ServiceLogDto {
   return {

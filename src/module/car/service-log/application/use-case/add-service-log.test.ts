@@ -1,16 +1,16 @@
 import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
+import { createMockServiceLogMapper } from '@/car/service-log/application/mapper/service-log.mock';
 import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
+import { createMockCarOwnershipReader } from '@/car/service-log/application/reader/car-ownership.mock';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
+import { createMockServiceLogRepository } from '@/car/service-log/application/repository/service-log.mock';
 import { AddServiceLogUseCase } from '@/car/service-log/application/use-case/add-service-log';
 import type { AddServiceLogApiRequest } from '@/car/service-log/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockServiceLogMapper } from '@/lib/jest/mock/src/module/car/service-log/application/mapper/service-log';
-import { createMockCarOwnershipReader } from '@/lib/jest/mock/src/module/car/service-log/application/reader/car-ownership';
-import { createMockServiceLogRepository } from '@/lib/jest/mock/src/module/car/service-log/application/repository/service-log';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 const PRIMARY_OWNER_ID = 'b5b55395-e32f-4376-be03-f66be0a63ec4';

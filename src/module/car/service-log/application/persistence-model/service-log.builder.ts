@@ -1,6 +1,6 @@
 import type { ServiceLogPersistence } from '@/car/service-log/application/persistence-model/service-log';
 
-export function createMockServiceLogPersistence(
+export function buildServiceLogPersistence(
   overrides?: Partial<ServiceLogPersistence>,
 ): ServiceLogPersistence {
   return {

@@ -1,19 +1,19 @@
 /* eslint testing-library/no-await-sync-queries:0 */
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
+import { createMockServiceLogMapper } from '@/car/service-log/application/mapper/service-log.mock';
+import { buildServiceLogPersistence } from '@/car/service-log/application/persistence-model/service-log.builder';
+import { buildServiceLog } from '@/car/service-log/domain/service-log/service-log.builder';
 import { ServiceLogRepositoryImplementation } from '@/car/service-log/infrastructure/repository/service-log';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
 import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockServiceLogMapper } from '@/lib/jest/mock/src/module/car/service-log/application/mapper/service-log';
-import { createMockServiceLogPersistence } from '@/lib/jest/mock/src/module/car/service-log/application/persistence-model/service-log';
-import { createMockServiceLog } from '@/lib/jest/mock/src/module/car/service-log/domain/service-log';
 
 describe('ServiceLogRepositoryImplementation', () => {
   let mockDbClient: jest.Mocked<SupabaseDatabaseClient>;
   let mockServiceLogMapper: jest.Mocked<ServiceLogMapper>;
   let repository: ServiceLogRepositoryImplementation;
 
-  const serviceLog = createMockServiceLog();
+  const serviceLog = buildServiceLog();
 
   beforeEach(() => {
     mockDbClient = createMockSupabaseDatabaseClient();
@@ -26,7 +26,7 @@ describe('ServiceLogRepositoryImplementation', () => {
 
   describe('store', () => {
     it('returns success on a successful insert', async () => {
-      const persistence = createMockServiceLogPersistence();
+      const persistence = buildServiceLogPersistence();
 
       mockServiceLogMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
@@ -42,7 +42,7 @@ describe('ServiceLogRepositoryImplementation', () => {
 
     it('returns an error when the query fails', async () => {
       mockServiceLogMapper.domainToPersistence.mockReturnValue(
-        createMockServiceLogPersistence(),
+        buildServiceLogPersistence(),
       );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
@@ -59,7 +59,7 @@ describe('ServiceLogRepositoryImplementation', () => {
 
   describe('update', () => {
     it('returns success on a successful update', async () => {
-      const persistence = createMockServiceLogPersistence();
+      const persistence = buildServiceLogPersistence();
 
       mockServiceLogMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
@@ -75,7 +75,7 @@ describe('ServiceLogRepositoryImplementation', () => {
 
     it('returns an error when the query fails', async () => {
       mockServiceLogMapper.domainToPersistence.mockReturnValue(
-        createMockServiceLogPersistence(),
+        buildServiceLogPersistence(),
       );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),
@@ -116,7 +116,7 @@ describe('ServiceLogRepositoryImplementation', () => {
 
   describe('getById', () => {
     it('returns the mapped ServiceLog on success', async () => {
-      const persistence = createMockServiceLogPersistence();
+      const persistence = buildServiceLogPersistence();
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistence));
       mockServiceLogMapper.persistenceToDomain.mockReturnValue(
@@ -143,7 +143,7 @@ describe('ServiceLogRepositoryImplementation', () => {
 
     it('returns an error when the row fails to map to the domain', async () => {
       mockDbClient.query.mockResolvedValue(
-        Result.ok(createMockServiceLogPersistence()),
+        Result.ok(buildServiceLogPersistence()),
       );
       mockServiceLogMapper.persistenceToDomain.mockReturnValue(
         Result.fail({ message: 'Mapping failed', issues: [], name: '' }),

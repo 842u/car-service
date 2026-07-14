@@ -1,6 +1,6 @@
 import { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
+import { buildServiceLogPersistence } from '@/car/service-log/application/persistence-model/service-log.builder';
 import { ServiceLog } from '@/car/service-log/domain/service-log/service-log';
-import { createMockServiceLogPersistence } from '@/lib/jest/mock/src/module/car/service-log/application/persistence-model/service-log';
 
 describe('ServiceLogMapper', () => {
   let mapper: ServiceLogMapper;
@@ -11,7 +11,7 @@ describe('ServiceLogMapper', () => {
 
   describe('persistenceToDto', () => {
     it('maps a row into a camelCase DTO', () => {
-      const persistence = createMockServiceLogPersistence();
+      const persistence = buildServiceLogPersistence();
 
       const dto = mapper.persistenceToDto(persistence);
 
@@ -29,7 +29,7 @@ describe('ServiceLogMapper', () => {
 
   describe('persistenceToDomain', () => {
     it('builds a valid ServiceLog from a persisted row', () => {
-      const persistence = createMockServiceLogPersistence();
+      const persistence = buildServiceLogPersistence();
 
       const result = mapper.persistenceToDomain(persistence);
 
@@ -46,7 +46,7 @@ describe('ServiceLogMapper', () => {
     });
 
     it('fails when the row holds an invalid value', () => {
-      const persistence = createMockServiceLogPersistence({ id: 'not-a-uuid' });
+      const persistence = buildServiceLogPersistence({ id: 'not-a-uuid' });
 
       const result = mapper.persistenceToDomain(persistence);
 
@@ -56,7 +56,7 @@ describe('ServiceLogMapper', () => {
 
   describe('domainToDto', () => {
     it('maps a ServiceLog into a DTO with a null createdAt', () => {
-      const persistence = createMockServiceLogPersistence();
+      const persistence = buildServiceLogPersistence();
       const serviceLogResult = ServiceLog.create({
         id: persistence.id,
         carId: persistence.car_id,
@@ -89,7 +89,7 @@ describe('ServiceLogMapper', () => {
 
   describe('domainToPersistence', () => {
     it('maps a ServiceLog into an insertable row without created_at', () => {
-      const persistence = createMockServiceLogPersistence();
+      const persistence = buildServiceLogPersistence();
       const serviceLogResult = ServiceLog.create({
         id: persistence.id,
         carId: persistence.car_id,
