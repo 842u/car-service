@@ -1,7 +1,7 @@
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import { useCustomPeriodCostsSummary } from '@/car/service-log/presentation/ui/costs-summary/custom-period/use-custom-period';
-import { inputVariants } from '@/lib/tailwindcss/input';
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
+import { inputVariants } from '@/ui/variants/input';
 
 export const FILTERED_COSTS_TEST_ID = 'FILTERED_COSTS_TEST_ID';
 

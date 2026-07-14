@@ -10,8 +10,8 @@ import type {
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import type { InputVariants } from '@/lib/tailwindcss/input';
-import { inputVariants } from '@/lib/tailwindcss/input';
+import type { InputVariants } from '@/ui/variants/input';
+import { inputVariants } from '@/ui/variants/input';
 import { VisibilityButton } from '@/ui/visibility-button/visibility-button';
 
 import { useForm } from '../../form';
