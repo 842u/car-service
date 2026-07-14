@@ -3,9 +3,9 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { memo, useMemo, useRef } from 'react';
 
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
+import { serviceCategoryLabelValueMapping } from '@/car/service-log/interface/ui/service-log-form.schema';
 import { TableActionsDropdown } from '@/car/service-log/presentation/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
-import { serviceCategoryMapping } from '@/types';
 import { Tag } from '@/ui/tag/tag';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
@@ -123,7 +123,10 @@ export function useServiceLogsTable({
         columnsHelper.accessor('categories', {
           meta: {
             label: 'Category',
-            filter: { type: 'values', valuesMapping: serviceCategoryMapping },
+            filter: {
+              type: 'values',
+              valuesMapping: serviceCategoryLabelValueMapping,
+            },
           },
           enableColumnFilter: true,
           filterFn: 'arrIncludesSome',
