@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
 import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
-import { getRequestOrigin } from '@/lib/http/get-request-origin';
+import { getRequestOrigin } from '@/common/interface/api/request-origin';
 import { signUpApiHandler } from '@/user/dependency/api-handler';
 import { createSignUpUseCase } from '@/user/dependency/use-case';
 import { signUpApiRequestSchema } from '@/user/interface/api/sign-up.schema';
