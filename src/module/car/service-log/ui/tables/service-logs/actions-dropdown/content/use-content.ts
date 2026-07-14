@@ -1,22 +1,10 @@
-import type { QueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
 
-import { queryKeys } from '@/car/service-log/infrastructure/tanstack/query/keys';
+import { serviceLogRemoveMutationOptions } from '@/car/service-log/infrastructure/tanstack/mutation-options/remove';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { deleteServiceLogById } from '@/lib/supabase/tables/service_logs';
-import {
-  serviceLogsByCarIdDeleteOnError,
-  serviceLogsByCarIdDeleteOnMutate,
-} from '@/lib/tanstack/service_logs';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';
-
-interface MutationVariables {
-  carId: string;
-  serviceLogId: string;
-  queryClient: QueryClient;
-}
 
 interface UseDropdownContentParams {
   carId: string;
@@ -35,17 +23,21 @@ export function useDropdownContent({
 
   const queryClient = useQueryClient();
 
+  // The dropdown unmounts as soon as the confirm handler fires (the modal
+  // closes and, once the cache updates, this row disappears) before the
+  // request settles. React Query drops callbacks passed to mutate() once the
+  // caller unmounts, so the toast lives on the mutation options (which still
+  // run) rather than on the mutate() call. onError is composed so the
+  // options' optimistic rollback still runs.
+  const removeMutationOptions = serviceLogRemoveMutationOptions(queryClient);
+
   const { mutate } = useMutation({
-    throwOnError: false,
-    mutationFn: ({ serviceLogId }: MutationVariables) =>
-      deleteServiceLogById(serviceLogId),
-    onMutate: ({ carId, serviceLogId, queryClient }) =>
-      serviceLogsByCarIdDeleteOnMutate(carId, serviceLogId, queryClient),
-    onError: (error, { carId, queryClient }, context) => {
-      serviceLogsByCarIdDeleteOnError(context, carId, queryClient);
-      addToast(error.message, 'error');
-    },
+    ...removeMutationOptions,
     onSuccess: () => addToast('Service log deleted.', 'success'),
+    onError: (...args) => {
+      removeMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
+    },
   });
 
   const handleEditButtonClick = () => {
@@ -65,15 +57,7 @@ export function useDropdownContent({
   const handleDeleteModalConfirm = () => {
     deleteModalRef.current?.closeModal();
 
-    mutate(
-      { carId, queryClient, serviceLogId },
-      {
-        onSettled: (_, __, { queryClient, carId }) =>
-          queryClient.invalidateQueries({
-            queryKey: queryKeys.serviceLogsByCarId(carId),
-          }),
-      },
-    );
+    mutate({ carId, serviceLogId });
   };
 
   return {
