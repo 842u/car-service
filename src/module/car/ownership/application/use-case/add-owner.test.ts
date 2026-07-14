@@ -5,12 +5,12 @@ import { AddOwnerUseCase } from '@/car/ownership/application/use-case/add-owner'
 import type { AddOwnerApiRequest } from '@/car/ownership/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
 import { createMockOwnershipMapper } from '@/lib/jest/mock/src/module/car/ownership/application/mapper/ownership';
 import { createMockOwnershipRepository } from '@/lib/jest/mock/src/module/car/ownership/application/ownership-repository';
 import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 const PRIMARY_OWNER_ID = 'b5b55395-e32f-4376-be03-f66be0a63ec4';
 const CO_OWNER_ID = '5202140b-aa28-4058-9191-e4a117e15353';

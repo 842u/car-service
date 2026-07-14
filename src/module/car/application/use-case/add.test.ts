@@ -5,10 +5,10 @@ import { AddCarUseCase } from '@/car/application/use-case/add';
 import type { AddCarApiRequest } from '@/car/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockCarProvisioning } from '@/lib/jest/mock/src/module/car/application/car-provisioning';
 import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('AddCarUseCase', () => {
   let useCase: AddCarUseCase;

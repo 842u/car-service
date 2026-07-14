@@ -1,10 +1,10 @@
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { ValidatorError } from '@/common/application/validator';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
 import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import { SignInWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';

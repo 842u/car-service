@@ -1,4 +1,4 @@
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import { UserMapper } from '@/user/application/mapper/user';
 
 describe('UserMapper', () => {

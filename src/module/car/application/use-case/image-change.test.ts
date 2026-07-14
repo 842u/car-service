@@ -5,11 +5,11 @@ import { CarImageChangeUseCase } from '@/car/application/use-case/image-change';
 import type { CarImageChangeApiRequest } from '@/car/interface/api/image-change.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockCarRepository } from '@/lib/jest/mock/src/module/car/application/car-repository';
 import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
 import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('CarImageChangeUseCase', () => {
   let useCase: CarImageChangeUseCase;

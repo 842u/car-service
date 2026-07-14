@@ -3,10 +3,10 @@ import { RemoveCarUseCase } from '@/car/application/use-case/remove';
 import type { RemoveCarApiRequest } from '@/car/interface/api/remove.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockCarRepository } from '@/lib/jest/mock/src/module/car/application/car-repository';
 import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('RemoveCarUseCase', () => {
   let useCase: RemoveCarUseCase;

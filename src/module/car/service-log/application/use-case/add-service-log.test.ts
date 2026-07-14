@@ -6,12 +6,12 @@ import { AddServiceLogUseCase } from '@/car/service-log/application/use-case/add
 import type { AddServiceLogApiRequest } from '@/car/service-log/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
 import { createMockServiceLogMapper } from '@/lib/jest/mock/src/module/car/service-log/application/mapper/service-log';
 import { createMockCarOwnershipReader } from '@/lib/jest/mock/src/module/car/service-log/application/reader/car-ownership';
 import { createMockServiceLogRepository } from '@/lib/jest/mock/src/module/car/service-log/application/repository/service-log';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 const PRIMARY_OWNER_ID = 'b5b55395-e32f-4376-be03-f66be0a63ec4';
 const CO_OWNER_ID = '5202140b-aa28-4058-9191-e4a117e15353';

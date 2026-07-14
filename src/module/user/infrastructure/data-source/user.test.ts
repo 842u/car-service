@@ -2,12 +2,12 @@
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
 import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
 import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
 import { createMockUserPersistence } from '@/lib/jest/mock/src/module/user/application/persistence-model/user';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserMapper } from '@/user/application/mapper/user';
 
 import { UserDataSourceImplementation } from './user';

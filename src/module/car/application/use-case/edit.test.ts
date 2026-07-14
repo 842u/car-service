@@ -5,11 +5,11 @@ import { EditCarUseCase } from '@/car/application/use-case/edit';
 import type { EditCarApiRequest } from '@/car/interface/api/edit.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
 import { createMockCarRepository } from '@/lib/jest/mock/src/module/car/application/car-repository';
 import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
 import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('EditCarUseCase', () => {
   let useCase: EditCarUseCase;

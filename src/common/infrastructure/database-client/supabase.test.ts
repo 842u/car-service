@@ -4,7 +4,7 @@ import { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/
 import {
   mockInternalMethodFailure,
   mockInternalMethodSuccess,
-} from '@/lib/jest/mock/@supabase/database';
+} from '@/test/mock/@supabase/database';
 
 describe('SupabaseDatabaseClient', () => {
   let databaseClient: SupabaseDatabaseClient;
