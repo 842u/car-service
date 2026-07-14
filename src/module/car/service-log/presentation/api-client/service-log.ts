@@ -12,4 +12,5 @@ export interface ServiceLogApiClient {
   edit(
     contract: EditServiceLogApiRequest,
   ): Promise<Result<ServiceLogDto, ServiceLogApiClientError>>;
+  remove(serviceLogId: string): Promise<Result<null, ServiceLogApiClientError>>;
 }
