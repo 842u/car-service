@@ -2,7 +2,7 @@ import { mutationOptions } from '@tanstack/react-query';
 
 import { carApiClient } from '@/car/dependency/api-client';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
-import { CAR_IMAGE_UPLOAD_ERROR_CAUSE, hashFile } from '@/lib/utils';
+import { hashFile } from '@/lib/utils';
 
 type MutationVariables = {
   carId: string;
@@ -31,7 +31,6 @@ export const carImageChangeMutationOptions = () =>
         const { message } = uploadResult.error;
         throw new Error(
           `The image failed to upload: ${message} Try again by editing car details.`,
-          { cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE },
         );
       }
 
@@ -51,7 +50,6 @@ export const carImageChangeMutationOptions = () =>
         const { message } = imageChangeResult.error;
         throw new Error(
           `The image could not be saved: ${message} Try again by editing car details.`,
-          { cause: CAR_IMAGE_UPLOAD_ERROR_CAUSE },
         );
       }
 
