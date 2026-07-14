@@ -1,3 +1,4 @@
+import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
 import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
@@ -7,7 +8,6 @@ import type { AddServiceLogApiRequest } from '@/car/service-log/interface/api/ad
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
 import { createMockServiceLogMapper } from '@/lib/jest/mock/src/module/car/service-log/application/mapper/service-log';
 import { createMockCarOwnershipReader } from '@/lib/jest/mock/src/module/car/service-log/application/reader/car-ownership';
 import { createMockServiceLogRepository } from '@/lib/jest/mock/src/module/car/service-log/application/repository/service-log';
@@ -60,7 +60,7 @@ describe('AddServiceLogUseCase', () => {
       createdAt: null,
     };
 
-    const carOwnership = createMockCarOwnership({
+    const carOwnership = buildCarOwnership({
       carId: CAR_ID,
       primaryOwnerId: PRIMARY_OWNER_ID,
       coOwnerIds: [CO_OWNER_ID],

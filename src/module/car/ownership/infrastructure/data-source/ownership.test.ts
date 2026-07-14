@@ -1,11 +1,11 @@
 /* eslint testing-library/no-await-sync-queries:0 */
+import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
+import { createMockOwnershipMapper } from '@/car/ownership/application/mapper/ownership.mock';
+import { buildOwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
 import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
-import { createMockOwnershipMapper } from '@/lib/jest/mock/src/module/car/ownership/application/mapper/ownership';
-import { createMockOwnershipPersistence } from '@/lib/jest/mock/src/module/car/ownership/application/persistence-model/ownership';
 
 import { OwnershipDataSourceImplementation } from './ownership';
 
@@ -28,11 +28,11 @@ describe('OwnershipDataSourceImplementation', () => {
 
     it('returns ownership DTOs on success', async () => {
       const persistenceList = [
-        createMockOwnershipPersistence({ car_id: carId }),
-        createMockOwnershipPersistence({ car_id: carId }),
+        buildOwnershipPersistence({ car_id: carId }),
+        buildOwnershipPersistence({ car_id: carId }),
       ];
-      const dtoA = createMockOwnershipDto();
-      const dtoB = createMockOwnershipDto();
+      const dtoA = buildOwnershipDto();
+      const dtoB = buildOwnershipDto();
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistenceList));
       mockOwnershipMapper.persistenceToDto
@@ -68,9 +68,9 @@ describe('OwnershipDataSourceImplementation', () => {
 
     it('returns ownership DTOs on success', async () => {
       const persistenceList = [
-        createMockOwnershipPersistence({ owner_id: ownerId }),
+        buildOwnershipPersistence({ owner_id: ownerId }),
       ];
-      const dto = createMockOwnershipDto();
+      const dto = buildOwnershipDto();
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistenceList));
       mockOwnershipMapper.persistenceToDto.mockReturnValue(dto);

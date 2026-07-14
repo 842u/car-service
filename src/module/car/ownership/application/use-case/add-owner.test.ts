@@ -1,15 +1,15 @@
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
+import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
+import { createMockOwnershipMapper } from '@/car/ownership/application/mapper/ownership.mock';
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
+import { createMockOwnershipRepository } from '@/car/ownership/application/repository/ownership.mock';
 import { AddOwnerUseCase } from '@/car/ownership/application/use-case/add-owner';
+import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import type { AddOwnerApiRequest } from '@/car/ownership/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
-import { createMockOwnershipMapper } from '@/lib/jest/mock/src/module/car/ownership/application/mapper/ownership';
-import { createMockOwnershipRepository } from '@/lib/jest/mock/src/module/car/ownership/application/ownership-repository';
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 const PRIMARY_OWNER_ID = 'b5b55395-e32f-4376-be03-f66be0a63ec4';
@@ -43,18 +43,18 @@ describe('AddOwnerUseCase', () => {
     };
 
     it('adds a co-owner when the actor is the primary owner', async () => {
-      const carOwnership = createMockCarOwnership({
+      const carOwnership = buildCarOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
       });
 
       const mockOwnershipDtos: OwnershipDto[] = [
-        createMockOwnershipDto({
+        buildOwnershipDto({
           carId: CAR_ID,
           ownerId: PRIMARY_OWNER_ID,
           isPrimary: true,
         }),
-        createMockOwnershipDto({
+        buildOwnershipDto({
           carId: CAR_ID,
           ownerId: NEW_OWNER_ID,
           isPrimary: false,
@@ -119,7 +119,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as unauthorized when the actor is not the primary owner', async () => {
-      const carOwnership = createMockCarOwnership({
+      const carOwnership = buildCarOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
         coOwnerIds: [CO_OWNER_ID],
@@ -142,7 +142,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as validation when the new owner id is malformed', async () => {
-      const carOwnership = createMockCarOwnership({
+      const carOwnership = buildCarOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
       });
@@ -167,7 +167,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as conflict when the new owner already owns the car', async () => {
-      const carOwnership = createMockCarOwnership({
+      const carOwnership = buildCarOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
         coOwnerIds: [CO_OWNER_ID],
@@ -193,7 +193,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as unexpected when persistence fails', async () => {
-      const carOwnership = createMockCarOwnership({
+      const carOwnership = buildCarOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
       });

@@ -1,6 +1,6 @@
 import type { OwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership';
 
-export function createMockOwnershipPersistence(
+export function buildOwnershipPersistence(
   overrides?: Partial<OwnershipPersistence>,
 ): OwnershipPersistence {
   return {

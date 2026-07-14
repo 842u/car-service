@@ -1,11 +1,11 @@
 /* eslint testing-library/no-await-sync-queries:0 */
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
+import { createMockOwnershipMapper } from '@/car/ownership/application/mapper/ownership.mock';
+import { buildOwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership.builder';
+import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
 import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockOwnershipMapper } from '@/lib/jest/mock/src/module/car/ownership/application/mapper/ownership';
-import { createMockOwnershipPersistence } from '@/lib/jest/mock/src/module/car/ownership/application/persistence-model/ownership';
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
 
 import { OwnershipRepositoryImplementation } from './ownership';
 
@@ -14,7 +14,7 @@ describe('OwnershipRepositoryImplementation', () => {
   let mockOwnershipMapper: jest.Mocked<OwnershipMapper>;
   let repository: OwnershipRepositoryImplementation;
 
-  const carOwnership = createMockCarOwnership();
+  const carOwnership = buildCarOwnership();
 
   beforeEach(() => {
     mockDbClient = createMockSupabaseDatabaseClient();
@@ -29,7 +29,7 @@ describe('OwnershipRepositoryImplementation', () => {
     const carId = '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6';
 
     it('should return the reconstituted aggregate on success', async () => {
-      const rows = [createMockOwnershipPersistence({ car_id: carId })];
+      const rows = [buildOwnershipPersistence({ car_id: carId })];
 
       mockDbClient.query.mockResolvedValue(Result.ok(rows));
       mockOwnershipMapper.persistenceToDomain.mockReturnValue(
@@ -80,7 +80,7 @@ describe('OwnershipRepositoryImplementation', () => {
   describe('addOwner', () => {
     it('should insert the new co-owner row on success', async () => {
       const newOwnerId = carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
-      const row = createMockOwnershipPersistence();
+      const row = buildOwnershipPersistence();
 
       mockOwnershipMapper.newCoOwnerToPersistence.mockReturnValue(row);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
@@ -102,7 +102,7 @@ describe('OwnershipRepositoryImplementation', () => {
       const newOwnerId = carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
 
       mockOwnershipMapper.newCoOwnerToPersistence.mockReturnValue(
-        createMockOwnershipPersistence(),
+        buildOwnershipPersistence(),
       );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),

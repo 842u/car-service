@@ -2,9 +2,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { Result } from '@/common/application/result';
-import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
 import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 import { userDataSource } from '@/user/dependency/data-source';
@@ -25,7 +25,7 @@ const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<
 >;
 
 const MOCK_USER = createMockUserDto();
-const MOCK_OWNERSHIPS = [createMockOwnershipDto(), createMockOwnershipDto()];
+const MOCK_OWNERSHIPS = [buildOwnershipDto(), buildOwnershipDto()];
 
 function createWrapper() {
   const queryClient = new QueryClient({

@@ -1,6 +1,6 @@
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 
-export function createMockOwnershipDto(
+export function buildOwnershipDto(
   overrides?: Partial<OwnershipDto>,
 ): OwnershipDto {
   return {

@@ -1,3 +1,4 @@
+import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
 import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
@@ -7,7 +8,6 @@ import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/e
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
 import { createMockServiceLogMapper } from '@/lib/jest/mock/src/module/car/service-log/application/mapper/service-log';
 import { createMockCarOwnershipReader } from '@/lib/jest/mock/src/module/car/service-log/application/reader/car-ownership';
 import { createMockServiceLogRepository } from '@/lib/jest/mock/src/module/car/service-log/application/repository/service-log';
@@ -71,13 +71,11 @@ describe('EditServiceLogUseCase', () => {
       });
     }
 
-    function buildCarOwnership() {
-      return createMockCarOwnership({
-        carId: CAR_ID,
-        primaryOwnerId: PRIMARY_OWNER_ID,
-        coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
-      });
-    }
+    const carOwnership = buildCarOwnership({
+      carId: CAR_ID,
+      primaryOwnerId: PRIMARY_OWNER_ID,
+      coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
+    });
 
     it('edits the service log when the actor is the author', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
@@ -121,7 +119,7 @@ describe('EditServiceLogUseCase', () => {
         Result.ok(buildServiceLog()),
       );
       mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(buildCarOwnership()),
+        Result.ok(carOwnership),
       );
       mockServiceLogRepository.update.mockResolvedValue(Result.ok(null));
       mockServiceLogMapper.domainToDto.mockReturnValue(mockServiceLogDto);
@@ -141,7 +139,7 @@ describe('EditServiceLogUseCase', () => {
         Result.ok(buildServiceLog()),
       );
       mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(buildCarOwnership()),
+        Result.ok(carOwnership),
       );
 
       const result = await useCase.execute(validContract);
@@ -161,7 +159,7 @@ describe('EditServiceLogUseCase', () => {
         Result.ok(buildServiceLog()),
       );
       mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(buildCarOwnership()),
+        Result.ok(carOwnership),
       );
 
       const result = await useCase.execute(validContract);

@@ -1,8 +1,8 @@
 import { CarId } from '@/car/domain/car/value-object/car-id/car-id';
 import { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
+import { buildOwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership.builder';
 import { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
 import { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
-import { createMockOwnershipPersistence } from '@/lib/jest/mock/src/module/car/ownership/application/persistence-model/ownership';
 
 const CAR_ID = '11111111-1111-4111-8111-111111111111';
 const PRIMARY_OWNER_ID = '22222222-2222-4222-8222-222222222222';
@@ -17,7 +17,7 @@ describe('OwnershipMapper', () => {
 
   describe('persistenceToDto', () => {
     it('maps a row into a camelCase DTO', () => {
-      const persistence = createMockOwnershipPersistence();
+      const persistence = buildOwnershipPersistence();
 
       const dto = mapper.persistenceToDto(persistence);
 
@@ -31,12 +31,12 @@ describe('OwnershipMapper', () => {
   describe('persistenceToDomain', () => {
     it('reconstitutes a CarOwnership from its rows', () => {
       const rows = [
-        createMockOwnershipPersistence({
+        buildOwnershipPersistence({
           car_id: CAR_ID,
           owner_id: PRIMARY_OWNER_ID,
           is_primary_owner: true,
         }),
-        createMockOwnershipPersistence({
+        buildOwnershipPersistence({
           car_id: CAR_ID,
           owner_id: CO_OWNER_ID,
           is_primary_owner: false,
@@ -57,7 +57,7 @@ describe('OwnershipMapper', () => {
 
     it('fails when no row is flagged as primary', () => {
       const rows = [
-        createMockOwnershipPersistence({
+        buildOwnershipPersistence({
           car_id: CAR_ID,
           owner_id: CO_OWNER_ID,
           is_primary_owner: false,
@@ -71,12 +71,12 @@ describe('OwnershipMapper', () => {
 
     it('fails when more than one row is flagged as primary', () => {
       const rows = [
-        createMockOwnershipPersistence({
+        buildOwnershipPersistence({
           car_id: CAR_ID,
           owner_id: PRIMARY_OWNER_ID,
           is_primary_owner: true,
         }),
-        createMockOwnershipPersistence({
+        buildOwnershipPersistence({
           car_id: CAR_ID,
           owner_id: CO_OWNER_ID,
           is_primary_owner: true,

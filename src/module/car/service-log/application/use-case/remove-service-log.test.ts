@@ -1,3 +1,4 @@
+import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { RemoveServiceLogUseCase } from '@/car/service-log/application/use-case/remove-service-log';
@@ -5,7 +6,6 @@ import type { RemoveServiceLogApiRequest } from '@/car/service-log/interface/api
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
 import { createMockCarOwnershipReader } from '@/lib/jest/mock/src/module/car/service-log/application/reader/car-ownership';
 import { createMockServiceLogRepository } from '@/lib/jest/mock/src/module/car/service-log/application/repository/service-log';
 import { createMockServiceLog } from '@/lib/jest/mock/src/module/car/service-log/domain/service-log';
@@ -48,13 +48,11 @@ describe('RemoveServiceLogUseCase', () => {
       });
     }
 
-    function buildCarOwnership() {
-      return createMockCarOwnership({
-        carId: CAR_ID,
-        primaryOwnerId: PRIMARY_OWNER_ID,
-        coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
-      });
-    }
+    const carOwnership = buildCarOwnership({
+      carId: CAR_ID,
+      primaryOwnerId: PRIMARY_OWNER_ID,
+      coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
+    });
 
     it('removes the service log when the actor is the author', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
@@ -96,7 +94,7 @@ describe('RemoveServiceLogUseCase', () => {
         Result.ok(buildServiceLog()),
       );
       mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(buildCarOwnership()),
+        Result.ok(carOwnership),
       );
       mockServiceLogRepository.remove.mockResolvedValue(Result.ok(null));
 
@@ -115,7 +113,7 @@ describe('RemoveServiceLogUseCase', () => {
         Result.ok(buildServiceLog()),
       );
       mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(buildCarOwnership()),
+        Result.ok(carOwnership),
       );
 
       const result = await useCase.execute(validContract);
@@ -135,7 +133,7 @@ describe('RemoveServiceLogUseCase', () => {
         Result.ok(buildServiceLog()),
       );
       mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(buildCarOwnership()),
+        Result.ok(carOwnership),
       );
 
       const result = await useCase.execute(validContract);
