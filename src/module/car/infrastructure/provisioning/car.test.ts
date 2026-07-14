@@ -1,12 +1,12 @@
 /* eslint testing-library/no-await-sync-queries:0 */
 import type { CarMapper } from '@/car/application/mapper/car';
+import { createMockCarMapper } from '@/car/application/mapper/car.mock';
+import { buildCarPersistence } from '@/car/application/persistence-model/car.builder';
+import { buildCar } from '@/car/domain/car/car.builder';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
 import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
-import { createMockCarPersistence } from '@/lib/jest/mock/src/module/car/application/persistence-model/car';
-import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
 import { createMockOwnershipMapper } from '@/lib/jest/mock/src/module/car/ownership/application/mapper/ownership';
 import { createMockOwnershipPersistence } from '@/lib/jest/mock/src/module/car/ownership/application/persistence-model/ownership';
 import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
@@ -19,7 +19,7 @@ describe('CarProvisioningImplementation', () => {
   let mockOwnershipMapper: jest.Mocked<OwnershipMapper>;
   let provisioning: CarProvisioningImplementation;
 
-  const car = createMockCar();
+  const car = buildCar();
   const primaryOwnership = createMockCarOwnership();
 
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe('CarProvisioningImplementation', () => {
 
   describe('createWithPrimaryOwner', () => {
     it('should return success result on success', async () => {
-      const carPersistence = createMockCarPersistence();
+      const carPersistence = buildCarPersistence();
       const primaryOwnerPersistence = createMockOwnershipPersistence();
 
       mockCarMapper.domainToPersistence.mockReturnValue(carPersistence);
@@ -64,9 +64,7 @@ describe('CarProvisioningImplementation', () => {
     });
 
     it('should return error when the rpc fails', async () => {
-      mockCarMapper.domainToPersistence.mockReturnValue(
-        createMockCarPersistence(),
-      );
+      mockCarMapper.domainToPersistence.mockReturnValue(buildCarPersistence());
       mockOwnershipMapper.primaryOwnerToPersistence.mockReturnValue(
         createMockOwnershipPersistence(),
       );

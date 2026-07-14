@@ -1,6 +1,6 @@
 import type { CarDto } from '@/car/application/dto/car';
 
-export function createMockCarDto(overrides?: Partial<CarDto>): CarDto {
+export function buildCarDto(overrides?: Partial<CarDto>): CarDto {
   return {
     id: '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6',
     imageUrl: 'https://example.com/car.png',

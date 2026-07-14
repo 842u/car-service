@@ -1,14 +1,14 @@
 import type { CarDto } from '@/car/application/dto/car';
 import type { CarMapper } from '@/car/application/mapper/car';
+import { createMockCarMapper } from '@/car/application/mapper/car.mock';
 import type { CarRepository } from '@/car/application/repository/car';
+import { createMockCarRepository } from '@/car/application/repository/car.mock';
 import { EditCarUseCase } from '@/car/application/use-case/edit';
+import { buildCar } from '@/car/domain/car/car.builder';
 import type { EditCarApiRequest } from '@/car/interface/api/edit.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarRepository } from '@/lib/jest/mock/src/module/car/application/car-repository';
-import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
-import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('EditCarUseCase', () => {
@@ -56,7 +56,7 @@ describe('EditCarUseCase', () => {
     };
 
     it('should edit a car successfully', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),
@@ -127,7 +127,7 @@ describe('EditCarUseCase', () => {
     });
 
     it('should fail as validation when a field is invalid', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
       const invalidContract: EditCarApiRequest = {
         carId: '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6',
         customName: '',
@@ -155,7 +155,7 @@ describe('EditCarUseCase', () => {
     });
 
     it('should fail as unexpected when persistence fails', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),

@@ -1,6 +1,6 @@
 import type { CarPersistence } from '@/car/application/persistence-model/car';
 
-export function createMockCarPersistence(
+export function buildCarPersistence(
   overrides?: Partial<CarPersistence>,
 ): CarPersistence {
   return {

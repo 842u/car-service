@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carDataSource } from '@/car/dependency/data-source';
-import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 import { DateExpirationTable } from './date-expiration';
@@ -35,7 +35,7 @@ jest.mock('@/car/presentation/ui/tables/date-expiration/legend/legend', () => ({
   DateExpirationTableLegend: () => null,
 }));
 
-const MOCK_CARS = [createMockCarDto(), createMockCarDto()];
+const MOCK_CARS = [buildCarDto(), buildCarDto()];
 const DEFAULT_PROPS = {
   label: 'Insurance',
   dateColumn: 'insuranceExpiration' as const,

@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carDataSource } from '@/car/dependency/data-source';
-import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
 import { SPINNER_TEST_ID } from '@/ui/decorative/spinner/spinner';
 
 import { CarsGallery } from './cars-gallery';
@@ -43,10 +43,7 @@ DashboardSectionMock.Heading = function DashboardSectionHeading({
   return <h2>{children}</h2>;
 };
 
-const MOCK_CARS = [
-  createMockCarDto({ id: crypto.randomUUID() }),
-  createMockCarDto(),
-];
+const MOCK_CARS = [buildCarDto({ id: crypto.randomUUID() }), buildCarDto()];
 
 function createWrapper() {
   const queryClient = new QueryClient({

@@ -1,14 +1,14 @@
 import type { CarDto } from '@/car/application/dto/car';
 import type { CarMapper } from '@/car/application/mapper/car';
+import { createMockCarMapper } from '@/car/application/mapper/car.mock';
 import type { CarRepository } from '@/car/application/repository/car';
+import { createMockCarRepository } from '@/car/application/repository/car.mock';
 import { CarImageChangeUseCase } from '@/car/application/use-case/image-change';
+import { buildCar } from '@/car/domain/car/car.builder';
 import type { CarImageChangeApiRequest } from '@/car/interface/api/image-change.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarRepository } from '@/lib/jest/mock/src/module/car/application/car-repository';
-import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
-import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('CarImageChangeUseCase', () => {
@@ -56,7 +56,7 @@ describe('CarImageChangeUseCase', () => {
     };
 
     it('should change the image url successfully', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),
@@ -127,7 +127,7 @@ describe('CarImageChangeUseCase', () => {
     });
 
     it('should fail as validation when the image url is invalid', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
       const invalidContract: CarImageChangeApiRequest = {
         carId: '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6',
         imageUrl: 'not-a-url',
@@ -155,7 +155,7 @@ describe('CarImageChangeUseCase', () => {
     });
 
     it('should fail as unexpected when persistence fails', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),

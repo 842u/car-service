@@ -1,13 +1,13 @@
 import type { CarDto } from '@/car/application/dto/car';
 import type { CarMapper } from '@/car/application/mapper/car';
+import { createMockCarMapper } from '@/car/application/mapper/car.mock';
 import type { CarProvisioning } from '@/car/application/provisioning/car';
+import { createMockCarProvisioning } from '@/car/application/provisioning/car.mock';
 import { AddCarUseCase } from '@/car/application/use-case/add';
 import type { AddCarApiRequest } from '@/car/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { Result } from '@/common/application/result';
 import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarProvisioning } from '@/lib/jest/mock/src/module/car/application/car-provisioning';
-import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('AddCarUseCase', () => {
