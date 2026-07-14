@@ -1,6 +1,6 @@
 import type { Route } from 'next';
 
-import { wrongEmails } from '@/lib/validation';
+import { wrongEmails } from '@/user/domain/user/value-object/email/email.samples';
 
 import { expect, test } from './fixtures';
 

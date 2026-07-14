@@ -2,7 +2,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { browserSupabaseClient } from '@/dependency/supabase-client/browser';
-import { correctEmails, wrongEmails } from '@/lib/validation';
+import {
+  correctEmails,
+  wrongEmails,
+} from '@/user/domain/user/value-object/email/email.samples';
 
 import { PasswordResetForm } from './password-reset';
 

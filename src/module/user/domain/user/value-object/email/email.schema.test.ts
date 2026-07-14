@@ -1,6 +1,5 @@
-import { EMAIL_REGEXP } from '@/user/domain/user/value-object/email/email.schema';
-
-import { correctEmails, wrongEmails } from './validation';
+import { correctEmails, wrongEmails } from './email.samples';
+import { EMAIL_REGEXP } from './email.schema';
 
 describe('Email Validation RegExp', () => {
   it('should match valid email address', () => {
