@@ -87,4 +87,79 @@ describe('ServiceLog', () => {
       expect(result.data.isAuthoredBy(OTHER_USER_ID)).toBe(false);
     });
   });
+
+  describe('edit', () => {
+    it('overwrites the editable fields with valid params', () => {
+      const createResult = ServiceLog.create(validParams);
+      expect(createResult.success).toBe(true);
+      if (!createResult.success) return;
+
+      const serviceLog = createResult.data;
+
+      const editResult = serviceLog.edit({
+        serviceDate: '2026-08-01',
+        categories: ['tires'],
+        mileage: 60000,
+        note: 'Rotated tires.',
+        serviceCost: 79.5,
+      });
+
+      expect(editResult.success).toBe(true);
+      expect(serviceLog.serviceDate.value).toBe('2026-08-01');
+      expect(serviceLog.categories.value).toEqual(['tires']);
+      expect(serviceLog.mileage?.value).toBe(60000);
+      expect(serviceLog.note?.value).toBe('Rotated tires.');
+      expect(serviceLog.serviceCost?.value).toBe(79.5);
+    });
+
+    it('leaves id, carId, and authorId untouched', () => {
+      const createResult = ServiceLog.create(validParams);
+      expect(createResult.success).toBe(true);
+      if (!createResult.success) return;
+
+      const serviceLog = createResult.data;
+
+      serviceLog.edit({
+        serviceDate: '2026-08-01',
+        categories: ['tires'],
+      });
+
+      expect(serviceLog.id.value).toBe(SERVICE_LOG_ID);
+      expect(serviceLog.carId.value).toBe(CAR_ID);
+      expect(serviceLog.authorId.value).toBe(AUTHOR_ID);
+    });
+
+    it('nulls out mileage, note, and serviceCost when omitted', () => {
+      const createResult = ServiceLog.create(validParams);
+      expect(createResult.success).toBe(true);
+      if (!createResult.success) return;
+
+      const serviceLog = createResult.data;
+
+      serviceLog.edit({
+        serviceDate: '2026-08-01',
+        categories: ['tires'],
+      });
+
+      expect(serviceLog.mileage).toBeNull();
+      expect(serviceLog.note).toBeNull();
+      expect(serviceLog.serviceCost).toBeNull();
+    });
+
+    it('fails and leaves the aggregate unchanged when categories is empty', () => {
+      const createResult = ServiceLog.create(validParams);
+      expect(createResult.success).toBe(true);
+      if (!createResult.success) return;
+
+      const serviceLog = createResult.data;
+
+      const editResult = serviceLog.edit({
+        serviceDate: '2026-08-01',
+        categories: [],
+      });
+
+      expect(editResult.success).toBe(false);
+      expect(serviceLog.categories.value).toEqual(['brakes', 'engine']);
+    });
+  });
 });

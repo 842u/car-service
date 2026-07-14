@@ -22,10 +22,12 @@ type ServiceLogValue = {
   serviceCost: ServiceCost | null;
 };
 
-export type ServiceLogCreateParams = {
-  id: string;
-  carId: string;
-  authorId: string;
+type ServiceLogEditableValue = Pick<
+  ServiceLogValue,
+  'serviceDate' | 'categories' | 'mileage' | 'note' | 'serviceCost'
+>;
+
+export type ServiceLogEditParams = {
   serviceDate: string;
   categories: string[];
   mileage?: number | null;
@@ -33,9 +35,33 @@ export type ServiceLogCreateParams = {
   serviceCost?: number | null;
 };
 
+export type ServiceLogCreateParams = ServiceLogEditParams & {
+  id: string;
+  carId: string;
+  authorId: string;
+};
+
 export class ServiceLog extends Entity<ServiceLogValue> {
   private constructor(value: ServiceLogValue) {
     super(value);
+  }
+
+  /**
+   * Constructs and validates the editable value objects atomically, failing
+   * on the first invalid field. Shared by `create` and `edit`: `id`, `carId`,
+   * and `authorId` are immutable once set, so only this subset is ever
+   * re-validated.
+   */
+  private static buildEditable(
+    params: ServiceLogEditParams,
+  ): Result<ServiceLogEditableValue, ValidatorError> {
+    return Result.combine({
+      serviceDate: ServiceDate.create(params.serviceDate),
+      categories: ServiceCategories.create(params.categories),
+      mileage: optionalValueObject(ServiceMileage.create, params.mileage),
+      note: optionalValueObject(ServiceNote.create, params.note),
+      serviceCost: optionalValueObject(ServiceCost.create, params.serviceCost),
+    });
   }
 
   /**
@@ -47,22 +73,44 @@ export class ServiceLog extends Entity<ServiceLogValue> {
   static create(
     params: ServiceLogCreateParams,
   ): Result<ServiceLog, ValidatorError> {
-    const combinedResult = Result.combine({
+    const idsResult = Result.combine({
       id: ServiceLogId.create(params.id),
       carId: CarId.create(params.carId),
       authorId: AuthorId.create(params.authorId),
-      serviceDate: ServiceDate.create(params.serviceDate),
-      categories: ServiceCategories.create(params.categories),
-      mileage: optionalValueObject(ServiceMileage.create, params.mileage),
-      note: optionalValueObject(ServiceNote.create, params.note),
-      serviceCost: optionalValueObject(ServiceCost.create, params.serviceCost),
     });
 
-    if (!combinedResult.success) {
-      return Result.fail(combinedResult.error);
+    if (!idsResult.success) {
+      return Result.fail(idsResult.error);
     }
 
-    return Result.ok(new ServiceLog(combinedResult.data));
+    const editableResult = ServiceLog.buildEditable(params);
+
+    if (!editableResult.success) {
+      return Result.fail(editableResult.error);
+    }
+
+    return Result.ok(
+      new ServiceLog({
+        ...idsResult.data,
+        ...editableResult.data,
+      }),
+    );
+  }
+
+  /**
+   * Atomic edit of all editable fields; leaves `id`, `carId`, and `authorId`
+   * untouched (authorship is fixed at record time and never changes).
+   */
+  edit(params: ServiceLogEditParams): Result<undefined, ValidatorError> {
+    const editableResult = ServiceLog.buildEditable(params);
+
+    if (!editableResult.success) {
+      return Result.fail(editableResult.error);
+    }
+
+    Object.assign(this._value, editableResult.data);
+
+    return Result.ok(undefined);
   }
 
   isAuthoredBy(userId: string): boolean {
