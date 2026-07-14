@@ -90,6 +90,30 @@ describe('ServiceLogRepositoryImplementation', () => {
     });
   });
 
+  describe('remove', () => {
+    it('returns success on a successful delete', async () => {
+      mockDbClient.query.mockResolvedValue(Result.ok(null));
+
+      const result = await repository.remove(serviceLog);
+
+      expect(result.success).toBe(true);
+      expect(mockDbClient.query).toHaveBeenCalled();
+    });
+
+    it('returns an error when the query fails', async () => {
+      mockDbClient.query.mockResolvedValue(
+        Result.fail({ message: 'Delete failed' }),
+      );
+
+      const result = await repository.remove(serviceLog);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe('Delete failed');
+      }
+    });
+  });
+
   describe('getById', () => {
     it('returns the mapped ServiceLog on success', async () => {
       const persistence = createMockServiceLogPersistence();

@@ -5,5 +5,6 @@ export function createMockServiceLogRepository() {
     store: jest.fn(),
     getById: jest.fn(),
     update: jest.fn(),
+    remove: jest.fn(),
   } as unknown as jest.Mocked<ServiceLogRepository>;
 }
