@@ -5,31 +5,12 @@ import { memo, useMemo, useRef } from 'react';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import { TableActionsDropdown } from '@/car/service-log/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/lib/tanstack/table/filter';
-import { serviceCategoryMapping, type ServiceLog } from '@/types';
+import { serviceCategoryMapping } from '@/types';
 import { Tag } from '@/ui/tag/tag';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 const columnsHelper = createColumnHelper<ServiceLogDto>();
-
-/**
- * Bridges a DTO row back to the legacy row shape the actions-dropdown /
- * edit-modal chain still expects (it resets a form keyed by these exact
- * field names). Goes away once that chain is reworked onto the DTO.
- */
-function toLegacyServiceLog(dto: ServiceLogDto): ServiceLog {
-  return {
-    id: dto.id,
-    car_id: dto.carId,
-    created_by: dto.authorId,
-    service_date: dto.serviceDate,
-    category: dto.categories,
-    mileage: dto.mileage ?? null,
-    notes: dto.notes ?? null,
-    service_cost: dto.serviceCost ?? null,
-    created_at: dto.createdAt ?? null,
-  };
-}
 
 const CategoryCell = memo(function CategoryCell({
   categories,
@@ -91,7 +72,7 @@ const ActionsCell = memo(function ActionsCell({
 }: {
   canTakeAction: boolean;
   carId: string;
-  serviceLog: ServiceLog;
+  serviceLog: ServiceLogDto;
   collisionDetectionRoot: HTMLElement | null;
 }) {
   return (
@@ -187,7 +168,7 @@ export function useServiceLogsTable({
                 canTakeAction={!!canTakeAction}
                 carId={row.original.carId}
                 collisionDetectionRoot={tableRef.current}
-                serviceLog={toLegacyServiceLog(row.original)}
+                serviceLog={row.original}
               />
             );
           },

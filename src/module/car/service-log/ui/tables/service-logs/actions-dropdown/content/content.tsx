@@ -1,14 +1,14 @@
+import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
+import { EditModal } from '@/car/service-log/presentation/ui/modals/edit/edit';
 import { DeleteModal } from '@/car/service-log/ui/modals/delete/delete';
-import { EditModal } from '@/car/service-log/ui/modals/edit/edit';
 import { useDropdownContent } from '@/car/service-log/ui/tables/service-logs/actions-dropdown/content/use-content';
-import type { ServiceLog } from '@/types';
 import { Button } from '@/ui/button/button';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 
 interface DropdownContentProps {
   canTakeAction: boolean;
   carId: string;
-  serviceLog: ServiceLog;
+  serviceLog: ServiceLogDto;
 }
 
 export function DropdownContent({

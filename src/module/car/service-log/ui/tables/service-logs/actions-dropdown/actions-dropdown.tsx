@@ -1,5 +1,5 @@
+import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import { EllipsisIcon } from '@/icons/ellipsis';
-import type { ServiceLog } from '@/types';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
@@ -7,7 +7,7 @@ import { DropdownContent } from './content/content';
 
 interface TableActionsDropdownProps {
   carId: string;
-  serviceLog: ServiceLog;
+  serviceLog: ServiceLogDto;
   canTakeAction: boolean;
   className?: string;
   collisionDetectionRoot?: HTMLElement | null;
