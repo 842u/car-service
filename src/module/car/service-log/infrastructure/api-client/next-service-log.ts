@@ -1,3 +1,6 @@
+import type { Route } from 'next';
+import type { ZodType } from 'zod';
+
 import {
   type AddServiceLogApiRequest,
   addServiceLogApiResponseSchema,
@@ -14,6 +17,9 @@ import type { ServiceLogApiClient } from '@/car/service-log/presentation/api-cli
 import type { HttpClient } from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
+import type { ApiResponseBody } from '@/common/interface/api/response';
+
+const ENDPOINT: Route = '/api/car/service-log';
 
 export class NextServiceLogApiClient implements ServiceLogApiClient {
   private readonly _httpClient: HttpClient;
@@ -24,13 +30,19 @@ export class NextServiceLogApiClient implements ServiceLogApiClient {
     this._validator = validator;
   }
 
-  async add(contract: AddServiceLogApiRequest) {
+  private async makeRequest<T>(
+    contract: unknown,
+    schema: ZodType<ApiResponseBody<T>>,
+    method: 'POST' | 'PATCH' | 'DELETE',
+  ): Promise<Result<T, { message: string }>> {
     const data = JSON.stringify(contract);
 
-    const httpResult = await this._httpClient.post(
-      '/api/car/service-log',
-      data,
-    );
+    const httpResult =
+      method === 'POST'
+        ? await this._httpClient.post(ENDPOINT, data)
+        : method === 'PATCH'
+          ? await this._httpClient.patch(ENDPOINT, data)
+          : await this._httpClient.delete(ENDPOINT, data);
 
     if (!httpResult.success) {
       return Result.fail({
@@ -38,10 +50,7 @@ export class NextServiceLogApiClient implements ServiceLogApiClient {
       });
     }
 
-    const validationResult = this._validator.validate(
-      httpResult.data,
-      addServiceLogApiResponseSchema,
-    );
+    const validationResult = this._validator.validate(httpResult.data, schema);
 
     if (!validationResult.success) {
       return Result.fail({
@@ -58,72 +67,20 @@ export class NextServiceLogApiClient implements ServiceLogApiClient {
     return Result.ok(apiResponse.data);
   }
 
+  async add(contract: AddServiceLogApiRequest) {
+    return this.makeRequest(contract, addServiceLogApiResponseSchema, 'POST');
+  }
+
   async edit(contract: EditServiceLogApiRequest) {
-    const data = JSON.stringify(contract);
-
-    const httpResult = await this._httpClient.patch(
-      '/api/car/service-log',
-      data,
-    );
-
-    if (!httpResult.success) {
-      return Result.fail({
-        message: `HTTP request failed: ${httpResult.error.message}`,
-      });
-    }
-
-    const validationResult = this._validator.validate(
-      httpResult.data,
-      editServiceLogApiResponseSchema,
-    );
-
-    if (!validationResult.success) {
-      return Result.fail({
-        message: `API response validation failed: ${validationResult.error.message}`,
-      });
-    }
-
-    const apiResponse = validationResult.data;
-
-    if (!apiResponse.success) {
-      return Result.fail({ message: apiResponse.error.message });
-    }
-
-    return Result.ok(apiResponse.data);
+    return this.makeRequest(contract, editServiceLogApiResponseSchema, 'PATCH');
   }
 
   async remove(serviceLogId: string) {
     const contract: RemoveServiceLogApiRequest = { serviceLogId };
-    const data = JSON.stringify(contract);
-
-    const httpResult = await this._httpClient.delete(
-      '/api/car/service-log',
-      data,
-    );
-
-    if (!httpResult.success) {
-      return Result.fail({
-        message: `HTTP request failed: ${httpResult.error.message}`,
-      });
-    }
-
-    const validationResult = this._validator.validate(
-      httpResult.data,
+    return this.makeRequest(
+      contract,
       removeServiceLogApiResponseSchema,
+      'DELETE',
     );
-
-    if (!validationResult.success) {
-      return Result.fail({
-        message: `API response validation failed: ${validationResult.error.message}`,
-      });
-    }
-
-    const apiResponse = validationResult.data;
-
-    if (!apiResponse.success) {
-      return Result.fail({ message: apiResponse.error.message });
-    }
-
-    return Result.ok(apiResponse.data);
   }
 }
