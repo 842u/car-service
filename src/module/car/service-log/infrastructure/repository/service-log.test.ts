@@ -57,6 +57,39 @@ describe('ServiceLogRepositoryImplementation', () => {
     });
   });
 
+  describe('update', () => {
+    it('returns success on a successful update', async () => {
+      const persistence = createMockServiceLogPersistence();
+
+      mockServiceLogMapper.domainToPersistence.mockReturnValue(persistence);
+      mockDbClient.query.mockResolvedValue(Result.ok(null));
+
+      const result = await repository.update(serviceLog);
+
+      expect(result.success).toBe(true);
+      expect(mockServiceLogMapper.domainToPersistence).toHaveBeenCalledWith(
+        serviceLog,
+      );
+      expect(mockDbClient.query).toHaveBeenCalled();
+    });
+
+    it('returns an error when the query fails', async () => {
+      mockServiceLogMapper.domainToPersistence.mockReturnValue(
+        createMockServiceLogPersistence(),
+      );
+      mockDbClient.query.mockResolvedValue(
+        Result.fail({ message: 'Update failed' }),
+      );
+
+      const result = await repository.update(serviceLog);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe('Update failed');
+      }
+    });
+  });
+
   describe('getById', () => {
     it('returns the mapped ServiceLog on success', async () => {
       const persistence = createMockServiceLogPersistence();

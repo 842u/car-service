@@ -31,6 +31,23 @@ export class ServiceLogRepositoryImplementation implements ServiceLogRepository 
     return Result.ok(null);
   }
 
+  async update(serviceLog: ServiceLog) {
+    const serviceLogPersistence =
+      this._serviceLogMapper.domainToPersistence(serviceLog);
+
+    const queryResult = await this._dbClient.query(async (from) =>
+      from('service_logs')
+        .update(serviceLogPersistence)
+        .eq('id', serviceLog.id.value),
+    );
+
+    if (!queryResult.success) {
+      return Result.fail(queryResult.error);
+    }
+
+    return Result.ok(null);
+  }
+
   async getById(id: string) {
     const queryResult = await this._dbClient.query(async (from) =>
       from('service_logs').select('*').eq('id', id).single(),

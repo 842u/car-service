@@ -2,11 +2,12 @@ import type { ServiceLog } from '@/car/service-log/domain/service-log/service-lo
 import type { RepositoryResult } from '@/common/application/repository';
 
 /**
- * Not yet `extends Repository<ServiceLog>`: that base interface mandates
- * `update`/`remove`, which have no caller until the Edit and Remove slices.
- * Widens to the full shape as those slices land.
+ * Not yet `extends Repository<ServiceLog>`: that base interface also
+ * mandates `remove`, which has no caller until the Remove slice. Widens to
+ * the full shape once that slice lands.
  */
 export interface ServiceLogRepository {
   store(model: ServiceLog): Promise<RepositoryResult<null>>;
   getById(id: string): Promise<RepositoryResult<ServiceLog>>;
+  update(model: ServiceLog): Promise<RepositoryResult<null>>;
 }
