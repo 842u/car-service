@@ -6,8 +6,8 @@ import {
   getOwnershipsByCarIdQueryOptions,
 } from '@/car/ownership/infrastructure/tanstack/query/options';
 import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/infrastructure/tanstack/query/options';
+import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 interface UseServiceLogsSectionParams {

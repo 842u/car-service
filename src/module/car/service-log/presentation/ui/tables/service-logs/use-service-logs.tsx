@@ -5,7 +5,7 @@ import { memo, useMemo, useRef } from 'react';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import { serviceCategoryLabelValueMapping } from '@/car/service-log/interface/ui/service-log-form.schema';
 import { TableActionsDropdown } from '@/car/service-log/presentation/ui/tables/service-logs/actions-dropdown/actions-dropdown';
-import { filterColumnByDate } from '@/lib/tanstack/table/filter';
+import { filterColumnByDate } from '@/ui/table/compounds/date-filter/filter-column-by-date';
 import { Tag } from '@/ui/tag/tag';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';

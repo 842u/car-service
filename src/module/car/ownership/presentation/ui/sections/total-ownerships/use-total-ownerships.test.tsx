@@ -5,9 +5,9 @@ import type { ReactNode } from 'react';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/sections/total-ownerships/use-total-ownerships';
 import { Result } from '@/common/application/result';
+import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
 import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
 import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
-import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { userDataSource } from '@/user/dependency/data-source';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
