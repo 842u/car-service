@@ -38,7 +38,10 @@ const datePickerServiceDateSchema = z.coerce
   .transform((date) => parseDateToYyyyMmDd(date))
   .pipe(serviceDateSchema);
 
-export const addServiceLogFormSchema = z.object({
+// Shared by the Add and Edit forms: both validate the same editable core of
+// the Service Log aggregate (serviceDate, categories, mileage, notes,
+// serviceCost).
+export const serviceLogFormSchema = z.object({
   serviceDate: datePickerServiceDateSchema,
   categories: serviceCategoriesSchema,
   mileage: nullifyNaN(serviceMileageSchema),
@@ -46,4 +49,4 @@ export const addServiceLogFormSchema = z.object({
   serviceCost: nullifyNaN(serviceCostSchema),
 });
 
-export type AddServiceLogFormValues = z.infer<typeof addServiceLogFormSchema>;
+export type ServiceLogFormValues = z.infer<typeof serviceLogFormSchema>;

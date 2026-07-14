@@ -3,8 +3,11 @@ import userEvent from '@testing-library/user-event';
 
 import { serviceLogApiClient } from '@/car/service-log/dependency/api-client';
 import { TanStackQueryProvider } from '@/common/presentation/provider/tan-stack-query';
+import { parseDateToYyyyMmDd } from '@/lib/utils';
 
 import { AddForm } from './add';
+
+const TODAY = parseDateToYyyyMmDd(new Date());
 
 jest.mock('@/car/service-log/dependency/api-client', () => ({
   serviceLogApiClient: {
@@ -42,6 +45,12 @@ describe('AddForm', () => {
     ).toBeInTheDocument();
   });
 
+  it('defaults the date field to today', () => {
+    render(<TestAddForm />);
+
+    expect(screen.getByLabelText(/date/i)).toHaveValue(TODAY);
+  });
+
   it('should render a form reset button', () => {
     render(<TestAddForm />);
 
@@ -65,7 +74,6 @@ describe('AddForm', () => {
     const user = userEvent.setup();
     render(<TestAddForm />);
 
-    await user.type(screen.getByLabelText(/date/i), '2026-01-01');
     await user.click(screen.getByRole('checkbox', { name: /engine/i }));
 
     expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled();
@@ -78,7 +86,7 @@ describe('AddForm', () => {
         id: '11111111-1111-4111-8111-111111111111',
         carId: MOCK_CAR_ID,
         authorId: 'b5b55395-e32f-4376-be03-f66be0a63ec4',
-        serviceDate: '2026-01-01',
+        serviceDate: TODAY,
         categories: ['engine'],
         mileage: null,
         notes: null,
@@ -90,14 +98,13 @@ describe('AddForm', () => {
     const user = userEvent.setup();
     render(<TestAddForm />);
 
-    await user.type(screen.getByLabelText(/date/i), '2026-01-01');
     await user.click(screen.getByRole('checkbox', { name: /engine/i }));
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(serviceLogApiClient.add).toHaveBeenCalledWith(
       expect.objectContaining({
         carId: MOCK_CAR_ID,
-        serviceDate: '2026-01-01',
+        serviceDate: TODAY,
         categories: ['engine'],
       }),
     );
