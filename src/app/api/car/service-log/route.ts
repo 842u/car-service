@@ -3,13 +3,16 @@ import type { NextRequest } from 'next/server';
 import {
   addServiceLogApiHandler,
   editServiceLogApiHandler,
+  removeServiceLogApiHandler,
 } from '@/car/service-log/dependency/api-handler';
 import {
   createAddServiceLogUseCase,
   createEditServiceLogUseCase,
+  createRemoveServiceLogUseCase,
 } from '@/car/service-log/dependency/use-case';
 import { addServiceLogApiRequestSchema } from '@/car/service-log/interface/api/add.schema';
 import { editServiceLogApiRequestSchema } from '@/car/service-log/interface/api/edit.schema';
+import { removeServiceLogApiRequestSchema } from '@/car/service-log/interface/api/remove.schema';
 import { httpErrorMapper } from '@/common/infrastructure/api-handler/http-error-mapper';
 
 export const maxDuration = 10;
@@ -70,4 +73,34 @@ export async function PATCH(request: NextRequest) {
   const serviceLogDto = useCaseResult.data;
 
   return editServiceLogApiHandler.successResponse(serviceLogDto, 200);
+}
+
+export async function DELETE(request: NextRequest) {
+  const preprocessRequestResult =
+    await removeServiceLogApiHandler.preprocessRequest(
+      request,
+      removeServiceLogApiRequestSchema,
+    );
+
+  if (!preprocessRequestResult.success) {
+    const { message, issues } = preprocessRequestResult.error;
+    const { status } = preprocessRequestResult;
+    return removeServiceLogApiHandler.errorResponse(
+      { message, issues },
+      status,
+    );
+  }
+
+  const removeServiceLogUseCase = await createRemoveServiceLogUseCase();
+
+  const contract = preprocessRequestResult.data;
+
+  const useCaseResult = await removeServiceLogUseCase.execute(contract);
+
+  if (!useCaseResult.success) {
+    const { error, status } = httpErrorMapper.toApiError(useCaseResult.error);
+    return removeServiceLogApiHandler.errorResponse(error, status);
+  }
+
+  return removeServiceLogApiHandler.successResponse(null, 200);
 }
