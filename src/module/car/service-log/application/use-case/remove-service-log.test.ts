@@ -1,9 +1,11 @@
+import type { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
 import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
 import { createMockCarOwnershipReader } from '@/car/service-log/application/reader/car-ownership.mock';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { createMockServiceLogRepository } from '@/car/service-log/application/repository/service-log.mock';
 import { RemoveServiceLogUseCase } from '@/car/service-log/application/use-case/remove-service-log';
+import type { ServiceLog } from '@/car/service-log/domain/service-log/service-log';
 import { buildServiceLog } from '@/car/service-log/domain/service-log/service-log.builder';
 import type { RemoveServiceLogApiRequest } from '@/car/service-log/interface/api/remove.schema';
 import type { AuthClient } from '@/common/application/auth-client';
@@ -40,16 +42,23 @@ describe('RemoveServiceLogUseCase', () => {
       serviceLogId: SERVICE_LOG_ID,
     };
 
-    const serviceLog = buildServiceLog({
-      id: SERVICE_LOG_ID,
-      carId: CAR_ID,
-      authorId: AUTHOR_ID,
-    });
+    let serviceLog: ServiceLog;
+    let carOwnership: CarOwnership;
 
-    const carOwnership = buildCarOwnership({
-      carId: CAR_ID,
-      primaryOwnerId: PRIMARY_OWNER_ID,
-      coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
+    // Both aggregates mutate in place, so they are rebuilt per test to keep
+    // cases order-independent.
+    beforeEach(() => {
+      serviceLog = buildServiceLog({
+        id: SERVICE_LOG_ID,
+        carId: CAR_ID,
+        authorId: AUTHOR_ID,
+      });
+
+      carOwnership = buildCarOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+        coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
+      });
     });
 
     it('removes the service log when the actor is the author', async () => {

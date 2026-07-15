@@ -1,3 +1,4 @@
+import type { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
 import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
@@ -7,6 +8,7 @@ import { createMockCarOwnershipReader } from '@/car/service-log/application/read
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { createMockServiceLogRepository } from '@/car/service-log/application/repository/service-log.mock';
 import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/edit-service-log';
+import type { ServiceLog } from '@/car/service-log/domain/service-log/service-log';
 import { buildServiceLog } from '@/car/service-log/domain/service-log/service-log.builder';
 import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/edit.schema';
 import type { AuthClient } from '@/common/application/auth-client';
@@ -63,16 +65,23 @@ describe('EditServiceLogUseCase', () => {
       createdAt: null,
     };
 
-    const serviceLog = buildServiceLog({
-      id: SERVICE_LOG_ID,
-      carId: CAR_ID,
-      authorId: AUTHOR_ID,
-    });
+    let serviceLog: ServiceLog;
+    let carOwnership: CarOwnership;
 
-    const carOwnership = buildCarOwnership({
-      carId: CAR_ID,
-      primaryOwnerId: PRIMARY_OWNER_ID,
-      coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
+    // Both aggregates mutate in place (`ServiceLog.edit` assigns onto its own
+    // value), so they are rebuilt per test to keep cases order-independent.
+    beforeEach(() => {
+      serviceLog = buildServiceLog({
+        id: SERVICE_LOG_ID,
+        carId: CAR_ID,
+        authorId: AUTHOR_ID,
+      });
+
+      carOwnership = buildCarOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+        coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
+      });
     });
 
     it('edits the service log when the actor is the author', async () => {
