@@ -1,10 +1,12 @@
+import { jest } from '@jest/globals';
+
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 
-export function createMockServiceLogRepository() {
+export function createMockServiceLogRepository(): jest.Mocked<ServiceLogRepository> {
   return {
-    store: jest.fn(),
-    getById: jest.fn(),
-    update: jest.fn(),
-    remove: jest.fn(),
-  } as unknown as jest.Mocked<ServiceLogRepository>;
+    store: jest.fn<ServiceLogRepository['store']>(),
+    getById: jest.fn<ServiceLogRepository['getById']>(),
+    update: jest.fn<ServiceLogRepository['update']>(),
+    remove: jest.fn<ServiceLogRepository['remove']>(),
+  };
 }

@@ -1,10 +1,12 @@
+import { jest } from '@jest/globals';
+
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
 
-export function createMockOwnershipRepository() {
+export function createMockOwnershipRepository(): jest.Mocked<OwnershipRepository> {
   return {
-    getByCarId: jest.fn(),
-    addOwner: jest.fn(),
-    removeOwner: jest.fn(),
-    promotePrimary: jest.fn(),
-  } as unknown as jest.Mocked<OwnershipRepository>;
+    getByCarId: jest.fn<OwnershipRepository['getByCarId']>(),
+    addOwner: jest.fn<OwnershipRepository['addOwner']>(),
+    removeOwner: jest.fn<OwnershipRepository['removeOwner']>(),
+    promotePrimary: jest.fn<OwnershipRepository['promotePrimary']>(),
+  };
 }
