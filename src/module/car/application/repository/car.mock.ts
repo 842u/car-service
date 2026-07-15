@@ -1,10 +1,12 @@
+import { jest } from '@jest/globals';
+
 import type { CarRepository } from '@/car/application/repository/car';
 
-export function createMockCarRepository() {
+export function createMockCarRepository(): jest.Mocked<CarRepository> {
   return {
-    getById: jest.fn(),
-    update: jest.fn(),
-    store: jest.fn(),
-    remove: jest.fn(),
-  } as unknown as jest.Mocked<CarRepository>;
+    getById: jest.fn<CarRepository['getById']>(),
+    update: jest.fn<CarRepository['update']>(),
+    store: jest.fn<CarRepository['store']>(),
+    remove: jest.fn<CarRepository['remove']>(),
+  };
 }

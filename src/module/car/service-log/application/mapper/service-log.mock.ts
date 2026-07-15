@@ -1,10 +1,12 @@
+import { jest } from '@jest/globals';
+
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
 
-export function createMockServiceLogMapper() {
+export function createMockServiceLogMapper(): jest.Mocked<ServiceLogMapper> {
   return {
-    domainToDto: jest.fn(),
-    domainToPersistence: jest.fn(),
-    persistenceToDomain: jest.fn(),
-    persistenceToDto: jest.fn(),
-  } as unknown as jest.Mocked<ServiceLogMapper>;
+    domainToDto: jest.fn<ServiceLogMapper['domainToDto']>(),
+    domainToPersistence: jest.fn<ServiceLogMapper['domainToPersistence']>(),
+    persistenceToDomain: jest.fn<ServiceLogMapper['persistenceToDomain']>(),
+    persistenceToDto: jest.fn<ServiceLogMapper['persistenceToDto']>(),
+  };
 }

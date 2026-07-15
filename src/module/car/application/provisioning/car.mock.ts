@@ -1,7 +1,10 @@
+import { jest } from '@jest/globals';
+
 import type { CarProvisioning } from '@/car/application/provisioning/car';
 
-export function createMockCarProvisioning() {
+export function createMockCarProvisioning(): jest.Mocked<CarProvisioning> {
   return {
-    createWithPrimaryOwner: jest.fn(),
-  } as unknown as jest.Mocked<CarProvisioning>;
+    createWithPrimaryOwner:
+      jest.fn<CarProvisioning['createWithPrimaryOwner']>(),
+  };
 }
