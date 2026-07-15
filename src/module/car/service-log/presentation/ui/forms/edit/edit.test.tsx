@@ -34,32 +34,36 @@ function TestEditForm() {
 }
 
 describe('EditForm', () => {
-  it('should render the service log fields prefilled from the service log', () => {
+  it('should render the service log fields prefilled from the service log', async () => {
     render(<TestEditForm />);
 
-    expect(screen.getByLabelText(/date/i)).toHaveValue('2026-01-01');
+    expect(await screen.findByLabelText(/date/i)).toHaveValue('2026-01-01');
     expect(screen.getByLabelText(/mileage/i)).toHaveValue(50000);
     expect(screen.getByLabelText(/notes/i)).toHaveValue('Oil change');
     expect(screen.getByLabelText(/cost/i)).toHaveValue(100);
     expect(screen.getByRole('checkbox', { name: /engine/i })).toBeChecked();
   });
 
-  it('should render a form reset button', () => {
+  it('should render a form reset button', async () => {
     render(<TestEditForm />);
 
-    expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('button', { name: 'Reset' }),
+    ).toBeInTheDocument();
   });
 
-  it('should render a form submit button', () => {
+  it('should render a form submit button', async () => {
     render(<TestEditForm />);
 
-    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('button', { name: 'Save' }),
+    ).toBeInTheDocument();
   });
 
-  it('initially form controls should be disabled', () => {
+  it('initially form controls should be disabled', async () => {
     render(<TestEditForm />);
 
-    expect(screen.getByRole('button', { name: 'Reset' })).toBeDisabled();
+    expect(await screen.findByRole('button', { name: 'Reset' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled();
   });
 
