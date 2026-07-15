@@ -1,0 +1,6 @@
+import { createMockSupabaseClient } from '@/test/mock/@supabase/client';
+
+jest.mock('@supabase/ssr', () => ({
+  createBrowserClient: jest.fn(() => createMockSupabaseClient()),
+  createServerClient: jest.fn(() => createMockSupabaseClient()),
+}));

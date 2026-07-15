@@ -1,15 +1,15 @@
 /* eslint testing-library/no-await-sync-queries:0 */
 import type { CarMapper } from '@/car/application/mapper/car';
+import { createMockCarMapper } from '@/car/application/mapper/car.mock';
+import { buildCarPersistence } from '@/car/application/persistence-model/car.builder';
+import { buildCar } from '@/car/domain/car/car.builder';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
+import { createMockOwnershipMapper } from '@/car/ownership/application/mapper/ownership.mock';
+import { buildOwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership.builder';
+import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
-import { createMockCarPersistence } from '@/lib/jest/mock/src/module/car/application/persistence-model/car';
-import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
-import { createMockOwnershipMapper } from '@/lib/jest/mock/src/module/car/ownership/application/mapper/ownership';
-import { createMockOwnershipPersistence } from '@/lib/jest/mock/src/module/car/ownership/application/persistence-model/ownership';
-import { createMockCarOwnership } from '@/lib/jest/mock/src/module/car/ownership/domain/ownership/car-ownership';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 
 import { CarProvisioningImplementation } from './car';
 
@@ -19,8 +19,8 @@ describe('CarProvisioningImplementation', () => {
   let mockOwnershipMapper: jest.Mocked<OwnershipMapper>;
   let provisioning: CarProvisioningImplementation;
 
-  const car = createMockCar();
-  const primaryOwnership = createMockCarOwnership();
+  const car = buildCar();
+  const primaryOwnership = buildCarOwnership();
 
   beforeEach(() => {
     mockDbClient = createMockSupabaseDatabaseClient();
@@ -35,8 +35,8 @@ describe('CarProvisioningImplementation', () => {
 
   describe('createWithPrimaryOwner', () => {
     it('should return success result on success', async () => {
-      const carPersistence = createMockCarPersistence();
-      const primaryOwnerPersistence = createMockOwnershipPersistence();
+      const carPersistence = buildCarPersistence();
+      const primaryOwnerPersistence = buildOwnershipPersistence();
 
       mockCarMapper.domainToPersistence.mockReturnValue(carPersistence);
       mockOwnershipMapper.primaryOwnerToPersistence.mockReturnValue(
@@ -64,11 +64,9 @@ describe('CarProvisioningImplementation', () => {
     });
 
     it('should return error when the rpc fails', async () => {
-      mockCarMapper.domainToPersistence.mockReturnValue(
-        createMockCarPersistence(),
-      );
+      mockCarMapper.domainToPersistence.mockReturnValue(buildCarPersistence());
       mockOwnershipMapper.primaryOwnerToPersistence.mockReturnValue(
-        createMockOwnershipPersistence(),
+        buildOwnershipPersistence(),
       );
       mockDbClient.rpc.mockResolvedValue(
         Result.fail({ message: 'Provisioning failed' }),

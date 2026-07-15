@@ -7,7 +7,7 @@ import {
   createMockAuthIdentity,
   mockInternalMethodFailure,
   mockInternalMethodSuccess,
-} from '@/lib/jest/mock/@supabase/auth';
+} from '@/test/mock/@supabase/auth';
 
 describe('SupabaseAuthClient', () => {
   let mockInternalAuthClient: SupabaseClient<Database>['auth'];

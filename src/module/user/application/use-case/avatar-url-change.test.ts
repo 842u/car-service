@@ -1,14 +1,14 @@
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
-import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
-import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
+import { createMockUserMapper } from '@/user/application/mapper/user.mock';
 import type { UserRepository } from '@/user/application/repository/user';
+import { createMockUserRepository } from '@/user/application/repository/user.mock';
 import { AvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
+import { buildUser } from '@/user/domain/user/user.builder';
 import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
 
 describe('AvatarUrlChangeUseCase', () => {
@@ -43,7 +43,7 @@ describe('AvatarUrlChangeUseCase', () => {
     };
 
     it('should change the avatar URL successfully', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),
@@ -114,7 +114,7 @@ describe('AvatarUrlChangeUseCase', () => {
     });
 
     it('should fail as validation when avatar URL is invalid', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
       const invalidContract: AvatarUrlChangeApiRequest = {
         avatarUrl: 'invalid-url',
       };
@@ -141,7 +141,7 @@ describe('AvatarUrlChangeUseCase', () => {
     });
 
     it('should fail as unexpected when persistence fails', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),

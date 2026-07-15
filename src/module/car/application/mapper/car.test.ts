@@ -1,5 +1,5 @@
 import { CarMapper } from '@/car/application/mapper/car';
-import { createMockCarPersistence } from '@/lib/jest/mock/src/module/car/application/persistence-model/car';
+import { buildCarPersistence } from '@/car/application/persistence-model/car.builder';
 
 describe('CarMapper', () => {
   let mapper: CarMapper;
@@ -10,7 +10,7 @@ describe('CarMapper', () => {
 
   describe('persistenceToDomain', () => {
     it('maps a row into a Car aggregate', () => {
-      const persistence = createMockCarPersistence();
+      const persistence = buildCarPersistence();
 
       const result = mapper.persistenceToDomain(persistence);
 
@@ -23,7 +23,7 @@ describe('CarMapper', () => {
     });
 
     it('fails when a column violates a domain rule', () => {
-      const persistence = createMockCarPersistence({ vin: 'too-short' });
+      const persistence = buildCarPersistence({ vin: 'too-short' });
 
       const result = mapper.persistenceToDomain(persistence);
 
@@ -33,7 +33,7 @@ describe('CarMapper', () => {
 
   describe('domainToPersistence', () => {
     it('round-trips a row through the domain, omitting managed columns', () => {
-      const persistence = createMockCarPersistence();
+      const persistence = buildCarPersistence();
 
       const domainResult = mapper.persistenceToDomain(persistence);
       expect(domainResult.success).toBe(true);
@@ -52,7 +52,7 @@ describe('CarMapper', () => {
 
   describe('persistenceToDto', () => {
     it('maps a row into a camelCase DTO including createdAt', () => {
-      const persistence = createMockCarPersistence();
+      const persistence = buildCarPersistence();
 
       const dto = mapper.persistenceToDto(persistence);
 

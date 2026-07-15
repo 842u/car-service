@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import type { Route } from 'next';
 
-import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
+import { buildCarDto } from '@/car/application/dto/car.builder';
 
 import { CarCard } from './car';
 
 describe('CarCard', () => {
-  const mockCar = createMockCarDto();
+  const mockCar = buildCarDto();
 
   it('should render as a link element', async () => {
     render(<CarCard car={mockCar} />);

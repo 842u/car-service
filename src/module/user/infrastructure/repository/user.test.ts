@@ -1,11 +1,11 @@
 /* eslint testing-library/no-await-sync-queries:0 */
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
-import { createMockUserPersistence } from '@/lib/jest/mock/src/module/user/application/persistence-model/user';
-import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 import type { UserMapper } from '@/user/application/mapper/user';
+import { createMockUserMapper } from '@/user/application/mapper/user.mock';
+import { buildUserPersistence } from '@/user/application/persistence-model/user.builder';
+import { buildUser } from '@/user/domain/user/user.builder';
 
 import { UserRepositoryImplementation } from './user';
 
@@ -14,7 +14,7 @@ describe('UserRepositoryImplementation', () => {
   let mockUserMapper: jest.Mocked<UserMapper>;
   let repository: UserRepositoryImplementation;
 
-  const user = createMockUser();
+  const user = buildUser();
 
   beforeEach(() => {
     mockDbClient = createMockSupabaseDatabaseClient();
@@ -24,7 +24,7 @@ describe('UserRepositoryImplementation', () => {
 
   describe('store', () => {
     it('should return success result on success', async () => {
-      const persistence = createMockUserPersistence();
+      const persistence = buildUserPersistence();
 
       mockUserMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
@@ -41,7 +41,7 @@ describe('UserRepositoryImplementation', () => {
 
     it('should return error when query fails', async () => {
       mockUserMapper.domainToPersistence.mockReturnValue(
-        createMockUserPersistence(),
+        buildUserPersistence(),
       );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
@@ -87,7 +87,7 @@ describe('UserRepositoryImplementation', () => {
     const userId = '44dd8410-a912-480f-95be-9ad4cbe30d7f';
 
     it('should return user domain on success', async () => {
-      const persistence = createMockUserPersistence({ id: userId });
+      const persistence = buildUserPersistence({ id: userId });
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistence));
       mockUserMapper.persistenceToDomain.mockReturnValue(Result.ok(user));
@@ -119,7 +119,7 @@ describe('UserRepositoryImplementation', () => {
     });
 
     it('should return error when mapping fails', async () => {
-      const persistence = createMockUserPersistence({ id: userId });
+      const persistence = buildUserPersistence({ id: userId });
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistence));
       mockUserMapper.persistenceToDomain.mockReturnValue(
@@ -137,7 +137,7 @@ describe('UserRepositoryImplementation', () => {
 
   describe('update', () => {
     it('should return success result on success', async () => {
-      const persistence = createMockUserPersistence();
+      const persistence = buildUserPersistence();
 
       mockUserMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
@@ -154,7 +154,7 @@ describe('UserRepositoryImplementation', () => {
 
     it('should return error when query fails', async () => {
       mockUserMapper.domainToPersistence.mockReturnValue(
-        createMockUserPersistence(),
+        buildUserPersistence(),
       );
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),

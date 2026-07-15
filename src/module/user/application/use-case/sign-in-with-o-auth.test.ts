@@ -1,15 +1,15 @@
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
 import { ValidatorError } from '@/common/application/validator';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
-import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
-import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
+import { createMockUserMapper } from '@/user/application/mapper/user.mock';
 import type { UserRepository } from '@/user/application/repository/user';
+import { createMockUserRepository } from '@/user/application/repository/user.mock';
 import { SignInWithOAuthUseCase } from '@/user/application/use-case/sign-in-with-o-auth';
+import { buildUser } from '@/user/domain/user/user.builder';
 
 describe('SignInWithOAuthUseCase', () => {
   let useCase: SignInWithOAuthUseCase;
@@ -41,7 +41,7 @@ describe('SignInWithOAuthUseCase', () => {
     };
 
     it('should sign in successfully with existing user', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
       mockAuthClient.exchangeCodeForSession.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
@@ -65,7 +65,7 @@ describe('SignInWithOAuthUseCase', () => {
     });
 
     it('should sign in successfully and create new user if not exists', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
       mockAuthClient.exchangeCodeForSession.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );
@@ -138,7 +138,7 @@ describe('SignInWithOAuthUseCase', () => {
     });
 
     it('should fail as unexpected when user persistence fails', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
       mockAuthClient.exchangeCodeForSession.mockResolvedValue(
         Result.ok(mockAuthIdentity),
       );

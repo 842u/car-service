@@ -1,11 +1,11 @@
 /* eslint testing-library/no-await-sync-queries:0 */
 import type { CarMapper } from '@/car/application/mapper/car';
+import { createMockCarMapper } from '@/car/application/mapper/car.mock';
+import { buildCarPersistence } from '@/car/application/persistence-model/car.builder';
+import { buildCar } from '@/car/domain/car/car.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockCarMapper } from '@/lib/jest/mock/src/module/car/application/mapper/car';
-import { createMockCarPersistence } from '@/lib/jest/mock/src/module/car/application/persistence-model/car';
-import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 
 import { CarRepositoryImplementation } from './car';
 
@@ -14,7 +14,7 @@ describe('CarRepositoryImplementation', () => {
   let mockCarMapper: jest.Mocked<CarMapper>;
   let repository: CarRepositoryImplementation;
 
-  const car = createMockCar();
+  const car = buildCar();
 
   beforeEach(() => {
     mockDbClient = createMockSupabaseDatabaseClient();
@@ -24,7 +24,7 @@ describe('CarRepositoryImplementation', () => {
 
   describe('store', () => {
     it('should return success result on success', async () => {
-      const persistence = createMockCarPersistence();
+      const persistence = buildCarPersistence();
 
       mockCarMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
@@ -40,9 +40,7 @@ describe('CarRepositoryImplementation', () => {
     });
 
     it('should return error when query fails', async () => {
-      mockCarMapper.domainToPersistence.mockReturnValue(
-        createMockCarPersistence(),
-      );
+      mockCarMapper.domainToPersistence.mockReturnValue(buildCarPersistence());
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
       );
@@ -87,7 +85,7 @@ describe('CarRepositoryImplementation', () => {
     const carId = '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6';
 
     it('should return car domain on success', async () => {
-      const persistence = createMockCarPersistence({ id: carId });
+      const persistence = buildCarPersistence({ id: carId });
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistence));
       mockCarMapper.persistenceToDomain.mockReturnValue(Result.ok(car));
@@ -119,7 +117,7 @@ describe('CarRepositoryImplementation', () => {
     });
 
     it('should return error when mapping fails', async () => {
-      const persistence = createMockCarPersistence({ id: carId });
+      const persistence = buildCarPersistence({ id: carId });
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistence));
       mockCarMapper.persistenceToDomain.mockReturnValue(
@@ -137,7 +135,7 @@ describe('CarRepositoryImplementation', () => {
 
   describe('update', () => {
     it('should return success result on success', async () => {
-      const persistence = createMockCarPersistence();
+      const persistence = buildCarPersistence();
 
       mockCarMapper.domainToPersistence.mockReturnValue(persistence);
       mockDbClient.query.mockResolvedValue(Result.ok(null));
@@ -153,9 +151,7 @@ describe('CarRepositoryImplementation', () => {
     });
 
     it('should return error when query fails', async () => {
-      mockCarMapper.domainToPersistence.mockReturnValue(
-        createMockCarPersistence(),
-      );
+      mockCarMapper.domainToPersistence.mockReturnValue(buildCarPersistence());
       mockDbClient.query.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),
       );

@@ -1,13 +1,13 @@
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
 import { ValidatorError } from '@/common/application/validator';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
-import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
+import { createMockUserMapper } from '@/user/application/mapper/user.mock';
 import { SignInWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';
+import { buildUser } from '@/user/domain/user/user.builder';
 
 describe('SignInWithOtpUseCase', () => {
   let useCase: SignInWithOtpUseCase;
@@ -36,7 +36,7 @@ describe('SignInWithOtpUseCase', () => {
     };
 
     it('should sign in successfully with valid OTP', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
       mockAuthClient.verifyOtp.mockResolvedValue(Result.ok(mockAuthIdentity));
       mockUserMapper.authIdentityToDomain.mockReturnValue(Result.ok(mockUser));
       mockUserMapper.domainToDto.mockReturnValue(mockUserDto);

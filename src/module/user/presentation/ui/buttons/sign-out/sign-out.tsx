@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { SignOutIcon } from '@/icons/sign-out';
-import { buttonVariants } from '@/lib/tailwindcss/button';
+import { buttonVariants } from '@/ui/variants/button';
 
 type SignOutButtonProps = ComponentProps<'a'>;
 

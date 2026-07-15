@@ -1,3 +1,7 @@
+//! On-demand development tooling, intentionally left unreferenced. Not dead code.
+// Drop one of these into a mutation or loader to exercise loading and error UI
+// states by hand, then remove the call. Kept in-tree so it is ready when needed.
+
 export async function debugDelayResolveResponse(delayMilliseconds: number) {
   await new Promise((resolve) =>
     setTimeout(() => resolve(true), delayMilliseconds),

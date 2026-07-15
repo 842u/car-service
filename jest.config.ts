@@ -20,7 +20,7 @@ const config: Config = {
 
   testPathIgnorePatterns: [
     '<rootDir>/node_modules',
-    '<rootDir>/e2e',
+    '<rootDir>/test/e2e',
     '<rootDir>/resources',
     '<rootDir>/.next',
     '<rootDir>/coverage',
@@ -40,6 +40,7 @@ const config: Config = {
     '^@/user/(.*)$': '<rootDir>/src/module/user/$1',
     '^@/car/(.*)$': '<rootDir>/src/module/car/$1',
     '^@/common/(.*)$': '<rootDir>/src/common/$1',
+    '^@/test/(.*)$': '<rootDir>/test/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 };

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { GitHubIcon } from '@/icons/github';
 import { MailIcon } from '@/icons/mail';
 import { LandingSection } from '@/landing/ui/section/section';
-import { buttonVariants } from '@/lib/tailwindcss/button';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
+import { buttonVariants } from '@/ui/variants/button';
 
 export function LandingFooter() {
   return (

@@ -80,6 +80,23 @@ export default tseslintConfig(
         },
       ],
       'no-console': 'warn',
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/*.mock', '**/*.builder', '*.mock', '*.builder'],
+              message:
+                'Production code must not import a test double. Move the shape into real code if it is needed at runtime.',
+            },
+            {
+              group: ['@/test/*', '@/test/**'],
+              message:
+                'Production code must not import from the test/ area. Test doubles and fixtures stay in test context.',
+            },
+          ],
+        },
+      ],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       '@typescript-eslint/no-unused-vars': [
@@ -125,7 +142,7 @@ export default tseslintConfig(
   prettier,
   {
     name: 'e2e',
-    files: ['e2e/**'],
+    files: ['test/e2e/**'],
     ...playwright.configs['flat/recommended'],
     rules: {
       ...playwright.configs['flat/recommended'].rules,
@@ -136,9 +153,22 @@ export default tseslintConfig(
   {
     name: 'jest',
     files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
-    ignores: ['e2e/**'],
+    ignores: ['test/e2e/**'],
     ...jestDom.configs['flat/recommended'],
     ...testingLibrary.configs['flat/dom'],
     ...testingLibrary.configs['flat/react'],
+  },
+  {
+    name: 'allow-test-doubles',
+    files: [
+      '**/?(*.)+(spec|test).[jt]s?(x)',
+      'jest.setup.ts',
+      'test/**',
+      '**/*.mock.{ts,tsx}',
+      '**/*.builder.{ts,tsx}',
+    ],
+    rules: {
+      'no-restricted-imports': 'off',
+    },
   },
 );

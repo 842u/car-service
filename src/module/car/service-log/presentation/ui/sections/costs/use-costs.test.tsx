@@ -2,9 +2,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { buildServiceLogDto } from '@/car/service-log/application/dto/service-log.builder';
 import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
 import { Result } from '@/common/application/result';
-import { createMockServiceLogDto } from '@/lib/jest/mock/src/module/car/service-log/application/dto/service-log';
 
 import { useCostsSection } from './use-costs';
 
@@ -84,11 +84,11 @@ describe('useCostsSection', () => {
 
     it('should return fetched service logs', async () => {
       const mockLogs = [
-        createMockServiceLogDto({
+        buildServiceLogDto({
           serviceCost: 100,
           serviceDate: '2026-01-01',
         }),
-        createMockServiceLogDto({
+        buildServiceLogDto({
           serviceCost: 200,
           serviceDate: '2026-02-01',
         }),

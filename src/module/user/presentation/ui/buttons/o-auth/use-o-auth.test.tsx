@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 
 jest.mock('@/dependency/auth-client/browser', () => ({
   browserAuthClient: createMockAuthClient(),

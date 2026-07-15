@@ -1,14 +1,14 @@
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
-import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
-import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
+import { createMockUserMapper } from '@/user/application/mapper/user.mock';
 import type { UserRepository } from '@/user/application/repository/user';
+import { createMockUserRepository } from '@/user/application/repository/user.mock';
 import { SignInUseCase } from '@/user/application/use-case/sign-in';
+import { buildUser } from '@/user/domain/user/user.builder';
 import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 
 describe('SignInUseCase', () => {
@@ -44,7 +44,7 @@ describe('SignInUseCase', () => {
     };
 
     it('should sign in successfully', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
 
       mockAuthClient.signIn.mockResolvedValue(Result.ok(mockAuthIdentity));
       mockUserRepository.getById.mockResolvedValue(Result.ok(mockUser));

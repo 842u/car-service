@@ -2,12 +2,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/sections/total-ownerships/use-total-ownerships';
 import { Result } from '@/common/application/result';
-import { createMockOwnershipDto } from '@/lib/jest/mock/src/module/car/ownership/application/dto/ownership';
-import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
-import { queryKeySerialize } from '@/lib/tanstack/utils';
+import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
+import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userDataSource } from '@/user/dependency/data-source';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
@@ -24,8 +24,8 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 const mockUserDataSource = userDataSource as jest.Mocked<typeof userDataSource>;
 jest.mock('@/user/dependency/data-source');
 
-const MOCK_USER = createMockUserDto();
-const MOCK_OWNERSHIPS = [createMockOwnershipDto(), createMockOwnershipDto()];
+const MOCK_USER = buildUserDto();
+const MOCK_OWNERSHIPS = [buildOwnershipDto(), buildOwnershipDto()];
 
 function createWrapper() {
   const queryClient = new QueryClient({

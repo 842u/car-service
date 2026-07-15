@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { CheckIcon } from '@/icons/check';
 import { ClipboardIcon } from '@/icons/clipboard';
-import { inputVariants } from '@/lib/tailwindcss/input';
+import { inputVariants } from '@/ui/variants/input';
 
 type IdClipboardInputProps = {
   id?: string;

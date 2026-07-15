@@ -1,14 +1,14 @@
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockUserMapper } from '@/lib/jest/mock/src/module/user/application/mapper/user';
-import { createMockUserRepository } from '@/lib/jest/mock/src/module/user/application/user-repository';
-import { createMockUser } from '@/lib/jest/mock/src/module/user/domain/user/user';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
+import { createMockUserMapper } from '@/user/application/mapper/user.mock';
 import type { UserRepository } from '@/user/application/repository/user';
+import { createMockUserRepository } from '@/user/application/repository/user.mock';
 import { PasswordChangeUseCase } from '@/user/application/use-case/password-change';
+import { buildUser } from '@/user/domain/user/user.builder';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 
 describe('PasswordChangeUseCase', () => {
@@ -46,7 +46,7 @@ describe('PasswordChangeUseCase', () => {
     };
 
     it('should successfully change password', async () => {
-      const mockUser = createMockUser();
+      const mockUser = buildUser();
 
       mockAuthClient.changePassword.mockResolvedValue(
         Result.ok(mockAuthIdentity),

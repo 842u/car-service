@@ -6,8 +6,8 @@ import {
   IMAGE_FILE_ACCEPTED_MIME_TYPES,
   MAX_IMAGE_FILE_SIZE_BYTES,
 } from '@/common/interface/schema/image-file.schema';
-import { inputVariants } from '@/lib/tailwindcss/input';
 import { getMimeTypeExtensions } from '@/lib/utils';
+import { inputVariants } from '@/ui/variants/input';
 
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';

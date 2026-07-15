@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/lib/tanstack/utils';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
 
 export function useSessionUser() {

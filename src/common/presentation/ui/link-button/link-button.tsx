@@ -2,8 +2,8 @@ import Link from 'next/link';
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import type { ButtonVariants } from '@/lib/tailwindcss/button';
-import { buttonVariants } from '@/lib/tailwindcss/button';
+import type { ButtonVariants } from '@/ui/variants/button';
+import { buttonVariants } from '@/ui/variants/button';
 
 type LinkButtonProps = ComponentProps<typeof Link> & {
   className?: string;

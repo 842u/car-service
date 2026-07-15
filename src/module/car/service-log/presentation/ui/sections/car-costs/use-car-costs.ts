@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 import { queryKeys } from '@/car/service-log/infrastructure/tanstack/query/keys';
 import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/infrastructure/tanstack/query/options';
+import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/lib/tanstack/utils';
 
 interface UseCarCostsSectionParams {
   carId: string;

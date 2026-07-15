@@ -1,12 +1,12 @@
 import type { CarRepository } from '@/car/application/repository/car';
+import { createMockCarRepository } from '@/car/application/repository/car.mock';
 import { RemoveCarUseCase } from '@/car/application/use-case/remove';
+import { buildCar } from '@/car/domain/car/car.builder';
 import type { RemoveCarApiRequest } from '@/car/interface/api/remove.schema';
 import type { AuthClient } from '@/common/application/auth-client';
+import { createMockAuthClient } from '@/common/application/auth-client.mock';
 import { Result } from '@/common/application/result';
-import { createMockAuthIdentity } from '@/lib/jest/mock/@supabase/auth';
-import { createMockAuthClient } from '@/lib/jest/mock/src/common/application/auth-client';
-import { createMockCarRepository } from '@/lib/jest/mock/src/module/car/application/car-repository';
-import { createMockCar } from '@/lib/jest/mock/src/module/car/domain/car/car';
+import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 
 describe('RemoveCarUseCase', () => {
   let useCase: RemoveCarUseCase;
@@ -27,7 +27,7 @@ describe('RemoveCarUseCase', () => {
     };
 
     it('should remove a car successfully', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),
@@ -94,7 +94,7 @@ describe('RemoveCarUseCase', () => {
     });
 
     it('should fail as unexpected when persistence fails', async () => {
-      const mockCar = createMockCar();
+      const mockCar = buildCar();
 
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(mockAuthIdentity),

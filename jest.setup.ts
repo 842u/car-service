@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
 import 'whatwg-fetch';
-import '@/lib/jest/mock/next/navigation';
-import '@/lib/jest/mock/@supabase/ssr';
-import '@/lib/jest/mock/@supabase/supabase-js';
-import '@/lib/jest/mock/globalThis/URL/createObjectURL';
-import '@/lib/jest/mock/globalThis/URL/revokeObjectURL';
-import '@/lib/jest/mock/globalThis/IntersectionObserver';
+import '@/test/mock/next/navigation';
+import '@/test/mock/@supabase/ssr';
+import '@/test/mock/@supabase/supabase-js';
+import '@/test/mock/globalThis/URL/createObjectURL';
+import '@/test/mock/globalThis/URL/revokeObjectURL';
+import '@/test/mock/globalThis/IntersectionObserver';

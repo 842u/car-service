@@ -2,12 +2,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { buildServiceLogDto } from '@/car/service-log/application/dto/service-log.builder';
 import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
 import { queryKeys } from '@/car/service-log/infrastructure/tanstack/query/keys';
 import { useCarCostsSection } from '@/car/service-log/presentation/ui/sections/car-costs/use-car-costs';
 import { Result } from '@/common/application/result';
-import { createMockServiceLogDto } from '@/lib/jest/mock/src/module/car/service-log/application/dto/service-log';
-import { queryKeySerialize } from '@/lib/tanstack/utils';
+import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
 
 const mockServiceLogDataSource = serviceLogDataSource as jest.Mocked<
   typeof serviceLogDataSource
@@ -89,11 +89,11 @@ describe('useCarCostsSection', () => {
 
     it('should return fetched service logs', async () => {
       const mockLogs = [
-        createMockServiceLogDto({
+        buildServiceLogDto({
           serviceCost: 100,
           serviceDate: '2026-01-01',
         }),
-        createMockServiceLogDto({
+        buildServiceLogDto({
           serviceCost: 200,
           serviceDate: '2026-02-01',
         }),

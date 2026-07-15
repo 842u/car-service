@@ -1,11 +1,11 @@
 /* eslint testing-library/no-await-sync-queries:0 */
+import { buildServiceLogDto } from '@/car/service-log/application/dto/service-log.builder';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
+import { createMockServiceLogMapper } from '@/car/service-log/application/mapper/service-log.mock';
+import { buildServiceLogPersistence } from '@/car/service-log/application/persistence-model/service-log.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
-import { createMockSupabaseDatabaseClient } from '@/lib/jest/mock/src/common/infrastructure/supabase';
-import { createMockServiceLogDto } from '@/lib/jest/mock/src/module/car/service-log/application/dto/service-log';
-import { createMockServiceLogMapper } from '@/lib/jest/mock/src/module/car/service-log/application/mapper/service-log';
-import { createMockServiceLogPersistence } from '@/lib/jest/mock/src/module/car/service-log/application/persistence-model/service-log';
+import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
 
 import { ServiceLogDataSourceImplementation } from './service-log';
 
@@ -28,11 +28,11 @@ describe('ServiceLogDataSourceImplementation', () => {
 
     it('returns service log DTOs on success', async () => {
       const persistenceList = [
-        createMockServiceLogPersistence({ car_id: carId }),
-        createMockServiceLogPersistence({ car_id: carId }),
+        buildServiceLogPersistence({ car_id: carId }),
+        buildServiceLogPersistence({ car_id: carId }),
       ];
-      const dtoA = createMockServiceLogDto();
-      const dtoB = createMockServiceLogDto();
+      const dtoA = buildServiceLogDto();
+      const dtoB = buildServiceLogDto();
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistenceList));
       mockServiceLogMapper.persistenceToDto
@@ -66,11 +66,11 @@ describe('ServiceLogDataSourceImplementation', () => {
   describe('getAll', () => {
     it('returns service log DTOs on success', async () => {
       const persistenceList = [
-        createMockServiceLogPersistence(),
-        createMockServiceLogPersistence(),
+        buildServiceLogPersistence(),
+        buildServiceLogPersistence(),
       ];
-      const dtoA = createMockServiceLogDto();
-      const dtoB = createMockServiceLogDto();
+      const dtoA = buildServiceLogDto();
+      const dtoB = buildServiceLogDto();
 
       mockDbClient.query.mockResolvedValue(Result.ok(persistenceList));
       mockServiceLogMapper.persistenceToDto

@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carDataSource } from '@/car/dependency/data-source';
-import { createMockCarDto } from '@/lib/jest/mock/src/module/car/application/dto/car';
 
 import { useDateExpirationTable } from './use-date-expiration';
 
@@ -40,7 +40,7 @@ jest.mock('react', () => ({
   useRef: () => ({ current: document.createElement('tr') }),
 }));
 
-const MOCK_CARS = [createMockCarDto(), createMockCarDto()];
+const MOCK_CARS = [buildCarDto(), buildCarDto()];
 const DEFAULT_PARAMS = {
   label: 'Insurance',
   dateColumn: 'insuranceExpiration' as const,
@@ -140,8 +140,8 @@ describe('useDateExpirationTable', () => {
   });
 
   it('should flatten pages into table data', async () => {
-    const PAGE_1 = [createMockCarDto(), createMockCarDto()];
-    const PAGE_2 = [createMockCarDto()];
+    const PAGE_1 = [buildCarDto(), buildCarDto()];
+    const PAGE_2 = [buildCarDto()];
 
     mockCarDataSource.getByPage
       .mockResolvedValueOnce({

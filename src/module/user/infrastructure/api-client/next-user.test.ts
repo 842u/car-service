@@ -1,11 +1,11 @@
 import type { HttpClient } from '@/common/application/http-client';
 import { HttpError } from '@/common/application/http-client';
+import { createMockHttpClient } from '@/common/application/http-client.mock';
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
 import { ValidatorError } from '@/common/application/validator';
-import { createMockHttpClient } from '@/lib/jest/mock/src/common/application/http-client';
-import { createMockValidator } from '@/lib/jest/mock/src/common/application/validator';
-import { createMockUserDto } from '@/lib/jest/mock/src/module/user/application/dto/user';
+import { createMockValidator } from '@/common/application/validator.mock';
+import { buildUserDto } from '@/user/application/dto/user.builder';
 import { avatarUrlChangeApiResponseSchema } from '@/user/interface/api/avatar-change.schema';
 import { nameChangeApiResponseSchema } from '@/user/interface/api/name-change.schema';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
@@ -27,7 +27,7 @@ describe('NextUserApiClient', () => {
 
   describe('signUp', () => {
     const contract = { email: 'test@example.com', password: 'Password1!' };
-    const userDto = createMockUserDto();
+    const userDto = buildUserDto();
 
     it('should call httpClient.post with correct endpoint and serialized contract', async () => {
       mockHttpClient.post.mockResolvedValue(
@@ -141,7 +141,7 @@ describe('NextUserApiClient', () => {
 
   describe('signIn', () => {
     const contract = { email: 'test@example.com', password: 'Password1!' };
-    const userDto = createMockUserDto();
+    const userDto = buildUserDto();
 
     it('should call httpClient.post with /api/auth/sign-in', async () => {
       const apiSuccess = { success: true, data: userDto };
@@ -185,7 +185,7 @@ describe('NextUserApiClient', () => {
       password: 'newPassword123',
       passwordConfirm: 'newPassword123',
     };
-    const userDto = createMockUserDto();
+    const userDto = buildUserDto();
 
     it('should call httpClient.patch with /api/auth/password-change', async () => {
       const apiSuccess = { success: true, data: userDto };
@@ -226,7 +226,7 @@ describe('NextUserApiClient', () => {
 
   describe('nameChange', () => {
     const contract = { name: 'New Name' };
-    const userDto = createMockUserDto({ name: 'New Name' });
+    const userDto = buildUserDto({ name: 'New Name' });
 
     it('should call httpClient.patch with /api/user/name', async () => {
       const apiSuccess = { success: true, data: userDto };
@@ -267,7 +267,7 @@ describe('NextUserApiClient', () => {
 
   describe('avatarChange', () => {
     const contract = { avatarUrl: 'https://example.com/avatar.png' };
-    const userDto = createMockUserDto({
+    const userDto = buildUserDto({
       avatarUrl: 'https://example.com/avatar.png',
     });
 
