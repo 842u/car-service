@@ -1,4 +1,5 @@
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
+import { ownershipDomainErrorToApplicationError } from '@/car/ownership/application/mapper/error';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
 import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
@@ -60,19 +61,9 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
     const promoteResult = ownership.promotePrimary(actingId, ownerId);
 
     if (!promoteResult.success) {
-      const { kind, message } = promoteResult.error;
-
-      if (kind === 'validation') {
-        return Result.fail(
-          applicationError.validation(message, promoteResult.error.issues),
-        );
-      }
-
-      if (kind === 'forbidden') {
-        return Result.fail(applicationError.forbidden(message));
-      }
-
-      return Result.fail(applicationError.conflict(message));
+      return Result.fail(
+        ownershipDomainErrorToApplicationError(promoteResult.error),
+      );
     }
 
     const newPrimaryOwnerId = promoteResult.data;

@@ -1,3 +1,4 @@
+import { ownershipDomainErrorToApplicationError } from '@/car/ownership/application/mapper/error';
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
 import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { RemoveOwnerApiRequest } from '@/car/ownership/interface/api/remove.schema';
@@ -55,19 +56,9 @@ export class RemoveOwnerUseCase implements UseCase<
     const removeOwnerResult = ownership.removeOwner(actingId, ownerId);
 
     if (!removeOwnerResult.success) {
-      const { kind, message } = removeOwnerResult.error;
-
-      if (kind === 'validation') {
-        return Result.fail(
-          applicationError.validation(message, removeOwnerResult.error.issues),
-        );
-      }
-
-      if (kind === 'forbidden') {
-        return Result.fail(applicationError.forbidden(message));
-      }
-
-      return Result.fail(applicationError.conflict(message));
+      return Result.fail(
+        ownershipDomainErrorToApplicationError(removeOwnerResult.error),
+      );
     }
 
     const removedOwnerId = removeOwnerResult.data;
