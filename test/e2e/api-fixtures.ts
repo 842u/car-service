@@ -114,6 +114,20 @@ async function addCoOwner(
   }
 }
 
+async function removeCoOwner(
+  primaryOwner: ApiActor,
+  carId: string,
+  ownerId: string,
+): Promise<void> {
+  const response = await primaryOwner.request.delete('/api/car/ownership', {
+    data: { carId, ownerId },
+  });
+
+  if (!response.ok()) {
+    throw new Error(`Failed to remove test co-owner: ${response.status()}.`);
+  }
+}
+
 export type TestCarGraph = {
   primaryOwner: ApiActor;
   coOwner: ApiActor;
@@ -244,5 +258,5 @@ export const serviceLogGraphTest = base.extend<{
   },
 });
 
-export { addCoOwner, createApiActor, disposeApiActor };
+export { addCoOwner, createApiActor, disposeApiActor, removeCoOwner };
 export { expect } from '@playwright/test';
