@@ -2,7 +2,11 @@ import type { Locator, Page } from '@playwright/test';
 import { expect, test as base } from '@playwright/test';
 import type { Route } from 'next';
 
-import { createTestUserByEmail, deleteTestUserByEmail } from './test-user';
+import {
+  createTestUserByEmail,
+  deleteTestUserByEmail,
+  generateTestEmail,
+} from './test-user';
 
 class AuthenticatedPage {
   public readonly page: Page;
@@ -38,11 +42,6 @@ type TestUserCredentials = {
   email: string;
   password: string;
 };
-
-function generateTestEmail() {
-  const [, domain] = process.env.SUPABASE_TEST_USER_EMAIL!.split('@');
-  return `${crypto.randomUUID()}@${domain}`;
-}
 
 export const test = base.extend<{
   authenticatedPage: AuthenticatedPage;
