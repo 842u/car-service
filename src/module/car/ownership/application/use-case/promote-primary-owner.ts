@@ -63,8 +63,8 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
         );
       }
 
-      if (kind === 'unauthorized') {
-        return Result.fail(applicationError.unauthorized(message));
+      if (kind === 'forbidden') {
+        return Result.fail(applicationError.forbidden(message));
       }
 
       return Result.fail(applicationError.conflict(message));
