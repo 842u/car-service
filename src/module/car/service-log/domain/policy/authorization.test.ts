@@ -1,5 +1,5 @@
 import { CarId } from '@/car/domain/car/value-object/car-id/car-id';
-import { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 import {
   canModify,
@@ -30,7 +30,7 @@ function buildServiceLog(authorId: string = AUTHOR_ID): ServiceLog {
   return result.data;
 }
 
-function buildCarOwnership(): CarOwnership {
+function buildOwnership(): Ownership {
   const carIdResult = CarId.create(CAR_ID);
   const primaryOwnerIdResult = OwnerId.create(PRIMARY_OWNER_ID);
 
@@ -38,7 +38,7 @@ function buildCarOwnership(): CarOwnership {
     throw new Error('Failed to build test fixture.');
   }
 
-  const result = CarOwnership.create({
+  const result = Ownership.create({
     carId: carIdResult.data,
     primaryOwnerId: primaryOwnerIdResult.data,
   });
@@ -52,20 +52,20 @@ function buildCarOwnership(): CarOwnership {
 
 describe('canRecord', () => {
   it('allows the primary owner', () => {
-    const ownership = buildCarOwnership();
+    const ownership = buildOwnership();
 
     expect(canRecord(ownership, PRIMARY_OWNER_ID)).toBe(true);
   });
 
   it('allows a co-owner', () => {
-    const ownership = buildCarOwnership();
+    const ownership = buildOwnership();
     ownership.addOwner(PRIMARY_OWNER_ID, CO_OWNER_ID);
 
     expect(canRecord(ownership, CO_OWNER_ID)).toBe(true);
   });
 
   it('rejects a non-owner', () => {
-    const ownership = buildCarOwnership();
+    const ownership = buildOwnership();
 
     expect(canRecord(ownership, NON_OWNER_ID)).toBe(false);
   });
@@ -73,7 +73,7 @@ describe('canRecord', () => {
 
 describe('canModify', () => {
   it('allows the author, even when not the primary owner', () => {
-    const ownership = buildCarOwnership();
+    const ownership = buildOwnership();
     ownership.addOwner(PRIMARY_OWNER_ID, AUTHOR_ID);
     const serviceLog = buildServiceLog(AUTHOR_ID);
 
@@ -81,7 +81,7 @@ describe('canModify', () => {
   });
 
   it('allows the primary owner, even when not the author', () => {
-    const ownership = buildCarOwnership();
+    const ownership = buildOwnership();
     ownership.addOwner(PRIMARY_OWNER_ID, AUTHOR_ID);
     const serviceLog = buildServiceLog(AUTHOR_ID);
 
@@ -89,7 +89,7 @@ describe('canModify', () => {
   });
 
   it('rejects a co-owner who is neither the author nor the primary owner', () => {
-    const ownership = buildCarOwnership();
+    const ownership = buildOwnership();
     ownership.addOwner(PRIMARY_OWNER_ID, AUTHOR_ID);
     ownership.addOwner(PRIMARY_OWNER_ID, NON_OWNER_ID);
     const serviceLog = buildServiceLog(AUTHOR_ID);
@@ -98,7 +98,7 @@ describe('canModify', () => {
   });
 
   it('rejects a non-owner', () => {
-    const ownership = buildCarOwnership();
+    const ownership = buildOwnership();
     const serviceLog = buildServiceLog(AUTHOR_ID);
 
     expect(canModify(serviceLog, ownership, NON_OWNER_ID)).toBe(false);

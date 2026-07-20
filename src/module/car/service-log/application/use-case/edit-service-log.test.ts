@@ -1,10 +1,10 @@
-import type { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
-import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
+import type { Ownership } from '@/car/ownership/domain/ownership/ownership';
+import { buildOwnership } from '@/car/ownership/domain/ownership/ownership.builder';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
 import { createMockServiceLogMapper } from '@/car/service-log/application/mapper/service-log.mock';
-import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
-import { createMockCarOwnershipReader } from '@/car/service-log/application/reader/car-ownership.mock';
+import type { OwnershipReader } from '@/car/service-log/application/reader/ownership';
+import { createMockOwnershipReader } from '@/car/service-log/application/reader/ownership.mock';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { createMockServiceLogRepository } from '@/car/service-log/application/repository/service-log.mock';
 import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/edit-service-log';
@@ -26,18 +26,18 @@ const SERVICE_LOG_ID = '11111111-1111-4111-8111-111111111111';
 describe('EditServiceLogUseCase', () => {
   let useCase: EditServiceLogUseCase;
   let mockAuthClient: jest.Mocked<AuthClient>;
-  let mockCarOwnershipReader: jest.Mocked<CarOwnershipReader>;
+  let mockOwnershipReader: jest.Mocked<OwnershipReader>;
   let mockServiceLogRepository: jest.Mocked<ServiceLogRepository>;
   let mockServiceLogMapper: jest.Mocked<ServiceLogMapper>;
 
   beforeEach(() => {
     mockAuthClient = createMockAuthClient();
-    mockCarOwnershipReader = createMockCarOwnershipReader();
+    mockOwnershipReader = createMockOwnershipReader();
     mockServiceLogRepository = createMockServiceLogRepository();
     mockServiceLogMapper = createMockServiceLogMapper();
     useCase = new EditServiceLogUseCase(
       mockAuthClient,
-      mockCarOwnershipReader,
+      mockOwnershipReader,
       mockServiceLogRepository,
       mockServiceLogMapper,
     );
@@ -66,7 +66,7 @@ describe('EditServiceLogUseCase', () => {
     };
 
     let serviceLog: ServiceLog;
-    let carOwnership: CarOwnership;
+    let ownership: Ownership;
 
     // Both aggregates mutate in place (`ServiceLog.edit` assigns onto its own
     // value), so they are rebuilt per test to keep cases order-independent.
@@ -77,7 +77,7 @@ describe('EditServiceLogUseCase', () => {
         authorId: AUTHOR_ID,
       });
 
-      carOwnership = buildCarOwnership({
+      ownership = buildOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
         coOwnerIds: [AUTHOR_ID, NON_AUTHOR_CO_OWNER_ID],
@@ -111,7 +111,7 @@ describe('EditServiceLogUseCase', () => {
 
       await useCase.execute(validContract);
 
-      expect(mockCarOwnershipReader.getByCarId).not.toHaveBeenCalled();
+      expect(mockOwnershipReader.getByCarId).not.toHaveBeenCalled();
     });
 
     it('edits the service log when the actor is the primary owner, not the author', async () => {
@@ -119,16 +119,14 @@ describe('EditServiceLogUseCase', () => {
         Result.ok(createMockAuthIdentity({ id: PRIMARY_OWNER_ID })),
       );
       mockServiceLogRepository.getById.mockResolvedValue(Result.ok(serviceLog));
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
       mockServiceLogRepository.update.mockResolvedValue(Result.ok(null));
       mockServiceLogMapper.domainToDto.mockReturnValue(mockServiceLogDto);
 
       const result = await useCase.execute(validContract);
 
       expect(result.success).toBe(true);
-      expect(mockCarOwnershipReader.getByCarId).toHaveBeenCalledWith(CAR_ID);
+      expect(mockOwnershipReader.getByCarId).toHaveBeenCalledWith(CAR_ID);
       expect(mockServiceLogRepository.update).toHaveBeenCalledTimes(1);
     });
 
@@ -137,9 +135,7 @@ describe('EditServiceLogUseCase', () => {
         Result.ok(createMockAuthIdentity({ id: NON_AUTHOR_CO_OWNER_ID })),
       );
       mockServiceLogRepository.getById.mockResolvedValue(Result.ok(serviceLog));
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
 
       const result = await useCase.execute(validContract);
 
@@ -155,9 +151,7 @@ describe('EditServiceLogUseCase', () => {
         Result.ok(createMockAuthIdentity({ id: NON_OWNER_ID })),
       );
       mockServiceLogRepository.getById.mockResolvedValue(Result.ok(serviceLog));
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
 
       const result = await useCase.execute(validContract);
 
@@ -199,12 +193,12 @@ describe('EditServiceLogUseCase', () => {
       expect(mockServiceLogRepository.update).not.toHaveBeenCalled();
     });
 
-    it('fails as not-found when the car ownership cannot be read', async () => {
+    it('fails as not-found when the ownership cannot be read', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: PRIMARY_OWNER_ID })),
       );
       mockServiceLogRepository.getById.mockResolvedValue(Result.ok(serviceLog));
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
+      mockOwnershipReader.getByCarId.mockResolvedValue(
         Result.fail({ message: 'Ownership not found' }),
       );
 

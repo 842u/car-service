@@ -1,9 +1,9 @@
-import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
+import { buildOwnership } from '@/car/ownership/domain/ownership/ownership.builder';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
 import { createMockServiceLogMapper } from '@/car/service-log/application/mapper/service-log.mock';
-import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
-import { createMockCarOwnershipReader } from '@/car/service-log/application/reader/car-ownership.mock';
+import type { OwnershipReader } from '@/car/service-log/application/reader/ownership';
+import { createMockOwnershipReader } from '@/car/service-log/application/reader/ownership.mock';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { createMockServiceLogRepository } from '@/car/service-log/application/repository/service-log.mock';
 import { AddServiceLogUseCase } from '@/car/service-log/application/use-case/add-service-log';
@@ -21,18 +21,18 @@ const CAR_ID = '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6';
 describe('AddServiceLogUseCase', () => {
   let useCase: AddServiceLogUseCase;
   let mockAuthClient: jest.Mocked<AuthClient>;
-  let mockCarOwnershipReader: jest.Mocked<CarOwnershipReader>;
+  let mockOwnershipReader: jest.Mocked<OwnershipReader>;
   let mockServiceLogRepository: jest.Mocked<ServiceLogRepository>;
   let mockServiceLogMapper: jest.Mocked<ServiceLogMapper>;
 
   beforeEach(() => {
     mockAuthClient = createMockAuthClient();
-    mockCarOwnershipReader = createMockCarOwnershipReader();
+    mockOwnershipReader = createMockOwnershipReader();
     mockServiceLogRepository = createMockServiceLogRepository();
     mockServiceLogMapper = createMockServiceLogMapper();
     useCase = new AddServiceLogUseCase(
       mockAuthClient,
-      mockCarOwnershipReader,
+      mockOwnershipReader,
       mockServiceLogRepository,
       mockServiceLogMapper,
     );
@@ -60,7 +60,7 @@ describe('AddServiceLogUseCase', () => {
       createdAt: null,
     };
 
-    const carOwnership = buildCarOwnership({
+    const ownership = buildOwnership({
       carId: CAR_ID,
       primaryOwnerId: PRIMARY_OWNER_ID,
       coOwnerIds: [CO_OWNER_ID],
@@ -70,9 +70,7 @@ describe('AddServiceLogUseCase', () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: PRIMARY_OWNER_ID })),
       );
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
       mockServiceLogRepository.store.mockResolvedValue(Result.ok(null));
       mockServiceLogMapper.domainToDto.mockReturnValue(mockServiceLogDto);
 
@@ -89,9 +87,7 @@ describe('AddServiceLogUseCase', () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: CO_OWNER_ID })),
       );
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
       mockServiceLogRepository.store.mockResolvedValue(Result.ok(null));
       mockServiceLogMapper.domainToDto.mockReturnValue(mockServiceLogDto);
 
@@ -105,9 +101,7 @@ describe('AddServiceLogUseCase', () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: PRIMARY_OWNER_ID })),
       );
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
       mockServiceLogRepository.store.mockResolvedValue(Result.ok(null));
       mockServiceLogMapper.domainToDto.mockReturnValue(mockServiceLogDto);
 
@@ -128,16 +122,14 @@ describe('AddServiceLogUseCase', () => {
       if (!result.success) {
         expect(result.error.kind).toBe('unauthorized');
       }
-      expect(mockCarOwnershipReader.getByCarId).not.toHaveBeenCalled();
+      expect(mockOwnershipReader.getByCarId).not.toHaveBeenCalled();
     });
 
     it('fails as unauthorized when the actor does not own the car', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: NON_OWNER_ID })),
       );
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
 
       const result = await useCase.execute(validContract);
 
@@ -148,11 +140,11 @@ describe('AddServiceLogUseCase', () => {
       expect(mockServiceLogRepository.store).not.toHaveBeenCalled();
     });
 
-    it('fails as not-found when the car ownership cannot be read', async () => {
+    it('fails as not-found when the ownership cannot be read', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: PRIMARY_OWNER_ID })),
       );
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
+      mockOwnershipReader.getByCarId.mockResolvedValue(
         Result.fail({ message: 'Ownership not found' }),
       );
 
@@ -169,9 +161,7 @@ describe('AddServiceLogUseCase', () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: PRIMARY_OWNER_ID })),
       );
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
 
       const invalidContract: AddServiceLogApiRequest = {
         ...validContract,
@@ -191,9 +181,7 @@ describe('AddServiceLogUseCase', () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.ok(createMockAuthIdentity({ id: PRIMARY_OWNER_ID })),
       );
-      mockCarOwnershipReader.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
-      );
+      mockOwnershipReader.getByCarId.mockResolvedValue(Result.ok(ownership));
       mockServiceLogRepository.store.mockResolvedValue(
         Result.fail({ message: 'Database error' }),
       );

@@ -4,7 +4,7 @@ import { Result } from '@/common/application/result';
 import type { ValidatorIssue } from '@/common/application/validator';
 import { Entity } from '@/common/domain/entity';
 
-type CarOwnershipValue = {
+type OwnershipValue = {
   id: CarId;
   primaryOwner: OwnerId;
   coOwners: OwnerId[];
@@ -15,8 +15,8 @@ export type OwnershipDomainError =
   | { kind: 'forbidden'; message: string }
   | { kind: 'conflict'; message: string };
 
-export class CarOwnership extends Entity<CarOwnershipValue> {
-  private constructor(value: CarOwnershipValue) {
+export class Ownership extends Entity<OwnershipValue> {
+  private constructor(value: OwnershipValue) {
     super(value);
   }
 
@@ -24,8 +24,8 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
    * Rebuilds an already-existing Ownership from persisted, pre-validated
    * owners.
    */
-  static reconstitute(value: CarOwnershipValue): CarOwnership {
-    return new CarOwnership(value);
+  static reconstitute(value: OwnershipValue): Ownership {
+    return new Ownership(value);
   }
 
   /**
@@ -42,9 +42,9 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
   }: {
     carId: CarId;
     primaryOwnerId: OwnerId;
-  }): Result<CarOwnership, never> {
+  }): Result<Ownership, never> {
     return Result.ok(
-      new CarOwnership({
+      new Ownership({
         id: carId,
         primaryOwner: primaryOwnerId,
         coOwners: [],

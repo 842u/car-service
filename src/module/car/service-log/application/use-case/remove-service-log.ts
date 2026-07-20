@@ -1,4 +1,4 @@
-import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
+import type { OwnershipReader } from '@/car/service-log/application/reader/ownership';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { canModify } from '@/car/service-log/domain/policy/authorization';
 import type { RemoveServiceLogApiRequest } from '@/car/service-log/interface/api/remove.schema';
@@ -15,16 +15,16 @@ export class RemoveServiceLogUseCase implements UseCase<
   null
 > {
   private readonly _authClient: AuthClient;
-  private readonly _carOwnershipReader: CarOwnershipReader;
+  private readonly _ownershipReader: OwnershipReader;
   private readonly _serviceLogRepository: ServiceLogRepository;
 
   constructor(
     authClient: AuthClient,
-    carOwnershipReader: CarOwnershipReader,
+    ownershipReader: OwnershipReader,
     serviceLogRepository: ServiceLogRepository,
   ) {
     this._authClient = authClient;
-    this._carOwnershipReader = carOwnershipReader;
+    this._ownershipReader = ownershipReader;
     this._serviceLogRepository = serviceLogRepository;
   }
 
@@ -55,7 +55,7 @@ export class RemoveServiceLogUseCase implements UseCase<
     // permitted, so ownership is only loaded when it might change the
     // outcome.
     if (!serviceLog.isAuthoredBy(actingId)) {
-      const getOwnershipResult = await this._carOwnershipReader.getByCarId(
+      const getOwnershipResult = await this._ownershipReader.getByCarId(
         serviceLog.carId.value,
       );
 
@@ -64,9 +64,9 @@ export class RemoveServiceLogUseCase implements UseCase<
         return Result.fail(applicationError.notFound(message));
       }
 
-      const carOwnership = getOwnershipResult.data;
+      const ownership = getOwnershipResult.data;
 
-      if (!canModify(serviceLog, carOwnership, actingId)) {
+      if (!canModify(serviceLog, ownership, actingId)) {
         return Result.fail(
           applicationError.unauthorized(
             "Only this service log's author or the car's primary owner may remove it.",

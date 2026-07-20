@@ -1,7 +1,7 @@
 import { CarId } from '@/car/domain/car/value-object/car-id/car-id';
 import { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
 import { buildOwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership.builder';
-import { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 
 const CAR_ID = '11111111-1111-4111-8111-111111111111';
@@ -29,7 +29,7 @@ describe('OwnershipMapper', () => {
   });
 
   describe('persistenceToDomain', () => {
-    it('reconstitutes a CarOwnership from its rows', () => {
+    it('reconstitutes a Ownership from its rows', () => {
       const rows = [
         buildOwnershipPersistence({
           car_id: CAR_ID,
@@ -109,13 +109,13 @@ describe('OwnershipMapper', () => {
         throw new Error('Failed to build test fixture.');
       }
 
-      const carOwnership = CarOwnership.reconstitute({
+      const ownership = Ownership.reconstitute({
         id: idResult.data,
         primaryOwner: primaryOwnerResult.data,
         coOwners: [coOwnerResult.data],
       });
 
-      const dtos = mapper.domainToDto(carOwnership);
+      const dtos = mapper.domainToDto(ownership);
 
       expect(dtos).toEqual([
         {

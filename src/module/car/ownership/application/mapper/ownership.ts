@@ -4,14 +4,14 @@ import type {
   OwnershipInsertPersistence,
   OwnershipPersistence,
 } from '@/car/ownership/application/persistence-model/ownership';
-import { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 import type { CollectionMapper } from '@/common/application/collection-mapper';
 import { Result } from '@/common/application/result';
 import { ValidatorError } from '@/common/application/validator';
 
 export class OwnershipMapper implements CollectionMapper<
-  CarOwnership,
+  Ownership,
   OwnershipDto,
   OwnershipPersistence
 > {
@@ -26,7 +26,7 @@ export class OwnershipMapper implements CollectionMapper<
 
   persistenceToDomain(
     rows: OwnershipPersistence[],
-  ): Result<CarOwnership, ValidatorError> {
+  ): Result<Ownership, ValidatorError> {
     if (rows.length === 0) {
       return Result.fail(
         new ValidatorError('Cannot reconstitute ownership from no rows.'),
@@ -69,7 +69,7 @@ export class OwnershipMapper implements CollectionMapper<
     }
 
     return Result.ok(
-      CarOwnership.reconstitute({
+      Ownership.reconstitute({
         id: carIdResult.data,
         primaryOwner: primaryOwnerResult.data,
         coOwners,
@@ -77,7 +77,7 @@ export class OwnershipMapper implements CollectionMapper<
     );
   }
 
-  domainToDto(model: CarOwnership): OwnershipDto[] {
+  domainToDto(model: Ownership): OwnershipDto[] {
     const carId = model.id.value;
 
     return [

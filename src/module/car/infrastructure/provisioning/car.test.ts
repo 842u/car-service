@@ -6,7 +6,7 @@ import { buildCar } from '@/car/domain/car/car.builder';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
 import { createMockOwnershipMapper } from '@/car/ownership/application/mapper/ownership.mock';
 import { buildOwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership.builder';
-import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
+import { buildOwnership } from '@/car/ownership/domain/ownership/ownership.builder';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
 import { createMockSupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase.mock';
@@ -20,7 +20,7 @@ describe('CarProvisioningImplementation', () => {
   let provisioning: CarProvisioningImplementation;
 
   const car = buildCar();
-  const primaryOwnership = buildCarOwnership();
+  const primaryOwnership = buildOwnership();
 
   beforeEach(() => {
     mockDbClient = createMockSupabaseDatabaseClient();

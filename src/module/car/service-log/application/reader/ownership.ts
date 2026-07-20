@@ -1,4 +1,4 @@
-import type { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import type { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import type { RepositoryResult } from '@/common/application/repository';
 
 /**
@@ -6,6 +6,6 @@ import type { RepositoryResult } from '@/common/application/repository';
  * Service Log needs to read a car's Ownership to authorize writes, but must
  * not depend on Ownership's own repository or persistence wiring directly.
  */
-export interface CarOwnershipReader {
-  getByCarId(carId: string): Promise<RepositoryResult<CarOwnership>>;
+export interface OwnershipReader {
+  getByCarId(carId: string): Promise<RepositoryResult<Ownership>>;
 }

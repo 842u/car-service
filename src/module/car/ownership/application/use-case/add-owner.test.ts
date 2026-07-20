@@ -5,7 +5,7 @@ import { createMockOwnershipMapper } from '@/car/ownership/application/mapper/ow
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
 import { createMockOwnershipRepository } from '@/car/ownership/application/repository/ownership.mock';
 import { AddOwnerUseCase } from '@/car/ownership/application/use-case/add-owner';
-import { buildCarOwnership } from '@/car/ownership/domain/ownership/car-ownership.builder';
+import { buildOwnership } from '@/car/ownership/domain/ownership/ownership.builder';
 import type { AddOwnerApiRequest } from '@/car/ownership/interface/api/add.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import { createMockAuthClient } from '@/common/application/auth-client.mock';
@@ -43,7 +43,7 @@ describe('AddOwnerUseCase', () => {
     };
 
     it('adds a co-owner when the actor is the primary owner', async () => {
-      const carOwnership = buildCarOwnership({
+      const ownership = buildOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
       });
@@ -65,7 +65,7 @@ describe('AddOwnerUseCase', () => {
         Result.ok(mockAuthIdentity),
       );
       mockOwnershipRepository.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
+        Result.ok(ownership),
       );
       mockOwnershipRepository.addOwner.mockResolvedValue(Result.ok(null));
       mockOwnershipMapper.domainToDto.mockReturnValue(mockOwnershipDtos);
@@ -79,12 +79,10 @@ describe('AddOwnerUseCase', () => {
 
       expect(mockOwnershipRepository.getByCarId).toHaveBeenCalledWith(CAR_ID);
       expect(mockOwnershipRepository.addOwner).toHaveBeenCalledWith(
-        carOwnership,
+        ownership,
         expect.objectContaining({ value: NEW_OWNER_ID }),
       );
-      expect(mockOwnershipMapper.domainToDto).toHaveBeenCalledWith(
-        carOwnership,
-      );
+      expect(mockOwnershipMapper.domainToDto).toHaveBeenCalledWith(ownership);
     });
 
     it('fails as unauthorized when the session is not authenticated', async () => {
@@ -119,7 +117,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as forbidden when the actor is not the primary owner', async () => {
-      const carOwnership = buildCarOwnership({
+      const ownership = buildOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
         coOwnerIds: [CO_OWNER_ID],
@@ -129,7 +127,7 @@ describe('AddOwnerUseCase', () => {
         Result.ok(createMockAuthIdentity({ id: CO_OWNER_ID })),
       );
       mockOwnershipRepository.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
+        Result.ok(ownership),
       );
 
       const result = await useCase.execute(validContract);
@@ -142,7 +140,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as validation when the new owner id is malformed', async () => {
-      const carOwnership = buildCarOwnership({
+      const ownership = buildOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
       });
@@ -151,7 +149,7 @@ describe('AddOwnerUseCase', () => {
         Result.ok(mockAuthIdentity),
       );
       mockOwnershipRepository.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
+        Result.ok(ownership),
       );
 
       const result = await useCase.execute({
@@ -167,7 +165,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as conflict when the new owner already owns the car', async () => {
-      const carOwnership = buildCarOwnership({
+      const ownership = buildOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
         coOwnerIds: [CO_OWNER_ID],
@@ -177,7 +175,7 @@ describe('AddOwnerUseCase', () => {
         Result.ok(mockAuthIdentity),
       );
       mockOwnershipRepository.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
+        Result.ok(ownership),
       );
 
       const result = await useCase.execute({
@@ -193,7 +191,7 @@ describe('AddOwnerUseCase', () => {
     });
 
     it('fails as unexpected when persistence fails', async () => {
-      const carOwnership = buildCarOwnership({
+      const ownership = buildOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
       });
@@ -202,7 +200,7 @@ describe('AddOwnerUseCase', () => {
         Result.ok(mockAuthIdentity),
       );
       mockOwnershipRepository.getByCarId.mockResolvedValue(
-        Result.ok(carOwnership),
+        Result.ok(ownership),
       );
       mockOwnershipRepository.addOwner.mockResolvedValue(
         Result.fail({ message: 'Database error' }),

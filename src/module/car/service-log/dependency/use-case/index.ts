@@ -2,17 +2,17 @@ import { AddServiceLogUseCase } from '@/car/service-log/application/use-case/add
 import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/edit-service-log';
 import { RemoveServiceLogUseCase } from '@/car/service-log/application/use-case/remove-service-log';
 import { serviceLogMapper } from '@/car/service-log/dependency/mapper';
-import { createCarOwnershipReader } from '@/car/service-log/dependency/reader';
+import { createOwnershipReader } from '@/car/service-log/dependency/reader';
 import { createServiceLogRepository } from '@/car/service-log/dependency/repository';
 import { createServerAuthClient } from '@/dependency/auth-client/server';
 
 export async function createAddServiceLogUseCase() {
   const authClient = await createServerAuthClient();
-  const carOwnershipReader = await createCarOwnershipReader();
+  const ownershipReader = await createOwnershipReader();
   const serviceLogRepository = await createServiceLogRepository();
   return new AddServiceLogUseCase(
     authClient,
-    carOwnershipReader,
+    ownershipReader,
     serviceLogRepository,
     serviceLogMapper,
   );
@@ -20,11 +20,11 @@ export async function createAddServiceLogUseCase() {
 
 export async function createEditServiceLogUseCase() {
   const authClient = await createServerAuthClient();
-  const carOwnershipReader = await createCarOwnershipReader();
+  const ownershipReader = await createOwnershipReader();
   const serviceLogRepository = await createServiceLogRepository();
   return new EditServiceLogUseCase(
     authClient,
-    carOwnershipReader,
+    ownershipReader,
     serviceLogRepository,
     serviceLogMapper,
   );
@@ -32,11 +32,11 @@ export async function createEditServiceLogUseCase() {
 
 export async function createRemoveServiceLogUseCase() {
   const authClient = await createServerAuthClient();
-  const carOwnershipReader = await createCarOwnershipReader();
+  const ownershipReader = await createOwnershipReader();
   const serviceLogRepository = await createServiceLogRepository();
   return new RemoveServiceLogUseCase(
     authClient,
-    carOwnershipReader,
+    ownershipReader,
     serviceLogRepository,
   );
 }

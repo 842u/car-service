@@ -1,7 +1,7 @@
 import { createOwnershipRepository } from '@/car/ownership/dependency/repository';
-import { CarOwnershipReaderImplementation } from '@/car/service-log/infrastructure/reader/car-ownership';
+import { OwnershipReaderImplementation } from '@/car/service-log/infrastructure/reader/ownership';
 
-export async function createCarOwnershipReader() {
+export async function createOwnershipReader() {
   const ownershipRepository = await createOwnershipRepository();
-  return new CarOwnershipReaderImplementation(ownershipRepository);
+  return new OwnershipReaderImplementation(ownershipRepository);
 }

@@ -50,9 +50,9 @@ export class AddOwnerUseCase implements UseCase<
       return Result.fail(applicationError.notFound(message));
     }
 
-    const carOwnership = getOwnershipResult.data;
+    const ownership = getOwnershipResult.data;
 
-    const addOwnerResult = carOwnership.addOwner(actingId, ownerId);
+    const addOwnerResult = ownership.addOwner(actingId, ownerId);
 
     if (!addOwnerResult.success) {
       const { kind, message } = addOwnerResult.error;
@@ -73,7 +73,7 @@ export class AddOwnerUseCase implements UseCase<
     const newOwnerId = addOwnerResult.data;
 
     const persistResult = await this._ownershipRepository.addOwner(
-      carOwnership,
+      ownership,
       newOwnerId,
     );
 
@@ -82,6 +82,6 @@ export class AddOwnerUseCase implements UseCase<
       return Result.fail(applicationError.unexpected(message));
     }
 
-    return Result.ok(this._ownershipMapper.domainToDto(carOwnership));
+    return Result.ok(this._ownershipMapper.domainToDto(ownership));
   }
 }

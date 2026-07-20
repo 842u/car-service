@@ -45,9 +45,9 @@ export class RemoveOwnerUseCase implements UseCase<
       return Result.fail(applicationError.notFound(message));
     }
 
-    const carOwnership = getOwnershipResult.data;
+    const ownership = getOwnershipResult.data;
 
-    const removeOwnerResult = carOwnership.removeOwner(actingId, ownerId);
+    const removeOwnerResult = ownership.removeOwner(actingId, ownerId);
 
     if (!removeOwnerResult.success) {
       const { kind, message } = removeOwnerResult.error;
@@ -68,7 +68,7 @@ export class RemoveOwnerUseCase implements UseCase<
     const removedOwnerId = removeOwnerResult.data;
 
     const persistResult = await this._ownershipRepository.removeOwner(
-      carOwnership,
+      ownership,
       removedOwnerId,
     );
 

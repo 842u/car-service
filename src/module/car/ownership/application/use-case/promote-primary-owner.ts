@@ -50,9 +50,9 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
       return Result.fail(applicationError.notFound(message));
     }
 
-    const carOwnership = getOwnershipResult.data;
+    const ownership = getOwnershipResult.data;
 
-    const promoteResult = carOwnership.promotePrimary(actingId, ownerId);
+    const promoteResult = ownership.promotePrimary(actingId, ownerId);
 
     if (!promoteResult.success) {
       const { kind, message } = promoteResult.error;
@@ -73,7 +73,7 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
     const newPrimaryOwnerId = promoteResult.data;
 
     const persistResult = await this._ownershipRepository.promotePrimary(
-      carOwnership,
+      ownership,
       newPrimaryOwnerId,
     );
 
@@ -82,6 +82,6 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
       return Result.fail(applicationError.unexpected(message));
     }
 
-    return Result.ok(this._ownershipMapper.domainToDto(carOwnership));
+    return Result.ok(this._ownershipMapper.domainToDto(ownership));
   }
 }
