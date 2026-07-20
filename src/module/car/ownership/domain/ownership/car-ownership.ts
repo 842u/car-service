@@ -12,7 +12,7 @@ type CarOwnershipValue = {
 
 export type OwnershipDomainError =
   | { kind: 'validation'; message: string; issues: ValidatorIssue[] }
-  | { kind: 'unauthorized'; message: string }
+  | { kind: 'forbidden'; message: string }
   | { kind: 'conflict'; message: string };
 
 export class CarOwnership extends Entity<CarOwnershipValue> {
@@ -63,7 +63,7 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
   ): Result<OwnerId, OwnershipDomainError> {
     if (actingId !== this._value.primaryOwner.value) {
       return Result.fail({
-        kind: 'unauthorized',
+        kind: 'forbidden',
         message: 'Only the primary owner may add a co-owner.',
       });
     }
@@ -124,7 +124,7 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
     if (isActingPrimary) {
       if (isTargetPrimary) {
         return Result.fail({
-          kind: 'unauthorized',
+          kind: 'forbidden',
           message: 'The primary owner cannot leave without promoting first.',
         });
       }
@@ -142,13 +142,13 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
     } else if (isActingCoOwner) {
       if (target.value !== actingId) {
         return Result.fail({
-          kind: 'unauthorized',
+          kind: 'forbidden',
           message: 'A co-owner may remove only their own ownership.',
         });
       }
     } else {
       return Result.fail({
-        kind: 'unauthorized',
+        kind: 'forbidden',
         message: 'Only an owner of this car may remove an owner.',
       });
     }
@@ -175,7 +175,7 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
   ): Result<OwnerId, OwnershipDomainError> {
     if (actingId !== this._value.primaryOwner.value) {
       return Result.fail({
-        kind: 'unauthorized',
+        kind: 'forbidden',
         message: 'Only the primary owner may hand over primary ownership.',
       });
     }
