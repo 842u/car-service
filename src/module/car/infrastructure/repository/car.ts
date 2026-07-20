@@ -16,24 +16,26 @@ export class CarRepositoryImplementation implements CarRepository {
   async store(car: Car) {
     const carPersistence = this._carMapper.domainToPersistence(car);
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('cars').insert(carPersistence),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('cars').insert(carPersistence),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
   }
 
   async remove(car: Car) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('cars').delete().eq('id', car.id.value),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('cars').delete().eq('id', car.id.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
@@ -62,12 +64,13 @@ export class CarRepositoryImplementation implements CarRepository {
   async update(car: Car) {
     const carPersistence = this._carMapper.domainToPersistence(car);
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('cars').update(carPersistence).eq('id', car.id.value),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('cars').update(carPersistence).eq('id', car.id.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
