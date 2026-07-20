@@ -15,5 +15,6 @@ export function createMockSupabaseDatabaseClient() {
   return {
     query: jest.fn(),
     rpc: jest.fn(),
+    mutate: jest.fn(),
   } as unknown as jest.Mocked<SupabaseDatabaseClient>;
 }
