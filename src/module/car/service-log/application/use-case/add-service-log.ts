@@ -1,8 +1,7 @@
+import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
-import type { OwnershipReader } from '@/car/service-log/application/reader/ownership';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
-import { canRecord } from '@/car/service-log/domain/policy/authorization';
 import { ServiceLog } from '@/car/service-log/domain/service-log/service-log';
 import { ServiceLogId } from '@/car/service-log/domain/service-log/value-object/service-log-id/service-log-id';
 import type { AddServiceLogApiRequest } from '@/car/service-log/interface/api/add.schema';
@@ -19,18 +18,18 @@ export class AddServiceLogUseCase implements UseCase<
   ServiceLogDto
 > {
   private readonly _authClient: AuthClient;
-  private readonly _ownershipReader: OwnershipReader;
+  private readonly _ownershipVisibility: OwnershipVisibility;
   private readonly _serviceLogRepository: ServiceLogRepository;
   private readonly _serviceLogMapper: ServiceLogMapper;
 
   constructor(
     authClient: AuthClient,
-    ownershipReader: OwnershipReader,
+    ownershipVisibility: OwnershipVisibility,
     serviceLogRepository: ServiceLogRepository,
     serviceLogMapper: ServiceLogMapper,
   ) {
     this._authClient = authClient;
-    this._ownershipReader = ownershipReader;
+    this._ownershipVisibility = ownershipVisibility;
     this._serviceLogRepository = serviceLogRepository;
     this._serviceLogMapper = serviceLogMapper;
   }
@@ -47,23 +46,13 @@ export class AddServiceLogUseCase implements UseCase<
 
     const actingId = sessionResult.data.id;
 
-    const getOwnershipResult = await this._ownershipReader.getByCarId(
+    const visibilityResult = await this._ownershipVisibility.resolve(
       contract.carId,
+      actingId,
     );
 
-    if (!getOwnershipResult.success) {
-      const { message } = getOwnershipResult.error;
-      return Result.fail(applicationError.notFound(message));
-    }
-
-    const ownership = getOwnershipResult.data;
-
-    if (!canRecord(ownership, actingId)) {
-      return Result.fail(
-        applicationError.unauthorized(
-          'Only an owner of this car may record a service log.',
-        ),
-      );
+    if (!visibilityResult.success) {
+      return Result.fail(visibilityResult.error);
     }
 
     const serviceLogResult = ServiceLog.create({

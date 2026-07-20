@@ -1,6 +1,6 @@
-import type { OwnershipReader } from '@/car/service-log/application/reader/ownership';
+import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
-import { canModify } from '@/car/service-log/domain/policy/authorization';
+import { canRemove } from '@/car/service-log/domain/policy/authorization';
 import type { RemoveServiceLogApiRequest } from '@/car/service-log/interface/api/remove.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import {
@@ -15,16 +15,16 @@ export class RemoveServiceLogUseCase implements UseCase<
   null
 > {
   private readonly _authClient: AuthClient;
-  private readonly _ownershipReader: OwnershipReader;
+  private readonly _ownershipVisibility: OwnershipVisibility;
   private readonly _serviceLogRepository: ServiceLogRepository;
 
   constructor(
     authClient: AuthClient,
-    ownershipReader: OwnershipReader,
+    ownershipVisibility: OwnershipVisibility,
     serviceLogRepository: ServiceLogRepository,
   ) {
     this._authClient = authClient;
-    this._ownershipReader = ownershipReader;
+    this._ownershipVisibility = ownershipVisibility;
     this._serviceLogRepository = serviceLogRepository;
   }
 
@@ -45,34 +45,28 @@ export class RemoveServiceLogUseCase implements UseCase<
     );
 
     if (!getServiceLogResult.success) {
-      const { message } = getServiceLogResult.error;
-      return Result.fail(applicationError.notFound(message));
+      return Result.fail(applicationError.notFound('Service log not found.'));
     }
 
     const serviceLog = getServiceLogResult.data;
 
-    // The common case (self-delete) costs one query: the author is always
-    // permitted, so ownership is only loaded when it might change the
-    // outcome.
-    if (!serviceLog.isAuthoredBy(actingId)) {
-      const getOwnershipResult = await this._ownershipReader.getByCarId(
-        serviceLog.carId.value,
+    const visibilityResult = await this._ownershipVisibility.resolve(
+      serviceLog.carId.value,
+      actingId,
+    );
+
+    if (!visibilityResult.success) {
+      return Result.fail(applicationError.notFound('Service log not found.'));
+    }
+
+    const ownership = visibilityResult.data;
+
+    if (!canRemove(serviceLog, ownership, actingId)) {
+      return Result.fail(
+        applicationError.forbidden(
+          "Only this service log's author or the car's primary owner may remove it.",
+        ),
       );
-
-      if (!getOwnershipResult.success) {
-        const { message } = getOwnershipResult.error;
-        return Result.fail(applicationError.notFound(message));
-      }
-
-      const ownership = getOwnershipResult.data;
-
-      if (!canModify(serviceLog, ownership, actingId)) {
-        return Result.fail(
-          applicationError.unauthorized(
-            "Only this service log's author or the car's primary owner may remove it.",
-          ),
-        );
-      }
     }
 
     const removeResult = await this._serviceLogRepository.remove(serviceLog);

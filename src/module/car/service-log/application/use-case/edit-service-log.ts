@@ -1,8 +1,8 @@
+import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
-import type { OwnershipReader } from '@/car/service-log/application/reader/ownership';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
-import { canModify } from '@/car/service-log/domain/policy/authorization';
+import { canEdit } from '@/car/service-log/domain/policy/authorization';
 import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/edit.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import {
@@ -17,18 +17,18 @@ export class EditServiceLogUseCase implements UseCase<
   ServiceLogDto
 > {
   private readonly _authClient: AuthClient;
-  private readonly _ownershipReader: OwnershipReader;
+  private readonly _ownershipVisibility: OwnershipVisibility;
   private readonly _serviceLogRepository: ServiceLogRepository;
   private readonly _serviceLogMapper: ServiceLogMapper;
 
   constructor(
     authClient: AuthClient,
-    ownershipReader: OwnershipReader,
+    ownershipVisibility: OwnershipVisibility,
     serviceLogRepository: ServiceLogRepository,
     serviceLogMapper: ServiceLogMapper,
   ) {
     this._authClient = authClient;
-    this._ownershipReader = ownershipReader;
+    this._ownershipVisibility = ownershipVisibility;
     this._serviceLogRepository = serviceLogRepository;
     this._serviceLogMapper = serviceLogMapper;
   }
@@ -50,34 +50,28 @@ export class EditServiceLogUseCase implements UseCase<
     );
 
     if (!getServiceLogResult.success) {
-      const { message } = getServiceLogResult.error;
-      return Result.fail(applicationError.notFound(message));
+      return Result.fail(applicationError.notFound('Service log not found.'));
     }
 
     const serviceLog = getServiceLogResult.data;
 
-    // The common case (self-edit) costs one query: the author is always
-    // permitted, so ownership is only loaded when it might change the
-    // outcome.
-    if (!serviceLog.isAuthoredBy(actingId)) {
-      const getOwnershipResult = await this._ownershipReader.getByCarId(
-        serviceLog.carId.value,
+    const visibilityResult = await this._ownershipVisibility.resolve(
+      serviceLog.carId.value,
+      actingId,
+    );
+
+    if (!visibilityResult.success) {
+      return Result.fail(applicationError.notFound('Service log not found.'));
+    }
+
+    const ownership = visibilityResult.data;
+
+    if (!canEdit(serviceLog, ownership, actingId)) {
+      return Result.fail(
+        applicationError.forbidden(
+          "Only this service log's author or the car's primary owner may edit it.",
+        ),
       );
-
-      if (!getOwnershipResult.success) {
-        const { message } = getOwnershipResult.error;
-        return Result.fail(applicationError.notFound(message));
-      }
-
-      const ownership = getOwnershipResult.data;
-
-      if (!canModify(serviceLog, ownership, actingId)) {
-        return Result.fail(
-          applicationError.unauthorized(
-            "Only this service log's author or the car's primary owner may edit it.",
-          ),
-        );
-      }
     }
 
     const editResult = serviceLog.edit({
