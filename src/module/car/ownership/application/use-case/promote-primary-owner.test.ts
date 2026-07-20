@@ -120,7 +120,7 @@ describe('PromotePrimaryOwnerUseCase', () => {
       expect(mockOwnershipRepository.promotePrimary).not.toHaveBeenCalled();
     });
 
-    it('fails as unauthorized when the actor is not the primary owner', async () => {
+    it('fails as forbidden when the actor is not the primary owner', async () => {
       const carOwnership = buildCarOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
@@ -141,7 +141,7 @@ describe('PromotePrimaryOwnerUseCase', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
       expect(mockOwnershipRepository.promotePrimary).not.toHaveBeenCalled();
     });
