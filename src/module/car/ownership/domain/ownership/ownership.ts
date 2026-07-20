@@ -211,9 +211,9 @@ export class Ownership extends Entity<OwnershipValue> {
   }
 
   /**
-   * True for the primary owner or any co-owner. Backs cross-aggregate
-   * authorization rules (e.g. Service Log's `canRecord` policy) that only
-   * need to know whether someone owns the car, not which role they hold.
+   * True for the primary owner or any co-owner. Backs Visibility resolution
+   * and cross-aggregate authorization rules that only need to know whether
+   * someone owns the car, not which role they hold.
    */
   isOwner(userId: string): boolean {
     return (
@@ -224,8 +224,8 @@ export class Ownership extends Entity<OwnershipValue> {
 
   /**
    * True only for the primary owner. Backs cross-aggregate authorization
-   * rules (e.g. Service Log's `canModify` policy) that need the stronger,
-   * primary-only role rather than mere membership.
+   * rules (e.g. Service Log's `canEdit`/`canRemove` policies) that need the
+   * stronger, primary-only role rather than mere membership.
    */
   isPrimaryOwner(userId: string): boolean {
     return this._value.primaryOwner.value === userId;
