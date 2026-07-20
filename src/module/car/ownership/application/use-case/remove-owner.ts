@@ -1,4 +1,5 @@
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
+import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { RemoveOwnerApiRequest } from '@/car/ownership/interface/api/remove.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import {
@@ -13,13 +14,16 @@ export class RemoveOwnerUseCase implements UseCase<
   null
 > {
   private readonly _authClient: AuthClient;
+  private readonly _ownershipVisibility: OwnershipVisibility;
   private readonly _ownershipRepository: OwnershipRepository;
 
   constructor(
     authClient: AuthClient,
+    ownershipVisibility: OwnershipVisibility,
     ownershipRepository: OwnershipRepository,
   ) {
     this._authClient = authClient;
+    this._ownershipVisibility = ownershipVisibility;
     this._ownershipRepository = ownershipRepository;
   }
 
@@ -37,15 +41,16 @@ export class RemoveOwnerUseCase implements UseCase<
 
     const { carId, ownerId } = contract;
 
-    const getOwnershipResult =
-      await this._ownershipRepository.getByCarId(carId);
+    const visibilityResult = await this._ownershipVisibility.resolve(
+      carId,
+      actingId,
+    );
 
-    if (!getOwnershipResult.success) {
-      const { message } = getOwnershipResult.error;
-      return Result.fail(applicationError.notFound(message));
+    if (!visibilityResult.success) {
+      return Result.fail(visibilityResult.error);
     }
 
-    const ownership = getOwnershipResult.data;
+    const ownership = visibilityResult.data;
 
     const removeOwnerResult = ownership.removeOwner(actingId, ownerId);
 
