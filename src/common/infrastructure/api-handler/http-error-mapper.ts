@@ -6,6 +6,7 @@ type ApiError = { message: string; issues?: ValidatorIssue[] };
 const kindToStatus: Record<ErrorKind, number> = {
   validation: 422,
   unauthorized: 401,
+  forbidden: 403,
   'not-found': 404,
   conflict: 409,
   unexpected: 500,

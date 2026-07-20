@@ -3,6 +3,7 @@ import type { ValidatorIssue } from '@/common/application/validator';
 export type ErrorKind =
   | 'validation'
   | 'unauthorized'
+  | 'forbidden'
   | 'not-found'
   | 'conflict'
   | 'unexpected';
@@ -20,6 +21,10 @@ export const applicationError = {
 
   unauthorized(message: string): ApplicationError {
     return { kind: 'unauthorized', message };
+  },
+
+  forbidden(message: string): ApplicationError {
+    return { kind: 'forbidden', message };
   },
 
   notFound(message: string): ApplicationError {
