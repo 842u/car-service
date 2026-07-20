@@ -1,6 +1,9 @@
 import { createBrowserClient } from '@supabase/ssr';
 
-import { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
+import {
+  ROW_COUNT_MISMATCH,
+  SupabaseDatabaseClient,
+} from '@/common/infrastructure/database-client/supabase';
 import {
   mockInternalMethodFailure,
   mockInternalMethodSuccess,
@@ -120,6 +123,81 @@ describe('SupabaseDatabaseClient', () => {
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toBeNull();
+      }
+    });
+  });
+
+  describe('mutate', () => {
+    const affected = (rows: { id: string }[]) => ({
+      select: () => Promise.resolve({ data: rows, error: null }),
+    });
+
+    it('should return the affected rows when the count matches', async () => {
+      const affectedRows = [{ id: '1' }];
+
+      const result = await databaseClient.mutate(
+        () => affected(affectedRows),
+        1,
+      );
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(affectedRows);
+      }
+    });
+
+    it('should fail with ROW_COUNT_MISMATCH when no rows are affected', async () => {
+      const result = await databaseClient.mutate(() => affected([]), 1);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.code).toBe(ROW_COUNT_MISMATCH);
+      }
+    });
+
+    it('should fail with ROW_COUNT_MISMATCH when the count differs', async () => {
+      const result = await databaseClient.mutate(
+        () => affected([{ id: '1' }, { id: '2' }]),
+        1,
+      );
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.code).toBe(ROW_COUNT_MISMATCH);
+      }
+    });
+
+    it('should return error when the mutation fails', async () => {
+      const errorMessage = 'test error';
+
+      const result = await databaseClient.mutate(
+        () => ({
+          select: () =>
+            Promise.resolve({
+              data: null,
+              error: { message: errorMessage, code: 'error code' },
+            }),
+        }),
+        1,
+      );
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe(errorMessage);
+        expect(result.error.code).not.toBe(ROW_COUNT_MISMATCH);
+      }
+    });
+
+    it('should return error when an unexpected error occurs', async () => {
+      const errorMessage = 'test error';
+
+      const result = await databaseClient.mutate(() => {
+        throw new Error(errorMessage);
+      }, 1);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe(errorMessage);
       }
     });
   });
