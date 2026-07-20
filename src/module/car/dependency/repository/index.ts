@@ -1,8 +1,8 @@
 import { carMapper } from '@/car/dependency/mapper';
 import { CarRepositoryImplementation } from '@/car/infrastructure/repository/car';
-import { createServerDatabaseClient } from '@/dependency/database-client/server';
+import { adminDatabaseClient } from '@/dependency/database-client/admin';
 
-export async function createCarRepository() {
-  const dbClient = await createServerDatabaseClient();
-  return new CarRepositoryImplementation(dbClient, carMapper);
-}
+export const carRepository = new CarRepositoryImplementation(
+  adminDatabaseClient,
+  carMapper,
+);
