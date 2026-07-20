@@ -83,7 +83,7 @@ describe('OwnershipRepositoryImplementation', () => {
       const row = buildOwnershipPersistence();
 
       mockOwnershipMapper.newCoOwnerToPersistence.mockReturnValue(row);
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([row]));
 
       const result = await repository.addOwner(carOwnership, newOwnerId);
 
@@ -95,16 +95,16 @@ describe('OwnershipRepositoryImplementation', () => {
         carOwnership.id,
         newOwnerId,
       );
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
+    it('should return error when the mutation fails', async () => {
       const newOwnerId = carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
 
       mockOwnershipMapper.newCoOwnerToPersistence.mockReturnValue(
         buildOwnershipPersistence(),
       );
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
       );
 
@@ -121,7 +121,9 @@ describe('OwnershipRepositoryImplementation', () => {
     it('should delete the target owner row on success', async () => {
       const targetId = carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
 
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(
+        Result.ok([buildOwnershipPersistence()]),
+      );
 
       const result = await repository.removeOwner(carOwnership, targetId);
 
@@ -129,13 +131,13 @@ describe('OwnershipRepositoryImplementation', () => {
       if (result.success) {
         expect(result.data).toBeNull();
       }
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
+    it('should return error when the mutation fails', async () => {
       const targetId = carOwnership.coOwners[0] ?? carOwnership.primaryOwner;
 
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Delete failed' }),
       );
 
