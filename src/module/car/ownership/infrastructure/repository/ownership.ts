@@ -43,27 +43,30 @@ export class OwnershipRepositoryImplementation implements OwnershipRepository {
       newOwnerId,
     );
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('cars_ownerships').insert(row),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('cars_ownerships').insert(row),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
   }
 
   async removeOwner(carOwnership: CarOwnership, targetId: OwnerId) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('cars_ownerships')
-        .delete()
-        .eq('car_id', carOwnership.id.value)
-        .eq('owner_id', targetId.value),
+    const mutateResult = await this._dbClient.mutate(
+      (from) =>
+        from('cars_ownerships')
+          .delete()
+          .eq('car_id', carOwnership.id.value)
+          .eq('owner_id', targetId.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
