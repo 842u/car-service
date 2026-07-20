@@ -15,6 +15,14 @@ export default defineConfig({
   },
   projects: [
     {
+      name: 'API',
+      grep: /@api/,
+      // Each write-flow fixture signs in and provisions several actors plus a
+      // car/ownership/service-log graph through real API calls before a test
+      // body even runs, several more round trips than a single page load.
+      timeout: 40000,
+    },
+    {
       name: 'Desktop Chrome',
       use: { ...devices['Desktop Chrome'] },
       grep: /@desktop/,
