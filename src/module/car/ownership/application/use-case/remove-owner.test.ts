@@ -97,7 +97,7 @@ describe('RemoveOwnerUseCase', () => {
       expect(mockOwnershipRepository.removeOwner).not.toHaveBeenCalled();
     });
 
-    it('fails as unauthorized when a co-owner removes a different owner', async () => {
+    it('fails as forbidden when a co-owner removes a different owner', async () => {
       const carOwnership = buildCarOwnership({
         carId: CAR_ID,
         primaryOwnerId: PRIMARY_OWNER_ID,
@@ -118,7 +118,7 @@ describe('RemoveOwnerUseCase', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
       expect(mockOwnershipRepository.removeOwner).not.toHaveBeenCalled();
     });
