@@ -120,7 +120,7 @@ describe('CarOwnership', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
       expect(carOwnership.coOwners).toHaveLength(1);
     });
@@ -132,7 +132,7 @@ describe('CarOwnership', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
     });
 
@@ -208,7 +208,7 @@ describe('CarOwnership', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
       expect(carOwnership.coOwners).toHaveLength(1);
     });
@@ -222,7 +222,7 @@ describe('CarOwnership', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
       expect(carOwnership.coOwners).toHaveLength(2);
     });
@@ -234,7 +234,7 @@ describe('CarOwnership', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
       expect(carOwnership.coOwners).toHaveLength(1);
     });
@@ -303,7 +303,7 @@ describe('CarOwnership', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
       expect(carOwnership.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
     });
@@ -315,7 +315,7 @@ describe('CarOwnership', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.kind).toBe('unauthorized');
+        expect(result.error.kind).toBe('forbidden');
       }
     });
 
