@@ -88,6 +88,25 @@ describe('EditUserUseCase', () => {
       expect(mockUserRepository.update).toHaveBeenCalledWith(mockUser);
     });
 
+    it('clears the avatar url when it is explicitly null', async () => {
+      const mockUser = buildUser();
+      mockUser.edit({ avatarUrl: 'https://example.com/avatar.png' });
+      const contract: EditUserApiRequest = { avatarUrl: null };
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockUserRepository.getById.mockResolvedValue(Result.ok(mockUser));
+      mockUserRepository.update.mockResolvedValue(Result.ok(null));
+      mockUserMapper.domainToDto.mockReturnValue(mockUserDto);
+
+      const result = await useCase.execute(contract);
+
+      expect(result.success).toBe(true);
+      expect(mockUser.avatarUrl).toBeNull();
+      expect(mockUserRepository.update).toHaveBeenCalledWith(mockUser);
+    });
+
     it('leaves the user unchanged when no fields are present', async () => {
       const mockUser = buildUser({ name: 'Original Name' });
 
