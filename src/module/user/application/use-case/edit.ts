@@ -8,12 +8,9 @@ import type { UseCase } from '@/common/application/use-case';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
-import type { NameChangeApiRequest } from '@/user/interface/api/name-change.schema';
+import type { EditUserApiRequest } from '@/user/interface/api/edit.schema';
 
-export class NameChangeUseCase implements UseCase<
-  NameChangeApiRequest,
-  UserDto
-> {
+export class EditUserUseCase implements UseCase<EditUserApiRequest, UserDto> {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
@@ -29,7 +26,7 @@ export class NameChangeUseCase implements UseCase<
   }
 
   async execute(
-    contract: NameChangeApiRequest,
+    contract: EditUserApiRequest,
   ): Promise<Result<UserDto, ApplicationError>> {
     const sessionResult = await this._authClient.authenticate();
 
@@ -49,12 +46,10 @@ export class NameChangeUseCase implements UseCase<
 
     const user = getUserResult.data;
 
-    const { name } = contract;
+    const editResult = user.edit(contract);
 
-    const changeNameResult = user.changeName(name);
-
-    if (!changeNameResult.success) {
-      const { message, issues } = changeNameResult.error;
+    if (!editResult.success) {
+      const { message, issues } = editResult.error;
       return Result.fail(applicationError.validation(message, issues));
     }
 
