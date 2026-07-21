@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { userNameChangeMutationOptions } from '@/user/infrastructure/tanstack/mutation-options/name-change';
+import { userNameEditMutationOptions } from '@/user/infrastructure/tanstack/mutation-options/name-edit';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
-export function useUserNameChange() {
+export function useUserNameEdit() {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
 
   const { mutateAsync } = useMutation({
-    ...userNameChangeMutationOptions(queryClient),
+    ...userNameEditMutationOptions(queryClient),
     onSuccess: () => {
       addToast('Name changed.', 'success');
     },

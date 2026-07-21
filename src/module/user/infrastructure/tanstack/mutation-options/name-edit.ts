@@ -6,7 +6,7 @@ import { userApiClient } from '@/user/dependency/api-client';
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import type { EditUserApiRequest } from '@/user/interface/api/edit.schema';
 
-export const userNameChangeMutationOptions = (queryClient: QueryClient) =>
+export const userNameEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
     throwOnError: false,
     mutationFn: async (variables: Pick<EditUserApiRequest, 'name'>) => {
