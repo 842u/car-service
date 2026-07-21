@@ -109,74 +109,37 @@ export class Car extends Entity<CarValue> {
   }
 
   /**
-   * Resolves every editable field atomically, failing on the first invalid
-   * field in declaration order. Only `create` uses this: a new Car has no
-   * prior state, so every field must resolve to something, including `null`
-   * for one left out of the request.
-   */
-  private static buildEditable(
-    params: CarCreateParams,
-  ): Result<CarEditableValue, ValidatorError> {
-    return Result.combine({
-      customName: editableFieldFactories.customName(params.customName),
-      brand: editableFieldFactories.brand(params.brand),
-      model: editableFieldFactories.model(params.model),
-      licensePlates: editableFieldFactories.licensePlates(params.licensePlates),
-      vin: editableFieldFactories.vin(params.vin),
-      fuelType: editableFieldFactories.fuelType(params.fuelType),
-      additionalFuelType: editableFieldFactories.additionalFuelType(
-        params.additionalFuelType,
-      ),
-      transmissionType: editableFieldFactories.transmissionType(
-        params.transmissionType,
-      ),
-      driveType: editableFieldFactories.driveType(params.driveType),
-      productionYear: editableFieldFactories.productionYear(
-        params.productionYear,
-      ),
-      engineCapacity: editableFieldFactories.engineCapacity(
-        params.engineCapacity,
-      ),
-      mileage: editableFieldFactories.mileage(params.mileage),
-      insuranceExpiration: editableFieldFactories.insuranceExpiration(
-        params.insuranceExpiration,
-      ),
-      technicalInspectionExpiration:
-        editableFieldFactories.technicalInspectionExpiration(
-          params.technicalInspectionExpiration,
-        ),
-      imageUrl: editableFieldFactories.imageUrl(params.imageUrl),
-    });
-  }
-
-  /**
-   * Resolves only the fields present in `params`, failing atomically if any
-   * of them is invalid. Only `edit` uses this: an absent field means "leave
-   * unchanged", so it must never be resolved (not even to `null`).
+   * Resolves `keys` atomically via `editableFieldFactories`, failing on the
+   * first invalid field in `keys` order. `create` passes every key (a new
+   * Car has no prior state, so every field must resolve to something,
+   * including `null`); `edit` passes only the keys present in its params, so
+   * an absent field is never resolved (not even to `null`) and is left
+   * untouched.
    *
    * `Result.combine` infers its precise per-field return type from an object
    * literal with a fixed key set; here the key set is only known at runtime
-   * (whichever fields the caller included), so the combined result is cast
-   * back to the shape its keys are actually drawn from.
+   * (`keys`), so the combined result is cast back to the shape its keys are
+   * actually drawn from.
    */
-  private static buildPatch(
-    params: CarEditParams,
-  ): Result<Partial<CarEditableValue>, ValidatorError> {
-    const present: Record<string, Result<unknown, ValidatorError>> = {};
+  private static resolveFields<K extends keyof CarEditableValue>(
+    params: EditableFieldRawValue,
+    keys: readonly K[],
+  ): Result<Pick<CarEditableValue, K>, ValidatorError> {
+    const resolved: Record<string, Result<unknown, ValidatorError>> = {};
 
-    for (const key of Object.keys(
-      editableFieldFactories,
-    ) as (keyof CarEditableValue)[]) {
-      if (Object.hasOwn(params, key)) {
-        present[key] = editableFieldFactories[key](params[key] as never);
-      }
+    for (const key of keys) {
+      resolved[key] = editableFieldFactories[key](params[key] as never);
     }
 
-    return Result.combine(present) as Result<
-      Partial<CarEditableValue>,
+    return Result.combine(resolved) as Result<
+      Pick<CarEditableValue, K>,
       ValidatorError
     >;
   }
+
+  private static readonly editableFieldNames = Object.keys(
+    editableFieldFactories,
+  ) as (keyof CarEditableValue)[];
 
   /**
    * Single factory for both a brand-new Car (add passes a generated id) and
@@ -188,7 +151,7 @@ export class Car extends Entity<CarValue> {
       return Result.fail(idResult.error);
     }
 
-    const editableResult = Car.buildEditable(params);
+    const editableResult = Car.resolveFields(params, Car.editableFieldNames);
     if (!editableResult.success) {
       return Result.fail(editableResult.error);
     }
@@ -206,7 +169,11 @@ export class Car extends Entity<CarValue> {
    * any other value.
    */
   edit(params: CarEditParams): Result<undefined, ValidatorError> {
-    const patchResult = Car.buildPatch(params);
+    const presentFields = Car.editableFieldNames.filter((key) =>
+      Object.hasOwn(params, key),
+    );
+
+    const patchResult = Car.resolveFields(params, presentFields);
     if (!patchResult.success) {
       return Result.fail(patchResult.error);
     }
