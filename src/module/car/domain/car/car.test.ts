@@ -113,6 +113,24 @@ describe('Car', () => {
       expect(car.vin?.value).toBe(validParams.vin);
     });
 
+    it('leaves a field untouched when explicitly undefined, same as absent', () => {
+      const created = Car.create(validParams);
+      expect(created.success).toBe(true);
+      if (!created.success) {
+        return;
+      }
+      const car = created.data;
+
+      const result = car.edit({
+        customName: 'Weekend car',
+        brand: undefined,
+      });
+
+      expect(result.success).toBe(true);
+      expect(car.customName.value).toBe('Weekend car');
+      expect(car.brand?.value).toBe(validParams.brand);
+    });
+
     it('leaves every field untouched when the request is empty', () => {
       const created = Car.create(validParams);
       expect(created.success).toBe(true);
