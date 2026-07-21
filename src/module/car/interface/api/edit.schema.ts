@@ -43,6 +43,7 @@ export const editCarApiRequestSchema = z.object({
   mileage: z.number().nullable().optional(),
   insuranceExpiration: z.string().nullable().optional(),
   technicalInspectionExpiration: z.string().nullable().optional(),
+  imageUrl: z.string().nullable().optional(),
 });
 
 export type EditCarApiRequest = z.infer<typeof editCarApiRequestSchema>;

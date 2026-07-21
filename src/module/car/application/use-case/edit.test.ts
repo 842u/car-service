@@ -100,6 +100,33 @@ describe('EditCarUseCase', () => {
       expect(mockCarMapper.domainToDto).toHaveBeenCalledWith(mockCar);
     });
 
+    it('changes the image url as an ordinary field of the edit contract', async () => {
+      const ownership = buildOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+      });
+      const mockCar = buildCar();
+      const contract: EditCarApiRequest = {
+        carId: CAR_ID,
+        customName: 'Edited Car',
+        imageUrl: 'https://example.com/cars_images/car.png',
+      };
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockOwnershipVisibility.resolve.mockResolvedValue(Result.ok(ownership));
+      mockCarRepository.getById.mockResolvedValue(Result.ok(mockCar));
+      mockCarRepository.update.mockResolvedValue(Result.ok(null));
+      mockCarMapper.domainToDto.mockReturnValue(mockCarDto);
+
+      const result = await useCase.execute(contract);
+
+      expect(result.success).toBe(true);
+      expect(mockCar.imageUrl?.value).toBe(contract.imageUrl);
+      expect(mockCarRepository.update).toHaveBeenCalledWith(mockCar);
+    });
+
     it('should fail as unauthorized when authentication fails', async () => {
       mockAuthClient.authenticate.mockResolvedValue(
         Result.fail({ message: 'Unauthorized', code: '', status: 401 }),
@@ -217,6 +244,34 @@ describe('EditCarUseCase', () => {
       expect(mockCarRepository.getById).toHaveBeenCalledWith(
         invalidContract.carId,
       );
+      expect(mockCarRepository.update).not.toHaveBeenCalled();
+    });
+
+    it('should fail as validation when the image url is invalid', async () => {
+      const ownership = buildOwnership({
+        carId: CAR_ID,
+        primaryOwnerId: PRIMARY_OWNER_ID,
+      });
+      const mockCar = buildCar();
+      const invalidContract: EditCarApiRequest = {
+        carId: CAR_ID,
+        customName: 'Edited Car',
+        imageUrl: 'not-a-url',
+      };
+
+      mockAuthClient.authenticate.mockResolvedValue(
+        Result.ok(mockAuthIdentity),
+      );
+      mockOwnershipVisibility.resolve.mockResolvedValue(Result.ok(ownership));
+      mockCarRepository.getById.mockResolvedValue(Result.ok(mockCar));
+
+      const result = await useCase.execute(invalidContract);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('validation');
+      }
+
       expect(mockCarRepository.update).not.toHaveBeenCalled();
     });
 
