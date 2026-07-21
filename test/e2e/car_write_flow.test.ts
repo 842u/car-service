@@ -34,6 +34,28 @@ test.describe('car_write_flow - edit - @api', () => {
 
     expect(response.status()).toBe(404);
   });
+
+  test('a field absent from the edit request is left untouched - @api', async ({
+    testCarGraph,
+  }) => {
+    const { primaryOwner, carId } = testCarGraph;
+
+    const setBrandResponse = await primaryOwner.request.patch('/api/car', {
+      data: { carId, brand: 'Toyota' },
+    });
+
+    expect(setBrandResponse.status()).toBe(200);
+
+    const renameResponse = await primaryOwner.request.patch('/api/car', {
+      data: { carId, customName: 'Renamed, brand untouched' },
+    });
+
+    expect(renameResponse.status()).toBe(200);
+
+    const renameBody = await renameResponse.json();
+
+    expect(renameBody.data.brand).toBe('Toyota');
+  });
 });
 
 test.describe('car_write_flow - remove - @api', () => {
