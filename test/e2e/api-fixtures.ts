@@ -55,6 +55,10 @@ async function disposeApiActor(actor: ApiActor): Promise<void> {
   await deleteTestUserByEmail(actor.email);
 }
 
+async function createUnauthenticatedRequest(): Promise<APIRequestContext> {
+  return playwrightRequest.newContext({ baseURL: BASE_URL });
+}
+
 /**
  * Creates `count` actors and, if any of them fails, disposes whichever
  * already succeeded before rethrowing, so a partial failure never leaks
@@ -255,6 +259,16 @@ export const serviceLogGraphTest = base.extend<{
     const graph = await buildTestServiceLogGraph();
     await use(graph);
     await teardownTestServiceLogGraph(graph);
+  },
+});
+
+export const unauthenticatedTest = base.extend<{
+  unauthenticatedRequest: APIRequestContext;
+}>({
+  unauthenticatedRequest: async ({}, use) => {
+    const request = await createUnauthenticatedRequest();
+    await use(request);
+    await request.dispose();
   },
 });
 
