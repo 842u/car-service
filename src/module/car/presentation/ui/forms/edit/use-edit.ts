@@ -1,17 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { carEditMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/edit';
-import { carImageChangeMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/image';
 import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 interface UseEditFormParams {
   carId: string;
+  imageUrl?: string | null;
   onSubmit?: () => void;
 }
 
-export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
+export function useEditForm({ carId, imageUrl, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
@@ -33,23 +33,20 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
     },
   });
 
-  const changeImage = useMutation(carImageChangeMutationOptions());
-
   const handleFormSubmit = async (formData: CarFormData) => {
     onSubmit && onSubmit();
 
     const { image, ...contract } = formData;
 
     try {
-      const car = await editCar.mutateAsync({ carId, image, ...contract });
-
-      if (image) {
-        try {
-          await changeImage.mutateAsync({ carId: car.id, image });
-        } catch (error) {
-          if (error instanceof Error) addToast(error.message, 'warning');
-        }
-      }
+      // A save that doesn't pick a new file must not clear the existing
+      // image under full-replace, so fall back to what's already there.
+      await editCar.mutateAsync({
+        carId,
+        image,
+        ...contract,
+        imageUrl: image ? undefined : imageUrl,
+      });
     } catch {
       return;
     } finally {
