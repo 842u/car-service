@@ -9,7 +9,10 @@ import { Result } from '@/common/application/result';
 /**
  * Whether `actingId` may learn that the car `carId` names exists at all. An
  * absent Ownership and a non-owner actor answer identically: masking must not
- * distinguish "does not exist" from "hidden from you".
+ * distinguish "does not exist" from "hidden from you". A repository read that
+ * fails outright is not masked: it answers `unexpected` regardless of the
+ * acting actor, since the failure carries no information about the requested
+ * car specifically.
  */
 export interface OwnershipVisibility {
   resolve(
@@ -30,12 +33,14 @@ export class OwnershipVisibilityService implements OwnershipVisibility {
       await this._ownershipRepository.getByCarId(carId);
 
     if (!getOwnershipResult.success) {
-      return Result.fail(applicationError.notFound('Car not found.'));
+      return Result.fail(
+        applicationError.unexpected(getOwnershipResult.error.message),
+      );
     }
 
     const ownership = getOwnershipResult.data;
 
-    if (!ownership.isOwner(actingId)) {
+    if (ownership === null || !ownership.isOwner(actingId)) {
       return Result.fail(applicationError.notFound('Car not found.'));
     }
 

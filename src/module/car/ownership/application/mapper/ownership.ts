@@ -26,11 +26,9 @@ export class OwnershipMapper implements CollectionMapper<
 
   persistenceToDomain(
     rows: OwnershipPersistence[],
-  ): Result<Ownership, ValidatorError> {
+  ): Result<Ownership | null, ValidatorError> {
     if (rows.length === 0) {
-      return Result.fail(
-        new ValidatorError('Cannot reconstitute ownership from no rows.'),
-      );
+      return Result.ok(null);
     }
 
     const primaryRows = rows.filter((row) => row.is_primary_owner);

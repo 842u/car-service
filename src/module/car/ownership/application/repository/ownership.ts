@@ -8,7 +8,7 @@ import type { RepositoryResult } from '@/common/application/repository';
  * `Repository<T>`, which mandates `store`/`update`/`remove`.
  */
 export interface OwnershipRepository {
-  getByCarId(carId: string): Promise<RepositoryResult<Ownership>>;
+  getByCarId(carId: string): Promise<RepositoryResult<Ownership | null>>;
   addOwner(
     ownership: Ownership,
     newOwnerId: OwnerId,
