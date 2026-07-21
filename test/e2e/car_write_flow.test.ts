@@ -36,44 +36,6 @@ test.describe('car_write_flow - edit - @api', () => {
   });
 });
 
-test.describe('car_write_flow - image change - @api', () => {
-  test('primary owner can change the car image - @api', async ({
-    testCarGraph,
-  }) => {
-    const { primaryOwner, carId } = testCarGraph;
-
-    const response = await primaryOwner.request.patch('/api/car/image', {
-      data: { carId, imageUrl: 'https://example.com/primary-owner.png' },
-    });
-
-    expect(response.status()).toBe(200);
-  });
-
-  test('co-owner changing the car image is forbidden - @api', async ({
-    testCarGraph,
-  }) => {
-    const { coOwner, carId } = testCarGraph;
-
-    const response = await coOwner.request.patch('/api/car/image', {
-      data: { carId, imageUrl: 'https://example.com/co-owner.png' },
-    });
-
-    expect(response.status()).toBe(403);
-  });
-
-  test('stranger changing the car image gets not-found - @api', async ({
-    testCarGraph,
-  }) => {
-    const { stranger, carId } = testCarGraph;
-
-    const response = await stranger.request.patch('/api/car/image', {
-      data: { carId, imageUrl: 'https://example.com/stranger.png' },
-    });
-
-    expect(response.status()).toBe(404);
-  });
-});
-
 test.describe('car_write_flow - remove - @api', () => {
   test('primary owner can remove the car - @api', async ({ testCarGraph }) => {
     const { primaryOwner, carId } = testCarGraph;

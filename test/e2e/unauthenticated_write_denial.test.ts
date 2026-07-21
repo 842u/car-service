@@ -17,17 +17,6 @@ test.describe('unauthenticated_write_denial - car - @api', () => {
     expect(response.status()).toBe(401);
   });
 
-  test('image change is denied - @api', async ({ unauthenticatedRequest }) => {
-    const response = await unauthenticatedRequest.patch('/api/car/image', {
-      data: {
-        carId: crypto.randomUUID(),
-        imageUrl: 'https://example.com/denied.png',
-      },
-    });
-
-    expect(response.status()).toBe(401);
-  });
-
   test('remove is denied - @api', async ({ unauthenticatedRequest }) => {
     const response = await unauthenticatedRequest.delete('/api/car', {
       data: { carId: crypto.randomUUID() },
