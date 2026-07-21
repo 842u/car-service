@@ -20,6 +20,15 @@ describe('User', () => {
       expect(user.name.value).toBe('Original Name');
     });
 
+    it('leaves the name untouched when explicitly undefined, same as absent', () => {
+      const user = buildUser({ name: 'Original Name' });
+
+      const result = user.edit({ name: undefined });
+
+      expect(result.success).toBe(true);
+      expect(user.name.value).toBe('Original Name');
+    });
+
     it('rejects an invalid name and leaves the user unchanged', () => {
       const user = buildUser({ name: 'Original Name' });
 
@@ -53,6 +62,16 @@ describe('User', () => {
       user.edit({ avatarUrl: 'https://cdn.test/avatar.png' });
 
       const result = user.edit({ name: 'New Name' });
+
+      expect(result.success).toBe(true);
+      expect(user.avatarUrl?.value).toBe('https://cdn.test/avatar.png');
+    });
+
+    it('leaves the avatar url untouched when explicitly undefined, same as absent', () => {
+      const user = buildUser();
+      user.edit({ avatarUrl: 'https://cdn.test/avatar.png' });
+
+      const result = user.edit({ avatarUrl: undefined });
 
       expect(result.success).toBe(true);
       expect(user.avatarUrl?.value).toBe('https://cdn.test/avatar.png');
