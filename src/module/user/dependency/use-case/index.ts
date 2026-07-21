@@ -1,6 +1,5 @@
 import { adminAuthClient } from '@/dependency/auth-client/admin';
 import { createServerAuthClient } from '@/dependency/auth-client/server';
-import { AvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
 import { EditUserUseCase } from '@/user/application/use-case/edit';
 import { PasswordChangeUseCase } from '@/user/application/use-case/password-change';
 import { SignInUseCase } from '@/user/application/use-case/sign-in';
@@ -37,9 +36,4 @@ export async function createEditUserUseCase() {
 export async function createPasswordChangeUseCase() {
   const authClient = await createServerAuthClient();
   return new PasswordChangeUseCase(authClient, userRepository, userMapper);
-}
-
-export async function createAvatarUrlChangeUseCase() {
-  const authClient = await createServerAuthClient();
-  return new AvatarUrlChangeUseCase(authClient, userRepository, userMapper);
 }
