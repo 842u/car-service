@@ -9,10 +9,6 @@ import {
   type EditCarApiRequest,
   editCarApiResponseSchema,
 } from '@/car/interface/api/edit.schema';
-import {
-  type CarImageChangeApiRequest,
-  carImageChangeApiResponseSchema,
-} from '@/car/interface/api/image-change.schema';
 import { removeCarApiResponseSchema } from '@/car/interface/api/remove.schema';
 import type { CarApiClient } from '@/car/presentation/api-client/car';
 import type {
@@ -99,15 +95,6 @@ export class NextCarApiClient implements CarApiClient {
       { carId },
       removeCarApiResponseSchema,
       'DELETE',
-    );
-  }
-
-  async imageChange(contract: CarImageChangeApiRequest) {
-    return this.makeRequest(
-      '/api/car/image',
-      contract,
-      carImageChangeApiResponseSchema,
-      'PATCH',
     );
   }
 }
