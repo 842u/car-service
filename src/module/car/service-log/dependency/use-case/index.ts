@@ -1,7 +1,7 @@
 import { ownershipVisibility } from '@/car/ownership/dependency/service';
-import { AddServiceLogUseCase } from '@/car/service-log/application/use-case/add-service-log';
-import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/edit-service-log';
-import { RemoveServiceLogUseCase } from '@/car/service-log/application/use-case/remove-service-log';
+import { AddServiceLogUseCase } from '@/car/service-log/application/use-case/add';
+import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/edit';
+import { RemoveServiceLogUseCase } from '@/car/service-log/application/use-case/remove';
 import { serviceLogMapper } from '@/car/service-log/dependency/mapper';
 import { serviceLogRepository } from '@/car/service-log/dependency/repository';
 import { createServerAuthClient } from '@/dependency/auth-client/server';

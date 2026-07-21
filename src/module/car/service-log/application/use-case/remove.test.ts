@@ -3,7 +3,7 @@ import { createMockOwnershipVisibility } from '@/car/ownership/application/servi
 import { buildOwnership } from '@/car/ownership/domain/ownership/ownership.builder';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { createMockServiceLogRepository } from '@/car/service-log/application/repository/service-log.mock';
-import { RemoveServiceLogUseCase } from '@/car/service-log/application/use-case/remove-service-log';
+import { RemoveServiceLogUseCase } from '@/car/service-log/application/use-case/remove';
 import type { ServiceLog } from '@/car/service-log/domain/service-log/service-log';
 import { buildServiceLog } from '@/car/service-log/domain/service-log/service-log.builder';
 import type { RemoveServiceLogApiRequest } from '@/car/service-log/interface/api/remove.schema';

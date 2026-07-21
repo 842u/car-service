@@ -6,7 +6,7 @@ import type { ServiceLogMapper } from '@/car/service-log/application/mapper/serv
 import { createMockServiceLogMapper } from '@/car/service-log/application/mapper/service-log.mock';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
 import { createMockServiceLogRepository } from '@/car/service-log/application/repository/service-log.mock';
-import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/edit-service-log';
+import { EditServiceLogUseCase } from '@/car/service-log/application/use-case/edit';
 import type { ServiceLog } from '@/car/service-log/domain/service-log/service-log';
 import { buildServiceLog } from '@/car/service-log/domain/service-log/service-log.builder';
 import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/edit.schema';
