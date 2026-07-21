@@ -11,7 +11,6 @@ interface EditFormProps {
 export function EditForm({ car, onSubmit }: EditFormProps) {
   const { handleFormSubmit } = useEditForm({
     carId: car?.id || '',
-    imageUrl: car?.imageUrl,
     onSubmit,
   });
 

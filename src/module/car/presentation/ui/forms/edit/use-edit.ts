@@ -7,11 +7,10 @@ import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 interface UseEditFormParams {
   carId: string;
-  imageUrl?: string | null;
   onSubmit?: () => void;
 }
 
-export function useEditForm({ carId, imageUrl, onSubmit }: UseEditFormParams) {
+export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
@@ -39,14 +38,9 @@ export function useEditForm({ carId, imageUrl, onSubmit }: UseEditFormParams) {
     const { image, ...contract } = formData;
 
     try {
-      // A save that doesn't pick a new file must not clear the existing
-      // image under full-replace, so fall back to what's already there.
-      await editCar.mutateAsync({
-        carId,
-        image,
-        ...contract,
-        imageUrl: image ? undefined : imageUrl,
-      });
+      // Omitting imageUrl when no new file is picked leaves the existing
+      // image untouched; the mutation sets it only after a successful upload.
+      await editCar.mutateAsync({ carId, image, ...contract });
     } catch {
       return;
     } finally {
