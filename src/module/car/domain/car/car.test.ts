@@ -91,7 +91,7 @@ describe('Car', () => {
   });
 
   describe('edit', () => {
-    it('atomically replaces the editable fields', () => {
+    it('changes only the fields present in the request', () => {
       const created = Car.create(validParams);
       expect(created.success).toBe(true);
       if (!created.success) {
@@ -109,8 +109,39 @@ describe('Car', () => {
       expect(car.customName.value).toBe('Weekend car');
       expect(car.brand?.value).toBe('Mazda');
       expect(car.mileage?.value).toBe(5000);
-      // Fields not supplied are cleared (atomic replace, not merge).
-      expect(car.vin).toBeNull();
+      // Fields absent from the request are left untouched (partial patch).
+      expect(car.vin?.value).toBe(validParams.vin);
+    });
+
+    it('leaves every field untouched when the request is empty', () => {
+      const created = Car.create(validParams);
+      expect(created.success).toBe(true);
+      if (!created.success) {
+        return;
+      }
+      const car = created.data;
+
+      const result = car.edit({});
+
+      expect(result.success).toBe(true);
+      expect(car.customName.value).toBe(validParams.customName);
+      expect(car.brand?.value).toBe(validParams.brand);
+      expect(car.mileage?.value).toBe(validParams.mileage);
+    });
+
+    it('validates every present field before mutating any of them', () => {
+      const created = Car.create(validParams);
+      expect(created.success).toBe(true);
+      if (!created.success) {
+        return;
+      }
+      const car = created.data;
+
+      const result = car.edit({ customName: 'Weekend car', vin: 'TOO-SHORT' });
+
+      expect(result.success).toBe(false);
+      expect(car.customName.value).toBe('Daily driver');
+      expect(car.vin?.value).toBe(validParams.vin);
     });
 
     it('rejects an invalid edit and leaves the car unchanged', () => {
@@ -141,7 +172,7 @@ describe('Car', () => {
       expect(car.id.value).toBe(VALID_ID);
     });
 
-    it('clears the image url when omitted from an edit, like every other optional field', () => {
+    it('leaves the image url untouched when omitted from an edit', () => {
       const created = Car.create({
         ...validParams,
         imageUrl: 'https://cdn.test/x.png',
@@ -153,6 +184,22 @@ describe('Car', () => {
       const car = created.data;
 
       car.edit({ customName: 'Renamed' });
+
+      expect(car.imageUrl?.value).toBe('https://cdn.test/x.png');
+    });
+
+    it('clears the image url when explicitly null', () => {
+      const created = Car.create({
+        ...validParams,
+        imageUrl: 'https://cdn.test/x.png',
+      });
+      expect(created.success).toBe(true);
+      if (!created.success) {
+        return;
+      }
+      const car = created.data;
+
+      car.edit({ imageUrl: null });
 
       expect(car.imageUrl).toBeNull();
     });
