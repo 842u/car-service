@@ -1,8 +1,4 @@
-import {
-  canChangeImage,
-  canEdit,
-  canRemove,
-} from '@/car/domain/policy/authorization';
+import { canEdit, canRemove } from '@/car/domain/policy/authorization';
 import { buildOwnership } from '@/car/ownership/domain/ownership/ownership.builder';
 
 const PRIMARY_OWNER_ID = 'b5b55395-e32f-4376-be03-f66be0a63ec4';
@@ -13,7 +9,6 @@ const CAR_ID = '6a6e49f5-9711-4a95-9fc2-3e14d0b5a4e6';
 describe.each([
   ['canEdit', canEdit],
   ['canRemove', canRemove],
-  ['canChangeImage', canChangeImage],
 ])('%s', (_name, policy) => {
   it('allows the primary owner', () => {
     const ownership = buildOwnership({
