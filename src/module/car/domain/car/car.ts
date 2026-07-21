@@ -34,11 +34,11 @@ type CarEditableValue = {
   mileage: Mileage | null;
   insuranceExpiration: InsuranceExpiration | null;
   technicalInspectionExpiration: TechnicalInspectionExpiration | null;
+  imageUrl: ImageUrl | null;
 };
 
 type CarValue = CarEditableValue & {
   id: CarId;
-  imageUrl: ImageUrl | null;
 };
 
 export type CarEditParams = {
@@ -56,11 +56,11 @@ export type CarEditParams = {
   mileage?: number | null;
   insuranceExpiration?: string | null;
   technicalInspectionExpiration?: string | null;
+  imageUrl?: string | null;
 };
 
 export type CarCreateParams = CarEditParams & {
   id: string;
-  imageUrl?: string | null;
 };
 
 export class Car extends Entity<CarValue> {
@@ -69,7 +69,7 @@ export class Car extends Entity<CarValue> {
   }
 
   /**
-   * Constructs and validates the 14 editable value objects atomically, failing
+   * Constructs and validates the 15 editable value objects atomically, failing
    * on the first invalid field in declaration order. Shared by `create` and
    * `edit`.
    */
@@ -112,6 +112,7 @@ export class Car extends Entity<CarValue> {
         TechnicalInspectionExpiration.create,
         params.technicalInspectionExpiration,
       ),
+      imageUrl: optionalValueObject(ImageUrl.create, params.imageUrl),
     });
   }
 
@@ -130,23 +131,12 @@ export class Car extends Entity<CarValue> {
       return Result.fail(editableResult.error);
     }
 
-    let imageUrl: ImageUrl | null = null;
-    if (params.imageUrl) {
-      const imageUrlResult = ImageUrl.create(params.imageUrl);
-      if (!imageUrlResult.success) {
-        return Result.fail(imageUrlResult.error);
-      }
-      imageUrl = imageUrlResult.data;
-    }
-
-    return Result.ok(
-      new Car({ id: idResult.data, imageUrl, ...editableResult.data }),
-    );
+    return Result.ok(new Car({ id: idResult.data, ...editableResult.data }));
   }
 
   /**
-   * Atomic edit of all 14 editable fields; leaves `id` and `imageUrl`
-   * untouched.
+   * Atomic edit of all 15 editable fields, including the Image; leaves only
+   * `id` untouched.
    */
   edit(params: CarEditParams): Result<undefined, ValidatorError> {
     const editableResult = Car.buildEditable(params);
@@ -155,24 +145,6 @@ export class Car extends Entity<CarValue> {
     }
 
     Object.assign(this._value, editableResult.data);
-
-    return Result.ok(undefined);
-  }
-
-  changeImageUrl(imageUrl: string | undefined | null) {
-    if (!imageUrl) {
-      this._value.imageUrl = null;
-
-      return Result.ok(undefined);
-    }
-
-    const imageUrlResult = ImageUrl.create(imageUrl);
-
-    if (!imageUrlResult.success) {
-      return Result.fail(imageUrlResult.error);
-    }
-
-    this._value.imageUrl = imageUrlResult.data;
 
     return Result.ok(undefined);
   }

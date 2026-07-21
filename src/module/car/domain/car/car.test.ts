@@ -70,6 +70,24 @@ describe('Car', () => {
 
       expect(result.success).toBe(false);
     });
+
+    it('builds a car with an image url when provided', () => {
+      const result = Car.create({
+        ...validParams,
+        imageUrl: 'https://cdn.test/x.png',
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.imageUrl?.value).toBe('https://cdn.test/x.png');
+      }
+    });
+
+    it('fails when the image url is invalid', () => {
+      const result = Car.create({ ...validParams, imageUrl: 'not-a-url' });
+
+      expect(result.success).toBe(false);
+    });
   });
 
   describe('edit', () => {
@@ -110,7 +128,20 @@ describe('Car', () => {
       expect(car.brand?.value).toBe('Toyota');
     });
 
-    it('does not touch the id or image url', () => {
+    it('does not touch the id', () => {
+      const created = Car.create(validParams);
+      expect(created.success).toBe(true);
+      if (!created.success) {
+        return;
+      }
+      const car = created.data;
+
+      car.edit({ customName: 'Renamed' });
+
+      expect(car.id.value).toBe(VALID_ID);
+    });
+
+    it('clears the image url when omitted from an edit, like every other optional field', () => {
       const created = Car.create({
         ...validParams,
         imageUrl: 'https://cdn.test/x.png',
@@ -123,28 +154,10 @@ describe('Car', () => {
 
       car.edit({ customName: 'Renamed' });
 
-      expect(car.id.value).toBe(VALID_ID);
-      expect(car.imageUrl?.value).toBe('https://cdn.test/x.png');
-    });
-  });
-
-  describe('changeImageUrl', () => {
-    it('sets and clears the image url', () => {
-      const created = Car.create(validParams);
-      expect(created.success).toBe(true);
-      if (!created.success) {
-        return;
-      }
-      const car = created.data;
-
-      expect(car.changeImageUrl('https://cdn.test/car.png').success).toBe(true);
-      expect(car.imageUrl?.value).toBe('https://cdn.test/car.png');
-
-      expect(car.changeImageUrl(null).success).toBe(true);
       expect(car.imageUrl).toBeNull();
     });
 
-    it('rejects an invalid image url', () => {
+    it('replaces the image url on edit', () => {
       const created = Car.create(validParams);
       expect(created.success).toBe(true);
       if (!created.success) {
@@ -152,9 +165,26 @@ describe('Car', () => {
       }
       const car = created.data;
 
-      const result = car.changeImageUrl('not-a-url');
+      car.edit({ customName: 'Renamed', imageUrl: 'https://cdn.test/new.png' });
+
+      expect(car.imageUrl?.value).toBe('https://cdn.test/new.png');
+    });
+
+    it('rejects an invalid image url on edit and leaves the car unchanged', () => {
+      const created = Car.create({
+        ...validParams,
+        imageUrl: 'https://cdn.test/x.png',
+      });
+      expect(created.success).toBe(true);
+      if (!created.success) {
+        return;
+      }
+      const car = created.data;
+
+      const result = car.edit({ customName: 'Renamed', imageUrl: 'not-a-url' });
 
       expect(result.success).toBe(false);
+      expect(car.imageUrl?.value).toBe('https://cdn.test/x.png');
     });
   });
 });
