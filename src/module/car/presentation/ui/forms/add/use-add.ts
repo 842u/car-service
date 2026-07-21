@@ -61,7 +61,7 @@ export function useAddForm({
 
       if (image) {
         try {
-          await attachImage.mutateAsync({ carId: car.id, image, ...contract });
+          await attachImage.mutateAsync({ carId: car.id, image });
         } catch (error) {
           if (error instanceof Error) addToast(error.message, 'warning');
         }
