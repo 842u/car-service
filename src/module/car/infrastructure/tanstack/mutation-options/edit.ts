@@ -10,6 +10,8 @@ import {
 } from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
 import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { EditCarApiRequest } from '@/car/interface/api/edit.schema';
+import { browserStorageClient } from '@/dependency/storage-client/browser';
+import { hashFile } from '@/lib/utils';
 
 export type CarEditMutationVariables = EditCarApiRequest & {
   image?: File | null;
@@ -20,6 +22,27 @@ export const carEditMutationOptions = (queryClient: QueryClient) =>
     throwOnError: false,
     mutationFn: async (variables: CarEditMutationVariables) => {
       const { image, ...contract } = variables;
+
+      if (image) {
+        const hashedFile = await hashFile(image);
+        const uploadPath = `${contract.carId}/${hashedFile}`;
+
+        const uploadResult = await browserStorageClient.upload(
+          'cars_images',
+          uploadPath,
+          image,
+        );
+
+        if (!uploadResult.success) {
+          const { message } = uploadResult.error;
+          throw new Error(`The image failed to upload: ${message}`);
+        }
+
+        const apiUrl =
+          process.env.NEXT_PUBLIC_SUPABASE_URL! + '/storage/v1/object/public/';
+
+        contract.imageUrl = apiUrl + uploadResult.data.fullPath;
+      }
 
       const editResult = await carApiClient.edit(contract);
 

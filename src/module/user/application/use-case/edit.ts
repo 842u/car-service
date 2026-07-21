@@ -8,12 +8,9 @@ import type { UseCase } from '@/common/application/use-case';
 import type { UserDto } from '@/user/application/dto/user';
 import type { UserMapper } from '@/user/application/mapper/user';
 import type { UserRepository } from '@/user/application/repository/user';
-import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
+import type { EditUserApiRequest } from '@/user/interface/api/edit.schema';
 
-export class AvatarUrlChangeUseCase implements UseCase<
-  AvatarUrlChangeApiRequest,
-  UserDto
-> {
+export class EditUserUseCase implements UseCase<EditUserApiRequest, UserDto> {
   private readonly _authClient: AuthClient;
   private readonly _userRepository: UserRepository;
   private readonly _userMapper: UserMapper;
@@ -29,7 +26,7 @@ export class AvatarUrlChangeUseCase implements UseCase<
   }
 
   async execute(
-    contract: AvatarUrlChangeApiRequest,
+    contract: EditUserApiRequest,
   ): Promise<Result<UserDto, ApplicationError>> {
     const sessionResult = await this._authClient.authenticate();
 
@@ -49,12 +46,10 @@ export class AvatarUrlChangeUseCase implements UseCase<
 
     const user = getUserResult.data;
 
-    const { avatarUrl } = contract;
+    const editResult = user.edit(contract);
 
-    const changeAvatarUrlResult = user.changeAvatarUrl(avatarUrl);
-
-    if (!changeAvatarUrlResult.success) {
-      const { message, issues } = changeAvatarUrlResult.error;
+    if (!editResult.success) {
+      const { message, issues } = editResult.error;
       return Result.fail(applicationError.validation(message, issues));
     }
 

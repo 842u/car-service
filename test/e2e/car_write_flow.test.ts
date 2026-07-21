@@ -34,43 +34,27 @@ test.describe('car_write_flow - edit - @api', () => {
 
     expect(response.status()).toBe(404);
   });
-});
 
-test.describe('car_write_flow - image change - @api', () => {
-  test('primary owner can change the car image - @api', async ({
+  test('a field absent from the edit request is left untouched - @api', async ({
     testCarGraph,
   }) => {
     const { primaryOwner, carId } = testCarGraph;
 
-    const response = await primaryOwner.request.patch('/api/car/image', {
-      data: { carId, imageUrl: 'https://example.com/primary-owner.png' },
+    const setBrandResponse = await primaryOwner.request.patch('/api/car', {
+      data: { carId, brand: 'Toyota' },
     });
 
-    expect(response.status()).toBe(200);
-  });
+    expect(setBrandResponse.status()).toBe(200);
 
-  test('co-owner changing the car image is forbidden - @api', async ({
-    testCarGraph,
-  }) => {
-    const { coOwner, carId } = testCarGraph;
-
-    const response = await coOwner.request.patch('/api/car/image', {
-      data: { carId, imageUrl: 'https://example.com/co-owner.png' },
+    const renameResponse = await primaryOwner.request.patch('/api/car', {
+      data: { carId, customName: 'Renamed, brand untouched' },
     });
 
-    expect(response.status()).toBe(403);
-  });
+    expect(renameResponse.status()).toBe(200);
 
-  test('stranger changing the car image gets not-found - @api', async ({
-    testCarGraph,
-  }) => {
-    const { stranger, carId } = testCarGraph;
+    const renameBody = await renameResponse.json();
 
-    const response = await stranger.request.patch('/api/car/image', {
-      data: { carId, imageUrl: 'https://example.com/stranger.png' },
-    });
-
-    expect(response.status()).toBe(404);
+    expect(renameBody.data.brand).toBe('Toyota');
   });
 });
 

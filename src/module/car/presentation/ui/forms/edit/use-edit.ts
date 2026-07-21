@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { carEditMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/edit';
-import { carImageChangeMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/image';
 import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
@@ -33,23 +32,15 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
     },
   });
 
-  const changeImage = useMutation(carImageChangeMutationOptions());
-
   const handleFormSubmit = async (formData: CarFormData) => {
     onSubmit && onSubmit();
 
     const { image, ...contract } = formData;
 
     try {
-      const car = await editCar.mutateAsync({ carId, image, ...contract });
-
-      if (image) {
-        try {
-          await changeImage.mutateAsync({ carId: car.id, image });
-        } catch (error) {
-          if (error instanceof Error) addToast(error.message, 'warning');
-        }
-      }
+      // Omitting imageUrl when no new file is picked leaves the existing
+      // image untouched; the mutation sets it only after a successful upload.
+      await editCar.mutateAsync({ carId, image, ...contract });
     } catch {
       return;
     } finally {

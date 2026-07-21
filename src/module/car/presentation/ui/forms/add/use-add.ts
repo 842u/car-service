@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { carAddMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/add';
-import { carImageChangeMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/image';
+import { carEditMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/edit';
 import {
   type CarsInfiniteQueryData,
   deepCopyCarsInfiniteQueryData,
@@ -46,7 +46,10 @@ export function useAddForm({
     },
   });
 
-  const changeImage = useMutation(carImageChangeMutationOptions());
+  // A Car is always born imageless (add has no imageUrl field): attaching a
+  // picked image is a follow-up edit of the just-created car, not part of
+  // creating it, so a failed upload/attach here doesn't undo the car.
+  const attachImage = useMutation(carEditMutationOptions(queryClient));
 
   const handleFormSubmit = async (formData: CarFormData) => {
     onSubmit && onSubmit();
@@ -58,7 +61,7 @@ export function useAddForm({
 
       if (image) {
         try {
-          await changeImage.mutateAsync({ carId: car.id, image });
+          await attachImage.mutateAsync({ carId: car.id, image });
         } catch (error) {
           if (error instanceof Error) addToast(error.message, 'warning');
         }

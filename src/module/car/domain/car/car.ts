@@ -34,15 +34,20 @@ type CarEditableValue = {
   mileage: Mileage | null;
   insuranceExpiration: InsuranceExpiration | null;
   technicalInspectionExpiration: TechnicalInspectionExpiration | null;
+  imageUrl: ImageUrl | null;
 };
 
 type CarValue = CarEditableValue & {
   id: CarId;
-  imageUrl: ImageUrl | null;
 };
 
-export type CarEditParams = {
-  customName: string;
+/**
+ * Raw shape shared by every editable field, whether the caller is creating a
+ * Car (every field present, absent nullable fields meaning "no value") or
+ * patching one (a present field is applied, an absent one is left alone).
+ */
+type EditableFieldRawValue = {
+  customName?: string;
   brand?: string | null;
   model?: string | null;
   licensePlates?: string | null;
@@ -56,11 +61,46 @@ export type CarEditParams = {
   mileage?: number | null;
   insuranceExpiration?: string | null;
   technicalInspectionExpiration?: string | null;
+  imageUrl?: string | null;
 };
 
-export type CarCreateParams = CarEditParams & {
+export type CarCreateParams = EditableFieldRawValue & {
   id: string;
-  imageUrl?: string | null;
+  customName: string;
+};
+
+export type CarEditParams = EditableFieldRawValue;
+
+/**
+ * One factory per editable field, the single place each field's raw wire
+ * value is turned into its value object. `create` (every field resolved,
+ * including to `null`) and `edit` (only present fields resolved) each decide
+ * which fields to call these with; the validation itself lives here once.
+ */
+const editableFieldFactories: {
+  [K in keyof CarEditableValue]: (
+    value: EditableFieldRawValue[K],
+  ) => Result<CarEditableValue[K], ValidatorError>;
+} = {
+  customName: (value) => CustomName.create(value as string),
+  brand: (value) => optionalValueObject(Brand.create, value),
+  model: (value) => optionalValueObject(Model.create, value),
+  licensePlates: (value) => optionalValueObject(LicensePlates.create, value),
+  vin: (value) => optionalValueObject(Vin.create, value),
+  fuelType: (value) => optionalValueObject(FuelType.create, value),
+  additionalFuelType: (value) =>
+    optionalValueObject(AdditionalFuelType.create, value),
+  transmissionType: (value) =>
+    optionalValueObject(TransmissionType.create, value),
+  driveType: (value) => optionalValueObject(DriveType.create, value),
+  productionYear: (value) => optionalValueObject(ProductionYear.create, value),
+  engineCapacity: (value) => optionalValueObject(EngineCapacity.create, value),
+  mileage: (value) => optionalValueObject(Mileage.create, value),
+  insuranceExpiration: (value) =>
+    optionalValueObject(InsuranceExpiration.create, value),
+  technicalInspectionExpiration: (value) =>
+    optionalValueObject(TechnicalInspectionExpiration.create, value),
+  imageUrl: (value) => optionalValueObject(ImageUrl.create, value),
 };
 
 export class Car extends Entity<CarValue> {
@@ -69,51 +109,37 @@ export class Car extends Entity<CarValue> {
   }
 
   /**
-   * Constructs and validates the 14 editable value objects atomically, failing
-   * on the first invalid field in declaration order. Shared by `create` and
-   * `edit`.
+   * Resolves `keys` atomically via `editableFieldFactories`, failing on the
+   * first invalid field in `keys` order. `create` passes every key (a new
+   * Car has no prior state, so every field must resolve to something,
+   * including `null`); `edit` passes only the keys present in its params, so
+   * an absent field is never resolved (not even to `null`) and is left
+   * untouched.
+   *
+   * `Result.combine` infers its precise per-field return type from an object
+   * literal with a fixed key set; here the key set is only known at runtime
+   * (`keys`), so the combined result is cast back to the shape its keys are
+   * actually drawn from.
    */
-  private static buildEditable(
-    params: CarEditParams,
-  ): Result<CarEditableValue, ValidatorError> {
-    return Result.combine({
-      customName: CustomName.create(params.customName),
-      brand: optionalValueObject(Brand.create, params.brand),
-      model: optionalValueObject(Model.create, params.model),
-      licensePlates: optionalValueObject(
-        LicensePlates.create,
-        params.licensePlates,
-      ),
-      vin: optionalValueObject(Vin.create, params.vin),
-      fuelType: optionalValueObject(FuelType.create, params.fuelType),
-      additionalFuelType: optionalValueObject(
-        AdditionalFuelType.create,
-        params.additionalFuelType,
-      ),
-      transmissionType: optionalValueObject(
-        TransmissionType.create,
-        params.transmissionType,
-      ),
-      driveType: optionalValueObject(DriveType.create, params.driveType),
-      productionYear: optionalValueObject(
-        ProductionYear.create,
-        params.productionYear,
-      ),
-      engineCapacity: optionalValueObject(
-        EngineCapacity.create,
-        params.engineCapacity,
-      ),
-      mileage: optionalValueObject(Mileage.create, params.mileage),
-      insuranceExpiration: optionalValueObject(
-        InsuranceExpiration.create,
-        params.insuranceExpiration,
-      ),
-      technicalInspectionExpiration: optionalValueObject(
-        TechnicalInspectionExpiration.create,
-        params.technicalInspectionExpiration,
-      ),
-    });
+  private static resolveFields<K extends keyof CarEditableValue>(
+    params: EditableFieldRawValue,
+    keys: readonly K[],
+  ): Result<Pick<CarEditableValue, K>, ValidatorError> {
+    const resolved: Record<string, Result<unknown, ValidatorError>> = {};
+
+    for (const key of keys) {
+      resolved[key] = editableFieldFactories[key](params[key] as never);
+    }
+
+    return Result.combine(resolved) as Result<
+      Pick<CarEditableValue, K>,
+      ValidatorError
+    >;
   }
+
+  private static readonly editableFieldNames = Object.keys(
+    editableFieldFactories,
+  ) as (keyof CarEditableValue)[];
 
   /**
    * Single factory for both a brand-new Car (add passes a generated id) and
@@ -125,54 +151,34 @@ export class Car extends Entity<CarValue> {
       return Result.fail(idResult.error);
     }
 
-    const editableResult = Car.buildEditable(params);
+    const editableResult = Car.resolveFields(params, Car.editableFieldNames);
     if (!editableResult.success) {
       return Result.fail(editableResult.error);
     }
 
-    let imageUrl: ImageUrl | null = null;
-    if (params.imageUrl) {
-      const imageUrlResult = ImageUrl.create(params.imageUrl);
-      if (!imageUrlResult.success) {
-        return Result.fail(imageUrlResult.error);
-      }
-      imageUrl = imageUrlResult.data;
-    }
-
-    return Result.ok(
-      new Car({ id: idResult.data, imageUrl, ...editableResult.data }),
-    );
+    return Result.ok(new Car({ id: idResult.data, ...editableResult.data }));
   }
 
   /**
-   * Atomic edit of all 14 editable fields; leaves `id` and `imageUrl`
-   * untouched.
+   * Partial patch: a field absent from `params`, or explicitly `undefined`,
+   * is left untouched, so a caller that only cares about one field (e.g.
+   * attaching an uploaded Image right after creation) never has to resupply
+   * the rest. Every present field is validated before any mutation, so an
+   * invalid field leaves the Car untouched. A present nullable field of
+   * `null` clears it; only `null` clears, an empty string is validated (and
+   * rejected) like any other value.
    */
   edit(params: CarEditParams): Result<undefined, ValidatorError> {
-    const editableResult = Car.buildEditable(params);
-    if (!editableResult.success) {
-      return Result.fail(editableResult.error);
+    const presentFields = Car.editableFieldNames.filter(
+      (key) => Object.hasOwn(params, key) && params[key] !== undefined,
+    );
+
+    const patchResult = Car.resolveFields(params, presentFields);
+    if (!patchResult.success) {
+      return Result.fail(patchResult.error);
     }
 
-    Object.assign(this._value, editableResult.data);
-
-    return Result.ok(undefined);
-  }
-
-  changeImageUrl(imageUrl: string | undefined | null) {
-    if (!imageUrl) {
-      this._value.imageUrl = null;
-
-      return Result.ok(undefined);
-    }
-
-    const imageUrlResult = ImageUrl.create(imageUrl);
-
-    if (!imageUrlResult.success) {
-      return Result.fail(imageUrlResult.error);
-    }
-
-    this._value.imageUrl = imageUrlResult.data;
+    Object.assign(this._value, patchResult.data);
 
     return Result.ok(undefined);
   }

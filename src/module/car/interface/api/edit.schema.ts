@@ -29,7 +29,7 @@ export type EditCarApiResponseError = z.infer<
 
 export const editCarApiRequestSchema = z.object({
   carId: z.string(),
-  customName: z.string(),
+  customName: z.string().optional(),
   brand: z.string().nullable().optional(),
   model: z.string().nullable().optional(),
   licensePlates: z.string().nullable().optional(),
@@ -43,6 +43,7 @@ export const editCarApiRequestSchema = z.object({
   mileage: z.number().nullable().optional(),
   insuranceExpiration: z.string().nullable().optional(),
   technicalInspectionExpiration: z.string().nullable().optional(),
+  imageUrl: z.string().nullable().optional(),
 });
 
 export type EditCarApiRequest = z.infer<typeof editCarApiRequestSchema>;

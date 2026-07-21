@@ -6,14 +6,14 @@ import {
   type ImageFormData,
   imageFormSchema,
 } from '@/common/interface/ui/image-form.schema';
-import { useUserAvatarChange } from '@/user/presentation/ui/forms/avatar/use-avatar-change';
+import { useUserAvatarEdit } from '@/user/presentation/ui/forms/avatar/use-avatar-edit';
 
 export const defaultAvatarFormValues: ImageFormData = {
   image: null,
 };
 
 export function useAvatarForm() {
-  const { mutateAsync } = useUserAvatarChange();
+  const { mutateAsync } = useUserAvatarEdit();
 
   const {
     control,

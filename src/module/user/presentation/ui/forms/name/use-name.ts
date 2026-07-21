@@ -6,14 +6,14 @@ import {
   type NameChangeFormData,
   nameChangeFormDataSchema,
 } from '@/user/interface/ui/name-change-form.schema';
-import { useUserNameChange } from '@/user/presentation/ui/forms/name/use-name-change';
+import { useUserNameEdit } from '@/user/presentation/ui/forms/name/use-name-edit';
 
 const defaultNameFormValues: NameChangeFormData = {
   name: '',
 };
 
 export function useNameForm({ name }: { name: string | null | undefined }) {
-  const { mutateAsync } = useUserNameChange();
+  const { mutateAsync } = useUserNameEdit();
 
   const {
     register,
