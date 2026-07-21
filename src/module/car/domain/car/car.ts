@@ -160,17 +160,17 @@ export class Car extends Entity<CarValue> {
   }
 
   /**
-   * Partial patch: a field absent from `params` is left untouched, so a
-   * caller that only cares about one field (e.g. attaching an uploaded
-   * Image right after creation) never has to resupply the rest. Every
-   * present field is validated before any mutation, so an invalid field
-   * leaves the Car untouched. A present nullable field of `null` clears it;
-   * only `null` clears, an empty string is validated (and rejected) like
-   * any other value.
+   * Partial patch: a field absent from `params`, or explicitly `undefined`,
+   * is left untouched, so a caller that only cares about one field (e.g.
+   * attaching an uploaded Image right after creation) never has to resupply
+   * the rest. Every present field is validated before any mutation, so an
+   * invalid field leaves the Car untouched. A present nullable field of
+   * `null` clears it; only `null` clears, an empty string is validated (and
+   * rejected) like any other value.
    */
   edit(params: CarEditParams): Result<undefined, ValidatorError> {
-    const presentFields = Car.editableFieldNames.filter((key) =>
-      Object.hasOwn(params, key),
+    const presentFields = Car.editableFieldNames.filter(
+      (key) => Object.hasOwn(params, key) && params[key] !== undefined,
     );
 
     const patchResult = Car.resolveFields(params, presentFields);
