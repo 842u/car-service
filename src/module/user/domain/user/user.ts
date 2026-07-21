@@ -21,6 +21,11 @@ type UserCreateParams = {
   avatarUrl?: string | null;
 };
 
+export type UserEditParams = {
+  name?: string;
+  avatarUrl?: string | null;
+};
+
 export class User extends Entity<UserValue> {
   private constructor(value: UserValue) {
     super(value);
@@ -53,14 +58,47 @@ export class User extends Entity<UserValue> {
     return this._value.avatarUrl;
   }
 
-  changeName(name: string) {
-    const nameResult = Name.create(name);
+  /**
+   * Partial patch: a field absent from `params` is left untouched, so
+   * independent forms can each submit only the field they own. Every present
+   * field is validated before any mutation, so an invalid field leaves the
+   * User untouched. A present `avatarUrl` of `null` clears it; only `null`
+   * clears, an empty string is validated (and rejected) like any other value.
+   */
+  edit(params: UserEditParams): Result<undefined, ValidatorError> {
+    let nextName: Name | undefined;
+    let nextAvatarUrl: AvatarUrl | null | undefined;
 
-    if (!nameResult.success) {
-      return Result.fail(nameResult.error);
+    if (Object.hasOwn(params, 'name')) {
+      const nameResult = Name.create(params.name as string);
+
+      if (!nameResult.success) {
+        return Result.fail(nameResult.error);
+      }
+
+      nextName = nameResult.data;
     }
 
-    this._value.name = nameResult.data;
+    if (Object.hasOwn(params, 'avatarUrl')) {
+      const avatarUrlResult = optionalValueObject(
+        AvatarUrl.create,
+        params.avatarUrl,
+      );
+
+      if (!avatarUrlResult.success) {
+        return Result.fail(avatarUrlResult.error);
+      }
+
+      nextAvatarUrl = avatarUrlResult.data;
+    }
+
+    if (nextName !== undefined) {
+      this._value.name = nextName;
+    }
+
+    if (nextAvatarUrl !== undefined) {
+      this._value.avatarUrl = nextAvatarUrl;
+    }
 
     return Result.ok(undefined);
   }
