@@ -1,7 +1,7 @@
 import type { Result } from '@/common/application/result';
 import type { UserDto } from '@/user/application/dto/user';
 import type { AvatarUrlChangeApiRequest } from '@/user/interface/api/avatar-change.schema';
-import type { NameChangeApiRequest } from '@/user/interface/api/name-change.schema';
+import type { EditUserApiRequest } from '@/user/interface/api/edit.schema';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
@@ -18,8 +18,8 @@ export interface UserApiClient {
   passwordChange(
     contract: PasswordChangeApiRequest,
   ): Promise<Result<UserDto, UserApiClientError>>;
-  nameChange(
-    contract: NameChangeApiRequest,
+  edit(
+    contract: EditUserApiRequest,
   ): Promise<Result<UserDto, UserApiClientError>>;
   avatarChange(
     contract: AvatarUrlChangeApiRequest,

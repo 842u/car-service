@@ -9,9 +9,9 @@ import {
   avatarUrlChangeApiResponseSchema,
 } from '@/user/interface/api/avatar-change.schema';
 import {
-  type NameChangeApiRequest,
-  nameChangeApiResponseSchema,
-} from '@/user/interface/api/name-change.schema';
+  type EditUserApiRequest,
+  editUserApiResponseSchema,
+} from '@/user/interface/api/edit.schema';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
 import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
@@ -96,11 +96,11 @@ export class NextUserApiClient implements UserApiClient {
     );
   }
 
-  async nameChange(contract: NameChangeApiRequest) {
+  async edit(contract: EditUserApiRequest) {
     return this.makeRequest(
-      '/api/user/name',
+      '/api/user',
       contract,
-      nameChangeApiResponseSchema,
+      editUserApiResponseSchema,
       'PATCH',
     );
   }
