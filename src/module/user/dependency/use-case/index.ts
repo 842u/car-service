@@ -1,7 +1,7 @@
 import { adminAuthClient } from '@/dependency/auth-client/admin';
 import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { AvatarUrlChangeUseCase } from '@/user/application/use-case/avatar-url-change';
-import { NameChangeUseCase } from '@/user/application/use-case/name-change';
+import { EditUserUseCase } from '@/user/application/use-case/edit';
 import { PasswordChangeUseCase } from '@/user/application/use-case/password-change';
 import { SignInUseCase } from '@/user/application/use-case/sign-in';
 import { SignInWithOAuthUseCase } from '@/user/application/use-case/sign-in-with-o-auth';
@@ -29,9 +29,9 @@ export async function createSignInWithOtpUseCase() {
   return new SignInWithOtpUseCase(authClient, userMapper);
 }
 
-export async function createNameChangeUseCase() {
+export async function createEditUserUseCase() {
   const authClient = await createServerAuthClient();
-  return new NameChangeUseCase(authClient, userRepository, userMapper);
+  return new EditUserUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createPasswordChangeUseCase() {

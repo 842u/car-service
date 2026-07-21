@@ -6,10 +6,10 @@ import type {
   AvatarUrlChangeApiResponseError,
 } from '@/user/interface/api/avatar-change.schema';
 import type {
-  NameChangeApiRequest,
-  NameChangeApiResponseData,
-  NameChangeApiResponseError,
-} from '@/user/interface/api/name-change.schema';
+  EditUserApiRequest,
+  EditUserApiResponseData,
+  EditUserApiResponseError,
+} from '@/user/interface/api/edit.schema';
 import type {
   PasswordChangeApiRequest,
   PasswordChangeApiResponseData,
@@ -32,10 +32,10 @@ export const avatarUrlChangeApiHandler = new NextApiHandler<
   AvatarUrlChangeApiRequest
 >(validator);
 
-export const nameChangeApiHandler = new NextApiHandler<
-  NameChangeApiResponseData,
-  NameChangeApiResponseError,
-  NameChangeApiRequest
+export const editUserApiHandler = new NextApiHandler<
+  EditUserApiResponseData,
+  EditUserApiResponseError,
+  EditUserApiRequest
 >(validator);
 
 export const passwordChangeApiHandler = new NextApiHandler<
