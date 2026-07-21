@@ -59,18 +59,19 @@ export class User extends Entity<UserValue> {
   }
 
   /**
-   * Partial patch: a field absent from `params` is left untouched, so
-   * independent forms can each submit only the field they own. Every present
-   * field is validated before any mutation, so an invalid field leaves the
-   * User untouched. A present `avatarUrl` of `null` clears it; only `null`
-   * clears, an empty string is validated (and rejected) like any other value.
+   * Partial patch: a field absent from `params`, or explicitly `undefined`,
+   * is left untouched, so independent forms can each submit only the field
+   * they own. Every present field is validated before any mutation, so an
+   * invalid field leaves the User untouched. A present `avatarUrl` of `null`
+   * clears it; only `null` clears, an empty string is validated (and
+   * rejected) like any other value.
    */
   edit(params: UserEditParams): Result<undefined, ValidatorError> {
     let nextName: Name | undefined;
     let nextAvatarUrl: AvatarUrl | null | undefined;
 
-    if (Object.hasOwn(params, 'name')) {
-      const nameResult = Name.create(params.name as string);
+    if (Object.hasOwn(params, 'name') && params.name !== undefined) {
+      const nameResult = Name.create(params.name);
 
       if (!nameResult.success) {
         return Result.fail(nameResult.error);
@@ -79,7 +80,7 @@ export class User extends Entity<UserValue> {
       nextName = nameResult.data;
     }
 
-    if (Object.hasOwn(params, 'avatarUrl')) {
+    if (Object.hasOwn(params, 'avatarUrl') && params.avatarUrl !== undefined) {
       const avatarUrlResult = optionalValueObject(
         AvatarUrl.create,
         params.avatarUrl,
