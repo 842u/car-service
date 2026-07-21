@@ -1,4 +1,6 @@
+import { ownershipDomainErrorToApplicationError } from '@/car/ownership/application/mapper/error';
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
+import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { RemoveOwnerApiRequest } from '@/car/ownership/interface/api/remove.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import {
@@ -13,13 +15,16 @@ export class RemoveOwnerUseCase implements UseCase<
   null
 > {
   private readonly _authClient: AuthClient;
+  private readonly _ownershipVisibility: OwnershipVisibility;
   private readonly _ownershipRepository: OwnershipRepository;
 
   constructor(
     authClient: AuthClient,
+    ownershipVisibility: OwnershipVisibility,
     ownershipRepository: OwnershipRepository,
   ) {
     this._authClient = authClient;
+    this._ownershipVisibility = ownershipVisibility;
     this._ownershipRepository = ownershipRepository;
   }
 
@@ -37,38 +42,29 @@ export class RemoveOwnerUseCase implements UseCase<
 
     const { carId, ownerId } = contract;
 
-    const getOwnershipResult =
-      await this._ownershipRepository.getByCarId(carId);
+    const visibilityResult = await this._ownershipVisibility.resolve(
+      carId,
+      actingId,
+    );
 
-    if (!getOwnershipResult.success) {
-      const { message } = getOwnershipResult.error;
-      return Result.fail(applicationError.notFound(message));
+    if (!visibilityResult.success) {
+      return Result.fail(visibilityResult.error);
     }
 
-    const carOwnership = getOwnershipResult.data;
+    const ownership = visibilityResult.data;
 
-    const removeOwnerResult = carOwnership.removeOwner(actingId, ownerId);
+    const removeOwnerResult = ownership.removeOwner(actingId, ownerId);
 
     if (!removeOwnerResult.success) {
-      const { kind, message } = removeOwnerResult.error;
-
-      if (kind === 'validation') {
-        return Result.fail(
-          applicationError.validation(message, removeOwnerResult.error.issues),
-        );
-      }
-
-      if (kind === 'unauthorized') {
-        return Result.fail(applicationError.unauthorized(message));
-      }
-
-      return Result.fail(applicationError.conflict(message));
+      return Result.fail(
+        ownershipDomainErrorToApplicationError(removeOwnerResult.error),
+      );
     }
 
     const removedOwnerId = removeOwnerResult.data;
 
     const persistResult = await this._ownershipRepository.removeOwner(
-      carOwnership,
+      ownership,
       removedOwnerId,
     );
 

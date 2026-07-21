@@ -16,24 +16,26 @@ export class UserRepositoryImplementation implements UserRepository {
   async store(user: User) {
     const userPersistence = this._userMapper.domainToPersistence(user);
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('users').insert(userPersistence),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('users').insert(userPersistence),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
   }
 
   async remove(user: User) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('users').delete().eq('id', user.id.value),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('users').delete().eq('id', user.id.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
@@ -62,12 +64,13 @@ export class UserRepositoryImplementation implements UserRepository {
   async update(user: User) {
     const userPersistence = this._userMapper.domainToPersistence(user);
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('users').update(userPersistence).eq('id', user.id.value),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('users').update(userPersistence).eq('id', user.id.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);

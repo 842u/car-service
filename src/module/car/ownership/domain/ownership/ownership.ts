@@ -4,7 +4,7 @@ import { Result } from '@/common/application/result';
 import type { ValidatorIssue } from '@/common/application/validator';
 import { Entity } from '@/common/domain/entity';
 
-type CarOwnershipValue = {
+type OwnershipValue = {
   id: CarId;
   primaryOwner: OwnerId;
   coOwners: OwnerId[];
@@ -12,11 +12,11 @@ type CarOwnershipValue = {
 
 export type OwnershipDomainError =
   | { kind: 'validation'; message: string; issues: ValidatorIssue[] }
-  | { kind: 'unauthorized'; message: string }
+  | { kind: 'forbidden'; message: string }
   | { kind: 'conflict'; message: string };
 
-export class CarOwnership extends Entity<CarOwnershipValue> {
-  private constructor(value: CarOwnershipValue) {
+export class Ownership extends Entity<OwnershipValue> {
+  private constructor(value: OwnershipValue) {
     super(value);
   }
 
@@ -24,8 +24,8 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
    * Rebuilds an already-existing Ownership from persisted, pre-validated
    * owners.
    */
-  static reconstitute(value: CarOwnershipValue): CarOwnership {
-    return new CarOwnership(value);
+  static reconstitute(value: OwnershipValue): Ownership {
+    return new Ownership(value);
   }
 
   /**
@@ -42,9 +42,9 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
   }: {
     carId: CarId;
     primaryOwnerId: OwnerId;
-  }): Result<CarOwnership, never> {
+  }): Result<Ownership, never> {
     return Result.ok(
-      new CarOwnership({
+      new Ownership({
         id: carId,
         primaryOwner: primaryOwnerId,
         coOwners: [],
@@ -63,7 +63,7 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
   ): Result<OwnerId, OwnershipDomainError> {
     if (actingId !== this._value.primaryOwner.value) {
       return Result.fail({
-        kind: 'unauthorized',
+        kind: 'forbidden',
         message: 'Only the primary owner may add a co-owner.',
       });
     }
@@ -124,7 +124,7 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
     if (isActingPrimary) {
       if (isTargetPrimary) {
         return Result.fail({
-          kind: 'unauthorized',
+          kind: 'forbidden',
           message: 'The primary owner cannot leave without promoting first.',
         });
       }
@@ -142,13 +142,13 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
     } else if (isActingCoOwner) {
       if (target.value !== actingId) {
         return Result.fail({
-          kind: 'unauthorized',
+          kind: 'forbidden',
           message: 'A co-owner may remove only their own ownership.',
         });
       }
     } else {
       return Result.fail({
-        kind: 'unauthorized',
+        kind: 'forbidden',
         message: 'Only an owner of this car may remove an owner.',
       });
     }
@@ -175,7 +175,7 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
   ): Result<OwnerId, OwnershipDomainError> {
     if (actingId !== this._value.primaryOwner.value) {
       return Result.fail({
-        kind: 'unauthorized',
+        kind: 'forbidden',
         message: 'Only the primary owner may hand over primary ownership.',
       });
     }
@@ -211,9 +211,9 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
   }
 
   /**
-   * True for the primary owner or any co-owner. Backs cross-aggregate
-   * authorization rules (e.g. Service Log's `canRecord` policy) that only
-   * need to know whether someone owns the car, not which role they hold.
+   * True for the primary owner or any co-owner. Backs Visibility resolution
+   * and cross-aggregate authorization rules that only need to know whether
+   * someone owns the car, not which role they hold.
    */
   isOwner(userId: string): boolean {
     return (
@@ -224,8 +224,8 @@ export class CarOwnership extends Entity<CarOwnershipValue> {
 
   /**
    * True only for the primary owner. Backs cross-aggregate authorization
-   * rules (e.g. Service Log's `canModify` policy) that need the stronger,
-   * primary-only role rather than mere membership.
+   * rules (e.g. Service Log's `canEdit`/`canRemove` policies) that need the
+   * stronger, primary-only role rather than mere membership.
    */
   isPrimaryOwner(userId: string): boolean {
     return this._value.primaryOwner.value === userId;

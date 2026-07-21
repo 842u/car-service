@@ -27,7 +27,7 @@ describe('UserRepositoryImplementation', () => {
       const persistence = buildUserPersistence();
 
       mockUserMapper.domainToPersistence.mockReturnValue(persistence);
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([persistence]));
 
       const result = await repository.store(user);
 
@@ -36,14 +36,14 @@ describe('UserRepositoryImplementation', () => {
         expect(result.data).toBeNull();
       }
       expect(mockUserMapper.domainToPersistence).toHaveBeenCalledWith(user);
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
+    it('should return error when the mutation fails', async () => {
       mockUserMapper.domainToPersistence.mockReturnValue(
         buildUserPersistence(),
       );
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
       );
 
@@ -58,7 +58,9 @@ describe('UserRepositoryImplementation', () => {
 
   describe('remove', () => {
     it('should return success result on success', async () => {
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(
+        Result.ok([buildUserPersistence()]),
+      );
 
       const result = await repository.remove(user);
 
@@ -66,11 +68,11 @@ describe('UserRepositoryImplementation', () => {
       if (result.success) {
         expect(result.data).toBeNull();
       }
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
-      mockDbClient.query.mockResolvedValue(
+    it('should return error when the mutation fails', async () => {
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Delete failed' }),
       );
 
@@ -140,7 +142,7 @@ describe('UserRepositoryImplementation', () => {
       const persistence = buildUserPersistence();
 
       mockUserMapper.domainToPersistence.mockReturnValue(persistence);
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([persistence]));
 
       const result = await repository.update(user);
 
@@ -149,14 +151,14 @@ describe('UserRepositoryImplementation', () => {
         expect(result.data).toBeNull();
       }
       expect(mockUserMapper.domainToPersistence).toHaveBeenCalledWith(user);
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
+    it('should return error when the mutation fails', async () => {
       mockUserMapper.domainToPersistence.mockReturnValue(
         buildUserPersistence(),
       );
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),
       );
 

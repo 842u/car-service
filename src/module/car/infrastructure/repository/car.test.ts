@@ -27,7 +27,7 @@ describe('CarRepositoryImplementation', () => {
       const persistence = buildCarPersistence();
 
       mockCarMapper.domainToPersistence.mockReturnValue(persistence);
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([persistence]));
 
       const result = await repository.store(car);
 
@@ -36,12 +36,12 @@ describe('CarRepositoryImplementation', () => {
         expect(result.data).toBeNull();
       }
       expect(mockCarMapper.domainToPersistence).toHaveBeenCalledWith(car);
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
+    it('should return error when the mutation fails', async () => {
       mockCarMapper.domainToPersistence.mockReturnValue(buildCarPersistence());
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
       );
 
@@ -56,7 +56,7 @@ describe('CarRepositoryImplementation', () => {
 
   describe('remove', () => {
     it('should return success result on success', async () => {
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([buildCarPersistence()]));
 
       const result = await repository.remove(car);
 
@@ -64,11 +64,11 @@ describe('CarRepositoryImplementation', () => {
       if (result.success) {
         expect(result.data).toBeNull();
       }
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
-      mockDbClient.query.mockResolvedValue(
+    it('should return error when the mutation fails', async () => {
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Delete failed' }),
       );
 
@@ -77,6 +77,22 @@ describe('CarRepositoryImplementation', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe('Delete failed');
+      }
+    });
+
+    it('should propagate a row-count mismatch as a failed result', async () => {
+      mockDbClient.mutate.mockResolvedValue(
+        Result.fail({
+          message: 'Expected to affect 1 row(s) but affected 0',
+          code: 'ROW_COUNT_MISMATCH',
+        }),
+      );
+
+      const result = await repository.remove(car);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.code).toBe('ROW_COUNT_MISMATCH');
       }
     });
   });
@@ -138,7 +154,7 @@ describe('CarRepositoryImplementation', () => {
       const persistence = buildCarPersistence();
 
       mockCarMapper.domainToPersistence.mockReturnValue(persistence);
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([persistence]));
 
       const result = await repository.update(car);
 
@@ -147,12 +163,12 @@ describe('CarRepositoryImplementation', () => {
         expect(result.data).toBeNull();
       }
       expect(mockCarMapper.domainToPersistence).toHaveBeenCalledWith(car);
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('should return error when query fails', async () => {
+    it('should return error when the mutation fails', async () => {
       mockCarMapper.domainToPersistence.mockReturnValue(buildCarPersistence());
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),
       );
 

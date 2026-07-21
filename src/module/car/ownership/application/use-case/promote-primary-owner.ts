@@ -1,6 +1,8 @@
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
+import { ownershipDomainErrorToApplicationError } from '@/car/ownership/application/mapper/error';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
+import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { PromotePrimaryOwnerApiRequest } from '@/car/ownership/interface/api/promote.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import {
@@ -15,15 +17,18 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
   OwnershipDto[]
 > {
   private readonly _authClient: AuthClient;
+  private readonly _ownershipVisibility: OwnershipVisibility;
   private readonly _ownershipRepository: OwnershipRepository;
   private readonly _ownershipMapper: OwnershipMapper;
 
   constructor(
     authClient: AuthClient,
+    ownershipVisibility: OwnershipVisibility,
     ownershipRepository: OwnershipRepository,
     ownershipMapper: OwnershipMapper,
   ) {
     this._authClient = authClient;
+    this._ownershipVisibility = ownershipVisibility;
     this._ownershipRepository = ownershipRepository;
     this._ownershipMapper = ownershipMapper;
   }
@@ -42,38 +47,29 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
 
     const { carId, ownerId } = contract;
 
-    const getOwnershipResult =
-      await this._ownershipRepository.getByCarId(carId);
+    const visibilityResult = await this._ownershipVisibility.resolve(
+      carId,
+      actingId,
+    );
 
-    if (!getOwnershipResult.success) {
-      const { message } = getOwnershipResult.error;
-      return Result.fail(applicationError.notFound(message));
+    if (!visibilityResult.success) {
+      return Result.fail(visibilityResult.error);
     }
 
-    const carOwnership = getOwnershipResult.data;
+    const ownership = visibilityResult.data;
 
-    const promoteResult = carOwnership.promotePrimary(actingId, ownerId);
+    const promoteResult = ownership.promotePrimary(actingId, ownerId);
 
     if (!promoteResult.success) {
-      const { kind, message } = promoteResult.error;
-
-      if (kind === 'validation') {
-        return Result.fail(
-          applicationError.validation(message, promoteResult.error.issues),
-        );
-      }
-
-      if (kind === 'unauthorized') {
-        return Result.fail(applicationError.unauthorized(message));
-      }
-
-      return Result.fail(applicationError.conflict(message));
+      return Result.fail(
+        ownershipDomainErrorToApplicationError(promoteResult.error),
+      );
     }
 
     const newPrimaryOwnerId = promoteResult.data;
 
     const persistResult = await this._ownershipRepository.promotePrimary(
-      carOwnership,
+      ownership,
       newPrimaryOwnerId,
     );
 
@@ -82,6 +78,6 @@ export class PromotePrimaryOwnerUseCase implements UseCase<
       return Result.fail(applicationError.unexpected(message));
     }
 
-    return Result.ok(this._ownershipMapper.domainToDto(carOwnership));
+    return Result.ok(this._ownershipMapper.domainToDto(ownership));
   }
 }

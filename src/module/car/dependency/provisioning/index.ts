@@ -1,13 +1,10 @@
 import { carMapper } from '@/car/dependency/mapper';
 import { CarProvisioningImplementation } from '@/car/infrastructure/provisioning/car';
 import { ownershipMapper } from '@/car/ownership/dependency/mapper';
-import { createServerDatabaseClient } from '@/dependency/database-client/server';
+import { adminDatabaseClient } from '@/dependency/database-client/admin';
 
-export async function createCarProvisioning() {
-  const dbClient = await createServerDatabaseClient();
-  return new CarProvisioningImplementation(
-    dbClient,
-    carMapper,
-    ownershipMapper,
-  );
-}
+export const carProvisioning = new CarProvisioningImplementation(
+  adminDatabaseClient,
+  carMapper,
+  ownershipMapper,
+);

@@ -1,6 +1,6 @@
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
 import type { OwnershipRepository } from '@/car/ownership/application/repository/ownership';
-import type { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import type { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import type { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
@@ -26,54 +26,57 @@ export class OwnershipRepositoryImplementation implements OwnershipRepository {
       return Result.fail(queryResult.error);
     }
 
-    const carOwnershipResult = this._ownershipMapper.persistenceToDomain(
+    const ownershipResult = this._ownershipMapper.persistenceToDomain(
       queryResult.data,
     );
 
-    if (!carOwnershipResult.success) {
-      return Result.fail(carOwnershipResult.error);
+    if (!ownershipResult.success) {
+      return Result.fail(ownershipResult.error);
     }
 
-    return Result.ok(carOwnershipResult.data);
+    return Result.ok(ownershipResult.data);
   }
 
-  async addOwner(carOwnership: CarOwnership, newOwnerId: OwnerId) {
+  async addOwner(ownership: Ownership, newOwnerId: OwnerId) {
     const row = this._ownershipMapper.newCoOwnerToPersistence(
-      carOwnership.id,
+      ownership.id,
       newOwnerId,
     );
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('cars_ownerships').insert(row),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('cars_ownerships').insert(row),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
   }
 
-  async removeOwner(carOwnership: CarOwnership, targetId: OwnerId) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('cars_ownerships')
-        .delete()
-        .eq('car_id', carOwnership.id.value)
-        .eq('owner_id', targetId.value),
+  async removeOwner(ownership: Ownership, targetId: OwnerId) {
+    const mutateResult = await this._dbClient.mutate(
+      (from) =>
+        from('cars_ownerships')
+          .delete()
+          .eq('car_id', ownership.id.value)
+          .eq('owner_id', targetId.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
   }
 
-  async promotePrimary(carOwnership: CarOwnership, newPrimaryOwnerId: OwnerId) {
+  async promotePrimary(ownership: Ownership, newPrimaryOwnerId: OwnerId) {
     const rpcResult = await this._dbClient.rpc(async (rpc) =>
       rpc('promote_primary_car_owner', {
         new_primary_owner_id: newPrimaryOwnerId.value,
-        target_car_id: carOwnership.id.value,
+        target_car_id: ownership.id.value,
       }),
     );
 

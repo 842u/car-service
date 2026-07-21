@@ -8,27 +8,19 @@ import { SignInWithOAuthUseCase } from '@/user/application/use-case/sign-in-with
 import { SignInWithOtpUseCase } from '@/user/application/use-case/sign-in-with-otp';
 import { SignUpUseCase } from '@/user/application/use-case/sign-up';
 import { userMapper } from '@/user/dependency/mapper';
-import { createUserRepository } from '@/user/dependency/repository';
-import { adminUserRepository } from '@/user/dependency/repository/admin';
+import { userRepository } from '@/user/dependency/repository';
 
 export async function createSignUpUseCase(origin: string) {
-  return new SignUpUseCase(
-    adminAuthClient,
-    adminUserRepository,
-    userMapper,
-    origin,
-  );
+  return new SignUpUseCase(adminAuthClient, userRepository, userMapper, origin);
 }
 
 export async function createSignInUseCase() {
   const authClient = await createServerAuthClient();
-  const userRepository = await createUserRepository();
   return new SignInUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createSignInWithOAuthUseCase() {
   const authClient = await createServerAuthClient();
-  const userRepository = await createUserRepository();
   return new SignInWithOAuthUseCase(authClient, userRepository, userMapper);
 }
 
@@ -39,18 +31,15 @@ export async function createSignInWithOtpUseCase() {
 
 export async function createNameChangeUseCase() {
   const authClient = await createServerAuthClient();
-  const userRepository = await createUserRepository();
   return new NameChangeUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createPasswordChangeUseCase() {
   const authClient = await createServerAuthClient();
-  const userRepository = await createUserRepository();
   return new PasswordChangeUseCase(authClient, userRepository, userMapper);
 }
 
 export async function createAvatarUrlChangeUseCase() {
   const authClient = await createServerAuthClient();
-  const userRepository = await createUserRepository();
   return new AvatarUrlChangeUseCase(authClient, userRepository, userMapper);
 }

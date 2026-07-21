@@ -1,4 +1,4 @@
-import type { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import type { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import type { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 import type { RepositoryResult } from '@/common/application/repository';
 
@@ -8,17 +8,17 @@ import type { RepositoryResult } from '@/common/application/repository';
  * `Repository<T>`, which mandates `store`/`update`/`remove`.
  */
 export interface OwnershipRepository {
-  getByCarId(carId: string): Promise<RepositoryResult<CarOwnership>>;
+  getByCarId(carId: string): Promise<RepositoryResult<Ownership | null>>;
   addOwner(
-    carOwnership: CarOwnership,
+    ownership: Ownership,
     newOwnerId: OwnerId,
   ): Promise<RepositoryResult<null>>;
   removeOwner(
-    carOwnership: CarOwnership,
+    ownership: Ownership,
     targetId: OwnerId,
   ): Promise<RepositoryResult<null>>;
   promotePrimary(
-    carOwnership: CarOwnership,
+    ownership: Ownership,
     newPrimaryOwnerId: OwnerId,
   ): Promise<RepositoryResult<null>>;
 }

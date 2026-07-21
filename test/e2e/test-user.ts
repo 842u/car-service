@@ -3,6 +3,11 @@ import { adminDatabaseClient } from '@/dependency/database-client/admin';
 
 const testUserPassword = process.env.SUPABASE_TEST_USER_PASSWORD!;
 
+export function generateTestEmail() {
+  const [, domain] = process.env.SUPABASE_TEST_USER_EMAIL!.split('@');
+  return `${crypto.randomUUID()}@${domain}`;
+}
+
 export async function createTestUserByEmail(email: string) {
   const createAuthIdentityResult = await adminAuthClient.createAuthIdentity({
     email,

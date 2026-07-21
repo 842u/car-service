@@ -20,12 +20,13 @@ export class ServiceLogRepositoryImplementation implements ServiceLogRepository 
     const serviceLogPersistence =
       this._serviceLogMapper.domainToPersistence(serviceLog);
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('service_logs').insert(serviceLogPersistence),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('service_logs').insert(serviceLogPersistence),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
@@ -35,26 +36,29 @@ export class ServiceLogRepositoryImplementation implements ServiceLogRepository 
     const serviceLogPersistence =
       this._serviceLogMapper.domainToPersistence(serviceLog);
 
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('service_logs')
-        .update(serviceLogPersistence)
-        .eq('id', serviceLog.id.value),
+    const mutateResult = await this._dbClient.mutate(
+      (from) =>
+        from('service_logs')
+          .update(serviceLogPersistence)
+          .eq('id', serviceLog.id.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);
   }
 
   async remove(serviceLog: ServiceLog) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('service_logs').delete().eq('id', serviceLog.id.value),
+    const mutateResult = await this._dbClient.mutate(
+      (from) => from('service_logs').delete().eq('id', serviceLog.id.value),
+      1,
     );
 
-    if (!queryResult.success) {
-      return Result.fail(queryResult.error);
+    if (!mutateResult.success) {
+      return Result.fail(mutateResult.error);
     }
 
     return Result.ok(null);

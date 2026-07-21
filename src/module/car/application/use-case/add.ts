@@ -4,7 +4,7 @@ import type { CarProvisioning } from '@/car/application/provisioning/car';
 import { Car } from '@/car/domain/car/car';
 import { CarId } from '@/car/domain/car/value-object/car-id/car-id';
 import type { AddCarApiRequest } from '@/car/interface/api/add.schema';
-import { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 import type { AuthClient } from '@/common/application/auth-client';
 import {
@@ -58,22 +58,22 @@ export class AddCarUseCase implements UseCase<AddCarApiRequest, CarDto> {
 
     const car = carResult.data;
 
-    const carOwnershipResult = CarOwnership.create({
+    const ownershipResult = Ownership.create({
       carId: car.id,
       primaryOwnerId: primaryOwnerIdResult.data,
     });
 
-    if (!carOwnershipResult.success) {
+    if (!ownershipResult.success) {
       return Result.fail(
         applicationError.unexpected('Failed to birth Ownership.'),
       );
     }
 
-    const carOwnership = carOwnershipResult.data;
+    const ownership = ownershipResult.data;
 
     const provisionResult = await this._carProvisioning.createWithPrimaryOwner(
       car,
-      carOwnership,
+      ownership,
     );
 
     if (!provisionResult.success) {

@@ -1,11 +1,9 @@
+import type { OwnershipVisibility } from '@/car/ownership/application/service/visibility';
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogMapper } from '@/car/service-log/application/mapper/service-log';
-import type { CarOwnershipReader } from '@/car/service-log/application/reader/car-ownership';
 import type { ServiceLogRepository } from '@/car/service-log/application/repository/service-log';
-import { canRecord } from '@/car/service-log/domain/policy/authorization';
-import { ServiceLog } from '@/car/service-log/domain/service-log/service-log';
-import { ServiceLogId } from '@/car/service-log/domain/service-log/value-object/service-log-id/service-log-id';
-import type { AddServiceLogApiRequest } from '@/car/service-log/interface/api/add.schema';
+import { canEdit } from '@/car/service-log/domain/policy/authorization';
+import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/edit.schema';
 import type { AuthClient } from '@/common/application/auth-client';
 import {
   type ApplicationError,
@@ -14,29 +12,29 @@ import {
 import { Result } from '@/common/application/result';
 import type { UseCase } from '@/common/application/use-case';
 
-export class AddServiceLogUseCase implements UseCase<
-  AddServiceLogApiRequest,
+export class EditServiceLogUseCase implements UseCase<
+  EditServiceLogApiRequest,
   ServiceLogDto
 > {
   private readonly _authClient: AuthClient;
-  private readonly _carOwnershipReader: CarOwnershipReader;
+  private readonly _ownershipVisibility: OwnershipVisibility;
   private readonly _serviceLogRepository: ServiceLogRepository;
   private readonly _serviceLogMapper: ServiceLogMapper;
 
   constructor(
     authClient: AuthClient,
-    carOwnershipReader: CarOwnershipReader,
+    ownershipVisibility: OwnershipVisibility,
     serviceLogRepository: ServiceLogRepository,
     serviceLogMapper: ServiceLogMapper,
   ) {
     this._authClient = authClient;
-    this._carOwnershipReader = carOwnershipReader;
+    this._ownershipVisibility = ownershipVisibility;
     this._serviceLogRepository = serviceLogRepository;
     this._serviceLogMapper = serviceLogMapper;
   }
 
   async execute(
-    contract: AddServiceLogApiRequest,
+    contract: EditServiceLogApiRequest,
   ): Promise<Result<ServiceLogDto, ApplicationError>> {
     const sessionResult = await this._authClient.authenticate();
 
@@ -47,29 +45,36 @@ export class AddServiceLogUseCase implements UseCase<
 
     const actingId = sessionResult.data.id;
 
-    const getOwnershipResult = await this._carOwnershipReader.getByCarId(
-      contract.carId,
+    const getServiceLogResult = await this._serviceLogRepository.getById(
+      contract.serviceLogId,
     );
 
-    if (!getOwnershipResult.success) {
-      const { message } = getOwnershipResult.error;
-      return Result.fail(applicationError.notFound(message));
+    if (!getServiceLogResult.success) {
+      return Result.fail(applicationError.notFound('Service log not found.'));
     }
 
-    const carOwnership = getOwnershipResult.data;
+    const serviceLog = getServiceLogResult.data;
 
-    if (!canRecord(carOwnership, actingId)) {
+    const visibilityResult = await this._ownershipVisibility.resolve(
+      serviceLog.carId.value,
+      actingId,
+    );
+
+    if (!visibilityResult.success) {
+      return Result.fail(applicationError.notFound('Service log not found.'));
+    }
+
+    const ownership = visibilityResult.data;
+
+    if (!canEdit(serviceLog, ownership, actingId)) {
       return Result.fail(
-        applicationError.unauthorized(
-          'Only an owner of this car may record a service log.',
+        applicationError.forbidden(
+          "Only this service log's author or the car's primary owner may edit it.",
         ),
       );
     }
 
-    const serviceLogResult = ServiceLog.create({
-      id: ServiceLogId.generate().value,
-      carId: contract.carId,
-      authorId: actingId,
+    const editResult = serviceLog.edit({
       serviceDate: contract.serviceDate,
       categories: contract.categories,
       mileage: contract.mileage,
@@ -77,17 +82,15 @@ export class AddServiceLogUseCase implements UseCase<
       serviceCost: contract.serviceCost,
     });
 
-    if (!serviceLogResult.success) {
-      const { message, issues } = serviceLogResult.error;
+    if (!editResult.success) {
+      const { message, issues } = editResult.error;
       return Result.fail(applicationError.validation(message, issues));
     }
 
-    const serviceLog = serviceLogResult.data;
+    const updateResult = await this._serviceLogRepository.update(serviceLog);
 
-    const storeResult = await this._serviceLogRepository.store(serviceLog);
-
-    if (!storeResult.success) {
-      const { message } = storeResult.error;
+    if (!updateResult.success) {
+      const { message } = updateResult.error;
       return Result.fail(applicationError.unexpected(message));
     }
 

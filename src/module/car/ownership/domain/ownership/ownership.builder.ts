@@ -1,8 +1,8 @@
 import { CarId } from '@/car/domain/car/value-object/car-id/car-id';
-import { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 
-export function buildCarOwnership({
+export function buildOwnership({
   carId = '5202140b-aa28-4058-9191-e4a117e15353',
   primaryOwnerId = 'b5b55395-e32f-4376-be03-f66be0a63ec4',
   coOwnerIds = [],
@@ -10,25 +10,25 @@ export function buildCarOwnership({
   carId?: string;
   primaryOwnerId?: string;
   coOwnerIds?: string[];
-} = {}): CarOwnership {
+} = {}): Ownership {
   const idResult = CarId.create(carId);
   const primaryOwnerResult = OwnerId.create(primaryOwnerId);
 
   if (!idResult.success || !primaryOwnerResult.success) {
-    throw new Error('Failed to create mock car ownership.');
+    throw new Error('Failed to create mock ownership.');
   }
 
   const coOwners = coOwnerIds.map((value) => {
     const coOwnerResult = OwnerId.create(value);
 
     if (!coOwnerResult.success) {
-      throw new Error('Failed to create mock car ownership.');
+      throw new Error('Failed to create mock ownership.');
     }
 
     return coOwnerResult.data;
   });
 
-  return CarOwnership.reconstitute({
+  return Ownership.reconstitute({
     id: idResult.data,
     primaryOwner: primaryOwnerResult.data,
     coOwners,

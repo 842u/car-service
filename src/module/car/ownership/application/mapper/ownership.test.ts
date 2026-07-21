@@ -1,7 +1,7 @@
 import { CarId } from '@/car/domain/car/value-object/car-id/car-id';
 import { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
 import { buildOwnershipPersistence } from '@/car/ownership/application/persistence-model/ownership.builder';
-import { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import { OwnerId } from '@/car/ownership/domain/ownership/value-object/owner-id/owner-id';
 
 const CAR_ID = '11111111-1111-4111-8111-111111111111';
@@ -29,7 +29,7 @@ describe('OwnershipMapper', () => {
   });
 
   describe('persistenceToDomain', () => {
-    it('reconstitutes a CarOwnership from its rows', () => {
+    it('reconstitutes a Ownership from its rows', () => {
       const rows = [
         buildOwnershipPersistence({
           car_id: CAR_ID,
@@ -46,13 +46,15 @@ describe('OwnershipMapper', () => {
       const result = mapper.persistenceToDomain(rows);
 
       expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.id.value).toBe(CAR_ID);
-        expect(result.data.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
-        expect(result.data.coOwners.map((owner) => owner.value)).toEqual([
-          CO_OWNER_ID,
-        ]);
+      if (!result.success || result.data === null) {
+        throw new Error('Failed to build test fixture.');
       }
+
+      expect(result.data.id.value).toBe(CAR_ID);
+      expect(result.data.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
+      expect(result.data.coOwners.map((owner) => owner.value)).toEqual([
+        CO_OWNER_ID,
+      ]);
     });
 
     it('fails when no row is flagged as primary', () => {
@@ -88,10 +90,13 @@ describe('OwnershipMapper', () => {
       expect(result.success).toBe(false);
     });
 
-    it('fails on an empty row set', () => {
+    it('succeeds with null on an empty row set', () => {
       const result = mapper.persistenceToDomain([]);
 
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toBeNull();
+      }
     });
   });
 
@@ -109,13 +114,13 @@ describe('OwnershipMapper', () => {
         throw new Error('Failed to build test fixture.');
       }
 
-      const carOwnership = CarOwnership.reconstitute({
+      const ownership = Ownership.reconstitute({
         id: idResult.data,
         primaryOwner: primaryOwnerResult.data,
         coOwners: [coOwnerResult.data],
       });
 
-      const dtos = mapper.domainToDto(carOwnership);
+      const dtos = mapper.domainToDto(ownership);
 
       expect(dtos).toEqual([
         {

@@ -2,7 +2,7 @@ import type { CarMapper } from '@/car/application/mapper/car';
 import type { CarProvisioning } from '@/car/application/provisioning/car';
 import type { Car } from '@/car/domain/car/car';
 import type { OwnershipMapper } from '@/car/ownership/application/mapper/ownership';
-import type { CarOwnership } from '@/car/ownership/domain/ownership/car-ownership';
+import type { Ownership } from '@/car/ownership/domain/ownership/ownership';
 import { Result } from '@/common/application/result';
 import type { SupabaseDatabaseClient } from '@/common/infrastructure/database-client/supabase';
 
@@ -21,7 +21,7 @@ export class CarProvisioningImplementation implements CarProvisioning {
     this._ownershipMapper = ownershipMapper;
   }
 
-  async createWithPrimaryOwner(car: Car, primaryOwnership: CarOwnership) {
+  async createWithPrimaryOwner(car: Car, primaryOwnership: Ownership) {
     const carPersistence = this._carMapper.domainToPersistence(car);
     const primaryOwnerPersistence =
       this._ownershipMapper.primaryOwnerToPersistence(

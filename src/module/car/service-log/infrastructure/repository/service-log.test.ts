@@ -29,7 +29,7 @@ describe('ServiceLogRepositoryImplementation', () => {
       const persistence = buildServiceLogPersistence();
 
       mockServiceLogMapper.domainToPersistence.mockReturnValue(persistence);
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([persistence]));
 
       const result = await repository.store(serviceLog);
 
@@ -37,14 +37,14 @@ describe('ServiceLogRepositoryImplementation', () => {
       expect(mockServiceLogMapper.domainToPersistence).toHaveBeenCalledWith(
         serviceLog,
       );
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('returns an error when the query fails', async () => {
+    it('returns an error when the mutation fails', async () => {
       mockServiceLogMapper.domainToPersistence.mockReturnValue(
         buildServiceLogPersistence(),
       );
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Insert failed' }),
       );
 
@@ -62,7 +62,7 @@ describe('ServiceLogRepositoryImplementation', () => {
       const persistence = buildServiceLogPersistence();
 
       mockServiceLogMapper.domainToPersistence.mockReturnValue(persistence);
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(Result.ok([persistence]));
 
       const result = await repository.update(serviceLog);
 
@@ -70,14 +70,14 @@ describe('ServiceLogRepositoryImplementation', () => {
       expect(mockServiceLogMapper.domainToPersistence).toHaveBeenCalledWith(
         serviceLog,
       );
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('returns an error when the query fails', async () => {
+    it('returns an error when the mutation fails', async () => {
       mockServiceLogMapper.domainToPersistence.mockReturnValue(
         buildServiceLogPersistence(),
       );
-      mockDbClient.query.mockResolvedValue(
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Update failed' }),
       );
 
@@ -92,16 +92,18 @@ describe('ServiceLogRepositoryImplementation', () => {
 
   describe('remove', () => {
     it('returns success on a successful delete', async () => {
-      mockDbClient.query.mockResolvedValue(Result.ok(null));
+      mockDbClient.mutate.mockResolvedValue(
+        Result.ok([buildServiceLogPersistence()]),
+      );
 
       const result = await repository.remove(serviceLog);
 
       expect(result.success).toBe(true);
-      expect(mockDbClient.query).toHaveBeenCalled();
+      expect(mockDbClient.mutate).toHaveBeenCalledWith(expect.any(Function), 1);
     });
 
-    it('returns an error when the query fails', async () => {
-      mockDbClient.query.mockResolvedValue(
+    it('returns an error when the mutation fails', async () => {
+      mockDbClient.mutate.mockResolvedValue(
         Result.fail({ message: 'Delete failed' }),
       );
 
