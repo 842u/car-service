@@ -6,7 +6,6 @@ import type { Validator } from '@/common/application/validator';
 import { ValidatorError } from '@/common/application/validator';
 import { createMockValidator } from '@/common/application/validator.mock';
 import { buildUserDto } from '@/user/application/dto/user.builder';
-import { avatarUrlChangeApiResponseSchema } from '@/user/interface/api/avatar-change.schema';
 import { editUserApiResponseSchema } from '@/user/interface/api/edit.schema';
 import { passwordChangeApiResponseSchema } from '@/user/interface/api/password-change.schema';
 import { signInApiResponseSchema } from '@/user/interface/api/sign-in.schema';
@@ -257,49 +256,6 @@ describe('NextUserApiClient', () => {
       mockValidator.validate.mockReturnValue(Result.ok(apiSuccess));
 
       const result = await userApiClient.edit(contract);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual(userDto);
-      }
-    });
-  });
-
-  describe('avatarChange', () => {
-    const contract = { avatarUrl: 'https://example.com/avatar.png' };
-    const userDto = buildUserDto({
-      avatarUrl: 'https://example.com/avatar.png',
-    });
-
-    it('should call httpClient.patch with /api/user/avatar', async () => {
-      const apiSuccess = { success: true, data: userDto };
-
-      mockHttpClient.patch.mockResolvedValue(
-        Result.ok(apiSuccess, { status: 200, statusText: 'OK', headers: {} }),
-      );
-      mockValidator.validate.mockReturnValue(Result.ok(apiSuccess));
-
-      await userApiClient.avatarChange(contract);
-
-      expect(mockHttpClient.patch).toHaveBeenCalledWith(
-        '/api/user/avatar',
-        JSON.stringify(contract),
-      );
-      expect(mockValidator.validate).toHaveBeenCalledWith(
-        apiSuccess,
-        avatarUrlChangeApiResponseSchema,
-      );
-    });
-
-    it('should return data on success', async () => {
-      const apiSuccess = { success: true, data: userDto };
-
-      mockHttpClient.patch.mockResolvedValue(
-        Result.ok(apiSuccess, { status: 200, statusText: 'OK', headers: {} }),
-      );
-      mockValidator.validate.mockReturnValue(Result.ok(apiSuccess));
-
-      const result = await userApiClient.avatarChange(contract);
 
       expect(result.success).toBe(true);
       if (result.success) {

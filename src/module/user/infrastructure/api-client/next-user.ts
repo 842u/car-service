@@ -5,10 +5,6 @@ import type { HttpClient } from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
 import {
-  type AvatarUrlChangeApiRequest,
-  avatarUrlChangeApiResponseSchema,
-} from '@/user/interface/api/avatar-change.schema';
-import {
   type EditUserApiRequest,
   editUserApiResponseSchema,
 } from '@/user/interface/api/edit.schema';
@@ -101,15 +97,6 @@ export class NextUserApiClient implements UserApiClient {
       '/api/user',
       contract,
       editUserApiResponseSchema,
-      'PATCH',
-    );
-  }
-
-  async avatarChange(contract: AvatarUrlChangeApiRequest) {
-    return this.makeRequest(
-      '/api/user/avatar',
-      contract,
-      avatarUrlChangeApiResponseSchema,
       'PATCH',
     );
   }
