@@ -46,13 +46,15 @@ describe('OwnershipMapper', () => {
       const result = mapper.persistenceToDomain(rows);
 
       expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.id.value).toBe(CAR_ID);
-        expect(result.data.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
-        expect(result.data.coOwners.map((owner) => owner.value)).toEqual([
-          CO_OWNER_ID,
-        ]);
+      if (!result.success || result.data === null) {
+        throw new Error('Failed to build test fixture.');
       }
+
+      expect(result.data.id.value).toBe(CAR_ID);
+      expect(result.data.primaryOwner.value).toBe(PRIMARY_OWNER_ID);
+      expect(result.data.coOwners.map((owner) => owner.value)).toEqual([
+        CO_OWNER_ID,
+      ]);
     });
 
     it('fails when no row is flagged as primary', () => {
@@ -88,10 +90,13 @@ describe('OwnershipMapper', () => {
       expect(result.success).toBe(false);
     });
 
-    it('fails on an empty row set', () => {
+    it('succeeds with null on an empty row set', () => {
       const result = mapper.persistenceToDomain([]);
 
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toBeNull();
+      }
     });
   });
 

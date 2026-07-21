@@ -79,9 +79,7 @@ describe('OwnershipVisibilityService', () => {
     });
 
     it('masks an absent Ownership identically to a stranger', async () => {
-      mockOwnershipRepository.getByCarId.mockResolvedValue(
-        Result.fail({ message: 'Cannot reconstitute ownership from no rows.' }),
-      );
+      mockOwnershipRepository.getByCarId.mockResolvedValue(Result.ok(null));
 
       const result = await service.resolve(CAR_ID, STRANGER_ID);
 
@@ -91,6 +89,35 @@ describe('OwnershipVisibilityService', () => {
           kind: 'not-found',
           message: 'Car not found.',
         });
+      }
+    });
+
+    it('answers unexpected, not masked, when the repository read fails', async () => {
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.fail({ message: 'Connection to database lost.' }),
+      );
+
+      const result = await service.resolve(CAR_ID, STRANGER_ID);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toEqual({
+          kind: 'unexpected',
+          message: 'Connection to database lost.',
+        });
+      }
+    });
+
+    it('answers unexpected for a broken read even for the primary owner', async () => {
+      mockOwnershipRepository.getByCarId.mockResolvedValue(
+        Result.fail({ message: 'Connection to database lost.' }),
+      );
+
+      const result = await service.resolve(CAR_ID, PRIMARY_OWNER_ID);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.kind).toBe('unexpected');
       }
     });
   });
