@@ -11,7 +11,7 @@ type MutationVariables = {
   image: File | undefined | null;
 };
 
-export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
+export const userAvatarEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
     throwOnError: false,
     mutationFn: async (variables: MutationVariables) => {
@@ -49,16 +49,14 @@ export const userAvatarChangeMutationOptions = (queryClient: QueryClient) =>
 
       const avatarUrl = apiUrl + avatarPath;
 
-      const avatarUrlChangeResult = await userApiClient.avatarChange({
-        avatarUrl,
-      });
+      const editResult = await userApiClient.edit({ avatarUrl });
 
-      if (!avatarUrlChangeResult.success) {
-        const { message } = avatarUrlChangeResult.error;
+      if (!editResult.success) {
+        const { message } = editResult.error;
         throw new Error(message);
       }
 
-      return avatarUrlChangeResult.data;
+      return editResult.data;
     },
     onMutate: async (variables) => {
       await queryClient.cancelQueries({

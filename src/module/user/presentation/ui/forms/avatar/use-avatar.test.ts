@@ -7,8 +7,8 @@ import { useAvatarForm } from './use-avatar';
 
 const mockMutateAsync = jest.fn();
 
-jest.mock('./use-avatar-change', () => ({
-  useUserAvatarChange: () => ({ mutateAsync: mockMutateAsync }),
+jest.mock('./use-avatar-edit', () => ({
+  useUserAvatarEdit: () => ({ mutateAsync: mockMutateAsync }),
 }));
 
 const VALID_FILE = new File(['avatar'], 'avatar.png', { type: 'image/png' });

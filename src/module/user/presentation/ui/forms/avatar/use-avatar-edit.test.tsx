@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 
-import { useUserAvatarChange } from './use-avatar-change';
+import { useUserAvatarEdit } from './use-avatar-edit';
 
 const mockAddToast = jest.fn();
 
@@ -14,9 +14,9 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 
 const mockMutationFn = jest.fn();
 jest.mock(
-  '@/user/infrastructure/tanstack/mutation-options/avatar-change',
+  '@/user/infrastructure/tanstack/mutation-options/avatar-edit',
   () => ({
-    userAvatarChangeMutationOptions: () => ({
+    userAvatarEditMutationOptions: () => ({
       mutationFn: mockMutationFn,
     }),
   }),
@@ -37,11 +37,11 @@ beforeEach(() => {
   });
 });
 
-describe('useUserAvatarChange', () => {
+describe('useUserAvatarEdit', () => {
   it('should show success toast on successful mutation', async () => {
     mockMutationFn.mockResolvedValue({ avatarUrl: 'new-url' });
 
-    const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
+    const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
 
     await result.current.mutateAsync({ image: null });
 
@@ -51,7 +51,7 @@ describe('useUserAvatarChange', () => {
   it('should show error toast on failed mutation', async () => {
     mockMutationFn.mockRejectedValue(new Error('Upload failed'));
 
-    const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
+    const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
 
     await expect(result.current.mutateAsync({ image: null })).rejects.toThrow(
       'Upload failed',
@@ -66,7 +66,7 @@ describe('useUserAvatarChange', () => {
 
     mockMutationFn.mockRejectedValue(new Error('Upload failed'));
 
-    const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
+    const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
 
     await expect(result.current.mutateAsync({ image: null })).rejects.toThrow(
       'Upload failed',
@@ -82,7 +82,7 @@ describe('useUserAvatarChange', () => {
 
     mockMutationFn.mockResolvedValue({ avatarUrl: 'new-url' });
 
-    const { result } = renderHook(() => useUserAvatarChange(), { wrapper });
+    const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
 
     await result.current.mutateAsync({ image: null });
 
