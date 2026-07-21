@@ -40,7 +40,7 @@ describe('User', () => {
 
     it('clears the avatar url when explicitly null', () => {
       const user = buildUser();
-      user.changeAvatarUrl('https://cdn.test/avatar.png');
+      user.edit({ avatarUrl: 'https://cdn.test/avatar.png' });
 
       const result = user.edit({ avatarUrl: null });
 
@@ -50,7 +50,7 @@ describe('User', () => {
 
     it('leaves the avatar url untouched when absent', () => {
       const user = buildUser();
-      user.changeAvatarUrl('https://cdn.test/avatar.png');
+      user.edit({ avatarUrl: 'https://cdn.test/avatar.png' });
 
       const result = user.edit({ name: 'New Name' });
 
@@ -60,7 +60,7 @@ describe('User', () => {
 
     it('rejects an empty avatar url instead of treating it as a clear', () => {
       const user = buildUser();
-      user.changeAvatarUrl('https://cdn.test/avatar.png');
+      user.edit({ avatarUrl: 'https://cdn.test/avatar.png' });
 
       const result = user.edit({ avatarUrl: '' });
 
@@ -93,7 +93,7 @@ describe('User', () => {
 
     it('validates every present field before mutating any of them', () => {
       const user = buildUser({ name: 'Original Name' });
-      user.changeAvatarUrl('https://cdn.test/avatar.png');
+      user.edit({ avatarUrl: 'https://cdn.test/avatar.png' });
 
       const result = user.edit({
         name: 'New Name',

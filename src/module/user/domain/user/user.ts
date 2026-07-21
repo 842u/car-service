@@ -102,22 +102,4 @@ export class User extends Entity<UserValue> {
 
     return Result.ok(undefined);
   }
-
-  changeAvatarUrl(avatarUrl: string | undefined | null) {
-    if (!avatarUrl) {
-      this._value.avatarUrl = null;
-
-      return Result.ok(undefined);
-    }
-
-    const avatarUrlResult = AvatarUrl.create(avatarUrl);
-
-    if (!avatarUrlResult.success) {
-      return Result.fail(avatarUrlResult.error);
-    }
-
-    this._value.avatarUrl = avatarUrlResult.data;
-
-    return Result.ok(undefined);
-  }
 }
