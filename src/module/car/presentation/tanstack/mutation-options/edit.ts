@@ -20,6 +20,7 @@ export type CarEditMutationVariables = EditCarApiRequest & {
 export const carEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
     throwOnError: false,
+    mutationKey: queryKeys.infinite(),
     mutationFn: async (variables: CarEditMutationVariables) => {
       const { image, ...contract } = variables;
 
@@ -93,5 +94,17 @@ export const carEditMutationOptions = (queryClient: QueryClient) =>
       );
 
       return { previousCar, previousCarsInfiniteData };
+    },
+    onError: (_error, variables, context) => {
+      if (!context) return;
+
+      queryClient.setQueryData(
+        queryKeys.byId(variables.carId),
+        context.previousCar,
+      );
+      queryClient.setQueryData(
+        queryKeys.infinite(),
+        context.previousCarsInfiniteData,
+      );
     },
   });
