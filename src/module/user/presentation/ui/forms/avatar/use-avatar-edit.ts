@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { userAvatarEditMutationOptions } from '@/user/infrastructure/tanstack/mutation-options/avatar-edit';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { userAvatarEditMutationOptions } from '@/user/presentation/tanstack/mutation-options/avatar-edit';
+import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 export function useUserAvatarEdit() {
   const { addToast } = useToasts();
@@ -16,14 +16,11 @@ export function useUserAvatarEdit() {
     },
     onError: (error, _, context) => {
       addToast(error.message, 'error');
-      queryClient.setQueryData(
-        queryKeys.sessionUser,
-        context?.previousQueryData,
-      );
+      queryClient.setQueryData(queryKeys.session(), context?.previousQueryData);
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.sessionUser,
+        queryKey: queryKeys.session(),
       });
     },
   });

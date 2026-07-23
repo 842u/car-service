@@ -3,8 +3,8 @@ import { mutationOptions } from '@tanstack/react-query';
 
 import type { UserDto } from '@/user/application/dto/user';
 import { userApiClient } from '@/user/dependency/api-client';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
 import type { EditUserApiRequest } from '@/user/interface/api/edit.schema';
+import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 export const userNameEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
@@ -21,13 +21,13 @@ export const userNameEditMutationOptions = (queryClient: QueryClient) =>
     },
     onMutate: async (variables) => {
       await queryClient.cancelQueries({
-        queryKey: queryKeys.sessionUser,
+        queryKey: queryKeys.session(),
       });
 
-      const previousQueryData = queryClient.getQueryData(queryKeys.sessionUser);
+      const previousQueryData = queryClient.getQueryData(queryKeys.session());
 
       queryClient.setQueryData(
-        queryKeys.sessionUser,
+        queryKeys.session(),
         (currentQueryData: UserDto) => {
           const updatedQueryData = {
             ...currentQueryData,

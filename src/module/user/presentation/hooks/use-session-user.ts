@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
-import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
+import { getSessionUserQueryOptions } from '@/user/presentation/tanstack/query/options';
 
 export function useSessionUser() {
   const { addToast } = useToasts();

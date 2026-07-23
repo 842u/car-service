@@ -9,7 +9,7 @@ import { Result } from '@/common/application/result';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userDataSource } from '@/user/dependency/data-source';
-import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
+import { getSessionUserQueryOptions } from '@/user/presentation/tanstack/query/options';
 
 const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<
   typeof ownershipDataSource

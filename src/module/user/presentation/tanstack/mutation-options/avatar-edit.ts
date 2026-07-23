@@ -5,7 +5,7 @@ import { browserStorageClient } from '@/dependency/storage-client/browser';
 import { hashFile } from '@/lib/utils';
 import type { UserDto } from '@/user/application/dto/user';
 import { userApiClient } from '@/user/dependency/api-client';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 type MutationVariables = {
   image: File | undefined | null;
@@ -20,7 +20,7 @@ export const userAvatarEditMutationOptions = (queryClient: QueryClient) =>
       if (!image) throw new Error('No file was provided. Try again.');
 
       const sessionUser = queryClient.getQueryData<UserDto>(
-        queryKeys.sessionUser,
+        queryKeys.session(),
       );
 
       if (!sessionUser) {
@@ -60,15 +60,15 @@ export const userAvatarEditMutationOptions = (queryClient: QueryClient) =>
     },
     onMutate: async (variables) => {
       await queryClient.cancelQueries({
-        queryKey: queryKeys.sessionUser,
+        queryKey: queryKeys.session(),
       });
 
-      const previousQueryData = queryClient.getQueryData(queryKeys.sessionUser);
+      const previousQueryData = queryClient.getQueryData(queryKeys.session());
 
       const imageUrl = variables.image && URL.createObjectURL(variables.image);
 
       queryClient.setQueryData(
-        queryKeys.sessionUser,
+        queryKeys.session(),
         (currentQueryData: UserDto) => {
           const updatedQueryData = {
             ...currentQueryData,
