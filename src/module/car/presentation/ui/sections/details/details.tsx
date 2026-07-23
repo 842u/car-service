@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { getCarByIdQueryOptions } from '@/car/infrastructure/tanstack/query/options';
 import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/infrastructure/tanstack/query/options';
+import { getCarByIdQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { DetailsCard } from '@/car/presentation/ui/cards/details/details';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DashboardSection } from '@/dashboard/ui/section/section';

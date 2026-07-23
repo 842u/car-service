@@ -7,8 +7,8 @@ import {
   deepCopyCarsInfiniteQueryData,
   deleteCarFromInfiniteQueryData,
   type DeletedCarContext,
-} from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
+} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 
 export const carRemoveMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
@@ -24,7 +24,7 @@ export const carRemoveMutationOptions = (queryClient: QueryClient) =>
       return removeResult.data;
     },
     onMutate: async (carId: string) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.carsInfinite });
+      await queryClient.cancelQueries({ queryKey: queryKeys.infinite() });
 
       let deletedCarContext: DeletedCarContext = {
         deletedCar: null,
@@ -33,7 +33,7 @@ export const carRemoveMutationOptions = (queryClient: QueryClient) =>
       };
 
       queryClient.setQueryData(
-        queryKeys.carsInfinite,
+        queryKeys.infinite(),
         (data: CarsInfiniteQueryData | undefined) => {
           if (!data) return data;
 

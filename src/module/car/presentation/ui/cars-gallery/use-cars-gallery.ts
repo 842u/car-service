@@ -5,8 +5,8 @@ import {
 } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
-import { getCarsInfiniteQueryOptions } from '@/car/infrastructure/tanstack/query/options';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
+import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export function useCarsGallery() {
@@ -15,7 +15,7 @@ export function useCarsGallery() {
   const { addToast } = useToasts();
 
   const carsInfiniteIsMutating = useIsMutating({
-    mutationKey: queryKeys.carsInfinite,
+    mutationKey: queryKeys.infinite(),
   });
 
   const queryClient = useQueryClient();
@@ -39,8 +39,7 @@ export function useCarsGallery() {
     data?.pages
       .flatMap((page) => page.data)
       .forEach(
-        (car) =>
-          car && queryClient.setQueryData(queryKeys.carsByCarId(car.id), car),
+        (car) => car && queryClient.setQueryData(queryKeys.byId(car.id), car),
       );
   }, [data, queryClient]);
 

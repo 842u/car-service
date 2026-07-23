@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { carEditMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/edit';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
+import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 interface UseEditFormParams {
@@ -17,16 +17,13 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
 
   const editCar = useMutation({
     ...carEditMutationOptions(queryClient),
-    mutationKey: queryKeys.carsInfinite,
+    mutationKey: queryKeys.infinite(),
     onSuccess: (data) => addToast(`Car ${data.customName} edited.`, 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
+      queryClient.setQueryData(queryKeys.byId(carId), context?.previousCar);
       queryClient.setQueryData(
-        queryKeys.carsByCarId(carId),
-        context?.previousCar,
-      );
-      queryClient.setQueryData(
-        queryKeys.carsInfinite,
+        queryKeys.infinite(),
         context?.previousCarsInfiniteData,
       );
     },
@@ -45,9 +42,9 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
       return;
     } finally {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.carsByCarId(carId),
+        queryKey: queryKeys.byId(carId),
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite });
+      queryClient.invalidateQueries({ queryKey: queryKeys.infinite() });
     }
   };
 

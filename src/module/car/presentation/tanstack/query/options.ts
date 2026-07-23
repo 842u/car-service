@@ -1,13 +1,15 @@
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
-import type { CarDto } from '@/car/application/dto/car';
 import { carDataSource } from '@/car/dependency/data-source';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
+import {
+  type CarOrderColumn,
+  queryKeys,
+} from '@/car/presentation/tanstack/query/keys';
 
 export const getCarByIdQueryOptions = (id: string) =>
   queryOptions({
     throwOnError: false,
-    queryKey: queryKeys.carsByCarId(id),
+    queryKey: queryKeys.byId(id),
     queryFn: async () => {
       const carResult = await carDataSource.getById(id);
 
@@ -20,23 +22,13 @@ export const getCarByIdQueryOptions = (id: string) =>
     },
   });
 
-type CarOrderColumn = keyof Pick<
-  CarDto,
-  'createdAt' | 'insuranceExpiration' | 'technicalInspectionExpiration'
->;
-
 export const getCarsInfiniteQueryOptions = (params?: {
   pageLimit?: number;
   orderBy?: { column: CarOrderColumn; ascending: boolean };
 }) =>
   infiniteQueryOptions({
     throwOnError: false,
-    queryKey: params?.orderBy
-      ? ([
-          ...queryKeys.carsInfiniteByColumnOrder(params.orderBy.column),
-          params.pageLimit,
-        ] as const)
-      : queryKeys.carsInfinite,
+    queryKey: queryKeys.infinite(params),
     queryFn: async ({ pageParam }) => {
       const carsResult = await carDataSource.getByPage({
         pageParam,

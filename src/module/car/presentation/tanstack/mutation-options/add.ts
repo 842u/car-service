@@ -4,13 +4,13 @@ import { mutationOptions } from '@tanstack/react-query';
 import type { CarDto } from '@/car/application/dto/car';
 import { carApiClient } from '@/car/dependency/api-client';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/car/infrastructure/data-source/car';
+import type { AddCarApiRequest } from '@/car/interface/api/add.schema';
 import {
   addCarToInfiniteQueryData,
   type CarsInfiniteQueryData,
   deepCopyCarsInfiniteQueryData,
-} from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
-import type { AddCarApiRequest } from '@/car/interface/api/add.schema';
+} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 
 export type CarAddMutationVariables = AddCarApiRequest & {
   image?: File | null;
@@ -32,7 +32,7 @@ export const carAddMutationOptions = (queryClient: QueryClient) =>
       return addResult.data;
     },
     onMutate: async (variables) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.carsInfinite });
+      await queryClient.cancelQueries({ queryKey: queryKeys.infinite() });
 
       const { image, ...contract } = variables;
 
@@ -43,7 +43,7 @@ export const carAddMutationOptions = (queryClient: QueryClient) =>
       } as CarDto;
 
       queryClient.setQueryData(
-        queryKeys.carsInfinite,
+        queryKeys.infinite(),
         (data: CarsInfiniteQueryData | undefined) => {
           const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
 

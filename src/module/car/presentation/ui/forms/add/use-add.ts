@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { carAddMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/add';
-import { carEditMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/edit';
+import type { CarFormData } from '@/car/interface/ui/car-form.schema';
+import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation-options/add';
+import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
 import {
   type CarsInfiniteQueryData,
   deepCopyCarsInfiniteQueryData,
-} from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
-import type { CarFormData } from '@/car/interface/ui/car-form.schema';
+} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export function useAddForm({
@@ -21,7 +21,7 @@ export function useAddForm({
 
   const addCar = useMutation({
     ...carAddMutationOptions(queryClient),
-    mutationKey: queryKeys.carsInfinite,
+    mutationKey: queryKeys.infinite(),
     onSuccess: (data) => addToast(`Car ${data.customName} added.`, 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
@@ -29,7 +29,7 @@ export function useAddForm({
       if (!context) return;
 
       const previousData = queryClient.getQueryData<CarsInfiniteQueryData>(
-        queryKeys.carsInfinite,
+        queryKeys.infinite(),
       );
 
       if (!previousData) return;
@@ -42,7 +42,7 @@ export function useAddForm({
         );
       });
 
-      queryClient.setQueryData(queryKeys.carsInfinite, updatedQueryData);
+      queryClient.setQueryData(queryKeys.infinite(), updatedQueryData);
     },
   });
 
@@ -69,7 +69,7 @@ export function useAddForm({
     } catch {
       return;
     } finally {
-      queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite });
+      queryClient.invalidateQueries({ queryKey: queryKeys.infinite() });
     }
   };
 

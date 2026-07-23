@@ -3,10 +3,10 @@ import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
-import { queryKeys as carQueryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import { ownershipPromoteMutationOptions } from '@/car/ownership/infrastructure/tanstack/mutation-options/promote';
 import { ownershipRemoveMutationOptions } from '@/car/ownership/infrastructure/tanstack/mutation-options/remove';
+import { queryKeys as carQueryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';
@@ -77,7 +77,7 @@ export function useDropdownContent({
     deleteModalRef.current?.closeModal();
 
     if (selfDeletion) {
-      queryClient.invalidateQueries({ queryKey: carQueryKeys.carsInfinite });
+      queryClient.invalidateQueries({ queryKey: carQueryKeys.infinite() });
       router.replace('/dashboard/cars' satisfies Route);
     }
 

@@ -4,7 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useRef } from 'react';
 
 import type { CarDto } from '@/car/application/dto/car';
-import { getCarsInfiniteQueryOptions } from '@/car/infrastructure/tanstack/query/options';
+import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { CarBadge } from '@/car/presentation/ui/badge/badge';
 import { DateExpirationTableViewButton } from '@/car/presentation/ui/tables/date-expiration/view-button/view-button';
 import { useToasts } from '@/common/presentation/hook/use-toasts';

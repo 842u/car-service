@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation';
 
 import type { CarDto } from '@/car/application/dto/car';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/car/infrastructure/data-source/car';
-import { carRemoveMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/remove';
+import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation-options/remove';
 import {
   addCarToInfiniteQueryData,
   type CarsInfiniteQueryData,
   deepCopyCarsInfiniteQueryData,
-} from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
+} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export type UseDeleteModalOptions = {
@@ -30,15 +30,13 @@ export function useDeleteModal({
 
   const queryClient = useQueryClient();
 
-  const carQueryData = queryClient.getQueryData<CarDto>(
-    queryKeys.carsByCarId(carId),
-  );
+  const carQueryData = queryClient.getQueryData<CarDto>(queryKeys.byId(carId));
 
   const carName = carQueryData?.customName;
 
   const { mutate } = useMutation({
     ...carRemoveMutationOptions(queryClient),
-    mutationKey: queryKeys.carsInfinite,
+    mutationKey: queryKeys.infinite(),
     onSuccess: () => addToast(`Car ${carName} deleted.`, 'success'),
     onError: (error, _, context) => {
       addToast(error.message, 'error');
@@ -53,7 +51,7 @@ export function useDeleteModal({
       }
 
       const previousData = queryClient.getQueryData<CarsInfiniteQueryData>(
-        queryKeys.carsInfinite,
+        queryKeys.infinite(),
       );
 
       if (!previousData) return;
@@ -68,10 +66,10 @@ export function useDeleteModal({
         context.deletedCarPagePositionIndex,
       );
 
-      queryClient.setQueryData(queryKeys.carsInfinite, updatedQueryData);
+      queryClient.setQueryData(queryKeys.infinite(), updatedQueryData);
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.infinite() }),
   });
 
   const handleCancelButtonClick = () => {

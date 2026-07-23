@@ -3,13 +3,13 @@ import { mutationOptions } from '@tanstack/react-query';
 
 import type { CarDto } from '@/car/application/dto/car';
 import { carApiClient } from '@/car/dependency/api-client';
+import type { EditCarApiRequest } from '@/car/interface/api/edit.schema';
 import {
   type CarsInfiniteQueryData,
   deepCopyCarsInfiniteQueryData,
   patchCarInInfiniteQueryData,
-} from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
-import type { EditCarApiRequest } from '@/car/interface/api/edit.schema';
+} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
 import { hashFile } from '@/lib/utils';
 
@@ -57,12 +57,12 @@ export const carEditMutationOptions = (queryClient: QueryClient) =>
       const { carId, image, ...contract } = variables;
 
       await queryClient.cancelQueries({
-        queryKey: queryKeys.carsByCarId(carId),
+        queryKey: queryKeys.byId(carId),
       });
-      await queryClient.cancelQueries({ queryKey: queryKeys.carsInfinite });
+      await queryClient.cancelQueries({ queryKey: queryKeys.infinite() });
 
       const previousCar = queryClient.getQueryData<CarDto>(
-        queryKeys.carsByCarId(carId),
+        queryKeys.byId(carId),
       );
 
       const patch = {
@@ -71,16 +71,16 @@ export const carEditMutationOptions = (queryClient: QueryClient) =>
       } as Partial<CarDto>;
 
       queryClient.setQueryData(
-        queryKeys.carsByCarId(carId),
+        queryKeys.byId(carId),
         (current: CarDto | undefined) => current && { ...current, ...patch },
       );
 
       const previousCarsInfiniteData = queryClient.getQueryData<
         CarsInfiniteQueryData | undefined
-      >(queryKeys.carsInfinite);
+      >(queryKeys.infinite());
 
       queryClient.setQueryData(
-        queryKeys.carsInfinite,
+        queryKeys.infinite(),
         (data: CarsInfiniteQueryData | undefined) => {
           if (!data) return data;
 
