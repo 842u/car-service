@@ -9,14 +9,16 @@ export function useUserNameEdit() {
 
   const queryClient = useQueryClient();
 
+  const nameEditMutationOptions = userNameEditMutationOptions(queryClient);
+
   const { mutateAsync } = useMutation({
-    ...userNameEditMutationOptions(queryClient),
+    ...nameEditMutationOptions,
     onSuccess: () => {
       addToast('Name changed.', 'success');
     },
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(queryKeys.session(), context?.previousQueryData);
+    onError: (...args) => {
+      nameEditMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
     },
     onSettled: () =>
       queryClient.invalidateQueries({

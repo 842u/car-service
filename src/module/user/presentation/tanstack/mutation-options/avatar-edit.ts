@@ -81,4 +81,9 @@ export const userAvatarEditMutationOptions = (queryClient: QueryClient) =>
 
       return { previousQueryData };
     },
+    onError: (_error, _variables, context) => {
+      if (!context) return;
+
+      queryClient.setQueryData(queryKeys.session(), context.previousQueryData);
+    },
   });

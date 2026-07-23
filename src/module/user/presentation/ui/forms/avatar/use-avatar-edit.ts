@@ -9,14 +9,16 @@ export function useUserAvatarEdit() {
 
   const queryClient = useQueryClient();
 
+  const avatarEditMutationOptions = userAvatarEditMutationOptions(queryClient);
+
   const { mutateAsync } = useMutation({
-    ...userAvatarEditMutationOptions(queryClient),
+    ...avatarEditMutationOptions,
     onSuccess: () => {
       addToast('Avatar changed.', 'success');
     },
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(queryKeys.session(), context?.previousQueryData);
+    onError: (...args) => {
+      avatarEditMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
     },
     onSettled: () => {
       queryClient.invalidateQueries({
