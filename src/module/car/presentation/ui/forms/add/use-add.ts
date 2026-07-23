@@ -3,10 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation-options/add';
 import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
-import {
-  type CarsInfiniteQueryData,
-  deepCopyCarsInfiniteQueryData,
-} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
@@ -19,30 +15,14 @@ export function useAddForm({
 
   const queryClient = useQueryClient();
 
+  const addMutationOptions = carAddMutationOptions(queryClient);
+
   const addCar = useMutation({
-    ...carAddMutationOptions(queryClient),
-    mutationKey: queryKeys.infinite(),
+    ...addMutationOptions,
     onSuccess: (data) => addToast(`Car ${data.customName} added.`, 'success'),
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-
-      if (!context) return;
-
-      const previousData = queryClient.getQueryData<CarsInfiniteQueryData>(
-        queryKeys.infinite(),
-      );
-
-      if (!previousData) return;
-
-      const updatedQueryData = deepCopyCarsInfiniteQueryData(previousData);
-
-      updatedQueryData.pages.forEach((page) => {
-        page.data = page.data.filter(
-          (car) => car && car.id !== context.newCarId,
-        );
-      });
-
-      queryClient.setQueryData(queryKeys.infinite(), updatedQueryData);
+    onError: (...args) => {
+      addMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
     },
   });
 

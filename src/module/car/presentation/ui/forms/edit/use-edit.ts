@@ -15,17 +15,14 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
 
   const queryClient = useQueryClient();
 
+  const editMutationOptions = carEditMutationOptions(queryClient);
+
   const editCar = useMutation({
-    ...carEditMutationOptions(queryClient),
-    mutationKey: queryKeys.infinite(),
+    ...editMutationOptions,
     onSuccess: (data) => addToast(`Car ${data.customName} edited.`, 'success'),
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(queryKeys.byId(carId), context?.previousCar);
-      queryClient.setQueryData(
-        queryKeys.infinite(),
-        context?.previousCarsInfiniteData,
-      );
+    onError: (...args) => {
+      editMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
     },
   });
 
@@ -41,10 +38,7 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
     } catch {
       return;
     } finally {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.byId(carId),
-      });
-      queryClient.invalidateQueries({ queryKey: queryKeys.infinite() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.all() });
     }
   };
 

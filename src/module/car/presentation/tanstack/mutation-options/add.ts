@@ -19,6 +19,7 @@ export type CarAddMutationVariables = AddCarApiRequest & {
 export const carAddMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
     throwOnError: false,
+    mutationKey: queryKeys.infinite(),
     mutationFn: async (variables: CarAddMutationVariables) => {
       const { image, ...contract } = variables;
 
@@ -58,5 +59,24 @@ export const carAddMutationOptions = (queryClient: QueryClient) =>
       );
 
       return { newCarId: newCar.id };
+    },
+    onError: (_error, _variables, context) => {
+      if (!context) return;
+
+      const previousData = queryClient.getQueryData<CarsInfiniteQueryData>(
+        queryKeys.infinite(),
+      );
+
+      if (!previousData) return;
+
+      const updatedQueryData = deepCopyCarsInfiniteQueryData(previousData);
+
+      updatedQueryData.pages.forEach((page) => {
+        page.data = page.data.filter(
+          (car) => car && car.id !== context.newCarId,
+        );
+      });
+
+      queryClient.setQueryData(queryKeys.infinite(), updatedQueryData);
     },
   });
