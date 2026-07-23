@@ -1,12 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import type { CarDto } from '@/car/application/dto/car';
 import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { CarBadge } from '@/car/presentation/ui/badge/badge';
 import { DateExpirationTableViewButton } from '@/car/presentation/ui/tables/date-expiration/view-button/view-button';
+import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
 
@@ -25,8 +26,6 @@ export function useDateExpirationTable({
   dateColumn,
 }: UseDateExpirationTableParams) {
   const { addToast } = useToasts();
-
-  const intersectionTargetRef = useRef<HTMLTableRowElement>(null);
 
   const columns = useMemo(
     () =>
@@ -101,25 +100,13 @@ export function useDateExpirationTable({
     [data],
   );
 
-  useEffect(() => {
-    const target = intersectionTargetRef.current;
-    if (!target || !hasNextPage) return;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (
-        entry.isIntersecting &&
-        isSuccess &&
-        !isFetching &&
-        !isFetchingNextPage
-      ) {
-        fetchNextPage();
-      }
-    });
-
-    observer.observe(target);
-
-    return () => observer.disconnect();
-  }, [hasNextPage, isSuccess, isFetching, isFetchingNextPage, fetchNextPage]);
+  const intersectionTargetRef = useInfiniteScrollTrigger<HTMLTableRowElement>({
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isSuccess,
+    fetchNextPage,
+  });
 
   useEffect(() => {
     if (!isError) return;

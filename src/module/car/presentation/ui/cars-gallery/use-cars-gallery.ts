@@ -3,15 +3,14 @@ import {
   useIsMutating,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
+import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export function useCarsGallery() {
-  const intersectionTargetRef = useRef<HTMLDivElement>(null);
-
   const { addToast } = useToasts();
 
   const carsInfiniteIsMutating = useIsMutating({
@@ -43,22 +42,14 @@ export function useCarsGallery() {
       );
   }, [data, queryClient]);
 
-  useEffect(() => {
-    if (!intersectionTargetRef.current || !hasNextPage) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          isSuccess && !isFetching && !isFetchingNextPage && fetchNextPage();
-        }
-      },
-      { threshold: 0.5 },
-    );
-
-    observer.observe(intersectionTargetRef.current);
-
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isFetching, isSuccess]);
+  const intersectionTargetRef = useInfiniteScrollTrigger<HTMLDivElement>({
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isSuccess,
+    fetchNextPage,
+    threshold: 0.5,
+  });
 
   useEffect(() => {
     isError && addToast(error.message, 'error');
