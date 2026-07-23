@@ -2,8 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hooks/use-owner-profiles-for-car';
-import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/infrastructure/tanstack/query/options';
+import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
+import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 interface UseServiceLogsSectionParams {
@@ -26,8 +28,12 @@ export function useServiceLogsSection({ carId }: UseServiceLogsSectionParams) {
   useEffect(() => {
     if (!serviceLogsError) return;
 
-    addToast(serviceLogsError.message, 'error');
-  }, [addToast, serviceLogsError]);
+    addToast(
+      serviceLogsError.message,
+      'error',
+      queryKeySerialize(queryKeys.byCarId(carId)),
+    );
+  }, [addToast, serviceLogsError, carId]);
 
   const isSessionUserPrimaryOwner = !!ownerships?.find(
     (ownership) => ownership.ownerId === sessionUser?.id && ownership.isPrimary,
