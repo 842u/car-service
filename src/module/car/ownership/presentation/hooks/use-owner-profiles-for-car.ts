@@ -1,8 +1,10 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { getUserByIdQueryOptions } from '@/user/presentation/tanstack/query/options';
 
 export function useOwnerProfilesForCar(carId: string) {
@@ -32,8 +34,12 @@ export function useOwnerProfilesForCar(carId: string) {
   useEffect(() => {
     if (!ownershipsError) return;
 
-    addToast(ownershipsError.message, 'error');
-  }, [ownershipsError, addToast]);
+    addToast(
+      ownershipsError.message,
+      'error',
+      queryKeySerialize(queryKeys.byCarId(carId)),
+    );
+  }, [ownershipsError, addToast, carId]);
 
   useEffect(() => {
     if (!failedCount) return;
