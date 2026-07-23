@@ -3,8 +3,8 @@ import { mutationOptions } from '@tanstack/react-query';
 
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import { ownershipApiClient } from '@/car/ownership/dependency/api-client';
-import { queryKeys } from '@/car/ownership/infrastructure/tanstack/query/keys';
 import type { AddOwnerApiRequest } from '@/car/ownership/interface/api/add.schema';
+import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 
 type OwnershipAddMutationContext = {
   previousOwnerships: OwnershipDto[] | undefined;
@@ -28,15 +28,15 @@ export const ownershipAddMutationOptions = (queryClient: QueryClient) =>
       ownerId,
     }): Promise<OwnershipAddMutationContext> => {
       await queryClient.cancelQueries({
-        queryKey: queryKeys.ownershipsByCarId(carId),
+        queryKey: queryKeys.byCarId(carId),
       });
 
       const previousOwnerships = queryClient.getQueryData<OwnershipDto[]>(
-        queryKeys.ownershipsByCarId(carId),
+        queryKeys.byCarId(carId),
       );
 
       queryClient.setQueryData(
-        queryKeys.ownershipsByCarId(carId),
+        queryKeys.byCarId(carId),
         (current: OwnershipDto[] | undefined) =>
           current && [
             ...current,
@@ -52,16 +52,16 @@ export const ownershipAddMutationOptions = (queryClient: QueryClient) =>
       }
 
       queryClient.setQueryData(
-        queryKeys.ownershipsByCarId(carId),
+        queryKeys.byCarId(carId),
         context.previousOwnerships,
       );
     },
     onSettled: (_data, _error, { carId }) => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.ownershipsByCarId(carId),
+        queryKey: queryKeys.byCarId(carId),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.ownerProfilesByCarIdPrefix(carId),
+        queryKey: queryKeys.ownerProfiles(carId),
       });
     },
   });

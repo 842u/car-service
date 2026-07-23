@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/infrastructure/tanstack/query/options';
+import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 

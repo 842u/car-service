@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import {
   getOwnerProfilesQueryOptions,
   getOwnershipsByCarIdQueryOptions,
-} from '@/car/ownership/infrastructure/tanstack/query/options';
+} from '@/car/ownership/presentation/tanstack/query/options';
 import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/infrastructure/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';

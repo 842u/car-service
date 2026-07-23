@@ -1,13 +1,13 @@
 import { queryOptions, skipToken } from '@tanstack/react-query';
 
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
-import { queryKeys } from '@/car/ownership/infrastructure/tanstack/query/keys';
+import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { userDataSource } from '@/user/dependency/data-source';
 
 export const getOwnershipsByCarIdQueryOptions = (carId: string) =>
   queryOptions({
     throwOnError: false,
-    queryKey: queryKeys.ownershipsByCarId(carId),
+    queryKey: queryKeys.byCarId(carId),
     queryFn: async () => {
       const ownershipsResult = await ownershipDataSource.getByCarId(carId);
 
@@ -23,7 +23,7 @@ export const getOwnershipsByCarIdQueryOptions = (carId: string) =>
 export const getOwnershipsByOwnerIdQueryOptions = (ownerId?: string) =>
   queryOptions({
     throwOnError: false,
-    queryKey: queryKeys.ownershipsByOwnerId(ownerId),
+    queryKey: queryKeys.byOwnerId(ownerId),
     queryFn: ownerId
       ? async () => {
           const ownershipsResult =
@@ -43,10 +43,10 @@ export const getOwnershipsByOwnerIdQueryOptions = (ownerId?: string) =>
  * Reads owner display profiles from the User context (`userDataSource`), not
  * from Ownership's own data source.
  *
- * Living beside Ownership's own query options instead of a separate
- * presentation-layer directory is a pragmatic choice: it keeps every ownership
- * read colocated for a module this size, at the cost of this one export
- * crossing a bounded-context boundary that the rest of the file does not.
+ * Living beside Ownership's other query options is a pragmatic choice: it
+ * keeps every ownership read colocated for a module this size, at the cost of
+ * this one export crossing a bounded-context boundary that the rest of the
+ * file does not.
  */
 export const getOwnerProfilesQueryOptions = ({
   carId,
@@ -57,7 +57,7 @@ export const getOwnerProfilesQueryOptions = ({
 }) =>
   queryOptions({
     throwOnError: false,
-    queryKey: queryKeys.ownerProfilesByCarId(carId, ownerIds),
+    queryKey: queryKeys.ownerProfilesByIds(carId, ownerIds),
     queryFn: async () => {
       const usersResult = await userDataSource.getUsersByIds(ownerIds);
 

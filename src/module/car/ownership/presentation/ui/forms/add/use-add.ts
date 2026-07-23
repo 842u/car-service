@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ownershipAddMutationOptions } from '@/car/ownership/infrastructure/tanstack/mutation-options/add';
 import {
   addOwnerFormSchema,
   type AddOwnerFormValues,
 } from '@/car/ownership/interface/ui/add-form.schema';
+import { ownershipAddMutationOptions } from '@/car/ownership/presentation/tanstack/mutation-options/add';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 import type { AddFormProps } from './add';
