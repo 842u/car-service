@@ -14,10 +14,12 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 
 const mockMutationFn = jest.fn();
 const mockOnError = jest.fn();
+const mockOnSettled = jest.fn();
 jest.mock('@/user/presentation/tanstack/mutation-options/avatar-edit', () => ({
   userAvatarEditMutationOptions: () => ({
     mutationFn: mockMutationFn,
     onError: mockOnError,
+    onSettled: mockOnSettled,
   }),
 }));
 
@@ -89,5 +91,21 @@ describe('useUserAvatarEdit', () => {
     expect(invalidateSpy).toHaveBeenCalledWith({
       queryKey: queryKeys.session(),
     });
+  });
+
+  it('should forward settled calls to the mutation options base onSettled', async () => {
+    mockMutationFn.mockResolvedValue({ avatarUrl: 'new-url' });
+
+    const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
+
+    await result.current.mutateAsync({ image: null });
+
+    expect(mockOnSettled).toHaveBeenCalledWith(
+      { avatarUrl: 'new-url' },
+      null,
+      { image: null },
+      undefined,
+      expect.anything(),
+    );
   });
 });

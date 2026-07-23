@@ -20,7 +20,8 @@ export function useUserAvatarEdit() {
       avatarEditMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
-    onSettled: () => {
+    onSettled: (...args) => {
+      avatarEditMutationOptions.onSettled?.(...args);
       queryClient.invalidateQueries({
         queryKey: queryKeys.session(),
       });

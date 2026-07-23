@@ -64,25 +64,32 @@ export const userAvatarEditMutationOptions = (queryClient: QueryClient) =>
 
       const previousQueryData = queryClient.getQueryData(queryKeys.session());
 
-      const imageUrl = variables.image && URL.createObjectURL(variables.image);
+      const optimisticImageUrl = variables.image
+        ? URL.createObjectURL(variables.image)
+        : undefined;
 
       queryClient.setQueryData(
         queryKeys.session(),
         (currentQueryData: UserDto) => {
           const updatedQueryData = {
             ...currentQueryData,
-            avatarUrl: imageUrl,
+            avatarUrl: optimisticImageUrl,
           };
 
           return updatedQueryData;
         },
       );
 
-      return { previousQueryData };
+      return { previousQueryData, optimisticImageUrl };
     },
     onError: (_error, _variables, context) => {
       if (!context) return;
 
       queryClient.setQueryData(queryKeys.session(), context.previousQueryData);
+    },
+    onSettled: (_data, _error, _variables, context) => {
+      if (context?.optimisticImageUrl) {
+        URL.revokeObjectURL(context.optimisticImageUrl);
+      }
     },
   });

@@ -6,13 +6,32 @@ import {
 import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import { Result } from '@/common/application/result';
+import { browserStorageClient } from '@/dependency/storage-client/browser';
 import { buildUserDto } from '@/user/application/dto/user.builder';
+import { userApiClient } from '@/user/dependency/api-client';
 import { userAvatarEditMutationOptions } from '@/user/presentation/tanstack/mutation-options/avatar-edit';
 import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
-// Keeps mutationFn pending past onMutate so the optimistic patch is
-// observable before the mutation ever settles.
-jest.mock('@/lib/utils', () => ({ hashFile: () => new Promise(() => {}) }));
+const mockHashFile = jest.fn();
+jest.mock('@/lib/utils', () => ({
+  hashFile: (...args: unknown[]) => mockHashFile(...args),
+}));
+
+const mockBrowserStorageClient = browserStorageClient as jest.Mocked<
+  typeof browserStorageClient
+>;
+jest.mock('@/dependency/storage-client/browser');
+
+const mockUserApiClient = userApiClient as jest.Mocked<typeof userApiClient>;
+jest.mock('@/user/dependency/api-client');
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  // Keeps mutationFn pending past onMutate so the optimistic patch is
+  // observable before the mutation ever settles, unless a test overrides it.
+  mockHashFile.mockReturnValue(new Promise(() => {}));
+});
 
 let queryClient: QueryClient;
 
@@ -72,6 +91,38 @@ describe('userAvatarEditMutationOptions', () => {
       expect(queryClient.getQueryData(queryKeys.session())).toEqual(
         previousUser,
       ),
+    );
+  });
+
+  it('revokes the optimistic image object URL once the mutation settles', async () => {
+    const previousUser = buildUserDto({ avatarUrl: 'old-url' });
+    const image = new File(['content'], 'avatar.png', { type: 'image/png' });
+
+    mockHashFile.mockResolvedValue('hash');
+    mockBrowserStorageClient.upload.mockResolvedValue(
+      Result.ok({
+        id: '1',
+        path: 'user-1/hash',
+        fullPath: 'avatars/user-1/hash',
+      }),
+    );
+    mockUserApiClient.edit.mockResolvedValue(
+      Result.ok(buildUserDto({ avatarUrl: 'https://example.com/avatar.png' })),
+    );
+
+    const wrapper = createWrapper();
+    const revokeObjectURLSpy = jest.spyOn(URL, 'revokeObjectURL');
+    queryClient.setQueryData(queryKeys.session(), previousUser);
+
+    const { result } = renderHook(
+      () => useMutation(userAvatarEditMutationOptions(queryClient)),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({ image });
+
+    expect(revokeObjectURLSpy).toHaveBeenCalledWith(
+      'blob:test/12345678-1234-4234-8234-123456789012',
     );
   });
 });
