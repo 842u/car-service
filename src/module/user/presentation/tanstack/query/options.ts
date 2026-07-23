@@ -17,3 +17,19 @@ export const getSessionUserQueryOptions = queryOptions({
     return userResult.data;
   },
 });
+
+export const getUserByIdQueryOptions = (id: string) =>
+  queryOptions({
+    throwOnError: false,
+    queryKey: queryKeys.byId(id),
+    queryFn: async () => {
+      const userResult = await userDataSource.getById(id);
+
+      if (!userResult.success) {
+        const { message } = userResult.error;
+        throw new Error(message);
+      }
+
+      return userResult.data;
+    },
+  });
