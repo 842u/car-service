@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { getServiceLogsQueryOptions } from '@/car/service-log/infrastructure/tanstack/query/options';
+import { getServiceLogsQueryOptions } from '@/car/service-log/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export function useCostsSection() {

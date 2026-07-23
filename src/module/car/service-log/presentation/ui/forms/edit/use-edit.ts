@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
-import { serviceLogEditMutationOptions } from '@/car/service-log/infrastructure/tanstack/mutation-options/edit';
 import type { ServiceLogFormValues } from '@/car/service-log/interface/ui/service-log-form.schema';
+import { serviceLogEditMutationOptions } from '@/car/service-log/presentation/tanstack/mutation-options/edit';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 interface UseEditFormParams {
