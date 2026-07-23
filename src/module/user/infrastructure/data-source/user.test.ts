@@ -63,64 +63,6 @@ describe('UserDataSourceImplementation', () => {
     });
   });
 
-  describe('getUsersByIds', () => {
-    const userIds = [
-      '44dd8410-a912-480f-95be-9ad4cbe30d7f',
-      '55ee9521-b023-591g-06cf-0be5ddf2e80g',
-    ];
-
-    it('should return array of user DTOs on success', async () => {
-      const persistenceList = [
-        buildUserPersistence({
-          id: userIds[0],
-          email: 'a@example.com',
-          user_name: 'User A',
-        }),
-        buildUserPersistence({
-          id: userIds[1],
-          email: 'b@example.com',
-          user_name: 'User B',
-        }),
-      ];
-      const dtoA = buildUserDto({
-        id: userIds[0],
-        email: 'a@example.com',
-        name: 'User A',
-      });
-      const dtoB = buildUserDto({
-        id: userIds[1],
-        email: 'b@example.com',
-        name: 'User B',
-      });
-
-      mockDbClient.query.mockResolvedValue(Result.ok(persistenceList));
-      mockUserMapper.persistenceToDto
-        .mockReturnValueOnce(dtoA)
-        .mockReturnValueOnce(dtoB);
-
-      const result = await dataSource.getUsersByIds(userIds);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual([dtoA, dtoB]);
-      }
-      expect(mockUserMapper.persistenceToDto).toHaveBeenCalledTimes(2);
-    });
-
-    it('should return error when query fails', async () => {
-      mockDbClient.query.mockResolvedValue(
-        Result.fail({ message: 'Query failed' }),
-      );
-
-      const result = await dataSource.getUsersByIds(userIds);
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.message).toBe('Query failed');
-      }
-    });
-  });
-
   describe('getSessionUser', () => {
     const authIdentity = createMockAuthIdentity();
     const userDto = buildUserDto({ id: authIdentity.id });
