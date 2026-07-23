@@ -19,7 +19,10 @@ export function useAddForm({
 
   const addCar = useMutation({
     ...addMutationOptions,
-    onSuccess: (data) => addToast(`Car ${data.customName} added.`, 'success'),
+    onSuccess: (...args) => {
+      addMutationOptions.onSuccess?.(...args);
+      addToast(`Car ${args[0].customName} added.`, 'success');
+    },
     onError: (...args) => {
       addMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
