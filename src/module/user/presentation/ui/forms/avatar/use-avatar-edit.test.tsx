@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 import { useUserAvatarEdit } from './use-avatar-edit';
 
@@ -13,14 +13,13 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 }));
 
 const mockMutationFn = jest.fn();
-jest.mock(
-  '@/user/infrastructure/tanstack/mutation-options/avatar-edit',
-  () => ({
-    userAvatarEditMutationOptions: () => ({
-      mutationFn: mockMutationFn,
-    }),
+const mockOnError = jest.fn();
+jest.mock('@/user/presentation/tanstack/mutation-options/avatar-edit', () => ({
+  userAvatarEditMutationOptions: () => ({
+    mutationFn: mockMutationFn,
+    onError: mockOnError,
   }),
-);
+}));
 
 let queryClient: QueryClient;
 
@@ -60,11 +59,9 @@ describe('useUserAvatarEdit', () => {
     expect(mockAddToast).toHaveBeenCalledWith('Upload failed', 'error');
   });
 
-  it('should revert query data on error', async () => {
-    const previousData = { avatarUrl: 'old-url' };
-    queryClient.setQueryData(queryKeys.sessionUser, previousData);
-
-    mockMutationFn.mockRejectedValue(new Error('Upload failed'));
+  it('should forward errors to the mutation options base onError', async () => {
+    const error = new Error('Upload failed');
+    mockMutationFn.mockRejectedValue(error);
 
     const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
 
@@ -72,12 +69,15 @@ describe('useUserAvatarEdit', () => {
       'Upload failed',
     );
 
-    expect(queryClient.getQueryData(queryKeys.sessionUser)).toEqual(
-      previousData,
+    expect(mockOnError).toHaveBeenCalledWith(
+      error,
+      { image: null },
+      undefined,
+      expect.anything(),
     );
   });
 
-  it('should invalidate sessionUser query on settled', async () => {
+  it('should invalidate session query on settled', async () => {
     const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
 
     mockMutationFn.mockResolvedValue({ avatarUrl: 'new-url' });
@@ -87,7 +87,7 @@ describe('useUserAvatarEdit', () => {
     await result.current.mutateAsync({ image: null });
 
     expect(invalidateSpy).toHaveBeenCalledWith({
-      queryKey: queryKeys.sessionUser,
+      queryKey: queryKeys.session(),
     });
   });
 });
