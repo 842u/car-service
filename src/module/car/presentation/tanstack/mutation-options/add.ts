@@ -18,7 +18,6 @@ export type CarAddMutationVariables = AddCarApiRequest & {
 
 export const carAddMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationKey: queryKeys.infinite(),
     mutationFn: async (variables: CarAddMutationVariables) => {
       const { image, ...contract } = variables;

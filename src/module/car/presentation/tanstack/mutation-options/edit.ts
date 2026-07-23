@@ -19,7 +19,6 @@ export type CarEditMutationVariables = EditCarApiRequest & {
 
 export const carEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationKey: queryKeys.infinite(),
     mutationFn: async (variables: CarEditMutationVariables) => {
       const { image, ...contract } = variables;

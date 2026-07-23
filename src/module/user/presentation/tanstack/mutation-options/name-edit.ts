@@ -8,7 +8,6 @@ import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 export const userNameEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async (variables: Pick<EditUserApiRequest, 'name'>) => {
       const editResult = await userApiClient.edit(variables);
 

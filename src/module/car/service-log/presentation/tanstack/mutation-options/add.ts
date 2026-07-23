@@ -19,7 +19,6 @@ type ServiceLogAddMutationContext = {
 
 export const serviceLogAddMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async ({
       authorId: _authorId,
       ...contract

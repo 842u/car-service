@@ -5,7 +5,6 @@ import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 
 export const getServiceLogsByCarIdQueryOptions = (carId: string) =>
   queryOptions({
-    throwOnError: false,
     queryKey: queryKeys.byCarId(carId),
     queryFn: async () => {
       const serviceLogsResult = await serviceLogDataSource.getByCarId(carId);
@@ -21,7 +20,6 @@ export const getServiceLogsByCarIdQueryOptions = (carId: string) =>
 
 export const getServiceLogsQueryOptions = () =>
   queryOptions({
-    throwOnError: false,
     queryKey: queryKeys.all(),
     queryFn: async () => {
       const serviceLogsResult = await serviceLogDataSource.getAll();

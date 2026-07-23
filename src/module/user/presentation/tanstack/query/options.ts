@@ -4,7 +4,6 @@ import { userDataSource } from '@/user/dependency/data-source';
 import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 export const getSessionUserQueryOptions = queryOptions({
-  throwOnError: false,
   queryKey: queryKeys.session(),
   queryFn: async () => {
     const userResult = await userDataSource.getSessionUser();
@@ -20,7 +19,6 @@ export const getSessionUserQueryOptions = queryOptions({
 
 export const getUserByIdQueryOptions = (id: string) =>
   queryOptions({
-    throwOnError: false,
     queryKey: queryKeys.byId(id),
     queryFn: async () => {
       const userResult = await userDataSource.getById(id);

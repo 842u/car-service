@@ -12,7 +12,6 @@ type OwnershipPromoteMutationContext = {
 
 export const ownershipPromoteMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async (contract: PromotePrimaryOwnerApiRequest) => {
       const promoteResult = await ownershipApiClient.promote(contract);
 

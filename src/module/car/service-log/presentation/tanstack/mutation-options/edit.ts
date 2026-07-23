@@ -19,7 +19,6 @@ type ServiceLogEditMutationContext = {
 
 export const serviceLogEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async ({
       carId: _carId,
       ...contract

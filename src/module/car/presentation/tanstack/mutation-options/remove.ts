@@ -14,7 +14,6 @@ import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 
 export const carRemoveMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationKey: queryKeys.infinite(),
     mutationFn: async (carId: string) => {
       const removeResult = await carApiClient.remove(carId);

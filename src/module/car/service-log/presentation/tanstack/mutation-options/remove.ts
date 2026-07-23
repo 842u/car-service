@@ -16,7 +16,6 @@ type ServiceLogRemoveMutationContext = {
 
 export const serviceLogRemoveMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async ({ serviceLogId }: RemoveServiceLogMutationVariables) => {
       const removeResult = await serviceLogApiClient.remove(serviceLogId);
 

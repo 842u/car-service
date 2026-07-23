@@ -13,7 +13,6 @@ type MutationVariables = {
 
 export const userAvatarEditMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async (variables: MutationVariables) => {
       const { image } = variables;
 

@@ -12,7 +12,6 @@ type OwnershipRemoveMutationContext = {
 
 export const ownershipRemoveMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async (contract: RemoveOwnerApiRequest) => {
       const removeResult = await ownershipApiClient.remove(contract);
 

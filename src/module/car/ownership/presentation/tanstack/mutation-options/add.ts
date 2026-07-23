@@ -12,7 +12,6 @@ type OwnershipAddMutationContext = {
 
 export const ownershipAddMutationOptions = (queryClient: QueryClient) =>
   mutationOptions({
-    throwOnError: false,
     mutationFn: async (contract: AddOwnerApiRequest) => {
       const addResult = await ownershipApiClient.add(contract);
 

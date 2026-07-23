@@ -5,7 +5,6 @@ import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 
 export const getOwnershipsByCarIdQueryOptions = (carId: string) =>
   queryOptions({
-    throwOnError: false,
     queryKey: queryKeys.byCarId(carId),
     queryFn: async () => {
       const ownershipsResult = await ownershipDataSource.getByCarId(carId);
@@ -21,7 +20,6 @@ export const getOwnershipsByCarIdQueryOptions = (carId: string) =>
 
 export const getOwnershipsByOwnerIdQueryOptions = (ownerId?: string) =>
   queryOptions({
-    throwOnError: false,
     queryKey: queryKeys.byOwnerId(ownerId),
     queryFn: ownerId
       ? async () => {

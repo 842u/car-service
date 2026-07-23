@@ -8,7 +8,6 @@ import {
 
 export const getCarByIdQueryOptions = (id: string) =>
   queryOptions({
-    throwOnError: false,
     queryKey: queryKeys.byId(id),
     queryFn: async () => {
       const carResult = await carDataSource.getById(id);
@@ -27,7 +26,6 @@ export const getCarsInfiniteQueryOptions = (params?: {
   orderBy?: { column: CarOrderColumn; ascending: boolean };
 }) =>
   infiniteQueryOptions({
-    throwOnError: false,
     queryKey: queryKeys.infinite(params),
     queryFn: async ({ pageParam }) => {
       const carsResult = await carDataSource.getByPage({
