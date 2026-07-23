@@ -6,7 +6,7 @@ import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.bui
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/sections/total-ownerships/use-total-ownerships';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userDataSource } from '@/user/dependency/data-source';
 import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
