@@ -65,9 +65,11 @@ export const carEditMutationOptions = (queryClient: QueryClient) =>
         queryKeys.byId(carId),
       );
 
+      const optimisticImageUrl = image ? URL.createObjectURL(image) : undefined;
+
       const patch = {
         ...contract,
-        ...(image ? { imageUrl: URL.createObjectURL(image) } : {}),
+        ...(optimisticImageUrl ? { imageUrl: optimisticImageUrl } : {}),
       } as Partial<CarDto>;
 
       queryClient.setQueryData(
@@ -92,7 +94,7 @@ export const carEditMutationOptions = (queryClient: QueryClient) =>
         },
       );
 
-      return { previousCar, previousCarsInfiniteData };
+      return { previousCar, previousCarsInfiniteData, optimisticImageUrl };
     },
     onError: (_error, variables, context) => {
       if (!context) return;
@@ -105,5 +107,10 @@ export const carEditMutationOptions = (queryClient: QueryClient) =>
         queryKeys.infinite(),
         context.previousCarsInfiniteData,
       );
+    },
+    onSettled: (_data, _error, _variables, context) => {
+      if (context?.optimisticImageUrl) {
+        URL.revokeObjectURL(context.optimisticImageUrl);
+      }
     },
   });

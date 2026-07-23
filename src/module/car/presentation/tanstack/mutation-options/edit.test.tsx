@@ -144,4 +144,35 @@ describe('carEditMutationOptions', () => {
       );
     });
   });
+
+  it('revokes the optimistic image object URL once the mutation settles', async () => {
+    const previousCar = buildCarDto({ id: 'car-1' });
+    const image = new File(['content'], 'car.png', { type: 'image/png' });
+
+    mockBrowserStorageClient.upload.mockResolvedValue(
+      Result.ok({
+        id: '1',
+        path: 'car-1/hash',
+        fullPath: 'cars_images/car-1/hash',
+      }),
+    );
+    mockCarApiClient.edit.mockResolvedValue(
+      Result.ok(buildCarDto({ id: 'car-1' })),
+    );
+
+    const wrapper = createWrapper();
+    const revokeObjectURLSpy = jest.spyOn(URL, 'revokeObjectURL');
+    queryClient.setQueryData(queryKeys.byId('car-1'), previousCar);
+
+    const { result } = renderHook(
+      () => useMutation(carEditMutationOptions(queryClient)),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({ carId: 'car-1', image });
+
+    expect(revokeObjectURLSpy).toHaveBeenCalledWith(
+      'blob:test/12345678-1234-4234-8234-123456789012',
+    );
+  });
 });
