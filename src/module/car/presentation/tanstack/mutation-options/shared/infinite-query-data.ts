@@ -101,6 +101,7 @@ export function deleteCarFromInfiniteQueryData(
       )[0];
       deletedCarContext.deletedCarPageIndex = pageIndex;
       deletedCarContext.deletedCarPagePositionIndex = carIndexToDelete;
+      break;
     }
   }
 
