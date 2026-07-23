@@ -5,9 +5,7 @@ import type { ReactNode } from 'react';
 import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hooks/use-owner-profiles-for-car';
-import { getOwnerProfilesQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userDataSource } from '@/user/dependency/data-source';
 
@@ -28,7 +26,8 @@ const MOCK_OWNERSHIPS = [
   buildOwnershipDto({ ownerId: 'owner-1' }),
   buildOwnershipDto({ ownerId: 'owner-2' }),
 ];
-const MOCK_USERS = [buildUserDto(), buildUserDto()];
+const MOCK_USER_1 = buildUserDto({ id: 'owner-1' });
+const MOCK_USER_2 = buildUserDto({ id: 'owner-2' });
 
 function createWrapper() {
   const queryClient = new QueryClient({
@@ -49,7 +48,9 @@ beforeEach(() => {
   mockOwnershipDataSource.getByCarId.mockResolvedValue(
     Result.ok(MOCK_OWNERSHIPS),
   );
-  mockUserDataSource.getUsersByIds.mockResolvedValue(Result.ok(MOCK_USERS));
+  mockUserDataSource.getById.mockImplementation(async (id: string) =>
+    Result.ok(id === MOCK_USER_1.id ? MOCK_USER_1 : MOCK_USER_2),
+  );
 });
 
 describe('useOwnerProfilesForCar', () => {
@@ -61,20 +62,20 @@ describe('useOwnerProfilesForCar', () => {
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.ownerships).toEqual(MOCK_OWNERSHIPS);
-    expect(result.current.users).toEqual(MOCK_USERS);
+    expect(result.current.users).toEqual([MOCK_USER_1, MOCK_USER_2]);
   });
 
-  it('fetches owner profiles by the ownerships owner ids', async () => {
+  it('fetches each owner profile by its owner id', async () => {
     renderHook(() => useOwnerProfilesForCar('car-1'), {
       wrapper: createWrapper(),
     });
 
     await waitFor(() =>
-      expect(mockUserDataSource.getUsersByIds).toHaveBeenCalledWith([
-        'owner-1',
-        'owner-2',
-      ]),
+      expect(mockUserDataSource.getById).toHaveBeenCalledTimes(2),
     );
+
+    expect(mockUserDataSource.getById).toHaveBeenCalledWith('owner-1');
+    expect(mockUserDataSource.getById).toHaveBeenCalledWith('owner-2');
   });
 
   it('does not fetch owner profiles when there are no ownerships', async () => {
@@ -86,7 +87,7 @@ describe('useOwnerProfilesForCar', () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-    expect(mockUserDataSource.getUsersByIds).not.toHaveBeenCalled();
+    expect(mockUserDataSource.getById).not.toHaveBeenCalled();
   });
 
   it('shows an error toast when the ownerships fetch fails', async () => {
@@ -103,9 +104,9 @@ describe('useOwnerProfilesForCar', () => {
     );
   });
 
-  it('shows an error toast with the query key when the owner-profiles fetch fails', async () => {
-    mockUserDataSource.getUsersByIds.mockResolvedValue(
-      Result.fail({ message: 'Users error' }),
+  it('shows a single combined error toast when owner-profile fetches fail', async () => {
+    mockUserDataSource.getById.mockResolvedValue(
+      Result.fail({ message: 'User error' }),
     );
 
     renderHook(() => useOwnerProfilesForCar('car-1'), {
@@ -114,15 +115,12 @@ describe('useOwnerProfilesForCar', () => {
 
     await waitFor(() =>
       expect(mockAddToast).toHaveBeenCalledWith(
-        'Users error',
+        'Cannot load 2 owner profile(s).',
         'error',
-        queryKeySerialize(
-          getOwnerProfilesQueryOptions({
-            carId: 'car-1',
-            ownerIds: ['owner-1', 'owner-2'],
-          }).queryKey,
-        ),
+        'owner-profiles-car-1',
       ),
     );
+
+    expect(mockAddToast).toHaveBeenCalledTimes(1);
   });
 });

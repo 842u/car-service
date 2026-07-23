@@ -1,12 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import {
-  getOwnerProfilesQueryOptions,
-  getOwnershipsByCarIdQueryOptions,
-} from '@/car/ownership/presentation/tanstack/query/options';
+import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { getUserByIdQueryOptions } from '@/user/presentation/tanstack/query/options';
 
 export function useOwnerProfilesForCar(carId: string) {
   const { addToast } = useToasts();
@@ -17,20 +14,19 @@ export function useOwnerProfilesForCar(carId: string) {
     isLoading: ownershipsLoading,
   } = useQuery(getOwnershipsByCarIdQueryOptions(carId));
 
-  const allowDependentQueries = !!(ownerships && ownerships.length);
-
-  const ownerProfilesQueryOptions = getOwnerProfilesQueryOptions({
-    carId,
-    ownerIds: ownerships?.map((ownership) => ownership.ownerId) || [],
-  });
+  const ownerIds = ownerships?.map((ownership) => ownership.ownerId) || [];
 
   const {
-    data: users,
-    error: usersError,
+    users,
     isLoading: usersLoading,
-  } = useQuery({
-    ...ownerProfilesQueryOptions,
-    enabled: allowDependentQueries,
+    failedCount,
+  } = useQueries({
+    queries: ownerIds.map((ownerId) => getUserByIdQueryOptions(ownerId)),
+    combine: (results) => ({
+      users: results.flatMap((result) => (result.data ? [result.data] : [])),
+      isLoading: results.some((result) => result.isLoading),
+      failedCount: results.filter((result) => result.isError).length,
+    }),
   });
 
   useEffect(() => {
@@ -40,14 +36,14 @@ export function useOwnerProfilesForCar(carId: string) {
   }, [ownershipsError, addToast]);
 
   useEffect(() => {
-    if (!usersError) return;
+    if (!failedCount) return;
 
     addToast(
-      usersError.message,
+      `Cannot load ${failedCount} owner profile(s).`,
       'error',
-      queryKeySerialize(ownerProfilesQueryOptions.queryKey),
+      `owner-profiles-${carId}`,
     );
-  }, [usersError, addToast, ownerProfilesQueryOptions.queryKey]);
+  }, [failedCount, carId, addToast]);
 
   return {
     ownerships,

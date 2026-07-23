@@ -57,8 +57,5 @@ export const ownershipRemoveMutationOptions = (queryClient: QueryClient) =>
       queryClient.invalidateQueries({
         queryKey: queryKeys.byCarId(carId),
       });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.ownerProfiles(carId),
-      });
     },
   });
