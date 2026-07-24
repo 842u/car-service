@@ -47,7 +47,7 @@ describe('serviceLogAddMutationOptions', () => {
     queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
 
     const { result } = renderHook(
-      () => useMutation(serviceLogAddMutationOptions(queryClient)),
+      () => useMutation(serviceLogAddMutationOptions),
       { wrapper },
     );
 
@@ -90,7 +90,7 @@ describe('serviceLogAddMutationOptions', () => {
     queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
 
     const { result } = renderHook(
-      () => useMutation(serviceLogAddMutationOptions(queryClient)),
+      () => useMutation(serviceLogAddMutationOptions),
       { wrapper },
     );
 
@@ -122,7 +122,7 @@ describe('serviceLogAddMutationOptions', () => {
     const invalidateQueriesSpy = jest.spyOn(queryClient, 'invalidateQueries');
 
     const { result } = renderHook(
-      () => useMutation(serviceLogAddMutationOptions(queryClient)),
+      () => useMutation(serviceLogAddMutationOptions),
       { wrapper },
     );
 

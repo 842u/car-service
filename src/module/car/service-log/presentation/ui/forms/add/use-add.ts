@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import type { ServiceLogFormValues } from '@/car/service-log/interface/ui/service-log-form.schema';
 import { serviceLogAddMutationOptions } from '@/car/service-log/presentation/tanstack/mutation-options/add';
@@ -15,19 +15,15 @@ export function useAddForm({ carId, onSubmit }: UseAddFormParams) {
 
   const { addToast } = useToasts();
 
-  const queryClient = useQueryClient();
-
   // The modal unmounts this form as soon as onSubmit fires, before the
   // request settles. React Query drops callbacks passed to mutate() once the
   // caller unmounts, so the toasts live on the mutation options (which still
   // run). onError is composed so the options' optimistic rollback still runs.
-  const addMutationOptions = serviceLogAddMutationOptions(queryClient);
-
   const { mutate } = useMutation({
-    ...addMutationOptions,
+    ...serviceLogAddMutationOptions,
     onSuccess: () => addToast('Service log added.', 'success'),
     onError: (...args) => {
-      addMutationOptions.onError?.(...args);
+      serviceLogAddMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });
