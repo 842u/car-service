@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { getOwnershipsByOwnerIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 export function useTotalOwnershipsSection() {
@@ -23,8 +25,9 @@ export function useTotalOwnershipsSection() {
     addToast(
       ownershipsError?.message || 'Cannot get user ownerships.',
       'error',
+      queryKeySerialize(queryKeys.byOwnerId(userData?.id)),
     );
-  }, [ownershipsIsError, addToast, ownershipsError]);
+  }, [ownershipsIsError, addToast, ownershipsError, userData?.id]);
 
   return {
     data: ownershipsData,
