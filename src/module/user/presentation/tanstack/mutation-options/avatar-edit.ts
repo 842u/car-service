@@ -1,4 +1,3 @@
-import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
 import { browserStorageClient } from '@/dependency/storage-client/browser';
@@ -11,85 +10,87 @@ type MutationVariables = {
   image: File | undefined | null;
 };
 
-export const userAvatarEditMutationOptions = (queryClient: QueryClient) =>
-  mutationOptions({
-    mutationFn: async (variables: MutationVariables) => {
-      const { image } = variables;
+export const userAvatarEditMutationOptions = mutationOptions({
+  mutationFn: async (variables: MutationVariables, context) => {
+    const { image } = variables;
 
-      if (!image) throw new Error('No file was provided. Try again.');
+    if (!image) throw new Error('No file was provided. Try again.');
 
-      const sessionUser = queryClient.getQueryData<UserDto>(
-        queryKeys.session(),
-      );
+    const sessionUser = context.client.getQueryData<UserDto>(
+      queryKeys.session(),
+    );
 
-      if (!sessionUser) {
-        throw new Error('You must be signed in to change your avatar.');
-      }
+    if (!sessionUser) {
+      throw new Error('You must be signed in to change your avatar.');
+    }
 
-      const hashedFile = await hashFile(image);
+    const hashedFile = await hashFile(image);
 
-      const uploadPath = `${sessionUser.id}/${hashedFile}`;
+    const uploadPath = `${sessionUser.id}/${hashedFile}`;
 
-      const uploadResult = await browserStorageClient.upload(
-        'avatars',
-        uploadPath,
-        image,
-      );
+    const uploadResult = await browserStorageClient.upload(
+      'avatars',
+      uploadPath,
+      image,
+    );
 
-      if (!uploadResult.success) {
-        const { message } = uploadResult.error;
-        throw new Error(message);
-      }
+    if (!uploadResult.success) {
+      const { message } = uploadResult.error;
+      throw new Error(message);
+    }
 
-      const avatarPath = uploadResult.data.fullPath;
+    const avatarPath = uploadResult.data.fullPath;
 
-      const apiUrl =
-        process.env.NEXT_PUBLIC_SUPABASE_URL! + '/storage/v1/object/public/';
+    const apiUrl =
+      process.env.NEXT_PUBLIC_SUPABASE_URL! + '/storage/v1/object/public/';
 
-      const avatarUrl = apiUrl + avatarPath;
+    const avatarUrl = apiUrl + avatarPath;
 
-      const editResult = await userApiClient.edit({ avatarUrl });
+    const editResult = await userApiClient.edit({ avatarUrl });
 
-      if (!editResult.success) {
-        const { message } = editResult.error;
-        throw new Error(message);
-      }
+    if (!editResult.success) {
+      const { message } = editResult.error;
+      throw new Error(message);
+    }
 
-      return editResult.data;
-    },
-    onMutate: async (variables) => {
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.session(),
-      });
+    return editResult.data;
+  },
+  onMutate: async (variables, context) => {
+    await context.client.cancelQueries({
+      queryKey: queryKeys.session(),
+    });
 
-      const previousQueryData = queryClient.getQueryData(queryKeys.session());
+    const previousQueryData = context.client.getQueryData<UserDto>(
+      queryKeys.session(),
+    );
 
-      const optimisticImageUrl = variables.image
-        ? URL.createObjectURL(variables.image)
-        : undefined;
+    const optimisticImageUrl = variables.image
+      ? URL.createObjectURL(variables.image)
+      : undefined;
 
-      queryClient.setQueryData(
-        queryKeys.session(),
-        (currentQueryData: UserDto) => {
-          const updatedQueryData = {
-            ...currentQueryData,
-            avatarUrl: optimisticImageUrl,
-          };
+    context.client.setQueryData(
+      queryKeys.session(),
+      (current: UserDto | undefined) =>
+        current && { ...current, avatarUrl: optimisticImageUrl },
+    );
 
-          return updatedQueryData;
-        },
-      );
+    return { previousQueryData, optimisticImageUrl };
+  },
+  onError: (_error, _variables, onMutateResult, context) => {
+    if (!onMutateResult) return;
 
-      return { previousQueryData, optimisticImageUrl };
-    },
-    onError: (_error, _variables, context) => {
-      if (!context) return;
+    context.client.setQueryData(
+      queryKeys.session(),
+      onMutateResult.previousQueryData,
+    );
+  },
+  onSettled: (_data, _error, _variables, onMutateResult, context) => {
+    if (onMutateResult?.optimisticImageUrl) {
+      URL.revokeObjectURL(onMutateResult.optimisticImageUrl);
+    }
 
-      queryClient.setQueryData(queryKeys.session(), context.previousQueryData);
-    },
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.optimisticImageUrl) {
-        URL.revokeObjectURL(context.optimisticImageUrl);
-      }
-    },
-  });
+    context.client.invalidateQueries({
+      queryKey: queryKeys.session(),
+    });
+  },
+});

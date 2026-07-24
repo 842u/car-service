@@ -58,7 +58,7 @@ describe('userAvatarEditMutationOptions', () => {
     queryClient.setQueryData(queryKeys.session(), previousUser);
 
     const { result } = renderHook(
-      () => useMutation(userAvatarEditMutationOptions(queryClient)),
+      () => useMutation(userAvatarEditMutationOptions),
       { wrapper },
     );
 
@@ -72,6 +72,24 @@ describe('userAvatarEditMutationOptions', () => {
     );
   });
 
+  it('does not corrupt the session cache when it is empty at mutation start', async () => {
+    const image = new File(['content'], 'avatar.png', { type: 'image/png' });
+
+    const wrapper = createWrapper();
+
+    const { result } = renderHook(
+      () => useMutation(userAvatarEditMutationOptions),
+      { wrapper },
+    );
+
+    await expect(result.current.mutateAsync({ image })).rejects.toThrow(
+      'You must be signed in to change your avatar.',
+    );
+
+    expect(mockHashFile).not.toHaveBeenCalled();
+    expect(queryClient.getQueryData(queryKeys.session())).toBeUndefined();
+  });
+
   it('rolls back the session query to its previous value on error', async () => {
     const previousUser = buildUserDto({ avatarUrl: 'old-url' });
 
@@ -79,7 +97,7 @@ describe('userAvatarEditMutationOptions', () => {
     queryClient.setQueryData(queryKeys.session(), previousUser);
 
     const { result } = renderHook(
-      () => useMutation(userAvatarEditMutationOptions(queryClient)),
+      () => useMutation(userAvatarEditMutationOptions),
       { wrapper },
     );
 
@@ -115,7 +133,7 @@ describe('userAvatarEditMutationOptions', () => {
     queryClient.setQueryData(queryKeys.session(), previousUser);
 
     const { result } = renderHook(
-      () => useMutation(userAvatarEditMutationOptions(queryClient)),
+      () => useMutation(userAvatarEditMutationOptions),
       { wrapper },
     );
 
@@ -124,5 +142,38 @@ describe('userAvatarEditMutationOptions', () => {
     expect(revokeObjectURLSpy).toHaveBeenCalledWith(
       'blob:test/12345678-1234-4234-8234-123456789012',
     );
+  });
+
+  it('invalidates the session query once the mutation settles', async () => {
+    const previousUser = buildUserDto({ avatarUrl: 'old-url' });
+    const image = new File(['content'], 'avatar.png', { type: 'image/png' });
+
+    mockHashFile.mockResolvedValue('hash');
+    mockBrowserStorageClient.upload.mockResolvedValue(
+      Result.ok({
+        id: '1',
+        path: 'user-1/hash',
+        fullPath: 'avatars/user-1/hash',
+      }),
+    );
+    mockUserApiClient.edit.mockResolvedValue(
+      Result.ok(buildUserDto({ avatarUrl: 'https://example.com/avatar.png' })),
+    );
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.session(), previousUser);
+
+    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+
+    const { result } = renderHook(
+      () => useMutation(userAvatarEditMutationOptions),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({ image });
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.session(),
+    });
   });
 });

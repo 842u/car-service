@@ -2,8 +2,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
-import { queryKeys } from '@/user/presentation/tanstack/query/keys';
-
 import { useUserAvatarEdit } from './use-avatar-edit';
 
 const mockAddToast = jest.fn();
@@ -16,11 +14,13 @@ const mockMutationFn = jest.fn();
 const mockOnError = jest.fn();
 const mockOnSettled = jest.fn();
 jest.mock('@/user/presentation/tanstack/mutation-options/avatar-edit', () => ({
-  userAvatarEditMutationOptions: () => ({
-    mutationFn: mockMutationFn,
-    onError: mockOnError,
-    onSettled: mockOnSettled,
-  }),
+  get userAvatarEditMutationOptions() {
+    return {
+      mutationFn: mockMutationFn,
+      onError: mockOnError,
+      onSettled: mockOnSettled,
+    };
+  },
 }));
 
 let queryClient: QueryClient;
@@ -79,21 +79,7 @@ describe('useUserAvatarEdit', () => {
     );
   });
 
-  it('should invalidate session query on settled', async () => {
-    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
-
-    mockMutationFn.mockResolvedValue({ avatarUrl: 'new-url' });
-
-    const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
-
-    await result.current.mutateAsync({ image: null });
-
-    expect(invalidateSpy).toHaveBeenCalledWith({
-      queryKey: queryKeys.session(),
-    });
-  });
-
-  it('should forward settled calls to the mutation options base onSettled', async () => {
+  it('should call the mutation options base onSettled', async () => {
     mockMutationFn.mockResolvedValue({ avatarUrl: 'new-url' });
 
     const { result } = renderHook(() => useUserAvatarEdit(), { wrapper });
