@@ -44,7 +44,7 @@ describe('userNameEditMutationOptions', () => {
     queryClient.setQueryData(queryKeys.session(), previousUser);
 
     const { result } = renderHook(
-      () => useMutation(userNameEditMutationOptions(queryClient)),
+      () => useMutation(userNameEditMutationOptions),
       { wrapper },
     );
 
@@ -68,7 +68,7 @@ describe('userNameEditMutationOptions', () => {
     queryClient.setQueryData(queryKeys.session(), previousUser);
 
     const { result } = renderHook(
-      () => useMutation(userNameEditMutationOptions(queryClient)),
+      () => useMutation(userNameEditMutationOptions),
       { wrapper },
     );
 
@@ -81,5 +81,45 @@ describe('userNameEditMutationOptions', () => {
         previousUser,
       ),
     );
+  });
+
+  it('does not corrupt the session cache when it is empty at mutation start', async () => {
+    mockUserApiClient.edit.mockReturnValue(new Promise(() => {}));
+
+    const wrapper = createWrapper();
+
+    const { result } = renderHook(
+      () => useMutation(userNameEditMutationOptions),
+      { wrapper },
+    );
+
+    result.current.mutate({ name: 'New Name' });
+
+    await waitFor(() =>
+      expect(queryClient.getQueryData(queryKeys.session())).toBeUndefined(),
+    );
+  });
+
+  it('invalidates the session query once the mutation settles', async () => {
+    const previousUser = buildUserDto({ name: 'Old Name' });
+    mockUserApiClient.edit.mockResolvedValue(
+      Result.ok(buildUserDto({ name: 'New Name' })),
+    );
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.session(), previousUser);
+
+    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+
+    const { result } = renderHook(
+      () => useMutation(userNameEditMutationOptions),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({ name: 'New Name' });
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.session(),
+    });
   });
 });
