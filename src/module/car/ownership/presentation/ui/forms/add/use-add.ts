@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -30,19 +30,15 @@ export function useAddForm({ carId, onSubmit }: AddFormProps) {
     defaultValues: defaultAddFormValues,
   });
 
-  const queryClient = useQueryClient();
-
   // onSubmit closes the add modal, unmounting this form before the request
   // settles. React Query drops callbacks passed to mutate() once the caller
   // unmounts, so the toasts live on the mutation options (which still run).
   // onError is composed so the options' optimistic rollback still runs.
-  const addMutationOptions = ownershipAddMutationOptions(queryClient);
-
   const { mutate } = useMutation({
-    ...addMutationOptions,
+    ...ownershipAddMutationOptions,
     onSuccess: () => addToast('Owner added.', 'success'),
     onError: (...args) => {
-      addMutationOptions.onError?.(...args);
+      ownershipAddMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });
