@@ -1,4 +1,3 @@
-import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
@@ -10,51 +9,50 @@ type OwnershipRemoveMutationContext = {
   previousOwnerships: OwnershipDto[] | undefined;
 };
 
-export const ownershipRemoveMutationOptions = (queryClient: QueryClient) =>
-  mutationOptions({
-    mutationFn: async (contract: RemoveOwnerApiRequest) => {
-      const removeResult = await ownershipApiClient.remove(contract);
+export const ownershipRemoveMutationOptions = mutationOptions({
+  mutationFn: async (contract: RemoveOwnerApiRequest) => {
+    const removeResult = await ownershipApiClient.remove(contract);
 
-      if (!removeResult.success) {
-        const { message } = removeResult.error;
-        throw new Error(message);
-      }
+    if (!removeResult.success) {
+      const { message } = removeResult.error;
+      throw new Error(message);
+    }
 
-      return removeResult.data;
-    },
-    onMutate: async ({
-      carId,
-      ownerId,
-    }): Promise<OwnershipRemoveMutationContext> => {
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.byCarId(carId),
-      });
+    return removeResult.data;
+  },
+  onMutate: async (
+    { carId, ownerId },
+    context,
+  ): Promise<OwnershipRemoveMutationContext> => {
+    await context.client.cancelQueries({
+      queryKey: queryKeys.byCarId(carId),
+    });
 
-      const previousOwnerships = queryClient.getQueryData<OwnershipDto[]>(
-        queryKeys.byCarId(carId),
-      );
+    const previousOwnerships = context.client.getQueryData<OwnershipDto[]>(
+      queryKeys.byCarId(carId),
+    );
 
-      queryClient.setQueryData(
-        queryKeys.byCarId(carId),
-        (current: OwnershipDto[] | undefined) =>
-          current?.filter((ownership) => ownership.ownerId !== ownerId),
-      );
+    context.client.setQueryData(
+      queryKeys.byCarId(carId),
+      (current: OwnershipDto[] | undefined) =>
+        current?.filter((ownership) => ownership.ownerId !== ownerId),
+    );
 
-      return { previousOwnerships };
-    },
-    onError: (_error, { carId }, context) => {
-      if (!context) {
-        return;
-      }
+    return { previousOwnerships };
+  },
+  onError: (_error, { carId }, onMutateResult, context) => {
+    if (!onMutateResult) {
+      return;
+    }
 
-      queryClient.setQueryData(
-        queryKeys.byCarId(carId),
-        context.previousOwnerships,
-      );
-    },
-    onSettled: (_data, _error, { carId }) => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.byCarId(carId),
-      });
-    },
-  });
+    context.client.setQueryData(
+      queryKeys.byCarId(carId),
+      onMutateResult.previousOwnerships,
+    );
+  },
+  onSettled: (_data, _error, { carId }, _onMutateResult, context) => {
+    context.client.invalidateQueries({
+      queryKey: queryKeys.byCarId(carId),
+    });
+  },
+});

@@ -38,24 +38,20 @@ export function useDropdownContent({
   // to mutate() once the caller unmounts, so the toasts live on the mutation
   // options (which still run) rather than on the mutate() call. onError is
   // composed so each options' optimistic rollback still runs.
-  const removeMutationOptions = ownershipRemoveMutationOptions(queryClient);
-
   const { mutate: mutateDelete } = useMutation({
-    ...removeMutationOptions,
+    ...ownershipRemoveMutationOptions,
     onSuccess: () => addToast(`Owner ${username} removed.`, 'success'),
     onError: (...args) => {
-      removeMutationOptions.onError?.(...args);
+      ownershipRemoveMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });
 
-  const promoteMutationOptions = ownershipPromoteMutationOptions(queryClient);
-
   const { mutate: mutatePromote } = useMutation({
-    ...promoteMutationOptions,
+    ...ownershipPromoteMutationOptions,
     onSuccess: () => addToast(`Owner ${username} promoted.`, 'success'),
     onError: (...args) => {
-      promoteMutationOptions.onError?.(...args);
+      ownershipPromoteMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });

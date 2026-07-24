@@ -58,7 +58,7 @@ describe('ownershipPromoteMutationOptions', () => {
     queryClient.setQueryData(queryKeys.byCarId('car-1'), owners);
 
     const { result } = renderHook(
-      () => useMutation(ownershipPromoteMutationOptions(queryClient)),
+      () => useMutation(ownershipPromoteMutationOptions),
       { wrapper },
     );
 
@@ -96,7 +96,7 @@ describe('ownershipPromoteMutationOptions', () => {
     queryClient.setQueryData(queryKeys.byCarId('car-1'), owners);
 
     const { result } = renderHook(
-      () => useMutation(ownershipPromoteMutationOptions(queryClient)),
+      () => useMutation(ownershipPromoteMutationOptions),
       { wrapper },
     );
 
@@ -108,6 +108,44 @@ describe('ownershipPromoteMutationOptions', () => {
       expect(queryClient.getQueryData(queryKeys.byCarId('car-1'))).toEqual(
         owners,
       );
+    });
+  });
+
+  it('invalidates the ownerships-by-car query once the mutation settles', async () => {
+    const owners = [
+      buildOwnershipDto({
+        carId: 'car-1',
+        ownerId: 'owner-1',
+        isPrimary: true,
+      }),
+      buildOwnershipDto({
+        carId: 'car-1',
+        ownerId: 'owner-2',
+        isPrimary: false,
+      }),
+    ];
+
+    mockOwnershipApiClient.promote.mockResolvedValue(
+      Result.ok([
+        { ...owners[0], isPrimary: false },
+        { ...owners[1], isPrimary: true },
+      ]),
+    );
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), owners);
+
+    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+
+    const { result } = renderHook(
+      () => useMutation(ownershipPromoteMutationOptions),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({ carId: 'car-1', ownerId: 'owner-2' });
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.byCarId('car-1'),
     });
   });
 });
