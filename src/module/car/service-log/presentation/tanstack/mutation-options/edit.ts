@@ -1,4 +1,3 @@
-import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
@@ -17,22 +16,22 @@ type ServiceLogEditMutationContext = {
   previousServiceLogs: ServiceLogDto[] | undefined;
 };
 
-export const serviceLogEditMutationOptions = (queryClient: QueryClient) =>
-  mutationOptions({
-    mutationFn: async ({
-      carId: _carId,
-      ...contract
-    }: EditServiceLogMutationVariables) => {
-      const editResult = await serviceLogApiClient.edit(contract);
+export const serviceLogEditMutationOptions = mutationOptions({
+  mutationFn: async ({
+    carId: _carId,
+    ...contract
+  }: EditServiceLogMutationVariables) => {
+    const editResult = await serviceLogApiClient.edit(contract);
 
-      if (!editResult.success) {
-        const { message } = editResult.error;
-        throw new Error(message);
-      }
+    if (!editResult.success) {
+      const { message } = editResult.error;
+      throw new Error(message);
+    }
 
-      return editResult.data;
-    },
-    onMutate: async ({
+    return editResult.data;
+  },
+  onMutate: async (
+    {
       carId,
       serviceLogId,
       serviceDate,
@@ -40,49 +39,51 @@ export const serviceLogEditMutationOptions = (queryClient: QueryClient) =>
       mileage,
       notes,
       serviceCost,
-    }): Promise<ServiceLogEditMutationContext> => {
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.byCarId(carId),
-      });
-
-      const previousServiceLogs = queryClient.getQueryData<ServiceLogDto[]>(
-        queryKeys.byCarId(carId),
-      );
-
-      queryClient.setQueryData(
-        queryKeys.byCarId(carId),
-        (current: ServiceLogDto[] | undefined) =>
-          current?.map((serviceLog) =>
-            serviceLog.id === serviceLogId
-              ? {
-                  ...serviceLog,
-                  serviceDate,
-                  categories: categories as ServiceLogDto['categories'],
-                  mileage: mileage ?? null,
-                  notes: notes ?? null,
-                  serviceCost: serviceCost ?? null,
-                }
-              : serviceLog,
-          ),
-      );
-
-      return { previousServiceLogs };
     },
-    onError: (_error, { carId }, context) => {
-      if (!context) {
-        return;
-      }
+    context,
+  ): Promise<ServiceLogEditMutationContext> => {
+    await context.client.cancelQueries({
+      queryKey: queryKeys.byCarId(carId),
+    });
 
-      queryClient.setQueryData(
-        queryKeys.byCarId(carId),
-        context.previousServiceLogs,
-      );
-    },
-    onSettled: (_data, _error, { carId }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.byCarId(carId) });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.all(),
-        exact: true,
-      });
-    },
-  });
+    const previousServiceLogs = context.client.getQueryData<ServiceLogDto[]>(
+      queryKeys.byCarId(carId),
+    );
+
+    context.client.setQueryData(
+      queryKeys.byCarId(carId),
+      (current: ServiceLogDto[] | undefined) =>
+        current?.map((serviceLog) =>
+          serviceLog.id === serviceLogId
+            ? {
+                ...serviceLog,
+                serviceDate,
+                categories: categories as ServiceLogDto['categories'],
+                mileage: mileage ?? null,
+                notes: notes ?? null,
+                serviceCost: serviceCost ?? null,
+              }
+            : serviceLog,
+        ),
+    );
+
+    return { previousServiceLogs };
+  },
+  onError: (_error, { carId }, onMutateResult, context) => {
+    if (!onMutateResult) {
+      return;
+    }
+
+    context.client.setQueryData(
+      queryKeys.byCarId(carId),
+      onMutateResult.previousServiceLogs,
+    );
+  },
+  onSettled: (_data, _error, { carId }, _onMutateResult, context) => {
+    context.client.invalidateQueries({ queryKey: queryKeys.byCarId(carId) });
+    context.client.invalidateQueries({
+      queryKey: queryKeys.all(),
+      exact: true,
+    });
+  },
+});
