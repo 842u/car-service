@@ -49,10 +49,9 @@ describe('carRemoveMutationOptions', () => {
     const wrapper = createWrapper();
     queryClient.setQueryData(queryKeys.infinite(), infiniteData);
 
-    const { result } = renderHook(
-      () => useMutation(carRemoveMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carRemoveMutationOptions), {
+      wrapper,
+    });
 
     result.current.mutate('car-1');
 
@@ -79,10 +78,9 @@ describe('carRemoveMutationOptions', () => {
     const wrapper = createWrapper();
     queryClient.setQueryData(queryKeys.infinite(), infiniteData);
 
-    const { result } = renderHook(
-      () => useMutation(carRemoveMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carRemoveMutationOptions), {
+      wrapper,
+    });
 
     await expect(result.current.mutateAsync('car-1')).rejects.toThrow(
       'Remove failed',
@@ -94,6 +92,36 @@ describe('carRemoveMutationOptions', () => {
       );
 
       expect(data?.pages[0].data[0]).toEqual(car);
+    });
+  });
+
+  it('removes the byId cache entry and invalidates the infinite query once the mutation settles', async () => {
+    const car = buildCarDto({ id: 'car-1' });
+    const infiniteData: CarsInfiniteQueryData = {
+      pages: [{ data: [car], nextPageParam: null }],
+      pageParams: [0],
+    };
+
+    mockCarApiClient.remove.mockResolvedValue(Result.ok(null));
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.infinite(), infiniteData);
+    queryClient.setQueryData(queryKeys.byId('car-1'), car);
+
+    const removeSpy = jest.spyOn(queryClient, 'removeQueries');
+    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+
+    const { result } = renderHook(() => useMutation(carRemoveMutationOptions), {
+      wrapper,
+    });
+
+    await result.current.mutateAsync('car-1');
+
+    expect(removeSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.byId('car-1'),
+    });
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.infinite(),
     });
   });
 });

@@ -28,17 +28,13 @@ export function useDeleteModal({
 
   const carName = carQueryData?.customName;
 
-  const removeMutationOptions = carRemoveMutationOptions(queryClient);
-
   const { mutate } = useMutation({
-    ...removeMutationOptions,
+    ...carRemoveMutationOptions,
     onSuccess: () => addToast(`Car ${carName} deleted.`, 'success'),
     onError: (...args) => {
-      removeMutationOptions.onError?.(...args);
+      carRemoveMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: queryKeys.infinite() }),
   });
 
   const handleCancelButtonClick = () => {
