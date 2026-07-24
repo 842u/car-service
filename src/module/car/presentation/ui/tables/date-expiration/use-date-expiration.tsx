@@ -1,14 +1,16 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useIsMutating } from '@tanstack/react-query';
 import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo } from 'react';
 
 import type { CarDto } from '@/car/application/dto/car';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { CarBadge } from '@/car/presentation/ui/badge/badge';
 import { DateExpirationTableViewButton } from '@/car/presentation/ui/tables/date-expiration/view-button/view-button';
 import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
 
 const columnsHelper = createColumnHelper<CarDto>();
@@ -26,6 +28,10 @@ export function useDateExpirationTable({
   dateColumn,
 }: UseDateExpirationTableParams) {
   const { addToast } = useToasts();
+
+  const carsInfiniteIsMutating = useIsMutating({
+    mutationKey: queryKeys.infinite(),
+  });
 
   const columns = useMemo(
     () =>
@@ -88,12 +94,13 @@ export function useDateExpirationTable({
     isSuccess,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery(
-    getCarsInfiniteQueryOptions({
+  } = useInfiniteQuery({
+    ...getCarsInfiniteQueryOptions({
       pageLimit: 6,
       orderBy: { column: dateColumn, ascending: true },
     }),
-  );
+    enabled: !carsInfiniteIsMutating,
+  });
 
   const tableData = useMemo(
     () => data?.pages.flatMap((p) => p.data) ?? [],
@@ -115,8 +122,11 @@ export function useDateExpirationTable({
       error?.message ||
         `Cannot get cars ${label.toLowerCase()} expiration data.`,
       'error',
+      queryKeySerialize(
+        queryKeys.infinite({ orderBy: { column: dateColumn } }),
+      ),
     );
-  }, [isError, error, label, addToast]);
+  }, [isError, error, label, addToast, dateColumn]);
 
   return {
     columns,
