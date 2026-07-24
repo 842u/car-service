@@ -5,7 +5,7 @@ export type CarOrderColumn = keyof Pick<
   'createdAt' | 'insuranceExpiration' | 'technicalInspectionExpiration'
 >;
 
-const baseKey = 'cars';
+const baseKey = 'car';
 
 export const queryKeys = {
   all: () => [baseKey] as const,
