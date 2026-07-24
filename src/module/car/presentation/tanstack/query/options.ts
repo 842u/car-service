@@ -27,7 +27,7 @@ export const getCarsInfiniteQueryOptions = (params?: {
 }) =>
   infiniteQueryOptions({
     queryKey: queryKeys.infinite(params),
-    queryFn: async ({ pageParam }) => {
+    queryFn: async ({ pageParam, client }) => {
       const carsResult = await carDataSource.getByPage({
         pageParam,
         pageLimit: params?.pageLimit,
@@ -38,6 +38,10 @@ export const getCarsInfiniteQueryOptions = (params?: {
         const { message } = carsResult.error;
         throw new Error(message);
       }
+
+      carsResult.data.data.forEach(
+        (car) => car && client.setQueryData(queryKeys.byId(car.id), car),
+      );
 
       return carsResult.data;
     },
