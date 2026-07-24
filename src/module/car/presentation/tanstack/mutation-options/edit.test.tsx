@@ -58,10 +58,9 @@ describe('carEditMutationOptions', () => {
     queryClient.setQueryData(queryKeys.byId('car-1'), previousCar);
     queryClient.setQueryData(queryKeys.infinite(), infiniteData);
 
-    const { result } = renderHook(
-      () => useMutation(carEditMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
 
     result.current.mutate({ carId: 'car-1', customName: 'New Name' });
 
@@ -96,10 +95,9 @@ describe('carEditMutationOptions', () => {
     queryClient.setQueryData(queryKeys.byId('car-1'), previousCar);
     queryClient.setQueryData(queryKeys.infinite(), infiniteData);
 
-    const { result } = renderHook(
-      () => useMutation(carEditMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
 
     await expect(
       result.current.mutateAsync({ carId: 'car-1', customName: 'New Name' }),
@@ -129,10 +127,9 @@ describe('carEditMutationOptions', () => {
     const wrapper = createWrapper();
     queryClient.setQueryData(queryKeys.byId('car-1'), previousCar);
 
-    const { result } = renderHook(
-      () => useMutation(carEditMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
 
     await expect(
       result.current.mutateAsync({ carId: 'car-1', image }),
@@ -164,15 +161,39 @@ describe('carEditMutationOptions', () => {
     const revokeObjectURLSpy = jest.spyOn(URL, 'revokeObjectURL');
     queryClient.setQueryData(queryKeys.byId('car-1'), previousCar);
 
-    const { result } = renderHook(
-      () => useMutation(carEditMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
 
     await result.current.mutateAsync({ carId: 'car-1', image });
 
     expect(revokeObjectURLSpy).toHaveBeenCalledWith(
       'blob:test/12345678-1234-4234-8234-123456789012',
     );
+  });
+
+  it('invalidates the car and infinite queries once the mutation settles', async () => {
+    mockCarApiClient.edit.mockResolvedValue(
+      Result.ok(buildCarDto({ id: 'car-1', customName: 'New Name' })),
+    );
+
+    const wrapper = createWrapper();
+    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
+
+    await result.current.mutateAsync({
+      carId: 'car-1',
+      customName: 'New Name',
+    });
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.byId('car-1'),
+    });
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.infinite(),
+    });
   });
 });

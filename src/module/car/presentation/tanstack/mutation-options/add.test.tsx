@@ -42,10 +42,9 @@ describe('carAddMutationOptions', () => {
 
     const wrapper = createWrapper();
 
-    const { result } = renderHook(
-      () => useMutation(carAddMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
 
     result.current.mutate({ customName: 'New Car' });
 
@@ -65,10 +64,9 @@ describe('carAddMutationOptions', () => {
 
     const wrapper = createWrapper();
 
-    const { result } = renderHook(
-      () => useMutation(carAddMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
 
     await expect(
       result.current.mutateAsync({ customName: 'New Car' }),
@@ -106,10 +104,9 @@ describe('carAddMutationOptions', () => {
       pageParams: [0, 1],
     } satisfies CarsInfiniteQueryData);
 
-    const { result } = renderHook(
-      () => useMutation(carAddMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
 
     await expect(
       result.current.mutateAsync({ customName: 'New Car' }),
@@ -139,10 +136,9 @@ describe('carAddMutationOptions', () => {
     const revokeObjectURLSpy = jest.spyOn(URL, 'revokeObjectURL');
     const image = new File(['content'], 'car.png', { type: 'image/png' });
 
-    const { result } = renderHook(
-      () => useMutation(carAddMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
 
     await result.current.mutateAsync({ customName: 'New Car', image });
 
@@ -158,10 +154,9 @@ describe('carAddMutationOptions', () => {
 
     const wrapper = createWrapper();
 
-    const { result } = renderHook(
-      () => useMutation(carAddMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
 
     await result.current.mutateAsync({ customName: 'New Car' });
 
@@ -184,10 +179,9 @@ describe('carAddMutationOptions', () => {
     const wrapper = createWrapper();
     const image = new File(['content'], 'car.png', { type: 'image/png' });
 
-    const { result } = renderHook(
-      () => useMutation(carAddMutationOptions(queryClient)),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
 
     await result.current.mutateAsync({ customName: 'New Car', image });
 
@@ -198,6 +192,25 @@ describe('carAddMutationOptions', () => {
     expect(data?.pages[0].data[0]).toMatchObject({
       id: 'real-id',
       imageUrl: 'blob:test/12345678-1234-4234-8234-123456789012',
+    });
+  });
+
+  it('invalidates the infinite query once the mutation settles', async () => {
+    mockCarApiClient.add.mockResolvedValue(
+      Result.ok(buildCarDto({ customName: 'New Car' })),
+    );
+
+    const wrapper = createWrapper();
+    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
+
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
+
+    await result.current.mutateAsync({ customName: 'New Car' });
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: queryKeys.infinite(),
     });
   });
 });

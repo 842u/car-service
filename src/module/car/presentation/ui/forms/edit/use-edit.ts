@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
-import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 interface UseEditFormParams {
@@ -13,15 +12,11 @@ interface UseEditFormParams {
 export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();
 
-  const queryClient = useQueryClient();
-
-  const editMutationOptions = carEditMutationOptions(queryClient);
-
   const editCar = useMutation({
-    ...editMutationOptions,
+    ...carEditMutationOptions,
     onSuccess: (data) => addToast(`Car ${data.customName} edited.`, 'success'),
     onError: (...args) => {
-      editMutationOptions.onError?.(...args);
+      carEditMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });
@@ -37,8 +32,6 @@ export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
       await editCar.mutateAsync({ carId, image, ...contract });
     } catch {
       return;
-    } finally {
-      queryClient.invalidateQueries({ queryKey: queryKeys.all() });
     }
   };
 

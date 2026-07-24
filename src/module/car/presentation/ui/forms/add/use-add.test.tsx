@@ -3,7 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
-import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 
 import { useAddForm } from './use-add';
 
@@ -16,18 +15,20 @@ const mockAddMutationFn = jest.fn();
 const mockAddOnSuccess = jest.fn();
 const mockAddOnError = jest.fn();
 jest.mock('@/car/presentation/tanstack/mutation-options/add', () => ({
-  carAddMutationOptions: () => ({
-    mutationFn: mockAddMutationFn,
-    onSuccess: mockAddOnSuccess,
-    onError: mockAddOnError,
-  }),
+  get carAddMutationOptions() {
+    return {
+      mutationFn: mockAddMutationFn,
+      onSuccess: mockAddOnSuccess,
+      onError: mockAddOnError,
+    };
+  },
 }));
 
 const mockEditMutationFn = jest.fn();
 jest.mock('@/car/presentation/tanstack/mutation-options/edit', () => ({
-  carEditMutationOptions: () => ({
-    mutationFn: mockEditMutationFn,
-  }),
+  get carEditMutationOptions() {
+    return { mutationFn: mockEditMutationFn };
+  },
 }));
 
 let queryClient: QueryClient;
@@ -95,24 +96,5 @@ describe('useAddForm', () => {
       undefined,
       expect.anything(),
     );
-  });
-
-  it('invalidates the infinite query once the flow settles', async () => {
-    mockAddMutationFn.mockResolvedValue({
-      id: 'car-1',
-      customName: 'New Car',
-    });
-
-    const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
-
-    const { result } = renderHook(() => useAddForm({ onSubmit: undefined }), {
-      wrapper,
-    });
-
-    await result.current.handleFormSubmit(formData);
-
-    expect(invalidateSpy).toHaveBeenCalledWith({
-      queryKey: queryKeys.infinite(),
-    });
   });
 });

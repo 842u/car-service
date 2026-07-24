@@ -1,4 +1,3 @@
-import type { QueryClient } from '@tanstack/react-query';
 import { mutationOptions } from '@tanstack/react-query';
 
 import type { CarDto } from '@/car/application/dto/car';
@@ -17,100 +16,104 @@ export type CarEditMutationVariables = EditCarApiRequest & {
   image?: File | null;
 };
 
-export const carEditMutationOptions = (queryClient: QueryClient) =>
-  mutationOptions({
-    mutationKey: queryKeys.infinite(),
-    mutationFn: async (variables: CarEditMutationVariables) => {
-      const { image, ...contract } = variables;
+export const carEditMutationOptions = mutationOptions({
+  mutationKey: queryKeys.infinite(),
+  mutationFn: async (variables: CarEditMutationVariables) => {
+    const { image, ...contract } = variables;
 
-      if (image) {
-        const hashedFile = await hashFile(image);
-        const uploadPath = `${contract.carId}/${hashedFile}`;
+    if (image) {
+      const hashedFile = await hashFile(image);
+      const uploadPath = `${contract.carId}/${hashedFile}`;
 
-        const uploadResult = await browserStorageClient.upload(
-          'cars_images',
-          uploadPath,
-          image,
-        );
+      const uploadResult = await browserStorageClient.upload(
+        'cars_images',
+        uploadPath,
+        image,
+      );
 
-        if (!uploadResult.success) {
-          const { message } = uploadResult.error;
-          throw new Error(`The image failed to upload: ${message}`);
-        }
-
-        const apiUrl =
-          process.env.NEXT_PUBLIC_SUPABASE_URL! + '/storage/v1/object/public/';
-
-        contract.imageUrl = apiUrl + uploadResult.data.fullPath;
+      if (!uploadResult.success) {
+        const { message } = uploadResult.error;
+        throw new Error(`The image failed to upload: ${message}`);
       }
 
-      const editResult = await carApiClient.edit(contract);
+      const apiUrl =
+        process.env.NEXT_PUBLIC_SUPABASE_URL! + '/storage/v1/object/public/';
 
-      if (!editResult.success) {
-        const { message } = editResult.error;
-        throw new Error(message);
-      }
+      contract.imageUrl = apiUrl + uploadResult.data.fullPath;
+    }
 
-      return editResult.data;
-    },
-    onMutate: async (variables) => {
-      const { carId, image, ...contract } = variables;
+    const editResult = await carApiClient.edit(contract);
 
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.byId(carId),
-      });
-      await queryClient.cancelQueries({ queryKey: queryKeys.infinite() });
+    if (!editResult.success) {
+      const { message } = editResult.error;
+      throw new Error(message);
+    }
 
-      const previousCar = queryClient.getQueryData<CarDto>(
-        queryKeys.byId(carId),
-      );
+    return editResult.data;
+  },
+  onMutate: async (variables, context) => {
+    const { carId, image, ...contract } = variables;
 
-      const optimisticImageUrl = image ? URL.createObjectURL(image) : undefined;
+    await context.client.cancelQueries({
+      queryKey: queryKeys.byId(carId),
+    });
+    await context.client.cancelQueries({ queryKey: queryKeys.infinite() });
 
-      const patch = {
-        ...contract,
-        ...(optimisticImageUrl ? { imageUrl: optimisticImageUrl } : {}),
-      } as Partial<CarDto>;
+    const previousCar = context.client.getQueryData<CarDto>(
+      queryKeys.byId(carId),
+    );
 
-      queryClient.setQueryData(
-        queryKeys.byId(carId),
-        (current: CarDto | undefined) => current && { ...current, ...patch },
-      );
+    const optimisticImageUrl = image ? URL.createObjectURL(image) : undefined;
 
-      const previousCarsInfiniteData = queryClient.getQueryData<
-        CarsInfiniteQueryData | undefined
-      >(queryKeys.infinite());
+    const patch = {
+      ...contract,
+      ...(optimisticImageUrl ? { imageUrl: optimisticImageUrl } : {}),
+    } as Partial<CarDto>;
 
-      queryClient.setQueryData(
-        queryKeys.infinite(),
-        (data: CarsInfiniteQueryData | undefined) => {
-          if (!data) return data;
+    context.client.setQueryData(
+      queryKeys.byId(carId),
+      (current: CarDto | undefined) => current && { ...current, ...patch },
+    );
 
-          const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
+    const previousCarsInfiniteData = context.client.getQueryData<
+      CarsInfiniteQueryData | undefined
+    >(queryKeys.infinite());
 
-          patchCarInInfiniteQueryData(carId, patch, updatedQueryData);
+    context.client.setQueryData(
+      queryKeys.infinite(),
+      (data: CarsInfiniteQueryData | undefined) => {
+        if (!data) return data;
 
-          return updatedQueryData;
-        },
-      );
+        const updatedQueryData = deepCopyCarsInfiniteQueryData(data);
 
-      return { previousCar, previousCarsInfiniteData, optimisticImageUrl };
-    },
-    onError: (_error, variables, context) => {
-      if (!context) return;
+        patchCarInInfiniteQueryData(carId, patch, updatedQueryData);
 
-      queryClient.setQueryData(
-        queryKeys.byId(variables.carId),
-        context.previousCar,
-      );
-      queryClient.setQueryData(
-        queryKeys.infinite(),
-        context.previousCarsInfiniteData,
-      );
-    },
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.optimisticImageUrl) {
-        URL.revokeObjectURL(context.optimisticImageUrl);
-      }
-    },
-  });
+        return updatedQueryData;
+      },
+    );
+
+    return { previousCar, previousCarsInfiniteData, optimisticImageUrl };
+  },
+  onError: (_error, variables, onMutateResult, context) => {
+    if (!onMutateResult) return;
+
+    context.client.setQueryData(
+      queryKeys.byId(variables.carId),
+      onMutateResult.previousCar,
+    );
+    context.client.setQueryData(
+      queryKeys.infinite(),
+      onMutateResult.previousCarsInfiniteData,
+    );
+  },
+  onSettled: (_data, _error, variables, onMutateResult, context) => {
+    if (onMutateResult?.optimisticImageUrl) {
+      URL.revokeObjectURL(onMutateResult.optimisticImageUrl);
+    }
+
+    context.client.invalidateQueries({
+      queryKey: queryKeys.byId(variables.carId),
+    });
+    context.client.invalidateQueries({ queryKey: queryKeys.infinite() });
+  },
+});

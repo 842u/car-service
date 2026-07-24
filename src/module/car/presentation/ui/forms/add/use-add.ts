@@ -1,9 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
 import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation-options/add';
 import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
-import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export function useAddForm({
@@ -13,18 +12,14 @@ export function useAddForm({
 }) {
   const { addToast } = useToasts();
 
-  const queryClient = useQueryClient();
-
-  const addMutationOptions = carAddMutationOptions(queryClient);
-
   const addCar = useMutation({
-    ...addMutationOptions,
+    ...carAddMutationOptions,
     onSuccess: (...args) => {
-      addMutationOptions.onSuccess?.(...args);
+      carAddMutationOptions.onSuccess?.(...args);
       addToast(`Car ${args[0].customName} added.`, 'success');
     },
     onError: (...args) => {
-      addMutationOptions.onError?.(...args);
+      carAddMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });
@@ -32,7 +27,7 @@ export function useAddForm({
   // A Car is always born imageless (add has no imageUrl field): attaching a
   // picked image is a follow-up edit of the just-created car, not part of
   // creating it, so a failed upload/attach here doesn't undo the car.
-  const attachImage = useMutation(carEditMutationOptions(queryClient));
+  const attachImage = useMutation(carEditMutationOptions);
 
   const handleFormSubmit = async (formData: CarFormData) => {
     onSubmit && onSubmit();
@@ -51,8 +46,6 @@ export function useAddForm({
       }
     } catch {
       return;
-    } finally {
-      queryClient.invalidateQueries({ queryKey: queryKeys.infinite() });
     }
   };
 
