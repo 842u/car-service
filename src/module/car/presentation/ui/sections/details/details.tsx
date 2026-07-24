@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { getCarByIdQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { DetailsCard } from '@/car/presentation/ui/cards/details/details';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
@@ -36,8 +37,13 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
   );
 
   useEffect(() => {
-    carError && addToast(carError.message, 'error');
-  }, [addToast, carError]);
+    carError &&
+      addToast(
+        carError.message,
+        'error',
+        queryKeySerialize(queryKeys.byId(carId)),
+      );
+  }, [addToast, carError, carId]);
 
   useEffect(() => {
     ownershipsError &&

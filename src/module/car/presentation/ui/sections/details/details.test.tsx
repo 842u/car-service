@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { carDataSource } from '@/car/dependency/data-source';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { DetailsSection } from '@/car/presentation/ui/sections/details/details';
 import { Result } from '@/common/application/result';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
@@ -61,6 +62,23 @@ describe('DetailsSection', () => {
         'Ownerships error',
         'error',
         queryKeySerialize(ownershipQueryKeys.byCarId('car-1')),
+      ),
+    );
+  });
+
+  it('shows a car error toast deduped against other consumers of the same query', async () => {
+    mockCarDataSource.getById.mockResolvedValue(
+      Result.fail({ message: 'Car error' }),
+    );
+    mockOwnershipDataSource.getByCarId.mockReturnValue(new Promise(() => {}));
+
+    render(<DetailsSection carId="car-1" />, { wrapper: createWrapper() });
+
+    await waitFor(() =>
+      expect(mockAddToast).toHaveBeenCalledWith(
+        'Car error',
+        'error',
+        queryKeySerialize(queryKeys.byId('car-1')),
       ),
     );
   });
