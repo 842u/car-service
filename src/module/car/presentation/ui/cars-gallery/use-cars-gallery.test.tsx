@@ -4,7 +4,9 @@ import type { ReactNode } from 'react';
 
 import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carDataSource } from '@/car/dependency/data-source';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 
 import { useCarsGallery } from './use-cars-gallery';
 
@@ -133,7 +135,11 @@ describe('useCarsGallery', () => {
     renderHook(() => useCarsGallery(), { wrapper: createWrapper() });
 
     await waitFor(() =>
-      expect(mockAddToast).toHaveBeenCalledWith('DB error', 'error'),
+      expect(mockAddToast).toHaveBeenCalledWith(
+        'DB error',
+        'error',
+        queryKeySerialize(queryKeys.infinite()),
+      ),
     );
   });
 });
