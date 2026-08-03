@@ -7,6 +7,5 @@ type UserDataSourceError = {
 
 export interface UserDataSource {
   getById(id: string): Promise<Result<UserDto, UserDataSourceError>>;
-  getUsersByIds(ids: string[]): Promise<Result<UserDto[], UserDataSourceError>>;
   getSessionUser(): Promise<Result<UserDto, UserDataSourceError>>;
 }

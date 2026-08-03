@@ -1,30 +1,20 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { userNameEditMutationOptions } from '@/user/infrastructure/tanstack/mutation-options/name-edit';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { userNameEditMutationOptions } from '@/user/presentation/tanstack/mutation-options/name-edit';
 
 export function useUserNameEdit() {
   const { addToast } = useToasts();
 
-  const queryClient = useQueryClient();
-
   const { mutateAsync } = useMutation({
-    ...userNameEditMutationOptions(queryClient),
+    ...userNameEditMutationOptions,
     onSuccess: () => {
       addToast('Name changed.', 'success');
     },
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(
-        queryKeys.sessionUser,
-        context?.previousQueryData,
-      );
+    onError: (...args) => {
+      userNameEditMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.sessionUser,
-      }),
   });
 
   return { mutateAsync };

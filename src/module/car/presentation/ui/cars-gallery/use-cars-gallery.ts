@@ -1,24 +1,18 @@
-import {
-  useInfiniteQuery,
-  useIsMutating,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useInfiniteQuery, useIsMutating } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
-import { getCarsInfiniteQueryOptions } from '@/car/infrastructure/tanstack/query/options';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
+import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
+import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 
 export function useCarsGallery() {
-  const intersectionTargetRef = useRef<HTMLDivElement>(null);
-
   const { addToast } = useToasts();
 
   const carsInfiniteIsMutating = useIsMutating({
-    mutationKey: queryKeys.carsInfinite,
+    mutationKey: queryKeys.infinite(),
   });
-
-  const queryClient = useQueryClient();
 
   const {
     data,
@@ -35,34 +29,18 @@ export function useCarsGallery() {
     enabled: !carsInfiniteIsMutating,
   });
 
-  useEffect(() => {
-    data?.pages
-      .flatMap((page) => page.data)
-      .forEach(
-        (car) =>
-          car && queryClient.setQueryData(queryKeys.carsByCarId(car.id), car),
-      );
-  }, [data, queryClient]);
+  const intersectionTargetRef = useInfiniteScrollTrigger<HTMLDivElement>({
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isSuccess,
+    fetchNextPage,
+    threshold: 0.5,
+  });
 
   useEffect(() => {
-    if (!intersectionTargetRef.current || !hasNextPage) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          isSuccess && !isFetching && !isFetchingNextPage && fetchNextPage();
-        }
-      },
-      { threshold: 0.5 },
-    );
-
-    observer.observe(intersectionTargetRef.current);
-
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isFetching, isSuccess]);
-
-  useEffect(() => {
-    isError && addToast(error.message, 'error');
+    isError &&
+      addToast(error.message, 'error', queryKeySerialize(queryKeys.infinite()));
   }, [isError, addToast, error]);
 
   const carsData = data?.pages.flatMap((page) => page.data) || [];

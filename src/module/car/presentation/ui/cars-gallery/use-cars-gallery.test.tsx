@@ -4,6 +4,9 @@ import type { ReactNode } from 'react';
 
 import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carDataSource } from '@/car/dependency/data-source';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
+import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 
 import { useCarsGallery } from './use-cars-gallery';
 
@@ -15,33 +18,12 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
   useToasts: () => ({ addToast: mockAddToast }),
 }));
 
-/**
- * Mock useRef so intersectionTargetRef.current is never null, allowing the
- * IntersectionObserver useEffect to run past the early guard
- */
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useRef: () => ({ current: document.createElement('div') }),
-}));
+const mockUseInfiniteScrollTrigger = useInfiniteScrollTrigger as jest.Mock;
+jest.mock('@/common/presentation/hook/use-infinite-scroll-trigger');
 
-/**
- * 1. IntersectionObserver is replaced with a jest.fn() in globalThis setup, so
- *    every call to `new IntersectionObserver(callback)` is tracked by Jest.
- * 2. `.mock.results[0].value` retrieves the MockIntersectionObserver instance
- *    returned by that call the same instance the hook holds internally, with
- *    the callback attached via its constructor.
- * 3. Invoke that callback manually with a minimal IntersectionObserverEntry,
- *    simulating exactly what the browser would do when the observed element
- *    intersects the viewport.
- */
-function triggerIntersection(isIntersecting: boolean) {
-  const instance = (IntersectionObserver as unknown as jest.Mock).mock
-    .results[0].value as MockIntersectionObserver;
-
-  instance.callback(
-    [{ isIntersecting } as IntersectionObserverEntry],
-    instance,
-  );
+function triggerFetchNextPage() {
+  const { calls } = mockUseInfiniteScrollTrigger.mock;
+  calls[calls.length - 1][0].fetchNextPage();
 }
 
 function createWrapper() {
@@ -122,7 +104,7 @@ describe('useCarsGallery', () => {
     });
 
     await waitFor(() => expect(result.current.isPending).toBe(false));
-    triggerIntersection(true);
+    triggerFetchNextPage();
 
     await waitFor(() =>
       expect(result.current.data).toEqual([...PAGE_1, ...PAGE_2]),
@@ -153,70 +135,11 @@ describe('useCarsGallery', () => {
     renderHook(() => useCarsGallery(), { wrapper: createWrapper() });
 
     await waitFor(() =>
-      expect(mockAddToast).toHaveBeenCalledWith('DB error', 'error'),
+      expect(mockAddToast).toHaveBeenCalledWith(
+        'DB error',
+        'error',
+        queryKeySerialize(queryKeys.infinite()),
+      ),
     );
-  });
-
-  describe('IntersectionObserver', () => {
-    it('should call fetchNextPage when target intersects and next page exists', async () => {
-      mockCarDataSource.getByPage
-        .mockResolvedValueOnce({
-          success: true,
-          data: { data: MOCK_CARS, nextPageParam: 1 },
-        })
-        .mockResolvedValueOnce({
-          success: true,
-          data: { data: [], nextPageParam: null },
-        });
-
-      const { result } = renderHook(() => useCarsGallery(), {
-        wrapper: createWrapper(),
-      });
-
-      await waitFor(() => expect(result.current.isPending).toBe(false));
-
-      triggerIntersection(true);
-
-      await waitFor(() =>
-        expect(mockCarDataSource.getByPage).toHaveBeenCalledTimes(2),
-      );
-    });
-
-    it('should not call fetchNextPage when target does not intersect', async () => {
-      mockCarDataSource.getByPage.mockResolvedValue({
-        success: true,
-        data: { data: MOCK_CARS, nextPageParam: 1 },
-      });
-
-      const { result } = renderHook(() => useCarsGallery(), {
-        wrapper: createWrapper(),
-      });
-
-      await waitFor(() => expect(result.current.isPending).toBe(false));
-
-      triggerIntersection(false);
-
-      expect(mockCarDataSource.getByPage).toHaveBeenCalledTimes(1);
-    });
-
-    it('should disconnect observer on unmount', async () => {
-      mockCarDataSource.getByPage.mockResolvedValue({
-        success: true,
-        data: { data: MOCK_CARS, nextPageParam: 1 },
-      });
-
-      const { result, unmount } = renderHook(() => useCarsGallery(), {
-        wrapper: createWrapper(),
-      });
-
-      await waitFor(() => expect(result.current.isPending).toBe(false));
-
-      unmount();
-
-      const instance = (IntersectionObserver as unknown as jest.Mock).mock
-        .results[0].value as MockIntersectionObserver;
-
-      expect(instance.disconnect).toHaveBeenCalled();
-    });
   });
 });

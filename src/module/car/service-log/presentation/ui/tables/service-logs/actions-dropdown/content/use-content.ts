@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRef } from 'react';
 
-import { serviceLogRemoveMutationOptions } from '@/car/service-log/infrastructure/tanstack/mutation-options/remove';
+import { serviceLogRemoveMutationOptions } from '@/car/service-log/presentation/tanstack/mutation-options/remove';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';
@@ -21,21 +21,17 @@ export function useDropdownContent({
   const editModalRef = useRef<DialogModalRef>(null);
   const deleteModalRef = useRef<DialogModalRef>(null);
 
-  const queryClient = useQueryClient();
-
   // The dropdown unmounts as soon as the confirm handler fires (the modal
   // closes and, once the cache updates, this row disappears) before the
   // request settles. React Query drops callbacks passed to mutate() once the
   // caller unmounts, so the toast lives on the mutation options (which still
   // run) rather than on the mutate() call. onError is composed so the
   // options' optimistic rollback still runs.
-  const removeMutationOptions = serviceLogRemoveMutationOptions(queryClient);
-
   const { mutate } = useMutation({
-    ...removeMutationOptions,
+    ...serviceLogRemoveMutationOptions,
     onSuccess: () => addToast('Service log deleted.', 'success'),
     onError: (...args) => {
-      removeMutationOptions.onError?.(...args);
+      serviceLogRemoveMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });

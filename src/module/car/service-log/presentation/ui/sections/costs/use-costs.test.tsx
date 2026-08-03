@@ -4,7 +4,9 @@ import type { ReactNode } from 'react';
 
 import { buildServiceLogDto } from '@/car/service-log/application/dto/service-log.builder';
 import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
+import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 
 import { useCostsSection } from './use-costs';
 
@@ -115,7 +117,11 @@ describe('useCostsSection', () => {
       renderHook(() => useCostsSection(), { wrapper: createWrapper() });
 
       await waitFor(() =>
-        expect(mockAddToast).toHaveBeenCalledWith('DB error', 'error'),
+        expect(mockAddToast).toHaveBeenCalledWith(
+          'DB error',
+          'error',
+          queryKeySerialize(queryKeys.all()),
+        ),
       );
     });
 
@@ -130,6 +136,7 @@ describe('useCostsSection', () => {
         expect(mockAddToast).toHaveBeenCalledWith(
           'Cannot get service logs costs.',
           'error',
+          queryKeySerialize(queryKeys.all()),
         ),
       );
     });

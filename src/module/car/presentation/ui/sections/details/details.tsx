@@ -3,10 +3,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { getCarByIdQueryOptions } from '@/car/infrastructure/tanstack/query/options';
-import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/infrastructure/tanstack/query/options';
+import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
+import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
+import { getCarByIdQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { DetailsCard } from '@/car/presentation/ui/cards/details/details';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
@@ -34,12 +37,22 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
   );
 
   useEffect(() => {
-    carError && addToast(carError.message, 'error');
-  }, [addToast, carError]);
+    carError &&
+      addToast(
+        carError.message,
+        'error',
+        queryKeySerialize(queryKeys.byId(carId)),
+      );
+  }, [addToast, carError, carId]);
 
   useEffect(() => {
-    ownershipsError && addToast(ownershipsError.message, 'error');
-  }, [addToast, ownershipsError]);
+    ownershipsError &&
+      addToast(
+        ownershipsError.message,
+        'error',
+        queryKeySerialize(ownershipQueryKeys.byCarId(carId)),
+      );
+  }, [addToast, ownershipsError, carId]);
 
   const isSessionUserPrimaryOwner = !!ownerships?.find(
     (ownership) => ownership.ownerId === sessionUser?.id && ownership.isPrimary,

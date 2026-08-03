@@ -4,10 +4,10 @@ import type { ReactNode } from 'react';
 
 import { buildServiceLogDto } from '@/car/service-log/application/dto/service-log.builder';
 import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
-import { queryKeys } from '@/car/service-log/infrastructure/tanstack/query/keys';
+import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 import { useCarCostsSection } from '@/car/service-log/presentation/ui/sections/car-costs/use-car-costs';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 
 const mockServiceLogDataSource = serviceLogDataSource as jest.Mocked<
   typeof serviceLogDataSource
@@ -139,7 +139,7 @@ describe('useCarCostsSection', () => {
         expect(mockAddToast).toHaveBeenCalledWith(
           'DB error',
           'error',
-          queryKeySerialize(queryKeys.serviceLogsByCarId('1')),
+          queryKeySerialize(queryKeys.byCarId('1')),
         ),
       );
     });
@@ -157,7 +157,7 @@ describe('useCarCostsSection', () => {
         expect(mockAddToast).toHaveBeenCalledWith(
           'Cannot get service logs costs.',
           'error',
-          queryKeySerialize(queryKeys.serviceLogsByCarId('1')),
+          queryKeySerialize(queryKeys.byCarId('1')),
         ),
       );
     });

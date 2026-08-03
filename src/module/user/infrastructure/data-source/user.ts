@@ -36,25 +36,6 @@ export class UserDataSourceImplementation implements UserDataSource {
     return Result.ok(userDto);
   }
 
-  async getUsersByIds(ids: string[]) {
-    const queryResult = await this._dbClient.query(async (from) =>
-      from('users').select('*').in('id', ids),
-    );
-
-    if (!queryResult.success) {
-      const { message } = queryResult.error;
-      return Result.fail({ message });
-    }
-
-    const usersPersistence = queryResult.data;
-
-    const usersDto = usersPersistence.map((userPersistence) =>
-      this._userMapper.persistenceToDto(userPersistence),
-    );
-
-    return Result.ok(usersDto);
-  }
-
   async getSessionUser() {
     const sessionResult = await this._authClient.authenticate();
 

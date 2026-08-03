@@ -1,13 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
-import { carAddMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/add';
-import { carEditMutationOptions } from '@/car/infrastructure/tanstack/mutation-options/edit';
-import {
-  type CarsInfiniteQueryData,
-  deepCopyCarsInfiniteQueryData,
-} from '@/car/infrastructure/tanstack/mutation-options/shared/infinite-query-data';
-import { queryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
+import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation-options/add';
+import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export function useAddForm({
@@ -17,39 +12,22 @@ export function useAddForm({
 }) {
   const { addToast } = useToasts();
 
-  const queryClient = useQueryClient();
-
   const addCar = useMutation({
-    ...carAddMutationOptions(queryClient),
-    mutationKey: queryKeys.carsInfinite,
-    onSuccess: (data) => addToast(`Car ${data.customName} added.`, 'success'),
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-
-      if (!context) return;
-
-      const previousData = queryClient.getQueryData<CarsInfiniteQueryData>(
-        queryKeys.carsInfinite,
-      );
-
-      if (!previousData) return;
-
-      const updatedQueryData = deepCopyCarsInfiniteQueryData(previousData);
-
-      updatedQueryData.pages.forEach((page) => {
-        page.data = page.data.filter(
-          (car) => car && car.id !== context.newCarId,
-        );
-      });
-
-      queryClient.setQueryData(queryKeys.carsInfinite, updatedQueryData);
+    ...carAddMutationOptions,
+    onSuccess: (...args) => {
+      carAddMutationOptions.onSuccess?.(...args);
+      addToast(`Car ${args[0].customName} added.`, 'success');
+    },
+    onError: (...args) => {
+      carAddMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
     },
   });
 
   // A Car is always born imageless (add has no imageUrl field): attaching a
   // picked image is a follow-up edit of the just-created car, not part of
   // creating it, so a failed upload/attach here doesn't undo the car.
-  const attachImage = useMutation(carEditMutationOptions(queryClient));
+  const attachImage = useMutation(carEditMutationOptions);
 
   const handleFormSubmit = async (formData: CarFormData) => {
     onSubmit && onSubmit();
@@ -68,8 +46,6 @@ export function useAddForm({
       }
     } catch {
       return;
-    } finally {
-      queryClient.invalidateQueries({ queryKey: queryKeys.carsInfinite });
     }
   };
 

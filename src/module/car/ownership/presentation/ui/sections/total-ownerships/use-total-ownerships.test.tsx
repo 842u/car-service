@@ -4,12 +4,13 @@ import type { ReactNode } from 'react';
 
 import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
+import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/sections/total-ownerships/use-total-ownerships';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
 import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userDataSource } from '@/user/dependency/data-source';
-import { getSessionUserQueryOptions } from '@/user/infrastructure/tanstack/query/options';
+import { getSessionUserQueryOptions } from '@/user/presentation/tanstack/query/options';
 
 const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<
   typeof ownershipDataSource
@@ -112,7 +113,11 @@ describe('useTotalOwnershipsSection', () => {
     });
 
     await waitFor(() =>
-      expect(mockAddToast).toHaveBeenCalledWith('DB error', 'error'),
+      expect(mockAddToast).toHaveBeenCalledWith(
+        'DB error',
+        'error',
+        queryKeySerialize(queryKeys.byOwnerId(MOCK_USER.id)),
+      ),
     );
   });
 
@@ -129,6 +134,7 @@ describe('useTotalOwnershipsSection', () => {
       expect(mockAddToast).toHaveBeenCalledWith(
         'Cannot get user ownerships.',
         'error',
+        queryKeySerialize(queryKeys.byOwnerId(MOCK_USER.id)),
       ),
     );
   });

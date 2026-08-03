@@ -1,30 +1,19 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { userAvatarEditMutationOptions } from '@/user/infrastructure/tanstack/mutation-options/avatar-edit';
-import { queryKeys } from '@/user/infrastructure/tanstack/query/keys';
+import { userAvatarEditMutationOptions } from '@/user/presentation/tanstack/mutation-options/avatar-edit';
 
 export function useUserAvatarEdit() {
   const { addToast } = useToasts();
 
-  const queryClient = useQueryClient();
-
   const { mutateAsync } = useMutation({
-    ...userAvatarEditMutationOptions(queryClient),
+    ...userAvatarEditMutationOptions,
     onSuccess: () => {
       addToast('Avatar changed.', 'success');
     },
-    onError: (error, _, context) => {
-      addToast(error.message, 'error');
-      queryClient.setQueryData(
-        queryKeys.sessionUser,
-        context?.previousQueryData,
-      );
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.sessionUser,
-      });
+    onError: (...args) => {
+      userAvatarEditMutationOptions.onError?.(...args);
+      addToast(args[0].message, 'error');
     },
   });
 

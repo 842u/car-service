@@ -1,12 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-
-import {
-  getOwnerProfilesQueryOptions,
-  getOwnershipsByCarIdQueryOptions,
-} from '@/car/ownership/infrastructure/tanstack/query/options';
-import { queryKeySerialize } from '@/common/infrastructure/tanstack/query-key';
-import { useToasts } from '@/common/presentation/hook/use-toasts';
+import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hooks/use-owner-profiles-for-car';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 interface UseOwnershipsSectionParams {
@@ -16,45 +8,7 @@ interface UseOwnershipsSectionParams {
 export function useOwnershipsSection({ carId }: UseOwnershipsSectionParams) {
   const { data: sessionUser } = useSessionUser();
 
-  const { addToast } = useToasts();
-
-  const {
-    data: ownerships,
-    error: ownershipsError,
-    isLoading: ownershipsLoading,
-  } = useQuery(getOwnershipsByCarIdQueryOptions(carId));
-
-  const allowDependentQueries = !!(ownerships && ownerships.length);
-
-  const ownerProfilesQueryOptions = getOwnerProfilesQueryOptions({
-    carId,
-    ownerIds: ownerships?.map((ownership) => ownership.ownerId) || [],
-  });
-
-  const {
-    data: users,
-    error: usersError,
-    isLoading: usersLoading,
-  } = useQuery({
-    ...ownerProfilesQueryOptions,
-    enabled: allowDependentQueries,
-  });
-
-  useEffect(() => {
-    if (!ownershipsError) return;
-
-    addToast(ownershipsError.message, 'error');
-  }, [addToast, ownershipsError]);
-
-  useEffect(() => {
-    if (!usersError) return;
-
-    addToast(
-      usersError.message,
-      'error',
-      queryKeySerialize(ownerProfilesQueryOptions.queryKey),
-    );
-  }, [addToast, usersError, ownerProfilesQueryOptions.queryKey]);
+  const { ownerships, users, isLoading } = useOwnerProfilesForCar(carId);
 
   const isSessionUserPrimaryOwner = !!ownerships?.find(
     (ownership) => ownership.ownerId === sessionUser?.id && ownership.isPrimary,
@@ -65,6 +19,6 @@ export function useOwnershipsSection({ carId }: UseOwnershipsSectionParams) {
     users,
     isSessionUserPrimaryOwner,
     sessionUserId: sessionUser?.id,
-    isLoading: ownershipsLoading || usersLoading,
+    isLoading,
   };
 }

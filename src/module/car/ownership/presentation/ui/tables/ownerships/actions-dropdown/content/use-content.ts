@@ -3,10 +3,10 @@ import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
-import { queryKeys as carQueryKeys } from '@/car/infrastructure/tanstack/query/keys';
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
-import { ownershipPromoteMutationOptions } from '@/car/ownership/infrastructure/tanstack/mutation-options/promote';
-import { ownershipRemoveMutationOptions } from '@/car/ownership/infrastructure/tanstack/mutation-options/remove';
+import { ownershipPromoteMutationOptions } from '@/car/ownership/presentation/tanstack/mutation-options/promote';
+import { ownershipRemoveMutationOptions } from '@/car/ownership/presentation/tanstack/mutation-options/remove';
+import { queryKeys as carQueryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';
@@ -38,24 +38,20 @@ export function useDropdownContent({
   // to mutate() once the caller unmounts, so the toasts live on the mutation
   // options (which still run) rather than on the mutate() call. onError is
   // composed so each options' optimistic rollback still runs.
-  const removeMutationOptions = ownershipRemoveMutationOptions(queryClient);
-
   const { mutate: mutateDelete } = useMutation({
-    ...removeMutationOptions,
+    ...ownershipRemoveMutationOptions,
     onSuccess: () => addToast(`Owner ${username} removed.`, 'success'),
     onError: (...args) => {
-      removeMutationOptions.onError?.(...args);
+      ownershipRemoveMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });
 
-  const promoteMutationOptions = ownershipPromoteMutationOptions(queryClient);
-
   const { mutate: mutatePromote } = useMutation({
-    ...promoteMutationOptions,
+    ...ownershipPromoteMutationOptions,
     onSuccess: () => addToast(`Owner ${username} promoted.`, 'success'),
     onError: (...args) => {
-      promoteMutationOptions.onError?.(...args);
+      ownershipPromoteMutationOptions.onError?.(...args);
       addToast(args[0].message, 'error');
     },
   });
@@ -77,7 +73,7 @@ export function useDropdownContent({
     deleteModalRef.current?.closeModal();
 
     if (selfDeletion) {
-      queryClient.invalidateQueries({ queryKey: carQueryKeys.carsInfinite });
+      queryClient.invalidateQueries({ queryKey: carQueryKeys.infinite() });
       router.replace('/dashboard/cars' satisfies Route);
     }
 
