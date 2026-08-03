@@ -79,6 +79,44 @@ describe('serviceLogAddMutationOptions', () => {
     });
   });
 
+  it("leaves other cars' cached lists untouched during the optimistic write", async () => {
+    const existingServiceLog = buildServiceLogDto({ carId: 'car-1' });
+    const car2ServiceLogs = [
+      buildServiceLogDto({ id: 'log-car-2', carId: 'car-2' }),
+    ];
+
+    mockServiceLogApiClient.add.mockReturnValue(new Promise(() => {}));
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
+    queryClient.setQueryData(queryKeys.byCarId('car-2'), car2ServiceLogs);
+
+    const { result } = renderHook(
+      () => useMutation(serviceLogAddMutationOptions),
+      { wrapper },
+    );
+
+    result.current.mutate({
+      carId: 'car-1',
+      authorId: 'author-1',
+      serviceDate: '2024-01-01T00:00:00Z',
+      categories: ['engine'],
+      mileage: 1000,
+      notes: null,
+      serviceCost: 50,
+    });
+
+    await waitFor(() => {
+      expect(queryClient.getQueryData(queryKeys.byCarId('car-1'))).toHaveLength(
+        2,
+      );
+    });
+
+    expect(queryClient.getQueryData(queryKeys.byCarId('car-2'))).toBe(
+      car2ServiceLogs,
+    );
+  });
+
   it('rolls back the cached list when the add fails', async () => {
     const existingServiceLog = buildServiceLogDto({ carId: 'car-1' });
 
@@ -145,5 +183,39 @@ describe('serviceLogAddMutationOptions', () => {
       queryKey: queryKeys.all(),
       exact: true,
     });
+  });
+
+  it("leaves other cars' cached lists untouched once the mutation settles", async () => {
+    const existingServiceLog = buildServiceLogDto({ carId: 'car-1' });
+    const car2ServiceLogs = [
+      buildServiceLogDto({ id: 'log-car-2', carId: 'car-2' }),
+    ];
+
+    mockServiceLogApiClient.add.mockResolvedValue(
+      Result.ok(buildServiceLogDto({ carId: 'car-1' })),
+    );
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
+    queryClient.setQueryData(queryKeys.byCarId('car-2'), car2ServiceLogs);
+
+    const { result } = renderHook(
+      () => useMutation(serviceLogAddMutationOptions),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({
+      carId: 'car-1',
+      authorId: 'author-1',
+      serviceDate: '2024-01-01T00:00:00Z',
+      categories: ['engine'],
+      mileage: 1000,
+      notes: null,
+      serviceCost: 50,
+    });
+
+    expect(queryClient.getQueryData(queryKeys.byCarId('car-2'))).toBe(
+      car2ServiceLogs,
+    );
   });
 });
