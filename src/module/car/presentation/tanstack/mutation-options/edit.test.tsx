@@ -10,6 +10,7 @@ import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carApiClient } from '@/car/dependency/api-client';
 import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
 import type { CarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import { buildCarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data.fixture';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
@@ -47,16 +48,15 @@ beforeEach(() => {
 describe('carEditMutationOptions', () => {
   it('optimistically patches the car and captures the previous data', async () => {
     const previousCar = buildCarDto({ id: 'car-1', customName: 'Old Name' });
-    const infiniteData: CarsInfiniteQueryData = {
-      pages: [{ data: [previousCar], nextPageParam: null }],
-      pageParams: [0],
-    };
 
     mockCarApiClient.edit.mockReturnValue(new Promise(() => {}));
 
     const wrapper = createWrapper();
     queryClient.setQueryData(queryKeys.byId('car-1'), previousCar);
-    queryClient.setQueryData(queryKeys.infinite(), infiniteData);
+    queryClient.setQueryData(
+      queryKeys.infinite(),
+      buildCarsInfiniteQueryData([[previousCar]]),
+    );
 
     const { result } = renderHook(() => useMutation(carEditMutationOptions), {
       wrapper,
@@ -82,10 +82,7 @@ describe('carEditMutationOptions', () => {
 
   it('rolls back the car and infinite data on a plain edit failure', async () => {
     const previousCar = buildCarDto({ id: 'car-1', customName: 'Old Name' });
-    const infiniteData: CarsInfiniteQueryData = {
-      pages: [{ data: [previousCar], nextPageParam: null }],
-      pageParams: [0],
-    };
+    const infiniteData = buildCarsInfiniteQueryData([[previousCar]]);
 
     mockCarApiClient.edit.mockResolvedValue(
       Result.fail({ message: 'Edit failed' }),
@@ -107,6 +104,139 @@ describe('carEditMutationOptions', () => {
       expect(queryClient.getQueryData(queryKeys.byId('car-1'))).toEqual(
         previousCar,
       );
+      expect(queryClient.getQueryData(queryKeys.infinite())).toEqual(
+        infiniteData,
+      );
+    });
+  });
+
+  it('patches only the target car when editing the middle of a multi-car page', async () => {
+    const car0 = buildCarDto({ id: 'car-0' });
+    const car1 = buildCarDto({ id: 'car-1', customName: 'Old Name' });
+    const car2 = buildCarDto({ id: 'car-2' });
+
+    mockCarApiClient.edit.mockReturnValue(new Promise(() => {}));
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(
+      queryKeys.infinite(),
+      buildCarsInfiniteQueryData([[car0, car1, car2]]),
+    );
+
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
+
+    result.current.mutate({ carId: 'car-1', customName: 'New Name' });
+
+    await waitFor(() => {
+      const data = queryClient.getQueryData<CarsInfiniteQueryData>(
+        queryKeys.infinite(),
+      );
+
+      expect(data?.pages[0].data).toEqual([
+        car0,
+        { ...car1, customName: 'New Name' },
+        car2,
+      ]);
+    });
+  });
+
+  it('rolls back a multi-car page to its previous state on edit failure', async () => {
+    const car0 = buildCarDto({ id: 'car-0' });
+    const car1 = buildCarDto({ id: 'car-1', customName: 'Old Name' });
+    const car2 = buildCarDto({ id: 'car-2' });
+    const infiniteData = buildCarsInfiniteQueryData([[car0, car1, car2]]);
+
+    mockCarApiClient.edit.mockResolvedValue(
+      Result.fail({ message: 'Edit failed' }),
+    );
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.infinite(), infiniteData);
+
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
+
+    await expect(
+      result.current.mutateAsync({ carId: 'car-1', customName: 'New Name' }),
+    ).rejects.toThrow('Edit failed');
+
+    await waitFor(() => {
+      expect(queryClient.getQueryData(queryKeys.infinite())).toEqual(
+        infiniteData,
+      );
+    });
+  });
+
+  it('patches only the target car when editing a car on a non-first page', async () => {
+    const car0 = buildCarDto({ id: 'car-0' });
+    const car1 = buildCarDto({ id: 'car-1' });
+    const car2 = buildCarDto({ id: 'car-2', customName: 'Old Name' });
+    const car3 = buildCarDto({ id: 'car-3' });
+
+    mockCarApiClient.edit.mockReturnValue(new Promise(() => {}));
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(
+      queryKeys.infinite(),
+      buildCarsInfiniteQueryData([
+        [car0, car1],
+        [car2, car3],
+      ]),
+    );
+
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
+
+    result.current.mutate({ carId: 'car-2', customName: 'New Name' });
+
+    await waitFor(() => {
+      const data = queryClient.getQueryData<CarsInfiniteQueryData>(
+        queryKeys.infinite(),
+      );
+
+      expect(data?.pages[1].data).toEqual([
+        { ...car2, customName: 'New Name' },
+        car3,
+      ]);
+    });
+
+    const data = queryClient.getQueryData<CarsInfiniteQueryData>(
+      queryKeys.infinite(),
+    );
+
+    expect(data?.pages[0].data).toEqual([car0, car1]);
+  });
+
+  it('rolls back all pages to their previous state when editing a non-first page errors', async () => {
+    const car0 = buildCarDto({ id: 'car-0' });
+    const car1 = buildCarDto({ id: 'car-1' });
+    const car2 = buildCarDto({ id: 'car-2', customName: 'Old Name' });
+    const car3 = buildCarDto({ id: 'car-3' });
+    const infiniteData = buildCarsInfiniteQueryData([
+      [car0, car1],
+      [car2, car3],
+    ]);
+
+    mockCarApiClient.edit.mockResolvedValue(
+      Result.fail({ message: 'Edit failed' }),
+    );
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.infinite(), infiniteData);
+
+    const { result } = renderHook(() => useMutation(carEditMutationOptions), {
+      wrapper,
+    });
+
+    await expect(
+      result.current.mutateAsync({ carId: 'car-2', customName: 'New Name' }),
+    ).rejects.toThrow('Edit failed');
+
+    await waitFor(() => {
       expect(queryClient.getQueryData(queryKeys.infinite())).toEqual(
         infiniteData,
       );
