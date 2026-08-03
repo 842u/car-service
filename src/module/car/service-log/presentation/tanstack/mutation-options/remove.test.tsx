@@ -63,6 +63,37 @@ describe('serviceLogRemoveMutationOptions', () => {
     });
   });
 
+  it("leaves other cars' cached lists untouched during the optimistic write", async () => {
+    const existingServiceLog = buildServiceLogDto({
+      id: 'log-1',
+      carId: 'car-1',
+    });
+    const car2ServiceLogs = [
+      buildServiceLogDto({ id: 'log-car-2', carId: 'car-2' }),
+    ];
+
+    mockServiceLogApiClient.remove.mockReturnValue(new Promise(() => {}));
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
+    queryClient.setQueryData(queryKeys.byCarId('car-2'), car2ServiceLogs);
+
+    const { result } = renderHook(
+      () => useMutation(serviceLogRemoveMutationOptions),
+      { wrapper },
+    );
+
+    result.current.mutate({ carId: 'car-1', serviceLogId: 'log-1' });
+
+    await waitFor(() => {
+      expect(queryClient.getQueryData(queryKeys.byCarId('car-1'))).toEqual([]);
+    });
+
+    expect(queryClient.getQueryData(queryKeys.byCarId('car-2'))).toBe(
+      car2ServiceLogs,
+    );
+  });
+
   it('restores the removed service log to the cached list on error', async () => {
     const serviceLogs = [
       buildServiceLogDto({ id: 'log-1', carId: 'car-1' }),
@@ -114,5 +145,32 @@ describe('serviceLogRemoveMutationOptions', () => {
       queryKey: queryKeys.all(),
       exact: true,
     });
+  });
+
+  it("leaves other cars' cached lists untouched once the mutation settles", async () => {
+    const existingServiceLog = buildServiceLogDto({
+      id: 'log-1',
+      carId: 'car-1',
+    });
+    const car2ServiceLogs = [
+      buildServiceLogDto({ id: 'log-car-2', carId: 'car-2' }),
+    ];
+
+    mockServiceLogApiClient.remove.mockResolvedValue(Result.ok(null));
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
+    queryClient.setQueryData(queryKeys.byCarId('car-2'), car2ServiceLogs);
+
+    const { result } = renderHook(
+      () => useMutation(serviceLogRemoveMutationOptions),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({ carId: 'car-1', serviceLogId: 'log-1' });
+
+    expect(queryClient.getQueryData(queryKeys.byCarId('car-2'))).toBe(
+      car2ServiceLogs,
+    );
   });
 });
