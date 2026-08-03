@@ -91,6 +91,50 @@ describe('serviceLogEditMutationOptions', () => {
     });
   });
 
+  it("leaves other cars' cached lists untouched during the optimistic write", async () => {
+    const existingServiceLog = buildServiceLogDto({
+      id: 'log-1',
+      carId: 'car-1',
+      serviceCost: 100,
+    });
+    const car2ServiceLogs = [
+      buildServiceLogDto({ id: 'log-car-2', carId: 'car-2' }),
+    ];
+
+    mockServiceLogApiClient.edit.mockReturnValue(new Promise(() => {}));
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
+    queryClient.setQueryData(queryKeys.byCarId('car-2'), car2ServiceLogs);
+
+    const { result } = renderHook(
+      () => useMutation(serviceLogEditMutationOptions),
+      { wrapper },
+    );
+
+    result.current.mutate({
+      carId: 'car-1',
+      serviceLogId: 'log-1',
+      serviceDate: '2024-02-01T00:00:00Z',
+      categories: ['tires'],
+      mileage: 2000,
+      notes: 'rotated',
+      serviceCost: 300,
+    });
+
+    await waitFor(() => {
+      const data = queryClient.getQueryData<
+        ReturnType<typeof buildServiceLogDto>[]
+      >(queryKeys.byCarId('car-1'));
+
+      expect(data?.[0]).toMatchObject({ serviceCost: 300 });
+    });
+
+    expect(queryClient.getQueryData(queryKeys.byCarId('car-2'))).toBe(
+      car2ServiceLogs,
+    );
+  });
+
   it('rolls back the cached list when the edit fails', async () => {
     const serviceLogs = [
       buildServiceLogDto({ id: 'log-1', carId: 'car-1', serviceCost: 100 }),
@@ -160,5 +204,43 @@ describe('serviceLogEditMutationOptions', () => {
       queryKey: queryKeys.all(),
       exact: true,
     });
+  });
+
+  it("leaves other cars' cached lists untouched once the mutation settles", async () => {
+    const existingServiceLog = buildServiceLogDto({
+      id: 'log-1',
+      carId: 'car-1',
+      serviceCost: 100,
+    });
+    const car2ServiceLogs = [
+      buildServiceLogDto({ id: 'log-car-2', carId: 'car-2' }),
+    ];
+
+    mockServiceLogApiClient.edit.mockResolvedValue(
+      Result.ok(buildServiceLogDto({ id: 'log-1', carId: 'car-1' })),
+    );
+
+    const wrapper = createWrapper();
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingServiceLog]);
+    queryClient.setQueryData(queryKeys.byCarId('car-2'), car2ServiceLogs);
+
+    const { result } = renderHook(
+      () => useMutation(serviceLogEditMutationOptions),
+      { wrapper },
+    );
+
+    await result.current.mutateAsync({
+      carId: 'car-1',
+      serviceLogId: 'log-1',
+      serviceDate: '2024-02-01T00:00:00Z',
+      categories: ['tires'],
+      mileage: 2000,
+      notes: 'rotated',
+      serviceCost: 300,
+    });
+
+    expect(queryClient.getQueryData(queryKeys.byCarId('car-2'))).toBe(
+      car2ServiceLogs,
+    );
   });
 });
