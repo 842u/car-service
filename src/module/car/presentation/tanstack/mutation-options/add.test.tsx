@@ -10,6 +10,7 @@ import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carApiClient } from '@/car/dependency/api-client';
 import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation-options/add';
 import type { CarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import { buildCarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data.fixture';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
 
@@ -81,6 +82,38 @@ describe('carAddMutationOptions', () => {
     });
   });
 
+  it('inserts the new car in front of an existing car without overwriting it', async () => {
+    mockCarApiClient.add.mockReturnValue(new Promise(() => {}));
+
+    const wrapper = createWrapper();
+    const existingCar = buildCarDto();
+
+    queryClient.setQueryData(
+      queryKeys.infinite(),
+      buildCarsInfiniteQueryData([[existingCar]]),
+    );
+
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
+
+    result.current.mutate({ customName: 'New Car' });
+
+    await waitFor(() => {
+      const data = queryClient.getQueryData<CarsInfiniteQueryData>(
+        queryKeys.infinite(),
+      );
+
+      expect(data?.pages[0].data[0]).toMatchObject({ customName: 'New Car' });
+    });
+
+    const data = queryClient.getQueryData<CarsInfiniteQueryData>(
+      queryKeys.infinite(),
+    );
+
+    expect(data?.pages[0].data[1]).toEqual(existingCar);
+  });
+
   it('restores the car carried over to the next page when the insert overflows the page limit and the mutation errors', async () => {
     mockCarApiClient.add.mockResolvedValue(
       Result.fail({ message: 'Add failed' }),
@@ -96,13 +129,10 @@ describe('carAddMutationOptions', () => {
       buildCarDto({ id: 'p1-1' }),
     ];
 
-    queryClient.setQueryData(queryKeys.infinite(), {
-      pages: [
-        { data: page0Cars, nextPageParam: 1 },
-        { data: page1Cars, nextPageParam: null },
-      ],
-      pageParams: [0, 1],
-    } satisfies CarsInfiniteQueryData);
+    queryClient.setQueryData(
+      queryKeys.infinite(),
+      buildCarsInfiniteQueryData([page0Cars, page1Cars]),
+    );
 
     const { result } = renderHook(() => useMutation(carAddMutationOptions), {
       wrapper,
@@ -125,6 +155,43 @@ describe('carAddMutationOptions', () => {
     );
 
     expect(data?.pages[1].data).toEqual(page1Cars);
+  });
+
+  it('carries the overflow car to the next page when the insert succeeds', async () => {
+    const serverCar = buildCarDto({ id: 'real-id', customName: 'New Car' });
+
+    mockCarApiClient.add.mockResolvedValue(Result.ok(serverCar));
+
+    const wrapper = createWrapper();
+
+    const page0Cars = Array.from({ length: 15 }, (_, i) =>
+      buildCarDto({ id: `p0-${i}` }),
+    );
+    const page1Cars = [
+      buildCarDto({ id: 'p1-0' }),
+      buildCarDto({ id: 'p1-1' }),
+    ];
+
+    queryClient.setQueryData(
+      queryKeys.infinite(),
+      buildCarsInfiniteQueryData([page0Cars, page1Cars]),
+    );
+
+    const { result } = renderHook(() => useMutation(carAddMutationOptions), {
+      wrapper,
+    });
+
+    await result.current.mutateAsync({ customName: 'New Car' });
+
+    const data = queryClient.getQueryData<CarsInfiniteQueryData>(
+      queryKeys.infinite(),
+    );
+
+    expect(data?.pages[0].data).toEqual([serverCar, ...page0Cars.slice(0, 14)]);
+    expect(data?.pages[1].data).toEqual([page0Cars[14], ...page1Cars]);
+    expect(data?.pages[0].nextPageParam).toBe(1);
+    expect(data?.pages[1].nextPageParam).toBeNull();
+    expect(data?.pageParams).toEqual([0, 1]);
   });
 
   it('revokes the optimistic image object URL once the mutation settles', async () => {
