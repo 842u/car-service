@@ -13,10 +13,10 @@ export const serviceLogDtoSchema = z.object({
   authorId: z.string(),
   serviceDate: z.string(),
   categories: z.array(z.string()) as z.ZodType<ServiceCategory[]>,
-  mileage: z.number().optional().nullable(),
-  notes: z.string().optional().nullable(),
-  serviceCost: z.number().optional().nullable(),
-  createdAt: z.string().optional().nullable(),
+  mileage: z.number().nullable(),
+  notes: z.string().nullable(),
+  serviceCost: z.number().nullable(),
+  createdAt: z.string().nullable(),
 });
 
 export type ServiceLogDto = z.infer<typeof serviceLogDtoSchema>;
