@@ -35,7 +35,7 @@ export function DropdownContent({
       />
       <DeleteModal
         ref={deleteModalRef}
-        canTakeAction={canTakeAction}
+        canDelete={canTakeAction}
         onCancel={handleDeleteModalCancel}
         onConfirm={handleDeleteModalConfirm}
       />

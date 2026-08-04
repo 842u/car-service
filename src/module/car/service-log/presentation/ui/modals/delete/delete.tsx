@@ -6,7 +6,7 @@ import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { DialogModal } from '@/ui/dialog-modal/dialog-modal';
 
 type DeleteModalProps = {
-  canTakeAction: boolean;
+  canDelete: boolean;
   ref?: RefObject<DialogModalRef | null>;
   onCancel?: () => void;
   onConfirm?: () => void;
@@ -14,7 +14,7 @@ type DeleteModalProps = {
 };
 
 export function DeleteModal({
-  canTakeAction,
+  canDelete,
   ref,
   onCancel,
   onConfirm,
@@ -28,7 +28,7 @@ export function DeleteModal({
         <p className="my-4">Are you sure you want to delete service log?</p>
         <DialogModal.Controls>
           <Button onClick={onCancel}>Cancel</Button>
-          <Button disabled={!canTakeAction} variant="error" onClick={onConfirm}>
+          <Button disabled={!canDelete} variant="error" onClick={onConfirm}>
             Delete
           </Button>
         </DialogModal.Controls>
