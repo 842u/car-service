@@ -6,7 +6,7 @@ import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carDataSource } from '@/car/dependency/data-source';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 
 import { useDateExpirationTable } from './use-date-expiration';
 

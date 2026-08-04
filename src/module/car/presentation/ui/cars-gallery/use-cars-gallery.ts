@@ -5,7 +5,7 @@ import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 
 export function useCarsGallery() {
   const { addToast } = useToasts();

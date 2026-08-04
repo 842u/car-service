@@ -6,7 +6,7 @@ import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { useDeleteSection } from '@/car/presentation/ui/sections/delete/use-delete';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { userDataSource } from '@/user/dependency/data-source';
 
 const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<

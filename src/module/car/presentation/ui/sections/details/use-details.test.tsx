@@ -8,7 +8,7 @@ import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/ta
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useDetailsSection } from '@/car/presentation/ui/sections/details/use-details';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { userDataSource } from '@/user/dependency/data-source';
 
 const mockCarDataSource = carDataSource as jest.Mocked<typeof carDataSource>;

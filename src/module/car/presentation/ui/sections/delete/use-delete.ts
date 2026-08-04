@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 
 interface UseDeleteSectionParams {

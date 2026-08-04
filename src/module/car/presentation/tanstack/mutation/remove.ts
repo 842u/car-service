@@ -8,7 +8,7 @@ import {
   deepCopyCarsInfiniteQueryData,
   deleteCarFromInfiniteQueryData,
   type DeletedCarContext,
-} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+} from '@/car/presentation/tanstack/mutation/shared/infinite-query-data';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 
 export const carRemoveMutationOptions = mutationOptions({

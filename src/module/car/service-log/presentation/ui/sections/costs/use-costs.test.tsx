@@ -6,7 +6,7 @@ import { buildServiceLogDto } from '@/car/service-log/application/dto/service-lo
 import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
 import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 
 import { useCostsSection } from './use-costs';
 

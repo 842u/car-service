@@ -10,8 +10,8 @@ import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carApiClient } from '@/car/dependency/api-client';
 import { carDataSource } from '@/car/dependency/data-source';
 import { CARS_INFINITE_QUERY_PAGE_DATA_LIMIT } from '@/car/infrastructure/data-source/car';
-import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation-options/add';
-import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation-options/remove';
+import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation/add';
+import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation/remove';
 import { Result } from '@/common/application/result';
 import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
 

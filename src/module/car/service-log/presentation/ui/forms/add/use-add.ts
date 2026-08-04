@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import type { ServiceLogFormValues } from '@/car/service-log/interface/ui/service-log-form.schema';
-import { serviceLogAddMutationOptions } from '@/car/service-log/presentation/tanstack/mutation-options/add';
+import { serviceLogAddMutationOptions } from '@/car/service-log/presentation/tanstack/mutation/add';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
 

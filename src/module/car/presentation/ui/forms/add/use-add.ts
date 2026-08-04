@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
-import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation-options/add';
-import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
+import { carAddMutationOptions } from '@/car/presentation/tanstack/mutation/add';
+import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation/edit';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 export function useAddForm({

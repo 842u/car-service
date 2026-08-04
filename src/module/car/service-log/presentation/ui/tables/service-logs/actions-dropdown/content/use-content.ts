@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRef } from 'react';
 
-import { serviceLogRemoveMutationOptions } from '@/car/service-log/presentation/tanstack/mutation-options/remove';
+import { serviceLogRemoveMutationOptions } from '@/car/service-log/presentation/tanstack/mutation/remove';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';

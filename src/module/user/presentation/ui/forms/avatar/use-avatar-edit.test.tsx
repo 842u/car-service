@@ -13,7 +13,7 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 const mockMutationFn = jest.fn();
 const mockOnError = jest.fn();
 const mockOnSettled = jest.fn();
-jest.mock('@/user/presentation/tanstack/mutation-options/avatar-edit', () => ({
+jest.mock('@/user/presentation/tanstack/mutation/avatar-edit', () => ({
   get userAvatarEditMutationOptions() {
     return {
       mutationFn: mockMutationFn,

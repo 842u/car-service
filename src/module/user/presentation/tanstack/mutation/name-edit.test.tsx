@@ -9,7 +9,7 @@ import type { ReactNode } from 'react';
 import { Result } from '@/common/application/result';
 import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userApiClient } from '@/user/dependency/api-client';
-import { userNameEditMutationOptions } from '@/user/presentation/tanstack/mutation-options/name-edit';
+import { userNameEditMutationOptions } from '@/user/presentation/tanstack/mutation/name-edit';
 import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 const mockUserApiClient = userApiClient as jest.Mocked<typeof userApiClient>;

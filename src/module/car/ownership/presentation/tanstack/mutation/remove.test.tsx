@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 
 import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipApiClient } from '@/car/ownership/dependency/api-client';
-import { ownershipRemoveMutationOptions } from '@/car/ownership/presentation/tanstack/mutation-options/remove';
+import { ownershipRemoveMutationOptions } from '@/car/ownership/presentation/tanstack/mutation/remove';
 import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
 

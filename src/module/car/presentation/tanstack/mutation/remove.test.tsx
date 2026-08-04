@@ -8,9 +8,9 @@ import type { ReactNode } from 'react';
 
 import { buildCarDto } from '@/car/application/dto/car.builder';
 import { carApiClient } from '@/car/dependency/api-client';
-import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation-options/remove';
-import type { CarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
-import { buildCarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data.fixture';
+import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation/remove';
+import type { CarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation/shared/infinite-query-data';
+import { buildCarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation/shared/infinite-query-data.fixture';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
 
