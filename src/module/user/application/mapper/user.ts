@@ -13,7 +13,7 @@ export class UserMapper implements Mapper<User, UserDto, UserPersistence> {
       id: model.id.value,
       email: model.email.value,
       name: model.name.value,
-      avatarUrl: model.avatarUrl?.value,
+      avatarUrl: model.avatarUrl?.value ?? null,
     };
   }
 
