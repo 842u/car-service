@@ -24,9 +24,9 @@ function toFormValues(serviceLog: ServiceLogDto): ServiceLogFormValues {
   return {
     serviceDate: serviceLog.serviceDate,
     categories: serviceLog.categories,
-    mileage: serviceLog.mileage ?? null,
-    notes: serviceLog.notes ?? null,
-    serviceCost: serviceLog.serviceCost ?? null,
+    mileage: serviceLog.mileage,
+    notes: serviceLog.notes,
+    serviceCost: serviceLog.serviceCost,
   };
 }
 

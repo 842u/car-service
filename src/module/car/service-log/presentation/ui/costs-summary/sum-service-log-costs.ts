@@ -8,7 +8,7 @@ interface ServiceLogCostRange {
 function hasServiceCost(
   serviceLog: ServiceLogDto,
 ): serviceLog is ServiceLogDto & { serviceCost: number } {
-  return serviceLog.serviceCost != null;
+  return serviceLog.serviceCost !== null;
 }
 
 export function sumServiceLogCosts(
