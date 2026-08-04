@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
-import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hooks/use-owner-profiles-for-car';
+import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hook/use-owner-profiles-for-car';
 import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';

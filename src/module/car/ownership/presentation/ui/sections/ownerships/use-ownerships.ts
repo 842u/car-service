@@ -1,5 +1,5 @@
-import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hooks/use-owner-profiles-for-car';
-import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
+import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hook/use-owner-profiles-for-car';
+import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
 interface UseOwnershipsSectionParams {
   carId: string;

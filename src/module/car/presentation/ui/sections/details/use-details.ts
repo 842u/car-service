@@ -7,7 +7,7 @@ import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { getCarByIdQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
-import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
+import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
 type UseDetailsSectionParams = {
   carId: string;
