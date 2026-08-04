@@ -8,21 +8,23 @@ export class CarMapper implements Mapper<Car, CarDto, CarPersistence> {
   domainToDto(model: Car): CarDto {
     return {
       id: model.id.value,
-      imageUrl: model.imageUrl?.value,
+      imageUrl: model.imageUrl?.value ?? null,
       customName: model.customName.value,
-      brand: model.brand?.value,
-      model: model.model?.value,
-      licensePlates: model.licensePlates?.value,
-      vin: model.vin?.value,
-      fuelType: model.fuelType?.value,
-      additionalFuelType: model.additionalFuelType?.value,
-      transmissionType: model.transmissionType?.value,
-      driveType: model.driveType?.value,
-      productionYear: model.productionYear?.value,
-      engineCapacity: model.engineCapacity?.value,
-      mileage: model.mileage?.value,
-      insuranceExpiration: model.insuranceExpiration?.value,
-      technicalInspectionExpiration: model.technicalInspectionExpiration?.value,
+      brand: model.brand?.value ?? null,
+      model: model.model?.value ?? null,
+      licensePlates: model.licensePlates?.value ?? null,
+      vin: model.vin?.value ?? null,
+      fuelType: model.fuelType?.value ?? null,
+      additionalFuelType: model.additionalFuelType?.value ?? null,
+      transmissionType: model.transmissionType?.value ?? null,
+      driveType: model.driveType?.value ?? null,
+      productionYear: model.productionYear?.value ?? null,
+      engineCapacity: model.engineCapacity?.value ?? null,
+      mileage: model.mileage?.value ?? null,
+      insuranceExpiration: model.insuranceExpiration?.value ?? null,
+      technicalInspectionExpiration:
+        model.technicalInspectionExpiration?.value ?? null,
+      createdAt: null,
     };
   }
 
