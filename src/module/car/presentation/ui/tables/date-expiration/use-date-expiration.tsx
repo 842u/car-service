@@ -4,6 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo } from 'react';
 
 import type { CarDto } from '@/car/application/dto/car';
+import type { CarDateColumn } from '@/car/presentation/tanstack/query/keys';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { CarBadge } from '@/car/presentation/ui/badge/badge';
@@ -17,10 +18,7 @@ const columnsHelper = createColumnHelper<CarDto>();
 
 interface UseDateExpirationTableParams {
   label: string;
-  dateColumn: keyof Pick<
-    CarDto,
-    'createdAt' | 'insuranceExpiration' | 'technicalInspectionExpiration'
-  >;
+  dateColumn: CarDateColumn;
 }
 
 export function useDateExpirationTable({

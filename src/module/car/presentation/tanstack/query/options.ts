@@ -2,7 +2,7 @@ import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { carDataSource } from '@/car/dependency/data-source';
 import {
-  type CarOrderColumn,
+  type CarDateColumn,
   queryKeys,
 } from '@/car/presentation/tanstack/query/keys';
 
@@ -23,7 +23,7 @@ export const getCarByIdQueryOptions = (id: string) =>
 
 export const getCarsInfiniteQueryOptions = (params?: {
   pageLimit?: number;
-  orderBy?: { column: CarOrderColumn; ascending: boolean };
+  orderBy?: { column: CarDateColumn; ascending: boolean };
 }) =>
   infiniteQueryOptions({
     queryKey: queryKeys.infinite(params),

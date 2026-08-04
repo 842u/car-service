@@ -1,6 +1,6 @@
 'use client';
 
-import type { CarDto } from '@/car/application/dto/car';
+import type { CarDateColumn } from '@/car/presentation/tanstack/query/keys';
 import { DateExpirationTableLegend } from '@/car/presentation/ui/tables/date-expiration/legend/legend';
 import { DateExpirationTablePlaceholder } from '@/car/presentation/ui/tables/date-expiration/placeholder/placeholder';
 import { useDateExpirationTable } from '@/car/presentation/ui/tables/date-expiration/use-date-expiration';
@@ -9,10 +9,7 @@ import { Table } from '@/ui/table/table';
 
 interface DateExpirationTableProps {
   label: string;
-  dateColumn: keyof Pick<
-    CarDto,
-    'createdAt' | 'insuranceExpiration' | 'technicalInspectionExpiration'
-  >;
+  dateColumn: CarDateColumn;
 }
 
 export function DateExpirationTable({
