@@ -1,11 +1,39 @@
 import { createMockAuthIdentity } from '@/test/mock/@supabase/auth';
 import { UserMapper } from '@/user/application/mapper/user';
+import { User } from '@/user/domain/user/user';
+import { buildUser } from '@/user/domain/user/user.builder';
 
 describe('UserMapper', () => {
   let mapper: UserMapper;
 
   beforeEach(() => {
     mapper = new UserMapper();
+  });
+
+  describe('domainToDto', () => {
+    it('maps a present avatarUrl through', () => {
+      const userResult = User.create({
+        id: '44dd8410-a912-480f-95be-9ad4cbe30d7f',
+        email: 'test@example.com',
+        name: 'Test User',
+        avatarUrl: 'https://example.com/avatar.png',
+      });
+
+      expect(userResult.success).toBe(true);
+      if (!userResult.success) return;
+
+      const dto = mapper.domainToDto(userResult.data);
+
+      expect(dto.avatarUrl).toBe('https://example.com/avatar.png');
+    });
+
+    it('maps an absent avatarUrl to null', () => {
+      const user = buildUser();
+
+      const dto = mapper.domainToDto(user);
+
+      expect(dto.avatarUrl).toBeNull();
+    });
   });
 
   describe('authIdentityToDomain', () => {
