@@ -5,7 +5,7 @@ import { useEditForm } from './use-edit';
 
 export const EDIT_FORM_TEST_ID = 'edit-form';
 
-export type EditFormProps = {
+type EditFormProps = {
   serviceLog: ServiceLogDto;
   onSubmit?: () => void;
 };

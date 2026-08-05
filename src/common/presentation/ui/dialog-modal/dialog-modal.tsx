@@ -23,7 +23,7 @@ type DialogModalContextValue = DialogModalRef & {
   dialogRef: RefObject<HTMLDialogElement | null>;
 };
 
-export type DialogModalProps = {
+type DialogModalProps = {
   ref?: RefObject<DialogModalRef | null>;
   children?: ReactNode;
 };

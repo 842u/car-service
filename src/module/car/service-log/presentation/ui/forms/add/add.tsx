@@ -4,7 +4,7 @@ import { useAddForm } from './use-add';
 
 export const ADD_FORM_TEST_ID = 'add-form';
 
-export type AddFormProps = {
+type AddFormProps = {
   carId: string;
   onSubmit?: () => void;
 };
