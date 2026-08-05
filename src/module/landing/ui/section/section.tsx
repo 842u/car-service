@@ -1,6 +1,8 @@
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { LandingSectionHeading } from './compounds/heading/heading';
+
 type LandingSectionProps = ComponentProps<'section'>;
 
 export function LandingSection({
@@ -20,3 +22,5 @@ export function LandingSection({
     </section>
   );
 }
+
+LandingSection.Heading = LandingSectionHeading;
