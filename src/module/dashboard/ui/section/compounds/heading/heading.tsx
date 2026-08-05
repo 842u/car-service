@@ -1,9 +1,11 @@
+'use client';
+
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import type { HeadingLevel } from '@/ui/types/heading-level';
 
-import { useDashboardSection } from '../../section';
+import { useDashboardSection } from '../../section-context';
 
 type SectionHeadingProps = ComponentProps<'h1'> & {
   headingLevel: HeadingLevel;
