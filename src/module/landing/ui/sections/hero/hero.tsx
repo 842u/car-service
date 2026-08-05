@@ -1,10 +1,11 @@
+import { LandingSectionHeading } from '@/landing/ui/section/compounds/heading/heading';
 import { LandingSection } from '@/landing/ui/section/section';
 import { LinkButton } from '@/ui/link-button/link-button';
 
 export function HeroSection() {
   return (
     <LandingSection className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
-      <LandingSection.Heading
+      <LandingSectionHeading
         className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl"
         headingLevel="h1"
       >
@@ -14,7 +15,7 @@ export function HeroSection() {
         <span className="from-accent-200 to-accent-800 mt-1 block bg-linear-to-b bg-clip-text leading-tight text-transparent">
           Store, Track, Drive.
         </span>
-      </LandingSection.Heading>
+      </LandingSectionHeading>
 
       <div className="flex flex-col items-center justify-center gap-5 md:w-2/3 md:gap-10 lg:gap-14">
         <p className="text-sm md:text-base lg:text-lg">

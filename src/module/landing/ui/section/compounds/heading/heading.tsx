@@ -1,8 +1,10 @@
+'use client';
+
 import type { ComponentProps } from 'react';
 
 import type { HeadingLevel } from '@/ui/types/heading-level';
 
-import { useLandingSection } from '../../section';
+import { useLandingSection } from '../../section-context';
 
 type LandingSectionHeadingProps = ComponentProps<'h1'> & {
   headingLevel: HeadingLevel;

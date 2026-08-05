@@ -1,21 +1,11 @@
+'use client';
+
 import type { ComponentProps } from 'react';
-import { createContext, useId } from 'react';
+import { useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
-
 import { LandingSectionHeading } from './compounds/heading/heading';
-
-type LandingSectionContextValue = { headingId: string } | null;
-
-const LandingSectionContext = createContext<LandingSectionContextValue>(null);
-
-export function useLandingSection() {
-  return useContextGuard({
-    context: LandingSectionContext,
-    componentName: 'LandingSection',
-  });
-}
+import { LandingSectionContext } from './section-context';
 
 type LandingSectionProps = ComponentProps<'section'>;
 
