@@ -121,10 +121,10 @@ export class Car extends Entity<CarValue> {
    * (`keys`), so the combined result is cast back to the shape its keys are
    * actually drawn from.
    */
-  private static resolveFields<K extends keyof CarEditableValue>(
+  private static resolveFields<TField extends keyof CarEditableValue>(
     params: EditableFieldRawValue,
-    keys: readonly K[],
-  ): Result<Pick<CarEditableValue, K>, ValidatorError> {
+    keys: readonly TField[],
+  ): Result<Pick<CarEditableValue, TField>, ValidatorError> {
     const resolved: Record<string, Result<unknown, ValidatorError>> = {};
 
     for (const key of keys) {
@@ -132,7 +132,7 @@ export class Car extends Entity<CarValue> {
     }
 
     return Result.combine(resolved) as Result<
-      Pick<CarEditableValue, K>,
+      Pick<CarEditableValue, TField>,
       ValidatorError
     >;
   }

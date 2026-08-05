@@ -16,8 +16,8 @@ import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
 import type { UserApiClient } from '@/user/presentation/api-client/user';
 
-type ApiResponse<T> =
-  | { success: true; data: T }
+type ApiResponse<TData> =
+  | { success: true; data: TData }
   | { success: false; error: { message: string } };
 
 export class NextUserApiClient implements UserApiClient {
@@ -29,12 +29,12 @@ export class NextUserApiClient implements UserApiClient {
     this._validator = validator;
   }
 
-  private async makeRequest<T>(
+  private async makeRequest<TData>(
     endpoint: Route,
     contract: unknown,
-    schema: ZodType<ApiResponse<T>>,
+    schema: ZodType<ApiResponse<TData>>,
     method: 'POST' | 'PATCH',
-  ): Promise<Result<T, { message: string }>> {
+  ): Promise<Result<TData, { message: string }>> {
     const data = JSON.stringify(contract);
 
     const httpResult =
