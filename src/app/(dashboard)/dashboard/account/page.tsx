@@ -14,7 +14,9 @@ export default function AccountPage() {
   return (
     <DashboardMain>
       <DashboardSection variant="raw">
-        <DashboardSection.Heading>Account settings</DashboardSection.Heading>
+        <DashboardSection.Heading headingLevel="h1">
+          Account settings
+        </DashboardSection.Heading>
         <div className="mx-auto flex max-w-3xl flex-col gap-5">
           <IdSection id={data?.id} />
           <NameSection name={data?.name} />

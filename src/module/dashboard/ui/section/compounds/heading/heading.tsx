@@ -1,15 +1,17 @@
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import type { HeadingLevel } from '@/ui/types/heading-level';
+
 type SectionHeadingProps = ComponentProps<'h1'> & {
-  headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  headingLevel: HeadingLevel;
   withUnderline?: boolean;
 };
 
 export function SectionHeading({
   children,
   className,
-  headingLevel = 'h1',
+  headingLevel,
   withUnderline = true,
   ...props
 }: SectionHeadingProps) {

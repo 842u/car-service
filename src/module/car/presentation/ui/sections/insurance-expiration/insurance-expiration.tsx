@@ -12,7 +12,9 @@ export function InsuranceExpirationSection({
 }: InsuranceExpirationSectionProps) {
   return (
     <DashboardSection className={twMerge('lg:flex lg:flex-col', className)}>
-      <DashboardSection.Heading>Insurance expiration</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
+        Insurance expiration
+      </DashboardSection.Heading>
       <DateExpirationTable dateColumn="insuranceExpiration" label="Insurance" />
     </DashboardSection>
   );

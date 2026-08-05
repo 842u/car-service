@@ -12,7 +12,7 @@ export function TechnicalInspectionExpirationSection({
 }: TechnicalInspectionExpirationSectionProps) {
   return (
     <DashboardSection className={twMerge('lg:flex lg:flex-col', className)}>
-      <DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h2">
         Technical inspection expiration
       </DashboardSection.Heading>
       <div className="lg:flex lg:grow lg:flex-col lg:justify-center">
