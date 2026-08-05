@@ -20,7 +20,6 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
         <DashboardSection.Heading
           className="overflow-x-auto text-2xl text-nowrap md:overflow-y-clip md:text-5xl"
           headingLevel="h1"
-          id="car-name-heading"
           withUnderline={false}
         >
           {car?.customName}

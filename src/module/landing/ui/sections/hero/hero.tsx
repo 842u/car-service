@@ -1,18 +1,12 @@
 import { LandingSection } from '@/landing/ui/section/section';
 import { LinkButton } from '@/ui/link-button/link-button';
 
-const headingId = 'hero-heading';
-
 export function HeroSection() {
   return (
-    <LandingSection
-      aria-labelledby={headingId}
-      className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14"
-    >
+    <LandingSection className="flex h-screen flex-col items-center justify-center gap-5 text-center md:gap-10 lg:my-0 lg:gap-14">
       <LandingSection.Heading
         className="text-3xl font-semibold md:text-5xl md:font-medium lg:text-6xl"
         headingLevel="h1"
-        id={headingId}
       >
         <span className="from-dark-100 to-dark-500 dark:from-light-400 dark:to-light-800 block bg-linear-to-b bg-clip-text leading-tight text-transparent">
           Car&apos;s Story Safely Managed.

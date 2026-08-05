@@ -2,6 +2,8 @@ import type { ComponentProps } from 'react';
 
 import type { HeadingLevel } from '@/ui/types/heading-level';
 
+import { useLandingSection } from '../../section';
+
 type LandingSectionHeadingProps = ComponentProps<'h1'> & {
   headingLevel: HeadingLevel;
 };
@@ -9,9 +11,15 @@ type LandingSectionHeadingProps = ComponentProps<'h1'> & {
 export function LandingSectionHeading({
   children,
   headingLevel,
+  id,
   ...props
 }: LandingSectionHeadingProps) {
+  const { headingId } = useLandingSection();
   const HeadingTag = headingLevel;
 
-  return <HeadingTag {...props}>{children}</HeadingTag>;
+  return (
+    <HeadingTag id={id ?? headingId} {...props}>
+      {children}
+    </HeadingTag>
+  );
 }

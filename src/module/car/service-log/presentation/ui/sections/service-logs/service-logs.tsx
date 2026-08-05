@@ -9,8 +9,6 @@ import { EmptyStatePlaceholder } from '@/ui/empty-state-placeholder/empty-state-
 import { ServiceLogsTable } from '../../tables/service-logs/service-logs';
 import { SectionControls } from './controls/controls';
 
-const headingId = 'service-logs-heading';
-
 type ServiceLogsSectionProps = {
   carId: string;
   className?: string;
@@ -30,8 +28,8 @@ export function ServiceLogsSection({
 
   if (isLoading) {
     return (
-      <DashboardSection aria-labelledby={headingId} className={className}>
-        <DashboardSection.Heading headingLevel="h2" id={headingId}>
+      <DashboardSection className={className}>
+        <DashboardSection.Heading headingLevel="h2">
           Service Logs
         </DashboardSection.Heading>
         <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
@@ -41,8 +39,8 @@ export function ServiceLogsSection({
 
   if (!serviceLogs?.length) {
     return (
-      <DashboardSection aria-labelledby={headingId} className={className}>
-        <DashboardSection.Heading headingLevel="h2" id={headingId}>
+      <DashboardSection className={className}>
+        <DashboardSection.Heading headingLevel="h2">
           Service Logs
         </DashboardSection.Heading>
         <EmptyStatePlaceholder
@@ -57,8 +55,8 @@ export function ServiceLogsSection({
   }
 
   return (
-    <DashboardSection aria-labelledby={headingId} className={className}>
-      <DashboardSection.Heading headingLevel="h2" id={headingId}>
+    <DashboardSection className={className}>
+      <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>
       <ServiceLogsTable

@@ -5,8 +5,6 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 
 import { SectionControls } from './controls/controls';
 
-const headingId = 'delete-car-heading';
-
 type DeleteSectionProps = {
   carId: string;
   className?: string;
@@ -16,12 +14,8 @@ export function DeleteSection({ carId, className }: DeleteSectionProps) {
   const { isSessionUserPrimaryOwner } = useDeleteSection({ carId });
 
   return (
-    <DashboardSection
-      aria-labelledby={headingId}
-      className={className}
-      variant="errorDefault"
-    >
-      <DashboardSection.Heading headingLevel="h2" id={headingId}>
+    <DashboardSection className={className} variant="errorDefault">
+      <DashboardSection.Heading headingLevel="h2">
         Delete Car
       </DashboardSection.Heading>
       <DashboardSection.Text>

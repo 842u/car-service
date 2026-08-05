@@ -6,8 +6,6 @@ import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/secti
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-const headingId = 'total-ownerships-heading';
-
 type TotalOwnershipsSectionProps = {
   className?: string;
 };
@@ -19,14 +17,9 @@ export function TotalOwnershipsSection({
 
   return (
     <DashboardSection
-      aria-labelledby={headingId}
       className={twMerge('lg:flex lg:flex-col lg:justify-center', className)}
     >
-      <DashboardSection.Heading
-        className="lg:self-start"
-        headingLevel="h2"
-        id={headingId}
-      >
+      <DashboardSection.Heading className="lg:self-start" headingLevel="h2">
         Cars owned
       </DashboardSection.Heading>
       <DashboardSection.Text className="text-center text-9xl lg:flex lg:grow lg:items-center lg:justify-center">

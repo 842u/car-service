@@ -3,6 +3,8 @@ import { twMerge } from 'tailwind-merge';
 
 import type { HeadingLevel } from '@/ui/types/heading-level';
 
+import { useDashboardSection } from '../../section';
+
 type SectionHeadingProps = ComponentProps<'h1'> & {
   headingLevel: HeadingLevel;
   withUnderline?: boolean;
@@ -12,15 +14,18 @@ export function SectionHeading({
   children,
   className,
   headingLevel,
+  id,
   withUnderline = true,
   ...props
 }: SectionHeadingProps) {
+  const { headingId } = useDashboardSection();
   const HeadingTag = headingLevel;
 
   return (
     <>
       <HeadingTag
         className={twMerge('text-lg font-medium', className)}
+        id={id ?? headingId}
         {...props}
       >
         {children}

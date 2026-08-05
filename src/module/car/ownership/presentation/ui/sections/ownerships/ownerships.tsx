@@ -9,8 +9,6 @@ import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { OwnershipsTable } from '../../tables/ownerships/ownerships';
 import { SectionControls } from './controls/controls';
 
-const headingId = 'ownerships-heading';
-
 type OwnershipsSectionProps = {
   carId: string;
   className?: string;
@@ -30,8 +28,8 @@ export function OwnershipsSection({
 
   if (isLoading) {
     return (
-      <DashboardSection aria-labelledby={headingId} className={className}>
-        <DashboardSection.Heading headingLevel="h2" id={headingId}>
+      <DashboardSection className={className}>
+        <DashboardSection.Heading headingLevel="h2">
           Ownerships
         </DashboardSection.Heading>
         <Spinner className="stroke-accent-400 fill-accent-400 my-10 h-16 w-full" />
@@ -40,11 +38,8 @@ export function OwnershipsSection({
   }
 
   return (
-    <DashboardSection
-      aria-labelledby={headingId}
-      className={twMerge('flex flex-col', className)}
-    >
-      <DashboardSection.Heading headingLevel="h2" id={headingId}>
+    <DashboardSection className={twMerge('flex flex-col', className)}>
+      <DashboardSection.Heading headingLevel="h2">
         Ownerships
       </DashboardSection.Heading>
       <div className="flex-1">

@@ -5,12 +5,10 @@ import {
 } from '@/user/domain/user/value-object/password/password.schema';
 import { PasswordChangeForm } from '@/user/presentation/ui/forms/password-change/password-change';
 
-const headingId = 'password-change-heading';
-
 export function PasswordChangeSection() {
   return (
-    <DashboardSection aria-labelledby={headingId}>
-      <DashboardSection.Heading headingLevel="h2" id={headingId}>
+    <DashboardSection>
+      <DashboardSection.Heading headingLevel="h2">
         Change Password
       </DashboardSection.Heading>
       <DashboardSection.Text>
