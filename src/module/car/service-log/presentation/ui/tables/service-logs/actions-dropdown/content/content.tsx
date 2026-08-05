@@ -5,11 +5,11 @@ import { useDropdownContent } from '@/car/service-log/presentation/ui/tables/ser
 import { Button } from '@/ui/button/button';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 
-interface DropdownContentProps {
+type DropdownContentProps = {
   canTakeAction: boolean;
   carId: string;
   serviceLog: ServiceLogDto;
-}
+};
 
 export function DropdownContent({
   canTakeAction,
@@ -35,7 +35,7 @@ export function DropdownContent({
       />
       <DeleteModal
         ref={deleteModalRef}
-        canTakeAction={canTakeAction}
+        canDelete={canTakeAction}
         onCancel={handleDeleteModalCancel}
         onConfirm={handleDeleteModalConfirm}
       />

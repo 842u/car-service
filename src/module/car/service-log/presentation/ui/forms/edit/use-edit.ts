@@ -2,13 +2,13 @@ import { useMutation } from '@tanstack/react-query';
 
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { ServiceLogFormValues } from '@/car/service-log/interface/ui/service-log-form.schema';
-import { serviceLogEditMutationOptions } from '@/car/service-log/presentation/tanstack/mutation-options/edit';
+import { serviceLogEditMutationOptions } from '@/car/service-log/presentation/tanstack/mutation/edit';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
-interface UseEditFormParams {
+type UseEditFormParams = {
   serviceLog: ServiceLogDto;
   onSubmit?: () => void;
-}
+};
 
 export function useEditForm({ serviceLog, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();

@@ -10,7 +10,7 @@ import { Result } from '@/common/application/result';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
 import { buildUserDto } from '@/user/application/dto/user.builder';
 import { userApiClient } from '@/user/dependency/api-client';
-import { userAvatarEditMutationOptions } from '@/user/presentation/tanstack/mutation-options/avatar-edit';
+import { userAvatarEditMutationOptions } from '@/user/presentation/tanstack/mutation/avatar-edit';
 import { queryKeys } from '@/user/presentation/tanstack/query/keys';
 
 const mockHashFile = jest.fn();

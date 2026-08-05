@@ -1,8 +1,8 @@
 export const YEAR_TO_DATE_COSTS_TEST_ID = 'YEAR_TO_DATE_COSTS_TEST_ID';
 
-interface PastYearCostsSummaryProps {
+type PastYearCostsSummaryProps = {
   costs?: number;
-}
+};
 
 export function PastYearCostsSummary({ costs }: PastYearCostsSummaryProps) {
   return (

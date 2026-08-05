@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { getOwnershipsByOwnerIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
-import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
+import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
 export function useTotalOwnershipsSection() {
   const { addToast } = useToasts();

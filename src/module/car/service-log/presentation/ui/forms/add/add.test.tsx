@@ -15,7 +15,7 @@ jest.mock('@/car/service-log/dependency/api-client', () => ({
   },
 }));
 
-jest.mock('@/user/presentation/hooks/use-session-user', () => ({
+jest.mock('@/user/presentation/hook/use-session-user', () => ({
   useSessionUser: () => ({
     data: { id: 'b5b55395-e32f-4376-be03-f66be0a63ec4' },
     isPending: false,

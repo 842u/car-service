@@ -51,6 +51,7 @@ describe('AddCarUseCase', () => {
       mileage: null,
       insuranceExpiration: null,
       technicalInspectionExpiration: null,
+      createdAt: null,
     };
 
     it('should add a car successfully', async () => {

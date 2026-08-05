@@ -63,6 +63,7 @@ describe('EditCarUseCase', () => {
       mileage: null,
       insuranceExpiration: null,
       technicalInspectionExpiration: null,
+      createdAt: null,
     };
 
     it('should edit a car successfully when the actor is the primary owner', async () => {

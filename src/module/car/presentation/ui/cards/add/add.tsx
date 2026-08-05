@@ -2,9 +2,9 @@ import { BrandFullIcon } from '@/icons/brand-full';
 import { CarPlusIcon } from '@/icons/car-plus';
 import { Card } from '@/ui/card/card';
 
-interface AddCardProps {
+type AddCardProps = {
   onClick?: () => void;
-}
+};
 
 export function AddCard({ onClick }: AddCardProps) {
   return (

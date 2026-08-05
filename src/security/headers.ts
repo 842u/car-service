@@ -1,7 +1,7 @@
-interface Header {
+type Header = {
   key: string;
   value: string;
-}
+};
 
 const xFrameOptionsHeader: Header = {
   key: 'X-Frame-Options',

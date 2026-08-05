@@ -30,9 +30,9 @@ function getUpdatedFiltersState(
   }
 }
 
-interface UseDateFilterParams {
+type UseDateFilterParams = {
   columnId: string;
-}
+};
 
 export function useDateFilter({ columnId }: UseDateFilterParams) {
   const { table } = useTable();

@@ -5,13 +5,13 @@ import { useServiceLogsTable } from '@/car/service-log/presentation/ui/tables/se
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
 
-interface ServiceLogsTableProps {
+type ServiceLogsTableProps = {
   serviceLogs?: ServiceLogDto[];
   users?: UserDto[];
   isSessionUserPrimaryOwner?: boolean;
   sessionUserId?: string;
   className?: string;
-}
+};
 
 export function ServiceLogsTable({
   serviceLogs,

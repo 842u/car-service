@@ -5,9 +5,9 @@ import type { ReactNode } from 'react';
 import { Table } from './table';
 import { useColumnSortState } from './use-column-sort-state';
 
-interface TestRow {
+type TestRow = {
   name: string;
-}
+};
 
 const columns: ColumnDef<TestRow>[] = [
   {

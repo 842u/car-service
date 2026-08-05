@@ -1,8 +1,8 @@
 export const TOTAL_COSTS_TEST_ID = 'TOTAL_COSTS_TEST_ID';
 
-interface AllTimeCostsSummaryProps {
+type AllTimeCostsSummaryProps = {
   costs?: number;
-}
+};
 
 export function AllTimeCostsSummary({ costs }: AllTimeCostsSummaryProps) {
   return (

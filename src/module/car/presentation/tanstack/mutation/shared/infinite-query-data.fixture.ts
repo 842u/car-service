@@ -1,5 +1,5 @@
 import type { CarDto } from '@/car/application/dto/car';
-import type { CarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+import type { CarsInfiniteQueryData } from '@/car/presentation/tanstack/mutation/shared/infinite-query-data';
 
 export function buildCarsInfiniteQueryData(
   pages: CarDto[][],

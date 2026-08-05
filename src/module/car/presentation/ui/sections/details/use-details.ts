@@ -3,22 +3,39 @@ import { useEffect } from 'react';
 
 import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { getOwnershipsByCarIdQueryOptions } from '@/car/ownership/presentation/tanstack/query/options';
+import { queryKeys } from '@/car/presentation/tanstack/query/keys';
+import { getCarByIdQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
-type UseDeleteSectionParams = {
+type UseDetailsSectionParams = {
   carId: string;
 };
 
-export function useDeleteSection({ carId }: UseDeleteSectionParams) {
+export function useDetailsSection({ carId }: UseDetailsSectionParams) {
   const { data: sessionUser } = useSessionUser();
 
   const { addToast } = useToasts();
 
+  const {
+    data: carData,
+    error: carError,
+    isLoading: isCarDataLoading,
+  } = useQuery(getCarByIdQueryOptions(carId));
+
   const { data: ownerships, error: ownershipsError } = useQuery(
     getOwnershipsByCarIdQueryOptions(carId),
   );
+
+  useEffect(() => {
+    carError &&
+      addToast(
+        carError.message,
+        'error',
+        queryKeySerialize(queryKeys.byId(carId)),
+      );
+  }, [addToast, carError, carId]);
 
   useEffect(() => {
     ownershipsError &&
@@ -33,5 +50,5 @@ export function useDeleteSection({ carId }: UseDeleteSectionParams) {
     (ownership) => ownership.ownerId === sessionUser?.id && ownership.isPrimary,
   );
 
-  return { isSessionUserPrimaryOwner };
+  return { carData, isCarDataLoading, isSessionUserPrimaryOwner };
 }

@@ -8,7 +8,7 @@ export const userDtoSchema = z.object({
   id: z.string(),
   email: z.string(),
   name: z.string(),
-  avatarUrl: z.string().optional().nullable(),
+  avatarUrl: z.string().nullable(),
 });
 
 export type UserDto = z.infer<typeof userDtoSchema>;

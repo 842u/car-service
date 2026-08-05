@@ -26,18 +26,6 @@ describe('sumServiceLogCosts', () => {
     expect(sumServiceLogCosts(serviceLogs)).toBe(100);
   });
 
-  it('treats undefined serviceCost as excluded from the sum', () => {
-    const serviceLogs = [
-      buildServiceLogDto({ serviceCost: 100, serviceDate: '2026-01-01' }),
-      buildServiceLogDto({
-        serviceCost: undefined,
-        serviceDate: '2026-01-02',
-      }),
-    ];
-
-    expect(sumServiceLogCosts(serviceLogs)).toBe(100);
-  });
-
   it('sums only logs within the given range', () => {
     const serviceLogs = [
       buildServiceLogDto({ serviceCost: 100, serviceDate: '2026-03-05' }),

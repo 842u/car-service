@@ -16,9 +16,9 @@ export class ServiceLogMapper implements Mapper<
       authorId: model.authorId.value,
       serviceDate: model.serviceDate.value,
       categories: model.categories.value,
-      mileage: model.mileage?.value,
-      notes: model.note?.value,
-      serviceCost: model.serviceCost?.value,
+      mileage: model.mileage?.value ?? null,
+      notes: model.note?.value ?? null,
+      serviceCost: model.serviceCost?.value ?? null,
       createdAt: null,
     };
   }

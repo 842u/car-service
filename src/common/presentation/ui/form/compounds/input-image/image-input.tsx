@@ -18,8 +18,8 @@ export const FORM_IMAGE_INPUT_TEST_ID = 'form-image-input';
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = MAX_IMAGE_FILE_SIZE_BYTES / (1024 * 1024);
 
-export type FormImageInputProps<T extends FieldValues> =
-  UseControllerProps<T> & {
+export type FormImageInputProps<TFieldValues extends FieldValues> =
+  UseControllerProps<TFieldValues> & {
     onChange?: (file: File | undefined | null) => void;
     withInfo?: boolean;
     required?: boolean;
@@ -34,7 +34,8 @@ export type FormImageInputProps<T extends FieldValues> =
  * FormImageInput is a reusable file input for images integrated with React Hook
  * Form.
  *
- * @template T - The type of the form values managed by React Hook Form.
+ * @template TFieldValues - The type of the form values managed by React Hook
+ * Form.
  *
  * @remarks
  * This component uses a render prop pattern for `children`:
@@ -47,7 +48,7 @@ export type FormImageInputProps<T extends FieldValues> =
  * - <FormImageInput name="image" control={control}> {(previewUrl) => <UserImage
  *   src={previewUrl || avatarUrl} />} </FormImageInput>
  */
-export function FormImageInput<T extends FieldValues>({
+export function FormImageInput<TFieldValues extends FieldValues>({
   onChange,
   label,
   name,
@@ -60,7 +61,7 @@ export function FormImageInput<T extends FieldValues>({
   withInfo = true,
   required = false,
   showErrorMessage = true,
-}: FormImageInputProps<T>) {
+}: FormImageInputProps<TFieldValues>) {
   const { handleFileChange, previewUrl } = useFormImageInput({
     name,
     control,

@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 
 import type { CarFormData } from '@/car/interface/ui/car-form.schema';
-import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation-options/edit';
+import { carEditMutationOptions } from '@/car/presentation/tanstack/mutation/edit';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
-interface UseEditFormParams {
+type UseEditFormParams = {
   carId: string;
   onSubmit?: () => void;
-}
+};
 
 export function useEditForm({ carId, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();

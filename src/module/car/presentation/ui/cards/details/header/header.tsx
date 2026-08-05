@@ -3,9 +3,9 @@ import { CarImage } from '@/car/presentation/ui/image/image';
 import { LabelIcon } from '@/icons/label';
 import { SwatchIcon } from '@/icons/swatch';
 
-interface DetailsCardHeaderProps {
+type DetailsCardHeaderProps = {
   car?: CarDto;
-}
+};
 
 export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
   return (

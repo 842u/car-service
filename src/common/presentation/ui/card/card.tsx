@@ -4,13 +4,13 @@ import type { HTMLMotionProps } from 'motion/react';
 import { LazyMotion, motion } from 'motion/react';
 import { twMerge } from 'tailwind-merge';
 
-import type { UseMouseTiltAnimationOptions } from '@/common/presentation/hook/use-mouse-tilt-animation';
+import type { UseMouseTiltAnimationParams } from '@/common/presentation/hook/use-mouse-tilt-animation';
 import { useMouseTiltAnimation } from '@/common/presentation/hook/use-mouse-tilt-animation';
 
 const motionFeatures = () =>
   import('@/lib/motion/motion').then((module) => module.default);
 
-export type CardProps = HTMLMotionProps<'div'> & UseMouseTiltAnimationOptions;
+export type CardProps = HTMLMotionProps<'div'> & UseMouseTiltAnimationParams;
 
 export function Card({
   rotationDirection,

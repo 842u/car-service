@@ -6,11 +6,11 @@ import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { DialogModal } from '@/ui/dialog-modal/dialog-modal';
 
-interface EditModalProps {
+type EditModalProps = {
   car?: CarDto;
   ref?: RefObject<DialogModalRef | null>;
   onSubmit?: () => void;
-}
+};
 
 export function EditModal({ ref, car, onSubmit }: EditModalProps) {
   return (

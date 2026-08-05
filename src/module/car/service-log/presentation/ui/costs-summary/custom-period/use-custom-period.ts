@@ -4,9 +4,9 @@ import type { ServiceLogDto } from '@/car/service-log/application/dto/service-lo
 import { sumServiceLogCosts } from '@/car/service-log/presentation/ui/costs-summary/sum-service-log-costs';
 import { parseDateToYyyyMmDd } from '@/lib/utils';
 
-interface UseCustomPeriodCostsSummaryParams {
+type UseCustomPeriodCostsSummaryParams = {
   serviceLogs?: ServiceLogDto[];
-}
+};
 
 export function useCustomPeriodCostsSummary({
   serviceLogs,

@@ -30,11 +30,11 @@ export class NextServiceLogApiClient implements ServiceLogApiClient {
     this._validator = validator;
   }
 
-  private async makeRequest<T>(
+  private async makeRequest<TData>(
     contract: unknown,
-    schema: ZodType<ApiResponseBody<T>>,
+    schema: ZodType<ApiResponseBody<TData>>,
     method: 'POST' | 'PATCH' | 'DELETE',
-  ): Promise<Result<T, { message: string }>> {
+  ): Promise<Result<TData, { message: string }>> {
     const data = JSON.stringify(contract);
 
     const httpResult =

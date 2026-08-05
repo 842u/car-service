@@ -3,23 +3,27 @@ import type { NextURL } from 'next/dist/server/web/next-url';
 import type { Result } from '@/common/application/result';
 import type { ValidatorIssue } from '@/common/application/validator';
 
-export type ApiHandlerResponseError<U extends object = object> = {
+export type ApiHandlerResponseError<TMeta extends object = object> = {
   message: string;
-} & U;
+} & TMeta;
 
-export interface ApiHandler<T, E extends ApiHandlerResponseError, S> {
+export interface ApiHandler<
+  TData,
+  TError extends ApiHandlerResponseError,
+  TSchema,
+> {
   preprocessRequest(
     request: Request,
-    schema: { _output: S },
+    schema: { _output: TSchema },
     errorMessage?: string,
   ): Promise<
     Result<
-      S,
+      TSchema,
       { message: string; issues?: ValidatorIssue[] },
       { status: number }
     >
   >;
-  errorResponse(error: E, status: number): Response;
-  successResponse(data: T, status: number): Response;
+  errorResponse(error: TError, status: number): Response;
+  successResponse(data: TData, status: number): Response;
   redirectResponse(url: string | NextURL | URL, status: number): Response;
 }

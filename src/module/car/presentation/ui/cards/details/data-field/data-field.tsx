@@ -1,10 +1,10 @@
 import type { SvgA11yProps } from '@/ui/decorative/svg-a11y/svg-a11y';
 
-interface DetailsCardDataFieldProps {
+type DetailsCardDataFieldProps = {
   label: string;
   value?: string | number | null;
   icon?: React.ComponentType<SvgA11yProps>;
-}
+};
 
 export function DetailsCardDataField({
   label,

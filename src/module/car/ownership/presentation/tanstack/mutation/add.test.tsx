@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 
 import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
 import { ownershipApiClient } from '@/car/ownership/dependency/api-client';
-import { ownershipPromoteMutationOptions } from '@/car/ownership/presentation/tanstack/mutation-options/promote';
+import { ownershipAddMutationOptions } from '@/car/ownership/presentation/tanstack/mutation/add';
 import { queryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
 
@@ -37,28 +37,17 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('ownershipPromoteMutationOptions', () => {
-  it('optimistically marks the promoted owner as primary in the cached list', async () => {
-    const owners = [
-      buildOwnershipDto({
-        carId: 'car-1',
-        ownerId: 'owner-1',
-        isPrimary: true,
-      }),
-      buildOwnershipDto({
-        carId: 'car-1',
-        ownerId: 'owner-2',
-        isPrimary: false,
-      }),
-    ];
+describe('ownershipAddMutationOptions', () => {
+  it('optimistically appends the new ownership to the cached list', async () => {
+    const existingOwnership = buildOwnershipDto({ carId: 'car-1' });
 
-    mockOwnershipApiClient.promote.mockReturnValue(new Promise(() => {}));
+    mockOwnershipApiClient.add.mockReturnValue(new Promise(() => {}));
 
     const wrapper = createWrapper();
-    queryClient.setQueryData(queryKeys.byCarId('car-1'), owners);
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingOwnership]);
 
     const { result } = renderHook(
-      () => useMutation(ownershipPromoteMutationOptions),
+      () => useMutation(ownershipAddMutationOptions),
       { wrapper },
     );
 
@@ -68,77 +57,53 @@ describe('ownershipPromoteMutationOptions', () => {
       const data = queryClient.getQueryData(queryKeys.byCarId('car-1'));
 
       expect(data).toEqual([
-        { ...owners[0], isPrimary: false },
-        { ...owners[1], isPrimary: true },
+        existingOwnership,
+        {
+          carId: 'car-1',
+          ownerId: 'owner-2',
+          isPrimary: false,
+          createdAt: null,
+        },
       ]);
     });
   });
 
-  it('rolls back the cached list when the promote fails', async () => {
-    const owners = [
-      buildOwnershipDto({
-        carId: 'car-1',
-        ownerId: 'owner-1',
-        isPrimary: true,
-      }),
-      buildOwnershipDto({
-        carId: 'car-1',
-        ownerId: 'owner-2',
-        isPrimary: false,
-      }),
-    ];
+  it('rolls back the cached list when the add fails', async () => {
+    const existingOwnership = buildOwnershipDto({ carId: 'car-1' });
 
-    mockOwnershipApiClient.promote.mockResolvedValue(
-      Result.fail({ message: 'Promote failed' }),
+    mockOwnershipApiClient.add.mockResolvedValue(
+      Result.fail({ message: 'Add failed' }),
     );
 
     const wrapper = createWrapper();
-    queryClient.setQueryData(queryKeys.byCarId('car-1'), owners);
+    queryClient.setQueryData(queryKeys.byCarId('car-1'), [existingOwnership]);
 
     const { result } = renderHook(
-      () => useMutation(ownershipPromoteMutationOptions),
+      () => useMutation(ownershipAddMutationOptions),
       { wrapper },
     );
 
     await expect(
       result.current.mutateAsync({ carId: 'car-1', ownerId: 'owner-2' }),
-    ).rejects.toThrow('Promote failed');
+    ).rejects.toThrow('Add failed');
 
     await waitFor(() => {
-      expect(queryClient.getQueryData(queryKeys.byCarId('car-1'))).toEqual(
-        owners,
-      );
+      expect(queryClient.getQueryData(queryKeys.byCarId('car-1'))).toEqual([
+        existingOwnership,
+      ]);
     });
   });
 
   it('invalidates the ownerships-by-car query once the mutation settles', async () => {
-    const owners = [
-      buildOwnershipDto({
-        carId: 'car-1',
-        ownerId: 'owner-1',
-        isPrimary: true,
-      }),
-      buildOwnershipDto({
-        carId: 'car-1',
-        ownerId: 'owner-2',
-        isPrimary: false,
-      }),
-    ];
-
-    mockOwnershipApiClient.promote.mockResolvedValue(
-      Result.ok([
-        { ...owners[0], isPrimary: false },
-        { ...owners[1], isPrimary: true },
-      ]),
+    mockOwnershipApiClient.add.mockResolvedValue(
+      Result.ok([buildOwnershipDto({ carId: 'car-1', ownerId: 'owner-2' })]),
     );
 
     const wrapper = createWrapper();
-    queryClient.setQueryData(queryKeys.byCarId('car-1'), owners);
-
     const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries');
 
     const { result } = renderHook(
-      () => useMutation(ownershipPromoteMutationOptions),
+      () => useMutation(ownershipAddMutationOptions),
       { wrapper },
     );
 

@@ -3,10 +3,10 @@ import { useEditForm } from '@/car/presentation/ui/forms/edit/use-edit';
 
 import { CarForm } from '../../form/form';
 
-interface EditFormProps {
+type EditFormProps = {
   car?: CarDto;
   onSubmit?: () => void;
-}
+};
 
 export function EditForm({ car, onSubmit }: EditFormProps) {
   const { handleFormSubmit } = useEditForm({

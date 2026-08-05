@@ -7,7 +7,7 @@ import {
   addOwnerFormSchema,
   type AddOwnerFormValues,
 } from '@/car/ownership/interface/ui/add-form.schema';
-import { ownershipAddMutationOptions } from '@/car/ownership/presentation/tanstack/mutation-options/add';
+import { ownershipAddMutationOptions } from '@/car/ownership/presentation/tanstack/mutation/add';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
 import type { AddFormProps } from './add';

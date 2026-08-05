@@ -7,7 +7,7 @@ import { serviceLogDataSource } from '@/car/service-log/dependency/data-source';
 import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 import { useCarCostsSection } from '@/car/service-log/presentation/ui/sections/car-costs/use-car-costs';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 
 const mockServiceLogDataSource = serviceLogDataSource as jest.Mocked<
   typeof serviceLogDataSource

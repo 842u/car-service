@@ -86,12 +86,12 @@ const ActionsCell = memo(function ActionsCell({
   );
 });
 
-interface UseServiceLogsTableParams {
+type UseServiceLogsTableParams = {
   serviceLogs?: ServiceLogDto[];
   users?: UserDto[];
   sessionUserId?: string;
   isSessionUserPrimaryOwner?: boolean;
-}
+};
 
 export function useServiceLogsTable({
   serviceLogs,

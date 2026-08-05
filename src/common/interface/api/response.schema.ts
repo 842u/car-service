@@ -9,8 +9,8 @@ z.config({
 });
 
 function createFailureApiResponseResultSchema<
-  E extends z.ZodType<ApiResponseError>,
->(errorSchema: E) {
+  TErrorSchema extends z.ZodType<ApiResponseError>,
+>(errorSchema: TErrorSchema) {
   return z.object({
     success: z.literal(false),
     status: z.number(),
@@ -18,8 +18,8 @@ function createFailureApiResponseResultSchema<
   });
 }
 
-function createSuccessApiResponseResultSchema<T extends z.ZodTypeAny>(
-  dataSchema: T,
+function createSuccessApiResponseResultSchema<TDataSchema extends z.ZodTypeAny>(
+  dataSchema: TDataSchema,
 ) {
   return z.object({
     success: z.literal(true),
@@ -29,9 +29,9 @@ function createSuccessApiResponseResultSchema<T extends z.ZodTypeAny>(
 }
 
 export function createApiResponseSchema<
-  T extends z.ZodTypeAny,
-  E extends z.ZodType<ApiResponseError>,
->(dataSchema: T, errorSchema: E) {
+  TDataSchema extends z.ZodTypeAny,
+  TErrorSchema extends z.ZodType<ApiResponseError>,
+>(dataSchema: TDataSchema, errorSchema: TErrorSchema) {
   const successSchema = createSuccessApiResponseResultSchema(dataSchema);
   const failureSchema = createFailureApiResponseResultSchema(errorSchema);
 

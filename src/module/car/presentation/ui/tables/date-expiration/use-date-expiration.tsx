@@ -4,24 +4,22 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo } from 'react';
 
 import type { CarDto } from '@/car/application/dto/car';
+import type { CarDateColumn } from '@/car/presentation/tanstack/query/keys';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { getCarsInfiniteQueryOptions } from '@/car/presentation/tanstack/query/options';
 import { CarBadge } from '@/car/presentation/ui/badge/badge';
 import { DateExpirationTableViewButton } from '@/car/presentation/ui/tables/date-expiration/view-button/view-button';
 import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinite-scroll-trigger';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
 
 const columnsHelper = createColumnHelper<CarDto>();
 
-interface UseDateExpirationTableParams {
+type UseDateExpirationTableParams = {
   label: string;
-  dateColumn: keyof Pick<
-    CarDto,
-    'createdAt' | 'insuranceExpiration' | 'technicalInspectionExpiration'
-  >;
-}
+  dateColumn: CarDateColumn;
+};
 
 export function useDateExpirationTable({
   label,

@@ -2,11 +2,11 @@ import { Dropdown } from '@/ui/dropdown/dropdown';
 import { TableColumnDropdownContent } from '@/ui/table/compounds/column-dropdown/content/content';
 import { TableColumnDropdownTrigger } from '@/ui/table/compounds/column-dropdown/trigger/trigger';
 
-interface TableColumnDropdownProps {
+type TableColumnDropdownProps = {
   columnId: string;
   label?: string;
   className?: string;
-}
+};
 
 export function TableColumnDropdown({
   columnId,

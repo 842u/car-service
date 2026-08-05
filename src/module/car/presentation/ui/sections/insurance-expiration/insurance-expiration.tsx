@@ -3,9 +3,9 @@ import { twMerge } from 'tailwind-merge';
 import { DateExpirationTable } from '@/car/presentation/ui/tables/date-expiration/date-expiration';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
-interface InsuranceExpirationSectionProps {
+type InsuranceExpirationSectionProps = {
   className?: string;
-}
+};
 
 export function InsuranceExpirationSection({
   className,

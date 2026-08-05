@@ -9,10 +9,10 @@ import { EmptyStatePlaceholder } from '@/ui/empty-state-placeholder/empty-state-
 import { ServiceLogsTable } from '../../tables/service-logs/service-logs';
 import { SectionControls } from './controls/controls';
 
-interface ServiceLogsSectionProps {
+type ServiceLogsSectionProps = {
   carId: string;
   className?: string;
-}
+};
 
 export function ServiceLogsSection({
   carId,

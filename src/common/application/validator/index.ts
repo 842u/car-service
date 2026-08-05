@@ -27,9 +27,9 @@ export class ValidatorError extends Error {
 }
 
 export interface Validator {
-  validate<T>(
+  validate<TData>(
     value: unknown,
-    schema: { _output: T },
+    schema: { _output: TData },
     errorMessage?: string,
-  ): Result<T, ValidatorError>;
+  ): Result<TData, ValidatorError>;
 }

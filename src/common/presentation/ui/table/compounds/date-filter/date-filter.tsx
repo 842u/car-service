@@ -1,9 +1,9 @@
 import { ArrowIcon } from '@/icons/arrow';
 import { useDateFilter } from '@/ui/table/compounds/date-filter/use-date-filter';
 
-interface TableDateFilterProps {
+type TableDateFilterProps = {
   columnId: string;
-}
+};
 
 export function TableDateFilter({ columnId }: TableDateFilterProps) {
   const { columnLabel, onFromDateChange, onToDateChange, fromDate, toDate } =

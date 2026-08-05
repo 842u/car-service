@@ -1,30 +1,27 @@
-import { useRef } from 'react';
-
 import { DeleteButton } from '@/car/presentation/ui/buttons/delete/delete';
 import { DeleteModal } from '@/car/presentation/ui/modals/delete/delete';
+import { useSectionControls } from '@/car/presentation/ui/sections/delete/controls/use-controls';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-interface SectionControlsProps {
+type SectionControlsProps = {
   carId: string;
   canDelete: boolean;
-}
+};
 
 export function SectionControls({ carId, canDelete }: SectionControlsProps) {
-  const dialogRef = useRef<DialogModalRef>(null);
-
-  const handleDeleteModalCancel = () => dialogRef.current?.closeModal();
-
-  const handleDeleteModalConfirm = () => dialogRef.current?.closeModal();
-
-  const handleDeleteButtonClick = () => dialogRef.current?.showModal();
+  const {
+    dialogRef,
+    handleDeleteButtonClick,
+    handleDeleteModalCancel,
+    handleDeleteModalConfirm,
+  } = useSectionControls({ carId });
 
   return (
     <DashboardSection.Controls>
       <DeleteButton disabled={!canDelete} onClick={handleDeleteButtonClick} />
       <DeleteModal
         ref={dialogRef}
-        carId={carId}
+        canDelete={canDelete}
         onCancel={handleDeleteModalCancel}
         onConfirm={handleDeleteModalConfirm}
       />

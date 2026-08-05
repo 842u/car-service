@@ -10,5 +10,4 @@ import type { User } from '@supabase/supabase-js';
 /**
  * Distinguish these types to avoid confusion with domain User type.
  */
-// eslint-disable-next-line
-export interface AuthIdentityPersistence extends User {}
+export type AuthIdentityPersistence = User;

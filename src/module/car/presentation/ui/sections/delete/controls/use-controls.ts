@@ -1,28 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 
 import type { CarDto } from '@/car/application/dto/car';
-import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation-options/remove';
+import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation/remove';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
+import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-export type UseDeleteModalOptions = {
+type UseSectionControlsParams = {
   carId: string;
-  onCancel?: () => void;
-  onConfirm?: () => void;
 };
 
-export function useDeleteModal({
-  carId,
-  onCancel,
-  onConfirm,
-}: UseDeleteModalOptions) {
+export function useSectionControls({ carId }: UseSectionControlsParams) {
   const router = useRouter();
 
   const { addToast } = useToasts();
 
   const queryClient = useQueryClient();
+
+  const dialogRef = useRef<DialogModalRef>(null);
 
   const carQueryData = queryClient.getQueryData<CarDto>(queryKeys.byId(carId));
 
@@ -37,12 +35,12 @@ export function useDeleteModal({
     },
   });
 
-  const handleCancelButtonClick = () => {
-    onCancel && onCancel();
-  };
+  const handleDeleteButtonClick = () => dialogRef.current?.showModal();
 
-  const handleDeleteButtonClick = () => {
-    onConfirm && onConfirm();
+  const handleDeleteModalCancel = () => dialogRef.current?.closeModal();
+
+  const handleDeleteModalConfirm = () => {
+    dialogRef.current?.closeModal();
 
     mutate(carId);
 
@@ -50,9 +48,9 @@ export function useDeleteModal({
   };
 
   return {
-    handlers: {
-      handleCancelButtonClick,
-      handleDeleteButtonClick,
-    },
+    dialogRef,
+    handleDeleteButtonClick,
+    handleDeleteModalCancel,
+    handleDeleteModalConfirm,
   };
 }

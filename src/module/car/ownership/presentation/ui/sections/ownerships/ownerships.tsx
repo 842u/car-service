@@ -9,10 +9,10 @@ import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { OwnershipsTable } from '../../tables/ownerships/ownerships';
 import { SectionControls } from './controls/controls';
 
-interface OwnershipsSectionProps {
+type OwnershipsSectionProps = {
   carId: string;
   className?: string;
-}
+};
 
 export function OwnershipsSection({
   carId,

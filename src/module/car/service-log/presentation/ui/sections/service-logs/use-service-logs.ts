@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hooks/use-owner-profiles-for-car';
+import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hook/use-owner-profiles-for-car';
 import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
-import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
+import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
-interface UseServiceLogsSectionParams {
+type UseServiceLogsSectionParams = {
   carId: string;
-}
+};
 
 export function useServiceLogsSection({ carId }: UseServiceLogsSectionParams) {
   const { data: sessionUser } = useSessionUser();

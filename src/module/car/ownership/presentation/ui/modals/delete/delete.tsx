@@ -5,7 +5,7 @@ import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { DialogModal } from '@/ui/dialog-modal/dialog-modal';
 
-interface DeleteModalProps {
+type DeleteModalProps = {
   canDelete: boolean;
   selfDeletion: boolean;
   username?: string | null;
@@ -13,7 +13,7 @@ interface DeleteModalProps {
   onConfirm?: () => void;
   onCancel?: () => void;
   onClose?: () => void;
-}
+};
 
 export function DeleteModal({
   canDelete,

@@ -1,8 +1,8 @@
 import React from 'react';
 
-interface TagProps {
+type TagProps = {
   children?: React.ReactNode;
-}
+};
 
 export function Tag({ children }: TagProps) {
   return (

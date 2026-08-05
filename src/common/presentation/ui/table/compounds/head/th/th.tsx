@@ -5,10 +5,10 @@ import { twMerge } from 'tailwind-merge';
 import { TableColumnDropdown } from '@/ui/table/compounds/column-dropdown/column-dropdown';
 import { useTable } from '@/ui/table/table';
 
-interface HeadThProps extends ComponentProps<'th'> {
+type HeadThProps = ComponentProps<'th'> & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   header: Header<any, unknown>;
-}
+};
 
 export function HeadTh({ header, ...props }: HeadThProps) {
   useTable();

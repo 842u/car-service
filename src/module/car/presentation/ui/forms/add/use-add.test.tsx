@@ -14,7 +14,7 @@ jest.mock('@/common/presentation/hook/use-toasts', () => ({
 const mockAddMutationFn = jest.fn();
 const mockAddOnSuccess = jest.fn();
 const mockAddOnError = jest.fn();
-jest.mock('@/car/presentation/tanstack/mutation-options/add', () => ({
+jest.mock('@/car/presentation/tanstack/mutation/add', () => ({
   get carAddMutationOptions() {
     return {
       mutationFn: mockAddMutationFn,
@@ -25,7 +25,7 @@ jest.mock('@/car/presentation/tanstack/mutation-options/add', () => ({
 }));
 
 const mockEditMutationFn = jest.fn();
-jest.mock('@/car/presentation/tanstack/mutation-options/edit', () => ({
+jest.mock('@/car/presentation/tanstack/mutation/edit', () => ({
   get carEditMutationOptions() {
     return { mutationFn: mockEditMutationFn };
   },

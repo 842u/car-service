@@ -4,10 +4,10 @@ import userEvent from '@testing-library/user-event';
 
 import { Table } from '../../table';
 
-interface TestRow {
+type TestRow = {
   name: string;
   status: string;
-}
+};
 
 function renderHead(columns: ColumnDef<TestRow>[]) {
   return render(

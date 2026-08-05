@@ -1,14 +1,14 @@
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 
-interface ServiceLogCostRange {
+type ServiceLogCostRange = {
   from: string;
   to: string;
-}
+};
 
 function hasServiceCost(
   serviceLog: ServiceLogDto,
 ): serviceLog is ServiceLogDto & { serviceCost: number } {
-  return serviceLog.serviceCost != null;
+  return serviceLog.serviceCost !== null;
 }
 
 export function sumServiceLogCosts(

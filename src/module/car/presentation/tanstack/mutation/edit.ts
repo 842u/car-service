@@ -7,7 +7,7 @@ import {
   type CarsInfiniteQueryData,
   deepCopyCarsInfiniteQueryData,
   patchCarInInfiniteQueryData,
-} from '@/car/presentation/tanstack/mutation-options/shared/infinite-query-data';
+} from '@/car/presentation/tanstack/mutation/shared/infinite-query-data';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
 import { hashFile } from '@/lib/utils';

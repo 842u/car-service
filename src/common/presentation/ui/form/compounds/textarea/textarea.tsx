@@ -14,18 +14,19 @@ import { useForm } from '../../form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 
-type TextareaProps<T extends FieldValues> = ComponentProps<'textarea'> & {
-  label: string;
-  name: Path<T>;
-  register: UseFormRegister<T>;
-  registerOptions?: RegisterOptions<T>;
-  variant?: InputVariants;
-  required?: boolean;
-  showErrorMessage?: boolean;
-  errorMessage?: string;
-};
+type TextareaProps<TFieldValues extends FieldValues> =
+  ComponentProps<'textarea'> & {
+    label: string;
+    name: Path<TFieldValues>;
+    register: UseFormRegister<TFieldValues>;
+    registerOptions?: RegisterOptions<TFieldValues>;
+    variant?: InputVariants;
+    required?: boolean;
+    showErrorMessage?: boolean;
+    errorMessage?: string;
+  };
 
-export function Textarea<T extends FieldValues>({
+export function Textarea<TFieldValues extends FieldValues>({
   label,
   name,
   className,
@@ -36,7 +37,7 @@ export function Textarea<T extends FieldValues>({
   variant = 'default',
   showErrorMessage = true,
   ...props
-}: TextareaProps<T>) {
+}: TextareaProps<TFieldValues>) {
   useForm();
 
   return (

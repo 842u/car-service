@@ -18,8 +18,8 @@ import type {
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
 
-type ApiResponse<T> =
-  | { success: true; data: T }
+type ApiResponse<TData> =
+  | { success: true; data: TData }
   | { success: false; error: { message: string } };
 
 export class NextCarApiClient implements CarApiClient {
@@ -31,12 +31,12 @@ export class NextCarApiClient implements CarApiClient {
     this._validator = validator;
   }
 
-  private async makeRequest<T>(
+  private async makeRequest<TData>(
     endpoint: Route,
     contract: unknown,
-    schema: ZodType<ApiResponse<T>>,
+    schema: ZodType<ApiResponse<TData>>,
     method: 'POST' | 'PATCH' | 'DELETE' = 'POST',
-  ): Promise<Result<T, { message: string }>> {
+  ): Promise<Result<TData, { message: string }>> {
     const data = JSON.stringify(contract);
 
     let httpResult: HttpClientResponse;

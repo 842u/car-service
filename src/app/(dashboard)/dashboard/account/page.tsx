@@ -2,7 +2,7 @@
 
 import { DashboardMain } from '@/dashboard/ui/main/main';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { useSessionUser } from '@/user/presentation/hooks/use-session-user';
+import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 import { AvatarSection } from '@/user/presentation/ui/sections/avatar/avatar';
 import { IdSection } from '@/user/presentation/ui/sections/id/id';
 import { NameSection } from '@/user/presentation/ui/sections/name/name';

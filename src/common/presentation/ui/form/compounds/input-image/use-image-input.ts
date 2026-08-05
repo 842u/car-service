@@ -6,17 +6,17 @@ import { useController } from 'react-hook-form';
 import { useForm } from '../../form';
 import type { FormImageInputProps } from './image-input';
 
-type UseFormImageInputOptions<T extends FieldValues> = Pick<
-  FormImageInputProps<T>,
+type UseFormImageInputParams<TFieldValues extends FieldValues> = Pick<
+  FormImageInputProps<TFieldValues>,
   'control' | 'defaultValue' | 'name' | 'rules' | 'onChange'
 >;
 
-export function useFormImageInput<T extends FieldValues>({
+export function useFormImageInput<TFieldValues extends FieldValues>({
   control,
   defaultValue,
   name,
   rules,
-}: UseFormImageInputOptions<T>) {
+}: UseFormImageInputParams<TFieldValues>) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const { field } = useController({ name, control, rules, defaultValue });

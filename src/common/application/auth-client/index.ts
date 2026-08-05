@@ -7,7 +7,7 @@ type AuthError = {
   status: number | undefined;
 };
 
-type AuthClientResult<T> = Result<T, AuthError>;
+type AuthClientResult<TData> = Result<TData, AuthError>;
 
 export interface AuthClient {
   authenticate(): Promise<AuthClientResult<AuthIdentityPersistence>>;

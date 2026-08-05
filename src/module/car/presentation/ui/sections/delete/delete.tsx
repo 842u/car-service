@@ -5,10 +5,10 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 
 import { SectionControls } from './controls/controls';
 
-interface DeleteSectionProps {
+type DeleteSectionProps = {
   carId: string;
   className?: string;
-}
+};
 
 export function DeleteSection({ carId, className }: DeleteSectionProps) {
   const { isSessionUserPrimaryOwner } = useDeleteSection({ carId });

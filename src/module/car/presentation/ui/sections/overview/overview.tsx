@@ -6,9 +6,9 @@ import { DashboardSection } from '@/dashboard/ui/section/section';
 
 import { DeleteSection } from '../delete/delete';
 
-interface OverviewSectionProps {
+type OverviewSectionProps = {
   carId: string;
-}
+};
 
 export function OverviewSection({ carId }: OverviewSectionProps) {
   return (

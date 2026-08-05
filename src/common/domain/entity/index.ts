@@ -3,10 +3,10 @@ import type { Id } from '@/common/domain/value-object/id';
 
 type BaseEntityValue = { id: Id };
 
-export abstract class Entity<T extends BaseEntityValue> {
-  protected readonly _value: T;
+export abstract class Entity<TValue extends BaseEntityValue> {
+  protected readonly _value: TValue;
 
-  protected constructor(value: T) {
+  protected constructor(value: TValue) {
     this._value = Object.seal(value);
   }
 
@@ -14,7 +14,7 @@ export abstract class Entity<T extends BaseEntityValue> {
     throw new Error('Create method of an Entity not implemented.');
   }
 
-  public get value(): T {
+  public get value(): TValue {
     return this._value;
   }
 

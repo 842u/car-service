@@ -1,13 +1,13 @@
 import { allowedOrigins } from './allowed-origins';
 
-interface Directive {
+type Directive = {
   name: string;
   value: string[];
-}
+};
 
-interface ContentSecurityPolicy {
+type ContentSecurityPolicy = {
   [key: Directive['name']]: Directive['value'];
-}
+};
 
 const defaultSrcDirective: Directive = {
   name: 'default-src',

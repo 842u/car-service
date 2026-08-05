@@ -4,10 +4,10 @@ type RepositoryError = {
   message: string;
 };
 
-export type RepositoryResult<T> = Result<T, RepositoryError>;
+export type RepositoryResult<TData> = Result<TData, RepositoryError>;
 
-export interface Repository<T> {
-  store(model: T): Promise<RepositoryResult<null>>;
-  update(model: T): Promise<RepositoryResult<null>>;
-  remove(model: T): Promise<RepositoryResult<null>>;
+export interface Repository<TModel> {
+  store(model: TModel): Promise<RepositoryResult<null>>;
+  update(model: TModel): Promise<RepositoryResult<null>>;
+  remove(model: TModel): Promise<RepositoryResult<null>>;
 }

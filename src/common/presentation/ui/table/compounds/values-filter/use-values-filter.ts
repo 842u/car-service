@@ -2,10 +2,10 @@ import type { ChangeEvent } from 'react';
 
 import { useTable } from '@/ui/table/table';
 
-interface UseValuesFilterParams {
+type UseValuesFilterParams = {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
-}
+};
 
 export function useValuesFilter({
   columnId,

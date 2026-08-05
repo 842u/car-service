@@ -3,10 +3,10 @@ import { IconButton } from '@/ui/icon-button/icon-button';
 import { TableSortDropdownIcon } from '@/ui/table/compounds/sort-dropdown/trigger/icon';
 import { useColumnSortState } from '@/ui/table/use-column-sort-state';
 
-interface TableSortDropdownTriggerProps {
+type TableSortDropdownTriggerProps = {
   columnId: string;
   label?: string;
-}
+};
 
 export function TableSortDropdownTrigger({
   columnId,

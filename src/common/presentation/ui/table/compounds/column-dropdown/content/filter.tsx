@@ -5,10 +5,10 @@ import { TableValuesFilterContent } from '@/ui/table/compounds/values-filter/con
 import { TableDateFilter } from '../../date-filter/date-filter';
 import { TableTextFilter } from '../../text-filter/text-filter';
 
-interface TableColumnDropdownFilterProps {
+type TableColumnDropdownFilterProps = {
   columnId: string;
   filterMeta: NonNullable<ColumnMeta<unknown, unknown>['filter']>;
-}
+};
 
 export function TableColumnDropdownFilter({
   columnId,

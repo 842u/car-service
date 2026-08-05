@@ -1,9 +1,9 @@
 import { CalendarIcon } from '@/icons/calendar';
 import { EmptyStatePlaceholder } from '@/ui/empty-state-placeholder/empty-state-placeholder';
 
-interface DateExpirationTablePlaceholderProps {
+type DateExpirationTablePlaceholderProps = {
   label: string;
-}
+};
 
 export function DateExpirationTablePlaceholder({
   label,

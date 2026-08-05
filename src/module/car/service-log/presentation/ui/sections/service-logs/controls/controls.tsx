@@ -5,9 +5,9 @@ import { AddModal } from '@/car/service-log/presentation/ui/modals/add/add';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-interface SectionControlsProps {
+type SectionControlsProps = {
   carId: string;
-}
+};
 
 export function SectionControls({ carId }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);

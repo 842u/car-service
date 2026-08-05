@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/presentation/tanstack/query/options';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 
-interface UseCarCostsSectionParams {
+type UseCarCostsSectionParams = {
   carId: string;
-}
+};
 
 export function useCarCostsSection({ carId }: UseCarCostsSectionParams) {
   const { addToast } = useToasts();

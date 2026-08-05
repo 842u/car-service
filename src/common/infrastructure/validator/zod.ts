@@ -8,9 +8,9 @@ z.config({
 });
 
 export class ZodValidator implements Validator {
-  validate<T>(
+  validate<TData>(
     value: unknown,
-    schema: z.ZodSchema<T>,
+    schema: z.ZodSchema<TData>,
     errorMessage: string = 'Validation failed.',
   ) {
     const result = schema.safeParse(value);

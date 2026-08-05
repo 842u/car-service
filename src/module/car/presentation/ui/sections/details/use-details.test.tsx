@@ -1,14 +1,15 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
 import { carDataSource } from '@/car/dependency/data-source';
 import { ownershipDataSource } from '@/car/ownership/dependency/data-source';
 import { queryKeys as ownershipQueryKeys } from '@/car/ownership/presentation/tanstack/query/keys';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
-import { DetailsSection } from '@/car/presentation/ui/sections/details/details';
+import { useDetailsSection } from '@/car/presentation/ui/sections/details/use-details';
 import { Result } from '@/common/application/result';
-import { queryKeySerialize } from '@/common/presentation/tanstack/query-key';
+import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
+import { userDataSource } from '@/user/dependency/data-source';
 
 const mockCarDataSource = carDataSource as jest.Mocked<typeof carDataSource>;
 jest.mock('@/car/dependency/data-source');
@@ -18,9 +19,8 @@ const mockOwnershipDataSource = ownershipDataSource as jest.Mocked<
 >;
 jest.mock('@/car/ownership/dependency/data-source');
 
-jest.mock('@/user/presentation/hooks/use-session-user', () => ({
-  useSessionUser: () => ({ data: undefined, isPending: false }),
-}));
+const mockUserDataSource = userDataSource as jest.Mocked<typeof userDataSource>;
+jest.mock('@/user/dependency/data-source');
 
 const mockAddToast = jest.fn();
 jest.mock('@/common/presentation/hook/use-toasts', () => ({
@@ -43,19 +43,19 @@ function createWrapper() {
 
 beforeEach(() => {
   jest.clearAllMocks();
-  // Keeps the car query pending so the component stays on its spinner
-  // branch, isolating the ownerships-error toast from DetailsCard/EditModal
-  // rendering, which is unrelated to the behavior under test.
-  mockCarDataSource.getById.mockReturnValue(new Promise(() => {}));
+  mockUserDataSource.getSessionUser.mockReturnValue(new Promise(() => {}));
 });
 
-describe('DetailsSection', () => {
+describe('useDetailsSection', () => {
   it('shows an ownerships error toast deduped against other consumers of the same query', async () => {
+    mockCarDataSource.getById.mockReturnValue(new Promise(() => {}));
     mockOwnershipDataSource.getByCarId.mockResolvedValue(
       Result.fail({ message: 'Ownerships error' }),
     );
 
-    render(<DetailsSection carId="car-1" />, { wrapper: createWrapper() });
+    renderHook(() => useDetailsSection({ carId: 'car-1' }), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() =>
       expect(mockAddToast).toHaveBeenCalledWith(
@@ -72,7 +72,9 @@ describe('DetailsSection', () => {
     );
     mockOwnershipDataSource.getByCarId.mockReturnValue(new Promise(() => {}));
 
-    render(<DetailsSection carId="car-1" />, { wrapper: createWrapper() });
+    renderHook(() => useDetailsSection({ carId: 'car-1' }), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() =>
       expect(mockAddToast).toHaveBeenCalledWith(

@@ -9,7 +9,7 @@ export type UseInfiniteScrollTriggerParams = {
   threshold?: number;
 };
 
-export function useInfiniteScrollTrigger<T extends Element>({
+export function useInfiniteScrollTrigger<TElement extends Element>({
   hasNextPage,
   isFetching,
   isFetchingNextPage,
@@ -17,7 +17,7 @@ export function useInfiniteScrollTrigger<T extends Element>({
   fetchNextPage,
   threshold = 0,
 }: UseInfiniteScrollTriggerParams) {
-  const intersectionTargetRef = useRef<T>(null);
+  const intersectionTargetRef = useRef<TElement>(null);
 
   useEffect(() => {
     const target = intersectionTargetRef.current;

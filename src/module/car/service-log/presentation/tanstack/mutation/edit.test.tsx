@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 
 import { buildServiceLogDto } from '@/car/service-log/application/dto/service-log.builder';
 import { serviceLogApiClient } from '@/car/service-log/dependency/api-client';
-import { serviceLogEditMutationOptions } from '@/car/service-log/presentation/tanstack/mutation-options/edit';
+import { serviceLogEditMutationOptions } from '@/car/service-log/presentation/tanstack/mutation/edit';
 import { queryKeys } from '@/car/service-log/presentation/tanstack/query/keys';
 import { Result } from '@/common/application/result';
 

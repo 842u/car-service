@@ -7,24 +7,24 @@ import {
 } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
-export type UseMouseTiltAnimationOptions = {
+export type UseMouseTiltAnimationParams = {
   rotationDirection?: 'push' | 'pull';
   rotationFactor?: number;
   transformPerspectivePixels?: number;
 };
 
-export function useMouseTiltAnimation<T extends HTMLElement>({
+export function useMouseTiltAnimation<TElement extends HTMLElement>({
   rotationDirection = 'push',
   rotationFactor = 5,
   transformPerspectivePixels = 1000,
-}: UseMouseTiltAnimationOptions) {
+}: UseMouseTiltAnimationParams) {
   /**
    * Due to strict CSP rules, setting inline style must be deferred to take place on
    * the client side.
    */
   const [canAnimate, setCanAnimate] = useState(false);
 
-  const elementRef = useRef<T>(null);
+  const elementRef = useRef<TElement>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -51,7 +51,7 @@ export function useMouseTiltAnimation<T extends HTMLElement>({
 
   useEffect(() => setCanAnimate(true), []);
 
-  const handleMouseMove = (event: React.MouseEvent<T>) => {
+  const handleMouseMove = (event: React.MouseEvent<TElement>) => {
     if (!elementRef.current) return;
 
     const rect = elementRef.current.getBoundingClientRect();

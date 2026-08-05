@@ -5,14 +5,14 @@ import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { DialogModal } from '@/ui/dialog-modal/dialog-modal';
 
-interface PromoteModalProps {
+type PromoteModalProps = {
   canPromote: boolean;
   username?: string | null;
   ref?: RefObject<DialogModalRef | null>;
   onConfirm?: () => void;
   onCancel?: () => void;
   onClose?: () => void;
-}
+};
 
 export function PromoteModal({
   canPromote,

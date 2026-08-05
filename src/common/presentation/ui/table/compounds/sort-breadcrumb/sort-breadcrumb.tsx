@@ -1,9 +1,9 @@
 import { useTable } from '../../table';
 import { TableSortDropdown } from '../sort-dropdown/sort-dropdown';
 
-interface TableSortBreadcrumbProps {
+type TableSortBreadcrumbProps = {
   className?: string;
-}
+};
 
 export function TableSortBreadcrumb({ className }: TableSortBreadcrumbProps) {
   const { table } = useTable();

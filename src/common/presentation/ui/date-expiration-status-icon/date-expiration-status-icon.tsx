@@ -2,12 +2,12 @@ import { twMerge } from 'tailwind-merge';
 
 import { useDateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/use-date-expiration-status-icon';
 
-interface DateExpirationStatusIconProps {
+type DateExpirationStatusIconProps = {
   date: string;
   label?: string;
   displayLabel?: boolean;
   className?: string;
-}
+};
 
 export function DateExpirationStatusIcon({
   date,

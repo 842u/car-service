@@ -22,9 +22,9 @@ import { TableSortBreadcrumb } from './compounds/sort-breadcrumb/sort-breadcrumb
 import { TableTextFilter } from './compounds/text-filter/text-filter';
 import { TableValuesFilter } from './compounds/values-filter/values-filter';
 
-interface TableContextValue<T> {
-  table: TanstackTable<T>;
-}
+type TableContextValue<TData> = {
+  table: TanstackTable<TData>;
+};
 
 // eslint-disable-next-line
 const TableContext = createContext<TableContextValue<any> | null>(null);
@@ -36,14 +36,19 @@ export function useTable() {
   });
 }
 
-interface TableProps<T> {
-  columns: ColumnDef<T>[];
-  data: T[];
-  options?: Partial<TableOptions<T>>;
+type TableProps<TData> = {
+  columns: ColumnDef<TData>[];
+  data: TData[];
+  options?: Partial<TableOptions<TData>>;
   children?: ReactNode;
-}
+};
 
-export function Table<T>({ columns, data, options, children }: TableProps<T>) {
+export function Table<TData>({
+  columns,
+  data,
+  options,
+  children,
+}: TableProps<TData>) {
   const table = useReactTable({
     columns,
     data,

@@ -25,10 +25,10 @@ const DEFAULT_FORM_VALUES: CarFormData = {
   technicalInspectionExpiration: null,
 };
 
-interface UseCarFormParams {
+type UseCarFormParams = {
   onSubmit?: (carFormData: CarFormData) => void;
   car?: CarDto;
-}
+};
 
 export function useCarForm({ onSubmit, car }: UseCarFormParams) {
   const {

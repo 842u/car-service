@@ -79,9 +79,7 @@ describe('ServiceLogMapper', () => {
       expect(dto.serviceDate).toBe(persistence.service_date);
       expect(dto.categories).toEqual(persistence.category);
       expect(dto.mileage).toBe(persistence.mileage);
-      // `?.value` yields `undefined` (not `null`) for an absent optional
-      // field, matching CarMapper's domainToDto convention.
-      expect(dto.notes ?? null).toBe(persistence.notes);
+      expect(dto.notes).toBe(persistence.notes);
       expect(dto.serviceCost).toBe(persistence.service_cost);
       expect(dto.createdAt).toBeNull();
     });

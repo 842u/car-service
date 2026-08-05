@@ -6,11 +6,11 @@ import { IconButton } from '@/ui/icon-button/icon-button';
 import { TableValuesFilterContent } from '@/ui/table/compounds/values-filter/content';
 import { useTable } from '@/ui/table/table';
 
-interface TableValuesFilterProps {
+type TableValuesFilterProps = {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
   className?: string;
-}
+};
 
 export function TableValuesFilter({
   columnId,
