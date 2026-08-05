@@ -5,9 +5,9 @@ import { inputVariants } from '@/ui/variants/input';
 
 export const FILTERED_COSTS_TEST_ID = 'FILTERED_COSTS_TEST_ID';
 
-interface CustomPeriodCostsSummaryProps {
+type CustomPeriodCostsSummaryProps = {
   serviceLogs?: ServiceLogDto[];
-}
+};
 
 export function CustomPeriodCostsSummary({
   serviceLogs,

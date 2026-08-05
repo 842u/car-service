@@ -5,10 +5,10 @@ import type { ServiceLogFormValues } from '@/car/service-log/interface/ui/servic
 import { serviceLogEditMutationOptions } from '@/car/service-log/presentation/tanstack/mutation/edit';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 
-interface UseEditFormParams {
+type UseEditFormParams = {
   serviceLog: ServiceLogDto;
   onSubmit?: () => void;
-}
+};
 
 export function useEditForm({ serviceLog, onSubmit }: UseEditFormParams) {
   const { addToast } = useToasts();

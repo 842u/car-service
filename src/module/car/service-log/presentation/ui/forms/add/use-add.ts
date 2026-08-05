@@ -5,10 +5,10 @@ import { serviceLogAddMutationOptions } from '@/car/service-log/presentation/tan
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
-interface UseAddFormParams {
+type UseAddFormParams = {
   carId: string;
   onSubmit?: () => void;
-}
+};
 
 export function useAddForm({ carId, onSubmit }: UseAddFormParams) {
   const { data: sessionUser } = useSessionUser();

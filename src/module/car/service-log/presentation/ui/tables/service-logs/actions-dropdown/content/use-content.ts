@@ -6,10 +6,10 @@ import { useToasts } from '@/common/presentation/hook/use-toasts';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 import { useDropdown } from '@/ui/dropdown/dropdown';
 
-interface UseDropdownContentParams {
+type UseDropdownContentParams = {
   carId: string;
   serviceLogId: string;
-}
+};
 
 export function useDropdownContent({
   carId,

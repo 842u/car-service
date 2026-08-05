@@ -7,9 +7,9 @@ import { PastYearCostsSummary } from '@/car/service-log/presentation/ui/costs-su
 import { sumServiceLogCosts } from '@/car/service-log/presentation/ui/costs-summary/sum-service-log-costs';
 import { yearToDateRange } from '@/car/service-log/presentation/ui/costs-summary/year-to-date-range';
 
-interface CostsSummaryProps {
+type CostsSummaryProps = {
   serviceLogs?: ServiceLogDto[];
-}
+};
 
 export function CostsSummary({ serviceLogs }: CostsSummaryProps) {
   const totalCost = serviceLogs ? sumServiceLogCosts(serviceLogs) : undefined;

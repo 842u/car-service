@@ -5,13 +5,13 @@ import { IconButton } from '@/ui/icon-button/icon-button';
 
 import { DropdownContent } from './content/content';
 
-interface TableActionsDropdownProps {
+type TableActionsDropdownProps = {
   carId: string;
   serviceLog: ServiceLogDto;
   canTakeAction: boolean;
   className?: string;
   collisionDetectionRoot?: HTMLElement | null;
-}
+};
 
 export function TableActionsDropdown({
   carId,

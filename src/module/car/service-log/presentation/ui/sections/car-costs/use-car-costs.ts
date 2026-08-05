@@ -6,9 +6,9 @@ import { getServiceLogsByCarIdQueryOptions } from '@/car/service-log/presentatio
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 
-interface UseCarCostsSectionParams {
+type UseCarCostsSectionParams = {
   carId: string;
-}
+};
 
 export function useCarCostsSection({ carId }: UseCarCostsSectionParams) {
   const { addToast } = useToasts();

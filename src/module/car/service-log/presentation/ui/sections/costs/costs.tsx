@@ -5,9 +5,9 @@ import { useCostsSection } from '@/car/service-log/presentation/ui/sections/cost
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-interface CostsSectionProps {
+type CostsSectionProps = {
   className?: string;
-}
+};
 
 export function CostsSection({ className }: CostsSectionProps) {
   const { serviceLogs, isPending } = useCostsSection();

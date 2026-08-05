@@ -30,10 +30,10 @@ function toFormValues(serviceLog: ServiceLogDto): ServiceLogFormValues {
   };
 }
 
-interface UseServiceLogFormParams {
+type UseServiceLogFormParams = {
   onSubmit?: (formValues: ServiceLogFormValues) => void;
   serviceLog?: ServiceLogDto;
-}
+};
 
 export function useServiceLogForm({
   onSubmit,

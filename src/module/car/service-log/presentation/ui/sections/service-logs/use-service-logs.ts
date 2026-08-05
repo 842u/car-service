@@ -8,9 +8,9 @@ import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
-interface UseServiceLogsSectionParams {
+type UseServiceLogsSectionParams = {
   carId: string;
-}
+};
 
 export function useServiceLogsSection({ carId }: UseServiceLogsSectionParams) {
   const { data: sessionUser } = useSessionUser();

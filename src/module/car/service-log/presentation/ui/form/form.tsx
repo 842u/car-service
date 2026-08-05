@@ -8,13 +8,10 @@ import { Form } from '@/ui/form/form';
 
 import { useServiceLogForm } from './use-form';
 
-interface ServiceLogFormComponentProps extends Omit<
-  FormProps,
-  'ref' | 'onSubmit'
-> {
+type ServiceLogFormComponentProps = Omit<FormProps, 'ref' | 'onSubmit'> & {
   serviceLog?: ServiceLogDto;
   onSubmit?: (formValues: ServiceLogFormValues) => void;
-}
+};
 
 export function ServiceLogForm({
   serviceLog,
