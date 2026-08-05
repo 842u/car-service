@@ -23,7 +23,9 @@ export function DeleteModal({
   return (
     <DialogModal ref={ref}>
       <DialogModal.Root onClose={onClose}>
-        <DialogModal.Heading>Delete service log</DialogModal.Heading>
+        <DialogModal.Heading headingLevel="h2">
+          Delete service log
+        </DialogModal.Heading>
         <TextSeparator className="my-4" />
         <p className="my-4">Are you sure you want to delete service log?</p>
         <DialogModal.Controls>

@@ -25,7 +25,7 @@ export function DeleteModal({
   return (
     <DialogModal ref={ref}>
       <DialogModal.Root data-testid={DELETE_MODAL_TEST_ID} onClose={onClose}>
-        <DialogModal.Heading>Delete car</DialogModal.Heading>
+        <DialogModal.Heading headingLevel="h2">Delete car</DialogModal.Heading>
         <TextSeparator className="my-4" />
         <p className="text-warning-500 dark:text-warning-300 my-4">
           Are you sure you want permanently delete this car?

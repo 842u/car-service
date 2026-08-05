@@ -27,7 +27,9 @@ export function DeleteModal({
   return (
     <DialogModal ref={ref}>
       <DialogModal.Root onClose={onClose}>
-        <DialogModal.Heading>Delete owner</DialogModal.Heading>
+        <DialogModal.Heading headingLevel="h2">
+          Delete owner
+        </DialogModal.Heading>
         <TextSeparator className="my-4" />
         {selfDeletion ? (
           <p className="my-10 max-w-full text-wrap">
