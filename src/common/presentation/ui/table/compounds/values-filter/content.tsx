@@ -1,10 +1,10 @@
 import { TextSeparator } from '@/ui/decorative/text-separator/text-separator';
 import { useValuesFilter } from '@/ui/table/compounds/values-filter/use-values-filter';
 
-interface TableValuesFilterContentProps {
+type TableValuesFilterContentProps = {
   columnId: string;
   checkboxLabelValueMapping: Record<string, string>;
-}
+};
 
 export function TableValuesFilterContent({
   columnId,

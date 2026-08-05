@@ -3,13 +3,13 @@ import { ChevronUpIcon } from '@/icons/chevron-up';
 import { XMarkIcon } from '@/icons/x-mark';
 import { IconButton } from '@/ui/icon-button/icon-button';
 
-interface TableSortDropdownInnerContentProps {
+type TableSortDropdownInnerContentProps = {
   isSortDesc: boolean;
   isSorted: boolean;
   handleAscClick: () => void;
   handleDescClick: () => void;
   handleReset: () => void;
-}
+};
 
 export function TableSortDropdownInnerContent({
   isSortDesc,

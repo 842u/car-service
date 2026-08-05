@@ -5,10 +5,10 @@ import { TableSortDropdownIcon } from '@/ui/table/compounds/sort-dropdown/trigge
 import { useColumnFilterState } from '@/ui/table/use-column-filter-state';
 import { useColumnSortState } from '@/ui/table/use-column-sort-state';
 
-interface TableColumnDropdownTriggerProps {
+type TableColumnDropdownTriggerProps = {
   columnId: string;
   label?: string;
-}
+};
 
 export function TableColumnDropdownTrigger({
   columnId,

@@ -1,9 +1,9 @@
 import { useTable } from '../../table';
 import { HeadTh } from './th/th';
 
-interface TableHeadProps {
+type TableHeadProps = {
   className?: string;
-}
+};
 
 export function TableHead({ className }: TableHeadProps) {
   const { table } = useTable();

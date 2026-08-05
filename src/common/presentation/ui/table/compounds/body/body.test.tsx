@@ -4,9 +4,9 @@ import { createRef } from 'react';
 
 import { Table } from '../../table';
 
-interface TestRow {
+type TestRow = {
   name: string;
-}
+};
 
 const columns: ColumnDef<TestRow>[] = [
   { id: 'name', accessorKey: 'name', meta: { label: 'Name' } },

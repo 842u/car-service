@@ -35,10 +35,10 @@ const STATUS_CONFIG = {
   },
 };
 
-interface useDateExpirationStatusIconParams {
+type useDateExpirationStatusIconParams = {
   date: string;
   label?: string;
-}
+};
 
 export function useDateExpirationStatusIcon({
   date,

@@ -4,9 +4,9 @@ import userEvent from '@testing-library/user-event';
 
 import { Table } from '../../table';
 
-interface TestRow {
+type TestRow = {
   status: string;
-}
+};
 
 const columns: ColumnDef<TestRow>[] = [
   {

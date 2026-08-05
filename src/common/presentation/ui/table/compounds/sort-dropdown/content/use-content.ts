@@ -1,9 +1,9 @@
 import { useDropdown } from '@/ui/dropdown/dropdown';
 import { useColumnSortState } from '@/ui/table/use-column-sort-state';
 
-interface UseTableSortDropdownContentParams {
+type UseTableSortDropdownContentParams = {
   columnId: string;
-}
+};
 
 export function useTableSortDropdownContent({
   columnId,

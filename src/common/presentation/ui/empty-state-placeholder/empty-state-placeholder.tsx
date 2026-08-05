@@ -1,12 +1,12 @@
 import type { ComponentType, SVGProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-interface EmptyStatePlaceholderProps {
+type EmptyStatePlaceholderProps = {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   text: string;
   subtext?: string;
   className?: string;
-}
+};
 
 export function EmptyStatePlaceholder({
   icon: Icon,

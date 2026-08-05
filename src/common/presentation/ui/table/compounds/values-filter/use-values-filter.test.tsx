@@ -5,9 +5,9 @@ import type { ChangeEvent, ReactNode } from 'react';
 import { Table } from '../../table';
 import { useValuesFilter } from './use-values-filter';
 
-interface TestRow {
+type TestRow = {
   status: string;
-}
+};
 
 const columns: ColumnDef<TestRow>[] = [
   {

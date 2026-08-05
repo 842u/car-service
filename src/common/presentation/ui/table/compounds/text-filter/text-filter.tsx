@@ -3,11 +3,11 @@ import { twMerge } from 'tailwind-merge';
 import { SearchIcon } from '@/icons/search';
 import { useTextFilter } from '@/ui/table/compounds/text-filter/use-text-filter';
 
-interface TableTextFilterProps {
+type TableTextFilterProps = {
   columnId: string;
   debounceDelay?: number;
   className?: string;
-}
+};
 
 export function TableTextFilter({
   columnId,

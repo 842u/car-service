@@ -5,9 +5,9 @@ import { TableSortDropdownInnerContent } from '@/ui/table/compounds/sort-dropdow
 import { useTableSortDropdownContent } from '@/ui/table/compounds/sort-dropdown/content/use-content';
 import { useColumnFilterState } from '@/ui/table/use-column-filter-state';
 
-interface TableColumnDropdownContentProps {
+type TableColumnDropdownContentProps = {
   columnId: string;
-}
+};
 
 export function TableColumnDropdownContent({
   columnId,

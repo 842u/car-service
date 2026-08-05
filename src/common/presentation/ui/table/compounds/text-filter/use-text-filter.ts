@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useTable } from '@/ui/table/table';
 
-interface UseTextFilterParams {
+type UseTextFilterParams = {
   columnId: string;
   debounceDelay?: number;
-}
+};
 
 export function useTextFilter({
   columnId,

@@ -6,9 +6,9 @@ import { EmptyStatePlaceholder } from '@/ui/empty-state-placeholder/empty-state-
 
 import { useTable } from '../../table';
 
-interface TableBodyProps {
+type TableBodyProps = {
   lastRowRef?: RefObject<HTMLTableRowElement | null>;
-}
+};
 
 export function TableBody({ lastRowRef }: TableBodyProps) {
   const { table } = useTable();

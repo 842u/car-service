@@ -2,10 +2,10 @@ import { ChevronDownIcon } from '@/icons/chevron-down';
 import { ChevronUpIcon } from '@/icons/chevron-up';
 import { ChevronUpDownIcon } from '@/icons/chevron-up-down';
 
-interface TableSortDropdownProps {
+type TableSortDropdownProps = {
   isSortDesc: boolean;
   isSorted: boolean;
-}
+};
 
 export function TableSortDropdownIcon({
   isSortDesc,

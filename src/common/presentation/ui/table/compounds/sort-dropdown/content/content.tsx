@@ -2,9 +2,9 @@ import { Dropdown } from '@/ui/dropdown/dropdown';
 import { TableSortDropdownInnerContent } from '@/ui/table/compounds/sort-dropdown/content/inner';
 import { useTableSortDropdownContent } from '@/ui/table/compounds/sort-dropdown/content/use-content';
 
-interface TableSortDropdownContentProps {
+type TableSortDropdownContentProps = {
   columnId: string;
-}
+};
 
 export function TableSortDropdownContent({
   columnId,

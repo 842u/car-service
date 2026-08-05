@@ -5,9 +5,9 @@ import type { ReactNode } from 'react';
 import { Table } from './table';
 import { useColumnFilterState } from './use-column-filter-state';
 
-interface TestRow {
+type TestRow = {
   status: string;
-}
+};
 
 const filterMeta = { type: 'text' as const };
 

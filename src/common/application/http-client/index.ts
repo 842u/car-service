@@ -14,12 +14,12 @@ export interface RequestController {
   readonly reason?: string;
 }
 
-export interface RequestConfig<T extends RequestController> {
+export type RequestConfig<T extends RequestController> = {
   headers?: Record<string, string>;
   timeout?: number;
   baseUrl?: string;
   requestController?: T;
-}
+};
 
 export interface HttpClient {
   get(
