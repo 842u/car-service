@@ -1,7 +1,7 @@
 import type { Context } from 'react';
 import { use } from 'react';
 
-type UseContextGuardOptions<TValue> = {
+type UseContextGuardParams<TValue> = {
   context: Context<TValue | null>;
   componentName: string;
 };
@@ -9,7 +9,7 @@ type UseContextGuardOptions<TValue> = {
 export function useContextGuard<TValue>({
   context,
   componentName,
-}: UseContextGuardOptions<TValue>) {
+}: UseContextGuardParams<TValue>) {
   const receivedContext = use(context);
 
   if (!receivedContext)

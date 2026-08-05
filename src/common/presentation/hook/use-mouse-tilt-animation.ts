@@ -7,7 +7,7 @@ import {
 } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
-export type UseMouseTiltAnimationOptions = {
+export type UseMouseTiltAnimationParams = {
   rotationDirection?: 'push' | 'pull';
   rotationFactor?: number;
   transformPerspectivePixels?: number;
@@ -17,7 +17,7 @@ export function useMouseTiltAnimation<TElement extends HTMLElement>({
   rotationDirection = 'push',
   rotationFactor = 5,
   transformPerspectivePixels = 1000,
-}: UseMouseTiltAnimationOptions) {
+}: UseMouseTiltAnimationParams) {
   /**
    * Due to strict CSP rules, setting inline style must be deferred to take place on
    * the client side.
