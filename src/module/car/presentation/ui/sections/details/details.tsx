@@ -25,7 +25,7 @@ export function DetailsSection({ carId, className }: DetailsSectionProps) {
   }
 
   return (
-    <DashboardSection aria-label="Vehicle details" className={className}>
+    <DashboardSection aria-labelledby="car-name-heading" className={className}>
       <DetailsCard car={carData} className="mb-5" />
       <SectionControls canEdit={isSessionUserPrimaryOwner} car={carData} />
     </DashboardSection>
