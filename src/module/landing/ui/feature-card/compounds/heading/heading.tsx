@@ -1,14 +1,16 @@
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import type { HeadingLevel } from '@/ui/types/heading-level';
+
 type FeatureCardHeadingProps = ComponentProps<'h1'> & {
-  headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  headingLevel: HeadingLevel;
 };
 
 export function FeatureCardHeading({
   className,
   children,
-  headingLevel = 'h2',
+  headingLevel,
   ...props
 }: FeatureCardHeadingProps) {
   const HeadingTag = headingLevel;

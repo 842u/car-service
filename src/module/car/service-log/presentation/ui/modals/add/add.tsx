@@ -16,7 +16,9 @@ export function AddModal({ carId, ref, onSubmit }: AddModalProps) {
   return (
     <DialogModal ref={ref}>
       <DialogModal.Root>
-        <DialogModal.Heading>Add service log</DialogModal.Heading>
+        <DialogModal.Heading headingLevel="h2">
+          Add service log
+        </DialogModal.Heading>
         <TextSeparator className="my-4" />
         <AddForm carId={carId} onSubmit={onSubmit} />
       </DialogModal.Root>

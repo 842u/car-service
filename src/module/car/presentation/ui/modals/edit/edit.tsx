@@ -16,7 +16,7 @@ export function EditModal({ ref, car, onSubmit }: EditModalProps) {
   return (
     <DialogModal ref={ref}>
       <DialogModal.Root>
-        <DialogModal.Heading>Edit car</DialogModal.Heading>
+        <DialogModal.Heading headingLevel="h2">Edit car</DialogModal.Heading>
         <TextSeparator className="my-4" />
         <EditForm car={car} onSubmit={onSubmit} />
       </DialogModal.Root>

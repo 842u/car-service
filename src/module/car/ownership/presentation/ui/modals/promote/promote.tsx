@@ -25,7 +25,9 @@ export function PromoteModal({
   return (
     <DialogModal ref={ref}>
       <DialogModal.Root onClose={onClose}>
-        <DialogModal.Heading>Promote owner</DialogModal.Heading>
+        <DialogModal.Heading headingLevel="h2">
+          Promote owner
+        </DialogModal.Heading>
         <TextSeparator className="my-4" />
         <p className="my-10 max-w-full text-wrap">
           Are you sure you want to pass primary ownership to{' '}

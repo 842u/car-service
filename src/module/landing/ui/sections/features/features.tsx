@@ -69,7 +69,9 @@ export function FeaturesSection() {
           }
         >
           <FeatureCard.Icon>{feature.icon}</FeatureCard.Icon>
-          <FeatureCard.Heading>{feature.heading}</FeatureCard.Heading>
+          <FeatureCard.Heading headingLevel="h2">
+            {feature.heading}
+          </FeatureCard.Heading>
           <FeatureCard.Description>
             {feature.description}
           </FeatureCard.Description>

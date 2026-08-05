@@ -24,7 +24,9 @@ export function CarsGallery() {
   if (isPending)
     return (
       <DashboardSection className="flex flex-col self-stretch" variant="raw">
-        <DashboardSection.Heading>Cars</DashboardSection.Heading>
+        <DashboardSection.Heading headingLevel="h1">
+          Cars
+        </DashboardSection.Heading>
         <div className="flex grow items-center justify-center">
           <Spinner className="stroke-accent-400 fill-accent-400 h-16 md:h-20 lg:h-24" />
         </div>
@@ -33,7 +35,9 @@ export function CarsGallery() {
 
   return (
     <DashboardSection className="flex flex-col self-stretch" variant="raw">
-      <DashboardSection.Heading>Cars</DashboardSection.Heading>
+      <DashboardSection.Heading headingLevel="h1">
+        Cars
+      </DashboardSection.Heading>
       <div className="flex grow items-center justify-center">
         <div className="relative flex flex-col gap-5 py-5 md:flex-row md:flex-wrap md:justify-center lg:max-w-480">
           <AddCard onClick={handleAddCardClick} />

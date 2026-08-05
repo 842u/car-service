@@ -3,6 +3,7 @@ import {
   createContext,
   useCallback,
   useEffect,
+  useId,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -21,6 +22,7 @@ export type DialogModalRef = {
 
 type DialogModalContextValue = DialogModalRef & {
   dialogRef: RefObject<HTMLDialogElement | null>;
+  headingId: string;
 };
 
 type DialogModalProps = {
@@ -39,6 +41,7 @@ export function useDialogModal() {
 
 export function DialogModal({ ref, children }: DialogModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const headingId = useId();
 
   const showModal = useCallback(
     () => dialogRef.current?.showModal() || (() => {}),
@@ -55,8 +58,9 @@ export function DialogModal({ ref, children }: DialogModalProps) {
       showModal,
       closeModal,
       dialogRef,
+      headingId,
     }),
-    [showModal, closeModal],
+    [showModal, closeModal, headingId],
   );
 
   useImperativeHandle(ref, () => {

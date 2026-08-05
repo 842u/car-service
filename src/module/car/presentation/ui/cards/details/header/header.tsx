@@ -1,5 +1,6 @@
 import type { CarDto } from '@/car/application/dto/car';
 import { CarImage } from '@/car/presentation/ui/image/image';
+import { DashboardSection } from '@/dashboard/ui/section/section';
 import { LabelIcon } from '@/icons/label';
 import { SwatchIcon } from '@/icons/swatch';
 
@@ -16,9 +17,13 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
       />
 
       <div className="flex max-w-8/12 flex-col justify-evenly gap-1 self-stretch">
-        <h2 className="overflow-x-auto text-2xl text-nowrap md:overflow-y-clip md:text-5xl">
+        <DashboardSection.Heading
+          className="overflow-x-auto text-2xl text-nowrap md:overflow-y-clip md:text-5xl"
+          headingLevel="h1"
+          withUnderline={false}
+        >
           {car?.customName}
-        </h2>
+        </DashboardSection.Heading>
 
         {car?.licensePlates && (
           <p className="border-alpha-grey-200 bg-alpha-grey-50 max-w-fit overflow-x-auto rounded-sm border px-6 py-1 text-sm md:text-2xl">

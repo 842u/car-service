@@ -17,7 +17,7 @@ describe('SignUpPage', () => {
     render(<SignUpPage />);
 
     const authProviders = screen.getByRole('region', {
-      name: /oauth providers/i,
+      name: /continue with a provider/i,
     });
 
     expect(authProviders).toBeInTheDocument();

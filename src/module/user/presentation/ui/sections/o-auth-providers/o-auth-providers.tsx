@@ -11,7 +11,7 @@ export function OAuthProvidersSection({
 }: OAuthProvidersSectionProps) {
   return (
     <section
-      aria-label="OAuth Providers"
+      aria-label="Continue with a provider"
       className={twMerge('flex flex-col gap-4', className)}
       {...props}
     >

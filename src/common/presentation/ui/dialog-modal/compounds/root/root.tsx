@@ -10,12 +10,19 @@ type DialogModalRootProps = ComponentProps<'dialog'> & {
   children?: ReactNode;
 };
 
-export function DialogModalRoot({ children, ...props }: DialogModalRootProps) {
-  const { closeModal, dialogRef } = useDialogModal();
+export function DialogModalRoot({
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
+  children,
+  ...props
+}: DialogModalRootProps) {
+  const { closeModal, dialogRef, headingId } = useDialogModal();
 
   return (
     <dialog
       ref={dialogRef}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabel ? undefined : (ariaLabelledBy ?? headingId)}
       className="bg-light-500 dark:bg-dark-500 border-accent-200 dark:border-accent-300 fixed m-auto w-full rounded-md border backdrop:backdrop-blur-xs md:w-fit"
       onClick={closeModal}
       {...props}

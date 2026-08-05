@@ -28,7 +28,7 @@ export function ServiceLogsSection({
 
   if (isLoading) {
     return (
-      <DashboardSection aria-label="Service logs" className={className}>
+      <DashboardSection className={className}>
         <DashboardSection.Heading headingLevel="h2">
           Service Logs
         </DashboardSection.Heading>
@@ -39,7 +39,7 @@ export function ServiceLogsSection({
 
   if (!serviceLogs?.length) {
     return (
-      <DashboardSection aria-label="Service logs" className={className}>
+      <DashboardSection className={className}>
         <DashboardSection.Heading headingLevel="h2">
           Service Logs
         </DashboardSection.Heading>
@@ -55,7 +55,7 @@ export function ServiceLogsSection({
   }
 
   return (
-    <DashboardSection aria-label="Service logs" className={className}>
+    <DashboardSection className={className}>
       <DashboardSection.Heading headingLevel="h2">
         Service Logs
       </DashboardSection.Heading>
