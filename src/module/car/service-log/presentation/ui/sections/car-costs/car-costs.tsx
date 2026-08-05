@@ -5,6 +5,8 @@ import { useCarCostsSection } from '@/car/service-log/presentation/ui/sections/c
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
+const headingId = 'car-costs-heading';
+
 type CarCostsSectionProps = {
   carId: string;
   className?: string;
@@ -16,8 +18,8 @@ export function CarCostsSection({ carId, className }: CarCostsSectionProps) {
   });
 
   return (
-    <DashboardSection className={className}>
-      <DashboardSection.Heading headingLevel="h2">
+    <DashboardSection aria-labelledby={headingId} className={className}>
+      <DashboardSection.Heading headingLevel="h2" id={headingId}>
         Costs
       </DashboardSection.Heading>
       {isPending ? (

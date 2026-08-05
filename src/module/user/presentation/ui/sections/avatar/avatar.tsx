@@ -8,6 +8,7 @@ import { AvatarForm } from '@/user/presentation/ui/forms/avatar/avatar';
 
 const acceptedFileTypes = getMimeTypeExtensions(IMAGE_FILE_ACCEPTED_MIME_TYPES);
 const maxFileSize = MAX_IMAGE_FILE_SIZE_BYTES / (1024 * 1024);
+const headingId = 'avatar-heading';
 
 type AvatarSectionProps = {
   avatarUrl?: string | null;
@@ -15,8 +16,8 @@ type AvatarSectionProps = {
 
 export function AvatarSection({ avatarUrl }: AvatarSectionProps) {
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">
+    <DashboardSection aria-labelledby={headingId}>
+      <DashboardSection.Heading headingLevel="h2" id={headingId}>
         Avatar
       </DashboardSection.Heading>
       <DashboardSection.Text>

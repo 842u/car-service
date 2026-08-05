@@ -1,14 +1,18 @@
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { IdClipboardInput } from '@/user/presentation/ui/id-clipboard-input/id-clipboard-input';
 
+const headingId = 'user-id-heading';
+
 type IdSectionProps = {
   id?: string;
 };
 
 export function IdSection({ id }: IdSectionProps) {
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">ID</DashboardSection.Heading>
+    <DashboardSection aria-labelledby={headingId}>
+      <DashboardSection.Heading headingLevel="h2" id={headingId}>
+        ID
+      </DashboardSection.Heading>
       <DashboardSection.Text>
         This ID uniquely identifies your profile.
       </DashboardSection.Text>

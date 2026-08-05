@@ -5,14 +5,16 @@ import {
 } from '@/user/domain/user/value-object/name/name.schema';
 import { NameForm } from '@/user/presentation/ui/forms/name/name';
 
+const headingId = 'name-heading';
+
 type NameSectionProps = {
   name?: string | null;
 };
 
 export function NameSection({ name }: NameSectionProps) {
   return (
-    <DashboardSection>
-      <DashboardSection.Heading headingLevel="h2">
+    <DashboardSection aria-labelledby={headingId}>
+      <DashboardSection.Heading headingLevel="h2" id={headingId}>
         Username
       </DashboardSection.Heading>
       <DashboardSection.Text>
