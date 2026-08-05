@@ -13,21 +13,21 @@ import { useForm } from '../../form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 
-export type FormSelectProps<T extends FieldValues> = {
+export type FormSelectProps<TFieldValues extends FieldValues> = {
   label: string;
-  name: Path<T>;
+  name: Path<TFieldValues>;
   options: Record<string, string>;
-  register?: UseFormRegister<T>;
+  register?: UseFormRegister<TFieldValues>;
   className?: string;
   variant?: InputVariants;
-  registerOptions?: RegisterOptions<T>;
+  registerOptions?: RegisterOptions<TFieldValues>;
   required?: boolean;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
   hasEmptyOption?: boolean;
 };
 
-export function FormSelect<T extends FieldValues>({
+export function FormSelect<TFieldValues extends FieldValues>({
   register,
   label,
   name,
@@ -39,7 +39,7 @@ export function FormSelect<T extends FieldValues>({
   required = false,
   showErrorMessage = true,
   hasEmptyOption = true,
-}: FormSelectProps<T>) {
+}: FormSelectProps<TFieldValues>) {
   useForm();
 
   return (

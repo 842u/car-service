@@ -13,18 +13,16 @@ import {
 } from '@/common/application/result';
 import type { Validator, ValidatorIssue } from '@/common/application/validator';
 
-type ErrorResponseResult<E extends ApiHandlerResponseError> = FailureResult<
-  E,
-  { status: number }
->;
+type ErrorResponseResult<TError extends ApiHandlerResponseError> =
+  FailureResult<TError, { status: number }>;
 
-type SuccessResponseResult<T> = SuccessResult<T, { status: number }>;
+type SuccessResponseResult<TData> = SuccessResult<TData, { status: number }>;
 
 export class NextApiHandler<
-  T,
-  E extends ApiHandlerResponseError,
-  S,
-> implements ApiHandler<T, E, S> {
+  TData,
+  TError extends ApiHandlerResponseError,
+  TSchema,
+> implements ApiHandler<TData, TError, TSchema> {
   private readonly _validator: Validator;
 
   constructor(validator: Validator) {
@@ -33,11 +31,11 @@ export class NextApiHandler<
 
   async preprocessRequest(
     request: NextRequest,
-    schema: { _output: S },
+    schema: { _output: TSchema },
     errorMessage = 'Contract validation failed.',
   ): Promise<
     Result<
-      S,
+      TSchema,
       { message: string; issues?: ValidatorIssue[] },
       { status: number }
     >
@@ -77,8 +75,8 @@ export class NextApiHandler<
     return Result.ok(data);
   }
 
-  errorResponse(error: E, status: number) {
-    const responseResult: ErrorResponseResult<E> = {
+  errorResponse(error: TError, status: number) {
+    const responseResult: ErrorResponseResult<TError> = {
       success: false,
       error,
       status,
@@ -89,8 +87,8 @@ export class NextApiHandler<
     });
   }
 
-  successResponse(data: T, status: number) {
-    const responseResult: SuccessResponseResult<T> = {
+  successResponse(data: TData, status: number) {
+    const responseResult: SuccessResponseResult<TData> = {
       success: true,
       data,
       status,

@@ -9,18 +9,18 @@ import { useForm } from '../../form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 
-type FormCheckboxGroupProps<T extends FieldValues> = {
+type FormCheckboxGroupProps<TFieldValues extends FieldValues> = {
   label: string;
   checkboxLabelValueMapping: Record<string, string>;
-  register: UseFormRegister<T>;
-  name: Path<T>;
+  register: UseFormRegister<TFieldValues>;
+  name: Path<TFieldValues>;
   required?: boolean;
-  registerOptions?: RegisterOptions<T>;
+  registerOptions?: RegisterOptions<TFieldValues>;
   errorMessage?: string;
   showErrorMessage?: boolean;
 };
 
-export function FormCheckboxGroup<T extends FieldValues>({
+export function FormCheckboxGroup<TFieldValues extends FieldValues>({
   checkboxLabelValueMapping,
   label,
   register,
@@ -29,7 +29,7 @@ export function FormCheckboxGroup<T extends FieldValues>({
   errorMessage,
   required = false,
   showErrorMessage = true,
-}: FormCheckboxGroupProps<T>) {
+}: FormCheckboxGroupProps<TFieldValues>) {
   useForm();
 
   return (

@@ -13,7 +13,7 @@ export type UseMouseTiltAnimationOptions = {
   transformPerspectivePixels?: number;
 };
 
-export function useMouseTiltAnimation<T extends HTMLElement>({
+export function useMouseTiltAnimation<TElement extends HTMLElement>({
   rotationDirection = 'push',
   rotationFactor = 5,
   transformPerspectivePixels = 1000,
@@ -24,7 +24,7 @@ export function useMouseTiltAnimation<T extends HTMLElement>({
    */
   const [canAnimate, setCanAnimate] = useState(false);
 
-  const elementRef = useRef<T>(null);
+  const elementRef = useRef<TElement>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -51,7 +51,7 @@ export function useMouseTiltAnimation<T extends HTMLElement>({
 
   useEffect(() => setCanAnimate(true), []);
 
-  const handleMouseMove = (event: React.MouseEvent<T>) => {
+  const handleMouseMove = (event: React.MouseEvent<TElement>) => {
     if (!elementRef.current) return;
 
     const rect = elementRef.current.getBoundingClientRect();

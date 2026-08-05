@@ -5,11 +5,11 @@ z.config({
   jitless: true,
 });
 
-export function nullifyEmptyString<T extends ZodType>(schema: T) {
+export function nullifyEmptyString<TSchema extends ZodType>(schema: TSchema) {
   return z.preprocess((val) => (val === '' ? null : val), schema.nullable());
 }
 
-export function nullifyNaN<T extends ZodType>(schema: T) {
+export function nullifyNaN<TSchema extends ZodType>(schema: TSchema) {
   return z.preprocess(
     (val) => (typeof val === 'number' && Number.isNaN(val) ? null : val),
     schema.nullable(),

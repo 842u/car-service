@@ -2,17 +2,18 @@ import type { FailureResult, SuccessResult } from '../../application/result';
 
 type ApiResponseMeta = { status: number };
 
-export type ApiResponseError<U extends object = object> = {
+export type ApiResponseError<TMeta extends object = object> = {
   message: string;
-} & U;
+} & TMeta;
 
-type ApiResponseFailureResult<E extends ApiResponseError> = FailureResult<
-  E,
+type ApiResponseFailureResult<TError extends ApiResponseError> = FailureResult<
+  TError,
   ApiResponseMeta
 >;
 
-type ApiResponseSuccessResult<T> = SuccessResult<T, ApiResponseMeta>;
+type ApiResponseSuccessResult<TData> = SuccessResult<TData, ApiResponseMeta>;
 
-export type ApiResponseBody<T, E extends ApiResponseError = ApiResponseError> =
-  | ApiResponseSuccessResult<T>
-  | ApiResponseFailureResult<E>;
+export type ApiResponseBody<
+  TData,
+  TError extends ApiResponseError = ApiResponseError,
+> = ApiResponseSuccessResult<TData> | ApiResponseFailureResult<TError>;

@@ -158,9 +158,9 @@ export class FetchHttpClient implements HttpClient {
     };
   }
 
-  private async safeParseResponse<T>(
+  private async safeParseResponse<TData>(
     response: Response,
-  ): Promise<Result<T, string>> {
+  ): Promise<Result<TData, string>> {
     const contentType = response.headers.get('content-type');
 
     if (contentType?.includes('application/json')) {
@@ -173,7 +173,7 @@ export class FetchHttpClient implements HttpClient {
     }
 
     try {
-      const data = (await response.text()) as T;
+      const data = (await response.text()) as TData;
       return Result.ok(data);
     } catch {
       return Result.fail('Failed to parse response text.');

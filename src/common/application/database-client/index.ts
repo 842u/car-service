@@ -5,10 +5,17 @@ type DatabaseError = {
   code?: string;
 };
 
-export type DatabaseClientResult<T = unknown> = Result<T, DatabaseError>;
+export type DatabaseClientResult<TData = unknown> = Result<
+  TData,
+  DatabaseError
+>;
 
 export interface DatabaseClient {
-  query<T = unknown>(...args: unknown[]): Promise<DatabaseClientResult<T>>;
-  rpc<T = unknown>(...args: unknown[]): Promise<DatabaseClientResult<T>>;
-  mutate<T = unknown>(...args: unknown[]): Promise<DatabaseClientResult<T[]>>;
+  query<TRow = unknown>(
+    ...args: unknown[]
+  ): Promise<DatabaseClientResult<TRow>>;
+  rpc<TRow = unknown>(...args: unknown[]): Promise<DatabaseClientResult<TRow>>;
+  mutate<TRow = unknown>(
+    ...args: unknown[]
+  ): Promise<DatabaseClientResult<TRow[]>>;
 }

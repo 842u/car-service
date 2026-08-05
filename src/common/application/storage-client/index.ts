@@ -4,7 +4,7 @@ type StorageError = {
   message: string;
 };
 
-export type StorageClientResult<T = unknown> = Result<T, StorageError>;
+export type StorageClientResult<TData = unknown> = Result<TData, StorageError>;
 
 export interface StorageClient {
   upload(...args: unknown[]): Promise<StorageClientResult<unknown>>;

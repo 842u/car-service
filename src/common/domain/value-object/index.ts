@@ -1,10 +1,10 @@
 import { Result } from '@/common/application/result';
 import type { ValidatorError } from '@/common/application/validator';
 
-export abstract class ValueObject<T> {
-  protected readonly _value: T;
+export abstract class ValueObject<TValue> {
+  protected readonly _value: TValue;
 
-  protected constructor(value: T) {
+  protected constructor(value: TValue) {
     this._value = value;
   }
 
@@ -12,7 +12,7 @@ export abstract class ValueObject<T> {
     throw new Error('Create method of a Value Object not implemented.');
   }
 
-  public get value(): T {
+  public get value(): TValue {
     return this._value;
   }
 }
@@ -25,10 +25,10 @@ export abstract class ValueObject<T> {
  * usable inside `Result.combine`, where an inline `Result.ok(null)` would
  * otherwise infer its error type as `unknown` and widen the combined error.
  */
-export function optionalValueObject<Input, Vo>(
-  create: (value: Input) => Result<Vo, ValidatorError>,
-  value: Input | null | undefined,
-): Result<Vo | null, ValidatorError> {
+export function optionalValueObject<TRaw, TValueObject>(
+  create: (value: TRaw) => Result<TValueObject, ValidatorError>,
+  value: TRaw | null | undefined,
+): Result<TValueObject | null, ValidatorError> {
   if (value === null || value === undefined) {
     return Result.ok(null);
   }

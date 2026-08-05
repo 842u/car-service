@@ -19,8 +19,8 @@ export const ROW_COUNT_MISMATCH = 'ROW_COUNT_MISMATCH';
  * and an optional error. A PostgREST filter builder satisfies it structurally,
  * so callers pass the builder directly.
  */
-type MutationResponse<T> = {
-  data: T[] | null;
+type MutationResponse<TRow> = {
+  data: TRow[] | null;
   error: { message: string; code?: string } | null;
 };
 
@@ -31,20 +31,20 @@ export class SupabaseDatabaseClient implements DatabaseClient {
     this._client = client;
   }
 
-  async query<T>(
+  async query<TRow>(
     queryCallback: (
       nativeQuery: typeof this._client.from,
-    ) => Promise<PostgrestResponse<T>>,
-  ): Promise<DatabaseClientResult<T[]>>;
-  async query<T>(
+    ) => Promise<PostgrestResponse<TRow>>,
+  ): Promise<DatabaseClientResult<TRow[]>>;
+  async query<TRow>(
     queryCallback: (
       nativeQuery: typeof this._client.from,
-    ) => Promise<PostgrestSingleResponse<T>>,
-  ): Promise<DatabaseClientResult<T>>;
-  async query<T>(
+    ) => Promise<PostgrestSingleResponse<TRow>>,
+  ): Promise<DatabaseClientResult<TRow>>;
+  async query<TRow>(
     queryCallback: (
       nativeQuery: typeof this._client.from,
-    ) => Promise<PostgrestResponse<T> | PostgrestSingleResponse<T>>,
+    ) => Promise<PostgrestResponse<TRow> | PostgrestSingleResponse<TRow>>,
   ) {
     try {
       const { data, error } = await queryCallback(
@@ -75,12 +75,12 @@ export class SupabaseDatabaseClient implements DatabaseClient {
    * differs from the expectation. A zero-row write is a failure here, not the
    * fabricated success it would be through `query`.
    */
-  async mutate<T>(
+  async mutate<TRow>(
     mutationCallback: (nativeQuery: typeof this._client.from) => {
-      select: () => PromiseLike<MutationResponse<T>>;
+      select: () => PromiseLike<MutationResponse<TRow>>;
     },
     expectedCount: number,
-  ): Promise<DatabaseClientResult<T[]>> {
+  ): Promise<DatabaseClientResult<TRow[]>> {
     try {
       const { data, error } = await mutationCallback(
         this._client.from.bind(this._client),
@@ -111,20 +111,20 @@ export class SupabaseDatabaseClient implements DatabaseClient {
     }
   }
 
-  async rpc<T>(
+  async rpc<TRow>(
     rpcCallback: (
       nativeRpc: typeof this._client.rpc,
-    ) => Promise<PostgrestResponse<T>>,
-  ): Promise<DatabaseClientResult<T[]>>;
-  async rpc<T>(
+    ) => Promise<PostgrestResponse<TRow>>,
+  ): Promise<DatabaseClientResult<TRow[]>>;
+  async rpc<TRow>(
     rpcCallback: (
       nativeRpc: typeof this._client.rpc,
-    ) => Promise<PostgrestSingleResponse<T>>,
-  ): Promise<DatabaseClientResult<T>>;
-  async rpc<T>(
+    ) => Promise<PostgrestSingleResponse<TRow>>,
+  ): Promise<DatabaseClientResult<TRow>>;
+  async rpc<TRow>(
     rpcCallback: (
       nativeRpc: typeof this._client.rpc,
-    ) => Promise<PostgrestResponse<T> | PostgrestSingleResponse<T>>,
+    ) => Promise<PostgrestResponse<TRow> | PostgrestSingleResponse<TRow>>,
   ) {
     try {
       const { data, error } = await rpcCallback(

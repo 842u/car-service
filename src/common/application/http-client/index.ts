@@ -6,7 +6,11 @@ type ResultMeta = {
   headers: Record<string, string>;
 };
 
-export type HttpClientResponse<T = unknown> = Result<T, HttpError, ResultMeta>;
+export type HttpClientResponse<TData = unknown> = Result<
+  TData,
+  HttpError,
+  ResultMeta
+>;
 
 export interface RequestController {
   cancel(): void;
@@ -14,11 +18,11 @@ export interface RequestController {
   readonly reason?: string;
 }
 
-export type RequestConfig<T extends RequestController> = {
+export type RequestConfig<TController extends RequestController> = {
   headers?: Record<string, string>;
   timeout?: number;
   baseUrl?: string;
-  requestController?: T;
+  requestController?: TController;
 };
 
 export interface HttpClient {

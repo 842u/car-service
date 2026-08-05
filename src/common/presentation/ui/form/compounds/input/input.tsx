@@ -14,19 +14,20 @@ import { useForm } from '../../form';
 import { InputErrorText } from './error-text/error-text';
 import { InputLabelText } from './label-text/label-text';
 
-export type FormInputProps<T extends FieldValues> = ComponentProps<'input'> & {
-  label: string;
-  name: Path<T>;
-  type: Exclude<HTMLInputTypeAttribute, 'password'>;
-  register?: UseFormRegister<T>;
-  variant?: InputVariants;
-  required?: boolean;
-  registerOptions?: RegisterOptions<T>;
-  errorMessage?: string | undefined;
-  showErrorMessage?: boolean;
-};
+export type FormInputProps<TFieldValues extends FieldValues> =
+  ComponentProps<'input'> & {
+    label: string;
+    name: Path<TFieldValues>;
+    type: Exclude<HTMLInputTypeAttribute, 'password'>;
+    register?: UseFormRegister<TFieldValues>;
+    variant?: InputVariants;
+    required?: boolean;
+    registerOptions?: RegisterOptions<TFieldValues>;
+    errorMessage?: string | undefined;
+    showErrorMessage?: boolean;
+  };
 
-export function FormInput<T extends FieldValues>({
+export function FormInput<TFieldValues extends FieldValues>({
   register,
   label,
   name,
@@ -38,7 +39,7 @@ export function FormInput<T extends FieldValues>({
   showErrorMessage = true,
   required = false,
   ...props
-}: FormInputProps<T>) {
+}: FormInputProps<TFieldValues>) {
   useForm();
 
   return (

@@ -18,21 +18,21 @@ import { useForm } from '../../form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 
-export type FormPasswordInputProps<T extends FieldValues> = Omit<
+export type FormPasswordInputProps<TFieldValues extends FieldValues> = Omit<
   ComponentProps<'input'>,
   'type'
 > & {
   label: string;
-  name: Path<T>;
-  register?: UseFormRegister<T>;
+  name: Path<TFieldValues>;
+  register?: UseFormRegister<TFieldValues>;
   variant?: InputVariants;
   required?: boolean;
-  registerOptions?: RegisterOptions<T>;
+  registerOptions?: RegisterOptions<TFieldValues>;
   errorMessage?: string | undefined;
   showErrorMessage?: boolean;
 };
 
-export function FormPasswordInput<T extends FieldValues>({
+export function FormPasswordInput<TFieldValues extends FieldValues>({
   register,
   label,
   name,
@@ -43,7 +43,7 @@ export function FormPasswordInput<T extends FieldValues>({
   showErrorMessage = true,
   required = false,
   ...props
-}: FormPasswordInputProps<T>) {
+}: FormPasswordInputProps<TFieldValues>) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   useForm();
