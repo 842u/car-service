@@ -7,10 +7,10 @@ import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
 export const SECTION_CONTROLS_TEST_ID = 'section-controls';
 
-interface SectionControlsProps {
+type SectionControlsProps = {
   carId: string;
   canAdd: boolean;
-}
+};
 
 export function SectionControls({ carId, canAdd }: SectionControlsProps) {
   const dialogRef = useRef<DialogModalRef>(null);

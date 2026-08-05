@@ -6,9 +6,9 @@ import { useTotalOwnershipsSection } from '@/car/ownership/presentation/ui/secti
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-interface TotalOwnershipsSectionProps {
+type TotalOwnershipsSectionProps = {
   className?: string;
-}
+};
 
 export function TotalOwnershipsSection({
   className,

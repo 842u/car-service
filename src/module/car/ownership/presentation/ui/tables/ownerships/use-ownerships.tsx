@@ -62,12 +62,12 @@ const ActionsCell = memo(function ActionsCell({
   );
 });
 
-interface UseOwnershipsTableParams {
+type UseOwnershipsTableParams = {
   isSessionUserPrimaryOwner: boolean;
   ownerships?: OwnershipDto[];
   sessionUserId?: string;
   users?: UserDto[];
-}
+};
 
 export function useOwnershipsTable({
   users,

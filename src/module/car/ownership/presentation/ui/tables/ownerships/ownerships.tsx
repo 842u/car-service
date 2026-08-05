@@ -5,12 +5,12 @@ import { useOwnershipsTable } from '@/car/ownership/presentation/ui/tables/owner
 import { Table } from '@/ui/table/table';
 import type { UserDto } from '@/user/application/dto/user';
 
-interface OwnershipsTableProps {
+type OwnershipsTableProps = {
   isSessionUserPrimaryOwner: boolean;
   ownerships?: OwnershipDto[];
   users?: UserDto[];
   sessionUserId?: string;
-}
+};
 
 export function OwnershipsTable({
   isSessionUserPrimaryOwner,

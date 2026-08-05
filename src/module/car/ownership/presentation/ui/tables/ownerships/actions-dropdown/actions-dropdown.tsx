@@ -5,7 +5,7 @@ import { IconButton } from '@/ui/icon-button/icon-button';
 
 import { DropdownContent } from './content/content';
 
-interface TableActionsDropdownProps {
+type TableActionsDropdownProps = {
   canDelete: boolean;
   canPromote: boolean;
   canTakeAction: boolean;
@@ -13,7 +13,7 @@ interface TableActionsDropdownProps {
   ownership: OwnershipDto;
   username?: string | null;
   sessionUserId?: string;
-}
+};
 
 export function TableActionsDropdown({
   canDelete,

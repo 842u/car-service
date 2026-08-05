@@ -5,13 +5,13 @@ import { useDropdownContent } from '@/car/ownership/presentation/ui/tables/owner
 import { Button } from '@/ui/button/button';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 
-interface DropdownContentProps {
+type DropdownContentProps = {
   canDelete: boolean;
   canPromote: boolean;
   ownership: OwnershipDto;
   username?: string | null;
   sessionUserId?: string;
-}
+};
 
 export function DropdownContent({
   canDelete,

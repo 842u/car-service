@@ -1,9 +1,9 @@
 import { useOwnerProfilesForCar } from '@/car/ownership/presentation/hook/use-owner-profiles-for-car';
 import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
-interface UseOwnershipsSectionParams {
+type UseOwnershipsSectionParams = {
   carId: string;
-}
+};
 
 export function useOwnershipsSection({ carId }: UseOwnershipsSectionParams) {
   const { data: sessionUser } = useSessionUser();
