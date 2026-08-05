@@ -6,9 +6,9 @@ import { DashboardMain } from '@/dashboard/ui/main/main';
 import { createServerAuthClient } from '@/dependency/auth-client/server';
 import { createServerDatabaseClient } from '@/dependency/database-client/server';
 
-interface CarPageProps {
+type CarPageProps = {
   params: Promise<{ id: string }>;
-}
+};
 
 export default async function CarPage({ params }: CarPageProps) {
   const { id } = await params;

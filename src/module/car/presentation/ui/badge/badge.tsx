@@ -2,11 +2,11 @@ import { twMerge } from 'tailwind-merge';
 
 import { CarImage } from '@/car/presentation/ui/image/image';
 
-interface CarBadgeProps {
+type CarBadgeProps = {
   name: string;
   imageUrl?: string | null;
   className?: string;
-}
+};
 
 export function CarBadge({ name, imageUrl, className }: CarBadgeProps) {
   return (

@@ -7,10 +7,10 @@ import { useDateExpirationTable } from '@/car/presentation/ui/tables/date-expira
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { Table } from '@/ui/table/table';
 
-interface DateExpirationTableProps {
+type DateExpirationTableProps = {
   label: string;
   dateColumn: CarDateColumn;
-}
+};
 
 export function DateExpirationTable({
   label,

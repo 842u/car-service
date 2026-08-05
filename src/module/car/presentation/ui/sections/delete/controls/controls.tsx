@@ -3,10 +3,10 @@ import { DeleteModal } from '@/car/presentation/ui/modals/delete/delete';
 import { useSectionControls } from '@/car/presentation/ui/sections/delete/controls/use-controls';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 
-interface SectionControlsProps {
+type SectionControlsProps = {
   carId: string;
   canDelete: boolean;
-}
+};
 
 export function SectionControls({ carId, canDelete }: SectionControlsProps) {
   const {

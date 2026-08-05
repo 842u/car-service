@@ -7,10 +7,10 @@ import { Form } from '@/ui/form/form';
 import { FormFields } from './fields/fields';
 import { useCarForm } from './use-form';
 
-interface CarFormProps extends Omit<FormProps, 'ref' | 'onSubmit'> {
+type CarFormProps = Omit<FormProps, 'ref' | 'onSubmit'> & {
   car?: CarDto;
   onSubmit?: (carFormData: CarFormData) => void;
-}
+};
 
 export function CarForm({ onSubmit, car, ...props }: CarFormProps) {
   const {

@@ -1,9 +1,9 @@
 import { EyeOpenIcon } from '@/icons/eye-open';
 import { LinkButton } from '@/ui/link-button/link-button';
 
-interface DateExpirationTableViewButtonProps {
+type DateExpirationTableViewButtonProps = {
   carId: string;
-}
+};
 
 export function DateExpirationTableViewButton({
   carId,

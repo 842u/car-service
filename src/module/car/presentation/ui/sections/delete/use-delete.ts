@@ -7,9 +7,9 @@ import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 
-interface UseDeleteSectionParams {
+type UseDeleteSectionParams = {
   carId: string;
-}
+};
 
 export function useDeleteSection({ carId }: UseDeleteSectionParams) {
   const { data: sessionUser } = useSessionUser();

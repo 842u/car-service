@@ -7,10 +7,10 @@ import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { SectionControls } from './controls/controls';
 import { useDetailsSection } from './use-details';
 
-interface DetailsSectionProps {
+type DetailsSectionProps = {
   carId: string;
   className?: string;
-}
+};
 
 export function DetailsSection({ carId, className }: DetailsSectionProps) {
   const { carData, isCarDataLoading, isSessionUserPrimaryOwner } =

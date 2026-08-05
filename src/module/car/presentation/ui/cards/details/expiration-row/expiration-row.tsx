@@ -1,11 +1,11 @@
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
 import type { SvgA11yProps } from '@/ui/decorative/svg-a11y/svg-a11y';
 
-interface DetailsCardExpirationRowProps {
+type DetailsCardExpirationRowProps = {
   label: string;
   date?: string | null;
   icon?: React.ComponentType<SvgA11yProps>;
-}
+};
 
 export function DetailsCardExpirationRow({
   label,

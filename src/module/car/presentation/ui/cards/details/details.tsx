@@ -29,10 +29,10 @@ const DATA_FIELDS: {
   { label: 'ADDITIONAL FUEL', key: 'additionalFuelType', icon: FuelIcon },
 ];
 
-interface DetailsCardProps {
+type DetailsCardProps = {
   car?: CarDto;
   className?: string;
-}
+};
 
 export function DetailsCard({ car, className }: DetailsCardProps) {
   return (

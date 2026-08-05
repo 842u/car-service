@@ -16,10 +16,10 @@ import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-
 
 const columnsHelper = createColumnHelper<CarDto>();
 
-interface UseDateExpirationTableParams {
+type UseDateExpirationTableParams = {
   label: string;
   dateColumn: CarDateColumn;
-}
+};
 
 export function useDateExpirationTable({
   label,
