@@ -10,15 +10,16 @@ type CarBadgeProps = {
 
 export function CarBadge({ name, imageUrl, className }: CarBadgeProps) {
   return (
-    <div
-      className={twMerge(
-        'flex flex-row items-center justify-center gap-2 overflow-auto',
-        className,
-      )}
-    >
+    <div className={twMerge('flex min-w-0 items-center gap-2', className)}>
       <p className="truncate">{name}</p>
+      {/*
+        Fixed square size rather than `h-full aspect-square w-fit`: a width
+        derived from a percentage height through an aspect ratio depends on the
+        caller giving this badge a definite height, and collapses in Firefox
+        wherever that height is a percentage or comes from a table cell.
+      */}
       <CarImage
-        className="border-alpha-grey-300 aspect-square h-full w-fit shrink-0 overflow-hidden rounded-full border"
+        className="border-alpha-grey-300 size-10 shrink-0 overflow-hidden rounded-full border"
         src={imageUrl}
       />
     </div>

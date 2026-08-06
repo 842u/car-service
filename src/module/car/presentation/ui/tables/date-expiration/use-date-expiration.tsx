@@ -61,7 +61,7 @@ export function useDateExpirationTable({
             return (
               <div className="max-w-32">
                 <CarBadge
-                  className="h-10 flex-row-reverse justify-end"
+                  className="flex-row-reverse justify-end"
                   imageUrl={imageUrl}
                   name={customName}
                 />
