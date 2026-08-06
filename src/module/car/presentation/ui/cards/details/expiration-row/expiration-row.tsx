@@ -23,7 +23,7 @@ export function DetailsCardExpirationRow({
   const Icon = icon;
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-5">
       {Icon && (
         <Icon className="md:dark:stroke-accent-400/40 md:stroke-accent-500/50 hidden md:block md:h-8 md:w-8 md:shrink-0 md:stroke-2" />
       )}

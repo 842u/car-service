@@ -60,7 +60,7 @@ export function DetailsCard({ car, className }: DetailsCardProps) {
         text="LEGAL & COMPLIANCE"
       />
 
-      <div className="flex flex-col gap-5">
+      <div className="mx-auto flex w-fit flex-col gap-5">
         <DetailsCardExpirationRow
           date={car?.insuranceExpiration}
           icon={CheckShieldIcon}
