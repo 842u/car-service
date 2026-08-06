@@ -28,7 +28,7 @@ const UserCell = memo(function UserCell({
   user: UserDto | undefined;
 }) {
   return user ? (
-    <UserBadge className="h-10 flex-row-reverse justify-end" user={user} />
+    <UserBadge className="flex-row-reverse justify-end" user={user} />
   ) : null;
 });
 
