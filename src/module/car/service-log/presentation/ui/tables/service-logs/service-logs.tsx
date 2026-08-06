@@ -18,7 +18,7 @@ export function ServiceLogsTable({
   users,
   isSessionUserPrimaryOwner,
   sessionUserId,
-  className = '',
+  className,
 }: ServiceLogsTableProps) {
   const { data, columns, tableRef } = useServiceLogsTable({
     serviceLogs,
