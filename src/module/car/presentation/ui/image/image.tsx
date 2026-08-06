@@ -1,7 +1,7 @@
-import NextImage from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
 import { BrandFullIcon } from '@/icons/brand-full';
+import { ImageWithFallback } from '@/ui/image/image';
 
 type CarImageProps = {
   src?: string | null;
@@ -10,19 +10,16 @@ type CarImageProps = {
 
 export function CarImage({ src, className }: CarImageProps) {
   return (
-    <div
+    <ImageWithFallback
+      alt="car image"
       className={twMerge(
-        'relative flex aspect-square w-full items-center justify-center',
+        'flex aspect-square w-full items-center justify-center',
         className,
       )}
-    >
-      {src && (
-        <NextImage fill alt="car image" className="object-cover" src={src} />
-      )}
-
-      {!src && (
-        <BrandFullIcon className="stroke-alpha-grey-600 stroke-[0.1] object-cover" />
-      )}
-    </div>
+      fallback={
+        <BrandFullIcon className="stroke-alpha-grey-600 stroke-[0.1]" />
+      }
+      src={src}
+    />
   );
 }

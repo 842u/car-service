@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';
 
 import { UserIcon } from '@/icons/user';
+import { ImageWithFallback } from '@/ui/image/image';
 
 type UserImageProps = {
   src?: string | null;
@@ -10,12 +10,13 @@ type UserImageProps = {
 
 export function UserImage({ src, className }: UserImageProps) {
   return (
-    <div className={twMerge('relative h-full w-full', className)}>
-      {src && (
-        <Image fill alt="avatar image" className="object-cover" src={src} />
-      )}
-
-      {!src && <UserIcon className="stroke-alpha-grey-600 object-cover p-2" />}
-    </div>
+    <ImageWithFallback
+      alt="avatar image"
+      className={twMerge('h-full w-full', className)}
+      fallback={
+        <UserIcon className="stroke-alpha-grey-600 h-full w-full p-2" />
+      }
+      src={src}
+    />
   );
 }
