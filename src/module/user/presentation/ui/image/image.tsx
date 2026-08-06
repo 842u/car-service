@@ -10,21 +10,12 @@ type UserImageProps = {
 
 export function UserImage({ src, className }: UserImageProps) {
   return (
-    <div
-      className={twMerge(
-        'relative flex h-full w-full items-center justify-center',
-        className,
-      )}
-    >
+    <div className={twMerge('relative h-full w-full', className)}>
       {src && (
         <Image fill alt="avatar image" className="object-cover" src={src} />
       )}
 
-      {!src && (
-        <div className="h-full w-full py-2">
-          <UserIcon className="stroke-alpha-grey-600 h-full w-full object-cover" />
-        </div>
-      )}
+      {!src && <UserIcon className="stroke-alpha-grey-600 object-cover p-2" />}
     </div>
   );
 }
