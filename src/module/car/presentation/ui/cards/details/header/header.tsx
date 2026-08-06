@@ -3,6 +3,7 @@ import { CarImage } from '@/car/presentation/ui/image/image';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import { LabelIcon } from '@/icons/label';
 import { SwatchIcon } from '@/icons/swatch';
+import { TruncatedText } from '@/ui/truncated-text/truncated-text';
 
 type DetailsCardHeaderProps = {
   car?: CarDto;
@@ -27,12 +28,10 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
         </DashboardSection.Heading>
 
         {car?.licensePlates && (
-          <p
-            className="border-alpha-grey-200 bg-alpha-grey-50 w-fit max-w-full truncate rounded-sm border px-6 py-1 text-sm md:text-2xl"
-            title={car.licensePlates}
-          >
-            {car.licensePlates}
-          </p>
+          <TruncatedText
+            className="border-alpha-grey-200 bg-alpha-grey-50 w-fit max-w-full rounded-sm border px-6 py-1 text-sm md:text-2xl"
+            text={car.licensePlates}
+          />
         )}
 
         {(car?.brand || car?.model) && (
@@ -44,9 +43,7 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
                   BRAND
                 </p>
                 {car?.brand && (
-                  <p className="truncate md:text-2xl" title={car.brand}>
-                    {car.brand}
-                  </p>
+                  <TruncatedText className="md:text-2xl" text={car.brand} />
                 )}
               </div>
             </div>
@@ -57,12 +54,10 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
                   MODEL
                 </p>
                 {car?.model && (
-                  <p
-                    className="text-alpha-grey-900 truncate text-sm md:text-xl md:text-inherit"
-                    title={car.model}
-                  >
-                    {car.model}
-                  </p>
+                  <TruncatedText
+                    className="text-alpha-grey-900 text-sm md:text-xl md:text-inherit"
+                    text={car.model}
+                  />
                 )}
               </div>
             </div>
