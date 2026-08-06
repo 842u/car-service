@@ -38,9 +38,12 @@ export function useDateExpirationTable({
           id: 'status',
           cell: ({ row }) => {
             const date = row.original[dateColumn];
+            // Definite size rather than `aspect-square h-full`: Firefox does
+            // not resolve percentage heights against a table cell, so the icon
+            // and the svg it sizes both collapsed to zero.
             return date ? (
               <DateExpirationStatusIcon
-                className="aspect-square h-full p-0.5"
+                className="size-10 p-0.5"
                 date={date}
                 label={label}
               />
