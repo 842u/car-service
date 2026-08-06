@@ -12,7 +12,7 @@ export function DetailsCardExpirationRow({
   date,
   icon,
 }: DetailsCardExpirationRowProps) {
-  const formatted =
+  const formattedDate =
     date &&
     new Date(date).toLocaleDateString('en-US', {
       month: 'short',
@@ -27,12 +27,12 @@ export function DetailsCardExpirationRow({
       {Icon && (
         <Icon className="md:dark:stroke-accent-400/40 md:stroke-accent-500/50 hidden md:block md:h-8 md:w-8 md:shrink-0 md:stroke-2" />
       )}
-      <div>
+      <div className="min-w-0">
         <p className="text-alpha-grey-900 text-[10px]">
           {label.toUpperCase()} EXPIRATION
         </p>
-        <p className="overflow-auto">
-          {formatted ?? <span className="text-alpha-grey-900">---</span>}
+        <p className="truncate" title={formattedDate || undefined}>
+          {formattedDate ?? <span className="text-alpha-grey-900">---</span>}
         </p>
       </div>
       {date && (
