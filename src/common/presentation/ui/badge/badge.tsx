@@ -1,6 +1,8 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { TruncatedText } from '@/ui/truncated-text/truncated-text';
+
 type BadgeProps = ComponentProps<'div'> & {
   label: string;
   image: ReactNode;
@@ -16,9 +18,7 @@ export function Badge({ label, image, className, ...props }: BadgeProps) {
       className={twMerge('flex min-w-0 items-center gap-2', className)}
       {...props}
     >
-      <p className="truncate" title={label}>
-        {label}
-      </p>
+      <TruncatedText text={label} />
       {/*
         A definite square rather than `h-full aspect-square w-fit`: a width
         derived from a percentage height through an aspect ratio is not
