@@ -12,11 +12,11 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
   return (
     <div className="flex items-center gap-5 md:gap-10">
       <CarImage
-        className="w-4/12 overflow-hidden rounded-sm md:w-full md:max-w-64"
+        className="w-4/12 overflow-hidden rounded-sm"
         src={car?.imageUrl}
       />
 
-      <div className="flex max-w-8/12 flex-col justify-evenly gap-1 self-stretch">
+      <div className="flex w-full flex-col justify-evenly gap-1 self-stretch overflow-hidden">
         <DashboardSection.Heading
           className="overflow-x-auto text-2xl text-nowrap md:overflow-y-clip md:text-5xl"
           headingLevel="h1"
