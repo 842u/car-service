@@ -27,7 +27,14 @@ export function DateExpirationStatusIcon({
       title={tooltip}
     >
       {displayLabel && <span className="text-nowrap">{statusLabel}</span>}
-      <Icon className={`${iconClassName} h-full w-full stroke-2 p-2`} />
+      {/*
+        A definite size rather than `h-full w-full`: the svg would otherwise
+        resolve a percentage against a box this component does not control, so
+        every caller had to hand it a height, and it collapsed to zero wherever
+        that height was itself indefinite (Firefox does not resolve percentage
+        heights against a table cell).
+      */}
+      <Icon className={`${iconClassName} size-10 shrink-0 stroke-2 p-2`} />
     </div>
   );
 }

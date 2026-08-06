@@ -38,7 +38,7 @@ export function DetailsCardExpirationRow({
       {date && (
         <DateExpirationStatusIcon
           displayLabel
-          className="ml-auto h-10 shrink-0 p-0.5 text-xs"
+          className="ml-auto shrink-0 text-xs"
           date={date}
           label={label}
         />
