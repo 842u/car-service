@@ -74,6 +74,22 @@ export function useDateExpirationTable({
         }),
         columnsHelper.accessor('vin', {
           meta: { label: 'VIN', shouldSpan: true },
+          // `break-all` is what makes the column elastic. An unbreakable word
+          // has the same min-content and max-content size, so auto table layout
+          // has no range to work with and the column can only ever be its full
+          // width. A break opportunity at every character drops min-content to
+          // one character while max-content stays the whole value, so the
+          // column grows and shrinks with the space available. `min-w-20` puts
+          // a readable floor back, and `line-clamp-1` keeps the result on one
+          // line with an ellipsis instead of wrapping.
+          cell: ({ row }) => (
+            <div
+              className="line-clamp-1 min-w-20 break-all whitespace-normal"
+              title={row.original.vin ?? ''}
+            >
+              {row.original.vin}
+            </div>
+          ),
         }),
         columnsHelper.display({
           id: 'actions',
