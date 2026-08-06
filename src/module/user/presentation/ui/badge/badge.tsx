@@ -20,7 +20,7 @@ export function UserBadge({ user, className }: UserBadgeProps) {
       )}
       data-testid={USER_BADGE_TEST_ID}
     >
-      <p className="overflow-auto">{user.name}</p>
+      <p className="truncate overflow-auto">{user.name}</p>
       <UserImage
         className="border-alpha-grey-300 aspect-square h-full w-fit shrink-0 overflow-hidden rounded-full border"
         src={user.avatarUrl}
