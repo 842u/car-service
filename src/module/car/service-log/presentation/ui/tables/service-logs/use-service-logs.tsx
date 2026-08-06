@@ -55,7 +55,10 @@ const NotesCell = memo(function NotesCell({
 }: {
   notes: ServiceLogDto['notes'];
 }) {
-  return <div className="max-h-24 overflow-y-auto">{notes}</div>;
+  // A wider floor than the one the spanning column gives every cell: prose
+  // needs more characters per line than an identifier does before it stops
+  // being readable, and this cell caps its height rather than its line count.
+  return <div className="max-h-24 min-w-52 overflow-y-auto">{notes}</div>;
 });
 
 const CreatorCell = memo(function CreatorCell({
