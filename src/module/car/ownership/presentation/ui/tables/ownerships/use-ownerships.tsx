@@ -5,6 +5,7 @@ import { memo, useMemo, useRef } from 'react';
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import { TableActionsDropdown } from '@/car/ownership/presentation/ui/tables/ownerships/actions-dropdown/actions-dropdown';
 import { KeyIcon } from '@/icons/key';
+import { TableIdentifierCell } from '@/ui/table/cells/identifier/identifier';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
@@ -110,21 +111,8 @@ export function useOwnershipsTable({
           enableColumnFilter: true,
           filterFn: 'includesString',
           meta: { label: 'ID', shouldSpan: true },
-          // `break-all` is what makes the column elastic. An unbreakable word
-          // has the same min-content and max-content size, so auto table layout
-          // has no range to work with and the column can only ever be its full
-          // width. A break opportunity at every character drops min-content to
-          // one character while max-content stays the whole uuid, so the column
-          // grows and shrinks with the space available. `min-w-20` puts a
-          // readable floor back, and `line-clamp-1` keeps the result on one
-          // line with an ellipsis instead of wrapping.
           cell: ({ row }) => (
-            <div
-              className="line-clamp-1 min-w-20 break-all whitespace-normal"
-              title={row.original.ownerId}
-            >
-              {row.original.ownerId}
-            </div>
+            <TableIdentifierCell value={row.original.ownerId} />
           ),
         }),
         columnsHelper.display({

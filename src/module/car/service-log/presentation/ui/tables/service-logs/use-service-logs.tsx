@@ -47,11 +47,7 @@ const NotesCell = memo(function NotesCell({
 }: {
   notes: ServiceLogDto['notes'];
 }) {
-  return (
-    <div className="max-h-24 w-52 overflow-y-auto text-wrap lg:w-fit">
-      {notes}
-    </div>
-  );
+  return <div className="max-h-24 overflow-y-auto">{notes}</div>;
 });
 
 const CreatorCell = memo(function CreatorCell({

@@ -1,5 +1,6 @@
 import { flexRender } from '@tanstack/react-table';
 import type { RefObject } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { SearchIcon } from '@/icons/search';
 import { EmptyStatePlaceholder } from '@/ui/empty-state-placeholder/empty-state-placeholder';
@@ -41,7 +42,19 @@ export function TableBody({ lastRowRef }: TableBodyProps) {
           className="border-alpha-grey-200 hover:bg-alpha-grey-100 border-b last-of-type:border-0"
         >
           {row.getVisibleCells().map((cell) => (
-            <td key={cell.id} className="px-5 py-1 whitespace-nowrap">
+            <td
+              key={cell.id}
+              className={twMerge(
+                'px-5 py-1 whitespace-nowrap',
+                // `wrap-anywhere` rather than `break-all`: both drop
+                // min-content to a single character, which is what makes the
+                // column elastic, but `wrap-anywhere` only breaks mid-word
+                // when the line cannot fit. `min-w-28` puts a readable floor
+                // back under the shrinking.
+                cell.column.columnDef.meta?.shouldSpan &&
+                  'min-w-28 wrap-anywhere whitespace-normal',
+              )}
+            >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </td>
           ))}
