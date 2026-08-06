@@ -7,6 +7,7 @@ import { serviceCategoryLabelValueMapping } from '@/car/service-log/interface/ui
 import { TableActionsDropdown } from '@/car/service-log/presentation/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/filter-column-by-date';
 import { Tag } from '@/ui/tag/tag';
+import { TruncatedText } from '@/ui/truncated-text/truncated-text';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
@@ -22,30 +23,6 @@ const CategoryCell = memo(function CategoryCell({
       {categories.map((category) => (
         <Tag key={category}>{category}</Tag>
       ))}
-    </div>
-  );
-});
-
-const MileageCell = memo(function MileageCell({
-  mileage,
-}: {
-  mileage: ServiceLogDto['mileage'];
-}) {
-  return (
-    <div className="max-w-32 truncate" title={String(mileage)}>
-      {mileage}
-    </div>
-  );
-});
-
-const CostCell = memo(function CostCell({
-  cost,
-}: {
-  cost: ServiceLogDto['serviceCost'];
-}) {
-  return (
-    <div className="max-w-32 truncate" title={String(cost)}>
-      {cost}
     </div>
   );
 });
@@ -144,12 +121,19 @@ export function useServiceLogsTable({
         columnsHelper.accessor('mileage', {
           meta: { label: 'Mileage' },
           enableSorting: true,
-          cell: ({ row }) => <MileageCell mileage={row.original.mileage} />,
+          cell: ({ row }) => (
+            <TruncatedText className="max-w-32" text={row.original.mileage} />
+          ),
         }),
         columnsHelper.accessor('serviceCost', {
           meta: { label: 'Cost' },
           enableSorting: true,
-          cell: ({ row }) => <CostCell cost={row.original.serviceCost} />,
+          cell: ({ row }) => (
+            <TruncatedText
+              className="max-w-32"
+              text={row.original.serviceCost}
+            />
+          ),
         }),
         columnsHelper.accessor('notes', {
           meta: { label: 'Notes', shouldSpan: true },
