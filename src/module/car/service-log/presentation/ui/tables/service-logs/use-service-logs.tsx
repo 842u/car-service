@@ -31,7 +31,11 @@ const MileageCell = memo(function MileageCell({
 }: {
   mileage: ServiceLogDto['mileage'];
 }) {
-  return <div className="max-w-32 overflow-x-auto">{mileage}</div>;
+  return (
+    <div className="max-w-32 truncate" title={String(mileage)}>
+      {mileage}
+    </div>
+  );
 });
 
 const CostCell = memo(function CostCell({
@@ -39,7 +43,11 @@ const CostCell = memo(function CostCell({
 }: {
   cost: ServiceLogDto['serviceCost'];
 }) {
-  return <div className="max-w-32 overflow-x-auto">{cost}</div>;
+  return (
+    <div className="max-w-32 truncate" title={String(cost)}>
+      {cost}
+    </div>
+  );
 });
 
 const NotesCell = memo(function NotesCell({
