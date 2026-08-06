@@ -18,7 +18,7 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
 
       <div className="flex w-full flex-col justify-evenly gap-1 self-stretch overflow-hidden">
         <DashboardSection.Heading
-          className="overflow-x-auto text-2xl text-nowrap md:overflow-y-clip md:text-5xl"
+          className="overflow-x-auto text-2xl leading-tight text-nowrap md:text-5xl"
           headingLevel="h1"
           withUnderline={false}
         >
