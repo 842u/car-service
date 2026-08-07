@@ -1,5 +1,6 @@
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
 import type { SvgA11yProps } from '@/ui/decorative/svg-a11y/svg-a11y';
+import { TruncatedText } from '@/ui/truncated-text/truncated-text';
 
 type DetailsCardExpirationRowProps = {
   label: string;
@@ -12,33 +13,34 @@ export function DetailsCardExpirationRow({
   date,
   icon,
 }: DetailsCardExpirationRowProps) {
-  const formatted =
-    date &&
-    new Date(date).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
+  const formattedDate = date
+    ? new Date(date).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : null;
 
   const Icon = icon;
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-5">
       {Icon && (
         <Icon className="md:dark:stroke-accent-400/40 md:stroke-accent-500/50 hidden md:block md:h-8 md:w-8 md:shrink-0 md:stroke-2" />
       )}
-      <div>
+      <div className="min-w-0">
         <p className="text-alpha-grey-900 text-[10px]">
           {label.toUpperCase()} EXPIRATION
         </p>
-        <p className="overflow-auto">
-          {formatted ?? <span className="text-alpha-grey-900">---</span>}
-        </p>
+        <TruncatedText
+          fallback={<span className="text-alpha-grey-900">---</span>}
+          text={formattedDate}
+        />
       </div>
       {date && (
         <DateExpirationStatusIcon
           displayLabel
-          className="ml-auto h-10 shrink-0 p-0.5 text-xs"
+          className="ml-auto shrink-0 text-xs"
           date={date}
           label={label}
         />

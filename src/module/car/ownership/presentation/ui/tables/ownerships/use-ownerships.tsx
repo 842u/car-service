@@ -5,6 +5,7 @@ import { memo, useMemo, useRef } from 'react';
 import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import { TableActionsDropdown } from '@/car/ownership/presentation/ui/tables/ownerships/actions-dropdown/actions-dropdown';
 import { KeyIcon } from '@/icons/key';
+import { TableIdentifierCell } from '@/ui/table/cells/identifier/identifier';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
@@ -28,7 +29,7 @@ const UserCell = memo(function UserCell({
   user: UserDto | undefined;
 }) {
   return user ? (
-    <UserBadge className="h-10 flex-row-reverse justify-end" user={user} />
+    <UserBadge className="flex-row-reverse justify-end" user={user} />
   ) : null;
 });
 
@@ -110,6 +111,9 @@ export function useOwnershipsTable({
           enableColumnFilter: true,
           filterFn: 'includesString',
           meta: { label: 'ID', shouldSpan: true },
+          cell: ({ row }) => (
+            <TableIdentifierCell value={row.original.ownerId} />
+          ),
         }),
         columnsHelper.display({
           id: 'actions',

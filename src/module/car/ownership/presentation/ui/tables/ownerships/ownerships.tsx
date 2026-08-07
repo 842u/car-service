@@ -49,10 +49,7 @@ export function OwnershipsTable({
         <Table.TextFilter className="lg:w-fit" columnId="ownerId" />
       </div>
       <Table.SortBreadcrumb className="mt-5" />
-      <Table.Root
-        ref={tableRef}
-        className="my-4 max-h-96 overflow-auto lg:max-h-60"
-      >
+      <Table.Root ref={tableRef} className="my-4 max-h-96 lg:max-h-60">
         <caption className="sr-only">car ownerships</caption>
         <Table.Head />
         <Table.Body />

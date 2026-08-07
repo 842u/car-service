@@ -13,6 +13,7 @@ import { useInfiniteScrollTrigger } from '@/common/presentation/hook/use-infinit
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
+import { TableIdentifierCell } from '@/ui/table/cells/identifier/identifier';
 
 const columnsHelper = createColumnHelper<CarDto>();
 
@@ -39,11 +40,7 @@ export function useDateExpirationTable({
           cell: ({ row }) => {
             const date = row.original[dateColumn];
             return date ? (
-              <DateExpirationStatusIcon
-                className="aspect-square h-full p-0.5"
-                date={date}
-                label={label}
-              />
+              <DateExpirationStatusIcon date={date} label={label} />
             ) : null;
           },
         }),
@@ -58,7 +55,7 @@ export function useDateExpirationTable({
             return (
               <div className="max-w-32">
                 <CarBadge
-                  className="h-10 flex-row-reverse justify-end"
+                  className="flex-row-reverse justify-end"
                   imageUrl={imageUrl}
                   name={customName}
                 />
@@ -71,6 +68,7 @@ export function useDateExpirationTable({
         }),
         columnsHelper.accessor('vin', {
           meta: { label: 'VIN', shouldSpan: true },
+          cell: ({ row }) => <TableIdentifierCell value={row.original.vin} />,
         }),
         columnsHelper.display({
           id: 'actions',

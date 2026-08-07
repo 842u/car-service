@@ -1,4 +1,5 @@
 import type { SvgA11yProps } from '@/ui/decorative/svg-a11y/svg-a11y';
+import { TruncatedText } from '@/ui/truncated-text/truncated-text';
 
 type DetailsCardDataFieldProps = {
   label: string;
@@ -22,9 +23,10 @@ export function DetailsCardDataField({
         {Icon && (
           <Icon className="md:dark:stroke-accent-400/40 md:stroke-accent-500/50 hidden md:block md:h-7 md:w-7 md:shrink-0 md:stroke-3 md:p-0.5" />
         )}
-        <p className="overflow-auto">
-          {value ?? <span className="text-alpha-grey-900">---</span>}
-        </p>
+        <TruncatedText
+          fallback={<span className="text-alpha-grey-900">---</span>}
+          text={value}
+        />
       </div>
     </div>
   );

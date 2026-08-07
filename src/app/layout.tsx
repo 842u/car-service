@@ -22,7 +22,7 @@ export default async function RootLayout({
   return (
     <html
       suppressHydrationWarning
-      className="[scrollbar-gutter:stable]"
+      className="scrollbar-thin scrollbar-gutter-stable"
       lang="en"
     >
       <body
