@@ -37,8 +37,8 @@ describe('TableDateFilter', () => {
       </Table>,
     );
 
-    expect(screen.getByTitle('From Date')).toBeInTheDocument();
-    expect(screen.getByTitle('To Date')).toBeInTheDocument();
+    expect(screen.getByLabelText('From Date')).toBeInTheDocument();
+    expect(screen.getByLabelText('To Date')).toBeInTheDocument();
   });
 
   it('should reflect a changed from-date value in the input', async () => {
@@ -50,9 +50,9 @@ describe('TableDateFilter', () => {
       </Table>,
     );
 
-    await user.type(screen.getByTitle('From Date'), date);
+    await user.type(screen.getByLabelText('From Date'), date);
 
-    expect(screen.getByTitle('From Date')).toHaveValue(date);
+    expect(screen.getByLabelText('From Date')).toHaveValue(date);
   });
 
   it('should reflect a changed to-date value in the input', async () => {
@@ -64,9 +64,9 @@ describe('TableDateFilter', () => {
       </Table>,
     );
 
-    await user.type(screen.getByTitle('To Date'), date);
+    await user.type(screen.getByLabelText('To Date'), date);
 
-    expect(screen.getByTitle('To Date')).toHaveValue(date);
+    expect(screen.getByLabelText('To Date')).toHaveValue(date);
   });
 
   it('should hide rows outside the from-date boundary after the date is entered', async () => {
@@ -82,7 +82,7 @@ describe('TableDateFilter', () => {
       </Table>,
     );
 
-    await user.type(screen.getByTitle('From Date'), from);
+    await user.type(screen.getByLabelText('From Date'), from);
 
     expect(screen.queryByText('2026-01-15')).not.toBeInTheDocument();
     expect(screen.getByText('2026-06-20')).toBeInTheDocument();
