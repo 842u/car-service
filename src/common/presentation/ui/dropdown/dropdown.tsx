@@ -1,5 +1,5 @@
 import type { ReactNode, RefObject } from 'react';
-import { createContext, useRef, useState } from 'react';
+import { createContext, useId, useRef, useState } from 'react';
 
 import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
 
@@ -12,6 +12,7 @@ type DropdownContextValue = {
   close: () => void;
   triggerRef: RefObject<HTMLButtonElement | null>;
   collisionDetectionRoot: HTMLElement | null;
+  contentId: string;
 } | null;
 
 const DropdownContext = createContext<DropdownContextValue>(null);
@@ -36,13 +37,21 @@ export function Dropdown({
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const contentId = useId();
 
   const toggle = () => setIsOpen((prev) => !prev);
   const close = () => setIsOpen(false);
 
   return (
     <DropdownContext
-      value={{ isOpen, toggle, close, triggerRef, collisionDetectionRoot }}
+      value={{
+        isOpen,
+        toggle,
+        close,
+        triggerRef,
+        collisionDetectionRoot,
+        contentId,
+      }}
     >
       <div className={className}>{children}</div>
     </DropdownContext>

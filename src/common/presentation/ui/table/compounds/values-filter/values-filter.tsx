@@ -24,15 +24,14 @@ export function TableValuesFilter({
   return (
     <Dropdown className={className}>
       <Dropdown.Trigger>
-        {({ onClick, ref }) => (
+        {(triggerProps) => (
           <IconButton
-            ref={ref}
+            {...triggerProps}
             className="h-fit p-2 px-3"
             iconSide="right"
             text={label}
             title={`Filter by ${label}`}
             variant="transparent"
-            onClick={onClick}
           >
             <FunnelIcon className="h-5 w-5 stroke-2 p-0.5" />
           </IconButton>

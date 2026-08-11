@@ -27,14 +27,13 @@ export function TableActionsDropdown({
   return (
     <Dropdown className="w-12" collisionDetectionRoot={collisionDetectionRoot}>
       <Dropdown.Trigger>
-        {({ onClick, ref }) => (
+        {(triggerProps) => (
           <IconButton
-            ref={ref}
+            {...triggerProps}
             className="group"
             disabled={!canTakeAction}
             title="Actions"
             variant="transparent"
-            onClick={onClick}
           >
             <EllipsisIcon className="fill-dark-500 stroke-dark-500 dark:fill-light-500 dark:stroke-light-500 group-disabled:dark:fill-alpha-grey-500 group-disabled:dark:stroke-alpha-grey-500 group-disabled:fill-alpha-grey-500 group-disabled:stroke-alpha-grey-500 w-full px-1" />
           </IconButton>
