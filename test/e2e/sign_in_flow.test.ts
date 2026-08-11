@@ -2,7 +2,7 @@ import type { Route } from 'next';
 
 import { wrongEmails } from '@/user/domain/user/value-object/email/email.samples';
 
-import { expect, test } from './fixtures';
+import { expect, test, toastLocator } from './fixtures';
 
 test.describe('sign_in_flow - @unauthenticated', () => {
   test('submit button should be disabled if auth form is filled incorrectly - @desktop @tablet @mobile', async ({
@@ -41,7 +41,7 @@ test.describe('sign_in_flow - @unauthenticated', () => {
     await passwordInput.fill(password);
     const submitButton = page.getByRole('button', { name: /sign in/i });
     await submitButton.click();
-    const errorToast = page.getByLabel(/error notification/i);
+    const errorToast = toastLocator(page, 'error');
 
     await expect(errorToast).toBeInViewport();
     await expect(submitButton).toBeDisabled();
@@ -67,7 +67,7 @@ test.describe('sign_in_flow - @unauthenticated', () => {
     await passwordInput.fill(password);
     const submitButton = page.getByRole('button', { name: /sign in/i });
     await submitButton.click();
-    const successToast = page.getByLabel(/success notification/i);
+    const successToast = toastLocator(page, 'success');
 
     await expect(page).toHaveURL(dashboardPath);
     await expect(successToast).toBeInViewport();

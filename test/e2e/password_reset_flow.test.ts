@@ -2,7 +2,7 @@ import type { Route } from 'next';
 
 import { wrongEmails } from '@/user/domain/user/value-object/email/email.samples';
 
-import { expect, test } from './fixtures';
+import { expect, test, toastLocator } from './fixtures';
 
 test.describe('password_reset_flow - @unauthenticated', () => {
   test('password reset form should be disabled if wrong format email provided - @desktop @tablet @mobile', async ({
@@ -34,7 +34,7 @@ test.describe('password_reset_flow - @unauthenticated', () => {
       name: 'Send password reset email',
     });
     await submitButton.click();
-    const successToast = page.getByLabel(/success notification/i);
+    const successToast = toastLocator(page, 'success');
 
     await expect(successToast).toBeInViewport();
   });
@@ -53,7 +53,7 @@ test.describe('password_reset_flow - @unauthenticated', () => {
       name: 'Send password reset email',
     });
     await submitButton.click();
-    const successToast = page.getByLabel(/success notification/i);
+    const successToast = toastLocator(page, 'success');
 
     await expect(successToast).toBeInViewport();
   });
@@ -152,7 +152,7 @@ test.describe('password_reset_flow - @authenticated', () => {
     await newPasswordInput.fill(password);
     await confirmPasswordInput.fill(password);
     await submitButton.click();
-    const errorToast = page.getByLabel(/error notification:/);
+    const errorToast = toastLocator(page, 'error');
 
     await expect(errorToast).toBeInViewport();
     await expect(errorToast).toHaveText(
@@ -188,9 +188,7 @@ test.describe('password_reset_flow - @authenticated', () => {
     await newPasswordInput.fill(newPassword);
     await confirmPasswordInput.fill(newPassword);
     await submitButton.click();
-    const successToast = page.getByRole('listitem', {
-      name: /success notification/i,
-    });
+    const successToast = toastLocator(page, 'success');
 
     await expect(successToast).toBeInViewport();
     await expect(successToast).toHaveText(/password changed/i);

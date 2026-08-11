@@ -38,6 +38,24 @@ class AuthenticatedPage {
   }
 }
 
+type ToastType = 'info' | 'success' | 'error' | 'warning';
+
+/**
+ * Locates a toast by the type prefix carried in its message.
+ *
+ * The toast `<li>` has no accessible name to match on: `listitem` does not
+ * compute one from its content, and the toaster announces the message through
+ * its live region rather than labelling each item. The type reaches assistive
+ * tech as a screen-reader-only prefix on the message text, which is the only
+ * thing that distinguishes a success toast from an error one.
+ */
+export function toastLocator(page: Page, type: ToastType): Locator {
+  return page
+    .getByRole('region', { name: 'notifications' })
+    .getByRole('listitem')
+    .filter({ hasText: new RegExp(`^${type}:`, 'i') });
+}
+
 type TestUserCredentials = {
   email: string;
   password: string;
