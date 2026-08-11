@@ -14,7 +14,7 @@ export function TableHead({ className }: TableHeadProps) {
         return (
           <tr
             key={headerGroup.id}
-            className="border-alpha-grey-300 bg-light-600 dark:bg-dark-500 sticky top-0 z-10 rounded-md"
+            className="border-alpha-grey-300 sticky top-0 z-10"
           >
             {headerGroup.headers.map((header) => (
               <HeadTh

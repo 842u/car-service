@@ -23,7 +23,7 @@ export function HeadTh({ header, ...props }: HeadThProps) {
   return (
     <th
       className={twMerge(
-        'w-1 px-5 py-1 text-start whitespace-nowrap',
+        'bg-light-600 dark:bg-dark-500 w-1 px-5 py-1 text-start whitespace-nowrap first:rounded-l-md last:rounded-r-md',
         shouldSpan ? 'w-auto' : '',
       )}
       {...props}
