@@ -1,4 +1,5 @@
 import type { MotionProps } from 'motion/react';
+import { useReducedMotion } from 'motion/react';
 import * as m from 'motion/react-m';
 import type { JSX, Ref } from 'react';
 import { useEffect, useRef } from 'react';
@@ -19,6 +20,12 @@ const toastAnimation: MotionProps = {
   initial: { opacity: 0, scale: 0 },
   animate: { scale: 1, opacity: 1 },
   exit: { scale: 0.5, opacity: 0.5 },
+};
+
+const reducedToastAnimation: MotionProps = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 type ToasterToastProps = {
@@ -103,6 +110,8 @@ export function ToasterToast({
   toastLifeTime = TOAST_LIFETIME,
   onRemove,
 }: ToasterToastProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   const onRemoveRef = useRef(onRemove);
   onRemoveRef.current = onRemove;
 
@@ -129,8 +138,7 @@ export function ToasterToast({
   return (
     <m.li
       ref={ref}
-      {...toastAnimation}
-      aria-label={`${type} notification: ${message}`}
+      {...(prefersReducedMotion ? reducedToastAnimation : toastAnimation)}
       className={twMerge(
         'border-alpha-grey-300 bg-light-600 dark:bg-dark-600 my-2 flex w-full items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm',
         style,
@@ -139,7 +147,10 @@ export function ToasterToast({
       id={id}
     >
       <div className="h-10 shrink-0 p-2">{icon}</div>
-      <span className="max-h-20 overflow-auto">{message}</span>
+      <span className="max-h-20 overflow-auto">
+        <span className="sr-only">{`${type}: `}</span>
+        {message}
+      </span>
       <IconButton
         aria-label="close notification"
         className="shrink-0"

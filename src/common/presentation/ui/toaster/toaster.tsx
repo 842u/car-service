@@ -25,6 +25,7 @@ export function Toaster({ maxToasts = 3, toastLifeTime }: ToasterProps) {
       className="fixed bottom-0 z-50 w-full p-2 md:right-0 md:m-5 md:max-w-sm"
     >
       <ol
+        aria-live="polite"
         className="relative"
         onBlur={() => setPaused(false)}
         onFocus={() => setPaused(true)}
