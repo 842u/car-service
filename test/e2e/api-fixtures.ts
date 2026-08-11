@@ -93,6 +93,38 @@ async function createApiActors(count: number): Promise<ApiActor[]> {
   return created;
 }
 
+async function createCar(
+  owner: ApiActor,
+  customName = 'E2E write-flow car',
+): Promise<string> {
+  const response = await owner.request.post('/api/car', {
+    data: { customName },
+  });
+
+  if (!response.ok()) {
+    throw new Error(`Failed to create test car: ${response.status()}.`);
+  }
+
+  return extractId(response);
+}
+
+async function createServiceLog(
+  author: ApiActor,
+  carId: string,
+  categories: string[],
+  serviceDate = '2026-01-01',
+): Promise<string> {
+  const response = await author.request.post('/api/car/service-log', {
+    data: { carId, serviceDate, categories },
+  });
+
+  if (!response.ok()) {
+    throw new Error(`Failed to create test service log: ${response.status()}.`);
+  }
+
+  return extractId(response);
+}
+
 async function deleteTestCar(carId: string): Promise<void> {
   const result = await adminDatabaseClient.query<{ id: string }>(
     async (query) => query('cars').delete().eq('id', carId).select('id'),
@@ -153,15 +185,7 @@ async function buildTestCarGraph(): Promise<TestCarGraph> {
   const [primaryOwner, coOwner, stranger] = actors;
 
   try {
-    const addCarResponse = await primaryOwner.request.post('/api/car', {
-      data: { customName: 'E2E write-flow car' },
-    });
-
-    if (!addCarResponse.ok()) {
-      throw new Error(`Failed to create test car: ${addCarResponse.status()}.`);
-    }
-
-    const carId = await extractId(addCarResponse);
+    const carId = await createCar(primaryOwner);
 
     await addCoOwner(primaryOwner, carId, coOwner.id);
 
@@ -186,37 +210,14 @@ async function buildTestServiceLogGraph(): Promise<TestServiceLogGraph> {
   const [primaryOwner, authorCoOwner, nonAuthorCoOwner, stranger] = actors;
 
   try {
-    const addCarResponse = await primaryOwner.request.post('/api/car', {
-      data: { customName: 'E2E write-flow car' },
-    });
-
-    if (!addCarResponse.ok()) {
-      throw new Error(`Failed to create test car: ${addCarResponse.status()}.`);
-    }
-
-    const carId = await extractId(addCarResponse);
+    const carId = await createCar(primaryOwner);
 
     await addCoOwner(primaryOwner, carId, authorCoOwner.id);
     await addCoOwner(primaryOwner, carId, nonAuthorCoOwner.id);
 
-    const addServiceLogResponse = await authorCoOwner.request.post(
-      '/api/car/service-log',
-      {
-        data: {
-          carId,
-          serviceDate: '2026-01-01',
-          categories: ['other'],
-        },
-      },
-    );
-
-    if (!addServiceLogResponse.ok()) {
-      throw new Error(
-        `Failed to create test service log: ${addServiceLogResponse.status()}.`,
-      );
-    }
-
-    const serviceLogId = await extractId(addServiceLogResponse);
+    const serviceLogId = await createServiceLog(authorCoOwner, carId, [
+      'other',
+    ]);
 
     return {
       primaryOwner,
@@ -272,5 +273,13 @@ export const unauthenticatedTest = base.extend<{
   },
 });
 
-export { addCoOwner, createApiActor, disposeApiActor, removeCoOwner };
+export {
+  addCoOwner,
+  createApiActor,
+  createCar,
+  createServiceLog,
+  deleteTestCar,
+  disposeApiActor,
+  removeCoOwner,
+};
 export { expect } from '@playwright/test';
