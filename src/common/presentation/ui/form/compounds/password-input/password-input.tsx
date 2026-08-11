@@ -10,6 +10,7 @@ import type {
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
+import { wrapperFocusClassName } from '@/ui/variants/focus';
 import type { InputVariants } from '@/ui/variants/input';
 import { inputVariants } from '@/ui/variants/input';
 import { VisibilityButton } from '@/ui/visibility-button/visibility-button';
@@ -59,11 +60,12 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
           'my-1 flex items-center p-0',
+          wrapperFocusClassName,
           className,
         )}
       >
         <input
-          className="inline-block h-full w-full pl-3"
+          className="inline-block h-full w-full pl-3 focus-visible:outline-none"
           type={passwordVisible ? 'text' : 'password'}
           {...props}
           {...(register ? register(name, registerOptions) : {})}

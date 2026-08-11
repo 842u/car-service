@@ -7,6 +7,7 @@ import {
   MAX_IMAGE_FILE_SIZE_BYTES,
 } from '@/common/interface/schema/image-file.schema';
 import { getMimeTypeExtensions } from '@/lib/utils';
+import { wrapperFocusClassName } from '@/ui/variants/focus';
 import { inputVariants } from '@/ui/variants/input';
 
 import { InputErrorText } from '../input/error-text/error-text';
@@ -77,6 +78,7 @@ export function FormImageInput<TFieldValues extends FieldValues>({
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants['default'],
           'relative my-1 aspect-square h-auto w-full cursor-pointer overflow-clip p-0',
+          wrapperFocusClassName,
           className,
         )}
       >
@@ -87,7 +89,7 @@ export function FormImageInput<TFieldValues extends FieldValues>({
         />
         <input
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
-          className="sr-only absolute"
+          className="sr-only absolute focus-visible:outline-none"
           data-testid={FORM_IMAGE_INPUT_TEST_ID}
           name={name}
           type="file"

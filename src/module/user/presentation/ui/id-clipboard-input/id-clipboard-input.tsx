@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { CheckIcon } from '@/icons/check';
 import { ClipboardIcon } from '@/icons/clipboard';
+import { wrapperFocusClassName } from '@/ui/variants/focus';
 import { inputVariants } from '@/ui/variants/input';
 
 type IdClipboardInputProps = {
@@ -51,13 +52,14 @@ export function IdClipboardInput({
         className={twMerge(
           inputVariants[variant],
           'my-1 flex items-center p-0',
-          'focus-within:border-accent-500 hover:border-accent-500 transition-colors',
+          'hover:border-accent-500 transition-colors',
+          wrapperFocusClassName,
           className,
         )}
       >
         <input
           readOnly
-          className="text-alpha-grey-900 inline-block h-full w-full cursor-pointer truncate pl-3 text-center text-xs outline-none"
+          className="text-alpha-grey-900 inline-block h-full w-full cursor-pointer truncate pl-3 text-center text-xs focus-visible:outline-none"
           placeholder="..."
           value={id ?? ''}
           onClick={handleCopy}
