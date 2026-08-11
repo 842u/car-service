@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type {
   FieldValues,
   Path,
@@ -32,8 +33,13 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
 }: FormCheckboxGroupProps<TFieldValues>) {
   useForm();
 
+  const errorId = useId();
+
   return (
-    <fieldset>
+    <fieldset
+      aria-describedby={errorMessage && showErrorMessage ? errorId : undefined}
+      aria-invalid={Boolean(errorMessage) || undefined}
+    >
       <legend>
         <InputLabelText required={required} text={label} />
       </legend>
@@ -51,7 +57,9 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
           {checkboxLabel}
         </label>
       ))}
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
     </fieldset>
   );
 }

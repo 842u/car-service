@@ -25,7 +25,7 @@ export function TableValuesFilterContent({
   return (
     <fieldset className="p-1">
       <legend>
-        <p className="sr-only">Filter by {label}</p>
+        <span className="sr-only">Filter by {label}</span>
       </legend>
 
       <div className="flex flex-col gap-1">

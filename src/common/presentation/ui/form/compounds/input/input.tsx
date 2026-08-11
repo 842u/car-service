@@ -1,4 +1,5 @@
 import type { ComponentProps, HTMLInputTypeAttribute } from 'react';
+import { useId } from 'react';
 import type {
   FieldValues,
   Path,
@@ -42,20 +43,29 @@ export function FormInput<TFieldValues extends FieldValues>({
 }: FormInputProps<TFieldValues>) {
   useForm();
 
+  const errorId = useId();
+
   return (
     <label>
       <InputLabelText required={required} text={label} />
       <input
+        aria-describedby={
+          errorMessage && showErrorMessage ? errorId : undefined
+        }
+        aria-invalid={Boolean(errorMessage) || undefined}
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
           'my-1',
           className,
         )}
+        required={required}
         type={type}
         {...props}
         {...(register ? register(name, registerOptions) : {})}
       />
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
     </label>
   );
 }

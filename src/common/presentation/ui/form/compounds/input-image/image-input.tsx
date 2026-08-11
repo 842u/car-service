@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useId } from 'react';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
@@ -71,6 +72,8 @@ export function FormImageInput<TFieldValues extends FieldValues>({
     rules,
   });
 
+  const errorId = useId();
+
   return (
     <label>
       {label && <InputLabelText required={required} text={label} />}
@@ -89,15 +92,22 @@ export function FormImageInput<TFieldValues extends FieldValues>({
         />
         <input
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
+          aria-describedby={
+            errorMessage && showErrorMessage ? errorId : undefined
+          }
+          aria-invalid={Boolean(errorMessage) || undefined}
           className="sr-only absolute focus-visible:outline-none"
           data-testid={FORM_IMAGE_INPUT_TEST_ID}
           name={name}
+          required={required}
           type="file"
           onChange={handleFileChange}
         />
         {children?.(previewUrl)}
       </div>
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
       {withInfo && (
         <div className="mb-5 text-sm">
           <p>Click on the image to upload a custom one.</p>

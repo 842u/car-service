@@ -22,10 +22,9 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
           wrapperFocusClassName,
         )}
       >
-        <p className="sr-only">From {columnLabel}</p>
+        <span className="sr-only block">From {columnLabel}</span>
         <input
           className="text-alpha-grey-900 h-full w-full cursor-pointer focus-visible:outline-none"
-          title={`From ${columnLabel}`}
           type="date"
           value={fromDate}
           onChange={onFromDateChange}
@@ -40,10 +39,9 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
           wrapperFocusClassName,
         )}
       >
-        <p className="sr-only">To {columnLabel}</p>
+        <span className="sr-only block">To {columnLabel}</span>
         <input
           className="text-alpha-grey-900 h-full w-full cursor-pointer focus-visible:outline-none"
-          title={`To ${columnLabel}`}
           type="date"
           value={toDate}
           onChange={onToDateChange}

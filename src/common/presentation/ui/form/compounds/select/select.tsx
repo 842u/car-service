@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type {
   FieldValues,
   Path,
@@ -42,19 +43,28 @@ export function FormSelect<TFieldValues extends FieldValues>({
 }: FormSelectProps<TFieldValues>) {
   useForm();
 
+  const errorId = useId();
+
   return (
     <label className="text-sm">
       <InputLabelText required={required} text={label} />
       <select
+        aria-describedby={
+          errorMessage && showErrorMessage ? errorId : undefined
+        }
+        aria-invalid={Boolean(errorMessage) || undefined}
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
           'my-1',
           className,
         )}
+        required={required}
         {...(register ? register(name, registerOptions) : {})}
       >
         {hasEmptyOption && (
-          <option className="bg-light-500 dark:bg-dark-500" value={undefined} />
+          <option className="bg-light-500 dark:bg-dark-500" value="">
+            None
+          </option>
         )}
         {Object.keys(options).map((key) => (
           <option
@@ -66,7 +76,9 @@ export function FormSelect<TFieldValues extends FieldValues>({
           </option>
         ))}
       </select>
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
     </label>
   );
 }

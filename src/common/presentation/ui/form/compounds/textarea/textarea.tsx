@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react';
+import { useId } from 'react';
 import type {
   FieldValues,
   Path,
@@ -40,20 +41,29 @@ export function Textarea<TFieldValues extends FieldValues>({
 }: TextareaProps<TFieldValues>) {
   useForm();
 
+  const errorId = useId();
+
   return (
     <label>
       <InputLabelText required={required} text={label} />
       <textarea
+        aria-describedby={
+          errorMessage && showErrorMessage ? errorId : undefined
+        }
+        aria-invalid={Boolean(errorMessage) || undefined}
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
           'my-1 h-auto min-h-10 py-2',
           className,
         )}
+        required={required}
         rows={4}
         {...props}
         {...register(name, registerOptions)}
       />
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
     </label>
   );
 }

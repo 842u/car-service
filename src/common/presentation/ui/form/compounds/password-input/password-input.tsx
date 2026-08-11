@@ -1,7 +1,7 @@
 'use client';
 
 import type { ComponentProps } from 'react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import type {
   FieldValues,
   Path,
@@ -49,6 +49,8 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
 
   useForm();
 
+  const errorId = useId();
+
   const handleVisibilityButtonClick = () => {
     setPasswordVisible((currentState) => !currentState);
   };
@@ -65,7 +67,12 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
         )}
       >
         <input
+          aria-describedby={
+            errorMessage && showErrorMessage ? errorId : undefined
+          }
+          aria-invalid={Boolean(errorMessage) || undefined}
           className="inline-block h-full w-full pl-3 focus-visible:outline-none"
+          required={required}
           type={passwordVisible ? 'text' : 'password'}
           {...props}
           {...(register ? register(name, registerOptions) : {})}
@@ -78,7 +85,9 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
           />
         </div>
       </div>
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
     </label>
   );
 }
