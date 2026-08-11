@@ -101,6 +101,26 @@
   }
 }
 
+/*
+  Unlayered on purpose: `transition-colors` includes `outline-color` in
+  Tailwind v4, so any element combining it with the focus-visible outline
+  above would animate the outline color in on focus. Unlayered rules beat
+  everything in `@layer utilities`/`@layer base` regardless of specificity,
+  so this makes the focus outline appear instantly everywhere.
+
+  `.wrapper-focus-outline` covers the composites in `wrapperFocusClassName`,
+  where the outline is drawn by a `:has(:focus-visible)` wrapper rather than
+  the focused control itself, so plain `:focus-visible` above doesn't match
+  them. Scoped to that marker class rather than a bare `:has(:focus-visible)`,
+  which would also match every ancestor of any focused element on the page
+  (the `<body>`'s own dark-mode `transition-colors` included) and zero their
+  unrelated transitions too.
+*/
+:focus-visible,
+.wrapper-focus-outline:has(:focus-visible) {
+  transition-duration: 0s;
+}
+
 :root {
   --color-dark-50: #e9e9e9;
   --color-dark-100: #bababa;
