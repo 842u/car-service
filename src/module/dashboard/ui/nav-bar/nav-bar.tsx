@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
@@ -14,6 +14,7 @@ import { NavBarNav } from './nav/nav';
 export function DashboardNavBar() {
   const { data, isPending } = useSessionUser();
 
+  const navId = useId();
   const [isActive, setIsActive] = useState(false);
 
   const handleHamburgerButtonClick = () => {
@@ -34,11 +35,13 @@ export function DashboardNavBar() {
       )}
       {data && <UserBadge className="z-10" user={data} />}
       <HamburgerButton
+        aria-controls={navId}
+        aria-expanded={isActive}
         className="z-10 md:hidden"
         isActive={isActive}
         onClick={handleHamburgerButtonClick}
       />
-      <NavBarNav isActive={isActive} onClick={handleNavClick} />
+      <NavBarNav id={navId} isActive={isActive} onClick={handleNavClick} />
     </NavBar>
   );
 }

@@ -27,6 +27,7 @@ export function NavItem({
   return (
     <li>
       <LinkButton
+        aria-current={isActive ? 'page' : undefined}
         className={twMerge(
           'm-2 flex h-12 items-center justify-start gap-2 rounded-md p-0 md:@container md:overflow-hidden',
           isActive && 'item-active bg-alpha-grey-200 hover:bg-alpha-grey-300',

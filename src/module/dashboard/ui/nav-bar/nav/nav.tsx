@@ -15,12 +15,14 @@ type NavBarNavProps = {
   isActive?: boolean;
   onClick?: () => void;
   className?: string;
+  id?: string;
 };
 
 export function NavBarNav({
   onClick,
   className,
   isActive = true,
+  id,
 }: NavBarNavProps) {
   return (
     <nav
@@ -30,6 +32,7 @@ export function NavBarNav({
         isActive ? 'translate-x-0' : '-translate-x-full',
         className,
       )}
+      id={id}
       onClick={onClick}
     >
       <div
@@ -51,7 +54,7 @@ export function NavBarNav({
           <UserIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </NavItem>
       </ul>
-      <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-[1px] before:w-3/4">
+      <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-px before:w-3/4">
         <li className="mx-2 my-4 h-12">
           <ThemeButton className="h-full w-full" />
         </li>

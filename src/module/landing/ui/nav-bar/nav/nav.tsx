@@ -12,12 +12,14 @@ type NavBarNavProps = {
   isActive?: boolean;
   onClick?: () => void;
   className?: string;
+  id?: string;
 };
 
 export function NavBarNav({
   isActive = true,
   onClick,
   className,
+  id,
 }: NavBarNavProps) {
   return (
     <nav
@@ -27,6 +29,7 @@ export function NavBarNav({
         isActive ? 'translate-x-0' : '-translate-x-full',
         className,
       )}
+      id={id}
       onClick={onClick}
     >
       <ul className="relative flex w-4/5 flex-col items-center justify-center md:w-1/2 lg:w-full lg:flex-row lg:gap-4">
