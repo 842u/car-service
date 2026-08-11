@@ -71,6 +71,7 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
             errorMessage && showErrorMessage ? errorId : undefined
           }
           aria-invalid={Boolean(errorMessage) || undefined}
+          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping div above carries wrapperFocusClassName */
           className="inline-block h-full w-full pl-3 focus-visible:outline-none"
           required={required}
           type={passwordVisible ? 'text' : 'password'}

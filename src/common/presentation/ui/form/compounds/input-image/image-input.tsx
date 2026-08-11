@@ -96,6 +96,7 @@ export function FormImageInput<TFieldValues extends FieldValues>({
             errorMessage && showErrorMessage ? errorId : undefined
           }
           aria-invalid={Boolean(errorMessage) || undefined}
+          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping div above carries wrapperFocusClassName. sr-only clips this input to a 1px box, so a ring drawn here would be invisible. */
           className="sr-only absolute focus-visible:outline-none"
           data-testid={FORM_IMAGE_INPUT_TEST_ID}
           name={name}

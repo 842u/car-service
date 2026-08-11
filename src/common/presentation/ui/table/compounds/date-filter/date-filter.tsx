@@ -24,6 +24,7 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
       >
         <span className="sr-only block">From {columnLabel}</span>
         <input
+          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping label above carries wrapperFocusClassName */
           className="text-alpha-grey-900 h-full w-full cursor-pointer focus-visible:outline-none"
           type="date"
           value={fromDate}
@@ -41,6 +42,7 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
       >
         <span className="sr-only block">To {columnLabel}</span>
         <input
+          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping label above carries wrapperFocusClassName */
           className="text-alpha-grey-900 h-full w-full cursor-pointer focus-visible:outline-none"
           type="date"
           value={toDate}

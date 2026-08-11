@@ -68,7 +68,27 @@ export default tseslintConfig(
       ...react.configs.flat['jsx-runtime'].rules,
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      ...jsxA11y.flatConfigs.recommended.rules,
+      ...jsxA11y.flatConfigs.strict.rules,
+      // Strict drops recommended's handler list for this rule, which pulls
+      // focus and hover events into scope. The toaster's <ol> listens for those
+      // to pause the dismiss timer while a toast's own close button is hovered
+      // or focused; the list itself is not interactive. Click and key handlers
+      // on non-interactive elements stay an error.
+      'jsx-a11y/no-noninteractive-element-interactions': [
+        'error',
+        {
+          handlers: [
+            'onClick',
+            'onError',
+            'onLoad',
+            'onMouseDown',
+            'onMouseUp',
+            'onKeyPress',
+            'onKeyDown',
+            'onKeyUp',
+          ],
+        },
+      ],
       ...nextConfigs.recommended.rules,
       ...nextConfigs['core-web-vitals'].rules,
       'no-restricted-syntax': [
@@ -77,6 +97,18 @@ export default tseslintConfig(
           selector:
             "CallExpression[callee.name='debugDelayResolveResponse'], CallExpression[callee.name='debugDelayRandomResponse'], CallExpression[callee.name='debugDelayRejectResponse']",
           message: 'Do not left debug delayed functions.',
+        },
+        {
+          selector:
+            'JSXAttribute[name.name="className"] Literal[value=/outline-none/]',
+          message:
+            'Removing the focus outline needs a replacement on the element that draws the border. See the :focus-visible rule in globals.css and wrapperFocusClassName.',
+        },
+        {
+          selector:
+            'JSXAttribute[name.name="role"][value.value=/^(button|link|checkbox|radio|textbox|heading)$/]',
+          message:
+            'Use the native element (<button>, <a href>, <input>, <h1>-<h6>). The role grants the semantics but none of the behaviour: role="button" obliges you to handle Enter and Space by hand, which is what left AddCard focusable and inert.',
         },
       ],
       'no-console': 'warn',

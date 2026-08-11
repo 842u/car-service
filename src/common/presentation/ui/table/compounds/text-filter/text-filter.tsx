@@ -36,6 +36,7 @@ export function TableTextFilter({
       <span className="sr-only">Filter {columnLabel}</span>
 
       <input
+        /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping label above carries wrapperFocusClassName */
         className="placeholder:text-alpha-grey-900 ml-2 w-full focus-visible:outline-none"
         placeholder={`Search by ${columnLabel}`}
         type="text"
