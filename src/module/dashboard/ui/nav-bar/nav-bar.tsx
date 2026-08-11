@@ -41,7 +41,12 @@ export function DashboardNavBar() {
         isActive={isActive}
         onClick={handleHamburgerButtonClick}
       />
-      <NavBarNav id={navId} isActive={isActive} onClick={handleNavClick} />
+      <NavBarNav
+        id={navId}
+        isActive={isActive}
+        onClose={handleNavClick}
+        onNavigate={handleNavClick}
+      />
     </NavBar>
   );
 }

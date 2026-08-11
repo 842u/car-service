@@ -1,6 +1,3 @@
-/* eslint-disable
- jsx-a11y/click-events-have-key-events,
- jsx-a11y/no-noninteractive-element-interactions  */
 import { twJoin, twMerge } from 'tailwind-merge';
 
 import { CarsIcon } from '@/icons/cars';
@@ -13,13 +10,15 @@ import { NavItem } from './item/item';
 
 type NavBarNavProps = {
   isActive?: boolean;
-  onClick?: () => void;
+  onNavigate?: () => void;
+  onClose?: () => void;
   className?: string;
   id?: string;
 };
 
 export function NavBarNav({
-  onClick,
+  onNavigate,
+  onClose,
   className,
   isActive = true,
   id,
@@ -33,24 +32,28 @@ export function NavBarNav({
         className,
       )}
       id={id}
-      onClick={onClick}
     >
-      <div
-        // Artificial area to register click event
-        aria-hidden
+      <button
+        aria-label="close navigation menu"
         className={twJoin(
           'fixed -z-10 h-screen w-screen overflow-hidden md:hidden',
           isActive ? 'translate-x-0' : '-translate-x-full',
         )}
+        type="button"
+        onClick={onClose}
       />
       <ul className="grow">
-        <NavItem href="/dashboard" text="Overview">
+        <NavItem href="/dashboard" text="Overview" onNavigate={onNavigate}>
           <HomeIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </NavItem>
-        <NavItem href="/dashboard/cars" text="Cars">
+        <NavItem href="/dashboard/cars" text="Cars" onNavigate={onNavigate}>
           <CarsIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </NavItem>
-        <NavItem href="/dashboard/account" text="Account">
+        <NavItem
+          href="/dashboard/account"
+          text="Account"
+          onNavigate={onNavigate}
+        >
           <UserIcon className="stroke-alpha-grey-900 dark:stroke-alpha-grey-800 item-active:stroke-dark-500 item-active:dark:stroke-light-500 h-full stroke-2 p-2" />
         </NavItem>
       </ul>

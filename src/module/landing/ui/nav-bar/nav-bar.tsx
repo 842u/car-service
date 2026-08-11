@@ -33,7 +33,8 @@ export function LandingNavBar() {
         className="z-0 lg:z-20"
         id={navId}
         isActive={isActive}
-        onClick={handleNavClick}
+        onClose={handleNavClick}
+        onNavigate={handleNavClick}
       />
     </NavBar>
   );
