@@ -22,7 +22,23 @@ describe('ThemeButton', () => {
   it('should render a button', () => {
     render(<ThemeButton />);
 
-    const button = screen.getByRole('button', { name: 'switch color theme' });
+    const button = screen.getByRole('button');
+
+    expect(button).toBeInTheDocument();
+  });
+
+  it("should name the button for the theme it switches to, not the action it's already in", () => {
+    const currentTheme = 'light';
+
+    render(
+      <ThemeProvider defaultTheme={currentTheme} enableSystem={false}>
+        <ThemeButton />
+      </ThemeProvider>,
+    );
+
+    const button = screen.getByRole('button', {
+      name: 'Switch to dark theme',
+    });
 
     expect(button).toBeInTheDocument();
   });
@@ -65,7 +81,7 @@ describe('ThemeButton', () => {
       </ThemeProvider>,
     );
 
-    const button = screen.getByRole('button', { name: 'switch color theme' });
+    const button = screen.getByRole('button');
     let darkThemeIcon = screen.queryByTestId('dark-theme-icon');
     let lightThemeIcon = screen.queryByTestId('light-theme-icon');
 

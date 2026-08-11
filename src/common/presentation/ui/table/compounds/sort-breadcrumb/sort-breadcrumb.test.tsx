@@ -57,15 +57,13 @@ describe('TableSortBreadcrumb', () => {
       </Table>,
     );
 
-    expect(
-      screen.queryByRole('button', { name: 'sort' }),
-    ).not.toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Name' })).toHaveLength(1);
 
-    await user.click(screen.getByRole('button', { name: 'Name options' }));
+    await user.click(screen.getByRole('button', { name: 'Name' }));
     await user.click(screen.getByRole('button', { name: 'Asc' }));
 
     expect(screen.queryByText('none')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'sort' })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Name' })).toHaveLength(2);
   });
 
   it('should show "none" when the only active sort is the intrinsic sort', () => {

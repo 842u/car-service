@@ -25,7 +25,7 @@ describe('NavBarNav', () => {
     render(<NavBarNav />);
 
     const themeSwitchButton = screen.getByRole('button', {
-      name: /switch color theme/i,
+      name: /switch to (dark|light) theme/i,
     });
 
     expect(themeSwitchButton).toBeInTheDocument();
