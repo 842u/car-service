@@ -7,19 +7,19 @@ import { ClipboardIcon } from '@/icons/clipboard';
 import { wrapperFocusClassName } from '@/ui/variants/focus';
 import { inputVariants } from '@/ui/variants/input';
 
-type IdClipboardInputProps = {
+type IdClipboardButtonProps = {
   id?: string;
   label?: string;
   className?: string;
   variant?: keyof typeof inputVariants;
 };
 
-export function IdClipboardInput({
+export function IdClipboardButton({
   id,
   label = 'ID',
   className,
   variant = 'default',
-}: IdClipboardInputProps) {
+}: IdClipboardButtonProps) {
   const { addToast } = useToasts();
   const [copied, setCopied] = useState(false);
 
@@ -38,34 +38,31 @@ export function IdClipboardInput({
   };
 
   return (
-    <label
-      className="selection:bg-accent-500 block md:max-w-72"
-      title="Copy ID"
-    >
+    <div className="selection:bg-accent-500 block md:max-w-72">
       {label && (
         <p>
           <span className="text-xs">{label}</span>
         </p>
       )}
 
-      <div
+      <button
+        aria-label={copied ? 'ID copied' : 'Copy ID'}
         className={twMerge(
           inputVariants[variant],
-          'my-1 flex items-center p-0',
+          'my-1 flex items-center gap-2 p-0',
           'hover:border-accent-500 transition-colors',
           wrapperFocusClassName,
           className,
         )}
+        title={copied ? 'ID copied' : 'Copy ID'}
+        type="button"
+        onClick={handleCopy}
       >
-        <input
-          readOnly
-          className="text-alpha-grey-900 inline-block h-full w-full cursor-pointer truncate pl-3 text-center text-xs focus-visible:outline-none"
-          placeholder="..."
-          value={id ?? ''}
-          onClick={handleCopy}
-        />
+        <span className="text-alpha-grey-900 grow truncate pl-3 text-center text-xs">
+          {id ?? '...'}
+        </span>
 
-        <div className="flex h-full cursor-pointer items-center justify-center p-2">
+        <span className="flex h-full items-center justify-center p-2">
           {copied ? (
             <CheckIcon
               className="h-full w-full stroke-3"
@@ -77,8 +74,8 @@ export function IdClipboardInput({
               data-testid="clipboard-icon"
             />
           )}
-        </div>
-      </div>
-    </label>
+        </span>
+      </button>
+    </div>
   );
 }

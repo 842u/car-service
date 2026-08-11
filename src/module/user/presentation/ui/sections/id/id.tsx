@@ -1,5 +1,5 @@
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import { IdClipboardInput } from '@/user/presentation/ui/id-clipboard-input/id-clipboard-input';
+import { IdClipboardButton } from '@/user/presentation/ui/id-clipboard-button/id-clipboard-button';
 
 type IdSectionProps = {
   id?: string;
@@ -16,7 +16,7 @@ export function IdSection({ id }: IdSectionProps) {
         You can share it with another users to manage cars ownerships. Click on
         it to automatically copy it to your clipboard.
       </DashboardSection.Subtext>
-      <IdClipboardInput id={id} />
+      <IdClipboardButton id={id} />
     </DashboardSection>
   );
 }
