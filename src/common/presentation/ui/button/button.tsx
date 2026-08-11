@@ -1,17 +1,19 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import type { ButtonVariants } from '@/ui/variants/button';
-import { buttonVariants } from '@/ui/variants/button';
+import type { ButtonSizes, ButtonVariants } from '@/ui/variants/button';
+import { buttonSizes, buttonVariants } from '@/ui/variants/button';
 
 export type ButtonProps = ComponentPropsWithoutRef<'button'> & {
   className?: string;
   variant?: ButtonVariants;
+  size?: ButtonSizes;
 };
 
 export function Button({
   className,
   variant = 'default',
+  size = 'md',
   children,
   ...props
 }: ButtonProps) {
@@ -21,7 +23,8 @@ export function Button({
       {...props}
       className={twMerge(
         buttonVariants[variant],
-        'block h-10 px-5 py-2',
+        buttonSizes[size],
+        'block',
         className,
       )}
     >

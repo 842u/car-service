@@ -2,25 +2,29 @@ import Link from 'next/link';
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import type { ButtonVariants } from '@/ui/variants/button';
-import { buttonVariants } from '@/ui/variants/button';
+import type { ButtonSizes, ButtonVariants } from '@/ui/variants/button';
+import { buttonSizes } from '@/ui/variants/button';
+import { linkButtonVariants } from '@/ui/variants/link';
 
 type LinkButtonProps = ComponentProps<typeof Link> & {
   className?: string;
   variant?: ButtonVariants;
+  size?: ButtonSizes;
 };
 
 export function LinkButton({
   className,
   variant = 'default',
+  size = 'md',
   children,
   ...props
 }: LinkButtonProps) {
   return (
     <Link
       className={twMerge(
-        buttonVariants[variant],
-        'block h-10 px-5 py-2 text-sm',
+        linkButtonVariants[variant],
+        buttonSizes[size],
+        'block text-sm',
         className,
       )}
       {...props}

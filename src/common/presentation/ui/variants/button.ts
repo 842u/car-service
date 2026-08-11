@@ -1,5 +1,5 @@
 const baseClassName =
-  'cursor-pointer rounded-md border disabled:cursor-not-allowed text-center block disabled:text-light-800 transition-colors h-10';
+  'cursor-pointer rounded-md border disabled:cursor-not-allowed text-center block disabled:text-light-800 transition-colors';
 
 const defaultClassName = `${baseClassName} border-alpha-grey-500 bg-alpha-grey-200 disabled:bg-alpha-grey-50 disabled:border-alpha-grey-100 hover:border-alpha-grey-600 hover:bg-alpha-grey-500`;
 
@@ -24,4 +24,12 @@ export const buttonVariants: Record<ButtonVariants, string> = {
   transparent: transparentClassName,
   transparentError: transparentErrorClassName,
   error: errorClassName,
+};
+
+export type ButtonSizes = 'md' | 'sm' | 'icon';
+
+export const buttonSizes: Record<ButtonSizes, string> = {
+  md: 'h-10 px-5 py-2',
+  sm: 'h-fit px-3 py-2',
+  icon: 'h-10 aspect-square p-2',
 };
