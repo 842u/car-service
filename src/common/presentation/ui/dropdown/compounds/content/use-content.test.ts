@@ -405,4 +405,190 @@ describe('useDropdownContent', () => {
       );
     });
   });
+
+  describe('focus outside', () => {
+    it('should call close when focus moves outside both trigger and content', () => {
+      renderAndOpen({});
+
+      const outsideEl = document.createElement('button');
+      document.body.appendChild(outsideEl);
+
+      fireEvent.focusOut(document, { relatedTarget: outsideEl });
+
+      expect(mockClose).toHaveBeenCalledTimes(1);
+
+      document.body.removeChild(outsideEl);
+    });
+
+    it('should not call close when focus moves inside content', () => {
+      const { fakeContent } = renderAndOpen({});
+      document.body.appendChild(fakeContent);
+
+      fireEvent.focusOut(document, { relatedTarget: fakeContent });
+
+      expect(mockClose).not.toHaveBeenCalled();
+
+      document.body.removeChild(fakeContent);
+    });
+
+    it('should not call close when focus moves to the trigger', () => {
+      const { fakeTrigger } = renderAndOpen({});
+      document.body.appendChild(fakeTrigger);
+
+      fireEvent.focusOut(document, { relatedTarget: fakeTrigger });
+
+      expect(mockClose).not.toHaveBeenCalled();
+
+      document.body.removeChild(fakeTrigger);
+    });
+
+    it('should not call close when relatedTarget is null (focus leaving the document)', () => {
+      renderAndOpen({});
+
+      fireEvent.focusOut(document, { relatedTarget: null });
+
+      expect(mockClose).not.toHaveBeenCalled();
+    });
+
+    it('should remove focusout listener from document when dropdown closes', () => {
+      const removeListenerSpy = jest.spyOn(document, 'removeEventListener');
+      const { rerender } = renderAndOpen({});
+
+      setupMockContext({ isOpen: false });
+      rerender();
+
+      expect(removeListenerSpy).toHaveBeenCalledWith(
+        'focusout',
+        expect.any(Function),
+      );
+    });
+  });
+
+  describe('escape key', () => {
+    it('should call close and refocus the trigger on Escape', () => {
+      const { fakeTrigger } = renderAndOpen({});
+      const focusSpy = jest.spyOn(fakeTrigger, 'focus');
+
+      fireEvent.keyDown(document, { key: 'Escape' });
+
+      expect(mockClose).toHaveBeenCalledTimes(1);
+      expect(focusSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not call close for other keys', () => {
+      renderAndOpen({});
+
+      fireEvent.keyDown(document, { key: 'Enter' });
+
+      expect(mockClose).not.toHaveBeenCalled();
+    });
+
+    it('should remove keydown listener from document when dropdown closes', () => {
+      const removeListenerSpy = jest.spyOn(document, 'removeEventListener');
+      const { rerender } = renderAndOpen({});
+
+      setupMockContext({ isOpen: false });
+      rerender();
+
+      expect(removeListenerSpy).toHaveBeenCalledWith(
+        'keydown',
+        expect.any(Function),
+      );
+    });
+  });
+
+  describe('containing-block check', () => {
+    function openWithTriggerParent(parent: HTMLElement) {
+      const trigger = makeFakeElement(TRIGGER_RECT);
+      parent.appendChild(trigger);
+      document.body.appendChild(parent);
+
+      mockTriggerRef.current = trigger as HTMLButtonElement;
+
+      const { result, rerender } = renderHook(() => useDropdownContent({}));
+      result.current.contentRef.current = makeFakeElement(
+        CONTENT_RECT,
+      ) as HTMLDivElement;
+
+      setupMockContext({ isOpen: true });
+      rerender();
+    }
+
+    let consoleErrorSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    });
+
+    afterEach(() => {
+      consoleErrorSpy.mockRestore();
+      document.body.replaceChildren();
+    });
+
+    it('should log an error naming the ancestor when it sets a filter', () => {
+      const ancestor = document.createElement('div');
+      ancestor.className = 'sticky-header';
+      ancestor.style.filter = 'blur(4px)';
+
+      openWithTriggerParent(ancestor);
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('sticky-header'),
+        ancestor,
+      );
+    });
+
+    it('should log an error when an ancestor sets a transform', () => {
+      const ancestor = document.createElement('div');
+      ancestor.style.transform = 'translateX(1px)';
+
+      openWithTriggerParent(ancestor);
+
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    });
+
+    it('should log an error when an ancestor sets contain: layout', () => {
+      const ancestor = document.createElement('div');
+      ancestor.style.contain = 'layout';
+
+      openWithTriggerParent(ancestor);
+
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    });
+
+    it('should stay silent when contain is size alone', () => {
+      const ancestor = document.createElement('div');
+      ancestor.style.contain = 'size';
+
+      openWithTriggerParent(ancestor);
+
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    });
+
+    it('should log an error when will-change names a containing-block property, even at its initial value', () => {
+      const ancestor = document.createElement('div');
+      ancestor.style.willChange = 'transform';
+
+      openWithTriggerParent(ancestor);
+
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    });
+
+    it('should stay silent when will-change names a property that does not establish a containing block', () => {
+      const ancestor = document.createElement('div');
+      ancestor.style.willChange = 'opacity';
+
+      openWithTriggerParent(ancestor);
+
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    });
+
+    it('should stay silent when no ancestor establishes a containing block', () => {
+      const ancestor = document.createElement('div');
+
+      openWithTriggerParent(ancestor);
+
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    });
+  });
 });

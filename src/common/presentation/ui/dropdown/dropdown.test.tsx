@@ -111,6 +111,7 @@ describe('useDropdown', () => {
       close: expect.any(Function),
       triggerRef: expect.objectContaining({ current: null }),
       collisionDetectionRoot: null,
+      contentId: expect.any(String),
     });
   });
 });

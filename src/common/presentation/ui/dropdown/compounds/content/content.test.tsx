@@ -54,17 +54,19 @@ describe('DropdownContent', () => {
     });
   });
 
-  it('should render content into document.body via portal', () => {
+  it('should set id from contentId returned by useDropdownContent', () => {
     mockUseDropdownContent.mockReturnValue({
       isOpen: true,
       position: { top: 0, left: 0 },
       contentRef: createRef(),
+      contentId: 'dropdown-content-id',
     });
 
-    const { container } = render(<DropdownContent>menu items</DropdownContent>);
+    render(<DropdownContent>menu items</DropdownContent>);
 
-    const menuEl = screen.getByText('menu items');
-    expect(container).not.toContainElement(menuEl);
-    expect(document.body).toContainElement(menuEl);
+    expect(screen.getByText('menu items')).toHaveAttribute(
+      'id',
+      'dropdown-content-id',
+    );
   });
 });
