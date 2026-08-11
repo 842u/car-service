@@ -24,7 +24,7 @@ export function TableColumnDropdownTrigger({
       {(triggerProps) => (
         <IconButton
           {...triggerProps}
-          className="h-fit p-2 px-3"
+          size="sm"
           text={label}
           title={`${label ? label : 'Column'} options`}
           variant="transparent"

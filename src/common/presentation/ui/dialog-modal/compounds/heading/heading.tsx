@@ -24,7 +24,7 @@ export function DialogModalHeading({
       <HeadingTag className="inline-block text-xl" id={headingId}>
         {children}
       </HeadingTag>
-      <IconButton className="p-1" title="close" onClick={closeModal}>
+      <IconButton size="icon" title="close" onClick={closeModal}>
         <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />
       </IconButton>
     </div>

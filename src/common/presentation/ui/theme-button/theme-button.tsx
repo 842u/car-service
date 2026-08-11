@@ -3,7 +3,6 @@
 import { useTheme } from 'next-themes';
 import type { ComponentProps } from 'react';
 import { useEffect, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 import { MoonIcon } from '@/icons/moon';
 import { SunIcon } from '@/icons/sun';
@@ -25,8 +24,9 @@ export function ThemeButton({ className, ...props }: ThemeButtonProps) {
 
   return (
     <IconButton
-      className={twMerge('aspect-square p-2', className)}
-      title="switch color theme"
+      className={className}
+      size="icon"
+      title={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} theme`}
       variant="transparent"
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       {...props}

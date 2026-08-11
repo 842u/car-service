@@ -32,6 +32,7 @@ export function TableActionsDropdown({
             {...triggerProps}
             className="group"
             disabled={!canTakeAction}
+            size="icon"
             title="Actions"
             variant="transparent"
           >

@@ -21,7 +21,8 @@ export function TableSortDropdownInnerContent({
   return (
     <>
       <IconButton
-        className="h-fit w-full justify-between p-2 px-3"
+        className="w-full justify-between"
+        size="sm"
         text="Asc"
         variant="transparent"
         onClick={handleAscClick}
@@ -31,7 +32,8 @@ export function TableSortDropdownInnerContent({
         />
       </IconButton>
       <IconButton
-        className="h-fit w-full justify-between p-2 px-3"
+        className="w-full justify-between"
+        size="sm"
         text="Desc"
         variant="transparent"
         onClick={handleDescClick}
@@ -42,7 +44,8 @@ export function TableSortDropdownInnerContent({
       </IconButton>
       {isSorted && (
         <IconButton
-          className="h-fit w-full justify-between p-2 px-3"
+          className="w-full justify-between"
+          size="sm"
           text="Reset"
           variant="transparent"
           onClick={handleReset}

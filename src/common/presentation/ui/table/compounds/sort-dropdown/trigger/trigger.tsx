@@ -19,9 +19,9 @@ export function TableSortDropdownTrigger({
       {(triggerProps) => (
         <IconButton
           {...triggerProps}
-          className="h-fit p-2 px-3"
+          size="sm"
           text={label}
-          title="sort"
+          title={`Sort by ${label ?? 'column'}`}
           variant="transparent"
         >
           <TableSortDropdownIcon isSortDesc={isSortDesc} isSorted={isSorted} />

@@ -142,8 +142,9 @@ export function ToasterToast({
       <span className="max-h-20 overflow-auto">{message}</span>
       <IconButton
         aria-label="close notification"
-        className="aspect-square h-10 shrink-0 p-2"
-        title="close toast"
+        className="shrink-0"
+        size="icon"
+        title="close notification"
         onClick={onRemove}
       >
         <XCircleIcon className="stroke-dark-500 dark:stroke-light-500 h-full w-full stroke-2" />

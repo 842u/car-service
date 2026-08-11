@@ -27,8 +27,8 @@ export function TableValuesFilter({
         {(triggerProps) => (
           <IconButton
             {...triggerProps}
-            className="h-fit p-2 px-3"
             iconSide="right"
+            size="sm"
             text={label}
             title={`Filter by ${label}`}
             variant="transparent"
