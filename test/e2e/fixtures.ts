@@ -8,7 +8,7 @@ import {
   generateTestEmail,
 } from './test-user';
 
-class AuthenticatedPage {
+export class AuthenticatedPage {
   public readonly page: Page;
   private readonly emailInput: Locator;
   private readonly passwordInput: Locator;
