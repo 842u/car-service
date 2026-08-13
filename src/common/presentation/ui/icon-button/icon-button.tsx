@@ -23,7 +23,7 @@ export function IconButton({
   text,
   iconSide = 'right',
   variant = 'default',
-  size = 'md',
+  size = 'compact',
   disabled,
   className,
   ...props
