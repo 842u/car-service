@@ -41,9 +41,10 @@ export type KeyboardTestContext = {
 export const keyboardTest = base.extend<{ keyboardPage: KeyboardTestContext }>({
   keyboardPage: async ({ page }, use) => {
     const owner = await createApiActor();
+    let carId: string | undefined;
 
     try {
-      const carId = await createCar(owner, 'E2E keyboard-navigation car');
+      carId = await createCar(owner, 'E2E keyboard-navigation car');
 
       await createServiceLog(owner, carId, [UNFILTERED_CATEGORY]);
       await createServiceLog(owner, carId, [FILTERED_CATEGORY]);
@@ -61,9 +62,8 @@ export const keyboardTest = base.extend<{ keyboardPage: KeyboardTestContext }>({
         filteredCategory: FILTERED_CATEGORY,
         filteredRowCount: 1,
       });
-
-      await deleteTestCar(carId);
     } finally {
+      if (carId) await deleteTestCar(carId);
       await disposeApiActor(owner);
     }
   },
