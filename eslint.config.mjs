@@ -69,6 +69,7 @@ export default tseslintConfig(
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       ...jsxA11y.flatConfigs.strict.rules,
+      'jsx-a11y/prefer-tag-over-role': 'error',
       ...nextConfigs.recommended.rules,
       ...nextConfigs['core-web-vitals'].rules,
       'no-restricted-syntax': [
@@ -83,12 +84,6 @@ export default tseslintConfig(
             'JSXAttribute[name.name="className"] Literal[value=/outline-none/]',
           message:
             'The focus ring is declared globally in globals.css, and a composite already suppresses the ring of its own direct child there, keyed on .wrapper-focus-outline. There is no correct use of outline-none in a className.',
-        },
-        {
-          selector:
-            'JSXAttribute[name.name="role"][value.value=/^(button|link|checkbox|radio|textbox|heading)$/]',
-          message:
-            'Use the native element (<button>, <a href>, <input>, <h1>-<h6>). The role grants the semantics but none of the behaviour: role="button" obliges you to handle Enter and Space by hand, which is what left AddCard focusable and inert.',
         },
       ],
       'no-console': 'warn',
