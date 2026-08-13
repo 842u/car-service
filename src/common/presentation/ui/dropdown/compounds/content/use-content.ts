@@ -326,7 +326,7 @@ export function useDropdownContent({
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { isOpen, close, triggerRef, collisionDetectionRoot, contentId } =
+  const { isOpen, triggerRef, collisionDetectionRoot, contentId } =
     useDropdown();
 
   const computePosition = useCallback((): { top: number; left: number } => {
@@ -367,53 +367,6 @@ export function useDropdownContent({
     setPosition(computePosition());
   }, [computePosition]);
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      const clickedOutsidePanel =
-        contentRef.current &&
-        !contentRef.current.contains(event.target as Node);
-      const clickedOutsideTrigger =
-        triggerRef.current &&
-        !triggerRef.current.contains(event.target as Node);
-
-      if (clickedOutsidePanel && clickedOutsideTrigger) {
-        close();
-      }
-    },
-    [close, triggerRef],
-  );
-
-  // Mirrors handleClickOutside for keyboard users: closes when focus moves
-  // past both the panel and the trigger. `relatedTarget` is the element
-  // gaining focus; it is null when focus leaves the document entirely (e.g.
-  // switching windows or devtools), which must not close the panel.
-  const handleFocusOut = useCallback(
-    (event: FocusEvent) => {
-      const relatedTarget = event.relatedTarget as Node | null;
-      if (relatedTarget === null) return;
-
-      const focusedOutsidePanel =
-        contentRef.current && !contentRef.current.contains(relatedTarget);
-      const focusedOutsideTrigger =
-        triggerRef.current && !triggerRef.current.contains(relatedTarget);
-
-      if (focusedOutsidePanel && focusedOutsideTrigger) {
-        close();
-      }
-    },
-    [close, triggerRef],
-  );
-
-  const handleEscapeKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-
-      close();
-      triggerRef.current?.focus();
-    },
-    [close, triggerRef],
-  );
-
   // Synchronously update position before the browser paints so there is no
   // flash of the panel at (0, 0).
   useLayoutEffect(() => {
@@ -445,36 +398,6 @@ export function useDropdownContent({
       collisionDetectionRoot?.removeEventListener('scroll', updatePosition);
     };
   }, [isOpen, updatePosition, collisionDetectionRoot]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [isOpen, handleClickOutside]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    document.addEventListener('focusout', handleFocusOut);
-
-    return () => {
-      document.removeEventListener('focusout', handleFocusOut);
-    };
-  }, [isOpen, handleFocusOut]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    document.addEventListener('keydown', handleEscapeKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleEscapeKeyDown);
-    };
-  }, [isOpen, handleEscapeKeyDown]);
 
   return { position, isOpen, contentRef, contentId };
 }
