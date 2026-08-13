@@ -17,7 +17,7 @@ export function Spinner({ className }: SpinnerProps) {
   return (
     <svg
       className={twMerge(
-        'aspect-square h-8 opacity-100 transition-opacity duration-200',
+        'size-8 opacity-100 transition-opacity duration-200',
         className,
         !isSynced && 'opacity-0',
       )}

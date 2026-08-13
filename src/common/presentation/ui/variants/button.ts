@@ -31,6 +31,6 @@ export type ButtonSizes = 'md' | 'sm' | 'icon' | 'compact';
 export const buttonSizes: Record<ButtonSizes, string> = {
   md: 'h-10 px-5 py-2',
   sm: 'h-fit px-3 py-2',
-  icon: 'h-10 aspect-square p-2',
+  icon: 'size-10 p-2',
   compact: 'h-10 px-3 py-1',
 };

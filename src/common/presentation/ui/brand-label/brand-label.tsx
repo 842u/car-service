@@ -19,7 +19,7 @@ export function BrandLabel({ className }: BrandLabelPops) {
       href="/"
       variant="transparent"
     >
-      <BrandSimpleIcon className="stroke-accent-500 aspect-square h-full md:inline-block" />
+      <BrandSimpleIcon className="stroke-accent-500 size-12 md:inline-block" />
       <span
         className={`hidden md:inline-block md:text-3xl md:font-medium md:whitespace-nowrap ${smoochSans.className}`}
       >
