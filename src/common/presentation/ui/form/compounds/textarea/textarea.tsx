@@ -15,11 +15,11 @@ import { useForm } from '../../form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 
-type TextareaProps<TFieldValues extends FieldValues> =
+export type TextareaProps<TFieldValues extends FieldValues> =
   ComponentProps<'textarea'> & {
     label: string;
     name: Path<TFieldValues>;
-    register: UseFormRegister<TFieldValues>;
+    register?: UseFormRegister<TFieldValues>;
     registerOptions?: RegisterOptions<TFieldValues>;
     variant?: InputVariants;
     required?: boolean;
@@ -59,7 +59,7 @@ export function Textarea<TFieldValues extends FieldValues>({
         required={required}
         rows={4}
         {...props}
-        {...register(name, registerOptions)}
+        {...(register ? register(name, registerOptions) : {})}
       />
       {showErrorMessage && (
         <InputErrorText errorMessage={errorMessage} id={errorId} />

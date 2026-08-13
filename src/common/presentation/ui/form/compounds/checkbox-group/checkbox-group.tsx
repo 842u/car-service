@@ -10,10 +10,10 @@ import { useForm } from '../../form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 
-type FormCheckboxGroupProps<TFieldValues extends FieldValues> = {
+export type FormCheckboxGroupProps<TFieldValues extends FieldValues> = {
   label: string;
   checkboxLabelValueMapping: Record<string, string>;
-  register: UseFormRegister<TFieldValues>;
+  register?: UseFormRegister<TFieldValues>;
   name: Path<TFieldValues>;
   required?: boolean;
   registerOptions?: RegisterOptions<TFieldValues>;
@@ -51,7 +51,7 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
             className="mr-2"
             type="checkbox"
             value={checkboxLabelValueMapping[checkboxLabel]}
-            {...register(name, registerOptions)}
+            {...(register ? register(name, registerOptions) : {})}
           />
           {checkboxLabel}
         </label>
