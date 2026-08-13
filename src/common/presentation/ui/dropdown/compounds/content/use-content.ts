@@ -53,88 +53,6 @@ function intersectRects(a: Rect, b: Rect): Rect {
   };
 }
 
-/** `contain` keywords whose used value establishes a containing block. */
-const CONTAINING_BLOCK_CONTAIN_KEYWORDS = new Set([
-  'layout',
-  'paint',
-  'strict',
-  'content',
-]);
-
-/**
- * Properties that establish a containing block when set to a non-initial
- * value, and therefore also do so when named in `will-change`, even while the
- * property itself is still at its initial value.
- */
-const CONTAINING_BLOCK_WILL_CHANGE_PROPERTIES = new Set([
-  'transform',
-  'filter',
-  'backdrop-filter',
-  'perspective',
-  'contain',
-]);
-
-/**
- * True for a set, non-initial value. Browsers report an unset property as
- * `'none'`; jsdom reports it as `''`. Both mean "not establishing anything".
- */
-function isSetToNonInitialValue(value: string | undefined): boolean {
-  return Boolean(value) && value !== 'none';
-}
-
-function establishesContainingBlock(style: CSSStyleDeclaration): boolean {
-  if (isSetToNonInitialValue(style.transform)) return true;
-  if (isSetToNonInitialValue(style.filter)) return true;
-  if (isSetToNonInitialValue(style.backdropFilter)) return true;
-
-  const containKeywords = (style.contain || '').split(/\s+/).filter(Boolean);
-  if (containKeywords.some((v) => CONTAINING_BLOCK_CONTAIN_KEYWORDS.has(v))) {
-    return true;
-  }
-
-  const willChangeProperties = (style.willChange || '')
-    .split(',')
-    .map((v) => v.trim())
-    .filter(Boolean);
-  return willChangeProperties.some((v) =>
-    CONTAINING_BLOCK_WILL_CHANGE_PROPERTIES.has(v),
-  );
-}
-
-//! Placement resolves `fixed` against the viewport, which holds only while no
-//! ancestor establishes a containing block. Re-adding a blur or a transform
-//! above a dropdown offsets and clips its panel with nothing pointing at why.
-function warnIfAncestorEstablishesContainingBlock(trigger: HTMLElement) {
-  for (
-    let ancestor = trigger.parentElement;
-    ancestor;
-    ancestor = ancestor.parentElement
-  ) {
-    if (!establishesContainingBlock(getComputedStyle(ancestor))) continue;
-
-    // eslint-disable-next-line no-console
-    console.error(
-      'Dropdown panel positioning assumes no ancestor establishes a ' +
-        'containing block. It resolves `fixed` against the viewport, but ' +
-        `${describeElement(ancestor)} sets a transform, filter, ` +
-        'backdrop-filter, contain, or will-change that establishes one, ' +
-        'so the panel will be offset and clipped instead.',
-      ancestor,
-    );
-    return;
-  }
-}
-
-function describeElement(element: HTMLElement): string {
-  const tag = element.tagName.toLowerCase();
-  const id = element.id ? `#${element.id}` : '';
-  const classes =
-    typeof element.className === 'string' && element.className
-      ? `.${element.className.trim().split(/\s+/).join('.')}`
-      : '';
-  return `<${tag}${id}${classes}>`;
-}
-
 function getViewportRect(): Rect {
   return {
     top: 0,
@@ -373,11 +291,6 @@ export function useDropdownContent({
     if (!isOpen) return;
     updatePosition();
   }, [isOpen, updatePosition]);
-
-  useEffect(() => {
-    if (!isOpen || !triggerRef.current) return;
-    warnIfAncestorEstablishesContainingBlock(triggerRef.current);
-  }, [isOpen, triggerRef]);
 
   // Re-position on scroll or resize while the panel is open.
   useEffect(() => {

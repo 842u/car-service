@@ -8,7 +8,6 @@ jest.mock('../../dropdown', () => ({
 }));
 
 const mockUseDropdown = useDropdown as jest.Mock;
-const mockClose = jest.fn();
 const mockTriggerRef: { current: HTMLButtonElement | null } = { current: null };
 
 function makeFakeElement(rect: {
@@ -48,7 +47,6 @@ function setupMockContext(
 ) {
   mockUseDropdown.mockReturnValue({
     isOpen: overrides.isOpen ?? false,
-    close: mockClose,
     triggerRef: mockTriggerRef,
     collisionDetectionRoot: overrides.collisionDetectionRoot ?? null,
   });
@@ -351,101 +349,6 @@ describe('useDropdownContent', () => {
       fireEvent(window, new Event('resize'));
 
       expect(result.current.position).toEqual({ top: 170, left: 50 });
-    });
-  });
-
-  describe('containing-block check', () => {
-    function openWithTriggerParent(parent: HTMLElement) {
-      const trigger = makeFakeElement(TRIGGER_RECT);
-      parent.appendChild(trigger);
-      document.body.appendChild(parent);
-
-      mockTriggerRef.current = trigger as HTMLButtonElement;
-
-      const { result, rerender } = renderHook(() => useDropdownContent({}));
-      result.current.contentRef.current = makeFakeElement(
-        CONTENT_RECT,
-      ) as HTMLDivElement;
-
-      setupMockContext({ isOpen: true });
-      rerender();
-    }
-
-    let consoleErrorSpy: jest.SpyInstance;
-
-    beforeEach(() => {
-      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-    });
-
-    afterEach(() => {
-      consoleErrorSpy.mockRestore();
-      document.body.replaceChildren();
-    });
-
-    it('should log an error naming the ancestor when it sets a filter', () => {
-      const ancestor = document.createElement('div');
-      ancestor.className = 'sticky-header';
-      ancestor.style.filter = 'blur(4px)';
-
-      openWithTriggerParent(ancestor);
-
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining('sticky-header'),
-        ancestor,
-      );
-    });
-
-    it('should log an error when an ancestor sets a transform', () => {
-      const ancestor = document.createElement('div');
-      ancestor.style.transform = 'translateX(1px)';
-
-      openWithTriggerParent(ancestor);
-
-      expect(consoleErrorSpy).toHaveBeenCalled();
-    });
-
-    it('should log an error when an ancestor sets contain: layout', () => {
-      const ancestor = document.createElement('div');
-      ancestor.style.contain = 'layout';
-
-      openWithTriggerParent(ancestor);
-
-      expect(consoleErrorSpy).toHaveBeenCalled();
-    });
-
-    it('should stay silent when contain is size alone', () => {
-      const ancestor = document.createElement('div');
-      ancestor.style.contain = 'size';
-
-      openWithTriggerParent(ancestor);
-
-      expect(consoleErrorSpy).not.toHaveBeenCalled();
-    });
-
-    it('should log an error when will-change names a containing-block property, even at its initial value', () => {
-      const ancestor = document.createElement('div');
-      ancestor.style.willChange = 'transform';
-
-      openWithTriggerParent(ancestor);
-
-      expect(consoleErrorSpy).toHaveBeenCalled();
-    });
-
-    it('should stay silent when will-change names a property that does not establish a containing block', () => {
-      const ancestor = document.createElement('div');
-      ancestor.style.willChange = 'opacity';
-
-      openWithTriggerParent(ancestor);
-
-      expect(consoleErrorSpy).not.toHaveBeenCalled();
-    });
-
-    it('should stay silent when no ancestor establishes a containing block', () => {
-      const ancestor = document.createElement('div');
-
-      openWithTriggerParent(ancestor);
-
-      expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
   });
 });
