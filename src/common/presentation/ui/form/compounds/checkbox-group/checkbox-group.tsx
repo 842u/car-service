@@ -38,7 +38,6 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
   return (
     <fieldset
       aria-describedby={errorMessage && showErrorMessage ? errorId : undefined}
-      aria-invalid={Boolean(errorMessage) || undefined}
     >
       <legend>
         <InputLabelText required={required} text={label} />
