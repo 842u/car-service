@@ -59,4 +59,26 @@ describe('NavBarNav', () => {
 
     expect(themeSwitchButton).toBeInTheDocument();
   });
+
+  it('should stay visible when active', () => {
+    render(<NavBarNav isActive />);
+
+    const dashboardMenu = screen.getByRole('navigation', {
+      name: /dashboard navigation menu/i,
+    });
+
+    expect(dashboardMenu).toHaveClass('visible');
+    expect(dashboardMenu).not.toHaveClass('invisible');
+  });
+
+  it('should leave the tab order when inactive', () => {
+    render(<NavBarNav isActive={false} />);
+
+    const dashboardMenu = screen.getByRole('navigation', {
+      name: /dashboard navigation menu/i,
+    });
+
+    expect(dashboardMenu).toHaveClass('invisible');
+    expect(dashboardMenu).not.toHaveClass('visible');
+  });
 });
