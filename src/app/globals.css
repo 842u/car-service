@@ -95,30 +95,57 @@
     border-color: var(--color-gray-200, currentColor);
   }
 
-  :focus-visible {
-    outline: 2px solid var(--color-accent-500);
+  /*
+    The focus ring's geometry, resting on every element. Nothing is painted
+    until a rule below sets an `outline-style`, so this is inert on its own.
+
+    Stated here once rather than repeated per rule: the 2px offset is what puts
+    a gap of page background between a control and its ring, so the ring's
+    adjacent colour is always the background its contrast was measured against.
+    Without it the ring on an accent-variant button is drawn straight onto
+    `accent-800`, where it falls below the 3:1 a focus indicator needs.
+
+    `:-moz-focusring` is in the list to outrank Tailwind's preflight, which
+    restores Firefox's own ring with `outline: auto` on that selector. Its
+    (0,1,0) beats a bare `*`, so without this Firefox would draw a currentColor
+    ring at the browser's own width instead of the one declared here.
+  */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button,
+  :-moz-focusring {
+    outline-color: var(--color-accent-500);
+    outline-width: 2px;
     outline-offset: 2px;
   }
-}
 
-/*
-  Unlayered on purpose: `transition-colors` includes `outline-color` in
-  Tailwind v4, so any element combining it with the focus-visible outline
-  above would animate the outline color in on focus. Unlayered rules beat
-  everything in `@layer utilities`/`@layer base` regardless of specificity,
-  so this makes the focus outline appear instantly everywhere.
+  /*
+    Focus flips one discrete property, so the ring can never animate in.
+    `transition-colors` covers `outline-color` in Tailwind v4 and
+    `transition-all` covers `outline-width`; neither reaches `outline-style`.
 
-  `.wrapper-focus-outline` covers the composites in `wrapperFocusClassName`,
-  where the outline is drawn by a `:has(:focus-visible)` wrapper rather than
-  the focused control itself, so plain `:focus-visible` above doesn't match
-  them. Scoped to that marker class rather than a bare `:has(:focus-visible)`,
-  which would also match every ancestor of any focused element on the page
-  (the `<body>`'s own dark-mode `transition-colors` included) and zero their
-  unrelated transitions too.
-*/
-:focus-visible,
-.wrapper-focus-outline:has(:focus-visible) {
-  transition-duration: 0s;
+    A simple control draws its own border, so it draws its own ring. A
+    composite draws its border on a wrapper, so that wrapper draws the ring on
+    the focused control's behalf.
+  */
+  :focus-visible,
+  .wrapper-focus-outline:has(> :focus-visible) {
+    outline-style: solid;
+  }
+
+  /*
+    The control a wrapper wraps must not draw a second ring inside it, which
+    would render inset from the visible border and read as a box within a box.
+
+    Scoped to direct children so a control nested deeper, such as the password
+    field's visibility toggle, keeps a ring of its own and stays
+    distinguishable when focus moves onto it.
+  */
+  .wrapper-focus-outline > :focus-visible {
+    outline-style: none;
+  }
 }
 
 :root {

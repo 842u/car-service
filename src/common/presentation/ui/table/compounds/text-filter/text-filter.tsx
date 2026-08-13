@@ -2,7 +2,6 @@ import { twMerge } from 'tailwind-merge';
 
 import { SearchIcon } from '@/icons/search';
 import { useTextFilter } from '@/ui/table/compounds/text-filter/use-text-filter';
-import { wrapperFocusClassName } from '@/ui/variants/focus';
 
 type TableTextFilterProps = {
   columnId: string;
@@ -24,7 +23,7 @@ export function TableTextFilter({
     <label
       className={twMerge(
         'border-alpha-grey-200 bg-alpha-grey-50 flex h-10 w-full items-center rounded-md border',
-        wrapperFocusClassName,
+        'wrapper-focus-outline',
         className,
       )}
     >
@@ -36,8 +35,7 @@ export function TableTextFilter({
       <span className="sr-only">Filter {columnLabel}</span>
 
       <input
-        /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping label above carries wrapperFocusClassName */
-        className="placeholder:text-alpha-grey-900 ml-2 w-full focus-visible:outline-none"
+        className="placeholder:text-alpha-grey-900 ml-2 w-full"
         placeholder={`Search by ${columnLabel}`}
         type="text"
         value={inputValue}

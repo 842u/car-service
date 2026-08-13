@@ -10,7 +10,6 @@ import type {
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-import { wrapperFocusClassName } from '@/ui/variants/focus';
 import type { InputVariants } from '@/ui/variants/input';
 import { inputVariants } from '@/ui/variants/input';
 import { VisibilityButton } from '@/ui/visibility-button/visibility-button';
@@ -62,7 +61,7 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
           'my-1 flex items-center p-0',
-          wrapperFocusClassName,
+          'wrapper-focus-outline',
           className,
         )}
       >
@@ -71,13 +70,18 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
             errorMessage && showErrorMessage ? errorId : undefined
           }
           aria-invalid={Boolean(errorMessage) || undefined}
-          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping div above carries wrapperFocusClassName */
-          className="inline-block h-full w-full pl-3 focus-visible:outline-none"
+          className="inline-block h-full w-full pl-3"
           required={required}
           type={passwordVisible ? 'text' : 'password'}
           {...props}
           {...(register ? register(name, registerOptions) : {})}
         />
+        {/*
+          Load-bearing, not decorative padding. The field suppresses the ring
+          of its own direct children, so nesting the toggle one level down is
+          what leaves it drawing a ring of its own. Flatten this and tabbing
+          from the input to the toggle stops moving the indicator.
+        */}
         <div className="inline-block h-full p-1">
           <VisibilityButton
             className="h-full w-full px-1 py-0"

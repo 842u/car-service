@@ -102,7 +102,7 @@ export default tseslintConfig(
           selector:
             'JSXAttribute[name.name="className"] Literal[value=/outline-none/]',
           message:
-            'Removing the focus outline needs a replacement on the element that draws the border. See the :focus-visible rule in globals.css and wrapperFocusClassName.',
+            'The focus ring is declared globally in globals.css, and a composite already suppresses the ring of its own direct child there, keyed on .wrapper-focus-outline. There is no correct use of outline-none in a className.',
         },
         {
           selector:

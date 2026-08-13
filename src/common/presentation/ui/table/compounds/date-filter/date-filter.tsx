@@ -2,7 +2,6 @@ import { twMerge } from 'tailwind-merge';
 
 import { ArrowIcon } from '@/icons/arrow';
 import { useDateFilter } from '@/ui/table/compounds/date-filter/use-date-filter';
-import { wrapperFocusClassName } from '@/ui/variants/focus';
 
 type TableDateFilterProps = {
   columnId: string;
@@ -19,13 +18,12 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
       <label
         className={twMerge(
           'hover:bg-alpha-grey-100 m-2 cursor-pointer rounded-sm p-2 transition-colors duration-200 md:m-0 md:p-1',
-          wrapperFocusClassName,
+          'wrapper-focus-outline',
         )}
       >
         <span className="sr-only block">From {columnLabel}</span>
         <input
-          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping label above carries wrapperFocusClassName */
-          className="text-alpha-grey-900 h-full w-full cursor-pointer focus-visible:outline-none"
+          className="text-alpha-grey-900 h-full w-full cursor-pointer"
           type="date"
           value={fromDate}
           onChange={onFromDateChange}
@@ -37,13 +35,12 @@ export function TableDateFilter({ columnId }: TableDateFilterProps) {
       <label
         className={twMerge(
           'hover:bg-alpha-grey-100 m-2 cursor-pointer rounded-sm p-2 transition-colors duration-200 md:m-0 md:p-1',
-          wrapperFocusClassName,
+          'wrapper-focus-outline',
         )}
       >
         <span className="sr-only block">To {columnLabel}</span>
         <input
-          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping label above carries wrapperFocusClassName */
-          className="text-alpha-grey-900 h-full w-full cursor-pointer focus-visible:outline-none"
+          className="text-alpha-grey-900 h-full w-full cursor-pointer"
           type="date"
           value={toDate}
           onChange={onToDateChange}

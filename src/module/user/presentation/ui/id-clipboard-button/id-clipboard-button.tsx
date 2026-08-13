@@ -4,7 +4,6 @@ import { twMerge } from 'tailwind-merge';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { CheckIcon } from '@/icons/check';
 import { ClipboardIcon } from '@/icons/clipboard';
-import { wrapperFocusClassName } from '@/ui/variants/focus';
 import { inputVariants } from '@/ui/variants/input';
 
 type IdClipboardButtonProps = {
@@ -51,7 +50,6 @@ export function IdClipboardButton({
           inputVariants[variant],
           'my-1 flex items-center gap-2 p-0',
           'hover:border-accent-500 transition-colors',
-          wrapperFocusClassName,
           className,
         )}
         title={copied ? 'ID copied' : 'Copy ID'}

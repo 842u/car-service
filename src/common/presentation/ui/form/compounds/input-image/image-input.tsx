@@ -8,7 +8,6 @@ import {
   MAX_IMAGE_FILE_SIZE_BYTES,
 } from '@/common/interface/schema/image-file.schema';
 import { getMimeTypeExtensions } from '@/lib/utils';
-import { wrapperFocusClassName } from '@/ui/variants/focus';
 import { inputVariants } from '@/ui/variants/input';
 
 import { InputErrorText } from '../input/error-text/error-text';
@@ -81,7 +80,7 @@ export function FormImageInput<TFieldValues extends FieldValues>({
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants['default'],
           'relative my-1 aspect-square h-auto w-full cursor-pointer overflow-clip p-0',
-          wrapperFocusClassName,
+          'wrapper-focus-outline',
           className,
         )}
       >
@@ -96,8 +95,10 @@ export function FormImageInput<TFieldValues extends FieldValues>({
             errorMessage && showErrorMessage ? errorId : undefined
           }
           aria-invalid={Boolean(errorMessage) || undefined}
-          /* eslint-disable-next-line no-restricted-syntax -- inner half of the composite; the wrapping div above carries wrapperFocusClassName. sr-only clips this input to a 1px box, so a ring drawn here would be invisible. */
-          className="sr-only absolute focus-visible:outline-none"
+          /* `sr-only` clips this input to a 1px box, so a ring drawn on it
+             would be clipped away. The wrapper above draws one on its behalf,
+             which is the whole reason this control is nested in one. */
+          className="sr-only absolute"
           data-testid={FORM_IMAGE_INPUT_TEST_ID}
           name={name}
           required={required}
