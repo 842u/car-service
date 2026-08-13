@@ -1,4 +1,4 @@
-import { twJoin, twMerge } from 'tailwind-merge';
+import { twMerge } from 'tailwind-merge';
 
 import { CarsIcon } from '@/icons/cars';
 import { HomeIcon } from '@/icons/home';
@@ -27,18 +27,15 @@ export function NavBarNav({
     <nav
       aria-label="dashboard navigation menu"
       className={twMerge(
-        'border-alpha-grey-300 bg-light-500 dark:bg-dark-500 fixed top-0 left-0 flex h-screen w-56 flex-col border-r pt-16 transition-all md:w-16 md:translate-x-0 md:hover:w-56',
-        isActive ? 'translate-x-0' : '-translate-x-full',
+        'border-alpha-grey-300 bg-light-500 dark:bg-dark-500 fixed top-0 left-0 flex h-screen w-56 flex-col border-r pt-16 transition-all md:visible md:w-16 md:translate-x-0 md:hover:w-56',
+        isActive ? 'visible translate-x-0' : 'invisible -translate-x-full',
         className,
       )}
       id={id}
     >
       <button
         aria-label="close navigation menu"
-        className={twJoin(
-          'fixed -z-10 h-screen w-screen overflow-hidden md:hidden',
-          isActive ? 'translate-x-0' : '-translate-x-full',
-        )}
+        className="fixed -z-10 h-screen w-screen overflow-hidden md:hidden"
         type="button"
         onClick={onClose}
       />

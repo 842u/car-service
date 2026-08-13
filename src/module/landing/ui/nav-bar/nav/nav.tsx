@@ -24,8 +24,8 @@ export function NavBarNav({
     <nav
       aria-label="landing navigation menu"
       className={twMerge(
-        'bg-light-500 dark:bg-dark-500 absolute top-0 left-0 flex h-screen w-screen justify-center transition-transform lg:static lg:h-full lg:w-fit lg:translate-x-0 lg:items-center lg:bg-transparent lg:text-xs lg:dark:bg-transparent',
-        isActive ? 'translate-x-0' : '-translate-x-full',
+        'bg-light-500 dark:bg-dark-500 absolute top-0 left-0 flex h-screen w-screen justify-center transition-all lg:visible lg:static lg:h-full lg:w-fit lg:translate-x-0 lg:items-center lg:bg-transparent lg:text-xs lg:dark:bg-transparent',
+        isActive ? 'visible translate-x-0' : 'invisible -translate-x-full',
         className,
       )}
       id={id}
