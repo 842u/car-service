@@ -21,10 +21,10 @@ export function AddCard({ onClick }: AddCardProps) {
         </div>
 
         <div>
-          <p className="text-2xl font-semibold">Add a car</p>
-          <p className="text-alpha-grey-900 text-sm">
+          <span className="block text-2xl font-semibold">Add a car</span>
+          <span className="text-alpha-grey-900 block text-sm">
             Create a new vehicle entry
-          </p>
+          </span>
         </div>
       </Card>
     </button>
