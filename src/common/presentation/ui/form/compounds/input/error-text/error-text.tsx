@@ -5,11 +5,7 @@ type ErrorTextProps = {
 
 export function InputErrorText({ id, errorMessage }: ErrorTextProps) {
   return (
-    <p
-      aria-live="polite"
-      className="text-error-400 text-sm whitespace-pre-wrap"
-      id={id}
-    >
+    <p className="text-error-400 text-sm whitespace-pre-wrap" id={id}>
       {errorMessage || ' '}
     </p>
   );
