@@ -24,6 +24,10 @@ export function Toaster({ maxToasts = 3, toastLifeTime }: ToasterProps) {
       aria-label="notifications"
       className="fixed bottom-0 z-50 w-full p-2 md:right-0 md:m-5 md:max-w-sm"
     >
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions --
+          the list is not interactive. These pause the dismiss timer while a toast's
+          own close button is hovered or focused, and no interactive element in this
+          subtree could carry them. */}
       <ol
         aria-live="polite"
         className="relative"

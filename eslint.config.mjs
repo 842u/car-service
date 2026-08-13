@@ -69,26 +69,6 @@ export default tseslintConfig(
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       ...jsxA11y.flatConfigs.strict.rules,
-      // Strict drops recommended's handler list for this rule, which pulls
-      // focus and hover events into scope. The toaster's <ol> listens for those
-      // to pause the dismiss timer while a toast's own close button is hovered
-      // or focused; the list itself is not interactive. Click and key handlers
-      // on non-interactive elements stay an error.
-      'jsx-a11y/no-noninteractive-element-interactions': [
-        'error',
-        {
-          handlers: [
-            'onClick',
-            'onError',
-            'onLoad',
-            'onMouseDown',
-            'onMouseUp',
-            'onKeyPress',
-            'onKeyDown',
-            'onKeyUp',
-          ],
-        },
-      ],
       ...nextConfigs.recommended.rules,
       ...nextConfigs['core-web-vitals'].rules,
       'no-restricted-syntax': [
