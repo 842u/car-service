@@ -31,11 +31,11 @@ describe('IdSection', () => {
     expect(usageInfo).toBeInTheDocument();
   });
 
-  it('should render ID input', () => {
+  it('should render an ID copy control', () => {
     render(<IdSection />);
 
-    const IDInput = screen.getByRole('textbox', { name: 'ID' });
+    const copyButton = screen.getByRole('button', { name: 'Copy ID' });
 
-    expect(IDInput).toBeInTheDocument();
+    expect(copyButton).toBeInTheDocument();
   });
 });

@@ -20,7 +20,7 @@ export function TableRoot({ className, children, ...props }: TableRootProps) {
     // zero, so it escapes the min-content floor that `whitespace-nowrap` cells
     // would otherwise impose.
     <div className={twMerge('overflow-auto', className)}>
-      <table className="w-full" {...props}>
+      <table className="w-full border-separate border-spacing-0" {...props}>
         {children}
       </table>
     </div>

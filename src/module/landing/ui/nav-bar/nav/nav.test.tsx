@@ -25,9 +25,31 @@ describe('NavBarNav', () => {
     render(<NavBarNav />);
 
     const themeSwitchButton = screen.getByRole('button', {
-      name: /switch color theme/i,
+      name: /switch to (dark|light) theme/i,
     });
 
     expect(themeSwitchButton).toBeInTheDocument();
+  });
+
+  it('should stay visible when active', () => {
+    render(<NavBarNav isActive />);
+
+    const landingMenu = screen.getByRole('navigation', {
+      name: /landing navigation menu/i,
+    });
+
+    expect(landingMenu).toHaveClass('visible');
+    expect(landingMenu).not.toHaveClass('invisible');
+  });
+
+  it('should leave the tab order when inactive', () => {
+    render(<NavBarNav isActive={false} />);
+
+    const landingMenu = screen.getByRole('navigation', {
+      name: /landing navigation menu/i,
+    });
+
+    expect(landingMenu).toHaveClass('invisible');
+    expect(landingMenu).not.toHaveClass('visible');
   });
 });

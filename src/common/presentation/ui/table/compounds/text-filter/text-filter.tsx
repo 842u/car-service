@@ -22,7 +22,8 @@ export function TableTextFilter({
   return (
     <label
       className={twMerge(
-        'border-alpha-grey-200 bg-alpha-grey-50 focus-within:ring-accent-500 flex h-10 w-full items-center rounded-md border focus-within:ring-1',
+        'border-alpha-grey-200 bg-alpha-grey-50 flex h-10 w-full items-center rounded-md border',
+        'wrapper-focus-outline',
         className,
       )}
     >
@@ -34,7 +35,7 @@ export function TableTextFilter({
       <span className="sr-only">Filter {columnLabel}</span>
 
       <input
-        className="placeholder:text-alpha-grey-900 ml-2 w-full outline-none"
+        className="placeholder:text-alpha-grey-900 ml-2 w-full"
         placeholder={`Search by ${columnLabel}`}
         type="text"
         value={inputValue}

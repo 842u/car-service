@@ -4,6 +4,9 @@ import { useDropdown } from '../../dropdown';
 
 type TriggerRenderProps = {
   ref: Ref<HTMLButtonElement>;
+  'aria-expanded': boolean;
+  'aria-haspopup': true;
+  'aria-controls': string | undefined;
   onClick: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -12,12 +15,15 @@ type DropdownTriggerProps = {
 };
 
 export function DropdownTrigger({ children }: DropdownTriggerProps) {
-  const { toggle, triggerRef } = useDropdown();
+  const { isOpen, toggle, triggerRef, contentId } = useDropdown();
 
   return (
     <>
       {children({
         ref: triggerRef,
+        'aria-expanded': isOpen,
+        'aria-haspopup': true,
+        'aria-controls': isOpen ? contentId : undefined,
         onClick: (e) => {
           e.stopPropagation();
           toggle();

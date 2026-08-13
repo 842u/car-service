@@ -39,13 +39,13 @@ export function TableBody({ lastRowRef }: TableBodyProps) {
         <tr
           key={row.id}
           ref={index === rows.length - 1 ? lastRowRef : null}
-          className="border-alpha-grey-200 hover:bg-alpha-grey-100 border-b last-of-type:border-0"
+          className="hover:bg-alpha-grey-100 last:*:border-b-0"
         >
           {row.getVisibleCells().map((cell) => (
             <td
               key={cell.id}
               className={twMerge(
-                'px-5 py-1 whitespace-nowrap',
+                'border-alpha-grey-200 border-b px-5 py-1 whitespace-nowrap',
                 // `wrap-anywhere` rather than `break-all`: both drop
                 // min-content to a single character, which is what makes the
                 // column elastic, but `wrap-anywhere` only breaks mid-word

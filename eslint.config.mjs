@@ -68,7 +68,8 @@ export default tseslintConfig(
       ...react.configs.flat['jsx-runtime'].rules,
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      ...jsxA11y.flatConfigs.recommended.rules,
+      ...jsxA11y.flatConfigs.strict.rules,
+      'jsx-a11y/prefer-tag-over-role': 'error',
       ...nextConfigs.recommended.rules,
       ...nextConfigs['core-web-vitals'].rules,
       'no-restricted-syntax': [
@@ -77,6 +78,12 @@ export default tseslintConfig(
           selector:
             "CallExpression[callee.name='debugDelayResolveResponse'], CallExpression[callee.name='debugDelayRandomResponse'], CallExpression[callee.name='debugDelayRejectResponse']",
           message: 'Do not left debug delayed functions.',
+        },
+        {
+          selector:
+            'JSXAttribute[name.name="className"] Literal[value=/outline-none/]',
+          message:
+            'The focus ring is declared globally in globals.css, and a composite already suppresses the ring of its own direct child there, keyed on .wrapper-focus-outline. There is no correct use of outline-none in a className.',
         },
       ],
       'no-console': 'warn',

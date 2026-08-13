@@ -54,12 +54,15 @@ describe('FormSelect', () => {
       />,
     );
 
-    const emptyOption = screen.getByRole('option', { name: '' });
+    const emptyOption = screen.getByRole('option', {
+      name: 'None',
+    }) as HTMLOptionElement;
 
     expect(emptyOption).toBeInTheDocument();
+    expect(emptyOption).toHaveValue('');
   });
 
-  it('should not have empty option if hasEmptyOption', () => {
+  it('should not have empty option if hasEmptyOption = false', () => {
     const labelText = 'testLabel';
     const name = 'testName';
     render(
@@ -71,7 +74,7 @@ describe('FormSelect', () => {
       />,
     );
 
-    const emptyOption = screen.queryByRole('option', { name: '' });
+    const emptyOption = screen.queryByRole('option', { name: 'None' });
 
     expect(emptyOption).not.toBeInTheDocument();
   });
@@ -124,5 +127,55 @@ describe('FormSelect', () => {
     const error = screen.getByText(errorMessage);
 
     expect(error).toBeInTheDocument();
+  });
+
+  it('should mark the select invalid and describe it by the error text when errorMessage is set', () => {
+    const errorMessage = 'testError';
+    const labelText = 'testLabel';
+    const name = 'testName';
+    render(
+      <TestFormSelect
+        errorMessage={errorMessage}
+        label={labelText}
+        name={name}
+        options={MOCK_OPTIONS}
+      />,
+    );
+
+    const selectElement = screen.getByRole('combobox');
+    const error = screen.getByText(errorMessage);
+
+    expect(selectElement).toHaveAttribute('aria-invalid', 'true');
+    expect(selectElement).toHaveAttribute('aria-describedby', error.id);
+  });
+
+  it('should not mark the select invalid or describe it when there is no errorMessage', () => {
+    const labelText = 'testLabel';
+    const name = 'testName';
+    render(
+      <TestFormSelect label={labelText} name={name} options={MOCK_OPTIONS} />,
+    );
+
+    const selectElement = screen.getByRole('combobox', { name: labelText });
+
+    expect(selectElement).not.toHaveAttribute('aria-invalid');
+    expect(selectElement).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('should reach the select element with the required attribute', () => {
+    const labelText = 'testLabel';
+    const name = 'testName';
+    render(
+      <TestFormSelect
+        label={labelText}
+        name={name}
+        options={MOCK_OPTIONS}
+        required={true}
+      />,
+    );
+
+    const selectElement = screen.getByRole('combobox');
+
+    expect(selectElement).toBeRequired();
   });
 });

@@ -16,14 +16,13 @@ export function TableSortDropdownTrigger({
 
   return (
     <Dropdown.Trigger>
-      {({ onClick, ref }) => (
+      {(triggerProps) => (
         <IconButton
-          ref={ref}
-          className="h-fit p-2 px-3"
+          {...triggerProps}
+          size="sm"
           text={label}
-          title="sort"
+          title={`Sort by ${label ?? 'column'}`}
           variant="transparent"
-          onClick={onClick}
         >
           <TableSortDropdownIcon isSortDesc={isSortDesc} isSorted={isSorted} />
         </IconButton>

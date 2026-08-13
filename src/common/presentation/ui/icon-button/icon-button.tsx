@@ -1,8 +1,8 @@
 import type { ComponentProps, MouseEventHandler, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import type { ButtonVariants } from '@/ui/variants/button';
-import { buttonVariants } from '@/ui/variants/button';
+import type { ButtonSizes, ButtonVariants } from '@/ui/variants/button';
+import { buttonSizes, buttonVariants } from '@/ui/variants/button';
 
 export type IconButtonProps = ComponentProps<'button'> & {
   children: ReactNode;
@@ -10,6 +10,7 @@ export type IconButtonProps = ComponentProps<'button'> & {
   text?: string;
   iconSide?: 'left' | 'right';
   variant?: ButtonVariants;
+  size?: ButtonSizes;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   className?: string;
@@ -22,16 +23,18 @@ export function IconButton({
   text,
   iconSide = 'right',
   variant = 'default',
+  size = 'compact',
   disabled,
   className,
   ...props
 }: IconButtonProps) {
   return (
     <button
-      aria-label={title}
+      aria-label={text ? undefined : title}
       className={twMerge(
         buttonVariants[variant],
-        'flex items-center justify-center gap-2 overflow-hidden px-3 py-1',
+        buttonSizes[size],
+        'flex items-center justify-center gap-2 overflow-hidden',
         className,
       )}
       disabled={disabled}

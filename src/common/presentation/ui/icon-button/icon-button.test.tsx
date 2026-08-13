@@ -3,14 +3,21 @@
 import { cleanup, render, screen } from '@testing-library/react';
 
 import { KeyIcon } from '@/icons/key';
+import type { ButtonSizes } from '@/ui/variants/button';
 
 import { IconButton } from './icon-button';
 
 const BUTTON_TITLE = 'test title';
 
-function TestIconButton({ disabled = false }: { disabled?: boolean }) {
+function TestIconButton({
+  disabled = false,
+  size,
+}: {
+  disabled?: boolean;
+  size?: ButtonSizes;
+}) {
   return (
-    <IconButton disabled={disabled} title={BUTTON_TITLE}>
+    <IconButton disabled={disabled} size={size} title={BUTTON_TITLE}>
       <KeyIcon />
     </IconButton>
   );
@@ -39,5 +46,21 @@ describe('IconButton', () => {
     buttonElement = screen.getByRole('button', { name: BUTTON_TITLE });
 
     expect(buttonElement).toBeDisabled();
+  });
+
+  it('should default to the compact size', () => {
+    render(<TestIconButton />);
+
+    const buttonElement = screen.getByRole('button', { name: BUTTON_TITLE });
+
+    expect(buttonElement).toHaveClass('h-10 px-3 py-1');
+  });
+
+  it('should render the compact size when passed explicitly', () => {
+    render(<TestIconButton size="compact" />);
+
+    const buttonElement = screen.getByRole('button', { name: BUTTON_TITLE });
+
+    expect(buttonElement).toHaveClass('h-10 px-3 py-1');
   });
 });

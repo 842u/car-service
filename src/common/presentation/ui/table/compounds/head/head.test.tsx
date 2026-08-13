@@ -43,9 +43,7 @@ describe('TableHead', () => {
 
     renderHead(columns);
 
-    expect(
-      screen.getByRole('button', { name: 'Name options' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Name' })).toBeInTheDocument();
   });
 
   it('should show sort options in a dropdown when the column header button is clicked', async () => {
@@ -61,7 +59,7 @@ describe('TableHead', () => {
 
     renderHead(columns);
 
-    await user.click(screen.getByRole('button', { name: 'Name options' }));
+    await user.click(screen.getByRole('button', { name: 'Name' }));
 
     expect(screen.getByRole('button', { name: 'Asc' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Desc' })).toBeInTheDocument();
@@ -79,8 +77,6 @@ describe('TableHead', () => {
 
     renderHead(columns);
 
-    expect(
-      screen.getByRole('button', { name: 'Status options' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Status' })).toBeInTheDocument();
   });
 });

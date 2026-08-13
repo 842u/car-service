@@ -76,6 +76,45 @@ describe('DropdownTrigger', () => {
     expect(screen.queryByText('menu content')).not.toBeInTheDocument();
   });
 
+  it('should yield aria-haspopup and aria-expanded=false with no aria-controls while closed', () => {
+    render(
+      <Dropdown>
+        <Dropdown.Trigger>
+          {(props) => <button {...props}>open menu</button>}
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <span>menu content</span>
+        </Dropdown.Content>
+      </Dropdown>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'open menu' });
+    expect(trigger).toHaveAttribute('aria-haspopup', 'true');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).not.toHaveAttribute('aria-controls');
+  });
+
+  it('should yield aria-expanded=true and aria-controls matching the panel id while open', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Dropdown>
+        <Dropdown.Trigger>
+          {(props) => <button {...props}>open menu</button>}
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <span>menu content</span>
+        </Dropdown.Content>
+      </Dropdown>,
+    );
+
+    const trigger = screen.getByRole('button', { name: 'open menu' });
+    await user.click(trigger);
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(trigger.getAttribute('aria-controls')).toBeTruthy();
+  });
+
   it('should stop click event propagation', async () => {
     const user = userEvent.setup();
     const parentClickHandler = jest.fn();

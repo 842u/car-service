@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { createPortal } from 'react-dom';
 
 import type { UseDropdownContentParams } from './use-content';
 import { useDropdownContent } from './use-content';
@@ -14,7 +13,7 @@ export function DropdownContent({
   align,
   children,
 }: DropdownContentProps) {
-  const { isOpen, position, contentRef } = useDropdownContent({
+  const { isOpen, position, contentRef, contentId } = useDropdownContent({
     collisionDetection,
     side,
     align,
@@ -22,14 +21,23 @@ export function DropdownContent({
 
   if (!isOpen) return null;
 
-  return createPortal(
+  //! `fixed` below resolves against the viewport, which is what
+  //! useDropdownContent measures its coordinates against. That holds only while
+  //! no ancestor establishes a containing block. A transform, filter,
+  //! backdrop-filter, contain, or container-type anywhere above this panel makes
+  //! `fixed` resolve against that ancestor instead, so the panel lands offset and
+  //! is clipped by any overflow between the two, with nothing pointing at the
+  //! cause. The sticky table header is opaque rather than backdrop-blurred for
+  //! exactly this reason, and no dropdown is rendered inside a Card, whose
+  //! drop-shadow is a filter.
+  return (
     <div
       ref={contentRef}
-      className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 fixed z-10 rounded-lg border p-1"
+      className="bg-light-500 dark:bg-dark-500 border-alpha-grey-500 fixed z-20 rounded-lg border p-1"
+      id={contentId}
       style={{ top: position.top, left: position.left }}
     >
       {children}
-    </div>,
-    document.body,
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import type { MotionStyle } from 'motion/react';
 import {
   useMotionTemplate,
   useMotionValue,
+  useReducedMotion,
   useSpring,
   useTransform,
 } from 'motion/react';
@@ -23,6 +24,7 @@ export function useMouseTiltAnimation<TElement extends HTMLElement>({
    * the client side.
    */
   const [canAnimate, setCanAnimate] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const elementRef = useRef<TElement>(null);
 
@@ -52,7 +54,7 @@ export function useMouseTiltAnimation<TElement extends HTMLElement>({
   useEffect(() => setCanAnimate(true), []);
 
   const handleMouseMove = (event: React.MouseEvent<TElement>) => {
-    if (!elementRef.current) return;
+    if (!elementRef.current || prefersReducedMotion) return;
 
     const rect = elementRef.current.getBoundingClientRect();
 

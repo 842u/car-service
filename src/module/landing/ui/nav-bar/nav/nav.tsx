@@ -1,6 +1,3 @@
-/* eslint-disable
- jsx-a11y/click-events-have-key-events,
- jsx-a11y/no-noninteractive-element-interactions  */
 import { twMerge } from 'tailwind-merge';
 
 import { LinkButton } from '@/ui/link-button/link-button';
@@ -10,28 +7,43 @@ import { NavItem } from './item/item';
 
 type NavBarNavProps = {
   isActive?: boolean;
-  onClick?: () => void;
+  onNavigate?: () => void;
+  onClose?: () => void;
   className?: string;
+  id?: string;
 };
 
 export function NavBarNav({
   isActive = true,
-  onClick,
+  onNavigate,
+  onClose,
   className,
+  id,
 }: NavBarNavProps) {
   return (
     <nav
       aria-label="landing navigation menu"
       className={twMerge(
-        'bg-light-500 dark:bg-dark-500 absolute top-0 left-0 flex h-screen w-screen justify-center transition-transform lg:static lg:h-full lg:w-fit lg:translate-x-0 lg:items-center lg:bg-[transparent] lg:text-xs lg:dark:bg-[transparent]',
-        isActive ? 'translate-x-0' : '-translate-x-full',
+        'bg-light-500 dark:bg-dark-500 absolute top-0 left-0 flex h-screen w-screen justify-center transition-all lg:visible lg:static lg:h-full lg:w-fit lg:translate-x-0 lg:items-center lg:bg-transparent lg:text-xs lg:dark:bg-transparent',
+        isActive ? 'visible translate-x-0' : 'invisible -translate-x-full',
         className,
       )}
-      onClick={onClick}
+      id={id}
     >
+      <button
+        aria-label="close navigation menu"
+        className="fixed -z-10 h-screen w-screen lg:hidden"
+        type="button"
+        onClick={onClose}
+      />
       <ul className="relative flex w-4/5 flex-col items-center justify-center md:w-1/2 lg:w-full lg:flex-row lg:gap-4">
         <NavItem>
-          <LinkButton className="my-2" href="/dashboard" variant="accent">
+          <LinkButton
+            className="my-2"
+            href="/dashboard"
+            variant="accent"
+            onClick={onNavigate}
+          >
             Dashboard
           </LinkButton>
         </NavItem>

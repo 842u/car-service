@@ -244,7 +244,8 @@ export function useDropdownContent({
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { isOpen, close, triggerRef, collisionDetectionRoot } = useDropdown();
+  const { isOpen, triggerRef, collisionDetectionRoot, contentId } =
+    useDropdown();
 
   const computePosition = useCallback((): { top: number; left: number } => {
     if (!triggerRef.current || !contentRef.current) {
@@ -284,22 +285,6 @@ export function useDropdownContent({
     setPosition(computePosition());
   }, [computePosition]);
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      const clickedOutsidePanel =
-        contentRef.current &&
-        !contentRef.current.contains(event.target as Node);
-      const clickedOutsideTrigger =
-        triggerRef.current &&
-        !triggerRef.current.contains(event.target as Node);
-
-      if (clickedOutsidePanel && clickedOutsideTrigger) {
-        close();
-      }
-    },
-    [close, triggerRef],
-  );
-
   // Synchronously update position before the browser paints so there is no
   // flash of the panel at (0, 0).
   useLayoutEffect(() => {
@@ -327,15 +312,5 @@ export function useDropdownContent({
     };
   }, [isOpen, updatePosition, collisionDetectionRoot]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [isOpen, handleClickOutside]);
-
-  return { position, isOpen, contentRef };
+  return { position, isOpen, contentRef, contentId };
 }

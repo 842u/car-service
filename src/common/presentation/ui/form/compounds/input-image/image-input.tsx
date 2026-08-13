@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useId } from 'react';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
@@ -70,6 +71,8 @@ export function FormImageInput<TFieldValues extends FieldValues>({
     rules,
   });
 
+  const errorId = useId();
+
   return (
     <label>
       {label && <InputLabelText required={required} text={label} />}
@@ -77,6 +80,7 @@ export function FormImageInput<TFieldValues extends FieldValues>({
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants['default'],
           'relative my-1 aspect-square h-auto w-full cursor-pointer overflow-clip p-0',
+          'wrapper-focus-outline',
           className,
         )}
       >
@@ -87,15 +91,25 @@ export function FormImageInput<TFieldValues extends FieldValues>({
         />
         <input
           accept={IMAGE_FILE_ACCEPTED_MIME_TYPES.join(', ')}
+          aria-describedby={
+            errorMessage && showErrorMessage ? errorId : undefined
+          }
+          aria-invalid={Boolean(errorMessage) || undefined}
+          /* `sr-only` clips this input to a 1px box, so a ring drawn on it
+             would be clipped away. The wrapper above draws one on its behalf,
+             which is the whole reason this control is nested in one. */
           className="sr-only absolute"
           data-testid={FORM_IMAGE_INPUT_TEST_ID}
           name={name}
+          required={required}
           type="file"
           onChange={handleFileChange}
         />
         {children?.(previewUrl)}
       </div>
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
       {withInfo && (
         <div className="mb-5 text-sm">
           <p>Click on the image to upload a custom one.</p>

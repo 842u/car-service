@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type {
   FieldValues,
   Path,
@@ -9,10 +10,10 @@ import { useForm } from '../../form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 
-type FormCheckboxGroupProps<TFieldValues extends FieldValues> = {
+export type FormCheckboxGroupProps<TFieldValues extends FieldValues> = {
   label: string;
   checkboxLabelValueMapping: Record<string, string>;
-  register: UseFormRegister<TFieldValues>;
+  register?: UseFormRegister<TFieldValues>;
   name: Path<TFieldValues>;
   required?: boolean;
   registerOptions?: RegisterOptions<TFieldValues>;
@@ -32,8 +33,12 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
 }: FormCheckboxGroupProps<TFieldValues>) {
   useForm();
 
+  const errorId = useId();
+
   return (
-    <fieldset>
+    <fieldset
+      aria-describedby={errorMessage && showErrorMessage ? errorId : undefined}
+    >
       <legend>
         <InputLabelText required={required} text={label} />
       </legend>
@@ -46,12 +51,14 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
             className="mr-2"
             type="checkbox"
             value={checkboxLabelValueMapping[checkboxLabel]}
-            {...register(name, registerOptions)}
+            {...(register ? register(name, registerOptions) : {})}
           />
           {checkboxLabel}
         </label>
       ))}
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
     </fieldset>
   );
 }

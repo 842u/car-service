@@ -38,9 +38,7 @@ describe('TableValuesFilter', () => {
       </Table>,
     );
 
-    expect(
-      screen.getByRole('button', { name: 'Filter by Status' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Status' })).toBeInTheDocument();
   });
 
   it('should reveal a checkbox for each option after clicking the trigger', async () => {
@@ -55,7 +53,7 @@ describe('TableValuesFilter', () => {
       </Table>,
     );
 
-    await user.click(screen.getByRole('button', { name: 'Filter by Status' }));
+    await user.click(screen.getByRole('button', { name: 'Status' }));
 
     expect(
       screen.getByRole('checkbox', { name: 'Active' }),
@@ -80,7 +78,7 @@ describe('TableValuesFilter', () => {
       </Table>,
     );
 
-    await user.click(screen.getByRole('button', { name: 'Filter by Status' }));
+    await user.click(screen.getByRole('button', { name: 'Status' }));
     await user.click(screen.getByRole('checkbox', { name: 'Active' }));
 
     expect(screen.getAllByText('active')).toHaveLength(2);
@@ -102,7 +100,7 @@ describe('TableValuesFilter', () => {
       </Table>,
     );
 
-    await user.click(screen.getByRole('button', { name: 'Filter by Status' }));
+    await user.click(screen.getByRole('button', { name: 'Status' }));
     await user.click(screen.getByRole('checkbox', { name: 'Active' }));
     expect(screen.queryByText('inactive')).not.toBeInTheDocument();
 

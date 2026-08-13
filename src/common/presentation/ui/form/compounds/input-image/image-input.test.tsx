@@ -70,4 +70,32 @@ describe('FormImageInput', () => {
 
     expect(error).toBeInTheDocument();
   });
+
+  it('should mark the input invalid and describe it by the error text when errorMessage is set', () => {
+    const errorMessage = 'testError';
+    render(<TestFormImageInput errorMessage={errorMessage} name="image" />);
+
+    const inputElement = screen.getByTestId(FORM_IMAGE_INPUT_TEST_ID);
+    const error = screen.getByText(errorMessage);
+
+    expect(inputElement).toHaveAttribute('aria-invalid', 'true');
+    expect(inputElement).toHaveAttribute('aria-describedby', error.id);
+  });
+
+  it('should not mark the input invalid or describe it when there is no errorMessage', () => {
+    render(<TestFormImageInput name="image" />);
+
+    const inputElement = screen.getByTestId(FORM_IMAGE_INPUT_TEST_ID);
+
+    expect(inputElement).not.toHaveAttribute('aria-invalid');
+    expect(inputElement).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('should reach the input element with the required attribute', () => {
+    render(<TestFormImageInput name="image" required={true} />);
+
+    const inputElement = screen.getByTestId(FORM_IMAGE_INPUT_TEST_ID);
+
+    expect(inputElement).toBeRequired();
+  });
 });

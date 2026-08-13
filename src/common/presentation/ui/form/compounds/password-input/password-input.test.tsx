@@ -86,4 +86,46 @@ describe('FormPasswordInput', () => {
 
     expect(error).toBeInTheDocument();
   });
+
+  it('should mark the input invalid and describe it by the error text when errorMessage is set', () => {
+    const errorMessage = 'testError';
+    const labelText = 'testLabel';
+    const name = 'testName';
+    render(
+      <TestFormPasswordInput
+        errorMessage={errorMessage}
+        label={labelText}
+        name={name}
+      />,
+    );
+
+    const inputElement = screen.getByLabelText(labelText, { exact: false });
+    const error = screen.getByText(errorMessage);
+
+    expect(inputElement).toHaveAttribute('aria-invalid', 'true');
+    expect(inputElement).toHaveAttribute('aria-describedby', error.id);
+  });
+
+  it('should not mark the input invalid or describe it when there is no errorMessage', () => {
+    const labelText = 'testLabel';
+    const name = 'testName';
+    render(<TestFormPasswordInput label={labelText} name={name} />);
+
+    const inputElement = screen.getByLabelText(labelText);
+
+    expect(inputElement).not.toHaveAttribute('aria-invalid');
+    expect(inputElement).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('should reach the input element with the required attribute', () => {
+    const labelText = 'testLabel';
+    const name = 'testName';
+    render(
+      <TestFormPasswordInput label={labelText} name={name} required={true} />,
+    );
+
+    const inputElement = screen.getByLabelText(labelText, { exact: false });
+
+    expect(inputElement).toBeRequired();
+  });
 });

@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import { EyeCloseIcon } from '@/ui/decorative/icons/eye-close';
 import { EyeOpenIcon } from '@/ui/decorative/icons/eye-open';
@@ -10,10 +11,16 @@ type VisibilityButtonProps = ComponentProps<'button'> & {
 
 export function VisibilityButton({
   isVisible = true,
+  className,
   ...props
 }: VisibilityButtonProps) {
   return (
-    <IconButton className="p-0" title="toggle visibility" {...props}>
+    <IconButton
+      className={twMerge('p-0', className)}
+      size="icon"
+      title="toggle visibility"
+      {...props}
+    >
       {isVisible ? (
         <EyeCloseIcon
           className="stroke-dark-500 dark:stroke-light-500 pointer-events-none h-full w-full stroke-2"

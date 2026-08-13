@@ -1,7 +1,7 @@
 'use client';
 
 import type { ComponentProps } from 'react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import type {
   FieldValues,
   Path,
@@ -48,6 +48,8 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
 
   useForm();
 
+  const errorId = useId();
+
   const handleVisibilityButtonClick = () => {
     setPasswordVisible((currentState) => !currentState);
   };
@@ -59,15 +61,27 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
         className={twMerge(
           errorMessage ? inputVariants['error'] : inputVariants[variant],
           'my-1 flex items-center p-0',
+          'wrapper-focus-outline',
           className,
         )}
       >
         <input
+          aria-describedby={
+            errorMessage && showErrorMessage ? errorId : undefined
+          }
+          aria-invalid={Boolean(errorMessage) || undefined}
           className="inline-block h-full w-full pl-3"
+          required={required}
           type={passwordVisible ? 'text' : 'password'}
           {...props}
           {...(register ? register(name, registerOptions) : {})}
         />
+        {/*
+          Load-bearing, not decorative padding. The field suppresses the ring
+          of its own direct children, so nesting the toggle one level down is
+          what leaves it drawing a ring of its own. Flatten this and tabbing
+          from the input to the toggle stops moving the indicator.
+        */}
         <div className="inline-block h-full p-1">
           <VisibilityButton
             className="h-full w-full px-1 py-0"
@@ -76,7 +90,9 @@ export function FormPasswordInput<TFieldValues extends FieldValues>({
           />
         </div>
       </div>
-      {showErrorMessage && <InputErrorText errorMessage={errorMessage} />}
+      {showErrorMessage && (
+        <InputErrorText errorMessage={errorMessage} id={errorId} />
+      )}
     </label>
   );
 }

@@ -8,24 +8,25 @@ type AddCardProps = {
 
 export function AddCard({ onClick }: AddCardProps) {
   return (
-    <Card
-      className="border-accent-500/40 relative flex w-80 cursor-pointer flex-col items-center justify-center gap-6 border-dashed p-6 text-center"
-      role="button"
-      tabIndex={0}
+    <button
+      className="w-80 rounded-md text-left"
+      type="button"
       onClick={onClick}
     >
-      <BrandFullIcon className="stroke-alpha-grey-500 w-full stroke-[0.1]" />
+      <Card className="border-accent-500/40 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-6 border-dashed p-6 text-center">
+        <BrandFullIcon className="stroke-alpha-grey-500 w-full stroke-[0.1]" />
 
-      <div className="bg-accent-100 dark:bg-accent-900/70 absolute top-0 right-0 m-5 flex h-14 w-14 items-center justify-center rounded-lg font-bold text-white shadow">
-        <CarPlusIcon className="fill-accent-500 stroke-accent-500 stroke-[0.5] p-2" />
-      </div>
+        <div className="bg-accent-100 dark:bg-accent-900/70 absolute top-0 right-0 m-5 flex h-14 w-14 items-center justify-center rounded-lg font-bold text-white shadow">
+          <CarPlusIcon className="fill-accent-500 stroke-accent-500 stroke-[0.5] p-2" />
+        </div>
 
-      <div>
-        <p className="text-2xl font-semibold">Add a car</p>
-        <p className="text-alpha-grey-900 text-sm">
-          Create a new vehicle entry
-        </p>
-      </div>
-    </Card>
+        <div>
+          <span className="block text-2xl font-semibold">Add a car</span>
+          <span className="text-alpha-grey-900 block text-sm">
+            Create a new vehicle entry
+          </span>
+        </div>
+      </Card>
+    </button>
   );
 }

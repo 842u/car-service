@@ -8,7 +8,6 @@ jest.mock('../../dropdown', () => ({
 }));
 
 const mockUseDropdown = useDropdown as jest.Mock;
-const mockClose = jest.fn();
 const mockTriggerRef: { current: HTMLButtonElement | null } = { current: null };
 
 function makeFakeElement(rect: {
@@ -48,7 +47,6 @@ function setupMockContext(
 ) {
   mockUseDropdown.mockReturnValue({
     isOpen: overrides.isOpen ?? false,
-    close: mockClose,
     triggerRef: mockTriggerRef,
     collisionDetectionRoot: overrides.collisionDetectionRoot ?? null,
   });
@@ -351,58 +349,6 @@ describe('useDropdownContent', () => {
       fireEvent(window, new Event('resize'));
 
       expect(result.current.position).toEqual({ top: 170, left: 50 });
-    });
-  });
-
-  describe('click outside', () => {
-    it('should call close when clicking outside both trigger and content', () => {
-      renderAndOpen({});
-
-      const outsideEl = document.createElement('button');
-      document.body.appendChild(outsideEl);
-
-      fireEvent.click(outsideEl);
-
-      expect(mockClose).toHaveBeenCalledTimes(1);
-
-      document.body.removeChild(outsideEl);
-    });
-
-    it('should not call close when clicking inside content', () => {
-      const { fakeContent } = renderAndOpen({});
-
-      document.body.appendChild(fakeContent);
-
-      fireEvent.click(fakeContent);
-
-      expect(mockClose).not.toHaveBeenCalled();
-
-      document.body.removeChild(fakeContent);
-    });
-
-    it('should not call close when clicking on trigger', () => {
-      const { fakeTrigger } = renderAndOpen({});
-
-      document.body.appendChild(fakeTrigger);
-
-      fireEvent.click(fakeTrigger);
-
-      expect(mockClose).not.toHaveBeenCalled();
-
-      document.body.removeChild(fakeTrigger);
-    });
-
-    it('should remove click listener from document when dropdown closes', () => {
-      const removeListenerSpy = jest.spyOn(document, 'removeEventListener');
-      const { rerender } = renderAndOpen({});
-
-      setupMockContext({ isOpen: false });
-      rerender();
-
-      expect(removeListenerSpy).toHaveBeenCalledWith(
-        'click',
-        expect.any(Function),
-      );
     });
   });
 });
