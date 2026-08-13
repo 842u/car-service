@@ -14,7 +14,11 @@ export function CarCard({ car }: CarCardProps) {
   const staticSegment = '/dashboard/cars' satisfies Route;
 
   return (
-    <Link className="w-80" href={`${staticSegment}/${car.id}`} prefetch={true}>
+    <Link
+      className="w-80 rounded-md"
+      href={`${staticSegment}/${car.id}`}
+      prefetch={true}
+    >
       <Card className="flex h-full flex-col gap-4">
         <CarImage className="overflow-hidden rounded-lg" src={car.imageUrl} />
         <div className="overflow-hidden">

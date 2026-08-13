@@ -8,7 +8,11 @@ type AddCardProps = {
 
 export function AddCard({ onClick }: AddCardProps) {
   return (
-    <button className="w-80 text-left" type="button" onClick={onClick}>
+    <button
+      className="w-80 rounded-md text-left"
+      type="button"
+      onClick={onClick}
+    >
       <Card className="border-accent-500/40 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-6 border-dashed p-6 text-center">
         <BrandFullIcon className="stroke-alpha-grey-500 w-full stroke-[0.1]" />
 
