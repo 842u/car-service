@@ -20,7 +20,7 @@ export function HamburgerButton({
 
   return (
     <Button
-      className={twMerge('aspect-square h-full px-3 py-4', className)}
+      className={twMerge('size-12 px-3 py-4', className)}
       variant="transparent"
       {...props}
     >

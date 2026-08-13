@@ -23,14 +23,14 @@ export function LandingFooter() {
               rel="noreferrer"
               target="_blank"
             >
-              <GitHubIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-2 p-2" />
+              <GitHubIcon className="stroke-dark-500 dark:stroke-light-500 size-10 stroke-2 p-2" />
             </a>
             <a
               aria-label="Mail"
               className={buttonVariants.transparent}
               href="mailto:contact@842u.dev"
             >
-              <MailIcon className="stroke-dark-500 dark:stroke-light-500 h-full stroke-2 p-2" />
+              <MailIcon className="stroke-dark-500 dark:stroke-light-500 size-10 stroke-2 p-2" />
             </a>
           </address>
         </div>

@@ -48,7 +48,7 @@ export function NavBarNav({
           </LinkButton>
         </NavItem>
         <NavItem>
-          <div className="aspect-square h-10 w-full">
+          <div className="my-2 h-10 w-full">
             <ThemeButton className="h-full w-full" />
           </div>
         </NavItem>
