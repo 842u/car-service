@@ -175,7 +175,7 @@ describe('dismissal', () => {
     expect(screen.getByText('menu content')).toBeInTheDocument();
   });
 
-  it('should leave the panel open when Escape is pressed outside the dropdown', async () => {
+  it('should close when Escape is pressed outside the dropdown', async () => {
     const user = userEvent.setup();
     renderDropdown();
 
@@ -183,6 +183,18 @@ describe('dismissal', () => {
     const outside = screen.getByRole('button', { name: 'outside' });
 
     fireEvent.keyDown(outside, { key: 'Escape' });
+
+    expect(screen.queryByText('menu content')).not.toBeInTheDocument();
+  });
+
+  it('should reopen after Escape closed it', async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+    const trigger = screen.getByRole('button', { name: 'open' });
+
+    await user.click(trigger);
+    fireEvent.keyDown(trigger, { key: 'Escape' });
+    await user.click(trigger);
 
     expect(screen.getByText('menu content')).toBeInTheDocument();
   });
@@ -237,8 +249,39 @@ describe('useDropdown', () => {
       toggle: expect.any(Function),
       close: expect.any(Function),
       triggerRef: expect.objectContaining({ current: null }),
+      contentRef: expect.objectContaining({ current: null }),
       collisionDetectionRoot: null,
       contentId: expect.any(String),
     });
+  });
+
+  it('should hold the rendered panel in contentRef', async () => {
+    const user = userEvent.setup();
+
+    function wrapper({ children }: { children: ReactNode }) {
+      return (
+        <Dropdown>
+          {children}
+          <Dropdown.Trigger>
+            {({ ref, onClick }) => (
+              <button ref={ref} onClick={onClick}>
+                open
+              </button>
+            )}
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <button>menu content</button>
+          </Dropdown.Content>
+        </Dropdown>
+      );
+    }
+
+    const { result } = renderHook(() => useDropdown(), { wrapper });
+    await user.click(screen.getByRole('button', { name: 'open' }));
+
+    expect(result.current.contentRef.current).toBe(
+      // eslint-disable-next-line testing-library/no-node-access
+      screen.getByText('menu content').parentElement,
+    );
   });
 });

@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import { useDropdown } from '../../dropdown';
 
@@ -242,9 +236,10 @@ export function useDropdownContent({
   align = 'start',
 }: UseDropdownContentParams) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
-  const contentRef = useRef<HTMLDivElement>(null);
 
-  const { isOpen, triggerRef, collisionDetectionRoot, contentId } =
+  // Owned by the Dropdown context because the dismissal listeners need it to
+  // decide whether an event landed inside the panel.
+  const { isOpen, triggerRef, contentRef, collisionDetectionRoot, contentId } =
     useDropdown();
 
   const computePosition = useCallback((): { top: number; left: number } => {
@@ -279,7 +274,14 @@ export function useDropdownContent({
     const effectiveAlign = resolveEffectiveAlign(align, alignCollisions);
 
     return calculatePanelPosition(dimensions, effectiveSide, effectiveAlign);
-  }, [triggerRef, collisionDetection, collisionDetectionRoot, side, align]);
+  }, [
+    triggerRef,
+    contentRef,
+    collisionDetection,
+    collisionDetectionRoot,
+    side,
+    align,
+  ]);
 
   const updatePosition = useCallback(() => {
     setPosition(computePosition());

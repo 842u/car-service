@@ -18,6 +18,7 @@ type DropdownContextValue = {
   toggle: () => void;
   close: () => void;
   triggerRef: RefObject<HTMLButtonElement | null>;
+  contentRef: RefObject<HTMLDivElement | null>;
   collisionDetectionRoot: HTMLElement | null;
   contentId: string;
 } | null;
@@ -44,6 +45,7 @@ export function Dropdown({
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const contentId = useId();
 
@@ -51,21 +53,24 @@ export function Dropdown({
 
   const toggle = useCallback(() => {
     // A pointer open leaves focus on <body> in Safari, which does not focus a
-    // button on click. Without this the panel is unreachable by Tab and the
-    // root-scoped Escape handler never fires.
+    // button on click. Without this the panel is unreachable by Tab.
     if (!isOpen) triggerRef.current?.focus();
     setIsOpen((prev) => !prev);
   }, [isOpen]);
 
   useEffect(() => {
-    const root = rootRef.current;
-    if (!isOpen || !root) return;
+    if (!isOpen) return;
+
+    // Both refs are read at event time rather than captured here, so the
+    // effect does not need to re-run when the panel mounts.
+    const isOutside = (node: Node | null) =>
+      !rootRef.current?.contains(node) && !contentRef.current?.contains(node);
 
     const handleFocusOut = (event: FocusEvent) => {
       const next = event.relatedTarget as Node | null;
       // null when focus leaves the document entirely (window switch,
       // devtools), which must not close the panel.
-      if (next && !root.contains(next)) close();
+      if (next && isOutside(next)) close();
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -75,19 +80,21 @@ export function Dropdown({
     };
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (!root.contains(event.target as Node)) close();
+      if (isOutside(event.target as Node)) close();
     };
 
-    root.addEventListener('focusout', handleFocusOut);
-    root.addEventListener('keydown', handleKeyDown);
+    // All three bind to document rather than to the root, so they keep firing
+    // for a panel that is not a descendant of the root.
+    document.addEventListener('focusout', handleFocusOut);
+    document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('click', handleClickOutside);
 
     return () => {
-      root.removeEventListener('focusout', handleFocusOut);
-      root.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('focusout', handleFocusOut);
+      document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [isOpen, close, triggerRef]);
+  }, [isOpen, close]);
 
   return (
     <DropdownContext
@@ -96,6 +103,7 @@ export function Dropdown({
         toggle,
         close,
         triggerRef,
+        contentRef,
         collisionDetectionRoot,
         contentId,
       }}
