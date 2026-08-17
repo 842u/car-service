@@ -1,12 +1,27 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { KeyboardEvent } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import { useDropdown } from '../../dropdown';
+
+/**
+ * Everything inside `root` that Tab can reach, in document order. Used to find
+ * the two ends of the panel's own tab order, not to trap focus between them.
+ *
+ * Both conditions are the platform's own answer rather than a restatement of
+ * it. `tabIndex` falls back to the element type's default when the attribute is
+ * absent, which is 0 for a focusable area and -1 for everything else, so an
+ * explicit `tabindex="-1"` on an otherwise focusable control is excluded.
+ * `:disabled` carries the `fieldset` inheritance a `[disabled]` selector cannot
+ * see. Enumerating tag names instead would restate both, and get both wrong.
+ *
+ * Visibility is not checked: every panel in the app renders its controls
+ * conditionally rather than hiding them.
+ */
+function findFocusable(root: HTMLElement): HTMLElement[] {
+  return [...root.querySelectorAll<HTMLElement>('*')].filter(
+    (element) => element.tabIndex >= 0 && !element.matches(':disabled'),
+  );
+}
 
 /**
  * Which side of the trigger the panel should prefer to open on.
@@ -242,9 +257,10 @@ export function useDropdownContent({
   align = 'start',
 }: UseDropdownContentParams) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
-  const contentRef = useRef<HTMLDivElement>(null);
 
-  const { isOpen, triggerRef, collisionDetectionRoot, contentId } =
+  // Owned by the Dropdown context because the dismissal listeners need it to
+  // decide whether an event landed inside the panel.
+  const { isOpen, triggerRef, contentRef, collisionDetectionRoot, contentId } =
     useDropdown();
 
   const computePosition = useCallback((): { top: number; left: number } => {
@@ -279,7 +295,14 @@ export function useDropdownContent({
     const effectiveAlign = resolveEffectiveAlign(align, alignCollisions);
 
     return calculatePanelPosition(dimensions, effectiveSide, effectiveAlign);
-  }, [triggerRef, collisionDetection, collisionDetectionRoot, side, align]);
+  }, [
+    triggerRef,
+    contentRef,
+    collisionDetection,
+    collisionDetectionRoot,
+    side,
+    align,
+  ]);
 
   const updatePosition = useCallback(() => {
     setPosition(computePosition());
@@ -291,6 +314,51 @@ export function useDropdownContent({
     if (!isOpen) return;
     updatePosition();
   }, [isOpen, updatePosition]);
+
+  // The panel is portaled out of the trigger's subtree, so DOM order no longer
+  // carries the keyboard from one to the other. Focus lands on the container
+  // rather than on the first control: one panel leads with a text filter, and
+  // landing there would make the same gesture type a character in one dropdown
+  // and activate a button in another.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    contentRef.current?.focus();
+  }, [isOpen, contentRef]);
+
+  /**
+   * Sends focus back to the trigger when Tab would carry it off either end of
+   * the panel.
+   *
+   * The default action is deliberately left to run: the browser resolves the
+   * next tab stop against whatever holds focus once the handler returns, so
+   * moving focus to the trigger first is what makes the page continue tabbing
+   * from the trigger's place in document order rather than from the end of the
+   * body. The panel then closes behind the user through the focus-out listener
+   * on the document.
+   */
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      if (event.key !== 'Tab') return;
+
+      const panel = contentRef.current;
+
+      if (!panel) return;
+
+      const focusable = findFocusable(panel);
+
+      // Backwards counts the panel itself as a boundary as well as its first
+      // control: the container holds focus on open, and its tabindex of -1
+      // keeps it out of the sequential order, so a Shift+Tab from the first
+      // control skips past it and leaves the panel too.
+      const isLeaving = event.shiftKey
+        ? event.target === panel || event.target === focusable[0]
+        : event.target === focusable[focusable.length - 1];
+
+      if (isLeaving) triggerRef.current?.focus();
+    },
+    [contentRef, triggerRef],
+  );
 
   // Re-position on scroll or resize while the panel is open.
   useEffect(() => {
@@ -312,5 +380,5 @@ export function useDropdownContent({
     };
   }, [isOpen, updatePosition, collisionDetectionRoot]);
 
-  return { position, isOpen, contentRef, contentId };
+  return { position, isOpen, contentRef, contentId, handleKeyDown };
 }

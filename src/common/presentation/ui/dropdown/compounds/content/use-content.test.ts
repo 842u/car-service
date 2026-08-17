@@ -9,6 +9,7 @@ jest.mock('../../dropdown', () => ({
 
 const mockUseDropdown = useDropdown as jest.Mock;
 const mockTriggerRef: { current: HTMLButtonElement | null } = { current: null };
+const mockContentRef: { current: HTMLDivElement | null } = { current: null };
 
 function makeFakeElement(rect: {
   top?: number;
@@ -48,6 +49,7 @@ function setupMockContext(
   mockUseDropdown.mockReturnValue({
     isOpen: overrides.isOpen ?? false,
     triggerRef: mockTriggerRef,
+    contentRef: mockContentRef,
     collisionDetectionRoot: overrides.collisionDetectionRoot ?? null,
   });
 }
@@ -81,6 +83,7 @@ function renderAndOpen(
 beforeEach(() => {
   jest.clearAllMocks();
   mockTriggerRef.current = null;
+  mockContentRef.current = null;
 
   Object.defineProperty(window, 'innerWidth', {
     value: 1000,
