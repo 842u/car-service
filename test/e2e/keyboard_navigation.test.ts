@@ -83,6 +83,62 @@ async function collectTabStops(page: Page): Promise<FocusedElementState[]> {
   return stops;
 }
 
+/**
+ * Stamps whatever holds focus so a later focus can be recognised as the same
+ * element. Accessible names repeat across a table's headers, so they cannot
+ * identify one tab stop on their own.
+ */
+function markFocused(page: Page, mark: string) {
+  return page.evaluate(
+    (value) => document.activeElement?.setAttribute('data-focus-mark', value),
+    mark,
+  );
+}
+
+function readFocusMark(page: Page) {
+  return page.evaluate(
+    () => document.activeElement?.getAttribute('data-focus-mark') ?? null,
+  );
+}
+
+/**
+ * True while focus is inside the panel the trigger controls. Goes through
+ * getElementById rather than a locator: the id comes from React's useId, whose
+ * delimiters are not valid in a CSS selector.
+ */
+function isFocusInPanel(page: Page, panelId: string) {
+  return page.evaluate((id) => {
+    const panel = document.getElementById(id);
+
+    return panel !== null && panel.contains(document.activeElement);
+  }, panelId);
+}
+
+/** Opens the trigger's panel and returns the panel's id. */
+async function openPanel(trigger: Locator): Promise<string> {
+  await trigger.focus();
+  await trigger.page().keyboard.press('Enter');
+
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+  const panelId = await trigger.getAttribute('aria-controls');
+
+  if (!panelId) throw new Error('An open trigger exposes no aria-controls.');
+
+  return panelId;
+}
+
+/** Tabs forwards until focus is no longer anywhere inside the panel. */
+async function pressTabUntilOutOfPanel(page: Page, panelId: string) {
+  for (let stop = 0; stop < MAX_TAB_STOPS; stop++) {
+    if (!(await isFocusInPanel(page, panelId))) return;
+
+    await page.keyboard.press('Tab');
+  }
+
+  throw new Error(`Focus never left the panel within ${MAX_TAB_STOPS} stops.`);
+}
+
 /** True while focus sits on an element that is still attached to the document. */
 function isFocusAttached(page: Page) {
   return page.evaluate(
@@ -121,7 +177,8 @@ test.describe('keyboard_navigation - column dropdown - @desktop', () => {
 
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
-    // The panel renders in place, so the very next tab stop is inside it.
+    // Opening puts focus on the panel container, so the next tab stop is the
+    // panel's own first control.
     await page.keyboard.press('Tab');
     await expect(page.getByRole('checkbox', { name: 'All' })).toBeFocused();
 
@@ -140,6 +197,71 @@ test.describe('keyboard_navigation - column dropdown - @desktop', () => {
 
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
     await expect(trigger).toBeFocused();
+  });
+});
+
+test.describe('keyboard_navigation - panel tab boundary - @desktop', () => {
+  // The panel is portaled to the end of the body, so DOM order would otherwise
+  // send a Tab off its last control past the whole page and a Shift+Tab back
+  // into it. Both journeys assert the page keeps tabbing from the trigger's
+  // own place instead. jsdom cannot observe either: they rest on the browser
+  // resolving Tab's default action against the focus the handler just moved.
+  test('tabbing off the panel resumes after the trigger and closes it - @desktop', async ({
+    keyboardPage,
+  }) => {
+    const { page, carId } = keyboardPage;
+
+    await page.goto(carRoute(carId));
+
+    await expect(
+      page.getByRole('table', { name: 'car service logs' }),
+    ).toBeVisible();
+
+    const trigger = page.getByRole('button', { name: 'Category', exact: true });
+
+    // Where Tab lands from the closed trigger is the reference the journey has
+    // to match, and it is read before the panel exists so nothing about the
+    // panel's own position can decide it.
+    await trigger.focus();
+    await page.keyboard.press('Tab');
+    await markFocused(page, 'after-trigger');
+
+    const panelId = await openPanel(trigger);
+
+    await pressTabUntilOutOfPanel(page, panelId);
+
+    expect(await isFocusAttached(page)).toBe(true);
+    expect(await readFocusMark(page)).toBe('after-trigger');
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('shift-tabbing off the panel resumes before the trigger and closes it - @desktop', async ({
+    keyboardPage,
+  }) => {
+    const { page, carId } = keyboardPage;
+
+    await page.goto(carRoute(carId));
+
+    await expect(
+      page.getByRole('table', { name: 'car service logs' }),
+    ).toBeVisible();
+
+    const trigger = page.getByRole('button', { name: 'Category', exact: true });
+
+    await trigger.focus();
+    await page.keyboard.press('Shift+Tab');
+    await markFocused(page, 'before-trigger');
+
+    await openPanel(trigger);
+
+    // Opening leaves focus on the panel container, which is already the
+    // backwards boundary: its tabindex of -1 keeps it out of the sequential
+    // order, so one Shift+Tab leaves the panel outright.
+    await page.keyboard.press('Shift+Tab');
+
+    expect(await isFocusAttached(page)).toBe(true);
+    expect(await readFocusMark(page)).toBe('before-trigger');
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 });
 
