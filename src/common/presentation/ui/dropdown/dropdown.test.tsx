@@ -8,7 +8,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-function renderDropdown() {
+function renderDropdown(panelExtras?: ReactNode) {
   return render(
     <>
       <button>outside</button>
@@ -22,10 +22,17 @@ function renderDropdown() {
         </Dropdown.Trigger>
         <Dropdown.Content>
           <button>menu content</button>
+          <button>last item</button>
+          {panelExtras}
         </Dropdown.Content>
       </Dropdown>
     </>,
   );
+}
+
+/** The portaled panel, which is the element `contentRef` points at. */
+function getPanel() {
+  return screen.getByText('menu content').parentElement;
 }
 
 describe('Dropdown', () => {
@@ -72,9 +79,33 @@ describe('Dropdown', () => {
 
     await user.click(screen.getByRole('button', { name: 'open' }));
 
-    const content = screen.getByText('menu content');
+    expect(getPanel()).toHaveAttribute('style');
+  });
+
+  it('should render the panel outside the dropdown, in document.body', async () => {
+    const user = userEvent.setup();
+    const { container } = renderDropdown();
+
+    await user.click(screen.getByRole('button', { name: 'open' }));
+
+    const panel = getPanel();
+
+    expect(container).not.toContainElement(panel);
     // eslint-disable-next-line testing-library/no-node-access
-    expect(content.parentElement).toHaveAttribute('style');
+    expect(panel?.parentElement).toBe(document.body);
+  });
+
+  it('should take the portaled panel back out of the document when closed', async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+    const trigger = screen.getByRole('button', { name: 'open' });
+
+    await user.click(trigger);
+    const panel = getPanel();
+
+    await user.click(trigger);
+
+    expect(panel).not.toBeInTheDocument();
   });
 });
 
@@ -200,29 +231,105 @@ describe('dismissal', () => {
   });
 });
 
-describe('opening focus', () => {
-  it('should focus the trigger when opening', () => {
+describe('focus management', () => {
+  it('should move focus to the panel when opening', async () => {
+    const user = userEvent.setup();
     renderDropdown();
-    const trigger = screen.getByRole('button', { name: 'open' });
-    const focusSpy = jest.spyOn(trigger, 'focus');
 
-    // fireEvent, not userEvent: userEvent's own pointer choreography also
-    // focuses the clicked button, which would count alongside the explicit
-    // `triggerRef.current?.focus()` this test targets.
-    fireEvent.click(trigger);
+    await user.click(screen.getByRole('button', { name: 'open' }));
 
-    expect(focusSpy).toHaveBeenCalledTimes(1);
+    expect(getPanel()).toHaveFocus();
   });
 
-  it('should not refocus the trigger on a second toggle', () => {
+  it('should leave focus on the element clicked outside', async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+
+    await user.click(screen.getByRole('button', { name: 'open' }));
+    const outside = screen.getByRole('button', { name: 'outside' });
+    await user.click(outside);
+
+    expect(screen.queryByText('menu content')).not.toBeInTheDocument();
+    expect(outside).toHaveFocus();
+  });
+
+  it('should return focus to the trigger when tabbing off the last control', async () => {
+    const user = userEvent.setup();
     renderDropdown();
     const trigger = screen.getByRole('button', { name: 'open' });
-    const focusSpy = jest.spyOn(trigger, 'focus');
 
-    fireEvent.click(trigger);
-    fireEvent.click(trigger);
+    await user.click(trigger);
+    const lastItem = screen.getByRole('button', { name: 'last item' });
+    lastItem.focus();
 
-    expect(focusSpy).toHaveBeenCalledTimes(1);
+    // fireEvent, not userEvent: what is asserted is where the handler puts
+    // focus during keydown. jsdom does not run Tab's default action, which is
+    // the half that then carries focus on past the trigger.
+    fireEvent.keyDown(lastItem, { key: 'Tab' });
+
+    expect(trigger).toHaveFocus();
+  });
+
+  it('should return focus to the trigger when shift-tabbing off the panel', async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+    const trigger = screen.getByRole('button', { name: 'open' });
+
+    await user.click(trigger);
+
+    fireEvent.keyDown(getPanel()!, { key: 'Tab', shiftKey: true });
+
+    expect(trigger).toHaveFocus();
+  });
+
+  it('should return focus to the trigger when shift-tabbing off the first control', async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+    const trigger = screen.getByRole('button', { name: 'open' });
+
+    await user.click(trigger);
+    const firstItem = screen.getByRole('button', { name: 'menu content' });
+    firstItem.focus();
+
+    // The container holds focus on open but its tabindex of -1 keeps it out of
+    // the sequential order, so Shift+Tab from here leaves the panel outright.
+    fireEvent.keyDown(firstItem, { key: 'Tab', shiftKey: true });
+
+    expect(trigger).toHaveFocus();
+  });
+
+  it('should find the boundary at the last control Tab can reach', async () => {
+    const user = userEvent.setup();
+    renderDropdown(
+      <>
+        <button tabIndex={-1}>programmatic only</button>
+        <button disabled>unavailable</button>
+      </>,
+    );
+    const trigger = screen.getByRole('button', { name: 'open' });
+
+    await user.click(trigger);
+    const lastItem = screen.getByRole('button', { name: 'last item' });
+    lastItem.focus();
+
+    // Both trailing buttons are focusable nodes that Tab never lands on, so
+    // neither is the end of the panel's tab order.
+    fireEvent.keyDown(lastItem, { key: 'Tab' });
+
+    expect(trigger).toHaveFocus();
+  });
+
+  it('should not move focus when tabbing between panel controls', async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+
+    await user.click(screen.getByRole('button', { name: 'open' }));
+    const firstItem = screen.getByRole('button', { name: 'menu content' });
+    firstItem.focus();
+
+    fireEvent.keyDown(firstItem, { key: 'Tab' });
+
+    expect(firstItem).toHaveFocus();
   });
 });
 

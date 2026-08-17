@@ -49,14 +49,20 @@ export function Dropdown({
   const rootRef = useRef<HTMLDivElement>(null);
   const contentId = useId();
 
-  const close = useCallback(() => setIsOpen(false), []);
+  const close = useCallback(() => {
+    // Read now, before the panel unmounts: afterwards activeElement is <body>,
+    // which answers false both for the case that has to restore focus and for
+    // the case that must not. Restoring unconditionally would take focus back
+    // from an element the user clicked outside, and from a modal that a panel
+    // button opened just before closing the dropdown.
+    if (contentRef.current?.contains(document.activeElement)) {
+      triggerRef.current?.focus();
+    }
 
-  const toggle = useCallback(() => {
-    // A pointer open leaves focus on <body> in Safari, which does not focus a
-    // button on click. Without this the panel is unreachable by Tab.
-    if (!isOpen) triggerRef.current?.focus();
-    setIsOpen((prev) => !prev);
-  }, [isOpen]);
+    setIsOpen(false);
+  }, []);
+
+  const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -73,10 +79,10 @@ export function Dropdown({
       if (next && isOutside(next)) close();
     };
 
+    // close() restores focus to the trigger on its own when focus is in the
+    // panel, which is where Escape finds it.
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      close();
-      triggerRef.current?.focus();
+      if (event.key === 'Escape') close();
     };
 
     const handleClickOutside = (event: MouseEvent) => {
