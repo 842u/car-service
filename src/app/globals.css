@@ -3,6 +3,17 @@
 @custom-variant dark (&:is(.dark *));
 @custom-variant item-active (&:is(.item-active *));
 
+/*
+  The dashboard shell carries `data-nav-mode`, rendered from a cookie on the
+  server so the first frame is already in the mode the user chose.
+
+  There is no `nav-collapsed` variant. Collapsed is the resting state every
+  rule already describes, so a rule scoped to it could only restate what the
+  unscoped rule says.
+*/
+@custom-variant nav-auto (&:is([data-nav-mode='auto'] *));
+@custom-variant nav-expanded (&:is([data-nav-mode='expanded'] *));
+
 @theme {
   --color-*: initial;
   --color-dark-50: var(--color-dark-50);

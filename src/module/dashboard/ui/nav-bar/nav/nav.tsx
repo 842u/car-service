@@ -31,7 +31,18 @@ export function NavBarNav({
     <nav
       aria-label="dashboard navigation menu"
       className={twMerge(
-        'border-alpha-grey-300 bg-light-500 dark:bg-dark-500 fixed top-0 left-0 flex h-screen w-56 flex-col border-r pt-16 transition-all md:visible md:w-16 md:translate-x-0 md:hover:w-56',
+        // The transition names its properties instead of using `all` so that
+        // `width` stays out of it. `width` is the resting width a mode sets,
+        // and a mode change is a decision the user just made rather than
+        // something to watch happen. The transient reveal widens the nav past
+        // that resting width with `min-width`, which is in the list and so
+        // animates.
+        //
+        // `md:min-w-16` restates the resting width and is not redundant: the
+        // initial `min-width` is the keyword `auto`, and a keyword does not
+        // interpolate with a length, so leaving it unset makes the reveal jump
+        // instead of animating. Both ends of the transition have to be lengths.
+        'border-alpha-grey-300 bg-light-500 dark:bg-dark-500 md:nav-auto:hover:min-w-56 md:nav-expanded:w-56 fixed top-0 left-0 flex h-screen w-56 flex-col border-r pt-16 transition-[background-color,border-color,min-width,translate,visibility] md:visible md:w-16 md:min-w-16 md:translate-x-0',
         isActive ? 'visible translate-x-0' : 'invisible -translate-x-full',
         className,
       )}

@@ -14,7 +14,11 @@ export function DashboardMain({ children, className }: DashboardMainProps) {
         // scrollbar, so it exceeds the content box by the gutter width.
         // Safe centering so that content wider than the viewport overflows the
         // end edge only, where it stays reachable by scrolling.
-        'flex min-h-screen max-w-full items-center-safe justify-center-safe pt-16 md:pl-16',
+        // The padding tracks the nav's resting width, so an expanded nav takes
+        // the width from here rather than covering what is under it. It is not
+        // transitioned: a mode change is instant, and animating this width
+        // would make every page re-resolve its layout on each frame.
+        'md:nav-expanded:pl-56 flex min-h-screen max-w-full items-center-safe justify-center-safe pt-16 md:pl-16',
         className,
       )}
     >
