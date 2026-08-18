@@ -1,5 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
+import type { NavMode } from '@/dashboard/ui/nav-mode/nav-mode';
 import { CarsIcon } from '@/icons/cars';
 import { HomeIcon } from '@/icons/home';
 import { UserIcon } from '@/icons/user';
@@ -7,8 +8,10 @@ import { ThemeButton } from '@/ui/theme-button/theme-button';
 import { SignOutButton } from '@/user/presentation/ui/buttons/sign-out/sign-out';
 
 import { NavItem } from './item/item';
+import { NavModeDropdown } from './mode-dropdown/mode-dropdown';
 
 type NavBarNavProps = {
+  navMode: NavMode;
   isActive?: boolean;
   onNavigate?: () => void;
   onClose?: () => void;
@@ -17,6 +20,7 @@ type NavBarNavProps = {
 };
 
 export function NavBarNav({
+  navMode,
   onNavigate,
   onClose,
   className,
@@ -55,6 +59,11 @@ export function NavBarNav({
         </NavItem>
       </ul>
       <ul className="before:bg-alpha-grey-300 w-full before:mx-auto before:block before:h-px before:w-3/4">
+        {/* Below `md` the nav is a transient drawer, where a resting width is
+            not a thing the user can have an opinion about. */}
+        <li className="mx-2 my-4 hidden h-12 md:block">
+          <NavModeDropdown className="h-full w-full" navMode={navMode} />
+        </li>
         <li className="mx-2 my-4 h-12">
           <ThemeButton className="h-full w-full" />
         </li>

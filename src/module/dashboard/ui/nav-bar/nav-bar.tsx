@@ -1,5 +1,6 @@
 'use client';
 
+import type { NavMode } from '@/dashboard/ui/nav-mode/nav-mode';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
@@ -9,7 +10,11 @@ import { UserBadge } from '@/user/presentation/ui/badge/badge';
 import { NavBarNav } from './nav/nav';
 import { useDashboardNavBar } from './use-nav-bar';
 
-export function DashboardNavBar() {
+type DashboardNavBarProps = {
+  navMode: NavMode;
+};
+
+export function DashboardNavBar({ navMode }: DashboardNavBarProps) {
   const {
     user,
     isPending,
@@ -36,6 +41,7 @@ export function DashboardNavBar() {
       <NavBarNav
         id={navId}
         isActive={isActive}
+        navMode={navMode}
         onClose={handleNavClick}
         onNavigate={handleNavClick}
       />

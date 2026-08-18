@@ -13,7 +13,7 @@ jest.mock('next/navigation', () => ({
 function TestDashboardNavBar() {
   return (
     <TanStackQueryProvider>
-      <DashboardNavBar />
+      <DashboardNavBar navMode="auto" />
     </TanStackQueryProvider>
   );
 }

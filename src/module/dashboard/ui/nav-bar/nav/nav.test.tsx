@@ -9,7 +9,7 @@ jest.mock('next/navigation', () => ({
 
 describe('NavBarNav', () => {
   it('should render dashboard navigation menu', () => {
-    render(<NavBarNav />);
+    render(<NavBarNav navMode="auto" />);
 
     const dashboardMenu = screen.getByRole('navigation', {
       name: /dashboard navigation menu/i,
@@ -19,7 +19,7 @@ describe('NavBarNav', () => {
   });
 
   it('should render a link to dashboard root tab', () => {
-    render(<NavBarNav />);
+    render(<NavBarNav navMode="auto" />);
 
     const dashboardHomeLink = screen.getByRole('link', { name: /overview/i });
 
@@ -27,7 +27,7 @@ describe('NavBarNav', () => {
   });
 
   it('should render a link to dashboard cars tab', () => {
-    render(<NavBarNav />);
+    render(<NavBarNav navMode="auto" />);
 
     const dashboardCarsLink = screen.getByRole('link', { name: /cars/i });
 
@@ -35,7 +35,7 @@ describe('NavBarNav', () => {
   });
 
   it('should render a link to dashboard account settings tab', () => {
-    render(<NavBarNav />);
+    render(<NavBarNav navMode="auto" />);
 
     const dashboardAccountLink = screen.getByRole('link', { name: /account/i });
 
@@ -43,15 +43,25 @@ describe('NavBarNav', () => {
   });
 
   it('should render a link to sign out', () => {
-    render(<NavBarNav />);
+    render(<NavBarNav navMode="auto" />);
 
     const signOutLink = screen.getByRole('link', { name: /sign out/i });
 
     expect(signOutLink).toBeInTheDocument();
   });
 
+  it('should render a nav mode control reporting the current mode', () => {
+    render(<NavBarNav navMode="expanded" />);
+
+    const navModeControl = screen.getByRole('button', {
+      name: 'Navigation menu mode: Expanded',
+    });
+
+    expect(navModeControl).toBeInTheDocument();
+  });
+
   it('should render a color theme switch button', () => {
-    render(<NavBarNav />);
+    render(<NavBarNav navMode="auto" />);
 
     const themeSwitchButton = screen.getByRole('button', {
       name: /switch to (dark|light) theme/i,
@@ -61,7 +71,7 @@ describe('NavBarNav', () => {
   });
 
   it('should stay visible when active', () => {
-    render(<NavBarNav isActive />);
+    render(<NavBarNav isActive navMode="auto" />);
 
     const dashboardMenu = screen.getByRole('navigation', {
       name: /dashboard navigation menu/i,
@@ -72,7 +82,7 @@ describe('NavBarNav', () => {
   });
 
   it('should leave the tab order when inactive', () => {
-    render(<NavBarNav isActive={false} />);
+    render(<NavBarNav isActive={false} navMode="auto" />);
 
     const dashboardMenu = screen.getByRole('navigation', {
       name: /dashboard navigation menu/i,
