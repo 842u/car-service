@@ -1,31 +1,28 @@
 'use client';
 
-import { useId, useState } from 'react';
-
+import type { NavMode } from '@/dashboard/ui/nav-mode/nav-mode';
 import { BrandLabel } from '@/ui/brand-label/brand-label';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 import { HamburgerButton } from '@/ui/hamburger-button/hamburger-button';
 import { NavBar } from '@/ui/nav-bar/nav-bar';
-import { useSessionUser } from '@/user/presentation/hook/use-session-user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
 import { NavBarNav } from './nav/nav';
+import { useDashboardNavBar } from './use-nav-bar';
 
-export function DashboardNavBar() {
-  const { data, isPending } = useSessionUser();
+type DashboardNavBarProps = {
+  navMode: NavMode;
+};
 
-  const navId = useId();
-  const [isActive, setIsActive] = useState(false);
-
-  const handleHamburgerButtonClick = () => {
-    setIsActive((currentState) => !currentState);
-  };
-
-  const handleNavClick = () => {
-    if (isActive) {
-      setIsActive(false);
-    }
-  };
+export function DashboardNavBar({ navMode }: DashboardNavBarProps) {
+  const {
+    user,
+    isPending,
+    navId,
+    isActive,
+    handleHamburgerButtonClick,
+    handleNavClick,
+  } = useDashboardNavBar();
 
   return (
     <NavBar>
@@ -33,7 +30,7 @@ export function DashboardNavBar() {
       {isPending && (
         <Spinner className="fill-accent-400 stroke-accent-400 z-10 h-full" />
       )}
-      {data && <UserBadge className="z-10" user={data} />}
+      {user && <UserBadge className="z-10" user={user} />}
       <HamburgerButton
         aria-controls={navId}
         aria-expanded={isActive}
@@ -44,6 +41,7 @@ export function DashboardNavBar() {
       <NavBarNav
         id={navId}
         isActive={isActive}
+        navMode={navMode}
         onClose={handleNavClick}
         onNavigate={handleNavClick}
       />
