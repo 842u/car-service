@@ -12,8 +12,42 @@ export function navModeTriggerLocator(page: Page): Locator {
   return page.getByRole('button', { name: /^navigation menu mode:/i });
 }
 
+/**
+ * The mode control's panel, named by the legend of the fieldset it wraps its
+ * options in.
+ */
+export function navModePanelLocator(page: Page): Locator {
+  return page.getByRole('group', { name: 'Navigation menu mode' });
+}
+
+/**
+ * The panel's positioned container, found through the `aria-controls` the
+ * trigger publishes while the panel is open.
+ *
+ * `navModePanelLocator` lands on the fieldset the options sit in, which is
+ * inset from the container by its border and padding. Anchoring is a property
+ * of the container, since that is the box the dropdown places against the
+ * trigger.
+ *
+ * Matched on the `id` attribute rather than with `#`, because the id comes from
+ * `useId` and carries characters a CSS id selector would have to escape.
+ */
+export async function navModePanelContainerLocator(
+  page: Page,
+): Promise<Locator> {
+  const contentId =
+    await navModeTriggerLocator(page).getAttribute('aria-controls');
+
+  return page.locator(`[id="${contentId}"]`);
+}
+
 export async function navWidth(page: Page): Promise<number | undefined> {
   return (await navLocator(page).boundingBox())?.width;
+}
+
+/** Puts the pointer past the nav's widest, so nothing it does is a hover. */
+export async function parkPointerClearOfNav(page: Page): Promise<void> {
+  await page.mouse.move(NAV_REVEALED_WIDTH * 2, 5);
 }
 
 /**
@@ -33,5 +67,5 @@ export async function selectNavMode(page: Page, label: string): Promise<void> {
   await navModeTriggerLocator(page).click();
   await page.getByRole('button', { name: label, exact: true }).click();
 
-  await page.mouse.move(NAV_REVEALED_WIDTH * 2, 5);
+  await parkPointerClearOfNav(page);
 }
