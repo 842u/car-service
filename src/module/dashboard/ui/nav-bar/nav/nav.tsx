@@ -42,7 +42,32 @@ export function NavBarNav({
         // initial `min-width` is the keyword `auto`, and a keyword does not
         // interpolate with a length, so leaving it unset makes the reveal jump
         // instead of animating. Both ends of the transition have to be lengths.
-        'border-alpha-grey-300 bg-light-500 dark:bg-dark-500 md:nav-auto:hover:min-w-56 md:nav-expanded:w-56 fixed top-0 left-0 flex h-screen w-56 flex-col border-r pt-16 transition-[background-color,border-color,min-width,translate,visibility] md:visible md:w-16 md:min-w-16 md:translate-x-0',
+        //
+        // Three things hold the reveal open, and all three mean the nav is in
+        // use: a pointer over it, a visible focus inside it, and an open panel
+        // belonging to a control inside it. Focus earns its place on its own,
+        // since the item labels are transparent at the resting width and a
+        // keyboard user would otherwise be reading an unlabelled icon.
+        //
+        // The focus hold reads `:focus-visible` rather than `:focus-within`,
+        // which is what separates a keyboard user from the click that happens
+        // to leave a button focused. On `:focus-within` a pointer user who
+        // picked a mode, or pressed the theme button, would be left with the
+        // nav revealed until they clicked elsewhere. It also puts the reveal on
+        // the same condition as the focus ring, so the nav is open exactly
+        // while an indicator is visible inside it.
+        //
+        // The open panel is read from the trigger's own `aria-expanded` rather
+        // than from a marker the nav sets, so no state has to travel out of the
+        // dropdown. The focus hold cannot stand in for it: the panel is
+        // portaled to `body`, so the nav stops containing focus the moment
+        // focus moves into the panel, and the nav would collapse out from under
+        // an open panel and leave it floating beside a 64px rail.
+        //
+        // `motion-reduce:transition-none` covers the whole list. Everything in
+        // it is the reveal widening or the drawer sliding in, and neither
+        // carries information the user would lose by it being instant.
+        'border-alpha-grey-300 bg-light-500 dark:bg-dark-500 md:nav-auto:hover:min-w-56 md:nav-auto:has-focus-visible:min-w-56 md:nav-auto:has-aria-expanded:min-w-56 md:nav-expanded:w-56 fixed top-0 left-0 flex h-screen w-56 flex-col border-r pt-16 transition-[background-color,border-color,min-width,translate,visibility] motion-reduce:transition-none md:visible md:w-16 md:min-w-16 md:translate-x-0',
         isActive ? 'visible translate-x-0' : 'invisible -translate-x-full',
         className,
       )}
