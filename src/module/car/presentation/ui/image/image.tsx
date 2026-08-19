@@ -6,9 +6,10 @@ import { ImageWithFallback } from '@/ui/image/image';
 type CarImageProps = {
   src?: string | null;
   className?: string;
+  sizes?: string;
 };
 
-export function CarImage({ src, className }: CarImageProps) {
+export function CarImage({ src, className, sizes }: CarImageProps) {
   return (
     <ImageWithFallback
       alt="car image"
@@ -19,6 +20,7 @@ export function CarImage({ src, className }: CarImageProps) {
       fallback={
         <BrandFullIcon className="stroke-alpha-grey-600 stroke-[0.1]" />
       }
+      sizes={sizes}
       src={src}
     />
   );

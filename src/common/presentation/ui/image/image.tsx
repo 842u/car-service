@@ -7,6 +7,7 @@ type ImageWithFallbackProps = {
   alt: string;
   fallback: ReactNode;
   className?: string;
+  sizes?: string;
 };
 
 /**
@@ -19,11 +20,18 @@ export function ImageWithFallback({
   alt,
   fallback,
   className,
+  sizes,
 }: ImageWithFallbackProps) {
   return (
     <div className={twMerge('relative', className)}>
       {src ? (
-        <NextImage fill alt={alt} className="object-cover" src={src} />
+        <NextImage
+          fill
+          alt={alt}
+          className="object-cover"
+          sizes={sizes}
+          src={src}
+        />
       ) : (
         fallback
       )}
