@@ -10,6 +10,9 @@ const configWithBundleAnalyzer = bundleAnalyzer({
 
 const nextConfig: NextConfig = {
   typedRoutes: true,
+  // TanStack Table v9 ships ESM only. Listing it here also feeds next/jest,
+  // which otherwise leaves the package untransformed and fails to parse it.
+  transpilePackages: ['@tanstack/react-table', '@tanstack/table-core'],
   images: {
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
