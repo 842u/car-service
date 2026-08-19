@@ -2,13 +2,14 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 
+import type { features } from '../../features';
 import { Table } from '../../table';
 
 type TestRow = {
   name: string;
 };
 
-const columns: ColumnDef<TestRow>[] = [
+const columns: ColumnDef<typeof features, TestRow>[] = [
   { id: 'name', accessorKey: 'name', meta: { label: 'Name' } },
 ];
 

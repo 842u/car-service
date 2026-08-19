@@ -1,12 +1,14 @@
 import type { Row } from '@tanstack/react-table';
 
+import type { features } from '@/ui/table/features';
+
 type DateFilter = { from?: string; to?: string };
 
 // The TanStack Row generic needs an index signature to read row.original[columnId];
 // unknown would force a cast on new Date(...).
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function filterColumnByDate<TRow extends Record<string, any>>(
-  row: Row<TRow>,
+  row: Row<typeof features, TRow>,
   columnId: string,
   filterValue: DateFilter,
 ) {

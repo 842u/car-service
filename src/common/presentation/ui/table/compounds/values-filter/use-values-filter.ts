@@ -15,9 +15,9 @@ export function useValuesFilter({
 
   const label = table.getColumn(columnId)?.columnDef.meta?.label;
 
-  const currentFilter = table
-    .getState()
-    .columnFilters.find((filter) => filter.id === columnId);
+  const currentFilter = table.state.columnFilters.find(
+    (filter) => filter.id === columnId,
+  );
 
   const selectedValues = (currentFilter?.value as string[]) ?? [];
   const allValues = Object.values(checkboxLabelValueMapping);

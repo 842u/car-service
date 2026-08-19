@@ -1,13 +1,12 @@
-import type { ColumnMeta } from '@tanstack/react-table';
-
 import { TableValuesFilterContent } from '@/ui/table/compounds/values-filter/content';
+import type { TableColumnMeta } from '@/ui/table/features';
 
 import { TableDateFilter } from '../../date-filter/date-filter';
 import { TableTextFilter } from '../../text-filter/text-filter';
 
 type TableColumnDropdownFilterProps = {
   columnId: string;
-  filterMeta: NonNullable<ColumnMeta<unknown, unknown>['filter']>;
+  filterMeta: NonNullable<TableColumnMeta['filter']>;
 };
 
 export function TableColumnDropdownFilter({

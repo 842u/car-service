@@ -1,4 +1,3 @@
-import { flexRender } from '@tanstack/react-table';
 import type { RefObject } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -55,7 +54,7 @@ export function TableBody({ lastRowRef }: TableBodyProps) {
                   'min-w-28 wrap-anywhere whitespace-normal',
               )}
             >
-              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              <table.FlexRender cell={cell} />
             </td>
           ))}
         </tr>

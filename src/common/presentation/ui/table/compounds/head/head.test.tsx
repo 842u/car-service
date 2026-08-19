@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import type { features } from '../../features';
 import { Table } from '../../table';
 
 type TestRow = {
@@ -9,7 +10,7 @@ type TestRow = {
   status: string;
 };
 
-function renderHead(columns: ColumnDef<TestRow>[]) {
+function renderHead(columns: ColumnDef<typeof features, TestRow>[]) {
   return render(
     <Table columns={columns} data={[]}>
       <Table.Root>
@@ -21,7 +22,7 @@ function renderHead(columns: ColumnDef<TestRow>[]) {
 
 describe('TableHead', () => {
   it('should render the column label directly when a column is neither sortable nor filterable', () => {
-    const columns: ColumnDef<TestRow>[] = [
+    const columns: ColumnDef<typeof features, TestRow>[] = [
       { id: 'name', accessorKey: 'name', meta: { label: 'Name' } },
     ];
 
@@ -32,7 +33,7 @@ describe('TableHead', () => {
   });
 
   it('should render a dropdown trigger button for a sortable column', () => {
-    const columns: ColumnDef<TestRow>[] = [
+    const columns: ColumnDef<typeof features, TestRow>[] = [
       {
         id: 'name',
         accessorKey: 'name',
@@ -48,7 +49,7 @@ describe('TableHead', () => {
 
   it('should show sort options in a dropdown when the column header button is clicked', async () => {
     const user = userEvent.setup();
-    const columns: ColumnDef<TestRow>[] = [
+    const columns: ColumnDef<typeof features, TestRow>[] = [
       {
         id: 'name',
         accessorKey: 'name',
@@ -66,7 +67,7 @@ describe('TableHead', () => {
   });
 
   it('should render a dropdown trigger button for a filterable column', () => {
-    const columns: ColumnDef<TestRow>[] = [
+    const columns: ColumnDef<typeof features, TestRow>[] = [
       {
         id: 'status',
         accessorKey: 'status',

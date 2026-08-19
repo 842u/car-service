@@ -12,11 +12,7 @@ const transparentErrorClassName = `${transparentClassName} text-error-500 dark:t
 const errorClassName = `${baseClassName} border-error-500 bg-error-700 disabled:bg-error-900 disabled:border-error-800 hover:border-error-300 hover:bg-error-600 text-light-500`;
 
 export type ButtonVariants =
-  | 'default'
-  | 'accent'
-  | 'transparent'
-  | 'transparentError'
-  | 'error';
+  'default' | 'accent' | 'transparent' | 'transparentError' | 'error';
 
 export const buttonVariants: Record<ButtonVariants, string> = {
   default: defaultClassName,

@@ -3,11 +3,12 @@ import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { TableColumnDropdown } from '@/ui/table/compounds/column-dropdown/column-dropdown';
+import type { features } from '@/ui/table/features';
 import { useTable } from '@/ui/table/table';
 
 type HeadThProps = ComponentProps<'th'> & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  header: Header<any, unknown>;
+  header: Header<typeof features, any, unknown>;
 };
 
 export function HeadTh({ header, ...props }: HeadThProps) {

@@ -1,4 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { memo, useMemo, useRef } from 'react';
 
@@ -6,10 +5,11 @@ import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import { TableActionsDropdown } from '@/car/ownership/presentation/ui/tables/ownerships/actions-dropdown/actions-dropdown';
 import { KeyIcon } from '@/icons/key';
 import { TableIdentifierCell } from '@/ui/table/cells/identifier/identifier';
+import type { features } from '@/ui/table/features';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
-const columnsHelper = createColumnHelper<OwnershipDto>();
+const columnsHelper = createColumnHelper<typeof features, OwnershipDto>();
 
 const PrimaryOwnerCell = memo(function PrimaryOwnerCell({
   isPrimaryOwner,
@@ -87,7 +87,7 @@ export function useOwnershipsTable({
 
   const columns = useMemo(
     () =>
-      [
+      columnsHelper.columns([
         columnsHelper.accessor('createdAt', { enableSorting: true }),
         columnsHelper.accessor('isPrimary', {
           meta: { label: 'Main Owner' },
@@ -100,7 +100,7 @@ export function useOwnershipsTable({
           meta: { label: 'User' },
           id: 'user',
           enableSorting: true,
-          sortingFn: 'alphanumeric',
+          sortFn: 'alphanumeric',
           enableColumnFilter: true,
           filterFn: 'includesString',
           cell: ({ row }) => (
@@ -139,7 +139,7 @@ export function useOwnershipsTable({
             );
           },
         }),
-      ] as ColumnDef<OwnershipDto>[],
+      ]),
     [usersMap, isSessionUserPrimaryOwner, sessionUserId],
   );
 

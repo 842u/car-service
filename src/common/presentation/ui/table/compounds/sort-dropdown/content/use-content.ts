@@ -13,18 +13,24 @@ export function useTableSortDropdownContent({
 
   const { close } = useDropdown();
 
-  const handleAscClick = () => {
+  const sortBy = (desc: boolean) => {
     table.setSorting((currentSorting) => {
       const intrinsicSort = table.options.meta?.intrinsicSort;
-      const newSortingState = currentSorting.filter(
+      // The intrinsic rule is dropped here and appended last so it stays the
+      // final tiebreaker behind whatever the user picks.
+      const userSorting = currentSorting.filter(
         (sort) => sort.id !== intrinsicSort?.id,
       );
+      const isColumnSorted = userSorting.some((sort) => sort.id === columnId);
 
-      if (isSorted && sortState) {
-        sortState.desc = false;
-      } else {
-        newSortingState.push({ id: columnId, desc: false });
-      }
+      // Every changed rule is a new object. The sorted row model compares its
+      // inputs by identity, so flipping `desc` on the rule already in state
+      // leaves it serving the previous order.
+      const newSortingState = isColumnSorted
+        ? userSorting.map((sort) =>
+            sort.id === columnId ? { ...sort, desc } : sort,
+          )
+        : [...userSorting, { id: columnId, desc }];
 
       intrinsicSort && newSortingState.push(intrinsicSort);
 
@@ -34,26 +40,9 @@ export function useTableSortDropdownContent({
     close();
   };
 
-  const handleDescClick = () => {
-    table.setSorting((currentSorting) => {
-      const intrinsicSort = table.options.meta?.intrinsicSort;
-      const newSortingState = currentSorting.filter(
-        (sort) => sort.id !== intrinsicSort?.id,
-      );
+  const handleAscClick = () => sortBy(false);
 
-      if (isSorted && sortState) {
-        sortState.desc = true;
-      } else {
-        newSortingState.push({ id: columnId, desc: true });
-      }
-
-      intrinsicSort && newSortingState.push(intrinsicSort);
-
-      return newSortingState;
-    });
-
-    close();
-  };
+  const handleDescClick = () => sortBy(true);
 
   const handleReset = () => table.getColumn(columnId)?.clearSorting();
 

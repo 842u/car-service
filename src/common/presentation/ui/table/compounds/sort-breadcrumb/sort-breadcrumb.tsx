@@ -8,7 +8,7 @@ type TableSortBreadcrumbProps = {
 export function TableSortBreadcrumb({ className }: TableSortBreadcrumbProps) {
   const { table } = useTable();
 
-  const sorting = table.getState().sorting;
+  const sorting = table.state.sorting;
 
   return (
     <div className={className}>

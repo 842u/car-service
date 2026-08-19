@@ -1,14 +1,10 @@
 import type {
   ColumnDef,
-  Table as TanstackTable,
+  ReactTable,
+  RowData,
   TableOptions,
 } from '@tanstack/react-table';
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
+import { useTable as useTanstackTable } from '@tanstack/react-table';
 import type { ReactNode } from 'react';
 import { createContext } from 'react';
 
@@ -21,13 +17,19 @@ import { TableRoot } from './compounds/root/root';
 import { TableSortBreadcrumb } from './compounds/sort-breadcrumb/sort-breadcrumb';
 import { TableTextFilter } from './compounds/text-filter/text-filter';
 import { TableValuesFilter } from './compounds/values-filter/values-filter';
+import { features } from './features';
 
-type TableContextValue<TData> = {
-  table: TanstackTable<TData>;
+// The compound components read the table without knowing the row shape, so
+// the context erases it. v9's table type is invariant in its data parameter,
+// which is why a concrete instance needs the cast below to reach the context.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyRowTable = ReactTable<typeof features, any>;
+
+type TableContextValue = {
+  table: AnyRowTable;
 };
 
-// eslint-disable-next-line
-const TableContext = createContext<TableContextValue<any> | null>(null);
+const TableContext = createContext<TableContextValue | null>(null);
 
 export function useTable() {
   return useContextGuard({
@@ -36,29 +38,31 @@ export function useTable() {
   });
 }
 
-type TableProps<TData> = {
-  columns: ColumnDef<TData>[];
+type TableProps<TData extends RowData> = {
+  columns: ColumnDef<typeof features, TData>[];
   data: TData[];
-  options?: Partial<TableOptions<TData>>;
+  options?: Partial<TableOptions<typeof features, TData>>;
   children?: ReactNode;
 };
 
-export function Table<TData>({
+export function Table<TData extends RowData>({
   columns,
   data,
   options,
   children,
 }: TableProps<TData>) {
-  const table = useReactTable({
+  const table = useTanstackTable({
+    features,
     columns,
     data,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     ...options,
   });
 
-  return <TableContext value={{ table }}>{children}</TableContext>;
+  return (
+    <TableContext value={{ table: table as AnyRowTable }}>
+      {children}
+    </TableContext>
+  );
 }
 
 Table.Root = TableRoot;
