@@ -14,6 +14,7 @@ export function DetailsCardHeader({ car }: DetailsCardHeaderProps) {
     <div className="flex items-center gap-5 md:gap-10">
       <CarImage
         className="w-4/12 overflow-hidden rounded-sm"
+        sizes="33vw"
         src={car?.imageUrl}
       />
 

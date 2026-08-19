@@ -11,7 +11,7 @@ export function CarBadge({ name, imageUrl, className }: CarBadgeProps) {
   return (
     <Badge
       className={className}
-      image={<CarImage src={imageUrl} />}
+      image={<CarImage sizes="10vw" src={imageUrl} />}
       label={name}
     />
   );

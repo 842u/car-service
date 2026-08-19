@@ -71,7 +71,12 @@ export function FormFields({
           label="Image"
           name="image"
         >
-          {(previewUrl) => <CarImage src={previewUrl || imageUrl} />}
+          {(previewUrl) => (
+            <CarImage
+              sizes="(min-width: 768px) 288px, 100vw"
+              src={previewUrl || imageUrl}
+            />
+          )}
         </Form.InputImage>
       </Form.InputWrapper>
       <Form.InputWrapper>
