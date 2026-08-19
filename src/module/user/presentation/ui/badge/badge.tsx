@@ -15,7 +15,7 @@ export function UserBadge({ user, className }: UserBadgeProps) {
     <Badge
       className={className}
       data-testid={USER_BADGE_TEST_ID}
-      image={<UserImage src={user.avatarUrl} />}
+      image={<UserImage sizes="38px" src={user.avatarUrl} />}
       label={user.name}
     />
   );

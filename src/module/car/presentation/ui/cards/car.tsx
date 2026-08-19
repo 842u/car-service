@@ -20,7 +20,11 @@ export function CarCard({ car }: CarCardProps) {
       prefetch={true}
     >
       <Card className="flex h-full flex-col gap-4">
-        <CarImage className="overflow-hidden rounded-lg" src={car.imageUrl} />
+        <CarImage
+          className="overflow-hidden rounded-lg"
+          sizes="320px"
+          src={car.imageUrl}
+        />
         <div className="overflow-hidden">
           <p className="mb-1 text-3xl font-bold">{car.customName}</p>
           <p className="text-lg">{car.licensePlates}</p>
