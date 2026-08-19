@@ -44,7 +44,7 @@
     "@next/eslint-plugin-next": "16.3.1",
     "@playwright/test": "1.61.1",
     "@postgres-language-server/cli": "0.25.7",
-    "@react-email/ui": "6.6.5",
+    "@react-email/ui": "6.9.2",
     "@tailwindcss/postcss": "4.3.1",
     "@tanstack/eslint-plugin-query": "5.101.1",
     "@tanstack/react-query-devtools": "5.101.1",
@@ -86,7 +86,7 @@
     "whatwg-fetch": "3.6.20"
   },
   "allowScripts": {
-    "esbuild@0.28.0": true,
+    "esbuild@0.28.1": true,
     "sharp@0.34.5": true,
     "unrs-resolver@1.11.1": true
   }
