@@ -15,8 +15,7 @@ export type FailureResult<TError, TMeta = object> = BaseFailureResult<TError> &
   TMeta;
 
 export type Result<TData, TError, TMeta = object> =
-  | SuccessResult<TData, TMeta>
-  | FailureResult<TError, TMeta>;
+  SuccessResult<TData, TMeta> | FailureResult<TError, TMeta>;
 
 type ResultRecord = Record<string, Result<unknown, unknown>>;
 

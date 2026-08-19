@@ -15,20 +15,17 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: allowedOrigins.google.avatars.protocol.replace(':', '') as
-          | 'https'
-          | 'http',
+          'https' | 'http',
         hostname: allowedOrigins.google.avatars.hostname,
       },
       {
         protocol: allowedOrigins.github.avatars.protocol.replace(':', '') as
-          | 'https'
-          | 'http',
+          'https' | 'http',
         hostname: allowedOrigins.github.avatars.hostname,
       },
       {
         protocol: allowedOrigins.supabase.app.protocol.replace(':', '') as
-          | 'https'
-          | 'http',
+          'https' | 'http',
         hostname: allowedOrigins.supabase.app.hostname,
       },
     ],

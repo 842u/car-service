@@ -14,11 +14,7 @@ const errorDefaultClassName = `${baseClassName} border rounded-md border-error-5
 const errorTransparentClassName = `${baseClassName} border rounded-md border-error-500`;
 
 export type SectionVariants =
-  | 'raw'
-  | 'default'
-  | 'transparent'
-  | 'errorDefault'
-  | 'errorTransparent';
+  'raw' | 'default' | 'transparent' | 'errorDefault' | 'errorTransparent';
 
 export const sectionVariants: Record<SectionVariants, string> = {
   raw: baseClassName,
