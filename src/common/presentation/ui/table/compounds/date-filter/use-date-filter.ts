@@ -39,9 +39,9 @@ export function useDateFilter({ columnId }: UseDateFilterParams) {
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
 
-  const currentFilter = table
-    .getState()
-    .columnFilters.find((filter) => filter.id === columnId);
+  const currentFilter = table.state.columnFilters.find(
+    (filter) => filter.id === columnId,
+  );
 
   const currentValue = currentFilter?.value
     ? (currentFilter.value as { from?: string; to?: string })

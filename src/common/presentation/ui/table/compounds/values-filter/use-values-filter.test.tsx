@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { act, renderHook } from '@testing-library/react';
 import type { ChangeEvent, ReactNode } from 'react';
 
+import type { features } from '../../features';
 import { Table } from '../../table';
 import { useValuesFilter } from './use-values-filter';
 
@@ -9,7 +10,7 @@ type TestRow = {
   status: string;
 };
 
-const columns: ColumnDef<TestRow>[] = [
+const columns: ColumnDef<typeof features, TestRow>[] = [
   {
     id: 'status',
     accessorKey: 'status',

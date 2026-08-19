@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import type { features } from './features';
 import { Table } from './table';
 import { useColumnSortState } from './use-column-sort-state';
 
@@ -9,7 +10,7 @@ type TestRow = {
   name: string;
 };
 
-const columns: ColumnDef<TestRow>[] = [
+const columns: ColumnDef<typeof features, TestRow>[] = [
   {
     id: 'name',
     accessorKey: 'name',
@@ -65,7 +66,7 @@ describe('useColumnSortState', () => {
   });
 
   it('should report isSortable falsy when enableSorting is not set on the column', () => {
-    const unsortableColumns: ColumnDef<TestRow>[] = [
+    const unsortableColumns: ColumnDef<typeof features, TestRow>[] = [
       { id: 'name', accessorKey: 'name', meta: { label: 'Name' } },
     ];
 

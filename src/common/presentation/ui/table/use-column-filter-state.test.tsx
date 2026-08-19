@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
+import type { features } from './features';
 import { Table } from './table';
 import { useColumnFilterState } from './use-column-filter-state';
 
@@ -11,7 +12,7 @@ type TestRow = {
 
 const filterMeta = { type: 'text' as const };
 
-const columns: ColumnDef<TestRow>[] = [
+const columns: ColumnDef<typeof features, TestRow>[] = [
   {
     id: 'status',
     accessorKey: 'status',

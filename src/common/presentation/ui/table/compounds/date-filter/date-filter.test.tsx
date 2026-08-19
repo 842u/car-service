@@ -2,13 +2,14 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import type { features } from '../../features';
 import { Table } from '../../table';
 
-const columns: ColumnDef<{ date: string }>[] = [
+const columns: ColumnDef<typeof features, { date: string }>[] = [
   { id: 'date', accessorKey: 'date', meta: { label: 'Date' } },
 ];
 
-const filterableColumns: ColumnDef<{ date: string }>[] = [
+const filterableColumns: ColumnDef<typeof features, { date: string }>[] = [
   {
     id: 'date',
     accessorKey: 'date',

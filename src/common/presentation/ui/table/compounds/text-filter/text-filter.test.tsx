@@ -2,9 +2,10 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import type { features } from '../../features';
 import { Table } from '../../table';
 
-const columns: ColumnDef<{ name: string }>[] = [
+const columns: ColumnDef<typeof features, { name: string }>[] = [
   {
     id: 'name',
     accessorKey: 'name',

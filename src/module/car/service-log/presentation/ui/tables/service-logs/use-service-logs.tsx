@@ -1,4 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { memo, useMemo, useRef } from 'react';
 
@@ -6,12 +5,13 @@ import type { ServiceLogDto } from '@/car/service-log/application/dto/service-lo
 import { serviceCategoryLabelValueMapping } from '@/car/service-log/interface/ui/service-log-form.schema';
 import { TableActionsDropdown } from '@/car/service-log/presentation/ui/tables/service-logs/actions-dropdown/actions-dropdown';
 import { filterColumnByDate } from '@/ui/table/compounds/date-filter/filter-column-by-date';
+import type { features } from '@/ui/table/features';
 import { Tag } from '@/ui/tag/tag';
 import { TruncatedText } from '@/ui/truncated-text/truncated-text';
 import type { UserDto } from '@/user/application/dto/user';
 import { UserBadge } from '@/user/presentation/ui/badge/badge';
 
-const columnsHelper = createColumnHelper<ServiceLogDto>();
+const columnsHelper = createColumnHelper<typeof features, ServiceLogDto>();
 
 const CategoryCell = memo(function CategoryCell({
   categories,
@@ -94,7 +94,7 @@ export function useServiceLogsTable({
 
   const columns = useMemo(
     () =>
-      [
+      columnsHelper.columns([
         columnsHelper.accessor('serviceDate', {
           meta: { label: 'Date', filter: { type: 'date' } },
           enableSorting: true,
@@ -142,7 +142,7 @@ export function useServiceLogsTable({
         columnsHelper.accessor((row) => usersMap.get(row.authorId)?.name, {
           id: 'author',
           enableSorting: true,
-          sortingFn: 'alphanumeric',
+          sortFn: 'alphanumeric',
           enableColumnFilter: true,
           filterFn: 'includesString',
           meta: { label: 'Creator' },
@@ -167,7 +167,7 @@ export function useServiceLogsTable({
             );
           },
         }),
-      ] as ColumnDef<ServiceLogDto>[],
+      ]),
     [usersMap, sessionUserId, isSessionUserPrimaryOwner],
   );
 

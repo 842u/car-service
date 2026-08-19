@@ -1,5 +1,4 @@
 import { useInfiniteQuery, useIsMutating } from '@tanstack/react-query';
-import type { ColumnDef } from '@tanstack/react-table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo } from 'react';
 
@@ -14,8 +13,9 @@ import { useToasts } from '@/common/presentation/hook/use-toasts';
 import { queryKeySerialize } from '@/common/presentation/tanstack/query-key-serialize';
 import { DateExpirationStatusIcon } from '@/ui/date-expiration-status-icon/date-expiration-status-icon';
 import { TableIdentifierCell } from '@/ui/table/cells/identifier/identifier';
+import type { features } from '@/ui/table/features';
 
-const columnsHelper = createColumnHelper<CarDto>();
+const columnsHelper = createColumnHelper<typeof features, CarDto>();
 
 type UseDateExpirationTableParams = {
   label: string;
@@ -34,7 +34,7 @@ export function useDateExpirationTable({
 
   const columns = useMemo(
     () =>
-      [
+      columnsHelper.columns([
         columnsHelper.display({
           id: 'status',
           cell: ({ row }) => {
@@ -76,7 +76,7 @@ export function useDateExpirationTable({
             <DateExpirationTableViewButton carId={row.original.id} />
           ),
         }),
-      ] as ColumnDef<CarDto>[],
+      ]),
     [dateColumn, label],
   );
 

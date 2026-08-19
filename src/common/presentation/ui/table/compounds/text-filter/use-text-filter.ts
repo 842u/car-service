@@ -18,9 +18,9 @@ export function useTextFilter({
 
   const columnLabel = table.getColumn(columnId)?.columnDef.meta?.label;
 
-  const currentFilter = table
-    .getState()
-    .columnFilters.find((filter) => filter.id === columnId);
+  const currentFilter = table.state.columnFilters.find(
+    (filter) => filter.id === columnId,
+  );
 
   const committedValue =
     typeof currentFilter?.value === 'string' ? currentFilter.value : '';
