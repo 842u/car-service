@@ -38,7 +38,9 @@ export function AvatarForm({ avatarUrl }: AvatarFormProps) {
           name="image"
           withInfo={false}
         >
-          {(previewUrl) => <UserImage src={previewUrl || avatarUrl} />}
+          {(previewUrl) => (
+            <UserImage sizes="288px" src={previewUrl || avatarUrl} />
+          )}
         </Form.InputImage>
       </Form.InputWrapper>
       <Form.Controls>
