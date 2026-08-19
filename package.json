@@ -76,7 +76,7 @@
     "lint-staged": "17.3.0",
     "postcss": "8.5.26",
     "prettier": "3.9.6",
-    "prettier-plugin-tailwindcss": "0.8.0",
+    "prettier-plugin-tailwindcss": "0.8.1",
     "react-email": "6.9.2",
     "supabase": "2.114.0",
     "tailwindcss": "4.3.3",
