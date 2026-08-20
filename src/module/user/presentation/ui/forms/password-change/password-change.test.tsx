@@ -4,9 +4,13 @@ import userEvent from '@testing-library/user-event';
 import { PasswordChangeForm } from './password-change';
 
 global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve({ message: 'ok', error: null }),
-  }),
+  Promise.resolve(
+    new Response(JSON.stringify({ success: true, status: 200, data: null }), {
+      status: 200,
+      statusText: 'OK',
+      headers: { 'content-type': 'application/json' },
+    }),
+  ),
 ) as jest.Mock;
 
 describe('PasswordChangeForm', () => {
