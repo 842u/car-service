@@ -63,16 +63,23 @@ describe('JsonApiRequester', () => {
   });
 
   describe('transport failure', () => {
-    it('should fail without validating the response', async () => {
+    it('should fail with the client message and nothing beside it', async () => {
       mockHttpClient.post.mockResolvedValue(
-        Result.fail(httpClientError.network('The request could not be sent.')),
+        Result.fail(
+          httpClientError.network('The request could not be sent.', 'cause'),
+        ),
       );
 
       const result = await apiRequester.send('POST', '/api/car', {}, schema);
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.message).toBe('The request could not be sent.');
+        // The transport `kind` and `cause` stop here: the port promises a
+        // message and issues, so passing the rest through would leak a shape
+        // no caller can see in the type.
+        expect(result.error).toEqual({
+          message: 'The request could not be sent.',
+        });
       }
       expect(mockValidator.validate).not.toHaveBeenCalled();
     });

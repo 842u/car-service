@@ -1,13 +1,10 @@
-import type { ApiResponseBody } from '@/common/application/api-response';
+import type {
+  ApiResponseBody,
+  ApiResponseError,
+} from '@/common/application/api-response';
 import type { Result } from '@/common/application/result';
-import type { ValidatorIssue } from '@/common/application/validator';
 
 export type ApiRequesterMethod = 'POST' | 'PATCH' | 'DELETE';
-
-export type ApiRequesterError = {
-  message: string;
-  issues?: ValidatorIssue[];
-};
 
 export interface ApiRequester {
   send<TData>(
@@ -15,5 +12,5 @@ export interface ApiRequester {
     endpoint: string,
     contract: unknown,
     schema: { _output: ApiResponseBody<TData> },
-  ): Promise<Result<TData, ApiRequesterError>>;
+  ): Promise<Result<TData, ApiResponseError>>;
 }

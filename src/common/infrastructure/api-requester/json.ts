@@ -1,9 +1,11 @@
 import type {
   ApiRequester,
-  ApiRequesterError,
   ApiRequesterMethod,
 } from '@/common/application/api-requester';
-import type { ApiResponseBody } from '@/common/application/api-response';
+import type {
+  ApiResponseBody,
+  ApiResponseError,
+} from '@/common/application/api-response';
 import type { HttpClient } from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
@@ -30,7 +32,7 @@ export class JsonApiRequester implements ApiRequester {
     endpoint: string,
     contract: unknown,
     schema: { _output: ApiResponseBody<TData> },
-  ): Promise<Result<TData, ApiRequesterError>> {
+  ): Promise<Result<TData, ApiResponseError>> {
     const httpResult = await this.dispatch(
       method,
       endpoint,
@@ -39,7 +41,9 @@ export class JsonApiRequester implements ApiRequester {
 
     // Every message the client produces already reads as a finished sentence,
     // and these reach the user as a toast, so the message is forwarded rather
-    // than prefixed with a diagnostic.
+    // than prefixed with a diagnostic. The `kind` and `cause` beside it are
+    // dropped rather than passed through, because the port does not declare
+    // them and nothing downstream reads them.
     if (!httpResult.success) {
       return Result.fail({ message: httpResult.error.message });
     }
@@ -57,12 +61,7 @@ export class JsonApiRequester implements ApiRequester {
 
     const responseBody = validationResult.data;
 
-    if (!responseBody.success) {
-      return Result.fail({
-        message: responseBody.error.message,
-        issues: responseBody.error.issues,
-      });
-    }
+    if (!responseBody.success) return Result.fail(responseBody.error);
 
     return Result.ok(responseBody.data);
   }

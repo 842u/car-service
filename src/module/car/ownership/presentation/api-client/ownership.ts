@@ -2,13 +2,11 @@ import type { OwnershipDto } from '@/car/ownership/application/dto/ownership';
 import type { AddOwnerApiRequest } from '@/car/ownership/interface/api/add.schema';
 import type { PromotePrimaryOwnerApiRequest } from '@/car/ownership/interface/api/promote.schema';
 import type { RemoveOwnerApiRequest } from '@/car/ownership/interface/api/remove.schema';
+import type { ApiResponseError } from '@/common/application/api-response';
 import type { Result } from '@/common/application/result';
-import type { ValidatorIssue } from '@/common/application/validator';
 
-type OwnershipApiClientError = {
-  message: string;
-  issues?: ValidatorIssue[];
-};
+/** The requester forwards the api error envelope unchanged. */
+type OwnershipApiClientError = ApiResponseError;
 
 export interface OwnershipApiClient {
   add(
