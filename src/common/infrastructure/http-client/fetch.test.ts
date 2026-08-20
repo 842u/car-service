@@ -1,3 +1,4 @@
+import type { HttpMethod } from '@/common/application/http-client';
 import { FetchHttpClient } from '@/common/infrastructure/http-client/fetch';
 
 function jsonResponse(body: unknown, init?: ResponseInit) {
@@ -180,6 +181,18 @@ describe('FetchHttpClient', () => {
 
       expect(lastCall().init).toEqual(
         expect.objectContaining({ method: verb, body }),
+      );
+    });
+
+    it('should send a method handed to request directly', async () => {
+      const method = 'PATCH' as HttpMethod;
+
+      fetchSpy.mockResolvedValue(jsonResponse({}));
+
+      await httpClient.request(method, '/users', '{}');
+
+      expect(lastCall().init).toEqual(
+        expect.objectContaining({ method: 'PATCH', body: '{}' }),
       );
     });
 

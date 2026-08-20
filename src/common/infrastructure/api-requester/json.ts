@@ -33,10 +33,11 @@ export class JsonApiRequester implements ApiRequester {
     contract: unknown,
     schema: { _output: ApiResponseBody<TData> },
   ): Promise<Result<TData, ApiResponseError>> {
-    const httpResult = await this.dispatch(
+    const httpResult = await this._httpClient.request(
       method,
       endpoint,
       JSON.stringify(contract),
+      { headers: JSON_HEADERS },
     );
 
     // Every message the client produces already reads as a finished sentence,
@@ -64,22 +65,5 @@ export class JsonApiRequester implements ApiRequester {
     if (!responseBody.success) return Result.fail(responseBody.error);
 
     return Result.ok(responseBody.data);
-  }
-
-  private async dispatch(
-    method: ApiRequesterMethod,
-    endpoint: string,
-    body: string,
-  ) {
-    const config = { headers: JSON_HEADERS };
-
-    switch (method) {
-      case 'POST':
-        return this._httpClient.post(endpoint, body, config);
-      case 'PATCH':
-        return this._httpClient.patch(endpoint, body, config);
-      case 'DELETE':
-        return this._httpClient.delete(endpoint, body, config);
-    }
   }
 }

@@ -2,6 +2,7 @@ import type {
   HttpClient,
   HttpClientError,
   HttpClientResponse,
+  HttpMethod,
   RequestConfig,
 } from '@/common/application/http-client';
 import { httpClientError } from '@/common/application/http-client';
@@ -23,28 +24,8 @@ export class FetchHttpClient implements HttpClient {
     this._defaultTimeout = config.timeout;
   }
 
-  async get(url: string, config?: RequestConfig) {
-    return this.request('GET', url, undefined, config);
-  }
-
-  async post(url: string, body?: BodyInit, config?: RequestConfig) {
-    return this.request('POST', url, body, config);
-  }
-
-  async put(url: string, body?: BodyInit, config?: RequestConfig) {
-    return this.request('PUT', url, body, config);
-  }
-
-  async delete(url: string, body?: BodyInit, config?: RequestConfig) {
-    return this.request('DELETE', url, body, config);
-  }
-
-  async patch(url: string, body?: BodyInit, config?: RequestConfig) {
-    return this.request('PATCH', url, body, config);
-  }
-
-  private async request(
-    method: string,
+  async request(
+    method: HttpMethod,
     url: string,
     body?: BodyInit,
     config?: RequestConfig,
@@ -89,6 +70,26 @@ export class FetchHttpClient implements HttpClient {
         httpClientError.parse('The response body could not be read.', error),
       );
     }
+  }
+
+  async get(url: string, config?: RequestConfig) {
+    return this.request('GET', url, undefined, config);
+  }
+
+  async post(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('POST', url, body, config);
+  }
+
+  async put(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('PUT', url, body, config);
+  }
+
+  async delete(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('DELETE', url, body, config);
+  }
+
+  async patch(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('PATCH', url, body, config);
   }
 
   /**

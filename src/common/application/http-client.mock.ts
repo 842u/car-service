@@ -4,6 +4,7 @@ import type { HttpClient } from '@/common/application/http-client';
 
 export function createMockHttpClient(): jest.Mocked<HttpClient> {
   return {
+    request: jest.fn<HttpClient['request']>(),
     get: jest.fn<HttpClient['get']>(),
     post: jest.fn<HttpClient['post']>(),
     put: jest.fn<HttpClient['put']>(),

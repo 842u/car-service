@@ -27,22 +27,19 @@ describe('JsonApiRequester', () => {
     apiRequester = new JsonApiRequester(mockHttpClient, mockValidator);
   });
 
-  describe('dispatch', () => {
-    it.each([
-      ['POST', 'post'],
-      ['PATCH', 'patch'],
-      ['DELETE', 'delete'],
-    ] as const)(
-      'should send %s through the matching client method',
-      async (method, clientMethod) => {
+  describe('request', () => {
+    it.each(['POST', 'PATCH', 'DELETE'] as const)(
+      'should send %s as the serialized contract',
+      async (method) => {
         const body = { success: true, data: null };
 
-        mockHttpClient[clientMethod].mockResolvedValue(httpSuccess(body));
+        mockHttpClient.request.mockResolvedValue(httpSuccess(body));
         mockValidator.validate.mockReturnValue(Result.ok(body));
 
         await apiRequester.send(method, '/api/car', { carId: '1' }, schema);
 
-        expect(mockHttpClient[clientMethod]).toHaveBeenCalledWith(
+        expect(mockHttpClient.request).toHaveBeenCalledWith(
+          method,
           '/api/car',
           JSON.stringify({ carId: '1' }),
           { headers: { 'Content-Type': 'application/json' } },
@@ -53,7 +50,7 @@ describe('JsonApiRequester', () => {
     it('should validate the response body against the given schema', async () => {
       const body = { success: true, data: null };
 
-      mockHttpClient.post.mockResolvedValue(httpSuccess(body));
+      mockHttpClient.request.mockResolvedValue(httpSuccess(body));
       mockValidator.validate.mockReturnValue(Result.ok(body));
 
       await apiRequester.send('POST', '/api/car', {}, schema);
@@ -64,7 +61,7 @@ describe('JsonApiRequester', () => {
 
   describe('transport failure', () => {
     it('should fail with the client message and nothing beside it', async () => {
-      mockHttpClient.post.mockResolvedValue(
+      mockHttpClient.request.mockResolvedValue(
         Result.fail(
           httpClientError.network('The request could not be sent.', 'cause'),
         ),
@@ -118,7 +115,7 @@ describe('JsonApiRequester', () => {
 
   describe('non-envelope body', () => {
     it('should fail with a message naming the status', async () => {
-      mockHttpClient.post.mockResolvedValue(
+      mockHttpClient.request.mockResolvedValue(
         httpSuccess('<!doctype html>', 404),
       );
       mockValidator.validate.mockReturnValue(
@@ -144,7 +141,7 @@ describe('JsonApiRequester', () => {
         error: { message: 'Email already taken' },
       };
 
-      mockHttpClient.post.mockResolvedValue(httpSuccess(body, 409));
+      mockHttpClient.request.mockResolvedValue(httpSuccess(body, 409));
       mockValidator.validate.mockReturnValue(Result.ok(body));
 
       const result = await apiRequester.send('POST', '/api/car', {}, schema);
@@ -163,7 +160,7 @@ describe('JsonApiRequester', () => {
         error: { message: 'Validation failed.', issues },
       };
 
-      mockHttpClient.post.mockResolvedValue(httpSuccess(body, 422));
+      mockHttpClient.request.mockResolvedValue(httpSuccess(body, 422));
       mockValidator.validate.mockReturnValue(Result.ok(body));
 
       const result = await apiRequester.send('POST', '/api/car', {}, schema);
@@ -180,7 +177,7 @@ describe('JsonApiRequester', () => {
       const data = { id: '1' };
       const body = { success: true, status: 200, data };
 
-      mockHttpClient.post.mockResolvedValue(httpSuccess(body));
+      mockHttpClient.request.mockResolvedValue(httpSuccess(body));
       mockValidator.validate.mockReturnValue(Result.ok(body));
 
       const result = await apiRequester.send('POST', '/api/car', {}, schema);

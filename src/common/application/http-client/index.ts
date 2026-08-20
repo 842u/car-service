@@ -37,12 +37,9 @@ export const httpClientError = {
   },
 };
 
-export type HttpClientSuccessResponse<TData> = SuccessResult<
-  TData,
-  HttpResponseMeta
->;
+type HttpClientSuccessResponse<TData> = SuccessResult<TData, HttpResponseMeta>;
 
-export type HttpClientFailureResponse = FailureResult<HttpClientError>;
+type HttpClientFailureResponse = FailureResult<HttpClientError>;
 
 /**
  * Metadata sits on the success branch alone, because it exists only when a
@@ -58,7 +55,21 @@ export type RequestConfig = {
   signal?: AbortSignal;
 };
 
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
 export interface HttpClient {
+  /**
+   * The verb methods below are sugar over this one. A caller holding the verb
+   * in a variable calls it directly rather than switching over the verb to
+   * pick a method.
+   */
+  request(
+    method: HttpMethod,
+    url: string,
+    body?: BodyInit,
+    config?: RequestConfig,
+  ): Promise<HttpClientResponse>;
+
   get(url: string, config?: RequestConfig): Promise<HttpClientResponse>;
 
   post(
