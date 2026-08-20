@@ -8,7 +8,10 @@ import {
   type EditCarApiRequest,
   editCarApiResponseSchema,
 } from '@/car/interface/api/edit.schema';
-import { removeCarApiResponseSchema } from '@/car/interface/api/remove.schema';
+import {
+  type RemoveCarApiRequest,
+  removeCarApiResponseSchema,
+} from '@/car/interface/api/remove.schema';
 import type { CarApiClient } from '@/car/presentation/api-client/car';
 import type { ApiRequester } from '@/common/application/api-requester';
 
@@ -40,10 +43,12 @@ export class NextCarApiClient implements CarApiClient {
   }
 
   async remove(carId: string) {
+    const contract: RemoveCarApiRequest = { carId };
+
     return this._apiRequester.send(
       'DELETE',
       ENDPOINT,
-      { carId },
+      contract,
       removeCarApiResponseSchema,
     );
   }
