@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 
 import type { HeadingLevel } from '@/ui/types/heading-level';
 
-import { useLandingSection } from '../../section-context';
+import { useLandingSection } from '../../use-landing-section';
 
 type LandingSectionHeadingProps = ComponentProps<'h1'> & {
   headingLevel: HeadingLevel;

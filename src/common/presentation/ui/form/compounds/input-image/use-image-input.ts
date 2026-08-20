@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { FieldValues } from 'react-hook-form';
 import { useController } from 'react-hook-form';
 
-import { useForm } from '../../form';
+import { useForm } from '../../use-form';
 import type { FormImageInputProps } from './image-input';
 
 type UseFormImageInputParams<TFieldValues extends FieldValues> = Pick<

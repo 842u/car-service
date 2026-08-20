@@ -4,7 +4,7 @@ import { FunnelIcon } from '@/icons/funnel';
 import { Dropdown } from '@/ui/dropdown/dropdown';
 import { IconButton } from '@/ui/icon-button/icon-button';
 import { TableValuesFilterContent } from '@/ui/table/compounds/values-filter/content';
-import { useTable } from '@/ui/table/table';
+import { useTable } from '@/ui/table/use-table';
 
 type TableValuesFilterProps = {
   columnId: string;

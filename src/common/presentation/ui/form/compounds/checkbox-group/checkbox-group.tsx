@@ -6,7 +6,7 @@ import type {
   UseFormRegister,
 } from 'react-hook-form';
 
-import { useForm } from '../../form';
+import { useForm } from '../../use-form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 

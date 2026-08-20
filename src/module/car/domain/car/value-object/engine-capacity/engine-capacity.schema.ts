@@ -6,13 +6,12 @@ z.config({
   jitless: true,
 });
 
-// Postgres "integer" (int4) upper bound; the engine_capacity column is int4.
-export const POSTGRES_INT4_MAX_VALUE = 2147483647;
-
 const ENGINE_CAPACITY_REQUIRED_MESSAGE = 'Engine capacity is required.';
 const ENGINE_CAPACITY_TYPE_MESSAGE = 'Engine capacity must be a number.';
 export const MIN_ENGINE_CAPACITY_VALUE = 0;
-export const MAX_ENGINE_CAPACITY_VALUE = POSTGRES_INT4_MAX_VALUE;
+// The largest production car engines are around 8,400 cc; the ceiling leaves
+// room for oddities without accepting a mistyped order of magnitude.
+export const MAX_ENGINE_CAPACITY_VALUE = 20_000;
 
 export const engineCapacitySchema = z
   .number({

@@ -17,7 +17,7 @@ import { AuthenticatedPage } from './fixtures';
 const UNFILTERED_CATEGORY = 'other';
 const FILTERED_CATEGORY = 'engine';
 
-export type KeyboardTestContext = {
+type KeyboardTestContext = {
   page: Page;
   carId: string;
   /** The category whose checkbox the column dropdown journey ticks. */

@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import { useTable } from '@/ui/table/table';
+import { useTable } from '@/ui/table/use-table';
 
 type UseTextFilterParams = {
   columnId: string;

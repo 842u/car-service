@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useForm } from '../../form';
+import { useForm } from '../../use-form';
 
 type FormControlsProps = ComponentProps<'div'> & {
   children: ReactNode;

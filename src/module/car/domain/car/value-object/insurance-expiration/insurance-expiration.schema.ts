@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+import {
+  BEFORE_FIRST_CAR_MESSAGE,
+  FIRST_CAR_PRODUCTION_DATE,
+} from '@/car/domain/car/constant/first-car';
 import { ZodValidator } from '@/common/infrastructure/validator/zod';
 
 z.config({
@@ -9,7 +13,7 @@ z.config({
 const INSURANCE_EXPIRATION_REQUIRED_MESSAGE =
   'Insurance expiration date is required.';
 const INSURANCE_EXPIRATION_TYPE_MESSAGE = 'Invalid date.';
-export const MIN_INSURANCE_EXPIRATION_DATE = '1885-01-01';
+export const MIN_INSURANCE_EXPIRATION_DATE = FIRST_CAR_PRODUCTION_DATE;
 
 // Models the `date` column shape (a `yyyy-mm-dd` string); the picker-to-string
 // coercion is a UI concern for the form schema. Lexicographic compare is valid
@@ -23,7 +27,7 @@ export const insuranceExpirationSchema = z
   })
   .regex(/^\d{4}-\d{2}-\d{2}$/, { error: INSURANCE_EXPIRATION_TYPE_MESSAGE })
   .refine((value) => value >= MIN_INSURANCE_EXPIRATION_DATE, {
-    error: 'Hey! First car was made in 1885.',
+    error: BEFORE_FIRST_CAR_MESSAGE,
   });
 
 export const insuranceExpirationValidator = new ZodValidator();

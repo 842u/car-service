@@ -164,14 +164,14 @@ async function removeCoOwner(
   }
 }
 
-export type TestCarGraph = {
+type TestCarGraph = {
   primaryOwner: ApiActor;
   coOwner: ApiActor;
   stranger: ApiActor;
   carId: string;
 };
 
-export type TestServiceLogGraph = {
+type TestServiceLogGraph = {
   primaryOwner: ApiActor;
   authorCoOwner: ApiActor;
   nonAuthorCoOwner: ApiActor;

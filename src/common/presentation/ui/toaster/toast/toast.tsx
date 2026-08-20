@@ -1,7 +1,7 @@
 import type { MotionProps } from 'motion/react';
 import { useReducedMotion } from 'motion/react';
 import * as m from 'motion/react-m';
-import type { JSX, Ref } from 'react';
+import type { Ref } from 'react';
 import { useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -48,11 +48,6 @@ export type Toast = {
   dedupeKey?: string;
 };
 
-export type ToastAsset = {
-  style: string;
-  icon: JSX.Element;
-};
-
 const errorIcon = (
   <ExclamationCircleIcon className="stroke-error-500 h-full w-full stroke-2" />
 );
@@ -72,7 +67,7 @@ const infoIcon = (
   <InformationCircleIcon className="stroke-light-500 h-full w-full stroke-2" />
 );
 
-export function getToastAssets(type: ToastType) {
+function getToastAssets(type: ToastType) {
   switch (type) {
     case 'error':
       return {

@@ -14,7 +14,7 @@ describe('ServiceMileage', () => {
     }
   });
 
-  it('accepts the int4 maximum', () => {
+  it('accepts the maximum mileage', () => {
     const result = ServiceMileage.create(MAX_SERVICE_MILEAGE_VALUE);
 
     expect(result.success).toBe(true);
@@ -32,7 +32,7 @@ describe('ServiceMileage', () => {
     expect(result.success).toBe(false);
   });
 
-  it('rejects a value above the int4 maximum', () => {
+  it('rejects a mileage above the maximum', () => {
     const result = ServiceMileage.create(MAX_SERVICE_MILEAGE_VALUE + 1);
 
     expect(result.success).toBe(false);

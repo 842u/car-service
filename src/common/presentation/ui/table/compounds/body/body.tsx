@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { SearchIcon } from '@/icons/search';
 import { EmptyStatePlaceholder } from '@/ui/empty-state-placeholder/empty-state-placeholder';
 
-import { useTable } from '../../table';
+import { useTable } from '../../use-table';
 
 type TableBodyProps = {
   lastRowRef?: RefObject<HTMLTableRowElement | null>;

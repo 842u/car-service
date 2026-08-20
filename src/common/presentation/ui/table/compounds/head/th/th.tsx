@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { TableColumnDropdown } from '@/ui/table/compounds/column-dropdown/column-dropdown';
 import type { features } from '@/ui/table/features';
-import { useTable } from '@/ui/table/table';
+import { useTable } from '@/ui/table/use-table';
 
 type HeadThProps = ComponentProps<'th'> & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

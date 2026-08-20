@@ -1,6 +1,6 @@
 import type { NavMode } from '@/dashboard/ui/nav-mode/nav-mode';
 import { applyNavMode } from '@/dashboard/ui/nav-mode/nav-mode';
-import { useDropdown } from '@/ui/dropdown/dropdown';
+import { useDropdown } from '@/ui/dropdown/use-dropdown';
 
 type UseNavModeDropdownContentParams = {
   onSelect: (mode: NavMode) => void;

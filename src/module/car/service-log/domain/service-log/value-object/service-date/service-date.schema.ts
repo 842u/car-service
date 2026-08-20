@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+import {
+  BEFORE_FIRST_CAR_MESSAGE,
+  FIRST_CAR_PRODUCTION_DATE,
+} from '@/car/domain/car/constant/first-car';
+import { MAX_PRODUCTION_YEAR_VALUE } from '@/car/domain/car/value-object/production-year/production-year.schema';
 import { ZodValidator } from '@/common/infrastructure/validator/zod';
 
 z.config({
@@ -8,10 +13,10 @@ z.config({
 
 const SERVICE_DATE_REQUIRED_MESSAGE = 'Date is required.';
 const SERVICE_DATE_TYPE_MESSAGE = 'Invalid date.';
-export const MIN_SERVICE_DATE = '1885-01-01';
+const MIN_SERVICE_DATE = FIRST_CAR_PRODUCTION_DATE;
 // Mirrors ProductionYear's ceiling: cars (and so their service records) are
 // allowed to reference model years a few years out.
-export const MAX_SERVICE_DATE = `${new Date().getFullYear() + 5}-12-31`;
+export const MAX_SERVICE_DATE = `${MAX_PRODUCTION_YEAR_VALUE}-12-31`;
 
 // Models the `date` column shape (a `yyyy-mm-dd` string); the picker-to-string
 // coercion is a UI concern for the form schema.
@@ -29,7 +34,7 @@ export const serviceDateSchema = z
   // "2026-10-1" since '9' > '1'). Also rejects non-date strings outright.
   .regex(/^\d{4}-\d{2}-\d{2}$/, { error: SERVICE_DATE_TYPE_MESSAGE })
   .refine((value) => value >= MIN_SERVICE_DATE, {
-    error: 'Hey! First car was made in 1885.',
+    error: BEFORE_FIRST_CAR_MESSAGE,
   })
   .refine((value) => value <= MAX_SERVICE_DATE, {
     error: `Maximum service date is ${MAX_SERVICE_DATE}.`,

@@ -4,7 +4,7 @@
  jsx-a11y/no-static-element-interactions  */
 import type { ComponentProps, MouseEvent, ReactNode } from 'react';
 
-import { useDialogModal } from '../../dialog-modal';
+import { useDialogModal } from '../../use-dialog-modal';
 
 type DialogModalRootProps = ComponentProps<'dialog'> & {
   children?: ReactNode;

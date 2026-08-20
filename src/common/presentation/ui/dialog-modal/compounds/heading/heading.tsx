@@ -4,7 +4,7 @@ import { XCircleIcon } from '@/icons/x-circle';
 import { IconButton } from '@/ui/icon-button/icon-button';
 import type { HeadingLevel } from '@/ui/types/heading-level';
 
-import { useDialogModal } from '../../dialog-modal';
+import { useDialogModal } from '../../use-dialog-modal';
 
 type DialogModalHeadingProps = {
   headingLevel: HeadingLevel;

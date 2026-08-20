@@ -75,10 +75,3 @@ export class RequestCancelledError extends HttpError {
     this.name = 'RequestCancelledError';
   }
 }
-
-export class ResponseParseError extends HttpError {
-  constructor(reason?: string) {
-    super(`Response parse failed: ${reason || ''}`, 0);
-    this.name = 'ResponseParseError';
-  }
-}

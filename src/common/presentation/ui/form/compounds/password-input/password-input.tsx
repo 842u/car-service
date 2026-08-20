@@ -14,7 +14,7 @@ import type { InputVariants } from '@/ui/variants/input';
 import { inputVariants } from '@/ui/variants/input';
 import { VisibilityButton } from '@/ui/visibility-button/visibility-button';
 
-import { useForm } from '../../form';
+import { useForm } from '../../use-form';
 import { InputErrorText } from '../input/error-text/error-text';
 import { InputLabelText } from '../input/label-text/label-text';
 

@@ -1,6 +1,5 @@
 import type { ReactNode, RefObject } from 'react';
 import {
-  createContext,
   useCallback,
   useEffect,
   useId,
@@ -9,35 +8,19 @@ import {
   useRef,
 } from 'react';
 
-import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
-
 import { Controls } from './compounds/controls/controls';
 import { DialogModalHeading } from './compounds/heading/heading';
 import { DialogModalRoot } from './compounds/root/root';
-
-export type DialogModalRef = {
-  showModal: () => void;
-  closeModal: () => void;
-};
-
-type DialogModalContextValue = DialogModalRef & {
-  dialogRef: RefObject<HTMLDialogElement | null>;
-  headingId: string;
-};
+import type {
+  DialogModalContextValue,
+  DialogModalRef,
+} from './use-dialog-modal';
+import { DialogModalContext } from './use-dialog-modal';
 
 type DialogModalProps = {
   ref?: RefObject<DialogModalRef | null>;
   children?: ReactNode;
 };
-
-const DialogModalContext = createContext<DialogModalContextValue | null>(null);
-
-export function useDialogModal() {
-  return useContextGuard({
-    context: DialogModalContext,
-    componentName: 'DialogModal',
-  });
-}
 
 export function DialogModal({ ref, children }: DialogModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);

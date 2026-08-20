@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 
-import { useTable } from './table';
+import { useTable } from './use-table';
 
 describe('useTable', () => {
   it('should throw when used outside a Table context', () => {

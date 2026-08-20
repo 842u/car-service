@@ -9,9 +9,9 @@ z.config({
 export const PASSWORD_REQUIRED_MESSAGE = 'Password is required.';
 export const PASSWORD_TYPE_MESSAGE = 'Password must be a string.';
 export const MIN_PASSWORD_LENGTH = 6;
-export const MIN_PASSWORD_LENGTH_MESSAGE = `Minimum password length is ${MIN_PASSWORD_LENGTH}.`;
+const MIN_PASSWORD_LENGTH_MESSAGE = `Minimum password length is ${MIN_PASSWORD_LENGTH}.`;
 export const MAX_PASSWORD_LENGTH = 72;
-export const MAX_PASSWORD_LENGTH_MESSAGE = `Maximum password length is ${MAX_PASSWORD_LENGTH}.`;
+const MAX_PASSWORD_LENGTH_MESSAGE = `Maximum password length is ${MAX_PASSWORD_LENGTH}.`;
 
 export const passwordSchema = z
   .string({

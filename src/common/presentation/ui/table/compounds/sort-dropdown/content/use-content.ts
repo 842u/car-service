@@ -1,4 +1,4 @@
-import { useDropdown } from '@/ui/dropdown/dropdown';
+import { useDropdown } from '@/ui/dropdown/use-dropdown';
 import { useColumnSortState } from '@/ui/table/use-column-sort-state';
 
 type UseTableSortDropdownContentParams = {

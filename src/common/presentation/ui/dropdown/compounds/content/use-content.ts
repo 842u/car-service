@@ -1,7 +1,7 @@
 import type { KeyboardEvent } from 'react';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
-import { useDropdown } from '../../dropdown';
+import { useDropdown } from '../../use-dropdown';
 
 /**
  * Everything inside `root` that Tab can reach, in document order. Used to find

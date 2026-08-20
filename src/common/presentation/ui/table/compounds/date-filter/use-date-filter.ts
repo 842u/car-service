@@ -1,6 +1,6 @@
 import type { ColumnFiltersState } from '@tanstack/react-table';
 
-import { useTable } from '@/ui/table/table';
+import { useTable } from '@/ui/table/use-table';
 
 function getUpdatedFiltersState(
   filters: ColumnFiltersState,

@@ -7,7 +7,7 @@ import type { CarDto } from '@/car/application/dto/car';
 import { carRemoveMutationOptions } from '@/car/presentation/tanstack/mutation/remove';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { DialogModalRef } from '@/ui/dialog-modal/use-dialog-modal';
 
 type UseSectionControlsParams = {
   carId: string;

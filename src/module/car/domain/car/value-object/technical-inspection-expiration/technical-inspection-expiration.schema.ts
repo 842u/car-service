@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+import {
+  BEFORE_FIRST_CAR_MESSAGE,
+  FIRST_CAR_PRODUCTION_DATE,
+} from '@/car/domain/car/constant/first-car';
 import { ZodValidator } from '@/common/infrastructure/validator/zod';
 
 z.config({
@@ -9,7 +13,8 @@ z.config({
 const TECHNICAL_INSPECTION_EXPIRATION_REQUIRED_MESSAGE =
   'Technical inspection expiration date is required.';
 const TECHNICAL_INSPECTION_EXPIRATION_TYPE_MESSAGE = 'Invalid date.';
-export const MIN_TECHNICAL_INSPECTION_EXPIRATION_DATE = '1885-01-01';
+export const MIN_TECHNICAL_INSPECTION_EXPIRATION_DATE =
+  FIRST_CAR_PRODUCTION_DATE;
 
 // Models the `date` column shape (a `yyyy-mm-dd` string); the picker-to-string
 // coercion is a UI concern for the form schema. Lexicographic compare is valid
@@ -25,7 +30,7 @@ export const technicalInspectionExpirationSchema = z
     error: TECHNICAL_INSPECTION_EXPIRATION_TYPE_MESSAGE,
   })
   .refine((value) => value >= MIN_TECHNICAL_INSPECTION_EXPIRATION_DATE, {
-    error: 'Hey! First car was made in 1885.',
+    error: BEFORE_FIRST_CAR_MESSAGE,
   });
 
 export const technicalInspectionExpirationValidator = new ZodValidator();

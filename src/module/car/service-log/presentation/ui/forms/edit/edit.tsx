@@ -3,8 +3,6 @@ import { ServiceLogForm } from '@/car/service-log/presentation/ui/form/form';
 
 import { useEditForm } from './use-edit';
 
-export const EDIT_FORM_TEST_ID = 'edit-form';
-
 type EditFormProps = {
   serviceLog: ServiceLogDto;
   onSubmit?: () => void;
@@ -13,11 +11,5 @@ type EditFormProps = {
 export function EditForm({ serviceLog, onSubmit }: EditFormProps) {
   const { handleFormSubmit } = useEditForm({ serviceLog, onSubmit });
 
-  return (
-    <ServiceLogForm
-      data-testid={EDIT_FORM_TEST_ID}
-      serviceLog={serviceLog}
-      onSubmit={handleFormSubmit}
-    />
-  );
+  return <ServiceLogForm serviceLog={serviceLog} onSubmit={handleFormSubmit} />;
 }

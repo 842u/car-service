@@ -1,36 +1,9 @@
-import type { ReactNode, RefObject } from 'react';
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
-
-import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
+import type { ReactNode } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 
 import { DropdownContent } from './compounds/content/content';
 import { DropdownTrigger } from './compounds/trigger/trigger';
-
-type DropdownContextValue = {
-  isOpen: boolean;
-  toggle: () => void;
-  close: () => void;
-  triggerRef: RefObject<HTMLButtonElement | null>;
-  contentRef: RefObject<HTMLDivElement | null>;
-  collisionDetectionRoot: HTMLElement | null;
-  contentId: string;
-} | null;
-
-const DropdownContext = createContext<DropdownContextValue>(null);
-
-export function useDropdown() {
-  return useContextGuard({
-    context: DropdownContext,
-    componentName: 'Dropdown',
-  });
-}
+import { DropdownContext } from './use-dropdown';
 
 type DropdownProps = {
   children: ReactNode;

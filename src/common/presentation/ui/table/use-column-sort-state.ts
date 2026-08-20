@@ -1,4 +1,4 @@
-import { useTable } from '@/ui/table/table';
+import { useTable } from '@/ui/table/use-table';
 
 export function useColumnSortState(columnId: string) {
   const { table } = useTable();
