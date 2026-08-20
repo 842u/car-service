@@ -6,6 +6,7 @@ import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
 import { ValidatorError } from '@/common/application/validator';
 import { createMockValidator } from '@/common/application/validator.mock';
+import { FetchHttpClient } from '@/common/infrastructure/http-client/fetch';
 
 import { JsonApiRequester } from './json';
 
@@ -74,6 +75,39 @@ describe('JsonApiRequester', () => {
         expect(result.error.message).toBe('HTTP request failed: Network error');
       }
       expect(mockValidator.validate).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deadline', () => {
+    it('should fail rather than hang when a request outlives its timeout', async () => {
+      // The one path the mocked client cannot reach: a real deadline expiring
+      // over a connection that never answers. Left unhandled it would keep a
+      // mutation pending forever instead of running its error handling.
+      const fetchSpy = jest.spyOn(globalThis, 'fetch').mockImplementation(
+        (_url, init) =>
+          new Promise((_resolve, reject) => {
+            init?.signal?.addEventListener('abort', () =>
+              reject(init.signal?.reason),
+            );
+          }),
+      );
+
+      const requester = new JsonApiRequester(
+        new FetchHttpClient({ timeout: 10 }),
+        mockValidator,
+      );
+
+      const result = await requester.send('POST', '/api/car', {}, schema);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.message).toBe(
+          'HTTP request failed: The request exceeded its deadline.',
+        );
+      }
+      expect(mockValidator.validate).not.toHaveBeenCalled();
+
+      fetchSpy.mockRestore();
     });
   });
 
