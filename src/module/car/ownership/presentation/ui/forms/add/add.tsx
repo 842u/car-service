@@ -3,8 +3,6 @@ import { Form } from '@/ui/form/form';
 
 import { useAddForm } from './use-add';
 
-export const ADD_FORM_TEST_ID = 'add-form';
-
 export type AddFormProps = {
   carId: string;
   onSubmit?: () => void;
@@ -22,12 +20,7 @@ export function AddForm({ carId, onSubmit }: AddFormProps) {
   } = useAddForm({ carId, onSubmit });
 
   return (
-    <Form
-      className="gap-4"
-      data-testid={ADD_FORM_TEST_ID}
-      variant="raw"
-      onSubmit={handleFormSubmit}
-    >
+    <Form className="gap-4" variant="raw" onSubmit={handleFormSubmit}>
       <Form.InputWrapper>
         <Form.Input
           required

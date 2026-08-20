@@ -5,8 +5,6 @@ import { AddModal } from '@/car/ownership/presentation/ui/modals/add/add';
 import { DashboardSection } from '@/dashboard/ui/section/section';
 import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
 
-export const SECTION_CONTROLS_TEST_ID = 'section-controls';
-
 type SectionControlsProps = {
   carId: string;
   canAdd: boolean;
@@ -20,7 +18,7 @@ export function SectionControls({ carId, canAdd }: SectionControlsProps) {
   const handleAddModalSubmit = () => dialogRef.current?.closeModal();
 
   return (
-    <DashboardSection.Controls data-testid={SECTION_CONTROLS_TEST_ID}>
+    <DashboardSection.Controls>
       <AddButton disabled={!canAdd} onClick={handleAddButtonClick} />
       <AddModal ref={dialogRef} carId={carId} onSubmit={handleAddModalSubmit} />
     </DashboardSection.Controls>
