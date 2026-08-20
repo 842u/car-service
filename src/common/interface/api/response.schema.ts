@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
+import type { ApiResponseError } from '@/common/application/api-response';
 import { validatorIssueSchema } from '@/common/application/validator';
-
-import type { ApiResponseError } from './response';
 
 z.config({
   jitless: true,

@@ -14,10 +14,10 @@ import {
   removeServiceLogApiResponseSchema,
 } from '@/car/service-log/interface/api/remove.schema';
 import type { ServiceLogApiClient } from '@/car/service-log/presentation/api-client/service-log';
+import type { ApiResponseBody } from '@/common/application/api-response';
 import type { HttpClient } from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
-import type { ApiResponseBody } from '@/common/interface/api/response';
 
 const ENDPOINT: Route = '/api/car/service-log';
 

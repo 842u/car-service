@@ -2,25 +2,19 @@ import type { NextURL } from 'next/dist/server/web/next-url';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
+import type { ApiHandler } from '@/common/application/api-handler';
 import type {
-  ApiHandler,
-  ApiHandlerResponseError,
-} from '@/common/application/api-handler';
-import {
-  type FailureResult,
-  Result,
-  type SuccessResult,
-} from '@/common/application/result';
-import type { Validator, ValidatorIssue } from '@/common/application/validator';
-
-type ErrorResponseResult<TError extends ApiHandlerResponseError> =
-  FailureResult<TError, { status: number }>;
-
-type SuccessResponseResult<TData> = SuccessResult<TData, { status: number }>;
+  ApiResponseError,
+  ApiResponseFailureResult,
+  ApiResponseMeta,
+  ApiResponseSuccessResult,
+} from '@/common/application/api-response';
+import { Result } from '@/common/application/result';
+import type { Validator } from '@/common/application/validator';
 
 export class NextApiHandler<
   TData,
-  TError extends ApiHandlerResponseError,
+  TError extends ApiResponseError,
   TSchema,
 > implements ApiHandler<TData, TError, TSchema> {
   private readonly _validator: Validator;
@@ -33,13 +27,7 @@ export class NextApiHandler<
     request: NextRequest,
     schema: { _output: TSchema },
     errorMessage = 'Contract validation failed.',
-  ): Promise<
-    Result<
-      TSchema,
-      { message: string; issues?: ValidatorIssue[] },
-      { status: number }
-    >
-  > {
+  ): Promise<Result<TSchema, ApiResponseError, ApiResponseMeta>> {
     if (request.headers.get('Content-Type') !== 'application/json')
       return Result.fail(
         {
@@ -76,7 +64,7 @@ export class NextApiHandler<
   }
 
   errorResponse(error: TError, status: number) {
-    const responseResult: ErrorResponseResult<TError> = {
+    const responseResult: ApiResponseFailureResult<TError> = {
       success: false,
       error,
       status,
@@ -88,7 +76,7 @@ export class NextApiHandler<
   }
 
   successResponse(data: TData, status: number) {
-    const responseResult: SuccessResponseResult<TData> = {
+    const responseResult: ApiResponseSuccessResult<TData> = {
       success: true,
       data,
       status,
