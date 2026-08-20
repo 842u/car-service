@@ -72,7 +72,7 @@ const infoIcon = (
   <InformationCircleIcon className="stroke-light-500 h-full w-full stroke-2" />
 );
 
-export function getToastAssets(type: ToastType) {
+function getToastAssets(type: ToastType) {
   switch (type) {
     case 'error':
       return {
