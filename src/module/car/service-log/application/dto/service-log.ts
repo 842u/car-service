@@ -5,7 +5,7 @@ z.config({
   jitless: true,
 });
 
-export type ServiceCategory = Database['public']['Enums']['service_category'];
+type ServiceCategory = Database['public']['Enums']['service_category'];
 
 export const serviceLogDtoSchema = z.object({
   id: z.string(),

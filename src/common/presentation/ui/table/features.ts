@@ -35,7 +35,7 @@ export type TableColumnMeta = {
       };
 };
 
-export type TableMeta = {
+type TableMeta = {
   intrinsicSort?: ColumnSort;
 };
 

@@ -1,7 +1,7 @@
 import type { MotionProps } from 'motion/react';
 import { useReducedMotion } from 'motion/react';
 import * as m from 'motion/react-m';
-import type { JSX, Ref } from 'react';
+import type { Ref } from 'react';
 import { useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -46,11 +46,6 @@ export type Toast = {
   message: string;
   type: ToastType;
   dedupeKey?: string;
-};
-
-export type ToastAsset = {
-  style: string;
-  icon: JSX.Element;
 };
 
 const errorIcon = (

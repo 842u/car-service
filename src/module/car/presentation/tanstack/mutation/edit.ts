@@ -12,7 +12,7 @@ import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 import { browserStorageClient } from '@/dependency/storage-client/browser';
 import { hashFile } from '@/lib/utils';
 
-export type CarEditMutationVariables = EditCarApiRequest & {
+type CarEditMutationVariables = EditCarApiRequest & {
   image?: File | null;
 };
 

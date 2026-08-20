@@ -12,7 +12,7 @@ import {
 } from '@/car/presentation/tanstack/mutation/shared/infinite-query-data';
 import { queryKeys } from '@/car/presentation/tanstack/query/keys';
 
-export type CarAddMutationVariables = AddCarApiRequest & {
+type CarAddMutationVariables = AddCarApiRequest & {
   image?: File | null;
 };
 
