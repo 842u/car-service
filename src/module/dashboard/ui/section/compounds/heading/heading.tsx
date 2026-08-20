@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 
 import type { HeadingLevel } from '@/ui/types/heading-level';
 
-import { useDashboardSection } from '../../section-context';
+import { useDashboardSection } from '../../use-dashboard-section';
 
 type SectionHeadingProps = ComponentProps<'h1'> & {
   headingLevel: HeadingLevel;

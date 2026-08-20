@@ -5,7 +5,7 @@ import { useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { LandingSectionHeading } from './compounds/heading/heading';
-import { LandingSectionContext } from './section-context';
+import { LandingSectionContext } from './use-landing-section';
 
 type LandingSectionProps = ComponentProps<'section'>;
 

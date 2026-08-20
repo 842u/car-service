@@ -11,7 +11,7 @@ import { SectionControls } from './compounds/controls/controls';
 import { SectionHeading } from './compounds/heading/heading';
 import { SectionSubtext } from './compounds/subtext/subtext';
 import { SectionText } from './compounds/text/text';
-import { DashboardSectionContext } from './section-context';
+import { DashboardSectionContext } from './use-dashboard-section';
 
 type DashboardSectionProps = ComponentProps<'section'> & {
   variant?: SectionVariants;
