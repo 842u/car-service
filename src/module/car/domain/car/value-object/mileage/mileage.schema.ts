@@ -6,13 +6,12 @@ z.config({
   jitless: true,
 });
 
-// Postgres "integer" (int4) upper bound; the mileage column is int4.
-export const POSTGRES_INT4_MAX_VALUE = 2147483647;
-
 const MILEAGE_REQUIRED_MESSAGE = 'Mileage is required.';
 const MILEAGE_TYPE_MESSAGE = 'Mileage must be a number.';
 export const MIN_MILEAGE_VALUE = 0;
-export const MAX_MILEAGE_VALUE = POSTGRES_INT4_MAX_VALUE;
+// The highest recorded car mileage is around 5.5M km, so this ceiling fits
+// any real odometer while still rejecting a mistyped order of magnitude.
+export const MAX_MILEAGE_VALUE = 10_000_000;
 
 export const mileageSchema = z
   .number({

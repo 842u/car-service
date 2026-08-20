@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
+import { MAX_MILEAGE_VALUE } from '@/car/domain/car/value-object/mileage/mileage.schema';
 import { ZodValidator } from '@/common/infrastructure/validator/zod';
 
 z.config({
   jitless: true,
 });
 
-// Postgres "integer" (int4) upper bound; the mileage column is int4.
-export const POSTGRES_INT4_MAX_VALUE = 2147483647;
-
 const SERVICE_MILEAGE_TYPE_MESSAGE = 'Mileage must be a number.';
 export const MIN_SERVICE_MILEAGE_VALUE = 0;
-export const MAX_SERVICE_MILEAGE_VALUE = POSTGRES_INT4_MAX_VALUE;
+// A service record's odometer reading is the same quantity as the car's
+// mileage, so it shares that ceiling.
+export const MAX_SERVICE_MILEAGE_VALUE = MAX_MILEAGE_VALUE;
 
 export const serviceMileageSchema = z
   .number({
