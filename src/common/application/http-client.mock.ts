@@ -9,6 +9,5 @@ export function createMockHttpClient(): jest.Mocked<HttpClient> {
     put: jest.fn<HttpClient['put']>(),
     delete: jest.fn<HttpClient['delete']>(),
     patch: jest.fn<HttpClient['patch']>(),
-    getController: jest.fn<HttpClient['getController']>(),
   };
 }

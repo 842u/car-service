@@ -1,546 +1,406 @@
-import {
-  HttpError,
-  RequestCancelledError,
-} from '@/common/application/http-client';
-import {
-  FetchHttpClient,
-  FetchRequestController,
-} from '@/common/infrastructure/http-client/fetch';
+import { FetchHttpClient } from '@/common/infrastructure/http-client/fetch';
+
+function jsonResponse(body: unknown, init?: ResponseInit) {
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    statusText: 'OK',
+    headers: { 'content-type': 'application/json' },
+    ...init,
+  });
+}
 
 describe('FetchHttpClient', () => {
+  let fetchSpy: jest.SpyInstance<
+    Promise<Response>,
+    [input: RequestInfo | URL, init?: RequestInit]
+  >;
   let httpClient: FetchHttpClient;
-  let mockInternalFetch: jest.SpyInstance;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockInternalFetch = jest.spyOn(window, 'fetch');
+    fetchSpy = jest.spyOn(globalThis, 'fetch');
     httpClient = new FetchHttpClient();
   });
 
-  describe('constructor', () => {
-    it('should create client with custom base URL', () => {
-      const baseUrl = 'https://api.example.com';
-      const client = new FetchHttpClient({
-        baseUrl,
-      });
-
-      expect(client['baseUrl']).toBe(baseUrl);
-    });
-
-    it('should create client with custom headers', () => {
-      const headers = { Authorization: 'Bearer token' };
-      const client = new FetchHttpClient({
-        headers,
-      });
-
-      expect(client['defaultHeaders']).toEqual(headers);
-    });
-
-    it('should create client with custom timeout', () => {
-      const timeout = 1000;
-      const client = new FetchHttpClient({
-        timeout,
-      });
-
-      expect(client['defaultTimeout']).toEqual(timeout);
-    });
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
-  describe('getController', () => {
-    it('should return a request controller', () => {
-      const controller = httpClient.getController();
+  function lastCall() {
+    const call = fetchSpy.mock.calls.at(-1);
 
-      expect(controller).toBeInstanceOf(FetchRequestController);
-    });
-  });
+    if (!call) throw new Error('fetch was not called.');
 
-  describe('get', () => {
-    it('should make successful GET request with JSON response', async () => {
-      const mockResponseData = { id: 1, name: 'Test' };
-      const status = 200;
-      const statusText = 'OK';
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status,
-        statusText,
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue(mockResponseData),
-      });
+    return { url: call[0], init: call[1] ?? {} };
+  }
 
-      const result = await httpClient.get('/users');
+  function lastHeaders() {
+    return new Headers(lastCall().init.headers);
+  }
 
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual(mockResponseData);
-        expect(result.status).toBe(status);
-        expect(result.statusText).toBe(statusText);
-      }
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        '/users',
-        expect.objectContaining({
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+  /** Rejects with the abort reason and never settles otherwise. */
+  function stallUntilAborted() {
+    fetchSpy.mockImplementation(
+      (_url, init) =>
+        new Promise((_resolve, reject) => {
+          const { signal } = init ?? {};
+
+          if (!signal) return;
+          if (signal.aborted) return reject(signal.reason);
+
+          signal.addEventListener('abort', () => reject(signal.reason));
         }),
-      );
-    });
+    );
+  }
 
-    it('should make successful GET request with text response', async () => {
-      const mockResponseData = 'text';
-      const status = 200;
-      const statusText = 'OK';
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status,
-        statusText,
-        headers: new Headers({ 'content-type': 'text/plain' }),
-        text: jest.fn().mockResolvedValue(mockResponseData),
-      });
-
-      const result = await httpClient.get('/users');
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual(mockResponseData);
-        expect(result.status).toBe(status);
-        expect(result.statusText).toBe(statusText);
-      }
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        '/users',
-        expect.objectContaining({
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      );
-    });
-
-    it('should include custom headers in request', async () => {
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue({}),
-      });
-
-      await httpClient.get('/users', {
-        headers: { Authorization: 'Bearer token123' },
-      });
-
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        '/users',
-        expect.objectContaining({
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer token123',
+  describe('response metadata', () => {
+    it('should return the parsed body with its status, status text, and headers', async () => {
+      fetchSpy.mockResolvedValue(
+        jsonResponse(
+          { id: 1 },
+          {
+            status: 201,
+            statusText: 'Created',
+            headers: { 'content-type': 'application/json', etag: 'abc' },
           },
+        ),
+      );
+
+      const result = await httpClient.get('/users');
+
+      expect(result.success).toBe(true);
+      if (!result.success) return;
+
+      expect(result.data).toEqual({ id: 1 });
+      expect(result.status).toBe(201);
+      expect(result.statusText).toBe('Created');
+      expect(result.headers).toEqual({
+        'content-type': 'application/json',
+        etag: 'abc',
+      });
+    });
+
+    it('should treat a non-2xx envelope as a response that arrived', async () => {
+      const envelope = {
+        success: false,
+        status: 422,
+        error: { message: 'Validation failed.' },
+      };
+
+      fetchSpy.mockResolvedValue(
+        jsonResponse(envelope, { status: 422, statusText: 'Unprocessable' }),
+      );
+
+      const result = await httpClient.post('/api/car', '{}');
+
+      expect(result.success).toBe(true);
+      if (!result.success) return;
+
+      expect(result.data).toEqual(envelope);
+      expect(result.status).toBe(422);
+    });
+
+    it('should return a non-2xx html body as text', async () => {
+      fetchSpy.mockResolvedValue(
+        new Response('<!doctype html><title>404</title>', {
+          status: 404,
+          statusText: 'Not Found',
+          headers: { 'content-type': 'text/html' },
         }),
       );
+
+      const result = await httpClient.get('/mistyped');
+
+      expect(result.success).toBe(true);
+      if (!result.success) return;
+
+      expect(result.data).toBe('<!doctype html><title>404</title>');
+      expect(result.status).toBe(404);
+    });
+  });
+
+  describe('body parsing', () => {
+    it('should parse an empty body as null', async () => {
+      fetchSpy.mockResolvedValue(
+        new Response(null, { status: 204, statusText: 'No Content' }),
+      );
+
+      const result = await httpClient.delete('/users/1');
+
+      expect(result.success).toBe(true);
+      if (!result.success) return;
+
+      expect(result.data).toBeNull();
+      expect(result.status).toBe(204);
     });
 
-    it('should use base URL when configured', async () => {
-      const baseUrl = 'https://api.example.com';
-      const endpointPath = '/users';
-      const clientWithBaseUrl = new FetchHttpClient({
-        baseUrl,
-      });
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue({}),
-      });
+    it('should return text when the response declares no content type', async () => {
+      const response = new Response('plain body', { status: 200 });
+      response.headers.delete('content-type');
 
-      await clientWithBaseUrl.get(endpointPath);
+      fetchSpy.mockResolvedValue(response);
 
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        baseUrl + endpointPath,
-        expect.anything(),
+      const result = await httpClient.get('/users');
+
+      expect(result.success).toBe(true);
+      if (!result.success) return;
+
+      expect(result.data).toBe('plain body');
+    });
+
+    it('should fail with a parse error when the json body is malformed', async () => {
+      fetchSpy.mockResolvedValue(
+        new Response('{ not json', {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        }),
+      );
+
+      const result = await httpClient.get('/users');
+
+      expect(result.success).toBe(false);
+      if (result.success) return;
+
+      expect(result.error.kind).toBe('parse');
+      expect(result.error.cause).toBeInstanceOf(SyntaxError);
+    });
+  });
+
+  describe('verbs', () => {
+    it.each([
+      ['post', 'POST'],
+      ['put', 'PUT'],
+      ['delete', 'DELETE'],
+      ['patch', 'PATCH'],
+    ] as const)('should send %s with its body', async (method, verb) => {
+      const body = JSON.stringify({ name: 'New User' });
+
+      fetchSpy.mockResolvedValue(jsonResponse({}));
+
+      await httpClient[method]('/users', body);
+
+      expect(lastCall().init).toEqual(
+        expect.objectContaining({ method: verb, body }),
       );
     });
 
-    it('should override default base URL with config base URL', async () => {
-      const baseUrlOverride = 'https://different-api.com';
-      const endpointPath = '/users';
-      const clientWithBaseUrl = new FetchHttpClient({
+    it('should send get without a body', async () => {
+      fetchSpy.mockResolvedValue(jsonResponse({}));
+
+      await httpClient.get('/users');
+
+      expect(lastCall().init.method).toBe('GET');
+      expect(lastCall().init.body).toBeUndefined();
+    });
+  });
+
+  describe('headers', () => {
+    it('should set no content type of its own', async () => {
+      fetchSpy.mockResolvedValue(jsonResponse({}));
+
+      await httpClient.post('/users', '{}');
+
+      expect(lastHeaders().get('content-type')).toBeNull();
+      expect([...lastHeaders()]).toEqual([]);
+    });
+
+    it('should send the configured default headers', async () => {
+      const client = new FetchHttpClient({
+        headers: { Authorization: 'Bearer token' },
+      });
+
+      fetchSpy.mockResolvedValue(jsonResponse({}));
+
+      await client.get('/users');
+
+      expect(lastHeaders().get('Authorization')).toBe('Bearer token');
+    });
+
+    it('should let a request header override a default of the same name', async () => {
+      const client = new FetchHttpClient({
+        headers: { Authorization: 'Bearer default', Accept: 'text/plain' },
+      });
+
+      fetchSpy.mockResolvedValue(jsonResponse({}));
+
+      await client.get('/users', {
+        headers: { Authorization: 'Bearer request' },
+      });
+
+      expect(lastHeaders().get('Authorization')).toBe('Bearer request');
+      expect(lastHeaders().get('Accept')).toBe('text/plain');
+    });
+  });
+
+  describe('url building', () => {
+    beforeEach(() => {
+      fetchSpy.mockResolvedValue(jsonResponse({}));
+    });
+
+    it('should pass the url through untouched when no base url is configured', async () => {
+      await httpClient.get('/api/car');
+
+      expect(lastCall().url).toBe('/api/car');
+    });
+
+    it.each([
+      ['https://api.example.com', '/users'],
+      ['https://api.example.com', 'users'],
+      ['https://api.example.com/', '/users'],
+      ['https://api.example.com/', 'users'],
+    ])('should resolve %s against %s', async (baseUrl, url) => {
+      const client = new FetchHttpClient({ baseUrl });
+
+      await client.get(url);
+
+      expect(lastCall().url).toBe('https://api.example.com/users');
+    });
+
+    it('should prefer the request base url over the configured one', async () => {
+      const client = new FetchHttpClient({
         baseUrl: 'https://api.example.com',
       });
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue({}),
-      });
 
-      await clientWithBaseUrl.get('/users', {
-        baseUrl: baseUrlOverride,
-      });
+      await client.get('/users', { baseUrl: 'https://other.example.com' });
 
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        baseUrlOverride + endpointPath,
-        expect.anything(),
-      );
+      expect(lastCall().url).toBe('https://other.example.com/users');
     });
 
-    it('should handle URL creation correctly', async () => {
-      const urlPairs = [
-        ['https://api.example.com/', '/users'],
-        ['https://api.example.com/', 'users'],
-        ['https://api.example.com', '/users'],
-        ['https://api.example.com', 'users'],
-      ];
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue({}),
+    it('should not append an absolute url to the base url', async () => {
+      const client = new FetchHttpClient({
+        baseUrl: 'https://api.example.com',
       });
 
-      for (const pair of urlPairs) {
-        const baseUrl = pair[0];
-        const endpointPath = pair[1];
-        const clientWithBaseUrl = new FetchHttpClient({
-          baseUrl,
-        });
+      await client.get('https://other.example.com/users');
 
-        await clientWithBaseUrl.get(endpointPath);
-
-        expect(mockInternalFetch).toHaveBeenCalledWith(
-          'https://api.example.com/users',
-          expect.anything(),
-        );
-      }
+      expect(lastCall().url).toBe('https://other.example.com/users');
     });
   });
 
-  describe('post', () => {
-    it('should make successful POST request', async () => {
-      const requestData = JSON.stringify({ name: 'New User' });
-      const endpointPath = '/users';
-      const mockResponseData = { id: 1, name: 'Test' };
-      const status = 200;
-      const statusText = 'OK';
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status,
-        statusText,
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue(mockResponseData),
-      });
+  describe('transport failure', () => {
+    it('should fail with a network error carrying the cause', async () => {
+      const cause = new TypeError('Failed to fetch');
 
-      const result = await httpClient.post(endpointPath, requestData);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual(mockResponseData);
-        expect(result.status).toBe(status);
-        expect(result.statusText).toBe(statusText);
-      }
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        endpointPath,
-        expect.objectContaining({
-          method: 'POST',
-          body: requestData,
-        }),
-      );
-    });
-  });
-
-  describe('put', () => {
-    it('should make successful PUT request', async () => {
-      const requestData = JSON.stringify({ name: 'New User' });
-      const endpointPath = '/users';
-      const mockResponseData = { id: 1, name: 'Test' };
-      const status = 200;
-      const statusText = 'OK';
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status,
-        statusText,
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue(mockResponseData),
-      });
-
-      const result = await httpClient.put(endpointPath, requestData);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual(mockResponseData);
-        expect(result.status).toBe(status);
-        expect(result.statusText).toBe(statusText);
-      }
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        endpointPath,
-        expect.objectContaining({
-          method: 'PUT',
-          body: requestData,
-        }),
-      );
-    });
-  });
-
-  describe('delete', () => {
-    it('should make successful DELETE request', async () => {
-      const endpointPath = '/users';
-      const status = 200;
-      const statusText = 'OK';
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status,
-        statusText,
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue(''),
-      });
-
-      const result = await httpClient.delete(endpointPath);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.status).toBe(status);
-        expect(result.statusText).toBe(statusText);
-      }
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        endpointPath,
-        expect.objectContaining({
-          method: 'DELETE',
-        }),
-      );
-    });
-  });
-
-  describe('patch', () => {
-    it('should make successful PATCH request', async () => {
-      const requestData = JSON.stringify({ name: 'New User' });
-      const endpointPath = '/users';
-      const mockResponseData = { id: 1, name: 'Test' };
-      const status = 200;
-      const statusText = 'OK';
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status,
-        statusText,
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue(mockResponseData),
-      });
-
-      const result = await httpClient.patch(endpointPath, requestData);
-
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data).toEqual(mockResponseData);
-        expect(result.status).toBe(status);
-        expect(result.statusText).toBe(statusText);
-      }
-      expect(mockInternalFetch).toHaveBeenCalledWith(
-        endpointPath,
-        expect.objectContaining({
-          method: 'PATCH',
-          body: requestData,
-        }),
-      );
-    });
-  });
-
-  describe('error handling', () => {
-    it('should handle JSON parse error', async () => {
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockRejectedValue(new Error('Invalid JSON')),
-      });
+      fetchSpy.mockRejectedValue(cause);
 
       const result = await httpClient.get('/users');
 
       expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error).toBeInstanceOf(HttpError);
-        expect(result.error.message).toBe('Failed to parse response JSON.');
-      }
-    });
+      if (result.success) return;
 
-    it('should handle text parse error', async () => {
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'text/plain' }),
-        text: jest.fn().mockRejectedValue(new Error('Invalid text')),
-      });
-
-      const result = await httpClient.get('/users');
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error).toBeInstanceOf(HttpError);
-        expect(result.error.message).toBe('Failed to parse response text.');
-      }
-    });
-
-    it('should handle unexpected errors', async () => {
-      mockInternalFetch.mockRejectedValue(new Error());
-
-      const result = await httpClient.get('/users');
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error).toBeInstanceOf(HttpError);
-        expect(result.error.message).toBe('Unexpected error.');
-      }
+      expect(result.error.kind).toBe('network');
+      expect(result.error.cause).toBe(cause);
     });
   });
 
-  describe('request cancellation', () => {
-    it('should cancel request with controller', async () => {
-      const controller = httpClient.getController();
-      const reason = 'test cancelled';
-      mockInternalFetch.mockImplementation(() => {
-        controller.cancel(reason);
-        return Promise.reject(new DOMException('Aborted', 'AbortError'));
-      });
+  describe('cancellation', () => {
+    it('should send no signal when nothing can cancel the request', async () => {
+      fetchSpy.mockResolvedValue(jsonResponse({}));
 
-      const result = await httpClient.get('/users', {
-        requestController: controller,
-      });
+      await httpClient.get('/users');
 
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error).toBeInstanceOf(RequestCancelledError);
-        expect(result.error.message).toContain(reason);
-      }
-      expect(controller.isCancelled()).toBe(true);
-      expect(controller.reason).toBe(reason);
-    });
-  });
-
-  describe('timeout handling', () => {
-    beforeEach(() => {
-      jest.useFakeTimers();
+      expect(lastCall().init.signal).toBeUndefined();
     });
 
-    afterEach(() => {
-      jest.useRealTimers();
-    });
+    it('should fail as aborted when the caller cancels mid flight', async () => {
+      const controller = new AbortController();
 
-    it('should timeout request when configured timeout is exceeded', async () => {
-      const timeout = 100;
-      const requestDuration = 200;
-      const httpClient = new FetchHttpClient({ timeout });
-
-      mockInternalFetch.mockImplementation(
-        (_url, options) =>
-          /**
-           * Mock fetch is not respecting the AbortSignal. When the timeout
-           * triggers and calls controller.cancel(), the fetch mock does not
-           * reject with an AbortError. Mock implementation need to actually
-           * handle the abort signal.
-           */
-          new Promise((resolve, reject) => {
-            const signal = options?.signal as AbortSignal;
-
-            if (signal) {
-              signal.addEventListener('abort', () => {
-                reject(new DOMException('Aborted', 'AbortError'));
-              });
-            }
-
-            setTimeout(() => {
-              resolve({
-                ok: true,
-                status: 200,
-                statusText: 'OK',
-                headers: new Headers({ 'content-type': 'application/json' }),
-                json: jest.fn().mockResolvedValue({}),
-              });
-            }, requestDuration);
-          }),
-      );
-
-      const resultPromise = httpClient.get('/users');
-
-      jest.advanceTimersByTime(timeout);
-      // Execute the timeout callback inside request() which triggers abort.
-      jest.runOnlyPendingTimers();
-
-      const result = await resultPromise;
-
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error).toBeInstanceOf(RequestCancelledError);
-        expect(result.error.message).toContain('Request timeout.');
-      }
-    });
-
-    it('should use request-level timeout over default timeout', async () => {
-      const defaultTimeout = 300;
-      const overrideTimeout = 100;
-      const requestDuration = 200;
-      const httpClient = new FetchHttpClient({ timeout: defaultTimeout });
-
-      mockInternalFetch.mockImplementation(
-        (_url, options) =>
-          new Promise((resolve, reject) => {
-            const signal = options?.signal as AbortSignal;
-
-            if (signal) {
-              signal.addEventListener('abort', () => {
-                reject(new DOMException('Aborted', 'AbortError'));
-              });
-            }
-
-            setTimeout(() => {
-              resolve({
-                ok: true,
-                status: 200,
-                statusText: 'OK',
-                headers: new Headers({ 'content-type': 'application/json' }),
-                json: jest.fn().mockResolvedValue({}),
-              });
-            }, requestDuration);
-          }),
-      );
+      stallUntilAborted();
 
       const resultPromise = httpClient.get('/users', {
-        timeout: overrideTimeout,
+        signal: controller.signal,
+        timeout: 10_000,
       });
 
-      jest.advanceTimersByTime(overrideTimeout);
-      jest.runOnlyPendingTimers();
+      controller.abort();
 
       const result = await resultPromise;
 
       expect(result.success).toBe(false);
+      if (result.success) return;
+
+      expect(result.error.kind).toBe('aborted');
     });
 
-    it('should clear timeout on successful request', async () => {
-      const httpClient = new FetchHttpClient({ timeout: 5000 });
-      const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
+    it('should fail as aborted when the caller signal is already aborted', async () => {
+      stallUntilAborted();
 
-      mockInternalFetch.mockResolvedValue({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: jest.fn().mockResolvedValue({}),
+      const result = await httpClient.get('/users', {
+        signal: AbortSignal.abort(),
       });
 
-      await httpClient.get('/users');
+      expect(result.success).toBe(false);
+      if (result.success) return;
 
-      expect(clearTimeoutSpy).toHaveBeenCalled();
+      expect(result.error.kind).toBe('aborted');
     });
 
-    it('should clear timeout on failed request', async () => {
-      const httpClient = new FetchHttpClient({ timeout: 5000 });
-      const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
+    it('should fail as timeout when the deadline expires', async () => {
+      stallUntilAborted();
 
-      mockInternalFetch.mockRejectedValue(new Error('Network error'));
+      const result = await httpClient.get('/users', { timeout: 10 });
 
-      await httpClient.get('/users');
+      expect(result.success).toBe(false);
+      if (result.success) return;
 
-      expect(clearTimeoutSpy).toHaveBeenCalled();
+      expect(result.error.kind).toBe('timeout');
+    });
+
+    it('should apply the configured default timeout', async () => {
+      const client = new FetchHttpClient({ timeout: 10 });
+
+      stallUntilAborted();
+
+      const result = await client.get('/users');
+
+      expect(result.success).toBe(false);
+      if (result.success) return;
+
+      expect(result.error.kind).toBe('timeout');
+    });
+
+    it('should prefer the request timeout over the configured default', async () => {
+      const client = new FetchHttpClient({ timeout: 10 });
+      const controller = new AbortController();
+
+      stallUntilAborted();
+
+      const resultPromise = client.get('/users', {
+        timeout: 10_000,
+        signal: controller.signal,
+      });
+
+      // Outlives the 10ms default. Had that deadline been applied, the request
+      // would already have failed as a timeout rather than as an abort.
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      controller.abort();
+
+      const result = await resultPromise;
+
+      expect(result.success).toBe(false);
+      if (result.success) return;
+
+      expect(result.error.kind).toBe('aborted');
+    });
+
+    it('should fail as timeout when the deadline expires while the body is read', async () => {
+      const response = jsonResponse({});
+
+      jest.spyOn(response, 'text').mockImplementation(
+        () =>
+          new Promise((_resolve, reject) => {
+            const signal = fetchSpy.mock.calls.at(-1)?.[1]?.signal;
+
+            signal?.addEventListener('abort', () => reject(signal.reason));
+          }),
+      );
+      fetchSpy.mockResolvedValue(response);
+
+      const result = await httpClient.get('/users', { timeout: 10 });
+
+      expect(result.success).toBe(false);
+      if (result.success) return;
+
+      expect(result.error.kind).toBe('timeout');
     });
   });
 });

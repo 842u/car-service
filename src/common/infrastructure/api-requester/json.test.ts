@@ -1,6 +1,6 @@
 import type { ApiResponseBody } from '@/common/application/api-response';
 import type { HttpClient } from '@/common/application/http-client';
-import { HttpError } from '@/common/application/http-client';
+import { httpClientError } from '@/common/application/http-client';
 import { createMockHttpClient } from '@/common/application/http-client.mock';
 import { Result } from '@/common/application/result';
 import type { Validator } from '@/common/application/validator';
@@ -64,11 +64,7 @@ describe('JsonApiRequester', () => {
   describe('transport failure', () => {
     it('should fail without validating the response', async () => {
       mockHttpClient.post.mockResolvedValue(
-        Result.fail(new HttpError('Network error', 0), {
-          status: 0,
-          statusText: '',
-          headers: {},
-        }),
+        Result.fail(httpClientError.network('Network error')),
       );
 
       const result = await apiRequester.send('POST', '/api/car', {}, schema);
