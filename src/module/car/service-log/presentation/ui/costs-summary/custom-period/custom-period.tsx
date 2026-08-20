@@ -45,10 +45,13 @@ export function CustomPeriodCostsSummary({
       </div>
 
       <div>
-        <p className="text-alpha-grey-900" data-testid={FILTERED_COSTS_TEST_ID}>
-          PERIOD TOTAL COSTS
+        <p className="text-alpha-grey-900">PERIOD TOTAL COSTS</p>
+        <p
+          className="overflow-x-auto overflow-y-clip text-5xl"
+          data-testid={FILTERED_COSTS_TEST_ID}
+        >
+          {costs ?? 0}
         </p>
-        <p className="overflow-x-auto overflow-y-clip text-5xl">{costs ?? 0}</p>
       </div>
     </div>
   );
