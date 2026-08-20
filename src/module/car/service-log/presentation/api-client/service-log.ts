@@ -2,8 +2,12 @@ import type { ServiceLogDto } from '@/car/service-log/application/dto/service-lo
 import type { AddServiceLogApiRequest } from '@/car/service-log/interface/api/add.schema';
 import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/edit.schema';
 import type { Result } from '@/common/application/result';
+import type { ValidatorIssue } from '@/common/application/validator';
 
-type ServiceLogApiClientError = { message: string };
+type ServiceLogApiClientError = {
+  message: string;
+  issues?: ValidatorIssue[];
+};
 
 export interface ServiceLogApiClient {
   add(

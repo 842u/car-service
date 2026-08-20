@@ -1,11 +1,15 @@
 import type { Result } from '@/common/application/result';
+import type { ValidatorIssue } from '@/common/application/validator';
 import type { UserDto } from '@/user/application/dto/user';
 import type { EditUserApiRequest } from '@/user/interface/api/edit.schema';
 import type { PasswordChangeApiRequest } from '@/user/interface/api/password-change.schema';
 import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 
-type UserApiClientError = { message: string };
+type UserApiClientError = {
+  message: string;
+  issues?: ValidatorIssue[];
+};
 
 export interface UserApiClient {
   signUp(

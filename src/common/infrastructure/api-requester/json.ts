@@ -57,7 +57,10 @@ export class JsonApiRequester implements ApiRequester {
     const responseBody = validationResult.data;
 
     if (!responseBody.success) {
-      return Result.fail({ message: responseBody.error.message });
+      return Result.fail({
+        message: responseBody.error.message,
+        issues: responseBody.error.issues,
+      });
     }
 
     return Result.ok(responseBody.data);
