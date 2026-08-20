@@ -65,14 +65,14 @@ describe('JsonApiRequester', () => {
   describe('transport failure', () => {
     it('should fail without validating the response', async () => {
       mockHttpClient.post.mockResolvedValue(
-        Result.fail(httpClientError.network('Network error')),
+        Result.fail(httpClientError.network('The request could not be sent.')),
       );
 
       const result = await apiRequester.send('POST', '/api/car', {}, schema);
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.message).toBe('HTTP request failed: Network error');
+        expect(result.error.message).toBe('The request could not be sent.');
       }
       expect(mockValidator.validate).not.toHaveBeenCalled();
     });
@@ -101,9 +101,7 @@ describe('JsonApiRequester', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.message).toBe(
-          'HTTP request failed: The request exceeded its deadline.',
-        );
+        expect(result.error.message).toBe('The request exceeded its deadline.');
       }
       expect(mockValidator.validate).not.toHaveBeenCalled();
 
@@ -125,7 +123,7 @@ describe('JsonApiRequester', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.message).toBe(
-          'API response validation failed with status 404: Invalid shape',
+          'The server returned an unexpected response (status 404).',
         );
       }
     });

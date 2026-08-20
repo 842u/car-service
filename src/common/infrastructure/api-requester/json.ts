@@ -37,20 +37,21 @@ export class JsonApiRequester implements ApiRequester {
       JSON.stringify(contract),
     );
 
+    // Every message the client produces already reads as a finished sentence,
+    // and these reach the user as a toast, so the message is forwarded rather
+    // than prefixed with a diagnostic.
     if (!httpResult.success) {
-      return Result.fail({
-        message: `HTTP request failed: ${httpResult.error.message}`,
-      });
+      return Result.fail({ message: httpResult.error.message });
     }
 
     const validationResult = this._validator.validate(httpResult.data, schema);
 
     if (!validationResult.success) {
-      // The status is part of the message because a body that is not an
-      // envelope did not come from a route handler at all. A framework 404 for
-      // a mistyped path reads as a 404 rather than as a schema failure.
+      // The status is named because a body that is not an envelope did not
+      // come from a route handler at all. A framework 404 for a mistyped path
+      // reads as a 404 rather than as a schema failure.
       return Result.fail({
-        message: `API response validation failed with status ${httpResult.status}: ${validationResult.error.message}`,
+        message: `The server returned an unexpected response (status ${httpResult.status}).`,
       });
     }
 
