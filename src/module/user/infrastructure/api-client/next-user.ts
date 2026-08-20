@@ -1,9 +1,6 @@
 import type { Route } from 'next';
-import type { ZodType } from 'zod';
 
-import type { HttpClient } from '@/common/application/http-client';
-import { Result } from '@/common/application/result';
-import type { Validator } from '@/common/application/validator';
+import type { ApiRequester } from '@/common/application/api-requester';
 import {
   type EditUserApiRequest,
   editUserApiResponseSchema,
@@ -16,88 +13,51 @@ import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 import { signUpApiResponseSchema } from '@/user/interface/api/sign-up.schema';
 import type { UserApiClient } from '@/user/presentation/api-client/user';
 
-type ApiResponse<TData> =
-  | { success: true; data: TData }
-  | { success: false; error: { message: string } };
+const SIGN_UP_ENDPOINT: Route = '/api/auth/sign-up';
+const SIGN_IN_ENDPOINT: Route = '/api/auth/sign-in';
+const PASSWORD_CHANGE_ENDPOINT: Route = '/api/auth/password-change';
+const USER_ENDPOINT: Route = '/api/user';
 
 export class NextUserApiClient implements UserApiClient {
-  private readonly _httpClient: HttpClient;
-  private readonly _validator: Validator;
+  private readonly _apiRequester: ApiRequester;
 
-  constructor(httpClient: HttpClient, validator: Validator) {
-    this._httpClient = httpClient;
-    this._validator = validator;
-  }
-
-  private async makeRequest<TData>(
-    endpoint: Route,
-    contract: unknown,
-    schema: ZodType<ApiResponse<TData>>,
-    method: 'POST' | 'PATCH',
-  ): Promise<Result<TData, { message: string }>> {
-    const data = JSON.stringify(contract);
-
-    const httpResult =
-      method === 'POST'
-        ? await this._httpClient.post(endpoint, data)
-        : await this._httpClient.patch(endpoint, data);
-
-    if (!httpResult.success) {
-      return Result.fail({
-        message: `HTTP request failed: ${httpResult.error.message}`,
-      });
-    }
-
-    const validationResult = this._validator.validate(httpResult.data, schema);
-
-    if (!validationResult.success) {
-      return Result.fail({
-        message: `API response validation failed: ${validationResult.error.message}`,
-      });
-    }
-
-    const apiResponse = validationResult.data;
-
-    if (!apiResponse.success) {
-      return Result.fail({ message: apiResponse.error.message });
-    }
-
-    return Result.ok(apiResponse.data);
+  constructor(apiRequester: ApiRequester) {
+    this._apiRequester = apiRequester;
   }
 
   async signUp(contract: SignUpApiRequest) {
-    return this.makeRequest(
-      '/api/auth/sign-up',
+    return this._apiRequester.send(
+      'POST',
+      SIGN_UP_ENDPOINT,
       contract,
       signUpApiResponseSchema,
-      'POST',
     );
   }
 
   async signIn(contract: SignInApiRequest) {
-    return this.makeRequest(
-      '/api/auth/sign-in',
+    return this._apiRequester.send(
+      'POST',
+      SIGN_IN_ENDPOINT,
       contract,
       signInApiResponseSchema,
-      'POST',
     );
   }
 
   async passwordChange(contract: PasswordChangeApiRequest) {
-    return this.makeRequest(
-      '/api/auth/password-change',
+    return this._apiRequester.send(
+      'PATCH',
+      PASSWORD_CHANGE_ENDPOINT,
       contract,
       passwordChangeApiResponseSchema,
-      'PATCH',
     );
   }
 
   async edit(contract: EditUserApiRequest) {
-    return this.makeRequest(
-      '/api/user',
+    return this._apiRequester.send(
+      'PATCH',
+      USER_ENDPOINT,
       contract,
       editUserApiResponseSchema,
-      'PATCH',
     );
   }
 }

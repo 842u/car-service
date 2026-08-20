@@ -1,5 +1,4 @@
 import { NextCarApiClient } from '@/car/infrastructure/api-client/next-car';
-import { httpClient } from '@/dependency/http-client';
-import { validator } from '@/dependency/validator';
+import { apiRequester } from '@/dependency/api-requester';
 
-export const carApiClient = new NextCarApiClient(httpClient, validator);
+export const carApiClient = new NextCarApiClient(apiRequester);

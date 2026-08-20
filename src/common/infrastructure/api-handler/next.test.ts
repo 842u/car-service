@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import type { ApiHandlerResponseError } from '@/common/application/api-handler';
+import type { ApiResponseError } from '@/common/application/api-response';
 import type { Validator } from '@/common/application/validator';
 
 import { NextApiHandler } from './next';
@@ -22,7 +22,7 @@ jest.mock('next/server', () => ({
 
 describe('NextApiHandler', () => {
   let mockValidator: jest.Mocked<Validator>;
-  let apiHandler: NextApiHandler<unknown, ApiHandlerResponseError, unknown>;
+  let apiHandler: NextApiHandler<unknown, ApiResponseError, unknown>;
 
   beforeEach(() => {
     jest.clearAllMocks();

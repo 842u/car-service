@@ -1,9 +1,11 @@
 import type { ServiceLogDto } from '@/car/service-log/application/dto/service-log';
 import type { AddServiceLogApiRequest } from '@/car/service-log/interface/api/add.schema';
 import type { EditServiceLogApiRequest } from '@/car/service-log/interface/api/edit.schema';
+import type { ApiResponseError } from '@/common/application/api-response';
 import type { Result } from '@/common/application/result';
 
-type ServiceLogApiClientError = { message: string };
+/** The requester forwards the api error envelope unchanged. */
+type ServiceLogApiClientError = ApiResponseError;
 
 export interface ServiceLogApiClient {
   add(

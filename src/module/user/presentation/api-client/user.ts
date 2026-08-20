@@ -1,3 +1,4 @@
+import type { ApiResponseError } from '@/common/application/api-response';
 import type { Result } from '@/common/application/result';
 import type { UserDto } from '@/user/application/dto/user';
 import type { EditUserApiRequest } from '@/user/interface/api/edit.schema';
@@ -5,7 +6,8 @@ import type { PasswordChangeApiRequest } from '@/user/interface/api/password-cha
 import type { SignInApiRequest } from '@/user/interface/api/sign-in.schema';
 import type { SignUpApiRequest } from '@/user/interface/api/sign-up.schema';
 
-type UserApiClientError = { message: string };
+/** The requester forwards the api error envelope unchanged. */
+type UserApiClientError = ApiResponseError;
 
 export interface UserApiClient {
   signUp(

@@ -1,192 +1,158 @@
 import type {
   HttpClient,
+  HttpClientError,
   HttpClientResponse,
+  HttpMethod,
   RequestConfig,
-  RequestController,
 } from '@/common/application/http-client';
-import {
-  HttpError,
-  RequestCancelledError,
-} from '@/common/application/http-client';
+import { httpClientError } from '@/common/application/http-client';
 import { Result } from '@/common/application/result';
 
-export class FetchRequestController implements RequestController {
-  private abortController: AbortController;
-  private _reason?: string;
-
-  constructor() {
-    this.abortController = new AbortController();
-  }
-
-  cancel(reason?: string) {
-    this._reason = reason;
-    this.abortController.abort();
-  }
-
-  isCancelled() {
-    return this.abortController.signal.aborted;
-  }
-
-  get reason() {
-    return this._reason;
-  }
-
-  get signal() {
-    return this.abortController.signal;
-  }
-}
-
-type FetchRequestConfig = RequestConfig<FetchRequestController>;
+/**
+ * A signal belongs to one request, so the client-wide defaults cannot carry one.
+ */
+type FetchHttpClientConfig = Omit<RequestConfig, 'signal'>;
 
 export class FetchHttpClient implements HttpClient {
-  private baseUrl: string;
-  private defaultHeaders: Record<string, string>;
-  private defaultTimeout?: number;
+  private readonly _baseUrl?: string;
+  private readonly _defaultHeaders?: HeadersInit;
+  private readonly _defaultTimeout?: number;
 
-  constructor(config: FetchRequestConfig = {}) {
-    this.baseUrl = config.baseUrl || '';
-    this.defaultHeaders = config.headers || {};
-    this.defaultTimeout = config.timeout;
+  constructor(config: FetchHttpClientConfig = {}) {
+    this._baseUrl = config.baseUrl;
+    this._defaultHeaders = config.headers;
+    this._defaultTimeout = config.timeout;
   }
 
-  getController(): FetchRequestController {
-    return new FetchRequestController();
+  async request(
+    method: HttpMethod,
+    url: string,
+    body?: BodyInit,
+    config?: RequestConfig,
+  ): Promise<HttpClientResponse> {
+    const signal = this.buildSignal(
+      config?.signal,
+      config?.timeout ?? this._defaultTimeout,
+    );
+
+    let response: Response;
+
+    try {
+      response = await fetch(this.buildUrl(url, config?.baseUrl), {
+        method,
+        headers: this.buildHeaders(config?.headers),
+        body,
+        signal,
+      });
+    } catch (error) {
+      if (signal?.aborted) return Result.fail(abortError(signal));
+
+      return Result.fail(
+        httpClientError.network('The request could not be sent.', error),
+      );
+    }
+
+    try {
+      const meta = {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers),
+      };
+
+      // Reading the body is still covered by the signal, so a deadline that
+      // expires between the headers and the last byte is a timeout, not a
+      // malformed body.
+      return Result.ok(await parseBody(response), meta);
+    } catch (error) {
+      if (signal?.aborted) return Result.fail(abortError(signal));
+
+      return Result.fail(
+        httpClientError.parse('The response body could not be read.', error),
+      );
+    }
   }
 
-  async get(url: string, config?: FetchRequestConfig) {
+  async get(url: string, config?: RequestConfig) {
     return this.request('GET', url, undefined, config);
   }
 
-  async post(url: string, data?: string, config?: FetchRequestConfig) {
-    return this.request('POST', url, data, config);
+  async post(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('POST', url, body, config);
   }
 
-  async put(url: string, data?: string, config?: FetchRequestConfig) {
-    return this.request('PUT', url, data, config);
+  async put(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('PUT', url, body, config);
   }
 
-  async delete(url: string, data?: string, config?: FetchRequestConfig) {
-    return this.request('DELETE', url, data, config);
+  async delete(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('DELETE', url, body, config);
   }
 
-  async patch(url: string, data?: string, config?: FetchRequestConfig) {
-    return this.request('PATCH', url, data, config);
+  async patch(url: string, body?: BodyInit, config?: RequestConfig) {
+    return this.request('PATCH', url, body, config);
   }
 
-  private async request(
-    method: string,
-    url: string,
-    data?: string,
-    config?: FetchRequestConfig,
-  ): Promise<HttpClientResponse> {
-    const timeout = config?.timeout || this.defaultTimeout;
-    let controller = config?.requestController;
-    let timeoutId: NodeJS.Timeout | undefined;
+  /**
+   * One signal covering both the caller's cancellation and the deadline. There
+   * is no timer to clear, so no path through the request can leak one.
+   */
+  private buildSignal(callerSignal?: AbortSignal, timeout?: number) {
+    const signals = [
+      callerSignal,
+      timeout === undefined ? undefined : AbortSignal.timeout(timeout),
+    ].filter((signal) => signal !== undefined);
 
-    if (timeout) {
-      if (!controller) {
-        controller = new FetchRequestController();
-      }
+    if (signals.length === 0) return undefined;
 
-      timeoutId = setTimeout(() => {
-        controller!.cancel('Request timeout.');
-      }, timeout);
-    }
-
-    const fullUrl = this.buildUrl(url, config?.baseUrl);
-    const headers = this.buildHeaders(config?.headers);
-
-    try {
-      const response = await fetch(fullUrl, {
-        method,
-        headers,
-        body: data,
-        signal: controller?.signal,
-      });
-
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-
-      const responseParseResult = await this.safeParseResponse(response);
-
-      if (!responseParseResult.success) {
-        const { error } = responseParseResult;
-
-        return Result.fail(new HttpError(error, 0));
-      }
-
-      const responseData = responseParseResult.data;
-
-      return Result.ok(responseData, {
-        headers: this.parseHeaders(response.headers),
-        status: response.status,
-        statusText: response.statusText,
-      });
-    } catch (error) {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-
-      if (error instanceof DOMException && error.name === 'AbortError') {
-        const reason = controller?.reason || 'Request cancelled.';
-        return Result.fail(new RequestCancelledError(reason));
-      }
-
-      return Result.fail(new HttpError('Unexpected error.', 0, error));
-    }
+    return AbortSignal.any(signals);
   }
 
   private buildUrl(url: string, configBaseUrl?: string) {
-    const baseUrl = configBaseUrl || this.baseUrl;
+    const baseUrl = configBaseUrl ?? this._baseUrl;
 
+    // A relative path with no base has nothing to resolve against, and an
+    // absolute url resolves to itself rather than being appended to the base.
     if (!baseUrl) return url;
 
-    // Match "/" at the end of a string
-    const baseUrlRegEx = /\/$/;
-    // Match "/" at the beginning of a string
-    const urlRegEx = /^\//;
-
-    return `${baseUrl.replace(baseUrlRegEx, '')}/${url.replace(urlRegEx, '')}`;
+    return new URL(url, baseUrl).toString();
   }
 
-  private buildHeaders(configHeaders?: Record<string, string>) {
-    return {
-      'Content-Type': 'application/json',
-      ...this.defaultHeaders,
-      ...configHeaders,
-    };
+  /**
+   * No `Content-Type` of its own. Whoever built the body knows its type, and a
+   * multipart boundary is the browser's to set.
+   */
+  private buildHeaders(configHeaders?: HeadersInit) {
+    const headers = new Headers(this._defaultHeaders);
+
+    new Headers(configHeaders).forEach((value, key) => headers.set(key, value));
+
+    return headers;
+  }
+}
+
+function abortError(signal: AbortSignal): HttpClientError {
+  const { reason } = signal;
+
+  // `AbortSignal.timeout` aborts with a `TimeoutError` and `AbortController`
+  // with an `AbortError`, so the two are told apart by what aborted the request
+  // rather than by matching a message.
+  if (reason instanceof DOMException && reason.name === 'TimeoutError') {
+    return httpClientError.timeout(
+      'The request exceeded its deadline.',
+      reason,
+    );
   }
 
-  private async safeParseResponse<TData>(
-    response: Response,
-  ): Promise<Result<TData, string>> {
-    const contentType = response.headers.get('content-type');
+  return httpClientError.aborted('The request was cancelled.', reason);
+}
 
-    if (contentType?.includes('application/json')) {
-      try {
-        const data = await response.json();
-        return Result.ok(data);
-      } catch {
-        return Result.fail('Failed to parse response JSON.');
-      }
-    }
+async function parseBody(response: Response): Promise<unknown> {
+  const contentType = response.headers.get('content-type');
+  const text = await response.text();
 
-    try {
-      const data = (await response.text()) as TData;
-      return Result.ok(data);
-    } catch {
-      return Result.fail('Failed to parse response text.');
-    }
-  }
+  if (text === '') return null;
 
-  private parseHeaders(headers: Headers): Record<string, string> {
-    const result: Record<string, string> = {};
+  if (contentType?.includes('application/json')) return JSON.parse(text);
 
-    headers.forEach((value, key) => {
-      result[key] = value;
-    });
-
-    return result;
-  }
+  return text;
 }
