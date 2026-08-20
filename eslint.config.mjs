@@ -104,6 +104,10 @@ export default tseslintConfig(
           ],
         },
       ],
+      'import-x/no-cycle': [
+        'error',
+        { maxDepth: Infinity, ignoreExternal: true },
+      ],
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       '@typescript-eslint/no-unused-vars': [
