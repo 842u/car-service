@@ -1,4 +1,4 @@
-import { useTable } from '../../table';
+import { useTable } from '../../use-table';
 import { TableSortDropdown } from '../sort-dropdown/sort-dropdown';
 
 type TableSortBreadcrumbProps = {

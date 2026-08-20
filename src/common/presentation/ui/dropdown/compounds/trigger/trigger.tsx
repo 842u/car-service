@@ -1,6 +1,6 @@
 import type { MouseEventHandler, Ref } from 'react';
 
-import { useDropdown } from '../../dropdown';
+import { useDropdown } from '../../use-dropdown';
 
 type TriggerRenderProps = {
   ref: Ref<HTMLButtonElement>;

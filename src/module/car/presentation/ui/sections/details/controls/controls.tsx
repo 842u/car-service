@@ -4,7 +4,7 @@ import type { CarDto } from '@/car/application/dto/car';
 import { EditButton } from '@/car/presentation/ui/buttons/edit/edit';
 import { EditModal } from '@/car/presentation/ui/modals/edit/edit';
 import { DashboardSection } from '@/dashboard/ui/section/section';
-import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
+import type { DialogModalRef } from '@/ui/dialog-modal/use-dialog-modal';
 
 type SectionControlsProps = {
   canEdit: boolean;

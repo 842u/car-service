@@ -2,7 +2,7 @@ import type { ButtonProps } from '@/ui/button/button';
 import { Button } from '@/ui/button/button';
 import { Spinner } from '@/ui/decorative/spinner/spinner';
 
-import { useForm } from '../../form';
+import { useForm } from '../../use-form';
 
 export type FormSubmitButtonProps = ButtonProps & {
   children: string;

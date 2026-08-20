@@ -3,7 +3,8 @@ import { act, renderHook } from '@testing-library/react';
 import type { ChangeEvent, ReactNode } from 'react';
 
 import type { features } from '../../features';
-import { Table, useTable } from '../../table';
+import { Table } from '../../table';
+import { useTable } from '../../use-table';
 import { useTextFilter } from './use-text-filter';
 
 const columns: ColumnDef<typeof features, { name: string }>[] = [

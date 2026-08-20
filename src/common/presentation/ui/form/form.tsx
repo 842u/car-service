@@ -1,8 +1,6 @@
 import type { ComponentProps } from 'react';
-import { createContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useContextGuard } from '@/common/presentation/hook/use-context-guard';
 import type { FormVariants } from '@/ui/variants/form';
 import { formVariants } from '@/ui/variants/form';
 
@@ -15,21 +13,11 @@ import { FormPasswordInput } from './compounds/password-input/password-input';
 import { FormSelect } from './compounds/select/select';
 import { FormSubmitButton } from './compounds/submit-button/submit-button';
 import { Textarea } from './compounds/textarea/textarea';
+import { FormContext } from './use-form';
 
 export type FormProps = ComponentProps<'form'> & {
   variant?: FormVariants;
 };
-
-type FormContextValue = true;
-
-const FormContext = createContext<FormContextValue | null>(null);
-
-export function useForm() {
-  return useContextGuard({
-    context: FormContext,
-    componentName: 'Form',
-  });
-}
 
 export function Form({
   children,

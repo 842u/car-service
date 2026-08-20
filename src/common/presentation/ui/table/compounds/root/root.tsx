@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { useTable } from '../../table';
+import { useTable } from '../../use-table';
 
 type TableRootProps = Omit<ComponentProps<'table'>, 'className'> & {
   /**

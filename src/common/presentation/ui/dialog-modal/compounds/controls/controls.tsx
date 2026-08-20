@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { useDialogModal } from '@/ui/dialog-modal/dialog-modal';
+import { useDialogModal } from '@/ui/dialog-modal/use-dialog-modal';
 
 type DialogModalControlsProps = {
   children?: ReactNode;

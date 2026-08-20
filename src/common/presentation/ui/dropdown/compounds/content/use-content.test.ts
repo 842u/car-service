@@ -1,9 +1,9 @@
 import { fireEvent, renderHook } from '@testing-library/react';
 
-import { useDropdown } from '../../dropdown';
+import { useDropdown } from '../../use-dropdown';
 import { useDropdownContent } from './use-content';
 
-jest.mock('../../dropdown', () => ({
+jest.mock('../../use-dropdown', () => ({
   useDropdown: jest.fn(),
 }));
 

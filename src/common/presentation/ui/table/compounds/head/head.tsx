@@ -1,4 +1,4 @@
-import { useTable } from '../../table';
+import { useTable } from '../../use-table';
 import { HeadTh } from './th/th';
 
 type TableHeadProps = {

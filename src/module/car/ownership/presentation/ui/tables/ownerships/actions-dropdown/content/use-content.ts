@@ -8,8 +8,8 @@ import { ownershipPromoteMutationOptions } from '@/car/ownership/presentation/ta
 import { ownershipRemoveMutationOptions } from '@/car/ownership/presentation/tanstack/mutation/remove';
 import { queryKeys as carQueryKeys } from '@/car/presentation/tanstack/query/keys';
 import { useToasts } from '@/common/presentation/hook/use-toasts';
-import type { DialogModalRef } from '@/ui/dialog-modal/dialog-modal';
-import { useDropdown } from '@/ui/dropdown/dropdown';
+import type { DialogModalRef } from '@/ui/dialog-modal/use-dialog-modal';
+import { useDropdown } from '@/ui/dropdown/use-dropdown';
 
 type UseDropdownContentParams = {
   ownership: OwnershipDto;

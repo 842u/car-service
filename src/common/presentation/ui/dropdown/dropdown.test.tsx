@@ -2,7 +2,8 @@ import { fireEvent, render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
 
-import { Dropdown, useDropdown } from './dropdown';
+import { Dropdown } from './dropdown';
+import { useDropdown } from './use-dropdown';
 
 beforeEach(() => {
   jest.clearAllMocks();

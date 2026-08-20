@@ -11,7 +11,7 @@ import { twMerge } from 'tailwind-merge';
 import type { InputVariants } from '@/ui/variants/input';
 import { inputVariants } from '@/ui/variants/input';
 
-import { useForm } from '../../form';
+import { useForm } from '../../use-form';
 import { InputErrorText } from './error-text/error-text';
 import { InputLabelText } from './label-text/label-text';
 
