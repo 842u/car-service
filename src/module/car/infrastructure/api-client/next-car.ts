@@ -1,5 +1,4 @@
 import type { Route } from 'next';
-import type { ZodType } from 'zod';
 
 import {
   type AddCarApiRequest,
@@ -11,90 +10,41 @@ import {
 } from '@/car/interface/api/edit.schema';
 import { removeCarApiResponseSchema } from '@/car/interface/api/remove.schema';
 import type { CarApiClient } from '@/car/presentation/api-client/car';
-import type {
-  HttpClient,
-  HttpClientResponse,
-} from '@/common/application/http-client';
-import { Result } from '@/common/application/result';
-import type { Validator } from '@/common/application/validator';
+import type { ApiRequester } from '@/common/application/api-requester';
 
-type ApiResponse<TData> =
-  | { success: true; data: TData }
-  | { success: false; error: { message: string } };
+const ENDPOINT: Route = '/api/car';
 
 export class NextCarApiClient implements CarApiClient {
-  private readonly _httpClient: HttpClient;
-  private readonly _validator: Validator;
+  private readonly _apiRequester: ApiRequester;
 
-  constructor(httpClient: HttpClient, validator: Validator) {
-    this._httpClient = httpClient;
-    this._validator = validator;
-  }
-
-  private async makeRequest<TData>(
-    endpoint: Route,
-    contract: unknown,
-    schema: ZodType<ApiResponse<TData>>,
-    method: 'POST' | 'PATCH' | 'DELETE' = 'POST',
-  ): Promise<Result<TData, { message: string }>> {
-    const data = JSON.stringify(contract);
-
-    let httpResult: HttpClientResponse;
-
-    switch (method) {
-      case 'POST':
-        httpResult = await this._httpClient.post(endpoint, data);
-        break;
-      case 'PATCH':
-        httpResult = await this._httpClient.patch(endpoint, data);
-        break;
-      case 'DELETE':
-        httpResult = await this._httpClient.delete(endpoint, data);
-        break;
-    }
-
-    if (!httpResult.success) {
-      return Result.fail({
-        message: `HTTP request failed: ${httpResult.error.message}`,
-      });
-    }
-
-    const validationResult = this._validator.validate(httpResult.data, schema);
-
-    if (!validationResult.success) {
-      return Result.fail({
-        message: `API response validation failed: ${validationResult.error.message}`,
-      });
-    }
-
-    const apiResponse = validationResult.data;
-
-    if (!apiResponse.success) {
-      return Result.fail({ message: apiResponse.error.message });
-    }
-
-    return Result.ok(apiResponse.data);
+  constructor(apiRequester: ApiRequester) {
+    this._apiRequester = apiRequester;
   }
 
   async add(contract: AddCarApiRequest) {
-    return this.makeRequest('/api/car', contract, addCarApiResponseSchema);
+    return this._apiRequester.send(
+      'POST',
+      ENDPOINT,
+      contract,
+      addCarApiResponseSchema,
+    );
   }
 
   async edit(contract: EditCarApiRequest) {
-    return this.makeRequest(
-      '/api/car',
+    return this._apiRequester.send(
+      'PATCH',
+      ENDPOINT,
       contract,
       editCarApiResponseSchema,
-      'PATCH',
     );
   }
 
   async remove(carId: string) {
-    return this.makeRequest(
-      '/api/car',
+    return this._apiRequester.send(
+      'DELETE',
+      ENDPOINT,
       { carId },
       removeCarApiResponseSchema,
-      'DELETE',
     );
   }
 }
