@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 
 import { buildOwnershipDto } from '@/car/ownership/application/dto/ownership.builder';
@@ -42,7 +42,7 @@ function createWrapper() {
     );
   }
 
-  return Wrapper;
+  return { Wrapper, queryClient };
 }
 
 beforeEach(() => {
@@ -58,7 +58,7 @@ beforeEach(() => {
 describe('useOwnerProfilesForCar', () => {
   it('returns ownerships and owner profiles after a successful fetch', async () => {
     const { result } = renderHook(() => useOwnerProfilesForCar('car-1'), {
-      wrapper: createWrapper(),
+      wrapper: createWrapper().Wrapper,
     });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -69,7 +69,7 @@ describe('useOwnerProfilesForCar', () => {
 
   it('fetches each owner profile by its owner id', async () => {
     renderHook(() => useOwnerProfilesForCar('car-1'), {
-      wrapper: createWrapper(),
+      wrapper: createWrapper().Wrapper,
     });
 
     await waitFor(() =>
@@ -84,7 +84,7 @@ describe('useOwnerProfilesForCar', () => {
     mockOwnershipDataSource.getByCarId.mockResolvedValue(Result.ok([]));
 
     const { result } = renderHook(() => useOwnerProfilesForCar('car-1'), {
-      wrapper: createWrapper(),
+      wrapper: createWrapper().Wrapper,
     });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -98,7 +98,7 @@ describe('useOwnerProfilesForCar', () => {
     );
 
     renderHook(() => useOwnerProfilesForCar('car-1'), {
-      wrapper: createWrapper(),
+      wrapper: createWrapper().Wrapper,
     });
 
     await waitFor(() =>
@@ -110,13 +110,56 @@ describe('useOwnerProfilesForCar', () => {
     );
   });
 
+  it('keeps loaded owner profiles on screen while a newly added owner is fetched', async () => {
+    const { Wrapper, queryClient } = createWrapper();
+    const addedOwnership = buildOwnershipDto({ ownerId: 'owner-3' });
+    const addedUser = buildUserDto({ id: 'owner-3' });
+    const { result } = renderHook(() => useOwnerProfilesForCar('car-1'), {
+      wrapper: Wrapper,
+    });
+
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    let resolveAddedUser: () => void = () => {};
+    mockUserDataSource.getById.mockImplementationOnce(async () => {
+      await new Promise<void>((resolve) => {
+        resolveAddedUser = resolve;
+      });
+      return Result.ok(addedUser);
+    });
+
+    act(() => {
+      queryClient.setQueryData(queryKeys.byCarId('car-1'), [
+        ...MOCK_OWNERSHIPS,
+        addedOwnership,
+      ]);
+    });
+
+    await waitFor(() =>
+      expect(mockUserDataSource.getById).toHaveBeenCalledWith('owner-3'),
+    );
+
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.users).toEqual([MOCK_USER_1, MOCK_USER_2]);
+
+    act(() => resolveAddedUser());
+
+    await waitFor(() =>
+      expect(result.current.users).toEqual([
+        MOCK_USER_1,
+        MOCK_USER_2,
+        addedUser,
+      ]),
+    );
+  });
+
   it('shows a single combined error toast when owner-profile fetches fail', async () => {
     mockUserDataSource.getById.mockResolvedValue(
       Result.fail({ message: 'User error' }),
     );
 
     renderHook(() => useOwnerProfilesForCar('car-1'), {
-      wrapper: createWrapper(),
+      wrapper: createWrapper().Wrapper,
     });
 
     await waitFor(() =>
