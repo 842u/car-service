@@ -32,12 +32,18 @@ export const ownershipAddMutationOptions = mutationOptions({
       queryKeys.byCarId(carId),
     );
 
+    //! The table sorts on `createdAt`, so `null` would park the new row at the
+    //! bottom and let the refetch visibly jump it to the top. Postgres stores
+    //! the column zone-less, hence trimming the `Z`: the optimistic value has
+    //! to sort against server rows under the same string shape.
+    const createdAt = new Date().toISOString().slice(0, -1);
+
     context.client.setQueryData(
       queryKeys.byCarId(carId),
       (current: OwnershipDto[] | undefined) =>
         current && [
           ...current,
-          { carId, ownerId, isPrimary: false, createdAt: null },
+          { carId, ownerId, isPrimary: false, createdAt },
         ],
     );
 

@@ -48,8 +48,7 @@ export function IdClipboardButton({
         aria-label={copied ? 'ID copied' : 'Copy ID'}
         className={twMerge(
           inputVariants[variant],
-          'my-1 flex items-center gap-2 p-0',
-          'hover:border-accent-500 transition-colors',
+          'hover:border-accent-500 my-1 flex items-center gap-2 p-0 transition-colors hover:cursor-pointer',
           className,
         )}
         title={copied ? 'ID copied' : 'Copy ID'}

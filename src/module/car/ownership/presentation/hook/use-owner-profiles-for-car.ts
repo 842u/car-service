@@ -26,7 +26,10 @@ export function useOwnerProfilesForCar(carId: string) {
     queries: ownerIds.map((ownerId) => getUserByIdQueryOptions(ownerId)),
     combine: (results) => ({
       users: results.flatMap((result) => (result.data ? [result.data] : [])),
-      isLoading: results.some((result) => result.isLoading),
+      //! `every`, not `some`: adding an owner mounts one more profile query,
+      //! and a pending newcomer must not blank the profiles already on screen.
+      isLoading:
+        results.length > 0 && results.every((result) => result.isLoading),
       failedCount: results.filter((result) => result.isError).length,
     }),
   });

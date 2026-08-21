@@ -66,6 +66,7 @@ export function FormFields({
     <>
       <Form.InputWrapper className="md:justify-center">
         <Form.InputImage
+          className="mx-auto max-w-72"
           control={control}
           errorMessage={errors.image?.message}
           label="Image"
@@ -144,7 +145,7 @@ export function FormFields({
         />
       </Form.InputWrapper>
       <Form.InputWrapper>
-        <div className="bg-alpha-grey-300 mb-4 h-px w-full md:block lg:hidden" />
+        <div className="bg-alpha-grey-300 mb-4 h-px w-full md:hidden" />
         <Form.Input
           errorMessage={errors.engineCapacity?.message}
           label="Engine Capacity [cc]"
@@ -187,7 +188,7 @@ export function FormFields({
       </Form.InputWrapper>
 
       <Form.InputWrapper>
-        <div className="bg-alpha-grey-300 mb-4 h-px w-full md:block lg:hidden" />
+        <div className="bg-alpha-grey-300 mb-4 h-px w-full md:hidden" />
         <Form.Input
           errorMessage={errors.mileage?.message}
           label="Mileage [km]"
